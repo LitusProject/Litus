@@ -22,8 +22,8 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\User\Person,
-    DateTime,
     DateInterval,
+    DateTime,
     Doctrine\ORM\EntityManager,
     SportBundle\Entity\Lap,
     SportBundle\Entity\Runner;
@@ -39,6 +39,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * @var EntityManager
      */
     private $_entityManager;
+
+    /**
+     * @var int Minimum runtime required (in seconds)
+     */
+    private static $MIN_LAP_TIME = 60;
 
     /**
      * @param EntityManager $entityManager
@@ -80,13 +85,15 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $command = json_decode($data);
 
-        if (null == $command)
+        if (null == $command) {
             return;
+        }
 
         switch ($command->command) {
             case 'action':
-                if ($this->isAuthenticated($user->getSocket()))
+                if ($this->isAuthenticated($user->getSocket())) {
                     $this->_gotAction($user, $command);
+                }
                 break;
             case 'initialize':
                 if (!isset($command->key) || $command->key != $key) {
@@ -191,9 +198,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function sendQueueToAll()
     {
-        $queue= $this->_getJsonQueue();
-        foreach($this->getUsers() as $user)
+        $queue = $this->_getJsonQueue();
+        foreach ($this->getUsers() as $user) {
             $this->sendQueue($user, $queue);
+        }
     }
 
     /**
@@ -243,8 +251,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
             $runner->setRunnerIdentification($data->universityIdentification);
         } else {
-            if (null === $runner->getDepartment())
+            if (null === $runner->getDepartment()) {
                 $runner->setDepartment($department);
+            }
         }
 
         $lap = new Lap($this->_getAcademicYear(), $runner);
@@ -272,16 +281,20 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('SportBundle\Entity\Lap')
                 ->findPrevious($this->_getAcademicYear(), 5)
         );
-        foreach($previousLaps as $lap)
+        foreach ($previousLaps as $lap) {
             $laps[] = $this->_jsonLap($lap, 'previous');
+        }
 
         $laps[] = $this->_jsonLap($this->_getCurrentLap(), 'current');
 
         $nextLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
             ->findNext($this->_getAcademicYear(), 15);
-        foreach($nextLaps as $lap)
+        foreach ($nextLaps as $lap) {
             $laps[] = $this->_jsonLap($lap, 'next');
+        }
+
+        $fastestLap = $this->_getFastestLap();
 
         $data = (object) array(
             'laps' => (object) array(
@@ -289,10 +302,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     'own' => $nbLaps,
                     'uniqueRunners' => $uniqueRunners,
                 ),
+                'fastestRunner' => $fastestLap['runner'],
+                'fastestTime' => $fastestLap['time'],
                 'laps' => $laps,
                 'officialResults' => $this->_getOfficialResults(),
                 'averageLapTime' => $this->_getAverageLapTime(),
                 'groupsOfFriends' => $this->_getGroupsOfFriends(),
+                'mostLaps' => $this->_getMostFrequentRunners()
             ),
         );
 
@@ -306,8 +322,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function _jsonLap(Lap $lap = null, $state)
     {
-        if (null === $lap)
+        if (null === $lap) {
             return null;
+        }
 
         $lap->setEntityManager($this->_entityManager);
 
@@ -338,11 +355,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _startLap()
     {
-        if (null !== $this->_getCurrentLap())
+        if (null !== $this->_getCurrentLap()) {
             $this->_getCurrentLap()->stop();
+        }
 
-        if (null !== $this->_getNextLap())
+        if (null !== $this->_getNextLap()) {
             $this->_getNextLap()->start();
+        }
 
         $this->_entityManager->flush();
     }
@@ -367,6 +386,75 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findNext($this->_getAcademicYear());
     }
 
+    private function _getFastestLap()
+    {
+        $previousLaps = array_reverse(
+            $this->_entityManager
+                ->getRepository('SportBundle\Entity\Lap')
+                ->findAllPreviousLaps($this->_getAcademicYear())
+        );
+
+        $time = null;
+        $fastestLap = null;
+
+        foreach ($previousLaps as $lap) {
+            if ($this->_isValidLapTime($lap->getLapTime())) {
+                if ($fastestLap == null) {
+                    $time = $lap->getLapTime();
+                    $fastestLap = $lap;
+                } elseif ($this->_convertDateIntervalToSeconds($lap->getLapTime()) < $this->_convertDateIntervalToSeconds($time)) {
+                    $time = $lap->getLapTime();
+                    $fastestLap = $lap;
+                }
+            }
+        }
+
+        return array(
+            'time' => $fastestLap->getLapTime()->format('%i:%S'),
+            'runner' => $fastestLap->getRunner()->getAcademic()->getFullName(),
+        );
+    }
+
+    private function _getMostFrequentRunners($number = 3)
+    {
+        $runners = $this->_entityManager
+                ->getRepository('SportBundle\Entity\Lap')
+                ->getRunnersAndCount($this->_getAcademicYear());
+
+        $i = 0;
+        $row = 0;
+        $mostLaps = array();
+        while ($i < $number) {
+            if (isset($runners[$row])) {
+                $runner = $this->_entityManager
+                    ->getRepository('SportBundle\Entity\Runner')
+                    ->findOneById($runners[$row]['runner']);
+                if (strpos($runner->getAcademic()->getFullName(),'VTK gent') == false) {
+                    array_push($mostLaps, array(
+                            'name' => $runner->getAcademic()->getFullName(),
+                            'laps' => $runners[$row]['lapCount'],
+                        )
+                    );
+                } else {
+                    if (isset($runners[$row+1])) {
+                        $runner = $this->_entityManager
+                            ->getRepository('SportBundle\Entity\Runner')
+                            ->findOneById($runners[$row+1]['runner']);
+                        array_push($mostLaps, array(
+                                'name' => $runner->getAcademic()->getFullName(),
+                                'laps' => $runners[$row+1]['lapCount'],
+                            )
+                        );
+                    }
+                }
+            }
+            $i++;
+            $row++;
+        }
+
+        return $mostLaps;
+    }
+
     private function _getAcademicYear()
     {
         return AcademicYear::getUniversityYear($this->_entityManager);
@@ -374,21 +462,23 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function _getOfficialResults()
     {
-        $fileContents = @file_get_contents('data/cache/' . md5('run_result_page'));
+        $fileContents = @file_get_contents('data/cache/run-' . md5('run_result_page'));
 
         $resultPage = null;
-        if (false !== $fileContents)
+        if (false !== $fileContents) {
             $resultPage = (array) json_decode($fileContents);
+        }
 
-        if (null !== $resultPage) {
+        if ($resultPage) {
             $teamId = $this->_entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.run_team_id');
 
             $currentPlace = null;
             $teamData = null;
+
             foreach ($resultPage['teams'] as $place => $team) {
-                if ($team[0] == $teamId) {
+                if ($team->nb == $teamId) {
                     $currentPlace = $place;
                     $teamData = $team;
                 }
@@ -398,19 +488,17 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $behind = 0;
                 if (null !== $currentPlace && $currentPlace > 0) {
                     $firstData = $resultPage['teams'][0];
-                    $behind = round(($firstData[2] + $firstData[3]) - ($teamData[2] + $teamData[3]), 2);
+                    $behind = round(($firstData->laps + $firstData->position) - ($teamData->laps + $teamData->position), 2);
                 }
 
-                $lapsPerSecond = 1/($resultPage['lap']/($teamData[4]/3.6));
+                $lapsPerSecond = 1/($resultPage['lap']/($teamData->speed/3.6));
 
                 return array(
                     'lapLength' => $resultPage['lap'],
-
-                    'nbLaps' => $teamData[2],
-                    'position' => round($teamData[3] * 100),
-                    'speed' => round($teamData[4], 2),
+                    'nbLaps' => $teamData->laps,
+                    'position' => round($teamData->position * 100),
+                    'speed' => round($teamData->speed, 2),
                     'lapsPerSecond' => round($lapsPerSecond, 4),
-
                     'behind' => $behind,
                 );
             }
@@ -453,8 +541,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findAll();
 
         $total = 0;
-        foreach ($laps as $lap)
+        foreach ($laps as $lap) {
             $total += $this->_convertDateIntervalToSeconds($lap->getLapTime());
+        }
         $average = $total / count($laps);
 
         return floor($average / 60) . ':' . ($average % 60 < 10 ? '0' . $average % 60 : $average % 60);
@@ -463,5 +552,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     private function _convertDateIntervalToSeconds(DateInterval $interval)
     {
         return $interval->h*3600 + $interval->i*60 + $interval->s;
+    }
+
+    private function _isValidLapTime(DateInterval $interval)
+    {
+        if ($this->_convertDateIntervalToSeconds($interval) < self::$MIN_LAP_TIME) {
+            return false;
+        }
+
+        return true;
     }
 }

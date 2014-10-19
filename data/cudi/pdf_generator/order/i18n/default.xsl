@@ -35,6 +35,10 @@
 	    <xsl:text>RV</xsl:text>
 	</xsl:template>
 
+	<xsl:template name="colored">
+	    <xsl:text>Color</xsl:text>
+	</xsl:template>
+
 	<xsl:template name="binding">
 	    <xsl:text>Binding</xsl:text>
 	</xsl:template>

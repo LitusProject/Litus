@@ -21,10 +21,10 @@ namespace CommonBundle\Component\Authentication;
 use CommonBundle\Component\Authentication\Action,
     CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
     Zend\Authentication\Storage\StorageInterface,
-    Zend\Http\PhpEnvironment\Request,
-    Zend\Http\PhpEnvironment\Response,
     Zend\Http\Header\Cookie,
-    Zend\Http\Header\SetCookie;
+    Zend\Http\Header\SetCookie,
+    Zend\Http\PhpEnvironment\Request,
+    Zend\Http\PhpEnvironment\Response;
 
 /**
  * An authentication service superclass that handles the setting and clearing of the cookie.
@@ -155,8 +155,9 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     protected function _clearCookie()
     {
-        if (isset($this->_cookies[$this->_cookie]))
+        if (isset($this->_cookies[$this->_cookie])) {
             unset($this->_cookies[$this->_cookie]);
+        }
 
         $this->_response->getHeaders()->addHeader(
             (new SetCookie())

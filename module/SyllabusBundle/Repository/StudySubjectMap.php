@@ -18,10 +18,10 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    SyllabusBundle\Entity\Subject as SubjectEntity,
-    SyllabusBundle\Entity\Study as StudyEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
+    SyllabusBundle\Entity\Study as StudyEntity,
+    SyllabusBundle\Entity\Subject as SubjectEntity;
 
 /**
  * StudySubjectMap
@@ -117,8 +117,9 @@ class StudySubjectMap extends EntityRepository
             ->getResult();
 
         $ids = array(0 => 0);
-        foreach($resultSet as $item)
+        foreach ($resultSet as $item) {
             $ids[$item['id']] = $item['id'];
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -150,8 +151,9 @@ class StudySubjectMap extends EntityRepository
             ->getResult();
 
         $ids = array(0 => 0);
-        foreach($resultSet as $item)
+        foreach ($resultSet as $item) {
             $ids[$item['id']] = $item['id'];
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -183,8 +185,9 @@ class StudySubjectMap extends EntityRepository
             ->getResult();
 
         $ids = array(0 => 0);
-        foreach($resultSet as $item)
+        foreach ($resultSet as $item) {
             $ids[$item['id']] = $item['id'];
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('s')

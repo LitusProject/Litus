@@ -97,7 +97,8 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
             $field = new Select($prefix . 'address_street_' . $id);
             $field->setLabel('Street')
                 ->setAttribute('class', $field->getAttribute('class') . ' ' . $prefix . 'address_street')
-                ->setAttribute('options', $collection);
+                ->setAttribute('options', $collection)
+                ->setRequired($this->_required);
             $this->add($field);
         }
 
@@ -114,8 +115,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
     private function _getCities()
     {
         if (null !== $this->_cache) {
-            if (null !== ($result = $this->_cache->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets')))
+            if (null !== ($result = $this->_cache->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets'))) {
                 return $result;
+            }
         }
 
         $cities = $this->_entityManager
@@ -126,7 +128,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
         $optionsStreet = array();
         foreach ($cities as $city) {
             $optionsCity[$city->getId()] = $city->getPostal() . ' ' . $city->getName();
-            $optionsStreet[$city->getId()] = array(0 => '');
+            $optionsStreet[$city->getId()] = array('' => '');
 
             foreach ($city->getStreets() as $street) {
                 $optionsStreet[$city->getId()][$street->getId()] = $street->getName();
@@ -139,7 +141,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Bootstrap\Element\Collecti
                 'Litus_CommonBundle_Entity_General_Address_Cities_Streets',
                 array(
                     $optionsCity,
-                    $optionsStreet
+                    $optionsStreet,
                 )
             );
         }

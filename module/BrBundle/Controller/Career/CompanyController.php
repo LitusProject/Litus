@@ -44,8 +44,9 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 
     public function viewAction()
     {
-        if (!($page = $this->_getPage()))
+        if (!($page = $this->_getPage())) {
             return new ViewModel();
+        }
 
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -138,7 +139,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             $this->redirect()->toRoute(
                 'br_career_company',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -158,7 +159,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             $this->redirect()->toRoute(
                 'br_career_company',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -179,7 +180,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             $this->redirect()->toRoute(
                 'br_career_company',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -199,7 +200,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             $this->redirect()->toRoute(
                 'br_career_company',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 

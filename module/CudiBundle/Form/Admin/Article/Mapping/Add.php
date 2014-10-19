@@ -22,10 +22,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\Validator\Subject\Code as SubjectValidator,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Mapping
@@ -78,39 +77,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
 
-        if (isset($this->data['subject_id']) && $this->data['subject_id'] == '') {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'subject',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'subject_id',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
                         ),
-                        'validators' => array(
-                            new SubjectValidator($this->_entityManager),
-                        ),
-                    )
+                    ),
                 )
-            );
-        } else {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'subject_id',
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'int',
-                            ),
-                        ),
-                    )
-                )
-            );
-        }
+            )
+        );
 
         return $inputFilter;
     }

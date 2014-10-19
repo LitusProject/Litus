@@ -19,12 +19,11 @@
 namespace TicketBundle\Entity;
 
 use CalendarBundle\Entity\Node\Event as CalendarEvent,
-    CommonBundle\Entity\User\Person,
     DateInterval,
     DateTime,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    \Doctrine\Common\Collection\ArrayCollection;
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Event")
@@ -279,8 +278,9 @@ class Event
      */
     public function isActive()
     {
-        if ($this->activity->getStartDate() < new DateTime())
+        if ($this->activity->getStartDate() < new DateTime()) {
             return false;
+        }
 
         return $this->active;
     }
@@ -452,8 +452,9 @@ class Event
     {
         $sold = 0;
         foreach ($this->tickets as $ticket) {
-            if ($ticket->getStatusCode() == 'sold')
+            if ($ticket->getStatusCode() == 'sold') {
                 $sold++;
+            }
         }
 
         return $sold;
@@ -466,8 +467,9 @@ class Event
     {
         $sold = 0;
         foreach ($this->tickets as $ticket) {
-            if ($ticket->getStatusCode() == 'booked')
+            if ($ticket->getStatusCode() == 'booked') {
                 $sold++;
+            }
         }
 
         return $sold;
@@ -502,8 +504,9 @@ class Event
      */
     public function canRemoveReservation(EntityManager $entityManager)
     {
-        if (!$this->allowRemove())
+        if (!$this->allowRemove()) {
             return false;
+        }
 
         $now = new DateTime();
 
@@ -518,8 +521,9 @@ class Event
             $getStartDate = clone $this->getBookingsCloseDate();
         }
 
-        if ($getStartDate->sub($removeReservationThreshold) < $now)
-             return false;
+        if ($getStartDate->sub($removeReservationThreshold) < $now) {
+            return false;
+        }
 
         return true;
     }
@@ -533,15 +537,18 @@ class Event
     {
         $number = 0;
         foreach ($this->tickets as $ticket) {
-            if ($ticket->getStatusCode() !== 'sold')
+            if ($ticket->getStatusCode() !== 'sold') {
                 continue;
+            }
 
             if (null !== $option) {
-                if (($ticket->getOption() == $option) && (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member)))
+                if (($ticket->getOption() == $option) && (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member))) {
                     $number++;
+                }
             } else {
-                if (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member))
+                if (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member)) {
                     $number++;
+                }
             }
         }
 
@@ -557,15 +564,18 @@ class Event
     {
         $number = 0;
         foreach ($this->tickets as $ticket) {
-            if ($ticket->getStatusCode() !== 'booked')
+            if ($ticket->getStatusCode() !== 'booked') {
                 continue;
+            }
 
             if (null !== $option) {
-                if (($ticket->getOption() == $option) && (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member)))
+                if (($ticket->getOption() == $option) && (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member))) {
                     $number++;
+                }
             } else {
-                if (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member))
+                if (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member)) {
                     $number++;
+                }
             }
         }
 

@@ -18,8 +18,8 @@
 
 namespace LogisticsBundle\Entity\Reservation;
 
-use Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a driver.
@@ -78,5 +78,4 @@ class ReservableResource
     {
         $this->reservations->add($reservation);
     }
-
 }

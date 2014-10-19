@@ -18,9 +18,9 @@
 
 namespace TicketBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     TicketBundle\Entity\Event as EventEntity;
 
 /**
@@ -245,7 +245,7 @@ class Ticket extends EntityRepository
                 )
             )
             ->setParameter('academicYear', $academicYear)
-            ->setParameter('organization', '%'.strtolower($organization).'%')
+            ->setParameter('organization', '%' . strtolower($organization) . '%')
             ->getQuery()
             ->getResult();
 

@@ -70,8 +70,9 @@ class Booking
         foreach ($openingHours as $openingHour) {
             $openingHourText .= '- ' . $openingHour->getStart()->format('l') . ' (' . $openingHour->getStart()->format('d/m') . ') : ' . $openingHour->getStart()->format('G:i') . ' - ' . $openingHour->getEnd()->format('G:i');
 
-            if (strlen($openingHour->getComment($language)) > 0)
+            if (strlen($openingHour->getComment($language)) > 0) {
                 $openingHourText .= ' (' . $openingHour->getComment($language) . ')';
+            }
 
             $openingHourText .= "\r\n";
         }
@@ -105,11 +106,13 @@ class Booking
         $sendMailsToCudi = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.booking_mails_to_cudi') == 1;
-        if ($sendMailsToCudi)
+        if ($sendMailsToCudi) {
             $mail->addCc($mailAddress, $mailName);
+        }
 
-        if ('development' != getenv('APPLICATION_ENV'))
+        if ('development' != getenv('APPLICATION_ENV')) {
             $mailTransport->send($mail);
+        }
     }
 
     /**
@@ -152,8 +155,9 @@ class Booking
         foreach ($openingHours as $openingHour) {
             $openingHourText .= '- ' . $openingHour->getStart()->format('l') . ' (' . $openingHour->getStart()->format('d/m') . ') : ' . $openingHour->getStart()->format('G:i') . ' - ' . $openingHour->getEnd()->format('G:i');
 
-            if (strlen($openingHour->getComment($language)) > 0)
+            if (strlen($openingHour->getComment($language)) > 0) {
                 $openingHourText .= ' (' . $openingHour->getComment($language) . ')';
+            }
 
             $openingHourText .= "\r\n";
         }
@@ -187,10 +191,13 @@ class Booking
         $sendMailsToCudi = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.booking_mails_to_cudi') == 1;
-        if ($sendMailsToCudi)
+        if ($sendMailsToCudi) {
             $mail->addCc($mailAddress, $mailName);
+        }
 
-        $mailTransport->send($mail);
+        if ('development' != getenv('APPLICATION_ENV')) {
+            $mailTransport->send($mail);
+        }
     }
 
     /**
@@ -237,8 +244,9 @@ class Booking
         foreach ($openingHours as $openingHour) {
             $openingHourText .= '- ' . $openingHour->getStart()->format('l') . ' (' . $openingHour->getStart()->format('d/m') . ') : ' . $openingHour->getStart()->format('G:i') . ' - ' . $openingHour->getEnd()->format('G:i');
 
-            if (strlen($openingHour->getComment($language)) > 0)
+            if (strlen($openingHour->getComment($language)) > 0) {
                 $openingHourText .= ' (' . $openingHour->getComment($language) . ')';
+            }
 
             $openingHourText .= "\r\n";
         }
@@ -272,10 +280,12 @@ class Booking
         $sendMailsToCudi = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.booking_mails_to_cudi') == 1;
-        if ($sendMailsToCudi)
+        if ($sendMailsToCudi) {
             $mail->addCc($mailAddress, $mailName);
+        }
 
-        if ('development' != getenv('APPLICATION_ENV'))
+        if ('development' != getenv('APPLICATION_ENV')) {
             $mailTransport->send($mail);
+        }
     }
 }

@@ -32,6 +32,7 @@
                     <th width="100px">Purchase Price</th>
                     <th width="90px">Sell Price</th>
                     <th width="90px">Number Sold</th>
+                    <th width="90px" class="widest">Article Type</th>
                     <th width="70px">Action</th>
                 </tr>
             </table>
@@ -47,6 +48,7 @@
                     <th width="100px">Purchase Price</th>
                     <th width="90px">Sell Price</th>
                     <th width="90px">Number Sold</th>
+                    <th width="90px" class="widest">Article Type</th>
                     <th width="70px">Action</th>
                 </tr>
 
@@ -59,6 +61,7 @@
                         <td>&euro; {{ (item.getPurchasePrice()/100)|number_format(2) }}</td>
                         <td>&euro; {{ (item.getSellPrice()/100)|number_format(2) }}</td>
                         <td>{{ item.getNumberSold(activeAcademicYear) }}</td>
+                        <td class="widest">{{ item.getMainArticle().getType()|capitalize }}</td>
                         <td class="actions">
                             {% if hasAccess('cudi_admin_sales_financial_sold', 'article') %}
                                 <a href="{{ url('cudi_admin_sales_financial_sold', {'action': 'article', 'id': item.getId(), 'academicyear': activeAcademicYear.getCode()}) }}" class="view">View</a>

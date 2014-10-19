@@ -71,13 +71,15 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
         $command = json_decode($data);
 
-        if (null == $command)
+        if (null == $command) {
             return;
+        }
 
         switch ($command->command) {
             case 'action':
-                if ($this->isAuthenticated($user->getSocket()))
+                if ($this->isAuthenticated($user->getSocket())) {
                     $this->_gotAction($user, $command);
+                }
                 break;
             case 'queueUpdated':
                 $this->sendQueueToAll();
@@ -128,12 +130,15 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                     }
                 }
 
-                if (isset($command->session) && is_numeric($command->session))
+                if (isset($command->session) && is_numeric($command->session)) {
                     $user->setExtraData('session', $command->session);
-                if (isset($command->queueType))
+                }
+                if (isset($command->queueType)) {
                     $user->setExtraData('queueType', $command->queueType);
-                if (isset($command->paydesk))
+                }
+                if (isset($command->paydesk)) {
                     $user->setExtraData('paydesk', $command->paydesk);
+                }
 
                 $this->addAuthenticated($user->getSocket());
                 $this->sendQueue($user);
@@ -181,8 +186,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
      */
     private function sendQueue(User $user)
     {
-        if (null == $user->getExtraData('session'))
+        if (null == $user->getExtraData('session')) {
             return;
+        }
 
         $session = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\Session')
@@ -203,8 +209,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
      */
     private function sendQueueToAll()
     {
-        foreach($this->getUsers() as $user)
+        foreach ($this->getUsers() as $user) {
             $this->sendQueue($user);
+        }
     }
 
     /**
@@ -212,8 +219,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
      */
     private function sendQueueItemToAll($id)
     {
-        if (null == $id)
+        if (null == $id) {
             return;
+        }
 
         $json = $this->_queue->getJsonQueueItem($id);
 
@@ -241,8 +249,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
      */
     private function _gotAction(User $user, $command)
     {
-        if (null == $user->getExtraData('session'))
+        if (null == $user->getExtraData('session')) {
             return;
+        }
 
         switch ($command->action) {
             case 'signIn':
@@ -324,7 +333,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
             Printer::signInTicket(
                 $this->_entityManager,
-                'signin',
+                $this->_entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.signing_printer'),
                 $item,
                 $this->_entityManager
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -356,8 +367,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     private function _startCollecting(User $user, $id, $bulk = false)
     {
         $result = $this->_queue->startCollecting($user, $id, $bulk);
-        if ($result)
+        if ($result) {
             $this->sendText($user, $result);
+        }
 
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -397,8 +409,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     {
         $saleItems = $this->_queue->concludeSale($id, $articles, $discounts, $payMethod);
 
-        if (null == $saleItems)
+        if (null == $saleItems) {
             return;
+        }
 
         $item = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
@@ -435,8 +448,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     private function _addArticle(User $user, $id, $articleId)
     {
         $result = $this->_queue->addArticle($id, $articleId);
-        if ($result)
+        if ($result) {
             $this->sendText($user, $result);
+        }
     }
 
     private function _undoSale(User $user, $id)
@@ -447,7 +461,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.sale_light_version');
 
-        if ($lightVersion == '1')
+        if ($lightVersion == '1') {
             $this->_startSale($user, $id);
+        }
     }
 }

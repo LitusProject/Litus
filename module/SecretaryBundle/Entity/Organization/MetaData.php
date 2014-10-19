@@ -108,8 +108,9 @@ class MetaData
      */
     public function __construct(Academic $academic, AcademicYear $academicYear, $becomeMember, $irreeelAtCudi, $bakskeByMail, $tshirtSize)
     {
-        if (!self::isValidTshirtSize($tshirtSize))
+        if (!self::isValidTshirtSize($tshirtSize)) {
             throw new \InvalidArgumentException('The T-shirt size is not valid');
+        }
 
         $this->academic = $academic;
         $this->academicYear = $academicYear;
@@ -222,8 +223,10 @@ class MetaData
      */
     public function getTshirtSizeName()
     {
-        if (isset(self::$possibleSizes[$this->tshirtSize]))
+        if (isset(self::$possibleSizes[$this->tshirtSize])) {
             return self::$possibleSizes[$this->tshirtSize];
+        }
+
         return '';
     }
 

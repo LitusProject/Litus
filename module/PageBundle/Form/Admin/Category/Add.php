@@ -19,14 +19,14 @@
 namespace PageBundle\Form\Admin\Category;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Tabs,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Category
@@ -97,10 +97,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->findAll();
 
         $pageOptions = array(
-            '' => ''
+            '' => '',
         );
-        foreach($pages as $page)
+        foreach ($pages as $page) {
             $pageOptions[$page->getId()] = $page->getTitle();
+        }
 
         return $pageOptions;
     }

@@ -22,9 +22,9 @@ use CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter,
     \MailBundle\Entity\MailingList as MailingListEntity;
 
 /**
@@ -96,8 +96,9 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
         if (!$editor) {
             $listsArray = array();
             foreach ($lists as $list) {
-                if ($list->canBeEditedBy($this->_authenticatedPerson))
+                if ($list->canBeEditedBy($this->_authenticatedPerson)) {
                     $listsArray[] = $list;
+                }
             }
         } else {
             $listsArray = $lists;
@@ -109,16 +110,18 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
                 ->findBy(
                     array(
                         'list' => $this->_currentList,
-                        'entry' => $value
+                        'entry' => $value,
                     )
                 );
-            if ($value === $this->_currentList || count($lists) > 0)
+            if ($value === $this->_currentList || count($lists) > 0) {
                 unset($listsArray[$key]);
+            }
         }
 
         $lists = array();
-        foreach ($listsArray as $list)
+        foreach ($listsArray as $list) {
             $lists[$list->getId()] = $list->getName();
+        }
 
         return $lists;
     }

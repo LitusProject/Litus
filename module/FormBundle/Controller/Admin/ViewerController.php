@@ -18,8 +18,8 @@
 
 namespace FormBundle\Controller\Admin;
 
-use FormBundle\Form\Admin\Viewer\Add as AddForm,
-    FormBundle\Entity\ViewerMap,
+use FormBundle\Entity\ViewerMap,
+    FormBundle\Form\Admin\Viewer\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -31,8 +31,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($formSpecification = $this->_getForm()))
+        if (!($formSpecification = $this->_getForm())) {
             return new ViewModel();
+        }
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
@@ -69,8 +70,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
 
     public function addAction()
     {
-        if (!($formSpecification = $this->_getForm()))
+        if (!($formSpecification = $this->_getForm())) {
             return new ViewModel();
+        }
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
@@ -132,7 +134,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                     ->findOneBy(
                         array(
                             'form' => $formSpecification,
-                            'person' => $person
+                            'person' => $person,
                         )
                     );
 
@@ -142,7 +144,6 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                         'This user has already been given access to this list!'
                     );
                 } else {
-
                     $viewer = new ViewerMap(
                         $formSpecification,
                         $person,
@@ -184,8 +185,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($viewer = $this->_getViewer()))
+        if (!($viewer = $this->_getViewer())) {
             return new ViewModel();
+        }
 
         if (!$viewer->getForm()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
@@ -245,7 +247,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'form_admin_form',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -265,7 +267,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'form_admin_form',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

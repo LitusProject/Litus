@@ -23,8 +23,8 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
     CommonBundle\Component\Validator\Username as UsernameValidator,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Person
@@ -81,7 +81,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
                 'options',
                 array(
                     'm' => 'M',
-                    'f' => 'F'
+                    'f' => 'F',
                 )
             );
         $this->add($field);
@@ -108,14 +108,16 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            if ($role->getSystem())
+            if ($role->getSystem()) {
                 continue;
+            }
 
             $rolesArray[$role->getName()] = $role->getName();
         }
 
-        if (empty($rolesArray))
+        if (empty($rolesArray)) {
             throw new \RuntimeException('There needs to be at least one role before you can add a person');
+        }
 
         return $rolesArray;
     }
@@ -135,7 +137,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'alnum'
+                            'name' => 'alnum',
                         ),
                         new UsernameValidator($this->_entityManager),
                     ),

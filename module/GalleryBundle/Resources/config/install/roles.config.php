@@ -23,7 +23,7 @@ return array(
         ),
         'actions' => array(
             'gallery' => array(
-                'album', 'overview', 'year'
+                'album', 'overview', 'year',
             ),
         ),
     ),

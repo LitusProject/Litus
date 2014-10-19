@@ -84,7 +84,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'on_admin_slug',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -101,8 +101,9 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($slug = $this->_getSlug()))
+        if (!($slug = $this->_getSlug())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getDocumentManager(), $slug);
 
@@ -126,7 +127,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'on_admin_slug',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -145,8 +146,9 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($slug = $this->_getSlug()))
+        if (!($slug = $this->_getSlug())) {
             return new ViewModel();
+        }
 
         $this->getDocumentManager()->remove($slug);
 
@@ -164,8 +166,9 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
         $characters = 'abcdefghijklmnopqrstuwxyz0123456789';
 
         $name = array();
-        for ($i = 0; $i < 8; $i++)
+        for ($i = 0; $i < 8; $i++) {
             $name[$i] = $characters[rand(0, strlen($characters) - 1)];
+        }
 
         return implode('', $name);
     }
@@ -184,7 +187,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'on_admin_slug',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -204,7 +207,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'on_admin_slug',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

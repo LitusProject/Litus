@@ -21,8 +21,8 @@ namespace ShiftBundle\Form\Shift\Search;
 use CommonBundle\Component\Form\Bootstrap\Element\Select,
     CommonBundle\Entity\General\Language,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Search Event
@@ -61,10 +61,11 @@ class Event extends \CommonBundle\Component\Form\Bootstrap\Form
             ->findAllActive();
 
         $eventsArray = array(
-            '' => ''
+            '' => '',
         );
-        foreach ($events as $event)
+        foreach ($events as $event) {
             $eventsArray[$event->getId()] = $event->getTitle($language);
+        }
 
         return $eventsArray;
     }

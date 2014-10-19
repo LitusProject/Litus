@@ -59,8 +59,9 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 
         $result = parent::onDispatch($e);
 
-        if (null == $session || !$session->isOpen())
+        if (null == $session || !$session->isOpen()) {
             $result->invalidSession = true;
+        }
 
         $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
@@ -108,7 +109,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             'controller'     => 'common_index',
 
             'auth_route'     => 'cudi_sale_auth',
-            'redirect_route' => 'cudi_sale_sale'
+            'redirect_route' => 'cudi_sale_sale',
         );
     }
 }

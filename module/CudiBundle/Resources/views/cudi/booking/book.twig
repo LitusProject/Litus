@@ -24,44 +24,49 @@
     {% if authenticatedPerson == null %}
         {{ translate('Please login to book textbooks.') }}
     {% else %}
-        {% if hasAccess('cudi_booking', 'search') %}
+        {% if hasAccess('cudi_booking', 'search') or hasAccess('cudi_booking', 'keepUpdated') %}
             <div style="height: 30px" class="hidden-xs hidden-sm">
                 <div class="pull-right">
                     {% if hasAccess('cudi_booking', 'keepUpdated') %}
                         <button class="btn btn-warning" id="keepUpdated" {% if isSubscribed %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('You will receive an e-mail when the catalog is updated.') }}">{{ translate('Keep Me Updated') }}</button>
                         <button class="btn btn-warning" id="dontKeepUpdated" {% if not isSubscribed %}style="display: none"{% endif %} rel="tooltip" data-toggle="tooltip" title="{{ translate('You won\'t receive an e-mail when the catalog is updated.') }}">{{ translate('Don\'t Keep Me Updated') }}</button>
                     {% endif %}
-                    <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
+                    {% if hasAccess('cudi_booking', 'search') %}
+                        <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
+                    {% endif %}
                 </div>
             </div>
 
-            <div id="searchArticlesPage" style="display: none;margin-top: 10px;">
-                {% import 'site/partials/form.twig' as forms %}
-                {{ forms.renderForm(searchForm) }}
+            {% if hasAccess('cudi_booking', 'search') %}
+                <div id="searchArticlesPage" style="display: none;margin-top: 10px;">
+                    {% import 'site/partials/form.twig' as forms %}
+                    {{ forms.renderForm(searchForm) }}
 
-                <table class="table bookings">
-                    <thead>
-                        <tr>
-                            <th>{{ translate('Title') }}</th>
-                            <th class="hidden-xs">{{ translate('Authors') }}</th>
-                            <th>{{ translate('Price / Piece') }}</th>
-                            <th class="hidden-xs">{{ translate('Remarks') }}</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="spacer">
-                            <td colspan="7"></td>
-                        </tr>
-                        <tr class="course-title">
-                            <td colspan="7"><i>{{ translate('No Articles Found') }}</i></td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <table class="table bookings">
+                        <thead>
+                            <tr>
+                                <th>{{ translate('Title') }}</th>
+                                <th class="hidden-xs">{{ translate('Authors') }}</th>
+                                <th style="min-width: 100px">{{ translate('Price / Piece') }}</th>
+                                <th class="hidden-xs" style="min-width: 60px">{{ translate('Mandatory') }}</th>
+                                <th class="hidden-xs" style="min-width: 70px">{{ translate('Remarks') }}</th>
+                                <th style="min-width: 100px"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="spacer">
+                                <td colspan="7"></td>
+                            </tr>
+                            <tr class="course-title">
+                                <td colspan="7"><i>{{ translate('No Articles Found') }}</i></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <a class="btn btn-default pull-left" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
-                <button id="bookSearchArticles" class="btn btn-primary pull-right" style="display: none">{{ translate('Book') }}</button>
-            </div>
+                    <a class="btn btn-default pull-left" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
+                    <button id="bookSearchArticles" class="btn btn-primary pull-right" style="display: none">{{ translate('Book') }}</button>
+                </div>
+            {% endif %}
         {% endif %}
 
         <div id="viewArticlesPage">
@@ -98,7 +103,7 @@
                         </tr>
 
                         {% for map in subjectArticle['articles'] %}
-                            <tr {% if map['sold'] > 0 %}class="success"{% endif %}>
+                            <tr class="{% if map['booked'] > 0 %}warning{% endif %} {% if map['sold'] > 0 %}success{% endif %}">
                                 <td>{{ map['article'].getMainArticle().getTitle() }}</td>
                                 <td class="hidden-xs">{{ map['article'].getMainArticle().getAuthors() }}</td>
                                 <td>
@@ -146,6 +151,14 @@
                                     </td>
                                 </tr>
                             {% endif %}
+                        {% else %}
+                            <tr>
+                                <td colspan="7" style="border-top-width:0px;">
+                                    <div>
+                                        <em>{{ translate('No articles available for this subject.') }}</em>
+                                    </div>
+                                </td>
+                            </tr>
                         {% endfor %}
                     {% endfor %}
 
@@ -153,15 +166,36 @@
 
                 </table>
 
-                <a class="btn btn-default pull-left" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
+                <div>
+                    <a class="btn btn-default" href="{{ url('cudi_booking', {'action' : 'view'}) }}">{{ translate('Back') }}</a>
 
-                {% if form.get('submit') %}
-                    {{ formElement(form.get('submit')) }}
-                {% endif %}
+                    {% if form.get('submit') %}
+                        {{ formElement(form.get('submit')) }}
+                    {% endif %}
+                </div>
 
             {{ form().closeTag() }}
 
             {% endautoescape %}
+
+            <table class="table" style="width:16.6666%;margin: 0 auto;">
+                <thead>
+                    <tr>
+                        <th>{{ translate("Color") }}</th>
+                        <th>{{ translate("Status") }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="warning" style="width:40px">&nbsp;</td>
+                        <td>{{ translate("Booked") }}</td>
+                    </tr>
+                    <tr>
+                        <td class="success" style="width:20px">&nbsp;</td>
+                        <td>{{ translate("Bought") }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     {% endif %}
 {% endblock %}
@@ -302,10 +336,11 @@
                                 );
                                 $(e).each(function () {
                                     tbody.append(
-                                        $('<tr>', {'class': this.sold > 0 ? 'success': ''}).append(
+                                        $('<tr>', {'class': (this.booked > 0 ? 'warning ': '') + (this.sold > 0 ? 'success': '')}).append(
                                             $('<td>').html(this.title),
                                             $('<td>', {'class': 'hidden-xs'}).html(this.authors),
                                             price = $('<td>'),
+                                            comments = $('<td>', {'class': 'hidden-xs'}),
                                             comments = $('<td>', {'class': 'hidden-xs'}),
                                             book = $('<td>', {'style': 'text-align: center;'})
                                         )

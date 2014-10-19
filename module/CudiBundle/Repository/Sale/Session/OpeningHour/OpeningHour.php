@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Repository\Sale\Session\OpeningHour;
 
-use DateInterval,
-    DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateInterval,
+    DateTime;
 
 /**
  * OpeningHour
@@ -42,7 +42,7 @@ class OpeningHour extends EntityRepository
             ->orderBy('o.startDate', 'ASC')
             ->getQuery();
 
-       return $resultSet;
+        return $resultSet;
     }
 
     public function findAllOldQuery()
@@ -57,17 +57,18 @@ class OpeningHour extends EntityRepository
             ->orderBy('o.startDate', 'DESC')
             ->getQuery();
 
-       return $resultSet;
+        return $resultSet;
     }
 
     public function findCurrentWeekQuery()
     {
         $start = new DateTime();
         $start->setTime(0, 0);
-        if ($start->format('N') > 5)
-            $start->add(new DateInterval('P' . (8 - $start->format('N')) .'D'));
-        else
-            $start->sub(new DateInterval('P' . ($start->format('N') - 1) .'D'));
+        if ($start->format('N') > 5) {
+            $start->add(new DateInterval('P' . (8 - $start->format('N')) . 'D'));
+        } else {
+            $start->sub(new DateInterval('P' . ($start->format('N') - 1) . 'D'));
+        }
 
         $end = clone $start;
         $end->add(new DateInterval('P7D'));
@@ -86,7 +87,31 @@ class OpeningHour extends EntityRepository
             ->orderBy('o.startDate')
             ->getQuery();
 
-       return $resultSet;
+        return $resultSet;
+    }
+
+    public function findCommingIntervalQuery(DateInterval $interval)
+    {
+        $start = new DateTime();
+
+        $end = clone $start;
+        $end->add($interval);
+
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('o')
+            ->from('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour', 'o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('o.endDate', ':start'),
+                    $query->expr()->lt('o.startDate', ':end')
+                )
+            )
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->orderBy('o.startDate')
+            ->getQuery();
+
+        return $resultSet;
     }
 
     public function findPeriodFromNowQuery($interval = 'P14D')
@@ -111,7 +136,7 @@ class OpeningHour extends EntityRepository
             ->orderBy('o.startDate')
             ->getQuery();
 
-       return $resultSet;
+        return $resultSet;
     }
 
     public function findCurrent()

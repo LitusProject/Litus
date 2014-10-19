@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Entity\Sale\Article\Discount;
 
-use CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
+    CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
@@ -195,14 +195,17 @@ class Discount
      */
     public function setDiscount($value, $method, $type, $rounding, $applyOnce, Organization $organization = null)
     {
-        if (!self::isValidDiscountType($type))
+        if (!self::isValidDiscountType($type)) {
             throw new \InvalidArgumentException('The discount type is not valid.');
+        }
 
-        if (!self::isValidDiscountMethod($method))
+        if (!self::isValidDiscountMethod($method)) {
             throw new \InvalidArgumentException('The discount method is not valid.');
+        }
 
-        if (!self::isValidRoundingType($rounding))
+        if (!self::isValidRoundingType($rounding)) {
             throw new \InvalidArgumentException('The rounding type is not valid.');
+        }
 
         $this->template = null;
         $this->value = (int) (str_replace(',', '.', $value) * 100);
@@ -263,8 +266,10 @@ class Discount
      */
     public function getValue()
     {
-        if (!isset($this->value) && isset($this->template))
+        if (!isset($this->value) && isset($this->template)) {
             return $this->template->getValue();
+        }
+
         return $this->value;
     }
 
@@ -273,8 +278,10 @@ class Discount
      */
     public function getMethod()
     {
-        if (!isset($this->method) && isset($this->template))
+        if (!isset($this->method) && isset($this->template)) {
             return $this->template->getMethod();
+        }
+
         return $this->method;
     }
 
@@ -283,8 +290,10 @@ class Discount
      */
     public function getType()
     {
-        if (!isset($this->type) && isset($this->template))
+        if (!isset($this->type) && isset($this->template)) {
             return $this->template->getType();
+        }
+
         return self::$POSSIBLE_TYPES[$this->type];
     }
 
@@ -293,8 +302,10 @@ class Discount
      */
     public function getRawType()
     {
-        if (!isset($this->type) && isset($this->template))
+        if (!isset($this->type) && isset($this->template)) {
             return $this->template->getRawType();
+        }
+
         return $this->type;
     }
 
@@ -311,8 +322,10 @@ class Discount
      */
     public function getOrganization()
     {
-        if (!isset($this->organization) && isset($this->template))
+        if (!isset($this->organization) && isset($this->template)) {
             return $this->template->getOrganization();
+        }
+
         return $this->organization;
     }
 
@@ -321,10 +334,11 @@ class Discount
      */
     public function getRounding()
     {
-        if (!isset($this->rounding) && isset($this->template))
+        if (!isset($this->rounding) && isset($this->template)) {
             return $this->template->getRounding();
-        else if (isset($this->rounding))
+        } elseif (isset($this->rounding)) {
             return self::$POSSIBLE_ROUNDINGS[$this->rounding]['name'];
+        }
     }
 
     /**
@@ -332,8 +346,10 @@ class Discount
      */
     public function applyOnce()
     {
-        if (!isset($this->applyOnce) && isset($this->template))
+        if (!isset($this->applyOnce) && isset($this->template)) {
             return $this->template->applyOnce();
+        }
+
         return $this->applyOnce;
     }
 
@@ -393,16 +409,19 @@ class Discount
     public function canBeApplied(Person $person, AcademicYear $academicYear, EntityManager $entityManager)
     {
         if ($this->getType() == 'member') {
-            if (!$person->isMember($academicYear))
+            if (!$person->isMember($academicYear)) {
                 return false;
+            }
 
             if ($this->getOrganization() !== null) {
                 $organization = $entityManager->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
                     ->findOneByAcademicAndAcademicYear($person, $academicYear);
-                if (null == $organization)
+                if (null == $organization) {
                     return false;
-                if ($organization != $this->getOrganization())
+                }
+                if ($organization != $this->getOrganization()) {
                     return false;
+                }
             }
         }
 

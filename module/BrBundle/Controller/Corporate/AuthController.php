@@ -18,8 +18,7 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Form\Auth\Login as LoginForm,
+use CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
 /**

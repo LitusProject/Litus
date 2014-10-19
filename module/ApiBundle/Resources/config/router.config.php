@@ -105,7 +105,7 @@ return array(
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '[a-z]{2}',
-                    'type'     => '(tar|zip)'
+                    'type'     => '(tar|zip)',
                 ),
                 'defaults' => array(
                     'controller' => 'api_mail',

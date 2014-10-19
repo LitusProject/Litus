@@ -20,6 +20,12 @@
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
+                <select id="searchStringOrganization" style="display: none">
+                    {% for organization in organizations %}
+                        <option value="organization-{{ organization.getId() }}">{{ organization.getName() }}</option>
+                    {% endfor %}
+                    <option value="organization-0">Other</option>
+                </select>
             </div>
 
             <table class="full_width manage">
@@ -68,6 +74,20 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#searchStringOrganization').change(function (e) {
+                $('#searchString').val($('#searchStringOrganization').val()).trigger('keyup');
+            });
+
+            $('#searchField').change(function (e) {
+                if ($(this).val() == 'organization') {
+                    $('#searchString').hide();
+                    $('#searchStringOrganization').show().change();
+                } else {
+                    $('#searchString').show();
+                    $('#searchStringOrganization').hide();
+                }
+            });
+
             {% if hasAccess('cudi_admin_sales_financial_returned', 'individualSearch') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),

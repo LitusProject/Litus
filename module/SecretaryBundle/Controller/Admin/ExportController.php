@@ -18,10 +18,8 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    SecretaryBundle\Component\Document\Generator\Registration as CsvGenerator,
     SecretaryBundle\Form\Admin\Export\Export as ExportForm,
     Zend\View\Model\ViewModel;
 
@@ -66,6 +64,10 @@ class ExportController extends \CommonBundle\Component\Controller\ActionControll
                     ->getRepository('CommonBundle\Entity\General\Organization')
                     ->findOneById($formData['organization']);
 
+                $exportFile = new CsvFile();
+                $csvGenerator = new CsvGenerator($this->getEntityManager(), $organization, $academicYear);
+                $csvGenerator->generateDocument($exportFile);
+
                 $this->getResponse()->getHeaders()
                     ->addHeaders(
                     array(
@@ -76,76 +78,12 @@ class ExportController extends \CommonBundle\Component\Controller\ActionControll
 
                 return new ViewModel(
                     array(
-                        'result' => $this->_generateFile($organization, $academicYear),
+                        'result' => $exportFile->getContent(),
                     )
                 );
             }
         }
 
         return $this->notFoundAction();
-    }
-
-    private function _generateFile(Organization $organization, AcademicYear $academicYear)
-    {
-        $mappings = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
-            ->findAllByAcademicYearAndOrganization($academicYear, $organization);
-
-        $members = array();
-        foreach ($mappings as $mapping) {
-            $academic = $mapping->getAcademic();
-
-            $registration = $this->getEntityManager()
-                ->getRepository('SecretaryBundle\Entity\Registration')
-                ->findOneByAcademicAndAcademicYear($academic, $academicYear);
-
-            if (null === $registration || !$registration->hasPayed())
-                continue;
-
-            $primaryAddress = $academic->getPrimaryAddress();
-            $secondaryAddress = $academic->getSecondaryAddress();
-
-            $members[$mapping->getAcademic()->getId()] = array(
-                'academicFirstName'               => $academic->getFirstName(),
-                'academicLastName'                => $academic->getLastName(),
-                'academicEmail'                   => $academic->getEmail(),
-                'academicPrimaryAddressStreet'    => $primaryAddress ? $primaryAddress->getStreet() : '',
-                'academicPrimaryAddressNumber'    => $primaryAddress ? $primaryAddress->getNumber() : '',
-                'academicPrimaryAddressMailbox'   => $primaryAddress ? $primaryAddress->getMailbox() : '',
-                'academicPrimaryAddressPostal'    => $primaryAddress ? $primaryAddress->getPostal() : '',
-                'academicPrimaryAddressCity'      => $primaryAddress ? $primaryAddress->getCity() : '',
-                'academicPrimaryAddressCountry'   => $primaryAddress ? $primaryAddress->getCountry() : '',
-                'academicSecondaryAddressStreet'  => $secondaryAddress ? $secondaryAddress->getStreet() : '',
-                'academicSecondaryAddressNumber'  => $secondaryAddress ? $secondaryAddress->getNumber() : '',
-                'academicSecondaryAddressMailbox' => $secondaryAddress ? $secondaryAddress->getMailbox() : '',
-                'academicSecondaryAddressPostal'  => $secondaryAddress ? $secondaryAddress->getPostal() : '',
-                'academicSecondaryAddressCity'    => $secondaryAddress ? $secondaryAddress->getCity() : '',
-                'academicSecondaryAddressCountry' => $secondaryAddress ? $secondaryAddress->getCountry() : '',
-            );
-        }
-
-        $header = array(
-            'First Name',
-            'Last Name',
-            'E-mail',
-            'Street (Primary Address)',
-            'Number (Primary Address)',
-            'Mailbox (Primary Address)',
-            'Postal (Primary Address)',
-            'City (Primary Address)',
-            'Country (Primary Address)',
-            'Street (Secondary Address)',
-            'Number (Secondary Address)',
-            'Mailbox (Secondary Address)',
-            'Postal (Secondary Address)',
-            'City (Secondary Address)',
-            'Country (Secondary Address)',
-        );
-
-        $exportFile = new CsvFile();
-        $csvGenerator = new CsvGenerator($header, $members);
-        $csvGenerator->generateDocument($exportFile);
-
-        return $exportFile->getContent();
     }
 }

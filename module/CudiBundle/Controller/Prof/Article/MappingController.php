@@ -32,11 +32,13 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 {
     public function addAction()
     {
-        if (!($subject = $this->_getSubject()))
+        if (!($subject = $this->_getSubject())) {
             return new ViewModel();
+        }
 
-        if (!($academicYear = $this->getCurrentAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear())) {
             return new ViewModel();
+        }
 
         $form = new AddForm();
 
@@ -47,8 +49,9 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                if (!($article = $this->_getArticle($formData['article_id'])))
+                if (!($article = $this->_getArticle($formData['article_id']))) {
                     return;
+                }
 
                 $mapping = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article\SubjectMap')
@@ -65,8 +68,9 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
                     $actions = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Prof\Action')
                         ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'remove');
-                    foreach ($actions as $action)
+                    foreach ($actions as $action) {
                         $this->getEntityManager()->remove($action);
+                    }
                 }
 
                 $this->getEntityManager()->flush();
@@ -106,15 +110,17 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping()))
+        if (!($mapping = $this->_getMapping())) {
             return new ViewModel();
+        }
 
         if ($mapping->isProf()) {
             $actions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'add');
-            foreach ($actions as $action)
+            foreach ($actions as $action) {
                 $this->getEntityManager()->remove($action);
+            }
 
             $this->getEntityManager()->remove($mapping);
         } else {
@@ -135,8 +141,9 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping()))
+        if (!($mapping = $this->_getMapping())) {
             return new ViewModel();
+        }
 
         $mapping->getArticle()->setIsSameAsPreviousYear($this->getRequest()->getPost()['sameAsPreviousYear']);
 
@@ -163,8 +170,9 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 
     private function _getMapping()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
+        }
 
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -213,8 +221,9 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 
     private function _getSubject()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
+        }
 
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

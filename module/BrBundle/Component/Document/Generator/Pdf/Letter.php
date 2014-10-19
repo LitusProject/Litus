@@ -75,7 +75,7 @@ class Letter extends DocumentGenerator
                             new XmlObject('contact_person', null, $ourContactPerson),
                             new XmlObject('address', null, $ourUnionAddress),
                             new XmlObject('logo', null, $ourUnionLogo),
-                            new XmlObject('vat_number', null, $ourUnionVatNb)
+                            new XmlObject('vat_number', null, $ourUnionVatNb),
                         )
                      ),
 
@@ -86,16 +86,16 @@ class Letter extends DocumentGenerator
                                 array(
                                     new XmlObject('title', null, $title),
                                     new XmlObject('first_name', null, $company->getFirstName()),
-                                    new XmlObject('last_name', null, $company->getLastName())
+                                    new XmlObject('last_name', null, $company->getLastName()),
                                 )
                              ),
-                             new XmlObject('address', null, $companyAddress)
+                             new XmlObject('address', null, $companyAddress),
                          )
                      ),
 
                      $content,
 
-                     new XmlObject('footer', null, $footer)
+                     new XmlObject('footer', null, $footer),
                  )
              )
         );

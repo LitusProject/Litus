@@ -67,10 +67,12 @@ class Edit extends Add
             'nb_responsibles' => $shift->getNbResponsibles(),
             'nb_volunteers' => $shift->getNbVolunteers(),
             'unit' => $shift->getUnit()->getId(),
+            'reward' => $shift->getReward(),
+            'handled_on_event' => $shift->getHandledOnEvent(),
             'event' => null === $shift->getEvent() ? '' : $shift->getEvent()->getId(),
             'location' => $shift->getLocation()->getId(),
             'name' => $shift->getName(),
-            'description' => $shift->getDescription()
+            'description' => $shift->getDescription(),
         );
 
         $this->setData($data);

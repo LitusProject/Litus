@@ -20,16 +20,16 @@ namespace CalendarBundle\Form\Admin\Event;
 
 use CalendarBundle\Component\Validator\Name as EventNameValidator,
     CalendarBundle\Entity\Node\Event,
+    CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add an event.
@@ -132,8 +132,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 )
             );
 
-            if ($language->getAbbrev() !== \Locale::getDefault())
+            if ($language->getAbbrev() !== \Locale::getDefault()) {
                 continue;
+            }
 
             $inputFilter->add(
                 $factory->createInput(

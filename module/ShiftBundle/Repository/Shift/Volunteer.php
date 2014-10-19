@@ -18,8 +18,9 @@
 
 namespace ShiftBundle\Repository\Shift;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
+    DateTime,
     ShiftBundle\Entity\Shift;
 
 /**
@@ -34,12 +35,14 @@ class Volunteer extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
-            ->from('ShiftBundle\Entity\Shift\Volunteer', 'v')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.volunteers', 'v')
             ->innerJoin('v.person', 'p')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('v.signupTime', ':startAcademicYear'),
-                    $query->expr()->lt('v.signupTime', ':endAcademicYear')
+                    $query->expr()->lt('v.signupTime', ':endAcademicYear'),
+                    $query->expr()->lte('s.endDate', ':now')
                 )
             )
             ->groupBy('p.id')
@@ -47,8 +50,9 @@ class Volunteer extends EntityRepository
             ->having(
                 $query->expr()->gte('COUNT(p.id)', ':min')
             )
-            ->setParameter('startAcademicYear', $academicYear->getUniversityStartDate())
-            ->setParameter('endAcademicYear', $academicYear->getUniversityEndDate())
+            ->setParameter('startAcademicYear', $academicYear->getStartDate())
+            ->setParameter('endAcademicYear', $academicYear->getEndDate())
+            ->setParameter('now', new DateTime())
             ->setParameter('min', $minimum)
             ->getQuery();
 
@@ -59,12 +63,14 @@ class Volunteer extends EntityRepository
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
-            ->from('ShiftBundle\Entity\Shift\Volunteer', 'v')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.volunteers', 'v')
             ->innerJoin('v.person', 'p')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('v.signupTime', ':startAcademicYear'),
-                    $query->expr()->lt('v.signupTime', ':endAcademicYear')
+                    $query->expr()->lt('v.signupTime', ':endAcademicYear'),
+                    $query->expr()->lte('s.endDate', ':now')
                 )
             )
             ->groupBy('p.id')
@@ -77,6 +83,7 @@ class Volunteer extends EntityRepository
             )
             ->setParameter('startAcademicYear', $academicYear->getStartDate())
             ->setParameter('endAcademicYear', $academicYear->getEndDate())
+            ->setParameter('now', new DateTime())
             ->setParameter('min', $minimum)
             ->setParameter('max', $maximum)
             ->getQuery();

@@ -71,8 +71,9 @@ class Zip
                 ->findByList($list);
 
             $entriesString = '';
-            foreach ($entries as $entry)
+            foreach ($entries as $entry) {
                 $entriesString .= $entry->getEmailAddress() . PHP_EOL;
+            }
 
             $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
             $zip->addFromString($list->getName(), $entriesString);

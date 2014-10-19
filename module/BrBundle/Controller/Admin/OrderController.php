@@ -25,8 +25,8 @@ use BrBundle\Entity\Collaborator,
     BrBundle\Entity\Product\Order,
     BrBundle\Entity\Product\OrderEntry,
     BrBundle\Form\Admin\Order\Add as AddForm,
-    BrBundle\Form\Admin\Order\Edit as EditForm,
     BrBundle\Form\Admin\Order\AddProduct as AddProductForm,
+    BrBundle\Form\Admin\Order\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -47,8 +47,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             )
         );
 
-        foreach($paginator as $order)
+        foreach ($paginator as $order) {
             $order->setEntityManager($this->getEntityManager());
+        }
 
         return new ViewModel(
             array(
@@ -102,8 +103,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         ->findNextContractNb()
                 );
 
-                if(!($formData['discount_context'] == ''))
+                if (!($formData['discount_context'] == '')) {
                     $contract->setDiscountContext($formData['discount_context']);
+                }
 
                 $this->getEntityManager()->persist($order);
                 $this->getEntityManager()->persist($contract);
@@ -131,19 +133,22 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function productAction()
     {
-        if (!($order = $this->_getOrder(false)))
+        if (!($order = $this->_getOrder(false))) {
             return new ViewModel();
+        }
 
-        if ($order->getContract()->isSigned() == true)
+        if ($order->getContract()->isSigned() == true) {
             return new ViewModel();
+        }
 
         $entries = $order->getEntries();
 
         $oldContract = $order->getContract();
 
         $currentProducts = array();
-        foreach ($entries as $entry)
+        foreach ($entries as $entry) {
             array_push($currentProducts, $entry->getProduct());
+        }
 
         $form = new AddProductForm($currentProducts, $this->getEntityManager(), $this->getCurrentAcademicYear());
 
@@ -229,15 +234,17 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 'addProductForm' => $form,
             )
         );
-   }
+    }
 
     public function editAction()
     {
-        if (!($order = $this->_getOrder(false)))
+        if (!($order = $this->_getOrder(false))) {
             return new ViewModel();
+        }
 
-        if ($order->getContract()->isSigned() == true)
+        if ($order->getContract()->isSigned() == true) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $this->getCurrentAcademicYear(), $order);
 
@@ -286,7 +293,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     $counter++;
                     $this->getEntityManager()->persist($updatedOrderEntry);
                     $this->getEntityManager()->persist($updatedContractEntry);
-
                 }
 
                 $this->getEntityManager()->persist($updatedOrder);
@@ -323,8 +329,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($order = $this->_getOrder()))
+        if (!($order = $this->_getOrder())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($order);
         $this->getEntityManager()->flush();
@@ -340,8 +347,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($entry = $this->_getEntry(false)))
-             return new ViewModel();
+        if (!($entry = $this->_getEntry(false))) {
+            return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($entry);
         $this->getEntityManager()->flush();
@@ -382,7 +390,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'br_admin_order',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -402,7 +410,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'br_admin_order',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -417,7 +425,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'br_admin_order',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -438,7 +446,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'br_admin_order',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -458,7 +466,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'br_admin_order',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -473,7 +481,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'br_admin_order',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

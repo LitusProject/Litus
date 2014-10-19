@@ -31,7 +31,7 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
             $this->getParam('page'),
             array(),
             array(
-                'name' => 'ASC'
+                'name' => 'ASC',
             )
         );
 
@@ -97,8 +97,9 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
     {
         $this->initAjax();
 
-        if (!($alias = $this->_getAlias()))
+        if (!($alias = $this->_getAlias())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($alias);
         $this->getEntityManager()->flush();
@@ -162,7 +163,7 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
             $this->redirect()->toRoute(
                 'mail_admin_alias',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -182,7 +183,7 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
             $this->redirect()->toRoute(
                 'mail_admin_alias',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

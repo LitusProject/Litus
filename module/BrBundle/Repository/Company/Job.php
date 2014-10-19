@@ -19,8 +19,8 @@
 namespace BrBundle\Repository\Company;
 
 use BrBundle\Entity\Company as CompanyEntity,
-    DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateTime;
 
 /**
  * Job
@@ -40,7 +40,6 @@ class Job extends EntityRepository
                 $query->expr()->andx(
                     $query->expr()->eq('v.type', ':type'),
                     $query->expr()->eq('v.id', ':id'),
-                    $query->expr()->lt('v.startDate', ':now'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true')
                 )
@@ -79,7 +78,6 @@ class Job extends EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('v.type', ':type'),
-                    $query->expr()->lt('v.startDate', ':now'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true')
                 )
@@ -102,7 +100,6 @@ class Job extends EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('v.type', ':type'),
-                    $query->expr()->lt('v.startDate', ':now'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true')
                 )
@@ -124,7 +121,6 @@ class Job extends EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('v.type', ':type'),
-                    $query->expr()->lt('v.startDate', ':now'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true')
                 )
@@ -146,7 +142,6 @@ class Job extends EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('v.type', ':type'),
-                    $query->expr()->lt('v.startDate', ':now'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
                     $query->expr()->eq('v.sector', ':sector')
@@ -170,7 +165,6 @@ class Job extends EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('v.type', ':type'),
-                    $query->expr()->lt('v.startDate', ':now'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
                     $query->expr()->eq('v.sector', ':sector')
@@ -195,7 +189,6 @@ class Job extends EntityRepository
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('v.type', ':type'),
-                    $query->expr()->lt('v.startDate', ':now'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
                     $query->expr()->eq('v.sector', ':sector')
@@ -219,7 +212,6 @@ class Job extends EntityRepository
                 $query->expr()->andx(
                     $query->expr()->eq('v.company', ':company'),
                     $query->expr()->eq('v.type', ':type'),
-                    $query->expr()->lt('v.startDate', ':now'),
                     $query->expr()->gt('v.endDate', ':now')
                 )
             )

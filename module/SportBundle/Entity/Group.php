@@ -117,6 +117,14 @@ class Group
     }
 
     /**
+     * @return Academicyear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
+    }
+
+    /**
      * @return array
      */
     public function getMembers()
@@ -167,8 +175,9 @@ class Group
             $member->setEntityManager($this->_entityManager);
 
             foreach ($member->getLaps($academicYear) as $lap) {
-                if (null === $lap->getEndTime())
+                if (null === $lap->getEndTime()) {
                     continue;
+                }
 
                 $lap->setEntityManager($this->_entityManager);
 
@@ -179,8 +188,9 @@ class Group
 
                 $happyHours = $this->getHappyHours();
                 for ($i = 0; isset($happyHours[$i]); $i++) {
-                    if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2))
+                    if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
                         $points += $lap->getPoints();
+                    }
                 }
             }
         }

@@ -20,13 +20,13 @@ namespace FormBundle\Entity\Node;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
-    FormBundle\Entity\Node\Entry,
-    FormBundle\Entity\Mail\Mail,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field;
+    FormBundle\Entity\Field,
+    FormBundle\Entity\Mail\Mail,
+    FormBundle\Entity\Node\Entry;
 
 /**
  * This entity stores the form
@@ -364,8 +364,9 @@ abstract class Form extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation)
+        if (null !== $translation) {
             return $translation->getTitle();
+        }
 
         return '';
     }
@@ -379,8 +380,9 @@ abstract class Form extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation)
+        if (null !== $translation) {
             return $translation->getIntroduction();
+        }
 
         return '';
     }
@@ -394,8 +396,9 @@ abstract class Form extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation)
+        if (null !== $translation) {
             return $translation->getSubmitText();
+        }
 
         return '';
     }
@@ -409,8 +412,9 @@ abstract class Form extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation)
+        if (null !== $translation) {
             return $translation->getUpdateText();
+        }
 
         return '';
     }
@@ -423,15 +427,18 @@ abstract class Form extends \CommonBundle\Entity\Node
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language)
+            if (null !== $language && $translation->getLanguage() == $language) {
                 return $translation;
+            }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
                 $fallbackTranslation = $translation;
+            }
         }
 
-        if ($allowFallback && isset($fallbackTranslation))
+        if ($allowFallback && isset($fallbackTranslation)) {
             return $fallbackTranslation;
+        }
 
         return null;
     }
@@ -444,8 +451,9 @@ abstract class Form extends \CommonBundle\Entity\Node
      */
     public function canBeViewedBy(Person $person = null)
     {
-        if (null === $person)
+        if (null === $person) {
             return false;
+        }
 
         $result = $this->_entityManager
             ->getRepository('FormBundle\Entity\ViewerMap')
@@ -462,15 +470,18 @@ abstract class Form extends \CommonBundle\Entity\Node
      */
     public function canBeEditedBy(Person $person = null)
     {
-        if (null === $person)
+        if (null === $person) {
             return false;
+        }
 
-        if ($this->getCreationPerson()->getId() === $person->getId())
+        if ($this->getCreationPerson()->getId() === $person->getId()) {
             return true;
+        }
 
         foreach ($person->getFlattenedRoles() as $role) {
-            if ($role->getName() == 'editor')
+            if ($role->getName() == 'editor') {
                 return true;
+            }
         }
 
         return false;

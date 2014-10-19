@@ -66,13 +66,14 @@ class Config
 
     /**
      * @param  string                   $key   The entry's key
-     * @param  string                   $value The entry's value
+     * @param  string|array             $value The entry's value
      * @throws InvalidArgumentException Key must be a string
      */
     public function __construct($key, $value)
     {
-        if(!is_string($key))
+        if (!is_string($key)) {
             throw new InvalidArgumentException('Key must be a string');
+        }
 
         $this->key = $key;
         $this->setValue($value);
@@ -96,14 +97,14 @@ class Config
     }
 
     /**
-     * @param  string                   $value The entry's value
+     * @param  string|array $value The entry's value
      * @return self
-     * @throws InvalidArgumentException Value must be a string
      */
     public function setValue($value)
     {
-        if(!is_string($value))
-            throw new InvalidArgumentException('Value must be a string');
+        if (!is_string($value)) {
+            $value = serialize($value);
+        }
 
         $this->value = $value;
 
@@ -125,15 +126,16 @@ class Config
      */
     public function setDescription($description = null)
     {
-        if(($description !== null) && !is_string($description))
+        if (($description !== null) && !is_string($description)) {
             throw new InvalidArgumentException('Description must be a string or null');
+        }
 
         $this->description = $description;
     }
 
     /**
      * @param  boolean $published
-     * @return Config
+     * @return self
      */
     public function setPublished($published)
     {

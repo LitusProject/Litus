@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Repository\Sale\Session;
 
-use CudiBundle\Entity\Sale\Session,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CudiBundle\Entity\Sale\Session;
 
 /**
  * Restriction
@@ -29,23 +29,4 @@ use CudiBundle\Entity\Sale\Session,
  */
 class Restriction extends EntityRepository
 {
-    public function findOneBySessionAndType(Session $session, $type)
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('r')
-            ->from('CudiBundle\Entity\Sale\Session\Restriction', 'r')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('r.session', ':session'),
-                    $query->expr()->eq('r.type', ':type')
-                )
-            )
-            ->setParameter('type', $type)
-            ->setParameter('session', $session)
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
-
-        return $resultSet;
-    }
 }

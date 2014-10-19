@@ -22,9 +22,9 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Role as RoleValidator,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Role
@@ -86,8 +86,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $parents = array();
         foreach ($roles as $role) {
-            if ($role->getName() != $exclude)
+            if ($role->getName() != $exclude) {
                 $parents[$role->getName()] = $role->getName();
+            }
         }
 
         return $parents;
@@ -112,7 +113,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 $childActions = $resourceChild->getActions($this->_entityManager);
                 $actions[$resourceChild->getName()] = array(
                     'label' => $resourceChild->getName(),
-                    'options' => array()
+                    'options' => array(),
                 );
                 foreach ($childActions as $childAction) {
                     $actions[$resourceChild->getName()]['options'][$childAction->getId()] = $childAction->getName();

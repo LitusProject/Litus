@@ -21,7 +21,7 @@ return array(
         'parent_roles' => array(),
         'actions' => array(
             'calendar' => array(
-                'export', 'month', 'overview', 'poster', 'view'
+                'export', 'month', 'overview', 'poster', 'view',
             ),
         ),
     ),

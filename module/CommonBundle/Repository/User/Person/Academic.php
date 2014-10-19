@@ -110,19 +110,14 @@ class Academic extends \CommonBundle\Repository\User\Person
     public function findAllByBarcodeQuery($barcode)
     {
         $query = $this->_em->createQueryBuilder();
-        $barcodes = $query->select('p.id')
-            ->from('CommonBundle\Entity\User\Barcode', 'b')
-            ->innerJoin('b.person', 'p')
-            ->where(
-                $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
-            )
-            ->setParameter('barcode', strtolower($barcode) . '%')
-            ->getQuery()
-            ->getResult();
+        $barcodes = $this->_em
+            ->getRepository('CommonBundle\Entity\User\Barcode')
+            ->findAllByBarcode($barcode);
 
         $ids = array(0);
-        foreach($barcodes as $barcode)
-            $ids[] = $barcode['id'];
+        foreach ($barcodes as $barcode) {
+            $ids[] = $barcode->getId();
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('p')
@@ -157,15 +152,17 @@ class Academic extends \CommonBundle\Repository\User\Person
             ->getQuery()
             ->getOneOrNullResult();
 
-        if ($resultSet)
+        if ($resultSet) {
             return $resultSet;
+        }
 
         $barcode = $this->_em
             ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findOneByBarcode($username);
 
-        if ($barcode)
+        if ($barcode) {
             return $barcode->getPerson();
+        }
 
         return null;
     }
@@ -222,8 +219,9 @@ class Academic extends \CommonBundle\Repository\User\Person
             ->getResult();
 
         $persons = array();
-        foreach($resultSet as $result)
+        foreach ($resultSet as $result) {
             $persons[] = $result->getPerson();
+        }
 
         return $persons;
     }

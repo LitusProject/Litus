@@ -52,8 +52,9 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket()))
+        if (!($ticket = $this->_getTicket())) {
             return new ViewModel();
+        }
 
         $ticket->setStatus('empty');
         $this->getEntityManager()->flush();
@@ -69,8 +70,9 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket()) && !$ticket->getEvent()->areTicketsGenerated())
+        if (!($ticket = $this->_getTicket()) && !$ticket->getEvent()->areTicketsGenerated()) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($ticket);
         $this->getEntityManager()->flush();
@@ -86,8 +88,9 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket()))
+        if (!($ticket = $this->_getTicket())) {
             return new ViewModel();
+        }
 
         $ticket->setStatus('sold');
         $this->getEntityManager()->flush();
@@ -103,8 +106,9 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket()))
+        if (!($ticket = $this->_getTicket())) {
             return new ViewModel();
+        }
 
         $ticket->setStatus('booked');
         $this->getEntityManager()->flush();

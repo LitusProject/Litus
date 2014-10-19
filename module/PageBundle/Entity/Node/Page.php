@@ -24,8 +24,8 @@ use CommonBundle\Component\Util\Url,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
-    PageBundle\Entity\Category,
-    Locale;
+    Locale,
+    PageBundle\Entity\Category;
 
 /**
  * This entity stores the node item.
@@ -212,15 +212,18 @@ class Page extends \CommonBundle\Entity\Node
         $fallbackTranslation = null;
 
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language)
+            if (null !== $language && $translation->getLanguage() == $language) {
                 return $translation;
+            }
 
-            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault())
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
                 $fallbackTranslation = $translation;
+            }
         }
 
-        if ($allowFallback)
+        if ($allowFallback) {
             return $fallbackTranslation;
+        }
 
         return null;
     }
@@ -234,8 +237,9 @@ class Page extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation)
+        if (null !== $translation) {
             return $translation->getTitle();
+        }
 
         return '';
     }
@@ -249,8 +253,9 @@ class Page extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation)
+        if (null !== $translation) {
             return $translation->getContent();
+        }
 
         return '';
     }
@@ -262,8 +267,9 @@ class Page extends \CommonBundle\Entity\Node
      */
     public function close()
     {
-        if (null === $this->endTime)
+        if (null === $this->endTime) {
             $this->endTime = new DateTime();
+        }
     }
 
     /**
@@ -274,12 +280,14 @@ class Page extends \CommonBundle\Entity\Node
      */
     public function canBeEditedBy(Person $person = null)
     {
-        if (null === $person)
+        if (null === $person) {
             return false;
+        }
 
         foreach ($person->getFlattenedRoles() as $role) {
-            if ($this->editRoles->contains($role) || $role->getName() == 'editor')
+            if ($this->editRoles->contains($role) || $role->getName() == 'editor') {
                 return true;
+            }
         }
 
         return false;

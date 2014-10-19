@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Component\Console;
 
-use Zend\ServiceManager\ServiceLocatorInterface,
+use Symfony\Component\Console\Application,
     Symfony\Component\Console\Helper\HelperSet,
-    Symfony\Component\Console\Application;
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 class ApplicationFactory extends \DoctrineModule\Service\CliFactory
 {
@@ -30,10 +30,10 @@ class ApplicationFactory extends \DoctrineModule\Service\CliFactory
      */
     public function createService(ServiceLocatorInterface $sl)
     {
-        $cli = new Application;
+        $cli = new Application();
         $cli->setName('Litus Command Line Interface');
         $cli->setVersion('0.1');
-        $cli->setHelperSet(new HelperSet);
+        $cli->setHelperSet(new HelperSet());
         $cli->setCatchExceptions(true);
         $cli->setAutoExit(false);
 

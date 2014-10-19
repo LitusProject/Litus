@@ -99,13 +99,13 @@
         {% endif %}
         {% if hasAccess('cudi_admin_article_subject', 'manage') %}
             <div class="sidebox">
-                <div class="title">Manage Subject Mapping</div>
+                <div class="title">Manage Subjects</div>
                 <div class="content">
                     <p>
                         <i>Please hit the link below to manage the mapping of this article to subjects!</i>
                     </p>
                     <p>
-                        <a href="{{ url('cudi_admin_article_subject', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Mapping</a>
+                        <a href="{{ url('cudi_admin_article_subject', {"action": "manage", "id": article.getId()}) }}">&rarr; Manage Subjects</a>
                     </p>
                 </div>
             </div>

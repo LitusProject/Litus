@@ -27,7 +27,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Publication
 {
-
     /**
      * @var integer The ID of this article
      *

@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Component\Authentication\Authentication,
-    CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
+    CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
@@ -68,7 +68,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                     $this->redirect()->toRoute(
                         'common_index',
                         array(
-                            'action' => 'index'
+                            'action' => 'index',
                         )
                     );
 
@@ -79,7 +79,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'form' => $form
+                'form' => $form,
             )
         );
     }
@@ -143,7 +143,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                                 ->findOneByUniversityIdentification($this->getParam('identification'));
 
-                            if (null !== $academic && null === $academic->getOrganizationStatus($this->getCurrentAcademicYear())) {
+                            if (null !== $academic && (null === $academic->getOrganizationStatus($this->getCurrentAcademicYear()) || null === $academic->getUniversityStatus($this->getCurrentAcademicYear()))) {
                                 $this->redirect()->toRoute(
                                     'secretary_registration'
                                 );
@@ -166,7 +166,11 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
                         return new ViewModel();
                     }
+                } else {
+                    $this->logToLilo('Code not valid (' . $this->getParam('identification') . ')', array('auth'));
                 }
+            } else {
+                $this->logToLilo('No code specifier (' . $this->getParam('identification') . ')', array('auth'));
             }
         }
 

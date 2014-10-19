@@ -65,15 +65,17 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     public function generate()
     {
         $mainArticle = $this->_article->getMainArticle();
-        if (!($mainArticle instanceof InternalArticle))
+        if (!($mainArticle instanceof InternalArticle)) {
             return;
+        }
 
         $cachePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.front_page_cache_dir');
 
-        if (!file_exists($cachePath))
+        if (!file_exists($cachePath)) {
             mkdir($cachePath);
+        }
 
         if (null !== $mainArticle->getFrontPage() && file_exists($cachePath . '/' . $mainArticle->getFrontPage())) {
             copy($cachePath . '/' . $mainArticle->getFrontPage(), $this->_pdfPath);
@@ -103,8 +105,9 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     protected function generateXml(TmpFile $tmpFile)
     {
         $mainArticle = $this->_article->getMainArticle();
-        if (!($mainArticle instanceof InternalArticle))
+        if (!($mainArticle instanceof InternalArticle)) {
             return;
+        }
 
         $configuration = $this->getConfigRepository();
 
@@ -176,7 +179,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                     new Object(
                         'our_union',
                         array(
-                            'short_name' => $organization_short_name
+                            'short_name' => $organization_short_name,
                         ),
                         array(
                             new Object(
@@ -188,7 +191,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                                 'logo',
                                 null,
                                 $organization_logo
-                            )
+                            ),
                         )
                     ),
                     new Object(
@@ -234,7 +237,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                                 'email',
                                 null,
                                 $organization_mail
-                            )
+                            ),
                         )
                     ),
                     new Object(
@@ -260,7 +263,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                     new Object(
                         'barcode',
                         null,
-                        substr((string) $this->_article->getBarcode(), 0, 12)
+                        substr((string) str_pad($this->_article->getBarcode(), 12, '0', STR_PAD_LEFT), 0, 12)
                     ),
                 )
             )

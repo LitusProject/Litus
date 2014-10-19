@@ -99,7 +99,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'news_admin_news',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -116,8 +116,9 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($news = $this->_getNews()))
+        if (!($news = $this->_getNews())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $news);
 
@@ -129,10 +130,11 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 $formData = $form->getFormData($formData);
 
                 $endDate = DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']);
-                if ($endDate)
+                if ($endDate) {
                     $news->setEndDate($endDate);
-                else
+                } else {
                     $news->setEndDate(null);
+                }
 
                 $languages = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Language')
@@ -169,7 +171,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'news_admin_news',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -188,8 +190,9 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($news = $this->_getNews()))
+        if (!($news = $this->_getNews())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($news);
 
@@ -198,7 +201,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -215,7 +218,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'news_admin_news',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -235,7 +238,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'news_admin_news',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

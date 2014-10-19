@@ -22,20 +22,20 @@ return array(
         'parents' => array(),
         'actions' => array(
             'page_admin_page' => array(
-                'add', 'delete', 'edit', 'manage', 'upload'
+                'add', 'delete', 'edit', 'manage', 'upload',
             ),
-        )
+        ),
     ),
     'guest' => array(
         'system' => true,
         'parents' => array(),
         'actions' => array(
             'page_link' => array(
-                'view'
+                'view',
             ),
             'page' => array(
-                'file', 'view'
+                'file', 'view',
             ),
-        )
+        ),
     ),
 );

@@ -24,8 +24,8 @@ use CudiBundle\Entity\Article,
     CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Prof\Action,
     CudiBundle\Form\Prof\Article\Add as AddForm,
-    CudiBundle\Form\Prof\Article\Edit as EditForm,
     CudiBundle\Form\Prof\Article\AddWithSubject as AddWithSubjectForm,
+    CudiBundle\Form\Prof\Article\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -54,8 +54,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function addAction()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager());
 
@@ -76,7 +77,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $formData['author'],
                         $formData['publisher'],
                         $formData['year_published'],
-                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['isbn'] != '' ? $formData['isbn'] : null,
                         $formData['url'],
                         $formData['type'],
                         $formData['downloadable'],
@@ -96,7 +97,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $formData['author'],
                         $formData['publisher'],
                         $formData['year_published'],
-                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['isbn'] != '' ? $formData['isbn'] : null,
                         $formData['url'],
                         $formData['type'],
                         $formData['downloadable'],
@@ -105,8 +106,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 }
 
                 $article->setIsProf(true);
-                if ($formData['draft'])
+                if ($formData['draft']) {
                     $article->setIsDraft(true);
+                }
 
                 $this->getEntityManager()->persist($article);
 
@@ -158,11 +160,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function addFromSubjectAction()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear())) {
             return new ViewModel();
+        }
 
-        if (!($subject = $this->_getSubject()))
+        if (!($subject = $this->_getSubject())) {
             return new ViewModel();
+        }
 
         $form = new AddWithSubjectForm($this->getEntityManager(), $subject);
 
@@ -183,7 +187,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $formData['author'],
                         $formData['publisher'],
                         $formData['year_published'],
-                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['isbn'] != '' ? $formData['isbn'] : null,
                         $formData['url'],
                         $formData['type'],
                         $formData['downloadable'],
@@ -203,7 +207,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $formData['author'],
                         $formData['publisher'],
                         $formData['year_published'],
-                        $formData['isbn'] != ''? $formData['isbn'] : null,
+                        $formData['isbn'] != '' ? $formData['isbn'] : null,
                         $formData['url'],
                         $formData['type'],
                         $formData['downloadable'],
@@ -212,8 +216,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 }
 
                 $article->setIsProf(true);
-                if ($formData['draft'])
+                if ($formData['draft']) {
                     $article->setIsDraft(true);
+                }
 
                 $this->getEntityManager()->persist($article);
 
@@ -267,8 +272,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function editAction()
     {
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $article);
 
@@ -302,7 +308,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $edited = true;
                     }
                     if ($article->getISBN() != $formData['isbn']) {
-                        $duplicate->setISBN($formData['isbn'] != ''? $formData['isbn'] : null);
+                        $duplicate->setISBN($formData['isbn'] != '' ? $formData['isbn'] : null);
                         $edited = true;
                     }
                     if ($article->getURL() != $formData['url']) {
@@ -349,10 +355,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $this->getEntityManager()->persist($action);
                     }
 
-                    if ($formData['draft'])
+                    if ($formData['draft']) {
                         $duplicate->setIsDraft(true);
-                    else
+                    } else {
                         $duplicate->setIsDraft(false);
+                    }
                 } else {
                     $article->setAuthors($formData['author'])
                         ->setPublishers($formData['publisher'])
@@ -373,10 +380,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                             ->setIsPerforated($formData['perforated']);
                     }
 
-                    if ($formData['draft'])
+                    if ($formData['draft']) {
                         $article->setIsDraft(true);
-                    else
+                    } else {
                         $article->setIsDraft(false);
+                    }
                 }
 
                 $this->getEntityManager()->flush();
@@ -408,8 +416,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function deleteAction()
     {
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $article->getId(), 'delete');
         $this->getEntityManager()->persist($action);
@@ -498,8 +507,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
      */
     private function _getSubject()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
+        }
 
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

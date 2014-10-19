@@ -18,7 +18,9 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CudiBundle\Entity\Sale\Article\Restriction,
+use CudiBundle\Entity\Sale\Article\Restriction\Amount as AmountRestriction,
+    CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction,
+    CudiBundle\Entity\Sale\Article\Restriction\Study as StudyRestriction,
     CudiBundle\Form\Admin\Sales\Article\Restrictions\Add as AddForm,
     Zend\View\Model\ViewModel;
 
@@ -31,8 +33,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 {
     public function manageAction()
     {
-        if (!($article = $this->_getSaleArticle()))
+        if (!($article = $this->_getSaleArticle())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($article, $this->getEntityManager());
 
@@ -43,13 +46,21 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                if (Restriction::$VALUE_TYPES[$formData['type']] == 'boolean') {
-                    $value = isset($formData['value_boolean']) && $formData['value_boolean'] ? '1' : '0';
-                } else {
-                    $value = $formData['value_string'];
-                }
+                if ('amount' == $formData['type']) {
+                    $restriction = new AmountRestriction($article, $formData['value_amount']);
+                } elseif ('member' == $formData['type']) {
+                    $restriction = new MemberRestriction($article, isset($formData['value_member']) && $formData['value_member']);
+                } elseif ('study' == $formData['type']) {
+                    $restriction = new StudyRestriction($article);
 
-                $restriction = new Restriction($article, $formData['type'], $value);
+                    foreach ($formData['value_study'] as $id) {
+                        $study = $this->getEntityManager()
+                            ->getRepository('SyllabusBundle\Entity\Study')
+                            ->findOneById($id);
+
+                        $restriction->addStudy($study);
+                    }
+                }
 
                 $this->getEntityManager()->persist($restriction);
 
@@ -93,8 +104,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($restriction = $this->_getRestriction()))
+        if (!($restriction = $this->_getRestriction())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($restriction);
         $this->getEntityManager()->flush();
@@ -117,7 +129,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -137,7 +149,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -158,7 +170,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -178,7 +190,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

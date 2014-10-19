@@ -80,8 +80,9 @@ class Values extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (null === $value || '' == $value)
+        if (null === $value || '' == $value) {
             return true;
+        }
 
         if (($context !== null) && isset($context) && array_key_exists($this->_startValueName, $context)) {
             $startValue = $context[$this->_startValueName];

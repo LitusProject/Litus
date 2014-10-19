@@ -38,4 +38,14 @@ class Rule extends DocumentRepository
 
         return $resultSet;
     }
+
+    public function findOld()
+    {
+        $resultSet = $this->createQueryBuilder()
+            ->field('endDate')->lt(new DateTime())
+            ->getQuery()
+            ->execute();
+
+        return $resultSet;
+    }
 }

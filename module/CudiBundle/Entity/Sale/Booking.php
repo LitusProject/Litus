@@ -116,7 +116,7 @@ class Booking
      * @var string[] The possible states of a booking
      */
     private static $POSSIBLE_STATUSES = array(
-        'booked', 'assigned', 'sold', 'expired', 'canceled', 'returned'
+        'booked', 'assigned', 'sold', 'expired', 'canceled', 'returned',
     );
 
     /**
@@ -131,8 +131,9 @@ class Booking
      */
     public function __construct(EntityManager $entityManager, Person $person, Article $article, $status, $number = 1, $force = false)
     {
-        if (!$article->isBookable() && !$force)
+        if (!$article->isBookable() && !$force) {
             throw new \InvalidArgumentException('The Stock Article cannot be booked.');
+        }
 
         $this->person = $person;
         $this->bookDate = new DateTime();
@@ -298,8 +299,9 @@ class Booking
     {
         switch ($status) {
             case 'booked':
-                if ($this->status != 'assigned')
+                if ($this->status != 'assigned') {
                     $this->bookDate = new DateTime();
+                }
                 $this->assignmentDate = null;
                 $this->saleDate = null;
                 $this->cancelationDate = null;

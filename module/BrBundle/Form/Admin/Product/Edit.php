@@ -18,11 +18,11 @@
 
 namespace BrBundle\Form\Admin\Product;
 
-use BrBundle\Entity\Product,
-    BrBundle\Component\Validator\ProductName as ProductNameValidator,
+use BrBundle\Component\Validator\ProductName as ProductNameValidator,
+    BrBundle\Entity\Product,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Edit a product.

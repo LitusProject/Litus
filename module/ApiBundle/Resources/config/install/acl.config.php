@@ -19,34 +19,34 @@
 return array(
     'apibundle' => array(
         'api_admin_key' => array(
-            'add', 'delete', 'edit', 'manage'
+            'add', 'delete', 'edit', 'manage',
         ),
         'api_auth' => array(
-            'getPerson'
+            'getPerson',
         ),
         'api_calendar' => array(
-            'activeEvents', 'poster'
+            'activeEvents', 'poster',
         ),
         'api_config' => array(
-            'entries'
+            'entries',
         ),
         'api_cudi' => array(
-            'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'openingHours', 'signIn', 'signInStatus'
+            'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'openingHours', 'signIn', 'signInStatus',
         ),
         'api_door' => array(
-            'getRules', 'log'
+            'getRules', 'log',
         ),
         'api_mail' => array(
-            'getAliases', 'getListsArchive'
+            'getAliases', 'getListsArchive',
         ),
         'api_news' => array(
-            'all'
+            'all',
         ),
         'api_oauth' => array(
-            'authorize', 'shibboleth', 'token'
+            'authorize', 'shibboleth', 'token',
         ),
         'api_shift' => array(
-            'active', 'responsible', 'volunteer', 'signOut'
+            'active', 'responsible', 'volunteer', 'signOut',
         ),
     ),
 );

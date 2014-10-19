@@ -68,7 +68,7 @@ return array(
         'logistics_admin_lease' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/logistics/lease[/:action[/:id]][/page/:page][/]',
+                'route' => '/admin/logistics/leases[/:action[/:id]][/page/:page][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',

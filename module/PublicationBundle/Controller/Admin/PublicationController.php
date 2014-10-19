@@ -56,7 +56,6 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             $form->setData($formData);
 
             if ($form->isValid()) {
-
                 $publication = new Publication($formData['title']);
 
                 $this->getEntityManager()->persist($publication);
@@ -87,8 +86,9 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 
     public function editAction()
     {
-        if (!($publication = $this->_getPublication()))
+        if (!($publication = $this->_getPublication())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $publication);
 
@@ -97,7 +97,6 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             $form->setData($formData);
 
             if ($form->isValid()) {
-
                 $publication->setTitle($formData['title']);
                 $this->getEntityManager()->flush();
 
@@ -109,7 +108,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
                 $this->redirect()->toRoute(
                     'publication_admin_publication',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -128,8 +127,9 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
-        if (!($publication = $this->_getPublication()))
+        if (!($publication = $this->_getPublication())) {
             return new ViewModel();
+        }
 
         $publication->delete();
         $this->getEntityManager()->flush();
@@ -155,7 +155,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             $this->redirect()->toRoute(
                 'publication_admin_publication',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -175,7 +175,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             $this->redirect()->toRoute(
                 'publication_admin_publication',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

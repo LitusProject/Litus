@@ -18,10 +18,10 @@
 
 namespace SportBundle\Form\Admin\Runner;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+use CommonBundle\Component\Form\Bootstrap\Element\Submit,
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Edit a runner of the queue.

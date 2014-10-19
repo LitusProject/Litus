@@ -18,13 +18,15 @@
 
 namespace MailBundle\Form\Admin\Promotion;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
+use CommonBundle\Component\Form\Admin\Element\File,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    MailBundle\Component\Validator\MultiMail as MultiMailValidator,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Send Mail
@@ -42,11 +44,18 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
      * @param EntityManager   $entityManager The EntityManager instance
      * @param null|string|int $name          Optional name for the element
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function __construct(EntityManager $entityManager, $groups, $name = null)
     {
         parent::__construct($name);
 
         $this->_entityManager = $entityManager;
+
+        $groupNames = array();
+        foreach ($groups as $group) {
+            if (strpos($group->getName(), "Master") === 0) {
+                $groupNames[$group->getId()] = $group->getName();
+            }
+        }
 
         $field = new Select('to');
         $field->setLabel('To')
@@ -55,15 +64,34 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        if (0 != count($groupNames)) {
+            $field = new Select('groups');
+            $field->setLabel('Groups')
+                ->setAttribute('multiple', true)
+                ->setAttribute('options', $groupNames);
+            $this->add($field);
+        }
+
         $field = new Text('subject');
         $field->setLabel('Subject')
             ->setAttribute('style', 'width: 400px;')
             ->setRequired();
         $this->add($field);
 
+        $field = new Text('bcc');
+        $field->setLabel('Additional BCC')
+            ->setAttribute('style', 'width: 400px;');
+        $this->add($field);
+
         $field = new Textarea('message');
         $field->setLabel('Message')
             ->setAttribute('style', 'width: 500px; height: 200px;')
+            ->setRequired();
+        $this->add($field);
+
+        $field = new File('file');
+        $field->setLabel('Attachments')
+            ->setAttribute('multiple', 'multiple')
             ->setRequired();
         $this->add($field);
 
@@ -80,8 +108,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $promotionsArray = array();
-        foreach ($academicYears as $academicYear)
+        foreach ($academicYears as $academicYear) {
             $promotionsArray[$academicYear->getId()] = $academicYear->getCode();
+        }
 
         return $promotionsArray;
     }
@@ -115,10 +144,42 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $inputFilter->add(
             $factory->createInput(
                 array(
+                    'name'     => 'bcc',
+                    'required' => false,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new MultiMailValidator(),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
                     'name'     => 'message',
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
+                    ),
+                )
+            )
+        );
+
+        $inputFilter->add(
+            $factory->createInput(
+                array(
+                    'name'     => 'file',
+                    'required' => false,
+                    'validators' => array(
+                        array(
+                            'name' => 'filefilessize',
+                            'options' => array(
+                                'max' => '50MB',
+                            ),
+                        ),
                     ),
                 )
             )

@@ -18,10 +18,10 @@
 
 namespace CalendarBundle\Component\Validator;
 
-use CommonBundle\Component\Util\Url,
+use CalendarBundle\Entity\Node\Event,
+    CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Language,
-    Doctrine\ORM\EntityManager,
-    CalendarBundle\Entity\Node\Event;
+    Doctrine\ORM\EntityManager;
 
 /**
  * Matches the given event title against the database to check whether it is
@@ -52,7 +52,7 @@ class Name extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This event title already exists'
+        self::NOT_VALID => 'This event title already exists',
     );
 
     /**
@@ -90,8 +90,9 @@ class Name extends \Zend\Validator\AbstractValidator
                 ->getRepository('CalendarBundle\Entity\Node\Event')
                 ->findOneByName($title);
 
-            if (null === $event || ($this->_event && $event->getEvent() == $this->_event))
+            if (null === $event || ($this->_event && $event->getEvent() == $this->_event)) {
                 return true;
+            }
 
             $this->error(self::NOT_VALID);
         }

@@ -49,7 +49,7 @@ return array(
 You have been removed from the following shift by a non-praesidium volunteer:
 {{ shift }}
 
--- This is an automatically generated email, please do not reply --'
+-- This is an automatically generated email, please do not reply --',
                 ),
                 'nl' => array(
                     'subject' => 'Shift Afmelding',
@@ -58,7 +58,7 @@ You have been removed from the following shift by a non-praesidium volunteer:
 U bent verwijderd van de volgende shift door een niet-praesidium vrijwilliger:
 {{ shift }}
 
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
             )
         ),
@@ -75,7 +75,7 @@ U bent verwijderd van de volgende shift door een niet-praesidium vrijwilliger:
 The following shift to which you were subscribed has been deleted:
 {{ shift }}
 
--- This is an automatically generated email, please do not reply --'
+-- This is an automatically generated email, please do not reply --',
                 ),
                 'nl' => array(
                     'subject' => 'Shift Verwijderd',
@@ -84,7 +84,7 @@ The following shift to which you were subscribed has been deleted:
 De volgende shift waar je was op ingeschreven is verwijderd:
 {{ shift }}
 
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
             )
         ),
@@ -101,7 +101,7 @@ De volgende shift waar je was op ingeschreven is verwijderd:
 You have been removed from the following shift by an administrator:
 {{ shift }}
 
--- This is an automatically generated email, please do not reply --'
+-- This is an automatically generated email, please do not reply --',
                 ),
                 'nl' => array(
                     'subject' => 'Shift Afmelding',
@@ -110,7 +110,7 @@ You have been removed from the following shift by an administrator:
 U bent verwijderd van de volgende shift door een administrator:
 {{ shift }}
 
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
             )
         ),
@@ -127,11 +127,11 @@ U bent verwijderd van de volgende shift door een administrator:
             array(
                 array(
                     'name' => 'silver',
-                    'limit' => '10'
+                    'limit' => '10',
                 ),
                 array(
                     'name' => 'gold',
-                    'limit' => '20'
+                    'limit' => '20',
                 ),
             )
         ),
@@ -141,5 +141,17 @@ U bent verwijderd van de volgende shift door een administrator:
         'key'         => 'shift.icalendar_uid_suffix',
         'value'       => 'shift.vtk.be',
         'description' => 'The suffix of an iCalendar shift uid',
+    ),
+    array(
+        'key'           => 'shift.reward_numbers',
+        'value'         => serialize(
+            array(
+            '2' => 2,
+            '0' => 0,
+            '3' => 3,
+            '10' => 10,
+            )
+        ),
+        'description'   => 'The coins you can select as reward for a shift',
     ),
 );

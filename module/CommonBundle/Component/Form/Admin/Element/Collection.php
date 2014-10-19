@@ -60,12 +60,13 @@ class Collection extends \Zend\Form\Element\Collection
         foreach ($this->byName as $elementOrFieldset) {
             // Recursively prepare elements
             if ($elementOrFieldset instanceof ElementPrepareAwareInterface) {
-                $elementOrFieldset->prepareElement($form);
+                // $elementOrFieldset->prepareElement($form);
             }
         }
 
-        if ($this->shouldCreateTemplate())
+        if ($this->shouldCreateTemplate()) {
             parent::prepareElement($form);
+        }
     }
 
     /**
@@ -78,32 +79,36 @@ class Collection extends \Zend\Form\Element\Collection
      */
     public function populateValues($data)
     {
-        if (empty($data))
+        if (empty($data)) {
             return;
+        }
 
         foreach ($this->getFieldsets() as $fieldset) {
             $fieldset->populateValues($data);
         }
 
         foreach ($data as $key => $value) {
-            if (!$this->has($key) && !is_numeric($key))
+            if (!$this->has($key) && !is_numeric($key)) {
                 unset($data[$key]);
+            }
         }
 
         if ($this->shouldCreateTemplate()) {
             foreach ($data as $value) {
                 foreach ($this->byName as $name => $element) {
-                    if (!isset($data[$name]))
+                    if (!isset($data[$name])) {
                         $data[$name] = '';
+                    }
                 }
             }
         } else {
             foreach ($this->byName as $name => $element) {
                 if (!isset($data[$name])) {
-                    if ($this->get($name) instanceof Fieldset)
+                    if ($this->get($name) instanceof Fieldset) {
                         $data[$name] = array();
-                    else
+                    } else {
                         $data[$name] = '';
+                    }
                 }
             }
         }

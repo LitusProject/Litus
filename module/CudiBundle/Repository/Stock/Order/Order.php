@@ -18,14 +18,14 @@
 
 namespace CudiBundle\Repository\Stock\Order;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Order\Item as ItemEntity,
     CudiBundle\Entity\Stock\Order\Order as OrderEntity,
     CudiBundle\Entity\Stock\Period,
-    CudiBundle\Entity\Supplier,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    CudiBundle\Entity\Supplier;
 
 /**
  * Order
@@ -56,8 +56,9 @@ class Order extends EntityRepository
             ->setParameter('startDate', $period->getStartDate())
             ->orderBy('o.dateCreated', 'DESC');
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery();
 
@@ -141,7 +142,7 @@ class Order extends EntityRepository
             )
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
-            ->setParameter('supplier', '%'.strtolower($supplier).'%')
+            ->setParameter('supplier', '%' . strtolower($supplier) . '%')
             ->orderBy('o.dateOrdered', 'DESC')
             ->getQuery();
 

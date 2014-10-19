@@ -23,22 +23,22 @@ return array(
         ),
         'actions' => array(
             'common_admin_auth' => array(
-                'authenticate', 'login', 'logout', 'shibboleth'
+                'authenticate', 'login', 'logout', 'shibboleth',
             ),
             'common_auth' => array(
-                'login', 'logout', 'shibboleth'
+                'login', 'logout', 'shibboleth',
             ),
             'common_index' => array(
-                'index'
+                'index',
             ),
             'common_account' => array(
-                'activate'
+                'activate',
             ),
             'common_robots' => array(
-                'index'
+                'index',
             ),
             'common_praesidium' => array(
-                'overview'
+                'overview',
             ),
             'common_privacy' => array(
                 'index'
@@ -51,10 +51,10 @@ return array(
         ),
         'actions' => array(
             'common_account' => array(
-                'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage'
+                'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage',
             ),
             'common_session' => array(
-                'manage', 'expire'
+                'manage', 'expire',
             ),
         ),
     ),

@@ -21,13 +21,13 @@ namespace BrBundle\Form\Admin\Company\Logo;
 use BrBundle\Component\Validator\Logo\Type as TypeValidator,
     BrBundle\Entity\Company,
     BrBundle\Entity\Company\Logo,
+    CommonBundle\Component\Form\Admin\Element\File,
     CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\File,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Logo
@@ -141,7 +141,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         array(
                             'name' => 'uri',
-                        )
+                        ),
                     ),
                 )
             )

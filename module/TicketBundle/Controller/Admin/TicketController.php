@@ -21,7 +21,8 @@ namespace TicketBundle\Controller\Admin;
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     DateTime,
-    TicketBundle\Component\Document\Generator\Event as EventGenerator,
+    TicketBundle\Component\Document\Generator\Event\Csv as CsvGenerator,
+    TicketBundle\Component\Document\Generator\Event\Pdf as PdfGenerator,
     TicketBundle\Entity\Event,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -35,11 +36,13 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $tickets = $this->_search($event);
+        }
 
         if (!isset($tickets)) {
             $tickets = $this->getEntityManager()
@@ -63,35 +66,20 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function exportAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $file = new CsvFile();
+        $document = new CsvGenerator($this->getEntityManager(), $event);
+        $document->generateDocument($file);
 
-        $file->appendContent(array('ID', 'Name', 'Status', 'Option', 'Number', 'Book Date', 'Sold Date', 'Member'));
-
-        $tickets = $this->getEntityManager()
-            ->getRepository('TicketBundle\Entity\Ticket')
-            ->findAllActiveByEvent($event);
-
-        foreach ($tickets as $ticket) {
-            $file->appendContent(
-                array(
-                    $ticket->getId(),
-                    $ticket->getFullName(),
-                    $ticket->getStatus(),
-                    $ticket->getOption()->getName() . ' (' . ($ticket->isMember() ? 'Member' : 'Non Member') . ')',
-                    $ticket->getNumber(),
-                    $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : '',
-                    $ticket->getSoldDate() ? $ticket->getSoldDate()->format('d/m/Y H:i') : '',
-                    $ticket->isMember() ? '1' : '0'
-                )
-            );
-        }
+        $now = new DateTime();
+        $filename = 'tickets_' . $now->format('Y_m_d') . '.pdf';
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="tickets.csv"',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
             'Content-Type'        => 'text/csv',
         ));
         $this->getResponse()->setHeaders($headers);
@@ -105,11 +93,12 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function printAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $file = new TmpFile();
-        $document = new EventGenerator($this->getEntityManager(), $event, $file);
+        $document = new PdfGenerator($this->getEntityManager(), $event, $file);
         $document->generate();
 
         $now = new DateTime();
@@ -133,8 +122,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $tickets = $this->_search($event);
 
@@ -194,7 +184,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'ticket_admin_event',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -214,7 +204,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'ticket_admin_event',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -235,7 +225,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'ticket_admin_event',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -255,7 +245,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'ticket_admin_event',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

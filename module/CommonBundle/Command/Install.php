@@ -50,7 +50,7 @@ class Install extends \CommonBundle\Component\Console\Command\Install
     {
         $languages = array(
             'en' => 'English',
-            'nl' => 'Nederlands'
+            'nl' => 'Nederlands',
         );
 
         foreach ($languages as $abbrev => $name) {
@@ -85,8 +85,9 @@ class Install extends \CommonBundle\Component\Console\Command\Install
                 $street = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Address\Street')
                     ->findOneByCityAndName($city, $streetData['name']);
-                if (null === $street)
+                if (null === $street) {
                     $this->getEntityManager()->persist(new Street($city, $streetData['register'], $streetData['name']));
+                }
             }
         }
 
@@ -98,8 +99,9 @@ class Install extends \CommonBundle\Component\Console\Command\Install
         $currentOrganizations = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
-        if (sizeof($currentOrganizations) > 0)
+        if (sizeof($currentOrganizations) > 0) {
             return;
+        }
 
         $organizations = array(
             'VTK',

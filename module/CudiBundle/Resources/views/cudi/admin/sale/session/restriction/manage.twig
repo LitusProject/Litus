@@ -34,17 +34,15 @@
         <table class="full_width manage">
 
             <tr>
-                <th>Type</th>
-                <th width="120px">Start Value</th>
-                <th width="120px">End Value</th>
+                <th width="70px">Type</th>
+                <th>Value</th>
                 <th width="90px">Action</th>
             </tr>
 
             {% for restriction in restrictions %}
                 <tr class="item item-{{ restriction.getId() }}">
-                    <td>{{ restriction.getType() }}</td>
-                    <td>{{ restriction.getStartValue() }}</td>
-                    <td>{{ restriction.getEndValue() }}</td>
+                    <td>{{ restriction.getType()|capitalize }}</td>
+                    <td>{{ restriction.getReadableValue() }}</td>
                     <td class="actions">
                         {% if hasAccess('cudi_admin_sales_session_restriction', 'delete') and session.isOpen() %}
                             <a href="#" class="delete" data-id="{{ restriction.getId() }}" data-type="{{ restriction.getType() }}">Delete</a>
@@ -86,17 +84,10 @@
             $('.item .delete').click(openRemoveModal);
 
             $('#restriction_type').change(function () {
-                if ($(this).val() == 'year') {
-                    $('#start_value_year').closest('.row').show();
-                    $('#end_value_year').closest('.row').show();
-                    $('#start_value').closest('.row').hide();
-                    $('#end_value').closest('.row').hide();
-                } else {
-                    $('#start_value_year').closest('.row').hide();
-                    $('#end_value_year').closest('.row').hide();
-                    $('#start_value').closest('.row').show();
-                    $('#end_value').closest('.row').show();
-                }
+                $('.restriction_value').each(function () {
+                    $(this).closest('.row').hide();
+                });
+                $('.restriction_value_' + $(this).val()).closest('.row').show();
             }).trigger('change');
         });
 

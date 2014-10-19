@@ -19,22 +19,22 @@
 return array(
     'ticketbundle' => array(
         'ticket_admin_event' => array(
-            'add', 'delete', 'edit', 'manage', 'old'
+            'add', 'delete', 'edit', 'manage', 'old',
         ),
         'ticket_admin_ticket' => array(
-            'export', 'manage', 'print', 'search'
+            'export', 'manage', 'print', 'search',
         ),
         'ticket_sale_index' => array(
-            'sale', 'validate'
+            'sale', 'validate',
         ),
         'ticket_sale_ticket' => array(
-            'delete', 'overview', 'sale', 'unassign', 'undoSale'
+            'delete', 'overview', 'sale', 'unassign', 'undoSale',
         ),
         'ticket_sale_person' => array(
-            'typeahead'
+            'typeahead',
         ),
         'ticket' => array(
-            'delete', 'event'
+            'delete', 'event',
         ),
     ),
 );

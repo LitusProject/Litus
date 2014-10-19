@@ -18,11 +18,12 @@
 
 namespace CudiBundle\Entity\Sale;
 
-use CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
+    CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Article as MainArticle,
     CudiBundle\Entity\Sale\Article\Barcode,
+    CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction,
     CudiBundle\Entity\Supplier,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -241,8 +242,9 @@ class Article
     public function getBarcode()
     {
         foreach ($this->barcodes as $barcode) {
-            if ($barcode->isMain())
+            if ($barcode->isMain()) {
                 return $barcode->getBarcode();
+            }
         }
     }
 
@@ -253,23 +255,31 @@ class Article
      */
     public function setBarcode($barcode)
     {
+        if ('' == $barcode) {
+            return $this;
+        }
+
         $main = null;
         $found = null;
         foreach ($this->barcodes as $object) {
-            if ($object->isMain())
+            if ($object->isMain()) {
                 $main = $object;
-            if ($object->getBarcode() == $barcode)
+            }
+            if ($object->getBarcode() == $barcode) {
                 $found = $object;
+            }
         }
 
         if (!(null !== $main && $main->getBarcode() == $barcode)) {
-            if ($main)
+            if ($main) {
                 $main->setIsMain(false);
+            }
 
-            if ($found)
+            if ($found) {
                 $found->setIsMain(true);
-            else
+            } else {
                 $this->addBarcode(new Barcode($this, $barcode, true));
+            }
         }
 
         return $this;
@@ -531,9 +541,23 @@ class Article
      */
     public function canBook(Person $person, EntityManager $entityManager)
     {
-        foreach ($this->restrictions as $restriction) {
-            if (!$restriction->canBook($person, $entityManager))
+        $restrictions = $this->restrictions->toArray();
+
+        $onlyMember = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.booking_only_member');
+
+        $memberRestriction = $entityManager->getRepository('CudiBundle\Entity\Sale\Article\Restriction\Member')
+            ->findOneByArticle($this);
+
+        if ($onlyMember && null === $memberRestriction) {
+            $restrictions[] = new MemberRestriction($this, false);
+        }
+
+        foreach ($restrictions as $restriction) {
+            if (!$restriction->canBook($person, $entityManager)) {
                 return false;
+            }
         }
 
         return true;
@@ -555,8 +579,9 @@ class Article
             $this->getSupplier(),
             $this->canExpire()
         );
-        foreach($this->barcodes as $barcode)
+        foreach ($this->barcodes as $barcode) {
             $article->addBarcode(new Barcode($article, $barcode->getBarcode()));
+        }
 
         return $article;
     }

@@ -20,8 +20,8 @@ namespace BrBundle\Form\Career\Search;
 
 use BrBundle\Entity\Company,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Search for companies in a certain section
@@ -66,8 +66,9 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
     private function _createSectorArray()
     {
         $sectorArray = array('all' => 'All');
-        foreach (Company::$possibleSectors as $key => $sector)
+        foreach (Company::$possibleSectors as $key => $sector) {
             $sectorArray[$key] = $sector;
+        }
 
         return $sectorArray;
     }

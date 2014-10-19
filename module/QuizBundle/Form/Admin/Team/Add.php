@@ -20,13 +20,13 @@ namespace QuizBundle\Form\Admin\Team;
 
 use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
-    QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator,
     Doctrine\ORM\EntityManager,
-    QuizBundle\Entity\Team,
+    QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator,
     QuizBundle\Entity\Quiz,
-    Zend\InputFilter\InputFilter,
+    QuizBundle\Entity\Team,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add a new team
@@ -114,9 +114,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int'),
-                        new PositiveNumberValidator,
+                        new PositiveNumberValidator(),
                         new UniqueTeamValidator($this->_entityManager, $this->_quiz),
-                    )
+                    ),
                 )
             )
         );

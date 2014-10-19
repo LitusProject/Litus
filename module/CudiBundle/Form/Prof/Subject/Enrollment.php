@@ -21,8 +21,8 @@ namespace CudiBundle\Form\Prof\Subject;
 use CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     SyllabusBundle\Entity\StudentEnrollment,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Update student enrollment

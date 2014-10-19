@@ -18,9 +18,9 @@
 
 namespace SyllabusBundle\Repository\Subject;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person;
 
 /**
  * Comment
@@ -60,8 +60,9 @@ class Comment extends EntityRepository
             ->getResult();
 
         $ids = array(0 => 0);
-        foreach($resultSet as $item)
+        foreach ($resultSet as $item) {
             $ids[$item['id']] = $item['id'];
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
@@ -92,10 +93,11 @@ class Comment extends EntityRepository
                     ->getRepository('SyllabusBundle\Entity\Subject\Reply')
                     ->findLastByComment($comment);
 
-                if (null !== $reply)
+                if (null !== $reply) {
                     $comments[$reply->getDate()->getTimestamp()] = array('type' => 'reply', 'content' => $reply);
-                else
+                } else {
                     $comments[$comment->getDate()->getTimestamp()] = array('type' => 'comment', 'content' => $comment);
+                }
             }
         }
 

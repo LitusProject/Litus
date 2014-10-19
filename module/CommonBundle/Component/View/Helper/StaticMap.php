@@ -53,15 +53,17 @@ class StaticMap extends \Zend\View\Helper\AbstractHelper
      */
     public function __invoke(Location $location, $size, $color)
     {
-        if (null === $this->_entityManager)
+        if (null === $this->_entityManager) {
             throw new Exception\RuntimeException('No EntityManager instance was provided');
+        }
 
         $staticMapsUrl = $this->_entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.static_maps_api_url');
 
-        if (substr($staticMapsUrl, -1) == '/')
+        if (substr($staticMapsUrl, -1) == '/') {
             $staticMapsUrl = substr($staticMapsUrl, 0, -1);
+        }
 
         $coordinates = $location->getLatitude() . ',' . $location->getLongitude();
 

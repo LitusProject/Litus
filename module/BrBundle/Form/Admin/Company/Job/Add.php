@@ -24,9 +24,9 @@ use BrBundle\Entity\Company,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Job
@@ -108,8 +108,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _getSectors()
     {
         $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector)
+        foreach (Company::$possibleSectors as $key => $sector) {
             $sectorArray[$key] = $sector;
+        }
 
         return $sectorArray;
     }

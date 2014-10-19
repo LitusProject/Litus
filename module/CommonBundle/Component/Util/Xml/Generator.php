@@ -74,7 +74,8 @@ class Generator
 
     public function __destruct()
     {
-        if($this->_destroy)
+        if ($this->_destroy) {
             $this->_data->destroy();
+        }
     }
 }

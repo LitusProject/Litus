@@ -204,7 +204,7 @@ return array(
         ),
         'common_jquery_table_sort' => array(
             'assets' => array(
-                'common/js/jquery.sortable-table.js'
+                'common/js/jquery.sortable-table.js',
             ),
             'filters' => array('js'),
         ),
@@ -292,7 +292,7 @@ return array(
             ),
             'filters' => array('less'),
             'options' => array(
-                'output' => 'site_css.css'
+                'output' => 'site_css.css',
             ),
         ),
 
@@ -305,7 +305,7 @@ return array(
 
         'gollum_css' => array(
             'assets' => array(
-                'gollum/css/editor.css'
+                'gollum/css/editor.css',
             ),
             'filters' => array('css'),
             'options' => array(

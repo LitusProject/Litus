@@ -40,7 +40,7 @@ Click here to activate it again: http://litus/account/activate/code/{{ code }}
 
 Kind regards,
 
-VTK'
+VTK',
                 ),
                 'nl' => array(
                     'subject' => 'VTK Account Gedeactiveerd',
@@ -51,7 +51,7 @@ Klik hier om deze opnieuw te activeren: http://litus/account/activate/code/{{ co
 
 Met vriendelijke groeten,
 
-VTK'
+VTK',
                 ),
             )
         ),
@@ -70,7 +70,7 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}
 
 Kind regards,
 
-VTK'
+VTK',
                 ),
                 'nl' => array(
                     'subject' => 'VTK Account Geactiveerd',
@@ -81,7 +81,7 @@ Klik hier om deze te activeren: http://litus/account/activate/code/{{ code }}
 
 Met vriendelijke groeten,
 
-VTK'
+VTK',
                 ),
             )
         ),
@@ -120,7 +120,7 @@ VTK'
                             'mailbox' => '1',
                             'postal' => '3001',
                             'city' => 'Heverlee',
-                            'country' => 'Belgium')),
+                            'country' => 'Belgium',)),
             'description' => 'The address of the organization',
     ),
     array(
@@ -284,7 +284,7 @@ Disallow: /admin/*
                 'membership' => array(
                     'path'     => 'data/certificates/private/membership.p12',
                     'password' => '3Vg2Z401YDh514Qw3t4m76SL',
-                )
+                ),
             )
         ),
         'description' => 'The certificates that will be used to to create PassKit signatures',
@@ -445,10 +445,14 @@ You can remove any installed cookies from your computer or mobile device at any 
         ),
         'description' => 'The privacy policy',
     ),
-
+    array(
+        'key'         => 'common.ios_app_id',
+        'value'       => '892060967',
+        'description' => 'The unique identifier of the iOS app',
+    ),
     array(
         'key'         => 'last_upgrade',
-        'value'       => '2014081300',
+        'value'       => '2014092300',
         'description' => 'The last Litus schema update performed on this system',
     ),
 );

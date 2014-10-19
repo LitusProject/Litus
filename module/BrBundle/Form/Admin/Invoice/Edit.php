@@ -24,9 +24,9 @@ use BrBundle\Entity\Contract\Section,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory,
     Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter,
     Zend\Validator\Float as FloatValidator;
 
 /**

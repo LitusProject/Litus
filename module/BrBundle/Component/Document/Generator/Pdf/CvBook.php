@@ -18,8 +18,8 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Cv\Util,
-    BrBundle\Entity\Cv\Entry,
+use BrBundle\Entity\Cv\Entry,
+    BrBundle\Entity\Cv\Util,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
     CommonBundle\Component\Util\Xml\Object,
@@ -74,8 +74,9 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
 
         $groups = array();
 
-        foreach ($data as $studyData)
+        foreach ($data as $studyData) {
             $groups[] = $this->_generateGroup($studyData['name'], $studyData['entries']);
+        }
 
         $organization_logo = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -105,7 +106,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                         'cvs',
                         null,
                         $groups
-                    )
+                    ),
                 )
             )
         );
@@ -114,8 +115,9 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
     private function _generateGroup($groupName, $entries)
     {
         $cvs = array();
-        foreach ($entries as $entry)
+        foreach ($entries as $entry) {
             $cvs[] = $this->_generateCv($entry);
+        }
 
         return new Object(
             'cvgroup',
@@ -179,7 +181,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                                     'title',
                                     null,
                                     $cv->getStudy()->getFullTitle()
-                                )
+                                ),
                             )
                         ),
                         new Object(
@@ -194,11 +196,11 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                                     'title',
                                     null,
                                     $cv->getPriorStudy()
-                                )
+                                ),
                             )
-                        )
+                        ),
                     )
-                )
+                ),
             )
         );
 
@@ -227,7 +229,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                                 $cv->getErasmusPeriod()
                             ),
                         )
-                    )
+                    ),
                 )
             );
         }
@@ -256,7 +258,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                             'content',
                             null,
                             $cv->getLanguageExtra()
-                        )
+                        ),
                     )
                 ),
             )
@@ -289,7 +291,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                         null,
                         $cv->getExperiences()
                     )
-                )
+                ),
             )
         );
 
@@ -303,7 +305,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                     'content',
                     null,
                     $cv->getThesisSummary()
-                )
+                ),
             )
         );
 
@@ -387,7 +389,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                         null,
                         $cv->getAbout()
                     )
-                )
+                ),
             )
         );
 
@@ -403,8 +405,9 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             'city'      => $cv->getAddress()->getCity(),
             'country'   => $cv->getAddress()->getCountry(),
         );
-        if (null !== $cv->getAddress()->getMailbox() && '' !== $cv->getAddress()->getMailbox())
+        if (null !== $cv->getAddress()->getMailbox() && '' !== $cv->getAddress()->getMailbox()) {
             $result['bus'] = $cv->getAddress()->getMailbox();
+        }
 
         return $result;
     }

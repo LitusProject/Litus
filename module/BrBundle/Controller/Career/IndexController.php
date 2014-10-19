@@ -32,7 +32,7 @@ class IndexController extends \BrBundle\Component\Controller\CareerController
         $this->redirect()->toRoute(
             'br_career_company',
             array(
-                'action' => 'overview'
+                'action' => 'overview',
             )
         );
 

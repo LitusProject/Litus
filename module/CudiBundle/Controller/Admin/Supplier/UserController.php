@@ -32,18 +32,19 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($supplier = $this->_getSupplier()))
+        if (!($supplier = $this->_getSupplier())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromEntity(
             'CudiBundle\Entity\User\Person\Supplier',
             $this->getParam('page'),
             array(
                 'canLogin' => 'true',
-                'supplier' => $supplier->getId()
+                'supplier' => $supplier->getId(),
             ),
             array(
-                'username' => 'ASC'
+                'username' => 'ASC',
             )
         );
 
@@ -58,8 +59,9 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($supplier = $this->_getSupplier()))
+        if (!($supplier = $this->_getSupplier())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager());
 
@@ -75,7 +77,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                     array(
                         $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName('supplier')
+                            ->findOneByName('supplier'),
                     ),
                     $formData['first_name'],
                     $formData['last_name'],
@@ -122,8 +124,9 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($user = $this->_getUser()))
+        if (!($user = $this->_getUser())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $user);
 
@@ -151,7 +154,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_supplier_user',
                     array(
                         'action' => 'manage',
-                        'id' => $user->getSupplier()->getId()
+                        'id' => $user->getSupplier()->getId(),
                     )
                 );
 
@@ -171,8 +174,9 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($user = $this->_getUser()))
+        if (!($user = $this->_getUser())) {
             return new ViewModel();
+        }
 
         $user->disableLogin();
         $this->getEntityManager()->flush();
@@ -198,7 +202,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_supplier',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -218,7 +222,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_supplier',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -242,7 +246,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_supplier',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -262,7 +266,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_supplier',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

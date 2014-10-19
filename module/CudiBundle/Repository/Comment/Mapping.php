@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Repository\Comment;
 
-use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Comment\Comment as CommentEntity,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CudiBundle\Entity\Article,
+    CudiBundle\Entity\Comment\Comment as CommentEntity;
 
 /**
  * Mapping

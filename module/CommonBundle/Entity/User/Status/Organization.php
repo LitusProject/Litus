@@ -40,7 +40,7 @@ class Organization
         'non_member'        => 'Non-Member',
         'honorary_member'   => 'Honorary Member',
         'supportive_member' => 'Supportive Member',
-        'praesidium'        => 'Praesidium'
+        'praesidium'        => 'Praesidium',
     );
 
     /**
@@ -85,8 +85,9 @@ class Organization
      */
     public function __construct(Person $person, $status, AcademicYear $academicYear)
     {
-        if(!self::isValidPerson($person, $academicYear))
+        if (!self::isValidPerson($person, $academicYear)) {
             throw new InvalidArgumentException('Invalid person');
+        }
 
         $this->person = $person;
 
@@ -136,8 +137,9 @@ class Organization
      */
     public function setStatus($status)
     {
-        if (self::isValidStatus($status))
+        if (self::isValidStatus($status)) {
             $this->status = $status;
+        }
 
         return $this;
     }

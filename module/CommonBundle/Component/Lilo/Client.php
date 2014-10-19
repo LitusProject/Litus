@@ -22,9 +22,9 @@ use CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Lilo\Data\Exception as ExceptionData,
     CommonBundle\Component\Lilo\Data\Log as LogData,
     Exception,
-    Zend\Http\PhpEnvironment\Request,
     Zend\Mvc\Application,
-    Zend\Mvc\MvcEvent;
+    Zend\Mvc\MvcEvent,
+    Zend\Stdlib\RequestInterface;
 
 /**
  * Lilo is a small application that can store exception and log messages.
@@ -45,7 +45,7 @@ class Client
     private $_connection;
 
     /**
-     * @var Request The request to the page
+     * @var RequestInterface The request to the page
      */
     private $_request;
 
@@ -54,9 +54,9 @@ class Client
      *
      * @param Connection          $connection     The connection to the Lilo server
      * @param Authentication|null $authentication The authentication instance
-     * @param Request             $request        The request to the page
+     * @param RequestInterface    $request        The request to the page
      */
-    public function __construct(Connection $connection, Authentication $authentication = null, Request $request)
+    public function __construct(Connection $connection, Authentication $authentication = null, RequestInterface $request)
     {
         $this->_authentication = $authentication;
         $this->_connection = $connection;
@@ -70,7 +70,7 @@ class Client
      * @param  string $tags    The tags associated with the message
      * @return void
      */
-    public function sendLog($message, $tags = '')
+    public function sendLog($message, array $tags = array())
     {
         $this->_connection->send(
             new LogData($message, $tags)
@@ -99,7 +99,8 @@ class Client
      */
     public function handleMvcEvent(MvcEvent $e)
     {
-        if ($e->getError() == Application::ERROR_EXCEPTION)
+        if ($e->getError() == Application::ERROR_EXCEPTION) {
             $this->sendException($e->getParam('exception'));
+        }
     }
 }

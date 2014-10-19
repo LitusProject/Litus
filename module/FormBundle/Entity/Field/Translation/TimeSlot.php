@@ -19,8 +19,8 @@
 namespace FormBundle\Entity\Field\Translation;
 
 use CommonBundle\Entity\General\Language,
-    FormBundle\Entity\Field\TimeSlot as TimeSlotField,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    FormBundle\Entity\Field\TimeSlot as TimeSlotField;
 
 /**
  * This entity stores the node item.

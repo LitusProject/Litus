@@ -81,7 +81,7 @@ You can use this account to view the CV Book at http://litus/corporate
 
 Kind regards,
 
-The VTK Corporate Relations Team'
+The VTK Corporate Relations Team',
                 ),
                 'nl' => array(
                     'subject' => 'VTK Bedrijfsaccount',
@@ -93,7 +93,7 @@ U kan dit account gebruiken om het CV Book te bekijken op http://litus/corporate
 
 Met vriendelijke groeten,
 
-Het VTK Bedrijvenrelaties Team'
+Het VTK Bedrijvenrelaties Team',
                 ),
             )
         ),
@@ -149,10 +149,10 @@ Example content of this section.
             array(
                 6,
                 11,
-                21
+                21,
             )
         ),
-        'description' => 'The possible amounts of VAT'
+        'description' => 'The possible amounts of VAT',
     ),
     array(
         'key'         => 'br.cv_archive_years',
@@ -166,7 +166,7 @@ Example content of this section.
                  */
             )
         ),
-        'description' => 'The cv archive years'
+        'description' => 'The cv archive years',
     ),
     array(
             'key'         => 'br.product_contract_text',
@@ -176,5 +176,5 @@ Example content of this section.
   * The next sub bullet most be lined up with the one above.
   At a sublevel you can also drop the bullet. This will be renderered without bullet.',
             'description' => 'The standard text that is displayed on the creation of a new product.',
-    )
+    ),
 );

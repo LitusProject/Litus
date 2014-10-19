@@ -181,8 +181,9 @@ class Role
         }
 
         foreach ($this->getParents() as $parent) {
-            if ($parent->isAllowed($acl, $resource, $action))
+            if ($parent->isAllowed($acl, $resource, $action)) {
                 return true;
+            }
         }
 
         return false;

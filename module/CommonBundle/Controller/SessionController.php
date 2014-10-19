@@ -66,8 +66,8 @@ class SessionController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => (object) array(
-                    'status' => $status
-                )
+                    'status' => $status,
+                ),
             )
         );
     }

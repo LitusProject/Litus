@@ -41,5 +41,5 @@ return array(
         'key'         => 'news.max_age_site',
         'value'       => 'P3M',
         'description' => 'The maximum age of news items shown on the homepage',
-    )
+    ),
 );

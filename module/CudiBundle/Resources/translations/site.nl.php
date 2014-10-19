@@ -60,6 +60,7 @@ return array(
     'Stop Search' => 'Stop Zoeken',
     'Search String' => 'Zoek Opdracht',
     'No Articles Found' => 'Geen Artikels Gevonden',
+    'No articles available for this subject.' => 'Geen artikels beschikbaar voor dit vak.',
 
     'The opening hours for next week are:' => 'De openingsuren voor de komende week zijn:',
 
@@ -69,4 +70,9 @@ return array(
     'Keep Me Updated' => 'Verwittig Me',
     'You won\'t receive an e-mail when the catalog is updated.' => 'Er wordt geen e-mail verstuurd wanneer de catalogus aangepast wordt.',
     'Don\'t Keep Me Updated' => 'Verwittig Me Niet',
+
+    'Color' => 'Kleur',
+    'Status' => 'Status',
+    'Booked' => 'Gereserveerd',
+    'Bought' => 'Aangekocht',
 );

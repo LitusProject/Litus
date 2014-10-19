@@ -22,16 +22,16 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
+    Doctrine\ORM\EntityManager,
     FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Component\Validator\TimeSlot as TimeSlotValidator,
     FormBundle\Entity\Field\TimeSlot as TimeSlotField,
+    FormBundle\Entity\Node\Entry,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Form\Doodle as DoodleEntity,
-    FormBundle\Entity\Node\Entry,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Specifield Form Doodle
@@ -73,8 +73,9 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::__construct($name);
 
-        if (!($form instanceof DoodleEntity))
+        if (!($form instanceof DoodleEntity)) {
             return;
+        }
 
         // Create guest fields
         if (null === $person) {
@@ -112,8 +113,9 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                 $field = new Checkbox('field-' . $fieldSpecification->getId());
                 $field->setAttribute('class', 'checkbox');
 
-                if (!$editable)
+                if (!$editable) {
                     $field->setAttribute('disabled', 'disabled');
+                }
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
             }
@@ -128,8 +130,9 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
             $this->add($field);
         }
 
-        if (null !== $entry)
+        if (null !== $entry) {
             $this->populateFromEntry($entry);
+        }
 
         $this->_disableOccupiedSlots($this->_occupiedSlots);
     }
@@ -142,8 +145,9 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $occupiedSlots = array();
         foreach ($formEntries as $formEntry) {
-            if (null !== $person && $formEntry->getCreationPerson() == $person)
+            if (null !== $person && $formEntry->getCreationPerson() == $person) {
                 continue;
+            }
 
             foreach ($formEntry->getFieldEntries() as $fieldEntry) {
                 $occupiedSlots[$fieldEntry->getField()->getId()] = $formEntry->getPersonInfo()->getFullName();
@@ -213,7 +217,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                                             'token' => '0',
                                         ),
                                     ),
-                                )
+                                ),
                             )
                         )
                     );

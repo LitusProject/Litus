@@ -18,9 +18,8 @@
 
 namespace BrBundle\Component\Validator;
 
-use CommonBundle\Component\Util\Url,
-    Doctrine\ORM\EntityManager,
-    BrBundle\Entity\Product;
+use BrBundle\Entity\Product,
+    Doctrine\ORM\EntityManager;
 
 /**
  * Matches the given product name against the database to check whether it is
@@ -46,7 +45,7 @@ class ProductName extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The product name already exists'
+        self::NOT_VALID => 'The product name already exists',
     );
 
     /**
@@ -76,8 +75,9 @@ class ProductName extends \Zend\Validator\AbstractValidator
             ->getRepository('BrBundle\Entity\Product')
             ->findOneByName($value);
 
-        if (null === $product || ($this->_product && ($product == $this->_product)))
+        if (null === $product || ($this->_product && ($product == $this->_product))) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

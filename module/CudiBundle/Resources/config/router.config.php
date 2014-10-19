@@ -35,7 +35,7 @@ return array(
                 ),
             ),
         ),
-        'cudi_admin_article_subject'=> array(
+        'cudi_admin_article_subject' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
                 'route' => '/admin/cudi/article/subject[/:action[/:id]][/:academicyear][/]',

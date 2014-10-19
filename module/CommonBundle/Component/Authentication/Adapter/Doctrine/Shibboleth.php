@@ -67,8 +67,8 @@ class Shibboleth extends \CommonBundle\Component\Authentication\Adapter\Doctrine
                 array(
                     'code' => Result::FAILURE,
                     'messages' => array(
-                        'The given identity cannot login'
-                    )
+                        'The given identity cannot login',
+                    ),
                 )
             );
         } else {
@@ -77,9 +77,9 @@ class Shibboleth extends \CommonBundle\Component\Authentication\Adapter\Doctrine
                     'code' => Result::SUCCESS,
                     'identity' => $this->getIdentity(),
                     'message' => array(
-                        'Authentication successful'
+                        'Authentication successful',
                     ),
-                    'personObject' => $this->getPersonObject()
+                    'personObject' => $this->getPersonObject(),
                 )
             );
         }

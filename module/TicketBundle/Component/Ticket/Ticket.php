@@ -50,8 +50,9 @@ class Ticket
                 $number = $numbers['member'];
                 $count = count($tickets);
                 for ($i = 0 ; $i < $count ; $i++) {
-                    if (0 == $number)
+                    if (0 == $number) {
                         break;
+                    }
 
                     $number--;
                     $tickets[$i]->setPerson($person)
@@ -64,8 +65,9 @@ class Ticket
                     $number = $numbers['non_member'];
                     $count = count($tickets);
                     for (; $i < $count ; $i++) {
-                        if (0 == $number)
+                        if (0 == $number) {
                             break;
+                        }
 
                         $number--;
                         $tickets[$i]->setPerson($person)
@@ -79,8 +81,9 @@ class Ticket
                     $number = $numbers['option_' . $option->getId() . '_number_member'];
                     $count = count($tickets);
                     for ($i = 0; $i < $count ; $i++) {
-                        if (0 == $number)
+                        if (0 == $number) {
                             break;
+                        }
 
                         $number--;
                         $tickets[$i]->setPerson($person)
@@ -94,8 +97,9 @@ class Ticket
                         $number = $numbers['option_' . $option->getId() . '_number_non_member'];
                         $count = count($tickets);
                         for (; $i < $count ; $i++) {
-                            if (0 == $number)
+                            if (0 == $number) {
                                 break;
+                            }
 
                             $number--;
                             $tickets[$i]->setPerson($person)

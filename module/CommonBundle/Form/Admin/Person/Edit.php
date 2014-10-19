@@ -91,8 +91,9 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
     {
         $rolesArray = array();
         foreach ($roles as $role) {
-            if ($role->getSystem())
+            if ($role->getSystem()) {
                 continue;
+            }
 
             $rolesArray[] = $role->getName();
         }
@@ -110,8 +111,9 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
     {
         $rolesArray = array();
         foreach ($roles as $role) {
-            if (!$role->getSystem())
+            if (!$role->getSystem()) {
                 continue;
+            }
 
             $rolesArray[] = $role->getName();
         }
@@ -133,8 +135,9 @@ abstract class Edit extends \CommonBundle\Form\Admin\Person\Add
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            if (!$role->getSystem())
+            if (!$role->getSystem()) {
                 continue;
+            }
 
             $rolesArray[$role->getName()] = $role->getName();
         }

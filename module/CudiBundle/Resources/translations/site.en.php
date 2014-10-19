@@ -61,6 +61,7 @@ return array(
     'Stop Search' => 'Stop Search',
     'Search String' => 'Search String',
     'No Articles Found' => 'No Articles Found',
+    'No articles available for this subject.' => 'No articles available for this subject.',
 
     'The opening hours for next week are:' => 'The opening hours for next week are:',
 
@@ -70,4 +71,9 @@ return array(
     'Keep Me Updated' => 'Keep Me Updated',
     'You won\'t receive an e-mail when the catalog is updated.' => 'You won\'t receive an e-mail when the catalog is updated.',
     'Don\'t Keep Me Updated' => 'Don\'t Keep Me Updated',
+
+    'Color' => 'Color',
+    'Status' => 'Status',
+    'Booked' => 'Booked',
+    'Bought' => 'Bought',
 );

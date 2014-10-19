@@ -18,11 +18,11 @@
 
 namespace SecretaryBundle\Form\Registration\Subject;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    Zend\InputFilter\InputFilter,
+use CommonBundle\Component\Form\Bootstrap\Element\Submit,
+    CommonBundle\Component\Form\Bootstrap\Element\Text,
+    Zend\Form\Element\Hidden,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Hidden;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Subject

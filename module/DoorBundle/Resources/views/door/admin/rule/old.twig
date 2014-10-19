@@ -1,0 +1,32 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'door/admin/rule/partials/navigation.twig' %}
+
+    <div id="controller_action">
+
+        <h1>Previous rules</h1>
+
+        <table class="full_width manage">
+            <thead>
+                <tr>
+                    <th>Person</th>
+                    <th>Start</th>
+                    <th>End</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for rule in paginator %}
+                    <tr class="item item-{{ rule.getId() }}">
+                        <td>{{ rule.getAcademic(entityManager).getFullName() }}</td>
+                        <td>{{ rule.getStartDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ rule.getEndDate().format('d/m/Y H:i') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}

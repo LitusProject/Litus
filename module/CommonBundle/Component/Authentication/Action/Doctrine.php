@@ -21,8 +21,8 @@ namespace CommonBundle\Component\Authentication\Action;
 use CommonBundle\Component\Authentication\Result,
     CommonBundle\Entity\User\Code,
     Doctrine\ORM\EntityManager,
-    Zend\Mail\Transport\TransportInterface,
-    Zend\Mail\Message;
+    Zend\Mail\Message,
+    Zend\Mail\Transport\TransportInterface;
 
 /**
  * The action that should be taken after authentication.
@@ -59,8 +59,9 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
      */
     public function failedAction(Result $result)
     {
-        if (null === $result->getPersonObject() || !$result->getPersonObject()->hasCredential())
+        if (null === $result->getPersonObject() || !$result->getPersonObject()->hasCredential()) {
             return;
+        }
 
         $result->getPersonObject()
             ->setFailedLogins($result->getPersonObject()->getFailedLogins() + 1);
@@ -107,8 +108,9 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
                 ->addTo($result->getPersonObject()->getEmail(), $result->getPersonObject()->getFullName())
                 ->setSubject($subject);
 
-            if ('development' != getenv('APPLICATION_ENV'))
+            if ('development' != getenv('APPLICATION_ENV')) {
                 $this->_mailTransport->send($mail);
+            }
         }
         $this->_entityManager->flush();
     }

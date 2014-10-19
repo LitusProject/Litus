@@ -24,8 +24,9 @@ function addConfigKey($connection, $name, $value, $description)
 function getConfigValue($connection, $name)
 {
     $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'' . $name . '\'');
-    if (0 == pg_num_rows($result))
+    if (0 == pg_num_rows($result)) {
         throw new \RuntimeException('The config key ' . $name . ' does not exist');
+    }
 
     return pg_fetch_row($result)[0];
 }
@@ -38,15 +39,17 @@ function removeConfigKey($connection, $name)
 function renameConfigKey($connection, $oldName, $newName, $description = null)
 {
     pg_query($connection, 'UPDATE general.config SET key = \'' . $newName . '\' WHERE key = \'' . $oldName . '\'');
-    if (null !== $description)
+    if (null !== $description) {
         pg_query($connection, 'UPDATE general.config SET description = \'' . $description . '\' WHERE key = \'' . $newName . '\'');
+    }
 }
 
 function updateConfigValue($connection, $name, $newValue, $description = null)
 {
     pg_query($connection, 'UPDATE general.config SET value = \'' . $newValue . '\' WHERE key = \'' . $name . '\'');
-    if (null !== $description)
+    if (null !== $description) {
         pg_query($connection, 'UPDATE general.config SET description = \'' . $description . '\' WHERE key = \'' . $name . '\'');
+    }
 }
 
 function publishConfigValue($connection, $name)
@@ -62,8 +65,9 @@ function updateConfigKey($connection, $name, $value)
 function removeAclAction($connection, $resource, $action)
 {
     $result = pg_query($connection, 'SELECT id FROM acl.actions WHERE resource = \'' . $resource . '\' AND name = \'' . $action . '\'');
-    if (0 == pg_num_rows($result))
+    if (0 == pg_num_rows($result)) {
         throw new \RuntimeException('The ACL action ' . $resource . '.' . $action . ' does not exist');
+    }
 
     $id = pg_fetch_row($result)[0];
 
@@ -74,8 +78,9 @@ function removeAclAction($connection, $resource, $action)
 function renameAclAction($connection, $resource, $action, $newAction)
 {
     $result = pg_query($connection, 'SELECT id FROM acl.actions WHERE resource = \'' . $resource . '\' AND name = \'' . $action . '\'');
-    if (0 == pg_num_rows($result))
+    if (0 == pg_num_rows($result)) {
         throw new \RuntimeException('The ACL action ' . $resource . '.' . $action . ' does not exist');
+    }
 
     $id = pg_fetch_row($result)[0];
 

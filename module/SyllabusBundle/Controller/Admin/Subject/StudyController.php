@@ -33,11 +33,13 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
 {
     public function addAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
-        if (!($subject = $this->_getSubject()))
+        if (!($subject = $this->_getSubject())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager(), $subject, $academicYear);
 
@@ -89,8 +91,9 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($mapping = $this->_getMapping()))
+        if (!($mapping = $this->_getMapping())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $mapping);
 
@@ -138,8 +141,9 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping()))
+        if (!($mapping = $this->_getMapping())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($mapping);
         $this->getEntityManager()->flush();
@@ -162,7 +166,7 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'syllabus_admin_subject',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -182,7 +186,7 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'syllabus_admin_subject',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -206,7 +210,7 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'syllabus_admin_subject',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -226,7 +230,7 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'syllabus_admin_subject',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -239,8 +243,9 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
     private function _getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear'))
+        if (null !== $this->getParam('academicyear')) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
@@ -252,7 +257,7 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'syllabus_admin_subject',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

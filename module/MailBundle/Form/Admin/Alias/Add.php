@@ -21,11 +21,11 @@ namespace MailBundle\Form\Admin\Alias;
 use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Academic as AcademicValidator,
-    MailBundle\Component\Validator\Alias as NameValidator,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    MailBundle\Component\Validator\Alias as NameValidator,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Send Mail
@@ -87,7 +87,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         new NameValidator(
                             $this->_entityManager
-                        )
+                        ),
                     ),
                 )
             )
@@ -108,7 +108,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 array(
                                     'byId' => false,
                                 )
-                            )
+                            ),
                         ),
                     )
                 )
@@ -128,7 +128,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 array(
                                     'byId' => true,
                                 )
-                            )
+                            ),
                         ),
                     )
                 )

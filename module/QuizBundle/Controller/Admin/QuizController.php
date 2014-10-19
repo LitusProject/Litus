@@ -39,8 +39,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->findAll();
 
         foreach ($quizes as $key => $quiz) {
-            if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject()))
+            if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
                 unset($quizes[$key]);
+            }
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -106,8 +107,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz())) {
             return new ViewModel();
+        }
 
         $form  = new EditForm($this->getEntityManager(), $quiz);
 
@@ -147,8 +149,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($quiz);
 
@@ -157,7 +160,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -197,7 +200,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -213,7 +216,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

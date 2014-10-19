@@ -44,8 +44,9 @@ class ReturnItem extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -92,8 +93,9 @@ class ReturnItem extends EntityRepository
                 ->getSingleScalarResult();
         }
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -135,7 +137,7 @@ class ReturnItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('article', '%' . strtolower($article) . '%')
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
             ->orderBy('i.timestamp', 'DESC')
@@ -176,7 +178,7 @@ class ReturnItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
             ->orderBy('i.timestamp', 'DESC')
@@ -185,35 +187,16 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByOrganizationAndAcademicYearQuery($organization, AcademicYear $academicYear)
+    public function findAllByOrganizationAndAcademicYearQuery(Organization $organization = null, AcademicYear $academicYear)
     {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p.id')
-            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-            ->innerJoin('m.academic', 'p')
-            ->innerJoin('m.organization', 'o')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('m.academicYear', ':academicYear'),
-                    $query->expr()->like($query->expr()->lower('o.name'), ':organization')
-                )
-            )
-            ->setParameter('academicYear', $academicYear)
-            ->setParameter('organization', '%'.strtolower($organization).'%')
-            ->getQuery()
-            ->getResult();
-
-        $ids = array(0);
-        foreach ($resultSet as $item) {
-            $ids[] = $item['id'];
-        }
+        $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\ReturnItem', 'i')
             ->innerJoin('i.queueItem', 'q')
             ->where(
-                $query->expr()->in('q.person', $ids)
+                $organization == null ? $query->expr()->notIn('q.person', $ids) : $query->expr()->in('q.person', $ids)
             )
             ->orderBy('i.timestamp', 'DESC')
             ->getQuery();
@@ -249,7 +232,7 @@ class ReturnItem extends EntityRepository
                     $query->expr()->like($query->expr()->lower('m.title'), ':article')
                 )
             )
-            ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('article', '%' . strtolower($article) . '%')
             ->setParameter('session', $session)
             ->orderBy('i.timestamp', 'DESC')
             ->getQuery();
@@ -285,7 +268,7 @@ class ReturnItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('session', $session)
             ->orderBy('i.timestamp', 'DESC')
             ->getQuery();
@@ -293,28 +276,9 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByOrganizationAndSessionQuery($organization, SessionEntity $session)
+    public function findAllByOrganizationAndSessionQuery(Organization $organization = null, SessionEntity $session)
     {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p.id')
-            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-            ->innerJoin('m.academic', 'p')
-            ->innerJoin('m.organization', 'o')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('m.academicYear', ':academicYear'),
-                    $query->expr()->like($query->expr()->lower('o.name'), ':organization')
-                )
-            )
-            ->setParameter('academicYear', $session->getAcademicYear())
-            ->setParameter('organization', '%'.strtolower($organization).'%')
-            ->getQuery()
-            ->getResult();
-
-        $ids = array(0);
-        foreach ($resultSet as $item) {
-            $ids[] = $item['id'];
-        }
+        $ids = $this->_personsByAcademicYearAndOrganization($session->getAcademicYear(), $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -323,7 +287,7 @@ class ReturnItem extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('i.session', ':session'),
-                    $query->expr()->in('q.person', $ids)
+                    $organization == null ? $query->expr()->notIn('q.person', $ids) : $query->expr()->in('q.person', $ids)
                 )
             )
             ->setParameter('session', $session)
@@ -390,7 +354,7 @@ class ReturnItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('article', $article)
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
@@ -400,28 +364,9 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByOrganizationAndArticleQuery($organization, ArticleEntity $article, AcademicYear $academicYear)
+    public function findAllByOrganizationAndArticleQuery(Organization $organization = null, ArticleEntity $article, AcademicYear $academicYear)
     {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p.id')
-            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-            ->innerJoin('m.academic', 'p')
-            ->innerJoin('m.organization', 'o')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('m.academicYear', ':academicYear'),
-                    $query->expr()->like($query->expr()->lower('o.name'), ':organization')
-                )
-            )
-            ->setParameter('academicYear', $academicYear)
-            ->setParameter('organization', '%'.strtolower($organization).'%')
-            ->getQuery()
-            ->getResult();
-
-        $ids = array(0);
-        foreach ($resultSet as $item) {
-            $ids[] = $item['id'];
-        }
+        $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -429,7 +374,7 @@ class ReturnItem extends EntityRepository
             ->innerJoin('i.queueItem', 'q')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->in('q.person', $ids),
+                    $organization == null ? $query->expr()->notIn('q.person', $ids) : $query->expr()->in('q.person', $ids),
                     $query->expr()->eq('i.article', ':article')
                 )
             )

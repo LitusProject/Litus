@@ -20,9 +20,9 @@ namespace FormBundle\Form\Admin\Group;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Mapping
@@ -80,8 +80,9 @@ class Mapping extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 ->getRepository('FormBundle\Entity\Node\Group\Mapping')
                 ->findOneByForm($form);
 
-            if (null == $group)
+            if (null == $group) {
                 $options[$form->getId()] = $form->getTitle($language);
+            }
         }
 
         return $options;

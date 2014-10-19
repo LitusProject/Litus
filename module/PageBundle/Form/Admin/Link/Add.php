@@ -19,15 +19,15 @@
 namespace PageBundle\Form\Admin\Link;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Tabs,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
-    PageBundle\Entity\Category,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    PageBundle\Entity\Category,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Link
@@ -114,12 +114,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->getRepository('PageBundle\Entity\Category')
             ->findAll();
 
-        if (empty($categories))
+        if (empty($categories)) {
             throw new \RuntimeException('There needs to be at least one category before you can add a link');
+        }
 
         $categoryOptions = array();
-        foreach($categories as $category)
+        foreach ($categories as $category) {
             $categoryOptions[$category->getId()] = $category->getName();
+        }
 
         asort($categoryOptions);
 
@@ -133,10 +135,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->findByCategory($category, array('name' => 'ASC'));
 
         $pageOptions = array(
-            '' => ''
+            '' => '',
         );
-        foreach($pages as $page)
+        foreach ($pages as $page) {
             $pageOptions[$page->getId()] = $page->getTitle();
+        }
 
         return $pageOptions;
     }

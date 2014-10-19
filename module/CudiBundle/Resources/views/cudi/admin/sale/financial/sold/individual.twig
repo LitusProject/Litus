@@ -22,10 +22,16 @@
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
-                <select id="searchStringSelect" style="display: none">
+                <select id="searchStringType" style="display: none">
                     <option value="regular">Regular</option>
                     <option value="prof">Prof</option>
                     <option value="external">External</option>
+                </select>
+                <select id="searchStringOrganization" style="display: none">
+                    {% for organization in organizations %}
+                        <option value="organization-{{ organization.getId() }}">{{ organization.getName() }}</option>
+                    {% endfor %}
+                    <option value="organization-0">Other</option>
                 </select>
             </div>
 
@@ -40,7 +46,8 @@
                     <th width="70px">Sell Price</th>
                     <th width="110px">Purchase Price</th>
                     <th width="70px" class="wider">Discount</th>
-                    <th width="70px" class="wider">Type</th>
+                    <th width="90px" class="widest">Article Type</th>
+                    <th width="70px" class="wider">Sale Type</th>
                 </tr>
             </table>
         </div>
@@ -57,7 +64,8 @@
                     <th width="70px">Sell Price</th>
                     <th width="110px">Purchase Price</th>
                     <th width="70px" class="wider">Discount</th>
-                    <th width="70px" class="wider">Type</th>
+                    <th width="90px" class="widest">Article Type</th>
+                    <th width="70px" class="wider">Sale Type</th>
                 </tr>
 
                 {% for item in paginator %}
@@ -71,6 +79,7 @@
                         <td>&euro; {{ (item.getPrice()/100)|number_format(2) }}</td>
                         <td>&euro; {{ (item.getArticle().getPurchasePrice()/100)|number_format(2) }}</td>
                         <td class="wider">{{ item.getDiscountType() }}</td>
+                        <td class="widest">{{ item.getArticle().getMainArticle().getType()|capitalize }}</td>
                         <td class="wider">{{ item.getType()|capitalize }}</td>
                     </tr>
                 {% endfor %}
@@ -84,17 +93,24 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#searchStringSelect').change(function (e) {
-                $('#searchString').val($('#searchStringSelect').val()).trigger('keyup');
+            $('#searchStringType').change(function (e) {
+                $('#searchString').val($('#searchStringType').val()).trigger('keyup');
+            });
+
+            $('#searchStringOrganization').change(function (e) {
+                $('#searchString').val($('#searchStringOrganization').val()).trigger('keyup');
             });
 
             $('#searchField').change(function (e) {
                 if ($(this).val() == 'type') {
-                    $('#searchString').hide();
-                    $('#searchStringSelect').show().change();
+                    $('#searchString, #searchStringOrganization').hide();
+                    $('#searchStringType').show().change();
+                } else if ($(this).val() == 'organization') {
+                    $('#searchString, #searchStringType').hide();
+                    $('#searchStringOrganization').show().change();
                 } else {
                     $('#searchString').show();
-                    $('#searchStringSelect').hide();
+                    $('#searchStringType, #searchStringOrganization').hide();
                 }
             });
 

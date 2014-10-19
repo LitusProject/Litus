@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Session as SessionEntity,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\User\Person,
+    CudiBundle\Entity\Sale\Session as SessionEntity;
 
 /**
  * QueueItem
@@ -42,8 +42,9 @@ class QueueItem extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if ($resultSet)
+        if ($resultSet) {
             return $resultSet + 1;
+        }
 
         return 1;
     }

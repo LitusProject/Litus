@@ -26,11 +26,11 @@ use CommonBundle\Component\Form\Bootstrap\Element\Select,
     DateTime,
     Doctrine\ORM\EntityManager,
     IntlDateFormatter,
-    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
+    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * The form used to add a new Reservation.
@@ -151,7 +151,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'value' => $startSlot->format('D d/m/Y H:i'),
                                 'attributes' => array(
                                     'disabled' => $occupied,
-                                )
+                                ),
                             );
                         }
 
@@ -165,7 +165,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'value' => $startSlot->format('D d/m/Y H:i'),
                                 'attributes' => array(
                                     'disabled' => $occupied,
-                                )
+                                ),
                             );
                         }
 
@@ -202,8 +202,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $factory = new InputFactory();
 
         foreach ($this->_weeks as $key => $week) {
-            if (!isset($this->data['submit_' . $key]))
+            if (!isset($this->data['submit_' . $key])) {
                 continue;
+            }
 
             $inputFilter->add(
                 $factory->createInput(

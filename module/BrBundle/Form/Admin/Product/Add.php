@@ -18,16 +18,16 @@
 
 namespace BrBundle\Form\Admin\Product;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
+use BrBundle\Component\Validator\ProductName as ProductNameValidator,
+    BrBundle\Entity\Product,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     CommonBundle\Component\Validator\Price as PriceValidator,
-    BrBundle\Entity\Product,
-    BrBundle\Component\Validator\ProductName as ProductNameValidator,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add a product.
@@ -116,14 +116,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'label' => '',
                 'value' => '',
-            )
+            ),
         );
         foreach ($events as $event) {
             $eventsArray[] = array(
                 'label' => $event->getTitle(),
                 'value' => $event->getId(),
                 'attributes' => array(
-                    'data-date' => $event->getStartDate()->format('d/m/Y')
+                    'data-date' => $event->getStartDate()->format('d/m/Y'),
                 ),
             );
         }
@@ -141,7 +141,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'invoice_description' => $product->getInvoiceDescription(),
             'contract_text' => $product->getContractText(),
             'event' => null === $product->getEvent() ? '' : $product->getEvent()->getId(),
-            'delivery_date' => null === $product->getDeliveryDate() ? '' : $product->getDeliveryDate()->format('d/m/Y')
+            'delivery_date' => null === $product->getDeliveryDate() ? '' : $product->getDeliveryDate()->format('d/m/Y'),
         );
 
         $this->setData($formData);
@@ -158,8 +158,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getConfigValue('br.vat_types');
         $types = unserialize($types);
         $typesArray = array();
-        foreach ($types as $type => $value)
+        foreach ($types as $type => $value) {
             $typesArray[$type] = $value . '%';
+        }
 
         return $typesArray;
     }
@@ -206,7 +207,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
-                    )
+                    ),
                 )
             )
         );

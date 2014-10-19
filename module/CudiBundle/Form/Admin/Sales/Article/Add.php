@@ -26,9 +26,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CudiBundle\Entity\Sale\Article,
     DateInterval,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Article
@@ -62,11 +62,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->setRequired();
         $this->add($field);
 
+        $barcodeCheck = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_sale_article_barcode_check');
+
         $field = new Text('barcode');
         $field->setLabel('Barcode')
             ->setAttribute('class', 'disableEnter')
             ->setAttribute('data-help', 'This is the main barcode of the article. This one will be printed on the front page.')
-            ->setRequired();
+            ->setRequired($barcodeCheck);
         $this->add($field);
 
         $field = new Select('supplier');
@@ -114,8 +118,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
         $supplierOptions = array();
-        foreach($suppliers as $item)
+        foreach ($suppliers as $item) {
             $supplierOptions[$item->getId()] = $item->getName();
+        }
 
         return $supplierOptions;
     }
@@ -126,12 +131,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'purchase_price' => number_format($article->getPurchasePrice()/100, 2),
                 'sell_price' => number_format($article->getSellPrice()/100, 2),
-                'barcode' => $article->getBarcode(),
+                'barcode' => $article->getBarcode() != '' ? str_pad($article->getBarcode(), 12, '0', STR_PAD_LEFT) : '',
                 'supplier' => $article->getSupplier()->getId(),
                 'bookable' => $article->isBookable(),
                 'unbookable' => $article->isUnbookable(),
                 'sellable' => $article->isSellable(),
-                'can_expire' => $article->canExpire()
+                'can_expire' => $article->canExpire(),
             )
         );
     }
@@ -171,27 +176,33 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'barcode',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'barcode',
-                            'options' => array(
-                                'adapter'     => 'Ean12',
-                                'useChecksum' => false,
-                            ),
+        $barcodeCheck = $this->_entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.enable_sale_article_barcode_check');
+
+        if ($barcodeCheck) {
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'barcode',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
                         ),
-                        new UniqueBarcodeValidator($this->_entityManager),
-                    ),
+                        'validators' => array(
+                            array(
+                                'name' => 'barcode',
+                                'options' => array(
+                                    'adapter'     => 'Ean12',
+                                    'useChecksum' => false,
+                                ),
+                            ),
+                            new UniqueBarcodeValidator($this->_entityManager),
+                        ),
+                    )
                 )
-            )
-        );
+            );
+        }
 
         $inputFilter->add(
             $factory->createInput(

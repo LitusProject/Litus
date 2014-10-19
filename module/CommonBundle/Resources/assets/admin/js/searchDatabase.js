@@ -85,8 +85,10 @@
                         return;
                     }
 
-                    indicator.html('');
-                    indicator.spin({lines: 9, length: 3, width: 2, radius: 2});
+                    if (opts.searchString.is(':visible')) {
+                        indicator.html('');
+                        indicator.spin({lines: 9, length: 3, width: 2, radius: 2});
+                    }
 
                     $.ajax({
                         url: opts.url + opts.searchField.val() + '/' + opts.searchString.val(),

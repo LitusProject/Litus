@@ -109,7 +109,7 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
             $this->redirect()->toRoute(
                 'br_career_internship',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -129,7 +129,7 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
             $this->redirect()->toRoute(
                 'br_career_internship',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 

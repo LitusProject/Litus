@@ -58,11 +58,13 @@ abstract class Pdf
      */
     public function __construct(EntityManager $entityManager, $xslPath, $pdfPath)
     {
-        if (($xslPath === null) || !is_string($xslPath))
+        if (($xslPath === null) || !is_string($xslPath)) {
             throw new \InvalidArgumentException('Invalid XSL');
+        }
 
-        if (($pdfPath === null) || !is_string($pdfPath))
+        if (($pdfPath === null) || !is_string($pdfPath)) {
             throw new \InvalidArgumentException('Invalid PDF');
+        }
 
         $this->_entityManager = $entityManager;
 
@@ -128,8 +130,9 @@ abstract class Pdf
         $pdfDir = dirname($this->_pdfPath);
 
         if (!file_exists($pdfDir)) {
-            if (!mkdir($pdfDir, 0770))
+            if (!mkdir($pdfDir, 0770)) {
                 throw new RuntimeException('Failed to create the PDF directory');
+            }
         }
 
         $resultValue = 0;
@@ -142,9 +145,9 @@ abstract class Pdf
             escapeshellcmd($fopCommand . ' -q -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath), $resultValue
         );
 
-        if ($resultValue != 0)
+        if ($resultValue != 0) {
             throw new RuntimeException('The FOP command failed with return value ' . $resultValue);
-
+        }
     }
 
     /**

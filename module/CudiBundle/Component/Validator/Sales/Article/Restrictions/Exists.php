@@ -46,7 +46,7 @@ class Exists extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The restriction already exist!'
+        self::NOT_VALID => 'The restriction already exist!',
     );
 
     /**
@@ -64,7 +64,6 @@ class Exists extends \Zend\Validator\AbstractValidator
         $this->_entityManager = $entityManager;
     }
 
-
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field is valid.
@@ -77,12 +76,24 @@ class Exists extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $restriction = $this->_entityManager
-            ->getRepository('CudiBundle\Entity\Sale\Article\Restriction')
-            ->findOneByArticleAndType($this->_article, $value);
+        $restriction = null;
+        if ('amount' == $value) {
+            $restriction = $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Article\Restriction\Amount')
+                ->findOneByArticle($this->_article);
+        } elseif ('member' == $value) {
+            $restriction = $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Article\Restriction\Member')
+                ->findOneByArticle($this->_article);
+        } elseif ('study' == $value) {
+            $restriction = $this->_entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Article\Restriction\Study')
+                ->findOneByArticle($this->_article);
+        }
 
-        if (null === $restriction)
+        if (null === $restriction) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

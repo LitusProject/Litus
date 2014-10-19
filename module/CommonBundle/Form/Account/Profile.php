@@ -20,8 +20,8 @@ namespace CommonBundle\Form\Account;
 
 use CommonBundle\Component\Form\Bootstrap\Element\File,
     CommonBundle\Component\Form\Bootstrap\Element\Hidden,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Upload Profile Image

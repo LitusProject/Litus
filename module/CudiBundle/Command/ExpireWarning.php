@@ -19,8 +19,8 @@
 namespace CudiBundle\Command;
 
 use CudiBundle\Component\Mail\Booking,
-    DateTime,
-    DateInterval;
+    DateInterval,
+    DateTime;
 
 /**
  * Sends expiry warnings to users
@@ -63,8 +63,9 @@ EOT
 
         $persons = array();
         foreach ($bookings as $booking) {
-            if (!isset($persons[$booking->getPerson()->getId()]))
+            if (!isset($persons[$booking->getPerson()->getId()])) {
                 $persons[$booking->getPerson()->getId()] = array('person' => $booking->getPerson(), 'bookings' => array());
+            }
 
             $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
         }
@@ -78,8 +79,9 @@ EOT
 
             foreach ($persons as $person) {
                 $count++;
-                if ($count % 3 === 0)
+                if ($count % 3 === 0) {
                     $this->write("\r" . 'Sending mail no. <comment>' . $count . '</comment>');
+                }
 
                 Booking::sendExpireWarningMail($this->getEntityManager(), $this->getMailTransport(), $person['bookings'], $person['person']);
             }

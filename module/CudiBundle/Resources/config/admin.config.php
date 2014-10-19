@@ -84,6 +84,7 @@ return array(
                 'cudi_admin_sales_financial_delivered',
                 'cudi_admin_sales_financial_ordered',
                 'cudi_admin_sales_financial_split',
+                'cudi_admin_sales_session_restriction',
                 'cudi_admin_supplier_user',
                 'cudi_admin_stock_period',
                 'cudi_admin_stock_order',

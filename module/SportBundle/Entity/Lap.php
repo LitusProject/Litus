@@ -188,8 +188,9 @@ class Lap
      */
     public function getLapTime()
     {
-        if (null === $this->startTime)
+        if (null === $this->startTime) {
             return new DateInterval('PT0S');
+        }
 
         if (null !== $this->endTime) {
             $lapTime = $this->endTime->diff($this->startTime);
@@ -218,11 +219,13 @@ class Lap
 
         foreach ($pointsCriteria as $i => $pointsCriterium) {
             if (isset($pointsCriteria[$i+1])) {
-                if ($seconds > $pointsCriteria[$i+1]['limit'] && $seconds <= $pointsCriterium['limit'])
+                if ($seconds > $pointsCriteria[$i+1]['limit'] && $seconds <= $pointsCriterium['limit']) {
                     return $pointsCriterium['points'];
+                }
             } else {
-                if ($seconds <= $pointsCriterium['limit'])
+                if ($seconds <= $pointsCriterium['limit']) {
                     return $pointsCriterium['points'];
+                }
             }
         }
 

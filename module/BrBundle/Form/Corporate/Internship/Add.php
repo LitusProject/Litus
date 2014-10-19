@@ -21,12 +21,12 @@ namespace BrBundle\Form\Corporate\Internship;
 use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Job,
     CommonBundle\Component\Form\Bootstrap\Element\Select,
+    CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Textarea,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Job
@@ -102,8 +102,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     private function _getSectors()
     {
         $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector)
+        foreach (Company::$possibleSectors as $key => $sector) {
             $sectorArray[$key] = $sector;
+        }
 
         return $sectorArray;
     }
