@@ -308,7 +308,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'officialResults' => $this->_getOfficialResults(),
                 'averageLapTime' => $this->_getAverageLapTime(),
                 'groupsOfFriends' => $this->_getGroupsOfFriends(),
-                'mostLaps' => $this->_getMostFrequentRunners()
+                'mostLaps' => $this->_getMostFrequentRunners(),
             ),
         );
 
@@ -451,6 +451,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $i++;
             $row++;
         }
+
         return $mostLaps;
     }
 
@@ -529,6 +530,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         array_multisort($sort, $returnArray);
         $returnArray = array_reverse($returnArray);
         $returnArray = array_splice($returnArray, 0, $number);
+
         return $returnArray;
     }
 
