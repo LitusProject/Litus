@@ -23,7 +23,7 @@
 
 <!-- =========================================================== -->
 <!-- This stylesheet exports a named template to draw barcodes   -->
-<!-- using EAN-13, EAN-8, UPC-A, or UPC-E encoding scheme. The   --> 
+<!-- using EAN-13, EAN-8, UPC-A, or UPC-E encoding scheme. The   -->
 <!-- stylesheet produces a barcode pattern as an SVG graphic.    -->
 <!--                                                             -->
 <!-- Template arguments have the following meaning:              -->
@@ -32,7 +32,7 @@
 <!--    $unit   - measurement unit for $module                   -->
 <!--                                                             -->
 <!-- Example: if the narrowest bar is 0.33mm,                    -->
-<!--          then $unit="mm", $module="0.33"                    -->   
+<!--          then $unit="mm", $module="0.33"                    -->
 <!-- These two parameters serve to provide an easy scaling of    -->
 <!-- barcode picture. All widths inside the template are         -->
 <!-- measured in modules; to convert such a relative value to an -->
@@ -58,7 +58,7 @@
 <!-- the bar should be longer than $height - it is a guard bar;  -->
 <!-- if the character is '.', the bar is a regular one. This     -->
 <!-- pattern depends on the EAN/UPC variant; for example, UPC-A  -->
-<!-- has the pattern of "||||..........||..........||||".        -->  
+<!-- has the pattern of "||||..........||..........||||".        -->
 <!--                                                             -->
 <!--    $first-digit - digit before the leading guard bars       -->
 <!--    $last-digit - digit after the trailing guard bars        -->
@@ -100,15 +100,15 @@
   <xsl:param name="last-digit"/>
   <xsl:param name="left-digits"/>
   <xsl:param name="right-digits"/>
-  <xsl:param name="leading-guards-width"/> 
+  <xsl:param name="leading-guards-width"/>
   <xsl:param name="trailing-guards-width"/>
-  <xsl:param name="center-guards-width"/>  
+  <xsl:param name="center-guards-width"/>
   <xsl:param name="left-short-bars-width"/>
   <xsl:param name="right-short-bars-width"/>
-  <xsl:param name="short-bars-in-group"/>  <!-- unused --> 
+  <xsl:param name="short-bars-in-group"/>  <!-- unused -->
    <xsl:param name="barcode-type"/>
   <!-- Preliminary calculations -->
-  
+
   <!-- Select font height (in modules) and family. -->
   <xsl:variable name="font-height" select="11"/>
   <xsl:variable name="font-family" select="'Helvetica'"/>
@@ -140,10 +140,10 @@
       <xsl:with-param name="bar-heights" select="$bar-heights"/>
       <xsl:with-param name="short-bar" select="$height"/>
       <xsl:with-param name="long-bar" select="$height + ($font-height div 2)"/>
-      <xsl:with-param name="module" select="$module"/>      
+      <xsl:with-param name="module" select="$module"/>
       <xsl:with-param name="unit" select="$unit"/>
       <xsl:with-param name="offset" select="$first-digit-width"/>
-    </xsl:call-template>    
+    </xsl:call-template>
 
 
     <!-- Draw digits -->
@@ -155,7 +155,7 @@
                                  '; fill: black;')"/>
     <xsl:variable name="vertical-offset"
                   select="concat(($height + $font-height) * $module, $unit)"/>
-    
+
     <xsl:if test="$first-digit">
       <svg:text x="{($first-digit-width - 1) * $module}{$unit}"
                 y="{$vertical-offset}"
@@ -199,7 +199,7 @@
   <xsl:param name="bar-heights"/>
   <xsl:param name="short-bar"/>
   <xsl:param name="long-bar"/>
-  <xsl:param name="module"/>      
+  <xsl:param name="module"/>
   <xsl:param name="unit"/>
   <xsl:param name="offset"/>
 
@@ -213,11 +213,11 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
-      
-  <!-- Draw a bar -->  
+
+  <!-- Draw a bar -->
   <svg:rect y="0" height="{$bar-length * $module}{$unit}"
-            x="{$offset * $module}{$unit}" 
-            width="{substring($bar-and-space-widths, 1, 1) * $module}{$unit}" 
+            x="{$offset * $module}{$unit}"
+            width="{substring($bar-and-space-widths, 1, 1) * $module}{$unit}"
             style="fill: black;"/>
 
   <xsl:if test="substring($bar-and-space-widths, 3)">
@@ -226,15 +226,15 @@
       <xsl:with-param name="bar-heights" select="substring($bar-heights, 2)"/>
       <xsl:with-param name="short-bar" select="$short-bar"/>
       <xsl:with-param name="long-bar" select="$long-bar"/>
-      <xsl:with-param name="module" select="$module"/>      
+      <xsl:with-param name="module" select="$module"/>
       <xsl:with-param name="unit" select="$unit"/>
       <xsl:with-param name="offset" select="$offset
                                           + substring($bar-and-space-widths, 1, 1)
                                           + substring($bar-and-space-widths, 2, 1)"/>
-    </xsl:call-template>        
+    </xsl:call-template>
   </xsl:if>
 
-</xsl:template>    
+</xsl:template>
 
 
 <!-- =========================================================== -->
