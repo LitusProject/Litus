@@ -44,6 +44,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
         );
 
         $ranking = array();
+
         for ($i = 0; isset($rankingCriteria[$i]); $i++) {
             if ($i != (count($rankingCriteria) - 1)) {
                 $volunteers = $this->getEntityManager()

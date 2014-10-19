@@ -23,6 +23,9 @@
             <div id="content_controller">
                 <div class="row">
                     <div class="col-md-4">
+                        <h2>Records</h2>
+                            Fastest run : <span id="fastestTime" class="label label-success" style="font-size: 16px;">N/A</span> by <span id="fastestRunner" class="label label-success" style="font-size: 16px;">N/A</span><br><br>
+                            Most laps :<span id="mostFrequentRunner" class="label label-success" style="font-size: 16px;">N/A</span> with <span id="mostLaps" class="label label-success" style="font-size: 16px;">N/A</span> laps<br>
                         <h2>Laps</h2>
 
                         <p style="margin-right: 20px;line-height: 30px;">
@@ -131,6 +134,10 @@
             });
 
             function displayLaps(data) {
+                $('#fastestTime').html(data.fastestTime);
+                $('#fastestRunner').html(data.fastestRunner);
+                $('#mostFrequentRunner').html(data.mostFrequentRunner);
+                $('#mostLaps').html(data.mostLaps);
                 $('#uniqueRunners').html(data.number.uniqueRunners);
                 $('#uniqueRunnersText').html((data.number.uniqueRunners == 1 ? 'runner' : 'runners'));
                 $('#uniqueRunnersTextVerb').html((data.number.uniqueRunners == 1 ? 'has' : 'have'));
@@ -163,9 +170,12 @@
 
                     if (lap.state == 'current') {
                         var lapTime = parseInt(lap.lapTime.substring(0, lap.lapTime.indexOf(':')), 10) * 60 + parseInt(lap.lapTime.substring(lap.lapTime.indexOf(':') + 1), 10);
-                        var lapDistance = Math.round(data.officialResults.lapsPerSecond * data.officialResults.lapLength * lapTime);
-                        if (lapDistance > data.officialResults.lapLength)
-                            lapDistance = data.officialResults.lapLength;
+                        var lapDistance;
+                        if (data.officialResults) {
+                            lapDistance = Math.round(data.officialResults.lapsPerSecond * data.officialResults.lapLength * lapTime);
+                            if (lapDistance > data.officialResults.lapLength)
+                                lapDistance = data.officialResults.lapLength;
+                        }
 
                         $('#noCurrentLap').removeClass('in');
                         $('#currentLapRunnerName').html(lap.fullName);

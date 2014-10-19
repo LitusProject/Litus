@@ -64,7 +64,7 @@
                                     <a href="#" data-id="{{ shift.getId() }}" data-name="{{ shift.getName() }}" class="delete">Delete</a>
                                 {% endif %}
                             {% endif %}
-                            {% if hasAccess('shift_admin_shift_subscription', 'manage') %}
+                            {% if (hasAccess('shift_admin_shift_subscription', 'manage')) or (shift.canBeEditedBy(authenticatedPerson)) %}
                                 <a href="{{ url('shift_admin_shift_subscription', {"action": "manage", "id": shift.getId()}) }}" class="view">View</a>
                             {% endif %}
                         </td>

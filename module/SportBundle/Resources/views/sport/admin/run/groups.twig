@@ -13,6 +13,7 @@
                     <th width="500px">Runners</th>
                     <th width="100px">Happy Hours</th>
                     <th width="100px">Points</th>
+                    <th width="100px">Actions</th>
                 </tr>
             </thead>
 
@@ -31,6 +32,11 @@
                             {% endfor %}
                         </td>
                         <td>{{ group.getPoints(academicYear) }}</td>
+                        <td>
+                            {% if hasAccess('sport_admin_run', 'editGroup') %}
+                                <a href="{{ url('sport_admin_run', {'action': 'editGroup', 'id': group.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

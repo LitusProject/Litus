@@ -18,10 +18,11 @@
 
 namespace FormBundle\Controller\Manage;
 
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile,
+use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    DateTime,
+    FormBundle\Component\Document\Generator\Doodle as DoodleGenerator,
+    FormBundle\Component\Document\Generator\Form as FormGenerator,
+    FormBundle\Component\Document\Generator\Zip as ZipGenerator,
     FormBundle\Component\Form\Doodle as DoodleHelper,
     FormBundle\Component\Form\Form as FormHelper,
     FormBundle\Form\Manage\Mail\Send as MailForm,
@@ -30,8 +31,7 @@ use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     FormBundle\Form\SpecifiedForm\Doodle as DoodleForm,
     FormBundle\Form\SpecifiedForm\Edit as SpecifiedForm,
     Zend\Http\Headers,
-    Zend\View\Model\ViewModel,
-    ZipArchive;
+    Zend\View\Model\ViewModel;
 
 /**
  * FormController
@@ -530,62 +530,11 @@ class FormController extends \FormBundle\Component\Controller\FormController
         }
 
         if ($form->getType() == 'doodle') {
-            $entries = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findAllByForm($form);
-
-            $maxSlots = 0;
-            $results = array();
-            foreach ($entries as $entry) {
-                $result = array($entry->getId(), $entry->getPersonInfo()->getFullName(), $entry->getCreationTime()->format('d/m/Y H:i'));
-                if ($viewerMap->isMail()) {
-                    $result[] = $entry->getPersonInfo()->getEmail();
-                }
-
-                $maxSlots = max(sizeof($entry->getFieldEntries()), $maxSlots);
-                foreach ($entry->getFieldEntries() as $fieldEntry) {
-                    $result[] = $fieldEntry->getField()->getStartDate()->format('d/m/Y H:i');
-                    $result[] = $fieldEntry->getField()->getEndDate()->format('d/m/Y H:i');
-                }
-                $results[] = $result;
-            }
-
-            for ($i = 0 ; $i < $maxSlots ; $i++) {
-                $heading[] = 'Slot ' . ($i+1) . ' Start';
-                $heading[] = 'Slot ' . ($i+1) . ' End';
-            }
+            $document = new DoodleGenerator($this->getEntityManager(), $viewerMap, $this->getLanguage());
         } else {
-            $fields = $form->getFields();
-            foreach ($fields as $field) {
-                $heading[] = $field->getLabel($language);
-            }
-
-            $entries = $this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findAllByForm($form);
-
-            $results = array();
-            foreach ($entries as $entry) {
-                $result = array($entry->getId(), $entry->getPersonInfo()->getFirstName() . ' ' . $entry->getPersonInfo()->getLastName(), $entry->getCreationTime()->format('d/m/Y H:i'));
-                if ($viewerMap->isMail()) {
-                    $result[] = $entry->getPersonInfo()->getEmail();
-                }
-
-                foreach ($fields as $field) {
-                    $fieldEntry = $this->getEntityManager()
-                        ->getRepository('FormBundle\Entity\Entry')
-                        ->findOneByFormEntryAndField($entry, $field);
-                    if ($fieldEntry) {
-                        $result[] = $fieldEntry->getValueString($language);
-                    } else {
-                        $result[] = '';
-                    }
-                }
-                $results[] = $result;
-            }
+            $document = new FormGenerator($this->getEntityManager(), $viewerMap, $this->getLanguage());
         }
 
-        $document = new CsvGenerator($heading, $results);
         $document->generateDocument($file);
 
         $headers = new Headers();
@@ -637,42 +586,20 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByField($field);
 
-        $archive = new TmpFile();
-
-        $zip = new ZipArchive();
-        $now = new DateTime();
-
-        $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
-        $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
-        $zip->close();
-
-        $filePath = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('form.file_upload_path') . '/';
-
-        foreach ($entries as $entry) {
-            $extension = pathinfo($entry->getReadableValue(), PATHINFO_EXTENSION);
-            $extension = $extension ? '.' . $extension : '';
-
-            $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
-            $zip->addFile(
-                $filePath . $entry->getValue(),
-                $field->getLabel($this->getLanguage()) . '_' . $entry->getFormEntry()->getPersonInfo()->getFullName() . '_' . $entry->getFormEntry()->getId() . $extension
-            );
-            $zip->close();
-        }
+        $tmpFile = new TmpFile();
+        $zipGenerator = new ZipGenerator($tmpFile, $this->getEntityManager(), $this->getLanguage(), $entries);
 
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="files_' . $field->getId() . '.zip"',
-            'Content-Type'        => mime_content_type($archive->getFileName()),
-            'Content-Length'      => filesize($archive->getFileName()),
+            'Content-Type'        => mime_content_type($tmpFile->getFileName()),
+            'Content-Length'      => filesize($tmpFile->getFileName()),
         ));
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
             array(
-                'data' => $archive->getContent(),
+                'data' => $tmpFile->getContent(),
             )
         );
     }

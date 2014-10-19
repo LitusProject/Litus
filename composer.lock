@@ -329,20 +329,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "7175964c30f4fd54c90f6f9c7c6f7bf49fc1c939"
+                "reference": "50557fc0c7479067063532171a602338cf8f413a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/7175964c30f4fd54c90f6f9c7c6f7bf49fc1c939",
-                "reference": "7175964c30f4fd54c90f6f9c7c6f7bf49fc1c939",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/50557fc0c7479067063532171a602338cf8f413a",
+                "reference": "50557fc0c7479067063532171a602338cf8f413a",
                 "shasum": ""
             },
             "require": {
-                "doctrine/common": "2.4.*",
+                "doctrine/common": ">=2.4,<2.6-dev",
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.0.*",
+                "phpunit/phpunit": "4.*",
                 "symfony/console": "2.*"
             },
             "suggest": {
@@ -392,7 +392,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2014-09-17 17:17:21"
+            "time": "2014-10-16 23:02:08"
         },
         {
             "name": "doctrine/doctrine-module",
@@ -637,12 +637,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/inflector.git",
-                "reference": "64de2fe36d578c5d5f3807ac7984547bbba5f7c5"
+                "reference": "8a0b96e65d2399d6f95b75de11134843a2c61feb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/inflector/zipball/64de2fe36d578c5d5f3807ac7984547bbba5f7c5",
-                "reference": "64de2fe36d578c5d5f3807ac7984547bbba5f7c5",
+                "url": "https://api.github.com/repos/doctrine/inflector/zipball/8a0b96e65d2399d6f95b75de11134843a2c61feb",
+                "reference": "8a0b96e65d2399d6f95b75de11134843a2c61feb",
                 "shasum": ""
             },
             "require": {
@@ -668,17 +668,6 @@
             ],
             "authors": [
                 {
-                    "name": "Jonathan Wage",
-                    "email": "jonwage@gmail.com",
-                    "homepage": "http://www.jwage.com/",
-                    "role": "Creator"
-                },
-                {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com",
-                    "homepage": "http://www.instaclick.com"
-                },
-                {
                     "name": "Roman Borschel",
                     "email": "roman@code-factory.org"
                 },
@@ -687,10 +676,16 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com"
+                },
+                {
                     "name": "Johannes Schmitt",
-                    "email": "schmittjoh@gmail.com",
-                    "homepage": "http://jmsyst.com",
-                    "role": "Developer of wrapped JMSSerializerBundle"
+                    "email": "schmittjoh@gmail.com"
                 }
             ],
             "description": "Common String Manipulations with regard to casing and singular/plural rules.",
@@ -701,7 +696,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2014-04-23 12:36:11"
+            "time": "2014-10-05 18:49:49"
         },
         {
             "name": "doctrine/instantiator",
@@ -709,16 +704,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/instantiator.git",
-                "reference": "26404e0c90565b614ee76b988b9bc8790d77f590"
+                "reference": "f976e5de371104877ebc89bd8fecb0019ed9c119"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/26404e0c90565b614ee76b988b9bc8790d77f590",
-                "reference": "26404e0c90565b614ee76b988b9bc8790d77f590",
+                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/f976e5de371104877ebc89bd8fecb0019ed9c119",
+                "reference": "f976e5de371104877ebc89bd8fecb0019ed9c119",
                 "shasum": ""
             },
             "require": {
-                "php": "~5.3"
+                "php": ">=5.3,<8.0-DEV"
             },
             "require-dev": {
                 "athletic/athletic": "~0.1.8",
@@ -755,7 +750,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2014-08-25 15:09:25"
+            "time": "2014-10-13 12:58:55"
         },
         {
             "name": "doctrine/lexer",
@@ -817,12 +812,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/mongodb.git",
-                "reference": "df9f5d5d4e01b5c40e4cacecbeb436329fd40e21"
+                "reference": "dfe39f889aca8d3cf87f6cbf3ca790b3c92b9d86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/mongodb/zipball/df9f5d5d4e01b5c40e4cacecbeb436329fd40e21",
-                "reference": "df9f5d5d4e01b5c40e4cacecbeb436329fd40e21",
+                "url": "https://api.github.com/repos/doctrine/mongodb/zipball/dfe39f889aca8d3cf87f6cbf3ca790b3c92b9d86",
+                "reference": "dfe39f889aca8d3cf87f6cbf3ca790b3c92b9d86",
                 "shasum": ""
             },
             "require": {
@@ -876,7 +871,7 @@
                 "mongodb",
                 "persistence"
             ],
-            "time": "2014-10-02 21:19:31"
+            "time": "2014-10-06 15:19:09"
         },
         {
             "name": "doctrine/mongodb-odm",
@@ -884,12 +879,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/mongodb-odm.git",
-                "reference": "096b5ef69cf69bb87efc6075119e96ff392cec84"
+                "reference": "29bdaa310f791fc0ec439fe2935348dfce4797c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/mongodb-odm/zipball/096b5ef69cf69bb87efc6075119e96ff392cec84",
-                "reference": "096b5ef69cf69bb87efc6075119e96ff392cec84",
+                "url": "https://api.github.com/repos/doctrine/mongodb-odm/zipball/29bdaa310f791fc0ec439fe2935348dfce4797c3",
+                "reference": "29bdaa310f791fc0ec439fe2935348dfce4797c3",
                 "shasum": ""
             },
             "require": {
@@ -898,6 +893,7 @@
                 "doctrine/collections": "~1.1",
                 "doctrine/common": "2.4.*",
                 "doctrine/inflector": "~1.0",
+                "doctrine/instantiator": "~1.0.1",
                 "doctrine/mongodb": ">=1.1.5,<2.0",
                 "php": ">=5.3.2",
                 "symfony/console": "~2.0"
@@ -949,7 +945,7 @@
                 "odm",
                 "persistence"
             ],
-            "time": "2014-10-01 20:56:26"
+            "time": "2014-10-06 15:30:16"
         },
         {
             "name": "doctrine/orm",
@@ -957,12 +953,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "0bff6aadbc9f3fd8167a320d9f4f6cf269382da0"
+                "reference": "f5ecabbc2198973f5e54cb76e99709c59fe62ffa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/0bff6aadbc9f3fd8167a320d9f4f6cf269382da0",
-                "reference": "0bff6aadbc9f3fd8167a320d9f4f6cf269382da0",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/f5ecabbc2198973f5e54cb76e99709c59fe62ffa",
+                "reference": "f5ecabbc2198973f5e54cb76e99709c59fe62ffa",
                 "shasum": ""
             },
             "require": {
@@ -1024,7 +1020,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2014-10-02 22:50:00"
+            "time": "2014-10-16 22:13:28"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -1148,12 +1144,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "7049924cf0b7f350e5a099ea988e713ebf7590fe"
+                "reference": "771649efa94246e63a6ab2726ba908a358bdd403"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/7049924cf0b7f350e5a099ea988e713ebf7590fe",
-                "reference": "7049924cf0b7f350e5a099ea988e713ebf7590fe",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/771649efa94246e63a6ab2726ba908a358bdd403",
+                "reference": "771649efa94246e63a6ab2726ba908a358bdd403",
                 "shasum": ""
             },
             "require": {
@@ -1196,7 +1192,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-10-01 05:53:11"
+            "time": "2014-10-05 13:59:22"
         },
         {
             "name": "symfony/process",
@@ -1251,12 +1247,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "9fb15e343e881c9a89b97ee2262d7b8fbf512c6e"
+                "reference": "9c162c5c5aafecb8b421baac073b33385d3902ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/9fb15e343e881c9a89b97ee2262d7b8fbf512c6e",
-                "reference": "9fb15e343e881c9a89b97ee2262d7b8fbf512c6e",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/9c162c5c5aafecb8b421baac073b33385d3902ac",
+                "reference": "9c162c5c5aafecb8b421baac073b33385d3902ac",
                 "shasum": ""
             },
             "require": {
@@ -1300,7 +1296,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-10-01 17:51:59"
+            "time": "2014-10-16 18:28:42"
         },
         {
             "name": "twitter/bootstrap",
@@ -1308,12 +1304,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "f75fc324622df92ffb0edef30dc87536dfba0b26"
+                "reference": "8a6a253355ab1d26865bfbfffaa2a194e173a3aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/f75fc324622df92ffb0edef30dc87536dfba0b26",
-                "reference": "f75fc324622df92ffb0edef30dc87536dfba0b26",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/8a6a253355ab1d26865bfbfffaa2a194e173a3aa",
+                "reference": "8a6a253355ab1d26865bfbfffaa2a194e173a3aa",
                 "shasum": ""
             },
             "replace": {
@@ -1351,7 +1347,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2014-10-03 05:21:02"
+            "time": "2014-10-14 18:41:30"
         },
         {
             "name": "widmogrod/zf2-assetic-module",
@@ -1693,12 +1689,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/PHP-CS-Fixer.git",
-                "reference": "b5ecc02235bae6519cb017dc91cc9cfbd9a47fd3"
+                "reference": "45a7ff3b135bb0abc5463a2055e4a8657b16ba55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/PHP-CS-Fixer/zipball/b5ecc02235bae6519cb017dc91cc9cfbd9a47fd3",
-                "reference": "b5ecc02235bae6519cb017dc91cc9cfbd9a47fd3",
+                "url": "https://api.github.com/repos/fabpot/PHP-CS-Fixer/zipball/45a7ff3b135bb0abc5463a2055e4a8657b16ba55",
+                "reference": "45a7ff3b135bb0abc5463a2055e4a8657b16ba55",
                 "shasum": ""
             },
             "require": {
@@ -1708,6 +1704,7 @@
                 "symfony/event-dispatcher": "~2.1",
                 "symfony/filesystem": "~2.1",
                 "symfony/finder": "~2.1",
+                "symfony/process": "~2.3",
                 "symfony/stopwatch": "~2.5"
             },
             "bin": [
@@ -1735,7 +1732,7 @@
                 }
             ],
             "description": "A script to automatically fix Symfony Coding Standard",
-            "time": "2014-09-30 20:10:32"
+            "time": "2014-10-14 21:49:55"
         },
         {
             "name": "litus/php-cs",
@@ -1825,12 +1822,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "93d237c3da7565a9ad2b4b6a74af73f4e3c0c305"
+                "reference": "e133748fd9165e24f8e9498ef5862f8bd37004e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/93d237c3da7565a9ad2b4b6a74af73f4e3c0c305",
-                "reference": "93d237c3da7565a9ad2b4b6a74af73f4e3c0c305",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/e133748fd9165e24f8e9498ef5862f8bd37004e5",
+                "reference": "e133748fd9165e24f8e9498ef5862f8bd37004e5",
                 "shasum": ""
             },
             "require": {
@@ -1874,7 +1871,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "http://symfony.com",
-            "time": "2014-10-01 05:53:11"
+            "time": "2014-10-04 06:08:58"
         },
         {
             "name": "symfony/filesystem",

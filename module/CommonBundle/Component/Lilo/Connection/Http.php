@@ -90,6 +90,6 @@ class Http extends \CommonBundle\Component\Lilo\Connection
         return (true === $this->_secure ? 'https://' : 'http://')
             . $this->_host
             . '/api/'
-            . ($data instanceof ExceptionData ? 'exception' : 'log') . '/add';
+            . ($data instanceof ExceptionData ? 'exception' : 'message') . '/add';
     }
 }
