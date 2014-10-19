@@ -24,9 +24,8 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="well">
-                            <h2>Records</h2>
+                            <h2>Record</h2>
                                 Fastest run : <span id="fastestTime" class="label label-success" style="font-size: 16px;">N/A</span> by <span id="fastestRunner" class="label label-success" style="font-size: 16px;">N/A</span><br><br>
-                                Most laps :<span id="mostFrequentRunner" class="label label-success" style="font-size: 16px;">N/A</span> with <span id="mostLaps" class="label label-success" style="font-size: 16px;">N/A</span> laps<br>
                             <h2>Laps</h2>
 
                             <p style="margin-right: 20px;line-height: 30px;">
@@ -94,6 +93,24 @@
                                             </tr>
                                         </tbody>
                                     </table>
+
+                                    <h3>Most laps</h3>
+
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th width="20px">#</th>
+                                                <th width="200px">Runner</th>
+                                                <th>Laps</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="mostLaps">
+                                            <tr>
+                                                <td colspan="3"><i>There are no runners!</i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
 
@@ -142,8 +159,6 @@
             function displayLaps(data) {
                 $('#fastestTime').html(data.fastestTime);
                 $('#fastestRunner').html(data.fastestRunner);
-                $('#mostFrequentRunner').html(data.mostFrequentRunner);
-                $('#mostLaps').html(data.mostLaps);
                 $('#uniqueRunners').html(data.number.uniqueRunners);
                 $('#uniqueRunnersText').html((data.number.uniqueRunners == 1 ? 'runner' : 'runners'));
                 $('#uniqueRunnersTextVerb').html((data.number.uniqueRunners == 1 ? 'has' : 'have'));
@@ -168,6 +183,7 @@
                 $('#previousRunners').html('');
                 $('#nextRunners').html('');
                 $('#groupsOfFriends').html('');
+                $('#mostLaps').html('');
 
                 var nextNum = 0;
                 $(data.laps).each(function (num, lap) {
@@ -234,12 +250,24 @@
                     );
                 });
 
+                $(data.mostLaps).each(function (num, runner) {
+                    $('#mostLaps').append(
+                        $('<tr>').append(
+                            $('<td>').html($('#mostLaps tr').length + 1),
+                            $('<td>').html(runner.name),
+                            $('<td>').html(runner.laps)
+                        )
+                    );
+                });
+
                 if ($('#previousRunners tr').length == 0)
                     $('#previousRunners').html('<tr><td colspan="3"><i>There are no previous runners!</i></td></tr>');
                 if ($('#nextRunners tr').length == 0)
                     $('#nextRunners').html('<tr><td colspan="3"><i>There are no next runners!</i></td></tr>');
                 if ($('#groupsOfFriends tr').length == 0)
                     $('#groupsOfFriends').html('<tr><td colspan="3"><i>There are no groups of friends!</i></td></tr>');
+                if ($('#mostLaps tr').length == 0)
+                    $('#mostLaps').html('<tr><td colspan="3"><i>There are no runners!</i></td></tr>');
 
                 if (!foundCurrent) {
                     $('#currentLapRunnerName').html('Nobody');
