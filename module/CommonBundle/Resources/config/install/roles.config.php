@@ -41,7 +41,7 @@ return array(
                 'overview',
             ),
             'common_privacy' => array(
-                'index'
+                'index',
             ),
         ),
     ),

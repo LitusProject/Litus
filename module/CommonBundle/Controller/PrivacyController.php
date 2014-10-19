@@ -36,10 +36,11 @@ class PrivacyController extends \CommonBundle\Component\Controller\ActionControl
                 ->getConfigValue('common.privacy_policy')
         );
 
-        if (isset($privacyPolicies[$this->getLanguage()->getAbbrev()]))
+        if (isset($privacyPolicies[$this->getLanguage()->getAbbrev()])) {
             $privacyPolicy = $privacyPolicies[$this->getLanguage()->getAbbrev()];
-        else
+        } else {
             $privacyPolicy = $privacyPolicies[Locale::getDefault()];
+        }
 
         return new ViewModel(
             array(
