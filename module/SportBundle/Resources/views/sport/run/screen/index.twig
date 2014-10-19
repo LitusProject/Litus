@@ -8,7 +8,7 @@
         {{ headLink() }}
     </head>
 
-    <body class="screen-wall">
+    <body class="screen-wall" style="background-image:url('/_run/img/formula1.png'); background-repeat: no-repeat; background-size: 100% 800px;">
         <div class="container">
             {% include 'run/partials/flashMessenger.twig' %}
 
@@ -23,42 +23,44 @@
             <div id="content_controller">
                 <div class="row">
                     <div class="col-md-4">
-                        <h2>Records</h2>
-                            Fastest run : <span id="fastestTime" class="label label-success" style="font-size: 16px;">N/A</span> by <span id="fastestRunner" class="label label-success" style="font-size: 16px;">N/A</span><br><br>
-                            Most laps :<span id="mostFrequentRunner" class="label label-success" style="font-size: 16px;">N/A</span> with <span id="mostLaps" class="label label-success" style="font-size: 16px;">N/A</span> laps<br>
-                        <h2>Laps</h2>
+                        <div class="well">
+                            <h2>Records</h2>
+                                Fastest run : <span id="fastestTime" class="label label-success" style="font-size: 16px;">N/A</span> by <span id="fastestRunner" class="label label-success" style="font-size: 16px;">N/A</span><br><br>
+                                Most laps :<span id="mostFrequentRunner" class="label label-success" style="font-size: 16px;">N/A</span> with <span id="mostLaps" class="label label-success" style="font-size: 16px;">N/A</span> laps<br>
+                            <h2>Laps</h2>
 
-                        <p style="margin-right: 20px;line-height: 30px;">
-                            We have run <span id="nbOfficialLaps" class="label label-danger" style="font-size: 16px;">N/A</span> <span id="nbOfficialLapsText">laps</span> and we are <span id="behindFirstOne"><span id="nbLapsBehind" class="label label-danger" style="font-size: 16px;">N/A</span> laps behind the first one</span><span id="firstOne" class="label label-success" style="font-size: 16px;display: none">first</span>! We are averaging <span id="averageLapTime" class="label label-info" style="font-size: 16px;">N/A</span> for each lap.
-                        </p>
+                            <p style="margin-right: 20px;line-height: 30px;">
+                                We have run <span id="nbOfficialLaps" class="label label-danger" style="font-size: 16px;">N/A</span> <span id="nbOfficialLapsText">laps</span> and we are <span id="behindFirstOne"><span id="nbLapsBehind" class="label label-danger" style="font-size: 16px;">N/A</span> laps behind the first one</span><span id="firstOne" class="label label-success" style="font-size: 16px;display: none">first</span>! We are averaging <span id="averageLapTime" class="label label-info" style="font-size: 16px;">N/A</span> for each lap.
+                            </p>
 
-                        <h2>Runners</h2>
+                            <h2>Runners</h2>
 
-                        <p style="margin-right: 20px">
-                            There <span id="uniqueRunnersTextVerb">have</span> been <span id="uniqueRunners" class="label label-success" style="font-size: 16px;">N/A</span> unique <span id="uniqueRunnersText">runners</span>.
-                        </p>
+                            <p style="margin-right: 20px">
+                                There <span id="uniqueRunnersTextVerb">have</span> been <span id="uniqueRunners" class="label label-success" style="font-size: 16px;">N/A</span> unique <span id="uniqueRunnersText">runners</span>.
+                            </p>
 
-                        <h2>Groups of Friends</h2>
+                            <h2>Groups of Friends</h2>
 
-                        <table class="table table-striped" style="width: 90%">
-                            <thead>
-                                <tr>
-                                    <th width="80%">Name</th>
-                                    <th width="20%">Points</th>
-                                </tr>
-                            </thead>
+                            <table class="table table-striped" style="width: 90%">
+                                <thead>
+                                    <tr>
+                                        <th width="80%">Name</th>
+                                        <th width="20%">Points</th>
+                                    </tr>
+                                </thead>
 
-                            <tbody id="groupsOfFriends">
-                                <tr>
-                                    <td colspan="3"><i>There are no groups of friends!</i></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <tbody id="groupsOfFriends">
+                                    <tr>
+                                        <td colspan="3"><i>There are no groups of friends!</i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <div class="col-md-8">
-                        <h2>Current Runner</h2>
                         <div id="currentLap" class="well">
+                            <h2>Current Runner</h2>
                             <h4 id="currentLapRunnerName" style="margin-top: 0;">Nobody</h4>
 
                             <div id="currentLapInfo" style="display: none">
@@ -74,42 +76,46 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <h3>Previous Runners</h3>
+                                <div class="well">
+                                    <h3>Previous Runners</h3>
 
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th width="20px">#</th>
-                                            <th width="200px">Runner</th>
-                                            <th>Time</th>
-                                        </tr>
-                                    </thead>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th width="20px">#</th>
+                                                <th width="200px">Runner</th>
+                                                <th>Time</th>
+                                            </tr>
+                                        </thead>
 
-                                    <tbody id="previousRunners">
-                                        <tr>
-                                            <td colspan="3"><i>There are no previous runners!</i></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                        <tbody id="previousRunners">
+                                            <tr>
+                                                <td colspan="3"><i>There are no previous runners!</i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <div class="col-md-6">
-                                <h3>Next Runners</h3>
+                                <div class="well">
+                                    <h3>Next Runners</h3>
 
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th width="20px">#</th>
-                                            <th>Runner</th>
-                                        </tr>
-                                    </thead>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th width="20px">#</th>
+                                                <th>Runner</th>
+                                            </tr>
+                                        </thead>
 
-                                    <tbody id="nextRunners">
-                                        <tr>
-                                            <td colspan="3"><i>There are no next runners!</i></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                        <tbody id="nextRunners">
+                                            <tr>
+                                                <td colspan="3"><i>There are no next runners!</i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
