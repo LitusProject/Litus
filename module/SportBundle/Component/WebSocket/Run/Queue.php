@@ -308,7 +308,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'officialResults' => $this->_getOfficialResults(),
                 'averageLapTime' => $this->_getAverageLapTime(),
                 'groupsOfFriends' => $this->_getGroupsOfFriends(),
-                'mostLaps' => $this->_getMostFrequentRunners()
+                'mostLaps' => $this->_getMostFrequentRunners(),
             ),
         );
 
