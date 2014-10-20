@@ -348,7 +348,7 @@
     <xsl:with-param name="short-bars-in-group" select="$short-bars-in-group"/>
 
      <xsl:with-param name="barcode-type" select="$code-type"/>
-  	
+
   </xsl:call-template>
 </xsl:template>
 
@@ -980,4 +980,3 @@
   </xsl:choose>
 </xsl:template>
 </xsl:stylesheet>
-

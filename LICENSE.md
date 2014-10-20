@@ -3,7 +3,7 @@ GNU AFFERO GENERAL PUBLIC LICENSE
 
 Version 3, 19 November 2007
 
-Copyright © 2007 Free Software Foundation, Inc.    
+Copyright © 2007 Free Software Foundation, Inc.
 Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
 
 ### Preamble
@@ -211,5 +211,3 @@ END OF TERMS AND CONDITIONS
 If you develop a new program, and you want it to be of the greatest possible use to the public, the best way to achieve this is to make it free software which everyone can redistribute and change under these terms.
 
 To do so, attach the following notices to the program. It is safest to attach them to the start of each source file to most effectively state the exclusion of warranty; and each file should have at least the "copyright" line and a pointer to where the full notice is found.
-
-      
