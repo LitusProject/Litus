@@ -104,40 +104,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     return;
                 }
 
-                if (!isset($command->authSession)) {
-                    $this->removeUser($user);
-                    $now = new DateTime();
-                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-
-                    return;
-                }
-
                 $authSession = $this->_entityManager
                     ->getRepository('CommonBundle\Entity\User\Session')
                     ->findOneById($command->authSession);
 
                 $allowed = false;
-                if ($authSession) {
-                    $acl = new Acl($this->_entityManager);
-
-                    foreach ($authSession->getPerson()->getRoles() as $role) {
-                        if (
-                            $role->isAllowed(
-                                $acl, 'sport_run_screen', 'index'
-                            )
-                        ) {
-                            $allowed = true;
-                        }
-                    }
-                }
-
-                if (null == $authSession || !$allowed) {
-                    $this->removeUser($user);
-                    $now = new DateTime();
-                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-
-                    return;
-                }
 
                 $this->addAuthenticated($user->getSocket());
 
@@ -408,11 +379,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 }
             }
         }
-
-        return array(
+        if ($fastestLap !== null) {
+            return array(
             'time' => $fastestLap->getLapTime()->format('%i:%S'),
             'runner' => $fastestLap->getRunner()->getAcademic()->getFullName(),
-        );
+            );
+        }
+
+        return null;
     }
 
     private function _getMostFrequentRunners($number = 3)

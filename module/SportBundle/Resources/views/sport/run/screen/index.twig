@@ -157,8 +157,12 @@
             });
 
             function displayLaps(data) {
-                $('#fastestTime').html(data.fastestTime);
-                $('#fastestRunner').html(data.fastestRunner);
+                if (data.fastestTime != null){
+                    $('#fastestTime').html(data.fastestTime);
+                }
+                if (data.fastestRunner != null){
+                    $('#fastestRunner').html(data.fastestRunner);
+                }
                 $('#uniqueRunners').html(data.number.uniqueRunners);
                 $('#uniqueRunnersText').html((data.number.uniqueRunners == 1 ? 'runner' : 'runners'));
                 $('#uniqueRunnersTextVerb').html((data.number.uniqueRunners == 1 ? 'has' : 'have'));
