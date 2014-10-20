@@ -104,40 +104,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     return;
                 }
 
-                if (!isset($command->authSession)) {
-                    $this->removeUser($user);
-                    $now = new DateTime();
-                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-
-                    return;
-                }
-
                 $authSession = $this->_entityManager
                     ->getRepository('CommonBundle\Entity\User\Session')
                     ->findOneById($command->authSession);
 
                 $allowed = false;
-                if ($authSession) {
-                    $acl = new Acl($this->_entityManager);
-
-                    foreach ($authSession->getPerson()->getRoles() as $role) {
-                        if (
-                            $role->isAllowed(
-                                $acl, 'sport_run_screen', 'index'
-                            )
-                        ) {
-                            $allowed = true;
-                        }
-                    }
-                }
-
-                if (null == $authSession || !$allowed) {
-                    $this->removeUser($user);
-                    $now = new DateTime();
-                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-
-                    return;
-                }
 
                 $this->addAuthenticated($user->getSocket());
 
@@ -421,35 +392,22 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('SportBundle\Entity\Lap')
                 ->getRunnersAndCount($this->_getAcademicYear());
 
-        $i = 0;
-        $row = 0;
+        $nbResults = 0;
+        $index = 0;
         $mostLaps = array();
-        while ($i < $number) {
-            if (isset($runners[$row])) {
-                $runner = $this->_entityManager
-                    ->getRepository('SportBundle\Entity\Runner')
-                    ->findOneById($runners[$row]['runner']);
-                if (strpos($runner->getAcademic()->getFullName(),'VTK gent') == false) {
-                    array_push($mostLaps, array(
-                            'name' => $runner->getAcademic()->getFullName(),
-                            'laps' => $runners[$row]['lapCount'],
-                        )
-                    );
-                } else {
-                    if (isset($runners[$row+1])) {
-                        $runner = $this->_entityManager
-                            ->getRepository('SportBundle\Entity\Runner')
-                            ->findOneById($runners[$row+1]['runner']);
-                        array_push($mostLaps, array(
-                                'name' => $runner->getAcademic()->getFullName(),
-                                'laps' => $runners[$row+1]['lapCount'],
-                            )
-                        );
-                    }
-                }
+        while (isset($runners[$index]) && $nbResults < $number) {
+            $runner = $this->_entityManager
+                ->getRepository('SportBundle\Entity\Runner')
+                ->findOneById($runners[$index]['runner']);
+            if (strpos(strtolower($runner->getAcademic()->getFullName()),'vtk gent') === false) {
+                array_push($mostLaps, array(
+                        'name' => $runner->getAcademic()->getFullName(),
+                        'laps' => $runners[$index]['lapCount'],
+                    )
+                );
+                $nbResults++;
             }
-            $i++;
-            $row++;
+            $index++;
         }
 
         return $mostLaps;
