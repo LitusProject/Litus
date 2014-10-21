@@ -489,7 +489,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     {
         $laps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
-            ->findAll();
+            ->findAllPreviousLaps($this->_getAcademicYear());
 
         $total = 0;
         foreach ($laps as $lap) {
