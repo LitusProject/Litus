@@ -212,10 +212,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             );
 
             $runner->setRunnerIdentification($data->universityIdentification);
-        } else {
-            if (null === $runner->getDepartment()) {
-                $runner->setDepartment($department);
-            }
         }
 
         $lap = new Lap($this->_getAcademicYear(), $runner);
@@ -360,7 +356,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $fastestLap = null;
 
         foreach ($previousLaps as $lap) {
-            if ($this->_isValidLapTime($lap->getLapTime())) {
+            if ($this->_isValidLapTime($lap->getLapTime()) && strpos(strtolower($lap->getRunner()->getAcademic()->getFullName()),'vtk gent') === false) {
                 if ($fastestLap == null) {
                     $time = $lap->getLapTime();
                     $fastestLap = $lap;
