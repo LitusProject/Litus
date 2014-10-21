@@ -116,7 +116,6 @@
 
         function displayErrorsInElement(errors, parent) {
             $.each(errors, function (name, childErrors) {
-                console.log(childErrors, parent);
                 if (typeof childErrors == 'string') {
                     var list = parent.find('ul.errors');
                     if (list.length == 0) {

@@ -76,7 +76,7 @@ class AdminMap extends \Zend\Validator\AbstractValidator
             ->findOneBy(
                 array(
                     'list' => $this->_list,
-                    'academic' => $context['person_id'],
+                    'academic' => $context['id'],
                 )
             );
 

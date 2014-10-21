@@ -18,7 +18,7 @@
 
 namespace MailBundle\Form\Admin\MailingList;
 
-use CommonBundle\Component\Validator\Academic as AcademicValidator,
+use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
     MailBundle\Component\Validator\AdminMap as AdminMapValidator,
     MailBundle\Entity\MailingList;
 
@@ -41,45 +41,14 @@ class Admin extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'person_id',
-            'required'   => true,
-            'attributes' => array(
-                'id' => 'personId',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new AcademicValidator(
-                            $this->getEntityManager(),
-                            array(
-                                'byId' => true,
-                            )
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'person_name',
+            'type'       => 'typeahead',
+            'name'       => 'person',
             'label'      => 'Name',
             'required'   => true,
-            'attributes' => array(
-                'id'           => 'personSearch',
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-            ),
             'options'    => array(
                 'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
                     'validators' => array(
+                        new PersonTypeaheadValidator($this->getEntityManager()),
                         new AdminMapValidator($this->getEntityManager(), $this->getList()),
                     ),
                 ),

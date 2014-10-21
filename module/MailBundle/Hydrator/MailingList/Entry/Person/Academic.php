@@ -36,7 +36,7 @@ class Academic extends \CommonBundle\Component\Hydrator\Hydrator
 
         $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneById($data['person_id']);
+            ->findOneById($data['person']['id']);
 
         $object->setAcademic($academic);
 

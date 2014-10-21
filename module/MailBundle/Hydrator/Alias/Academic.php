@@ -38,7 +38,7 @@ class Academic extends \CommonBundle\Component\Hydrator\Hydrator
         if (null === $object) {
             $academic = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findOneById($data['person_id']);
+                ->findOneById($data['person']['id']);
 
             $object = new AcademicEntity($data['alias'], $academic);
         }
@@ -54,16 +54,9 @@ class Academic extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$std_keys);
 
-        $data['person_id'] = $object->getAcademic()->getId();
-        $data['person_name'] = $object->getAcademic()->getFullName() . ' - ' . $object->getAcademic()->getUniversityIdentification();
+        $data['person']['id'] = $object->getAcademic()->getId();
+        $data['person']['value'] = $object->getAcademic()->getFullName() . ' - ' . $object->getAcademic()->getUniversityIdentification();
 
         return $data;
-    }
-
-    private function getLanguages()
-    {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
     }
 }

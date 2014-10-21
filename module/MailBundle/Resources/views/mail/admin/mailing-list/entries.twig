@@ -126,16 +126,16 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#personSearch').typeaheadRemote(
+            $('#person').typeaheadRemote(
                 {
                     source: '{{ url('common_admin_academic_typeahead', {})}}',
                     items: 20,
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#personId').val($(this).data('value').id);
+                    $('[name="person[id]"]').val($(this).data('value').id);
                 } else {
-                    $('#personId').val('');
+                    $('[name="person[id]"]').val('');
                 }
             });
             $('.item .delete').click(openModal);

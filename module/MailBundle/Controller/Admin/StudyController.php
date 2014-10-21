@@ -76,7 +76,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     }
 
                     foreach ($formData['compose_message']['file'] as $file) {
-                        if ($file['size'] === NULL) {
+                        if (!$file['size']) {
                             continue;
                         }
 

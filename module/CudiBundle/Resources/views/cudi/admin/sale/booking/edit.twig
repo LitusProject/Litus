@@ -383,33 +383,53 @@
 
             e.preventDefault();
             var sendMail = $('#sendMail');
-            sendMail.find('.send').one('click', function () {
-                sendMail.find('form').ajaxSubmit({
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.errors) {
-                            $('.flashmessage').addClass('hide');
-                            sendMail.find('ul.errors').remove();
-                            for(element in data.errors) {
-                                var list = $('<ul>', {class: 'errors'})
-                                for (error in data.errors[element])
-                                    list.append($('<li>').html(data.errors[element][error]));
-                                sendMail.find('#' + element).parent().after(list);
-                            }
-                        } else {
-                            $('.flashmessage').addClass('hide');
-                            $('.mail_send_success').removeClass('hide');
-                            sendMail.modal('hide');
-                        }
-                    },
-                    error: function () {
-                        $('.flashmessage').addClass('hide');
-                        $('.mail_send_error').removeClass('hide');
-                        sendMail.modal('hide');
-                    },
-                });
-            });
+            sendMail.find('.send').one('click', doSendMail);
             sendMail.modal();
+        }
+
+        function doSendMail() {
+            var sendMail = $('#sendMail');
+            sendMail.find('form').ajaxSubmit({
+                dataType: 'json',
+                success: function (data) {
+                    if (data.errors) {
+                        $('.flashmessage').addClass('hide');
+                        displayErrorsInElement(data.errors, sendMail.find('form'));
+                        sendMail.find('.send').one('click', doSendMail);
+                    } else {
+                        $('.flashmessage').addClass('hide');
+                        $('.mail_send_success').removeClass('hide');
+                        sendMail.modal('hide');
+                    }
+                },
+                error: function () {
+                    $('.flashmessage').addClass('hide');
+                    $('.mail_send_error').removeClass('hide');
+                    sendMail.modal('hide');
+                },
+            });
+        }
+
+        function displayErrorsInElement(errors, parent) {
+            parent.closest('.row').find('div.errors').html('');
+            $.each(errors, function (name, childErrors) {
+                if (typeof childErrors == 'string') {
+                    var list = parent.closest('.row').find('div.errors ul.errors');
+                    if (list.length == 0) {
+                        list = $('<ul>', {'class': 'errors'});
+                        parent.closest('.row').find('div.errors').after(list);
+                    }
+                    list.append($('<li>').html(childErrors));
+                } else {
+                    var child;
+                    if (parent.is('form')) {
+                        child = parent.find('[name=' + name + ']');
+                    } else {
+                        child = parent.find('[name$="[' + name + ']"]');
+                    }
+                    displayErrorsInElement(childErrors, child);
+                }
+            });
         }
 
         function openRemoveModal(e) {

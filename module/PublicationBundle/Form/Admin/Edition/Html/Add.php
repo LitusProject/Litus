@@ -90,7 +90,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'required' => false,
+                    'required' => true,
                     'validators' => array(
                         array(
                             'name' => 'filesize',

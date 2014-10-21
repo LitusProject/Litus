@@ -110,9 +110,9 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 $message = new MimeMessage();
                 $message->addPart($part);
 
-                if (isset($formData['file'])) {
+                if (!empty($formData['file'])) {
                     foreach ($formData['file'] as $file) {
-                        if ($file['size'] === NULL) {
+                        if (!$file['size']) {
                             continue;
                         }
 
@@ -143,9 +143,9 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 }
                 $i = 0;
                 foreach ($people as $person) {
-                    if (null !== $person->getPersonalEmail()) {
+                    if (null !== $person->getEmailAddress()) {
                         $i++;
-                        $mail->addBcc($person->getPersonalEmail(), $person->getFullName());
+                        $mail->addBcc($person->getEmailAddress(), $person->getFullName());
                     }
 
                     if ($i == 500) {
