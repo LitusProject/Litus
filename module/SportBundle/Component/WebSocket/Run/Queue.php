@@ -247,10 +247,12 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $nextLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
-            ->findNext($this->_getAcademicYear(), 15);
+            ->findNext($this->_getAcademicYear(), 40);
         foreach ($nextLaps as $lap) {
             $laps[] = $this->_jsonLap($lap, 'next');
         }
+
+        $queueSize = sizeof($nextLaps);
 
         $fastestLap = $this->_getFastestLap();
 
@@ -260,6 +262,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     'own' => $nbLaps,
                     'uniqueRunners' => $uniqueRunners,
                 ),
+                'queueSize' => $queueSize,
                 'fastestRunner' => $fastestLap['runner'],
                 'fastestTime' => $fastestLap['time'],
                 'laps' => $laps,

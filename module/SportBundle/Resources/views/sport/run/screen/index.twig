@@ -116,7 +116,7 @@
 
                             <div class="col-md-6">
                                 <div class="well">
-                                    <h3>Next Runners</h3>
+                                    <h3>Next Runners <span id="queueSize" class="label label-success" style="font-size: 16px;">N/A</span></h3>
 
                                     <table class="table table-striped">
                                         <thead>
@@ -157,6 +157,7 @@
             });
 
             function displayLaps(data) {
+                $('#queueSize').html(data.queueSize);
                 if (data.fastestTime != null){
                     $('#fastestTime').html(data.fastestTime);
                 }
@@ -229,7 +230,7 @@
                                 $('<td>').html(lap.lapTime)
                             )
                         );
-                    } else if (lap.state == 'next' && nextNum < 5) {
+                    } else if (lap.state == 'next' && nextNum < 10) {
                         nextNum++;
                         $('#nextRunners').append(
                             $('<tr>').append(
