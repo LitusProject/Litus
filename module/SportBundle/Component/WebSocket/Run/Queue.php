@@ -96,48 +96,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 }
                 break;
             case 'initialize':
-                if (!isset($command->key) || $command->key != $key) {
-                    $this->removeUser($user);
-                    $now = new DateTime();
-                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid key.' . PHP_EOL;
-
-                    return;
-                }
-
-                if (!isset($command->authSession)) {
-                    $this->removeUser($user);
-                    $now = new DateTime();
-                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-
-                    return;
-                }
-
-                $authSession = $this->_entityManager
-                    ->getRepository('CommonBundle\Entity\User\Session')
-                    ->findOneById($command->authSession);
-
-                $allowed = false;
-                if ($authSession) {
-                    $acl = new Acl($this->_entityManager);
-
-                    foreach ($authSession->getPerson()->getRoles() as $role) {
-                        if (
-                            $role->isAllowed(
-                                $acl, 'sport_run_screen', 'index'
-                            )
-                        ) {
-                            $allowed = true;
-                        }
-                    }
-                }
-
-                if (null == $authSession || !$allowed) {
-                    $this->removeUser($user);
-                    $now = new DateTime();
-                    echo '[' . $now->format('Y-m-d H:i:s') . '] WebSocket connection with invalid auth session.' . PHP_EOL;
-
-                    return;
-                }
 
                 $this->addAuthenticated($user->getSocket());
 
@@ -232,9 +190,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->findOneByRunnerIdentification($data->universityIdentification);
         }
 
-        $department = $this->_entityManager
+        if ($data->department !== '') {
+            $department = $this->_entityManager
             ->getRepository('SportBundle\Entity\Department')
             ->findOneById($data->department);
+        } else {
+            $department = null;
+        }
 
         if (null === $runner) {
             $academic = $this->_entityManager
