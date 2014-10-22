@@ -437,9 +437,15 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
             if (null !== $teamData) {
                 $behind = 0;
-                if (null !== $currentPlace && $currentPlace > 0) {
-                    $firstData = $resultPage['teams'][0];
-                    $behind = round(($firstData->laps + $firstData->position) - ($teamData->laps + $teamData->position), 2);
+                $difference = 0;
+                if (null !== $currentPlace) {
+                    if ($currentPlace != 0) {
+                        $firstData = $resultPage['teams'][0];
+                        $difference = round(($firstData->laps + $firstData->position) - ($teamData->laps + $teamData->position), 2);
+                    } else {
+                        $secondData = $resultPage['teams'][1];
+                        $difference = round(($teamData->laps + $teamData->position) - ($secondData->laps + $teamData->position), 2);
+                    }
                 }
 
                 $lapsPerSecond = 1/($resultPage['lap']/($teamData->speed/3.6));
@@ -450,7 +456,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     'position' => round($teamData->position * 100),
                     'speed' => round($teamData->speed, 2),
                     'lapsPerSecond' => round($lapsPerSecond, 4),
-                    'behind' => $behind,
+                    'difference' => $difference,
+                    'place' => $currentPlace,
                 );
             }
         }

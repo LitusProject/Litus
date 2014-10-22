@@ -29,7 +29,9 @@
                             <h2>Laps</h2>
 
                             <p style="margin-right: 20px;line-height: 30px;">
-                                We have run <span id="nbOfficialLaps" class="label label-danger" style="font-size: 16px;">N/A</span> <span id="nbOfficialLapsText">laps</span> and we are <span id="behindFirstOne"><span id="nbLapsBehind" class="label label-danger" style="font-size: 16px;">N/A</span> laps behind the first one</span><span id="firstOne" class="label label-success" style="font-size: 16px;display: none">first</span>! We are averaging <span id="averageLapTime" class="label label-info" style="font-size: 16px;">N/A</span> for each lap.
+                                We have run <span id="nbOfficialLaps" class="label label-danger" style="font-size: 16px;">N/A</span> <span id="nbOfficialLapsText">laps</span> and we are <span id="behindFirstOne"><span id="nbLapsBehind" class="label label-danger" style="font-size: 16px;">N/A</span> laps behind the first one</span><span id="firstOne" class="label label-success" style="font-size: 16px;display: none">first</span>!<br>
+                                <span id="aheadSecondOne">We are <span id="nbLapsAhead" class="label label-success" style="font-size: 16px;">N/A</span> laps ahead the second one!</span><br>
+                                We are averaging <span id="averageLapTime" class="label label-info" style="font-size: 16px;">N/A</span> for each lap.
                             </p>
 
                             <h2>Runners</h2>
@@ -172,12 +174,15 @@
                     $('#nbOfficialLaps').html(data.officialResults.nbLaps);
                     $('#nbOfficialLapsText').html((data.officialResults.nbLaps == 1 ? 'lap' : 'laps'));
 
-                    if (data.officialResults.behind > 0) {
-                        $('#nbLapsBehind').html(data.officialResults.behind);
+                    if (data.officialResults.place != 0) {
+                        $('#nbLapsBehind').html(data.officialResults.difference);
                         $('#behindFirstOne').show();
+                        $('#aheadSecondOne').hide();
                         $('#firstOne').hide();
                     } else {
+                        $('#nbLapsAhead').html(data.officialResults.difference);
                         $('#behindFirstOne').hide();
+                        $('#aheadSecondOne').show();
                         $('#firstOne').show();
                     }
 
