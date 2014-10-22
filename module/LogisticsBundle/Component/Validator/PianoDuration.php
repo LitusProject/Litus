@@ -26,7 +26,7 @@ use DateTime,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class PianoDuration extends \Zend\Validator\AbstractValidator
+class PianoDuration extends \CommonBundle\Component\Validator\AbstractValidator
 {
     /**
      * @const string The error codes
@@ -83,7 +83,7 @@ class PianoDuration extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (null === $startDate = self::getFormValue($context, $this->_startDate)) {
+        if (null === $startDate = $this->getFormValue($context, $this->_startDate)) {
             $this->error(self::NOT_VALID);
 
             return false;

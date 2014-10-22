@@ -82,6 +82,29 @@ class TypeAhead extends \CommonBundle\Component\Form\Fieldset
         return $this;
     }
 
+    /**
+     * Specifies whether this element is a required field.
+     *
+     * Also sets the HTML5 'required' attribute.
+     *
+     * @param  boolean $flag
+     * @return self
+     */
+    public function setRequired($flag = true)
+    {
+        parent::setRequired($flag);
+
+        $labelAttributes = $this->get('value')->getLabelAttributes() ?: array();
+        if (isset($labelAttributes['class'])) {
+            $labelAttributes['class'] .= ' ' . ($flag ? 'required' : 'optional');
+        } else {
+            $labelAttributes['class'] = ($flag ? 'required' : 'optional');
+        }
+        $this->get('value')->setLabelAttributes($labelAttributes);
+
+        return $this;
+    }
+
     public function getInputFilterSpecification()
     {
         $specs = parent::getInputFilterSpecification();

@@ -16,20 +16,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Component\Validator;
+namespace LogisticsBundle\Component\Validator\Typeahead;
 
 use Doctrine\ORM\EntityManager;
 
 /**
  * Checks if a barcode belongs to a lease item, and it is not yet leased
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class LeaseValidator extends \Zend\Validator\AbstractValidator
+class Lease extends \CommonBundle\Component\Validator\Typeahead
 {
     /**
      * @const string The error codes
      */
-    const NO_LEASE_ITEM = 'noLeaseItem';
     const ITEM_LEASED = 'itemLeased';
     const ITEM_RETURNED = 'itemReturned';
 
@@ -37,15 +37,10 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NO_LEASE_ITEM => 'No lease item with this barcode exists',
+        self::NOT_VALID => 'No lease item with this barcode exists',
         self::ITEM_LEASED => 'This item is already leased',
         self::ITEM_RETURNED => 'This item is already returned',
     );
-
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
 
     /**
      * True if the item has to be leased for the validator to be valid.
@@ -62,9 +57,10 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
      */
     public function __construct(EntityManager $entityManager, $mustBeLeased = false)
     {
-        parent::__construct(null);
+        $this->entity = 'LogisticsBundle\Entity\Lease\Item';
 
-        $this->_entityManager = $entityManager;
+        parent::__construct($entityManager);
+
         $this->_mustBeLeased = !!$mustBeLeased;
     }
 
@@ -80,17 +76,17 @@ class LeaseValidator extends \Zend\Validator\AbstractValidator
 
         $item = $this->_entityManager
             ->getRepository('LogisticsBundle\Entity\Lease\Item')
-            ->findOneByBarcode($value);
+            ->findOneById($context['id']);
 
         if (!$item) {
-            $this->error(self::NO_LEASE_ITEM);
+            $this->error(self::NOT_VALID);
 
             return false;
         }
 
         $unreturned = $this->_entityManager
-                ->getRepository('LogisticsBundle\Entity\Lease\Lease')
-                ->findUnreturnedByItem($item);
+            ->getRepository('LogisticsBundle\Entity\Lease\Lease')
+            ->findUnreturnedByItem($item);
 
         switch (count($unreturned)) {
             case 0:

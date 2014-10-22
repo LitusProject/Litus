@@ -33,8 +33,8 @@ class PianoReservation extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$std_keys);
 
         $player = $object->getPlayer();
-        $data['player_id'] = $player->getId();
-        $data['player'] = $player->getFullName() . ($player instanceof Academic ? ' - ' . $player->getUniversityIdentification() : '');
+        $data['player']['id'] = $player->getId();
+        $data['player']['value'] = $player->getFullName() . ($player instanceof Academic ? ' - ' . $player->getUniversityIdentification() : '');
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y');
@@ -55,25 +55,18 @@ class PianoReservation extends \CommonBundle\Component\Hydrator\Hydrator
             );
         }
 
-        if (isset($data['player']) || isset($data['player_id'])) {
-            $repository = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Academic');
+        $player = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findOneById($data['player']['id']);
 
-            if ('' != $data['player_id']) {
-                $player = $repository->findOneById($data['player_id']);
-            } else {
-                $player = $repository->findOneByUsername($data['player']);
-            }
-
-            $object->setPlayer($player);
-        }
+        $object->setPlayer($player);
 
         if (isset($data['start_date'])) {
-            $object->setStartDate(self::loadDate($data['start_date']));
+            $object->setStartDate(self::loadDateTime($data['start_date']));
         }
 
         if (isset($data['end_date'])) {
-            $object->setEndDate(self::loadDate($data['end_date']));
+            $object->setEndDate(self::loadDateTime($data['end_date']));
         }
 
         return $this->stdHydrate($data, $object, self::$std_keys);

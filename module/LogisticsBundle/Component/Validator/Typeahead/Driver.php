@@ -16,15 +16,16 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace LogisticsBundle\Component\Validator;
+namespace LogisticsBundle\Component\Validator\Typeahead;
 
 /**
  * Checks whether a user exists with the given name or id and whether
  * no driver is created for this user yet.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Driver extends \CommonBundle\Component\Validator\Academic
+class Driver extends \CommonBundle\Component\Validator\Typeahead\Person
 {
     const DRIVER_EXISTS = 'driverExists';
 
@@ -32,7 +33,7 @@ class Driver extends \CommonBundle\Component\Validator\Academic
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NO_SUCH_USER => 'The user doesn\'t exist',
+        self::NOT_VALID => 'This person does not exits',
         self::DRIVER_EXISTS => 'A driver already exists for that user',
     );
 
@@ -49,7 +50,7 @@ class Driver extends \CommonBundle\Component\Validator\Academic
             return false;
         }
 
-        $person = $this->getPerson($value);
+        $person = $this->getEntityObject();
 
         $driver = $this->_entityManager
             ->getRepository('LogisticsBundle\Entity\Driver')

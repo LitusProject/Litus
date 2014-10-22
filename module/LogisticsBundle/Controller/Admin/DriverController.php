@@ -114,6 +114,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'form' => $form,
+                'driver' => $driver,
             )
         );
     }

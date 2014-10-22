@@ -19,7 +19,7 @@
 namespace LogisticsBundle\Form\Lease;
 
 use CommonBundle\Component\Validator\Price as PriceValidator,
-    LogisticsBundle\Component\Validator\LeaseValidator;
+    LogisticsBundle\Component\Validator\Typeahead\Lease as LeaseTypeaheadValidator;
 
 /**
  * The form used to add a new Lease.
@@ -33,36 +33,13 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'item',
-            'label'      => 'Item',
-            'attributes' => array(
-                'autocomplete' => false,
-                'class'        => 'js-item-search',
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'barcode',
-            'attributes' => array(
-                'class' => 'js-item-barcode',
-            ),
-            'options'    => array(
+            'type'    => 'typeahead',
+            'name'    => 'leaseItem',
+            'label'   => 'Item',
+            'options' => array(
                 'input' => array(
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
                     'validators' => array(
-                        array(
-                            'name' => 'barcode',
-                            'options' => array(
-                                'adapter'     => 'Ean12',
-                                'useChecksum' => false,
-                            ),
-                        ),
-                        new LeaseValidator($this->getEntityManager()),
+                        new LeaseTypeaheadValidator($this->getEntityManager()),
                     ),
                 ),
             ),
@@ -91,6 +68,7 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'      => 'Leased To',
             'required'   => true,
             'attributes' => array(
+                'id'           => 'leased_to',
                 'autocomplete' => false,
             ),
             'options'    => array(

@@ -28,12 +28,17 @@ abstract class Typeahead extends \Zend\Validator\AbstractValidator
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    protected $_entityManager = null;
 
     /**
      * @var string The entity to check
      */
     protected $entity;
+
+    /**
+     * @var mixed The found entity
+     */
+    protected $entityObject;
 
     /**
      * Error messages
@@ -77,16 +82,24 @@ abstract class Typeahead extends \Zend\Validator\AbstractValidator
             return false;
         }
 
-        $person = $this->_entityManager
+        $this->entityObject = $this->_entityManager
             ->getRepository($this->entity)
             ->findOneById($context['id']);
 
-        if (null === $person) {
+        if (null === $this->entityObject) {
             $this->error(self::NOT_VALID);
 
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEntityObject()
+    {
+        return $this->entityObject;
     }
 }

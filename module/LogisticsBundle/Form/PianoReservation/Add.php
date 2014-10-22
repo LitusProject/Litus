@@ -34,17 +34,22 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
+    /**
+     * @var array List of all possible slots
+     */
+    private $_weeks;
+
     public function init()
     {
         parent::init();
 
-        $weeks = $this->getTimeSlots();
+        $this->_weeks = $this->getTimeSlots();
 
-        foreach ($weeks as $key => $week) {
+        foreach ($this->_weeks as $key => $week) {
             $this->add(array(
                 'type'       => 'fieldset',
                 'name'       => 'week_' . $key,
-                'attributes' => array(
+                'elements' => array(
                     array(
                         'type'       => 'select',
                         'name'       => 'start_date',
@@ -111,7 +116,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     array(
                         'type'  => 'submit',
                         'name'  => 'submit',
-                        'label' => 'Book',
+                        'value' => 'Book',
                     ),
                 ),
             ));
@@ -176,7 +181,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
                             $listStart[] = array(
                                 'label' => $formatter->format($startSlot),
-                                'value' => $startSlot->format('D d/m/Y H:i'),
+                                'value' => $startSlot->format('d/m/Y H:i'),
                                 'attributes' => array(
                                     'disabled' => $occupied,
                                 ),
@@ -190,7 +195,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
                             $listEnd[] = array(
                                 'label' => $formatter->format($startSlot),
-                                'value' => $startSlot->format('D d/m/Y H:i'),
+                                'value' => $startSlot->format('d/m/Y H:i'),
                                 'attributes' => array(
                                     'disabled' => $occupied,
                                 ),
@@ -222,6 +227,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         return $weeks;
+    }
+
+    public function getWeeks()
+    {
+        return $this->_weeks;
     }
 
     public function getInputFilterSpecification()

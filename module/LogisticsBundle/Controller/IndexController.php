@@ -192,26 +192,11 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     )
                 );
             } else {
-                $errors = $form->getMessages();
-                $formErrors = array();
-
-                foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()])) {
-                        continue;
-                    }
-
-                    $formErrors[$element->getAttribute('id')] = array();
-
-                    foreach ($errors[$element->getName()] as $error) {
-                        $formErrors[$element->getAttribute('id')][] = $error;
-                    }
-                }
-
                 return new ViewModel(
                     array(
                         'result' => array(
                             'status' => 'error',
-                            'errors' => $formErrors,
+                            'errors' => $form->getMessages(),
                         ),
                     )
                 );
