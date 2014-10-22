@@ -39,8 +39,6 @@ class Person extends \CommonBundle\Component\Validator\Typeahead
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
-        $this->entity = 'CommonBundle\Entity\User\Person';
-
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, 'CommonBundle\Entity\User\Person', $opts);
     }
 }

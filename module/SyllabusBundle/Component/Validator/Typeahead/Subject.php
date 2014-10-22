@@ -39,8 +39,6 @@ class Subject extends \CommonBundle\Component\Validator\Typeahead
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
-        $this->entity = 'SyllabusBundle\Entity\Subject';
-
-        parent::__construct($entityManager, $opts);
+        parent::__construct($entityManager, 'SyllabusBundle\Entity\Subject', $opts);
     }
 }

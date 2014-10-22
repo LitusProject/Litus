@@ -51,15 +51,13 @@ class Lease extends \CommonBundle\Component\Validator\Typeahead
     /**
      * Sets validator options
      *
-     * @param  EntityManager $entityManager
-     * @param  boolean       $mustBeLeased  If true, the item must be leased to pass the validation. Else it shouldn't.
-     * @return void
+     * @param EntityManager $entityManager
+     * @param boolean       $mustBeLeased  If true, the item must be leased to pass the validation. Else it shouldn't.
+     * @param mixed         $opts          The validator's options
      */
-    public function __construct(EntityManager $entityManager, $mustBeLeased = false)
+    public function __construct(EntityManager $entityManager, $mustBeLeased = false, $opts = null)
     {
-        $this->entity = 'LogisticsBundle\Entity\Lease\Item';
-
-        parent::__construct($entityManager);
+        parent::__construct($entityManager, 'LogisticsBundle\Entity\Lease\Item', $opts);
 
         $this->_mustBeLeased = !!$mustBeLeased;
     }

@@ -33,7 +33,7 @@ abstract class Typeahead extends \Zend\Validator\AbstractValidator
     /**
      * @var string The entity to check
      */
-    protected $entity;
+    protected $_entity;
 
     /**
      * @var mixed The found entity
@@ -53,17 +53,15 @@ abstract class Typeahead extends \Zend\Validator\AbstractValidator
      * Create a new typeahead validator
      *
      * @param EntityManager $entityManager The EntityManager instance
+     * @param string        $entity        The entity name
      * @param mixed         $opts          The validator's options
      */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct(EntityManager $entityManager, $entity, $opts = null)
     {
         parent::__construct($opts);
 
         $this->_entityManager = $entityManager;
-
-        if (empty($this->entity)) {
-            throw new RuntimeException('The typeahead validator needs an entity');
-        }
+        $this->_entity = $entity;
     }
 
     /**
@@ -83,7 +81,7 @@ abstract class Typeahead extends \Zend\Validator\AbstractValidator
         }
 
         $this->entityObject = $this->_entityManager
-            ->getRepository($this->entity)
+            ->getRepository($this->_entity)
             ->findOneById($context['id']);
 
         if (null === $this->entityObject) {
