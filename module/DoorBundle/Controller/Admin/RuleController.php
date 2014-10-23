@@ -119,6 +119,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
+                'academic' => $rule->getAcademic($this->getEntityManager()),
                 'form' => $form,
             )
         );
