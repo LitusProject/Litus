@@ -52,13 +52,7 @@
                     } else if (data.errors) {
                         $('.flashmessage').addClass('hide');
                         $('.banner_upload_error').removeClass('hide');
-                        $('#uploadBanner').find('ul.errors').remove();
-                        for(element in data.errors) {
-                            var list = $('<ul>', {class: 'errors'})
-                            for (error in data.errors[element])
-                                list.append($('<li>').html(data.errors[element][error]));
-                            $('#uploadBanner').find('#' + element).parent().parent().after(list);
-                        }
+                        displayErrorsInElement(data.errors, $('#uploadBanner'));
                     } else if (data.info) {
                         window.location.href = '{{ url('banner_admin_banner', {"action": "manage"}) }}';
                     }
@@ -78,5 +72,27 @@
                 }
             });
         });
+
+        function displayErrorsInElement(errors, parent) {
+            parent.closest('.row').find('div.errors').html('');
+            $.each(errors, function (name, childErrors) {
+                if (typeof childErrors == 'string') {
+                    var list = parent.closest('.row').find('div.errors ul.errors');
+                    if (list.length == 0) {
+                        list = $('<ul>', {'class': 'errors'});
+                        parent.closest('.row').find('div.errors').after(list);
+                    }
+                    list.append($('<li>').html(childErrors));
+                } else {
+                    var child;
+                    if (parent.is('form')) {
+                        child = parent.find('[name=' + name + ']');
+                    } else {
+                        child = parent.find('[name$="[' + name + ']"]');
+                    }
+                    displayErrorsInElement(childErrors, child);
+                }
+            });
+        }
     </script>
 {% endblock %}
