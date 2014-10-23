@@ -43,7 +43,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $this->getParam('page'),
             array(),
             array(
-                'dateActivity' => 'ASC',
+                'dateActivity' => 'DESC',
             )
         );
 
