@@ -34,7 +34,7 @@ return array(
             'add', 'delete', 'edit', 'export', 'fetch', 'index', 'move',
         ),
         'logistics_lease' => array(
-            'availabilityCheck', 'history', 'index', 'show', 'typeahead',
+            'history', 'index', 'show', 'typeahead',
         ),
         'logistics_auth' => array(
             'login', 'logout', 'shibboleth',
