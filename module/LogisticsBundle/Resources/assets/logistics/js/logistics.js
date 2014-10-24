@@ -244,7 +244,7 @@
                     settings.addError();
                     $('.popover form div.help-block').remove();
                     $('.popover form .form-group').removeClass('has-error');
-                    _displayErrorsInElement(data.errors, $('.popover form'));
+                    $('.popover form').displayFormErrors(data.errors);
                 }
             },
             error: function(a, b, c) {
@@ -448,7 +448,7 @@
                     if (data && data.errors) {
                         $('.popover form div.help-block').remove();
                         $('.popover form .form-group').removeClass('has-error');
-                        _displayErrorsInElement(data.errors, $('.popover form'));
+                        $('.popover form').displayFormErrors(data.errors);
                     }
                 }
             },
@@ -473,29 +473,5 @@
             placement = 'right';
         }
         return placement;
-    }
-
-    function _displayErrorsInElement(errors, parent) {
-        $.each(errors, function (name, childErrors) {
-            console.log(name, childErrors);
-            if (typeof childErrors == 'string') {
-                var list = parent.find('ul.errors');
-                if (list.length == 0) {
-                    list = $('<ul>', {'class': 'errors'});
-                    parent.closest('.form-group').addClass('has-error').find('input').after(
-                        $('<div>', {'class': 'help-block'}).append(list)
-                    );
-                }
-                list.append($('<li>').html(childErrors));
-            } else {
-                var child;
-                if (parent.is('form')) {
-                    child = parent.find('[name=' + name + ']');
-                } else {
-                    child = parent.find('[name$="[' + name + ']"]');
-                }
-                _displayErrorsInElement(childErrors, child);
-            }
-        });
     }
 }) (jQuery);

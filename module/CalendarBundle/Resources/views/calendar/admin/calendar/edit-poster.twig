@@ -66,7 +66,7 @@
                     } else if (data.errors) {
                         $('.flashmessage').addClass('hide');
                         $('.poster_upload_error').removeClass('hide');
-                        displayErrorsInElement(data.errors, $('#uploadPoster'));
+                        $('#uploadPoster').displayFormErrors(data.errors);
                     } else if (data.info) {
                         window.location.reload();
                     }
@@ -87,27 +87,5 @@
                 }
             });
         });
-
-        function displayErrorsInElement(errors, parent) {
-            parent.closest('.row').find('div.errors').html('');
-            $.each(errors, function (name, childErrors) {
-                if (typeof childErrors == 'string') {
-                    var list = parent.closest('.row').find('div.errors ul.errors');
-                    if (list.length == 0) {
-                        list = $('<ul>', {'class': 'errors'});
-                        parent.closest('.row').find('div.errors').after(list);
-                    }
-                    list.append($('<li>').html(childErrors));
-                } else {
-                    var child;
-                    if (parent.is('form')) {
-                        child = parent.find('[name=' + name + ']');
-                    } else {
-                        child = parent.find('[name$="[' + name + ']"]');
-                    }
-                    displayErrorsInElement(childErrors, child);
-                }
-            });
-        }
     </script>
 {% endblock %}

@@ -394,7 +394,7 @@
                 success: function (data) {
                     if (data.errors) {
                         $('.flashmessage').addClass('hide');
-                        displayErrorsInElement(data.errors, sendMail.find('form'));
+                        sendMail.find('form').displayFormErrors(data.errors);
                         sendMail.find('.send').one('click', doSendMail);
                     } else {
                         $('.flashmessage').addClass('hide');
@@ -407,28 +407,6 @@
                     $('.mail_send_error').removeClass('hide');
                     sendMail.modal('hide');
                 },
-            });
-        }
-
-        function displayErrorsInElement(errors, parent) {
-            parent.closest('.row').find('div.errors').html('');
-            $.each(errors, function (name, childErrors) {
-                if (typeof childErrors == 'string') {
-                    var list = parent.closest('.row').find('div.errors ul.errors');
-                    if (list.length == 0) {
-                        list = $('<ul>', {'class': 'errors'});
-                        parent.closest('.row').find('div.errors').after(list);
-                    }
-                    list.append($('<li>').html(childErrors));
-                } else {
-                    var child;
-                    if (parent.is('form')) {
-                        child = parent.find('[name=' + name + ']');
-                    } else {
-                        child = parent.find('[name$="[' + name + ']"]');
-                    }
-                    displayErrorsInElement(childErrors, child);
-                }
             });
         }
 
