@@ -18,17 +18,17 @@
  * ============================================================ */
 
 !function ($) {
-  
+
   "use strict"; // jshint ;_;
 
   var Rowlink = function (element, options) {
     options = $.extend({}, $.fn.rowlink.defaults, options)
     var tr = element.nodeName == 'tr' ? $(element) : $(element).find('tr:has(td)')
-    
+
     tr.each(function() {
       var link = $(this).find(options.target).first()
       if (!link.length) return
-      
+
       var href = link.attr('href')
 
       $(this).find('td').not('.nolink').click(function() {
@@ -40,7 +40,7 @@
     })
   }
 
-  
+
  /* ROWLINK PLUGIN DEFINITION
   * =========================== */
 
@@ -67,5 +67,5 @@
       $(this).rowlink($(this).data())
     })
   })
-  
+
 }(window.jQuery)

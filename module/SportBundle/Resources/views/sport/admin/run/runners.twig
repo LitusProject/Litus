@@ -1,0 +1,33 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'sport/admin/run/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="100px">Laps</th>
+                    <th width="100px">Points</th>
+                    <th width="100px">Avarage</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for runner in paginator %}
+                    <tr>
+                        <td>{{ runner['name'] }}</td>
+                        <td>{{ runner['laps'] }}</td>
+                        <td>{{ runner['points'] }}</td>
+                        <td>{{ runner['avarage'].format('%i:%S') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+{% endblock %}

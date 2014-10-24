@@ -41,6 +41,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     private $_entityManager;
 
     /**
+     * @var int Minimum runtime required (in seconds)
+     */
+    private static $MIN_LAP_TIME = 60;
+
+    /**
      * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
@@ -229,9 +234,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->findOneByRunnerIdentification($data->universityIdentification);
         }
 
-        $department = $this->_entityManager
+        if ($data->department !== '') {
+            $department = $this->_entityManager
             ->getRepository('SportBundle\Entity\Department')
             ->findOneById($data->department);
+        } else {
+            $department = null;
+        }
 
         if (null === $runner) {
             $academic = $this->_entityManager
@@ -247,10 +256,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             );
 
             $runner->setRunnerIdentification($data->universityIdentification);
-        } else {
-            if (null === $runner->getDepartment()) {
-                $runner->setDepartment($department);
-            }
         }
 
         $lap = new Lap($this->_getAcademicYear(), $runner);
@@ -286,13 +291,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
         $nextLaps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
-            ->findNext($this->_getAcademicYear(), 15);
+            ->findNext($this->_getAcademicYear(), 40);
         foreach ($nextLaps as $lap) {
             $laps[] = $this->_jsonLap($lap, 'next');
         }
 
+        $queueSize = sizeof($nextLaps);
+
         $fastestLap = $this->_getFastestLap();
-        $mostFrequent = $this->_getMostFrequentRunner();
 
         $data = (object) array(
             'laps' => (object) array(
@@ -300,14 +306,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     'own' => $nbLaps,
                     'uniqueRunners' => $uniqueRunners,
                 ),
+                'queueSize' => $queueSize,
                 'fastestRunner' => $fastestLap['runner'],
                 'fastestTime' => $fastestLap['time'],
-                'mostFrequentRunner' => $mostFrequent['runner'],
-                'mostLaps' => $mostFrequent['laps'],
                 'laps' => $laps,
                 'officialResults' => $this->_getOfficialResults(),
                 'averageLapTime' => $this->_getAverageLapTime(),
                 'groupsOfFriends' => $this->_getGroupsOfFriends(),
+                'mostLaps' => $this->_getMostFrequentRunners(),
             ),
         );
 
@@ -397,35 +403,51 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $fastestLap = null;
 
         foreach ($previousLaps as $lap) {
-            if ($fastestLap == null) {
-                $time = $lap->getLapTime();
-                $fastestLap = $lap;
-            } elseif ($this->_convertDateIntervalToSeconds($lap->getLapTime()) < $this->_convertDateIntervalToSeconds($time)) {
-                $time = $lap->getLapTime();
-                $fastestLap = $lap;
+            if ($this->_isValidLapTime($lap->getLapTime()) && strpos(strtolower($lap->getRunner()->getAcademic()->getFullName()),'vtk gent') === false) {
+                if ($fastestLap == null) {
+                    $time = $lap->getLapTime();
+                    $fastestLap = $lap;
+                } elseif ($this->_convertDateIntervalToSeconds($lap->getLapTime()) < $this->_convertDateIntervalToSeconds($time)) {
+                    $time = $lap->getLapTime();
+                    $fastestLap = $lap;
+                }
             }
         }
-
-        return array(
+        if ($fastestLap !== null) {
+            return array(
             'time' => $fastestLap->getLapTime()->format('%i:%S'),
             'runner' => $fastestLap->getRunner()->getAcademic()->getFullName(),
-        );
+            );
+        }
+
+        return null;
     }
 
-    private function _getMostFrequentRunner()
+    private function _getMostFrequentRunners($number = 3)
     {
         $runners = $this->_entityManager
                 ->getRepository('SportBundle\Entity\Lap')
                 ->getRunnersAndCount($this->_getAcademicYear());
 
-        $runner = $this->_entityManager
+        $nbResults = 0;
+        $index = 0;
+        $mostLaps = array();
+        while (isset($runners[$index]) && $nbResults < $number) {
+            $runner = $this->_entityManager
                 ->getRepository('SportBundle\Entity\Runner')
-                ->findOneById($runners[0]['runner']);
+                ->findOneById($runners[$index]['runner']);
+            if (strpos(strtolower($runner->getAcademic()->getFullName()),'vtk gent') === false) {
+                array_push($mostLaps, array(
+                        'name' => $runner->getAcademic()->getFullName(),
+                        'laps' => $runners[$index]['lapCount'],
+                    )
+                );
+                $nbResults++;
+            }
+            $index++;
+        }
 
-        return array(
-            'runner' => $runner->getAcademic()->getFullName(),
-            'laps' => $runners[0]['lapCount'],
-        );
+        return $mostLaps;
     }
 
     private function _getAcademicYear()
@@ -459,9 +481,15 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
             if (null !== $teamData) {
                 $behind = 0;
-                if (null !== $currentPlace && $currentPlace > 0) {
-                    $firstData = $resultPage['teams'][0];
-                    $behind = round(($firstData->laps + $firstData->position) - ($teamData->laps + $teamData->position), 2);
+                $difference = 0;
+                if (null !== $currentPlace) {
+                    if ($currentPlace != 0) {
+                        $firstData = $resultPage['teams'][0];
+                        $difference = round(($firstData->laps + $firstData->position) - ($teamData->laps + $teamData->position), 2);
+                    } else {
+                        $secondData = $resultPage['teams'][1];
+                        $difference = round(($teamData->laps + $teamData->position) - ($secondData->laps + $teamData->position), 2);
+                    }
                 }
 
                 $lapsPerSecond = 1/($resultPage['lap']/($teamData->speed/3.6));
@@ -472,7 +500,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     'position' => round($teamData->position * 100),
                     'speed' => round($teamData->speed, 2),
                     'lapsPerSecond' => round($lapsPerSecond, 4),
-                    'behind' => $behind,
+                    'difference' => $difference,
+                    'place' => $currentPlace,
                 );
             }
         }
@@ -511,7 +540,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     {
         $laps = $this->_entityManager
             ->getRepository('SportBundle\Entity\Lap')
-            ->findAll();
+            ->findAllPreviousLaps($this->_getAcademicYear());
 
         $total = 0;
         foreach ($laps as $lap) {
@@ -525,5 +554,14 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     private function _convertDateIntervalToSeconds(DateInterval $interval)
     {
         return $interval->h*3600 + $interval->i*60 + $interval->s;
+    }
+
+    private function _isValidLapTime(DateInterval $interval)
+    {
+        if ($this->_convertDateIntervalToSeconds($interval) < self::$MIN_LAP_TIME) {
+            return false;
+        }
+
+        return true;
     }
 }

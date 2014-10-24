@@ -57,7 +57,7 @@ EOT
             $resultPage = json_decode($fileContents);
 
             if (false !== $fileContents && null !== $resultPage) {
-                file_put_contents('data/cache/' . md5('run_result_page'), $fileContents);
+                file_put_contents('data/cache/run-' . md5('run_result_page'), $fileContents);
                 $this->writeln('Succesfully cached the result page');
                 sleep(10);
             } else {

@@ -70,4 +70,9 @@ return array(
         ),
         'description' => 'The criteria for the lap times that determine the number of points it is worth (times should decrease)',
     ),
+    array(
+        'key'         => 'sport.reward_time_limit',
+        'value'       => '87',
+        'description' => 'The lap time limit to get the reward (in seconds)',
+    ),
 );
