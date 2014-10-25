@@ -77,12 +77,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'    => 'Personal',
             'elements' => array(
                 array(
-                    'type'     => 'text',
-                    'name'     => 'first_name',
-                    'label'    => 'First Name',
-                    'required' => true,
-                    'value'    => isset($extra['first_name']) ? $extra['first_name'] : '',
-                    'options'  => array(
+                    'type'       => 'text',
+                    'name'       => 'first_name',
+                    'label'      => 'First Name',
+                    'required'   => true,
+                    'value'      => isset($extra['first_name']) ? $extra['first_name'] : '',
+                    'attributes' => array(
+                        'id' => 'first_name',
+                    ),
+                    'options'    => array(
                         'input' => array(
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
@@ -96,6 +99,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'    => 'Last Name',
                     'required' => true,
                     'value'    => isset($extra['last_name']) ? $extra['last_name'] : '',
+                    'attributes' => array(
+                        'id' => 'last_name',
+                    ),
                     'options'  => array(
                         'input' => array(
                             'filters'  => array(

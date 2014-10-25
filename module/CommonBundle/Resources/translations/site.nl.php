@@ -59,6 +59,7 @@ return array(
     'Activate' => 'Activeren',
     'Password' => 'Wachtwoord',
     'Verify Password' => 'Bevestig Wachtwoord',
+    'Your account was succesfully activated!' => 'Uw account was succesvol geactiveerd!',
     'Overview' => 'Overzicht',
     'Edit' => 'Bewerk',
     'Studies' => 'Studierichtingen',

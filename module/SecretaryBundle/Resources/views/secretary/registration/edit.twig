@@ -138,13 +138,14 @@
                 conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
             );
             conditionsLink.click(function (e) {
+                e.preventDefault();
                 $('#modalTermsAndCoditions').modal();
-
-                return false;
             });
 
             $('#register').click(function (e) {
-                if (!$('#become_member').is(':checked') && $form.find('#organization').val() != 0) {
+                e.preventDefault();
+
+                if (!$('#become_member').is(':checked') && && !$('#become_member').is(':disabled') && $form.find('#organization').val() != 0) {
                     $('#modalMemberWarning')
                         .modal()
                         .find('.confirm')
@@ -154,23 +155,6 @@
                 } else {
                     $form.submit();
                 }
-
-                return false;
-            });
-
-            $('#register').click(function (e) {
-                if (!$('#become_member').is(':checked') && $form.find('#organization').val() != 0) {
-                    $('#modalMemberWarning')
-                        .modal()
-                        .find('.confirm')
-                            .one('click', function () {
-                                $form.submit();
-                        });
-                } else {
-                    $form.submit();
-                }
-
-                return false;
             });
 
             {% if selectedOrganization %}
@@ -180,7 +164,6 @@
             {% endif %}
 
             $('.primary-address .city').change(cityChange);
-            $('#become_member').change(toggleMember);
             toggleMember();
             cityChange();
 

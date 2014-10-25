@@ -59,6 +59,7 @@ return array(
     'Activate' => 'Activate',
     'Password' => 'Password',
     'Verify Password' => 'Verify Password',
+    'Your account was succesfully activated!' => 'Your account was succesfully activated!',
     'Overview' => 'Overview',
     'Edit' => 'Edit',
     'Studies' => 'Studies',

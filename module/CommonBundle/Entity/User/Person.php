@@ -175,6 +175,7 @@ abstract class Person implements RoleAware
 
         $this->roles = new ArrayCollection();
         $this->organizationStatuses = new ArrayCollection();
+        $this->barcodes = new ArrayCollection();
     }
 
     /**

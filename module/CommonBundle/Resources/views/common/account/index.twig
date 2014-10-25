@@ -199,6 +199,7 @@
                                 if (data.status !== undefined && data.status == 'success') {
                                     $('#accountProfileImage img').attr('src', data.profile + '?time=' + (new Date()).getTime());
                                     image.attr('src', data.profile + '?time=' + (new Date()).getTime());
+                                    $('#profile_upload_error').removeClass('in');
                                     $('#modalProfileImage').modal('hide');
                                 } else {
                                     $('#profile_upload_error').addClass('in');

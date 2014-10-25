@@ -102,15 +102,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                if (!isset($formData['person_id']) || $formData['person_id'] == '') {
-                    $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneByUsername($formData['person_name']);
-                } else {
-                    $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneById($formData['person_id']);
-                }
+                $academic = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                    ->findOneById($formData['person']['id']);
 
                 $repositoryCheck = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')

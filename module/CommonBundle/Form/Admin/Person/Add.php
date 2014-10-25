@@ -56,11 +56,14 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'text',
-            'name'     => 'first_name',
-            'label'    => 'First Name',
-            'required' => true,
-            'options'  => array(
+            'type'       => 'text',
+            'name'       => 'first_name',
+            'label'      => 'First Name',
+            'required'   => true,
+            'attributes' => array(
+                'id' => 'first_name',
+            ),
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -70,11 +73,14 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'text',
-            'name'     => 'last_name',
-            'label'    => 'Last Name',
-            'required' => true,
-            'options'  => array(
+            'type'       => 'text',
+            'name'       => 'last_name',
+            'label'      => 'Last Name',
+            'required'   => true,
+            'attributes' => array(
+                'id' => 'last_name',
+            ),
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),

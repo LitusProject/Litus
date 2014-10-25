@@ -408,13 +408,15 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     : false;
             }
 
-            if (isset($formData['organization_info']['organization'])) {
-                if (0 == $formData['organization_info']['organization'] && $enableOtherOrganization) {
+            $organizationData = $formData['organization_info'];
+
+            if (isset($organizationData['organization'])) {
+                if (0 == $organizationData['organization'] && $enableOtherOrganization) {
                     $selectedOrganization = null;
                 } else {
                     $selectedOrganization = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findOneById($formData['organization_info']['organization']);
+                        ->findOneById($organizationData['organization']);
                 }
             } else {
                 $selectedOrganization = current(
@@ -428,6 +430,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
             if ($form->isValid()) {
                 $formData = $form->getData();
+                $organizationData = $formData['organization_info'];
 
                 if (null === $metaData) {
                     $metaData = $form->hydrateObject();
@@ -453,17 +456,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     );
                 }
 
-                $tshirts = unserialize(
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.tshirt_article')
-                );
-
-                if (null !== $oldTshirtBooking && $oldTshirtSize != $metaData->getTshirtSize()) {
-                    $this->getEntityManager()->remove($oldTshirtBooking);
-                }
-
                 if ($enableRegistration) {
+                    if (null !== $oldTshirtBooking && $oldTshirtSize != $metaData->getTshirtSize()) {
+                        $this->getEntityManager()->remove($oldTshirtBooking);
+                    }
+
                     $membershipArticles = array();
                     $ids = unserialize(
                         $this->getEntityManager()
@@ -477,8 +474,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             ->findOneById($articleId);
                     }
 
-                    if ($metaData->becomeMember()) {
-                        $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
+                    if ($metaData->becomeMember() && null !== $selectedOrganization) {
+                        $this->_bookRegistrationArticles($academic, $organizationData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
@@ -504,6 +501,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $registration = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Registration')
                     ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
+
                 if (null === $registration) {
                     $registration = new Registration(
                         $academic,
