@@ -116,12 +116,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "f7a1d660c521461b835dc31af0f6c9836769e917"
+                "reference": "912e8a11ce3c75a630b225dd82aed83e00943ed5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/f7a1d660c521461b835dc31af0f6c9836769e917",
-                "reference": "f7a1d660c521461b835dc31af0f6c9836769e917",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/912e8a11ce3c75a630b225dd82aed83e00943ed5",
+                "reference": "912e8a11ce3c75a630b225dd82aed83e00943ed5",
                 "shasum": ""
             },
             "require": {
@@ -177,7 +177,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2014-09-29 13:28:56"
+            "time": "2014-10-20 19:28:25"
         },
         {
             "name": "doctrine/collections",
@@ -329,12 +329,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "50557fc0c7479067063532171a602338cf8f413a"
+                "reference": "d8a96fcfbe8fcdc3572a6110ddf67151bd7b3001"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/50557fc0c7479067063532171a602338cf8f413a",
-                "reference": "50557fc0c7479067063532171a602338cf8f413a",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/d8a96fcfbe8fcdc3572a6110ddf67151bd7b3001",
+                "reference": "d8a96fcfbe8fcdc3572a6110ddf67151bd7b3001",
                 "shasum": ""
             },
             "require": {
@@ -392,7 +392,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2014-10-16 23:02:08"
+            "time": "2014-10-23 22:19:26"
         },
         {
             "name": "doctrine/doctrine-module",
@@ -555,12 +555,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineORMModule.git",
-                "reference": "40b80e1dc346be4c887b1d3e4eb43a95df54af22"
+                "reference": "5a1a8ae86eb5ac4fa0f3acaa1a452b4ccd85f962"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineORMModule/zipball/40b80e1dc346be4c887b1d3e4eb43a95df54af22",
-                "reference": "40b80e1dc346be4c887b1d3e4eb43a95df54af22",
+                "url": "https://api.github.com/repos/doctrine/DoctrineORMModule/zipball/5a1a8ae86eb5ac4fa0f3acaa1a452b4ccd85f962",
+                "reference": "5a1a8ae86eb5ac4fa0f3acaa1a452b4ccd85f962",
                 "shasum": ""
             },
             "require": {
@@ -629,7 +629,7 @@
                 "orm",
                 "zf2"
             ],
-            "time": "2014-09-09 22:34:47"
+            "time": "2014-10-19 09:27:54"
         },
         {
             "name": "doctrine/inflector",
@@ -953,12 +953,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "f5ecabbc2198973f5e54cb76e99709c59fe62ffa"
+                "reference": "20c6bfd360b3db9e9bc53e5ae37afe1a22dccca3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/f5ecabbc2198973f5e54cb76e99709c59fe62ffa",
-                "reference": "f5ecabbc2198973f5e54cb76e99709c59fe62ffa",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/20c6bfd360b3db9e9bc53e5ae37afe1a22dccca3",
+                "reference": "20c6bfd360b3db9e9bc53e5ae37afe1a22dccca3",
                 "shasum": ""
             },
             "require": {
@@ -967,7 +967,7 @@
                 "doctrine/instantiator": "~1.0.1",
                 "ext-pdo": "*",
                 "php": ">=5.3.2",
-                "symfony/console": "2.*"
+                "symfony/console": "~2.3"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.0",
@@ -1020,7 +1020,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2014-10-16 22:13:28"
+            "time": "2014-10-23 05:01:59"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -1246,13 +1246,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fabpot/Twig.git",
-                "reference": "9c162c5c5aafecb8b421baac073b33385d3902ac"
+                "url": "https://github.com/twigphp/Twig.git",
+                "reference": "f8b6e918a7d8e073efe14cbed7ae02df40ef19ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/9c162c5c5aafecb8b421baac073b33385d3902ac",
-                "reference": "9c162c5c5aafecb8b421baac073b33385d3902ac",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/f8b6e918a7d8e073efe14cbed7ae02df40ef19ed",
+                "reference": "f8b6e918a7d8e073efe14cbed7ae02df40ef19ed",
                 "shasum": ""
             },
             "require": {
@@ -1287,7 +1287,7 @@
                 },
                 {
                     "name": "Twig Team",
-                    "homepage": "https://github.com/fabpot/Twig/graphs/contributors",
+                    "homepage": "http://twig.sensiolabs.org/contributors",
                     "role": "Contributors"
                 }
             ],
@@ -1296,7 +1296,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-10-16 18:28:42"
+            "time": "2014-10-23 15:29:03"
         },
         {
             "name": "twitter/bootstrap",
@@ -1304,12 +1304,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "8a6a253355ab1d26865bfbfffaa2a194e173a3aa"
+                "reference": "a92aea5127e805cb44c9d606a71c48fa19ee157b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/8a6a253355ab1d26865bfbfffaa2a194e173a3aa",
-                "reference": "8a6a253355ab1d26865bfbfffaa2a194e173a3aa",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/a92aea5127e805cb44c9d606a71c48fa19ee157b",
+                "reference": "a92aea5127e805cb44c9d606a71c48fa19ee157b",
                 "shasum": ""
             },
             "replace": {
@@ -1347,7 +1347,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2014-10-14 18:41:30"
+            "time": "2014-10-24 20:28:46"
         },
         {
             "name": "widmogrod/zf2-assetic-module",
@@ -1414,12 +1414,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/ZendDeveloperTools.git",
-                "reference": "6468ed1c58a65ad797f04ebe794ca85fef0ff142"
+                "reference": "5e38d0889a34bfbfccef2acb93ca9f4df40dfe31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/ZendDeveloperTools/zipball/6468ed1c58a65ad797f04ebe794ca85fef0ff142",
-                "reference": "6468ed1c58a65ad797f04ebe794ca85fef0ff142",
+                "url": "https://api.github.com/repos/zendframework/ZendDeveloperTools/zipball/5e38d0889a34bfbfccef2acb93ca9f4df40dfe31",
+                "reference": "5e38d0889a34bfbfccef2acb93ca9f4df40dfe31",
                 "shasum": ""
             },
             "require": {
@@ -1467,7 +1467,7 @@
                 "module",
                 "zf2"
             ],
-            "time": "2014-08-13 19:03:31"
+            "time": "2014-10-23 18:27:03"
         },
         {
             "name": "zendframework/zendframework",
@@ -1689,12 +1689,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/PHP-CS-Fixer.git",
-                "reference": "45a7ff3b135bb0abc5463a2055e4a8657b16ba55"
+                "reference": "9597fff1e7205c0cd059d5deb6ba69f3a12d5a1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/PHP-CS-Fixer/zipball/45a7ff3b135bb0abc5463a2055e4a8657b16ba55",
-                "reference": "45a7ff3b135bb0abc5463a2055e4a8657b16ba55",
+                "url": "https://api.github.com/repos/fabpot/PHP-CS-Fixer/zipball/9597fff1e7205c0cd059d5deb6ba69f3a12d5a1f",
+                "reference": "9597fff1e7205c0cd059d5deb6ba69f3a12d5a1f",
                 "shasum": ""
             },
             "require": {
@@ -1732,7 +1732,7 @@
                 }
             ],
             "description": "A script to automatically fix Symfony Coding Standard",
-            "time": "2014-10-14 21:49:55"
+            "time": "2014-10-22 23:17:09"
         },
         {
             "name": "litus/php-cs",
@@ -1769,12 +1769,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "5843509fed39dee4b356a306401e9dd1a931fec7"
+                "reference": "92d423df43b160006907ea4297b916fdf00415d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/5843509fed39dee4b356a306401e9dd1a931fec7",
-                "reference": "5843509fed39dee4b356a306401e9dd1a931fec7",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/92d423df43b160006907ea4297b916fdf00415d8",
+                "reference": "92d423df43b160006907ea4297b916fdf00415d8",
                 "shasum": ""
             },
             "require": {
@@ -1813,7 +1813,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2014-08-15 10:29:00"
+            "time": "2014-10-19 13:19:30"
         },
         {
             "name": "symfony/event-dispatcher",
