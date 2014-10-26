@@ -53,7 +53,7 @@ class SignIn extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add(array(
             'type'  => 'reset',
             'name'  => 'cancel',
-            'label' => 'Cancel',
+            'value' => 'Cancel',
         ));
     }
 }

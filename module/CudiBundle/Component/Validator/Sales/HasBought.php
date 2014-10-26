@@ -18,14 +18,16 @@
 
 namespace CudiBundle\Component\Validator\Sales;
 
-use Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Form\Form,
+    CommonBundle\Component\Validator\FormAwareInterface,
+    Doctrine\ORM\EntityManager;
 
 /**
  * Check if user has bought an aritcle
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class HasBought extends \Zend\Validator\AbstractValidator
+class HasBought extends \Zend\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
 
@@ -33,6 +35,11 @@ class HasBought extends \Zend\Validator\AbstractValidator
      * @var EntityManager The EntityManager instance
      */
     private $_entityManager = null;
+
+    /**
+     * @var Form
+     */
+    private $_form;
 
     /**
      * Error messages
@@ -70,11 +77,11 @@ class HasBought extends \Zend\Validator\AbstractValidator
 
         $person = $this->_entityManager
             ->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($context['person_id']);
+            ->findOneById($this->_form->get('person')->get('id')->getValue());
 
         $article = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($context['article_id']);
+            ->findOneById($context['id']);
 
         $booking = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -87,5 +94,16 @@ class HasBought extends \Zend\Validator\AbstractValidator
         $this->error(self::NOT_VALID);
 
         return false;
+    }
+
+    /**
+     * @param  Form $form
+     * @return self
+     */
+    public function setForm(Form $form)
+    {
+        $this->_form = $form;
+
+        return $this;
     }
 }

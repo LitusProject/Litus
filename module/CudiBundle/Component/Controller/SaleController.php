@@ -112,4 +112,12 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             'redirect_route' => 'cudi_sale_sale',
         );
     }
+
+    /**
+     * @return \CommonBundle\Component\Form\Factory
+     */
+    protected function getFormFactory()
+    {
+        return $this->getServiceLocator()->get('formfactory.bootstrap');
+    }
 }

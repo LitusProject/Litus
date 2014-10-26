@@ -18,7 +18,9 @@
 
 namespace CudiBundle\Form\Sale\Sale;
 
-use CudiBundle\Component\Validator\Sales\HasBought as HasBoughtValidator;
+use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
+    CudiBundle\Component\Validator\Sales\HasBought as HasBoughtValidator,
+    CudiBundle\Component\Validator\Typeahead\Article as ArticleTypeaheadValidator;
 
 /**
  * Return Sale
@@ -32,84 +34,34 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'person_id',
-            'attributes' => array(
-                'id' => 'personId',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
+            'type'       => 'typeahead',
             'name'       => 'person',
             'label'      => 'Person',
             'required'   => true,
             'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-                'id'           => 'personSearch',
                 'placeholder'  => 'Student',
             ),
             'options'    => array(
                 'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+                    'validators'  => array(
+                        new PersonTypeaheadValidator($this->getEntityManager()),
                     ),
                 ),
             ),
         ));
 
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'article_id',
-            'attributes' => array(
-                'id' => 'articleId',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
+            'type'       => 'typeahead',
             'name'       => 'article',
             'label'      => 'Article',
             'required'   => true,
             'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-                'id'           => 'articleSearch',
                 'placeholder'  => 'Article',
             ),
             'options'    => array(
                 'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
                     'validators' => array(
+                        new ArticleTypeaheadValidator($this->getEntityManager()),
                         new HasBoughtValidator($this->getEntityManager()),
                     ),
                 ),
