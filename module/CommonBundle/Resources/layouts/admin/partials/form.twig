@@ -40,28 +40,30 @@
                 </div>
             {% elseif element.getAttribute('type') == 'radio' %}
                 <div class="row">
-                    <span class="label">
-                        {% if element.isRequired() %}<b>{% endif %}
-                            {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
-                        {% if element.isRequired() %}</b>{% endif %}
-                    </span>
-                    <div class="field">
-                        <div>
-                            {{ formElement(element) }}
+                    {{ formLabel().openTag(element) }}
+                        <span class="label">
+                            {% if element.isRequired() %}<b>{% endif %}
+                                {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
+                            {% if element.isRequired() %}</b>{% endif %}
+                        </span>
+                        <div class="field">
+                            <div>
+                                {{ formElement(element) }}
+                            </div>
                         </div>
-                    </div>
+                    {{ formLabel().closeTag() }}
                     <div class="errors">{{ formElementErrors(element) }}</div>
                 </div>
             {% else %}
                 <div class="row">
-                    <span class="label">
-                        {{ formLabel().openTag(element) }}
+                    {{ formLabel().openTag(element) }}
+                        <span class="label">
                             {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
-                        {{ formLabel().closeTag() }}
-                    </span>
-                    <span class="field">
-                        {{ formElement(element) }}
-                    </span>
+                        </span>
+                        <span class="field">
+                            {{ formElement(element) }}
+                        </span>
+                    {{ formLabel().closeTag() }}
                     <div class="errors">{{ formElementErrors(element) }}</div>
                 </div>
             {% endif %}
