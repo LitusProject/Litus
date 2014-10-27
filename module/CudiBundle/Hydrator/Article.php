@@ -48,7 +48,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
             ),
         );
 
-        $data['article']['author'] = $object->getAuthors();
+        $data['article']['authors'] = $object->getAuthors();
         $data['article']['publisher'] = $object->getPublishers();
         $data['article']['type'] = $object->getType();
 
@@ -61,8 +61,8 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
                 )
             );
 
-            $data['internal']['binding'] = $object->getBinding()->getId();
-            $data['internal']['front_color'] = $object->getFrontColor()->getId();
+            $data['internal']['binding'] = $object->getBinding() ? $object->getBinding()->getId() : '';
+            $data['internal']['front_color'] = $object->getFrontColor() ? $object->getFrontColor()->getId() : '';
             $data['internal']['rectoverso'] = $object->isRectoVerso();
         }
 
@@ -86,7 +86,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
         if (isset($data['article'])) {
             $this->stdHydrate($data['article'], $object, self::$article_keys);
 
-            $object->setAuthors($data['article']['author'])
+            $object->setAuthors($data['article']['authors'])
                 ->setPublishers($data['article']['publisher'])
                 ->setIsDownloadable($data['article']['downloadable'])
                 ->setIsSameAsPreviousYear($data['article']['same_as_previous_year'])

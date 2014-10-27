@@ -52,6 +52,7 @@ class Reply extends \CommonBundle\Component\Form\Bootstrap\Form
             'required'   => true,
             'attributes' => array(
                 'rows' => 5,
+                'id'   => 'reply',
             ),
             'options'    => array(
                 'input' => array(

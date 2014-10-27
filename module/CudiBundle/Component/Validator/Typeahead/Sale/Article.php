@@ -16,7 +16,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Component\Validator\Typeahead;
+namespace CudiBundle\Component\Validator\Typeahead\Sale;
 
 use Doctrine\ORM\EntityManager;
 
@@ -39,6 +39,6 @@ class Article extends \CommonBundle\Component\Validator\Typeahead
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
-        parent::__construct($entityManager, 'CudiBundle\Entity\Article', $opts);
+        parent::__construct($entityManager, 'CudiBundle\Entity\Sale\Article', $opts);
     }
 }

@@ -317,6 +317,7 @@ return array(
             '@common_permanent_modal',
             '@common_jquery_form',
             '@common_form_upload_progress',
+            '@display_form_error_js',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',
             '@bootstrap_js_transition',

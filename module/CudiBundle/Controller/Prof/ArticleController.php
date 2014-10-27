@@ -82,7 +82,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $academicYear
                     );
 
-                $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['mandatory']);
+                $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['subject']['mandatory']);
                 $mapping->setIsProf(true);
                 $this->getEntityManager()->persist($mapping);
 
@@ -251,7 +251,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $this->getEntityManager()->persist($action);
                     }
                 } else {
-                    $form->hydateObject($article);
+                    $form->hydrateObject($article);
 
                     $article->setIsDraft($formData['draft']);
                 }

@@ -36,6 +36,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required'   => true,
             'attributes' => array(
                 'rows' => 5,
+                'id'   => 'text',
             ),
             'options'    => array(
                 'input' => array(

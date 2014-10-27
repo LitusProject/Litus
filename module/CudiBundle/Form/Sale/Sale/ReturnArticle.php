@@ -20,7 +20,7 @@ namespace CudiBundle\Form\Sale\Sale;
 
 use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
     CudiBundle\Component\Validator\Sales\HasBought as HasBoughtValidator,
-    CudiBundle\Component\Validator\Typeahead\Article as ArticleTypeaheadValidator;
+    CudiBundle\Component\Validator\Typeahead\Sale\Article as SaleArticleTypeaheadValidator;
 
 /**
  * Return Sale
@@ -61,7 +61,7 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new ArticleTypeaheadValidator($this->getEntityManager()),
+                        new SaleArticleTypeaheadValidator($this->getEntityManager()),
                         new HasBoughtValidator($this->getEntityManager()),
                     ),
                 ),

@@ -158,15 +158,7 @@
                     } else if (data.errors) {
                         $('.flashmessage').removeClass('in');
                         $('#file_upload_error').addClass('in');
-                        $('#uploadFile').find('ul.errors').remove();
-                        $('#uploadFile').find('.form-group').removeClass('error');
-                        for(element in data.errors) {
-                            var list = $('<ul>', {'class': 'errors'});
-                            for (error in data.errors[element])
-                                list.append($('<li>').html(data.errors[element][error]));
-                            var div = $('<div>', {'class': 'help-block'}).append(list);
-                            $('#uploadFile').find('#' + element).closest('.form-group').addClass('error').find('.controls').append(div);
-                        }
+                        $('#uploadFile').displayFormErrors(data.errors);
                         $('#progressModal').permanentModal('hide');
                         $('#addFile').permanentModal('open');
                     } else if (data.info) {
