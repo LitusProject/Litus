@@ -56,14 +56,14 @@
                 </div>
             {% else %}
                 <div class="row">
-                    {{ formLabel().openTag(element) }}
-                        <span class="label">
+                    <span class="label">
+                        {{ formLabel().openTag(element) }}
                             {% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}
-                        </span>
-                        <span class="field">
-                            {{ formElement(element) }}
-                        </span>
-                    {{ formLabel().closeTag() }}
+                        {{ formLabel().closeTag() }}
+                    </span>
+                    <span class="field">
+                        {{ formElement(element) }}
+                    </span>
                     <div class="errors">{{ formElementErrors(element) }}</div>
                 </div>
             {% endif %}
