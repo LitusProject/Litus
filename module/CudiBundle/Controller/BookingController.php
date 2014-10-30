@@ -325,7 +325,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                 return new ViewModel();
             }
-            var_dump($form->getMessages());
         }
 
         $searchForm = $this->getForm('cudi_booking_search');

@@ -4,10 +4,10 @@
         $this.closest('.row').find('div.errors').html('');
         $.each(errors, function (name, childErrors) {
             if (typeof childErrors == 'string') {
-                var list = $this.closest('.row').find('div.errors ul.errors');
+                var list = $this.closest('.row').find('div.errors ul');
                 if (list.length == 0) {
-                    list = $('<ul>', {'class': 'errors'});
-                    $this.closest('.row').find('div.errors').after(list);
+                    list = $('<ul>');
+                    $this.closest('.row').find('div.errors').append(list);
                 }
                 list.append($('<li>').html(childErrors));
             } else {

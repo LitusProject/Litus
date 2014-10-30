@@ -104,7 +104,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $file = new File(
                 $this->getEntityManager(),
                 $fileName,
-                $originalName,
+                $formData['file']['name'],
                 $formData['description'],
                 $article,
                 $formData['printable']
@@ -131,26 +131,11 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                 )
             );
         } else {
-            $errors = $form->getMessages();
-            $formErrors = array();
-
-            foreach ($form->getElements() as $key => $element) {
-                if (!isset($errors[$element->getName()])) {
-                    continue;
-                }
-
-                $formErrors[$element->getAttribute('id')] = array();
-
-                foreach ($errors[$element->getName()] as $error) {
-                    $formErrors[$element->getAttribute('id')][] = $error;
-                }
-            }
-
             return new ViewModel(
                 array(
                     'status' => 'error',
                     'form' => array(
-                        'errors' => $formErrors,
+                        'errors' => $form->getMessages(),
                     ),
                 )
             );

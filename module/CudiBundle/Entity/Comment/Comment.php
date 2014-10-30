@@ -87,18 +87,17 @@ class Comment
      * @param string        $text          The content of the comment
      * @param string        $type          The type of the comment
      */
-    public function __construct(EntityManager $entityManager, Person $person, Article $article, $text, $type)
+    public function __construct(EntityManager $entityManager, Person $person, Article $article, $text = '', $type = null)
     {
         $this->person = $person;
-        $this->text = $text;
         $this->date = new DateTime();
 
         $entityManager->persist(new Mapping($article, $this));
 
-        if (!self::isValidCommentType($type)) {
-            throw new InvalidArgumentException('The comment type is not valid.');
+        $this->setText($text);
+        if (null !== $type) {
+            $this->setType($type);
         }
-        $this->type = $type;
     }
 
     /**
@@ -135,6 +134,17 @@ class Comment
     }
 
     /**
+     * @param  string $type
+     * @return self
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getSummary($length = 50)
@@ -156,5 +166,19 @@ class Comment
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @param  string $type
+     * @return self
+     */
+    public function setType($type)
+    {
+        if (!self::isValidCommentType($type)) {
+            throw new InvalidArgumentException('The comment type is not valid.');
+        }
+        $this->type = $type;
+
+        return $this;
     }
 }
