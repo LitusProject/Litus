@@ -16,7 +16,7 @@
         $(document).ready(function () {
             $('#type').change(function () {
                 if ($(this).find(':selected').val() == 'common') {
-                    $('#subjectSearch, #subjectId').val('');
+                    $('[name="subject[id]"], [name="subject[value]"]').val('');
                     $('#subject_form').hide();
                 } else {
                     $('#subject_form').show();
@@ -25,15 +25,15 @@
             $('#internal').click(toggleInternal);
             toggleInternal();
 
-            $('#subjectSearch').typeaheadRemote(
+            $('#subject_form\\[subject\\]').typeaheadRemote(
                 {
                     source: '{{ url("syllabus_admin_subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#subjectId').val($(this).data('value').id);
+                    $('[name="subject_form[subject][id]"]').val($(this).data('value').id);
                 } else {
-                    $('#subjectId').val('');
+                    $('[name="subject_form[subject][id]"]').val('');
                 }
             });
         });

@@ -51,7 +51,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
 
                 $subject = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Subject')
-                    ->findOneById($formData['subject_id']);
+                    ->findOneById($formData['subject']['id']);
 
                 $mapping = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article\SubjectMap')

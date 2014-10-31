@@ -80,21 +80,16 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->getEntityManager()->persist($article);
 
                 if ($formData['article']['type'] != 'common') {
-                    if ($formData['subject']['id'] == '') {
-                        $subject = $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\Subject')
-                            ->findOneByCode($formData['subject']['name']);
-                    } else {
-                        $subject = $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\Subject')
-                            ->findOneById($formData['subject']['id']);
-                    }
+                    $subject = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Subject')
+                        ->findOneById($formData['subject_form']['subject']['id']);
+
                     $mapping = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                         ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
 
                     if (null === $mapping) {
-                        $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
+                        $mapping = new SubjectMap($article, $subject, $academicYear, $formData['subject_form']['mandatory']);
                         $this->getEntityManager()->persist($mapping);
                         $this->getEntityManager()->persist(new SubjectMapAddedLog($this->getAuthentication()->getPersonObject(), $mapping));
                     }

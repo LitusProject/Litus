@@ -35,7 +35,7 @@ class Duplicate extends Add
 
         parent::init();
 
-        $this->remove('subject');
+        $this->remove('subject_form');
 
         $this->get('article')
             ->get('type')
@@ -51,5 +51,14 @@ class Duplicate extends Add
 
         // don't bind to the article, but extract its data
         $this->setData($this->getHydrator()->extract($this->article));
+    }
+
+    public function getInputFilterSpecification()
+    {
+        $specs = parent::getInputFilterSpecification();
+
+        unset($specs['article']['type']);
+
+        return $specs;
     }
 }

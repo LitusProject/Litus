@@ -98,7 +98,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('CudiBundle\Entity\Article\Option\Binding')
                 ->findOneById($data['internal']['binding']);
 
-            $frontColor = $this->getEntityManager()
+            $frontPageColor = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\Option\Color')
                 ->findOneById($data['internal']['front_color']);
 
