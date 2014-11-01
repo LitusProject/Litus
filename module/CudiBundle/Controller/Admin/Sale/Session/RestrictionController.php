@@ -40,7 +40,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             ->getRepository('CudiBundle\Entity\Sale\Session\Restriction')
             ->findBySession($session);
 
-        $form = $this->getForm('cudi_sales_session_restriction_add', array(
+        $form = $this->getForm('cudi_sale_session_restriction_add', array(
             'session' => $session,
         ));
 

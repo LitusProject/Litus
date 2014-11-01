@@ -51,7 +51,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        $form = $this->getForm('cudi_sales_session_add');
+        $form = $this->getForm('cudi_sale_session_add');
 
         $lastSession = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session')
@@ -103,7 +103,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
         $session->setEntityManager($this->getEntityManager());
 
-        $form = $this->getForm('cudi_sales_session_comment', array(
+        $form = $this->getForm('cudi_sale_session_comment', array(
             'session' => $session,
         ));
 
@@ -162,7 +162,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneByCashRegister($cashRegister);
 
-        $form = $this->getForm('cudi_sales_session_edit', array(
+        $form = $this->getForm('cudi_sale_session_edit', array(
             'cash_register' => $cashRegister,
         ));
 
@@ -205,7 +205,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
         $session->setEntityManager($this->getEntityManager());
 
-        $form = $this->getForm('cudi_sales_session_close', array(
+        $form = $this->getForm('cudi_sale_session_close', array(
             'cash_register' => $session->getOpenRegister(),
         ));
 

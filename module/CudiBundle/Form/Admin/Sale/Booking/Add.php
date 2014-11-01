@@ -16,19 +16,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Sale\Sale;
+namespace CudiBundle\Form\Admin\Sale\Booking;
 
 use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
-    CudiBundle\Component\Validator\Sale\HasBought as HasBoughtValidator,
     CudiBundle\Component\Validator\Typeahead\Sale\Article as SaleArticleTypeaheadValidator;
 
 /**
- * Return Sale
+ * Add Booking
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'CudiBundle\Hydrator\Sale\Booking';
+
     public function init()
     {
         parent::init();
@@ -39,7 +40,8 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'      => 'Person',
             'required'   => true,
             'attributes' => array(
-                'placeholder'  => 'Student',
+                'id'           => 'person',
+                'style'        => 'width: 400px;',
             ),
             'options'    => array(
                 'input' => array(
@@ -56,27 +58,46 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'      => 'Article',
             'required'   => true,
             'attributes' => array(
-                'placeholder'  => 'Article',
+                'id'           => 'article',
+                'style'        => 'width: 400px;',
             ),
             'options'    => array(
                 'input' => array(
-                    'validators' => array(
+                    'validators'  => array(
                         new SaleArticleTypeaheadValidator($this->getEntityManager()),
-                        new HasBoughtValidator($this->getEntityManager()),
                     ),
                 ),
             ),
         ));
 
-        $this->addSubmit('Return', null, 'submit', array(
-            'autocomplete' => 'off',
-            'id'           => 'signin',
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'amount',
+            'label'      => 'Amount',
+            'required'   => true,
+            'attributes' => array(
+                'autocomplete' => 'off',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                        array(
+                            'name' => 'greaterthan',
+                            'options' => array(
+                                'min' => 0,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         ));
 
-        $this->add(array(
-            'type'  => 'reset',
-            'name'  => 'cancel',
-            'value' => 'Cancel',
-        ));
+        $this->addSubmit('Add', 'booking_add');
     }
 }

@@ -36,7 +36,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_sales_article_restrictions_add', array('article' => $article));
+        $form = $this->getForm('cudi_sale_article_restriction_add', array('article' => $article));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

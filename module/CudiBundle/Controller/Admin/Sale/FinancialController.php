@@ -120,7 +120,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
         $organizationsList = array();
         $data = array();
 
-        $form = $this->getForm('cudi_sales_financial_period');
+        $form = $this->getForm('cudi_sale_financial_period');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

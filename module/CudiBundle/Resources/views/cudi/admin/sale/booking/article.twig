@@ -59,20 +59,20 @@
 
             $('#search').click(function (e) {
                 e.preventDefault();
-                if (isNaN(parseFloat($('#articleId').val())) || $('#articleId').val() == '')
+                if (isNaN(parseFloat($('[name="article[id]"]').val())) || $('[name="article[id]"]').val() == '')
                     return;
-                window.location.href = '{{ url("cudi_admin_sales_booking", {'action': 'article'}) }}' + $('#articleId').val();
+                window.location.href = '{{ url("cudi_admin_sales_booking", {'action': 'article'}) }}' + $('[name="article[id]"]').val();
             });
 
-            $('#articleSearch').typeaheadRemote(
+            $('#article').typeaheadRemote(
                 {
                     source: '{{ url("cudi_admin_sales_article_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#articleId').val($(this).data('value').id);
+                    $('[name="article[id]"]').val($(this).data('value').id);
                 } else {
-                    $('#articleId').val('');
+                    $('[name="article[id]"]').val('');
                 }
             });
         });

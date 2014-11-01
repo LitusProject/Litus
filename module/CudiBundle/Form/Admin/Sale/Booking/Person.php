@@ -16,18 +16,16 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Sale\Sale;
+namespace CudiBundle\Form\Admin\Sale\Booking;
 
-use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
-    CudiBundle\Component\Validator\Sale\HasBought as HasBoughtValidator,
-    CudiBundle\Component\Validator\Typeahead\Sale\Article as SaleArticleTypeaheadValidator;
+use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
 
 /**
- * Return Sale
+ * Booking by person
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
+class Person extends \CommonBundle\Component\Form\Admin\Form
 {
     public function init()
     {
@@ -39,7 +37,8 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'      => 'Person',
             'required'   => true,
             'attributes' => array(
-                'placeholder'  => 'Student',
+                'id'           => 'person',
+                'style'        => 'width: 400px;',
             ),
             'options'    => array(
                 'input' => array(
@@ -51,32 +50,13 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'article',
-            'label'      => 'Article',
-            'required'   => true,
+            'type'       => 'submit',
+            'name'       => 'submit',
+            'value'      => 'Search',
             'attributes' => array(
-                'placeholder'  => 'Article',
+                'class' => 'booking',
+                'id'    => 'search',
             ),
-            'options'    => array(
-                'input' => array(
-                    'validators' => array(
-                        new SaleArticleTypeaheadValidator($this->getEntityManager()),
-                        new HasBoughtValidator($this->getEntityManager()),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->addSubmit('Return', null, 'submit', array(
-            'autocomplete' => 'off',
-            'id'           => 'signin',
-        ));
-
-        $this->add(array(
-            'type'  => 'reset',
-            'name'  => 'cancel',
-            'value' => 'Cancel',
         ));
     }
 }

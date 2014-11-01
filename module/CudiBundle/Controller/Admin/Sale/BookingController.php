@@ -126,26 +126,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $academicYear = $this->getAcademicYear();
 
-        $form = $this->getForm('cudi_sales_booking_add');
+        $form = $this->getForm('cudi_sale_booking_add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $booking = new Booking(
-                    $this->getEntityManager(),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneById($formData['person_id']),
-                    $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Article')
-                        ->findOneById($formData['article_id']),
-                    'booked',
-                    $formData['amount'],
-                    true
-                );
+                $booking = $form->hydrateObject();
 
                 $this->getEntityManager()->persist($booking);
 
@@ -635,7 +622,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function personAction()
     {
-        $form = $this->getForm('cudi_sales_booking_person');
+        $form = $this->getForm('cudi_sale_booking_person');
 
         if ($person = $this->_getPerson()) {
             $paginator = $this->paginator()->createFromQuery(
@@ -668,7 +655,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_sales_booking_article');
+        $form = $this->getForm('cudi_sale_booking_article');
 
         if ($article = $this->_getArticle()) {
             $paginator = $this->paginator()->createFromQuery(
