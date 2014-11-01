@@ -39,9 +39,6 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        // XXX why remove the CSRF?
-        $this->remove('csrf');
-
         $this->add(array(
             'type'    => 'hidden',
             'name'    => 'email',
