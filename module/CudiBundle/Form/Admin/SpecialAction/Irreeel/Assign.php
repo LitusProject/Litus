@@ -16,7 +16,9 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Admin\SpecialActions\Irreeel;
+namespace CudiBundle\Form\Admin\SpecialAction\Irreeel;
+
+use CudiBundle\Component\Validator\Typeahead\Sale\Article as SaleArticleTypeaheadValidator;
 
 /**
  * Assign Ir.Reëel
@@ -30,42 +32,18 @@ class Assign extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'article_id',
-            'attributes' => array(
-                'id' => 'articleId',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
+            'type'       => 'typeahead',
             'name'       => 'article',
             'label'      => 'Article',
             'required'   => true,
             'attributes' => array(
-                'autocomplete' => 'off',
-                'class'        => 'disableEnter',
-                'data-provide' => 'typeahead',
-                'id'           => 'articleSearch',
+                'id'           => 'article',
                 'style'        => 'width: 400px;',
             ),
             'options'    => array(
                 'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+                    'validators'  => array(
+                        new SaleArticleTypeaheadValidator($this->getEntityManager()),
                     ),
                 ),
             ),
