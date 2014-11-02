@@ -18,14 +18,28 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use CommonBundle\Component\Form\ElementTrait;
+use CommonBundle\Component\Form\ElementTrait,
+    Zend\Form\FormInterface;
 
 /**
  * Textarea form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Textarea extends \Zend\Form\Element\Textarea implements \CommonBundle\Component\Form\ElementInterface
+class Textarea extends \Zend\Form\Element\Textarea implements \CommonBundle\Component\Form\ElementInterface, \Zend\Form\ElementPrepareAwareInterface
 {
     use ElementTrait;
+
+    /**
+     * Prepare the form element (mostly used for rendering purposes)
+     *
+     * @param  FormInterface $form
+     * @return mixed
+     */
+    public function prepareElement(FormInterface $form)
+    {
+        if (!$this->hasAttribute('id')) {
+            $this->setAttribute('id', md5($this->getName() . rand()));
+        }
+    }
 }

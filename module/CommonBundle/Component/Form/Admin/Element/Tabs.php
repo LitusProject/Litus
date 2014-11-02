@@ -18,12 +18,13 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
+use Zend\Form\FormInterface;
 /**
  * Tabs
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Tabs extends \Zend\Form\Element
+class Tabs extends \Zend\Form\Element implements \Zend\Form\ElementPrepareAwareInterface
 {
     /**
      * Seed attributes
@@ -66,5 +67,18 @@ class Tabs extends \Zend\Form\Element
         $this->attributes['tabs'] = array_merge($this->attributes['tabs'], $tab);
 
         return $this;
+    }
+
+    /**
+     * Prepare the form element (mostly used for rendering purposes)
+     *
+     * @param  FormInterface $form
+     * @return mixed
+     */
+    public function prepareElement(FormInterface $form)
+    {
+        if (!$this->hasAttribute('id')) {
+            $this->setAttribute('id', md5($this->getName() . rand()));
+        }
     }
 }

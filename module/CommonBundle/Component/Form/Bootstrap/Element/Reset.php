@@ -18,14 +18,15 @@
 
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
-use CommonBundle\Component\Form\ElementTrait;
+use CommonBundle\Component\Form\ElementTrait,
+    Zend\Form\FormInterface;
 
 /**
  * Reset form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Reset extends \Zend\Form\Element\Submit implements \CommonBundle\Component\Form\ElementInterface
+class Reset extends \Zend\Form\Element\Submit implements \CommonBundle\Component\Form\ElementInterface, \Zend\Form\ElementPrepareAwareInterface
 {
     use ElementTrait;
 
@@ -41,5 +42,18 @@ class Reset extends \Zend\Form\Element\Submit implements \CommonBundle\Component
     public function init()
     {
         $this->addClass('btn btn-default');
+    }
+
+    /**
+     * Prepare the form element (mostly used for rendering purposes)
+     *
+     * @param  FormInterface $form
+     * @return mixed
+     */
+    public function prepareElement(FormInterface $form)
+    {
+        if (!$this->hasAttribute('id')) {
+            $this->setAttribute('id', md5($this->getName() . rand()));
+        }
     }
 }

@@ -18,14 +18,28 @@
 
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
-use CommonBundle\Component\Form\ElementTrait;
+use CommonBundle\Component\Form\ElementTrait,
+    Zend\Form\FormInterface;
 
 /**
  * Checkbox form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Checkbox extends \Zend\Form\Element\Checkbox implements \CommonBundle\Component\Form\ElementInterface
+class Checkbox extends \Zend\Form\Element\Checkbox implements \CommonBundle\Component\Form\ElementInterface, \Zend\Form\ElementPrepareAwareInterface
 {
     use ElementTrait;
+
+    /**
+     * Prepare the form element (mostly used for rendering purposes)
+     *
+     * @param  FormInterface $form
+     * @return mixed
+     */
+    public function prepareElement(FormInterface $form)
+    {
+        if (!$this->hasAttribute('id')) {
+            $this->setAttribute('id', md5($this->getName() . rand()));
+        }
+    }
 }

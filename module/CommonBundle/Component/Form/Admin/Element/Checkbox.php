@@ -18,11 +18,25 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
+use Zend\Form\FormInterface;
+
 /**
  * Checkbox form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Checkbox extends \Zend\Form\Element\Checkbox
+class Checkbox extends \Zend\Form\Element\Checkbox implements \Zend\Form\ElementPrepareAwareInterface
 {
+    /**
+     * Prepare the form element (mostly used for rendering purposes)
+     *
+     * @param  FormInterface $form
+     * @return mixed
+     */
+    public function prepareElement(FormInterface $form)
+    {
+        if (!$this->hasAttribute('id')) {
+            $this->setAttribute('id', md5($this->getName() . rand()));
+        }
+    }
 }

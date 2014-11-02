@@ -18,14 +18,29 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use CommonBundle\Component\Form\ElementTrait;
+use CommonBundle\Component\Form\ElementTrait,
+    Zend\Form\FormInterface;
 
 /**
  * Text form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Text extends \Zend\Form\Element\Text implements \CommonBundle\Component\Form\ElementInterface
+class Text extends \Zend\Form\Element\Text implements \CommonBundle\Component\Form\ElementInterface, \Zend\Form\ElementPrepareAwareInterface
 {
     use ElementTrait;
+
+    /**
+     * Prepare the form element (mostly used for rendering purposes)
+     *
+     * @param  FormInterface $form
+     * @return mixed
+     */
+    public function prepareElement(FormInterface $form)
+    {
+        echo rand() . ' - ';
+        if (!$this->hasAttribute('id')) {
+            $this->setAttribute('id', md5($this->getName() . rand() . rand()));
+        }
+    }
 }
