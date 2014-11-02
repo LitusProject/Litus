@@ -326,7 +326,9 @@
             {% if showCookieBanner %}
                 $('.cookie-permission').click(function () {
                     $('.cookie-banner').hide();
-                    document.cookie="cookie_permission=true";
+                    var d = new Date();
+                    d.setTime(d.getTime() + (31*24*60*60*1000));
+                    document.cookie="cookie_permission=true;expires="+d.toUTCString();
                 });
 
                 $('.view-cookie-policy').click(function (e) {

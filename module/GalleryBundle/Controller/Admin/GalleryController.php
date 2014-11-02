@@ -235,7 +235,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $upload = new FileUpload();
-        $upload->addValidator(new SizeValidator(array('max' => '5MB')));
+        $upload->addValidator(new SizeValidator(array('max' => '15mb')));
         $upload->addValidator(new ImageValidator(array('mimeType' => 'image/jpeg')));
 
         if ($upload->isValid()) {

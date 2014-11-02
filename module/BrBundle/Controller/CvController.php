@@ -67,11 +67,11 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findOneByAcademic($person);
 
-        if (!$entry) {
+        if ($entry !== null) {
             $this->redirect()->toRoute(
                 'br_cv_index',
                 array(
-                    'action' => 'cv',
+                    'action' => 'edit',
                 )
             );
 
