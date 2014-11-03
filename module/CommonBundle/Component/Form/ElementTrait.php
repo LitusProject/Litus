@@ -18,6 +18,8 @@
 
 namespace CommonBundle\Component\Form;
 
+use Zend\Form\FormInterface;
+
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
@@ -120,6 +122,19 @@ trait ElementTrait
         $config['name'] = $this->getName();
 
         return $config;
+    }
+
+    /**
+     * Prepare the form element (mostly used for rendering purposes)
+     *
+     * @param  FormInterface $form
+     * @return mixed
+     */
+    public function prepareElement(FormInterface $form)
+    {
+        if (!$this->hasAttribute('id')) {
+            $this->setAttribute('id', md5($this->getName() . rand() . rand()));
+        }
     }
 
     // The following methods are required by the trait

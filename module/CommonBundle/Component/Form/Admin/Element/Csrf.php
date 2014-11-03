@@ -18,7 +18,7 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use Zend\Form\FormInterface;
+use CommonBundle\Component\Form\ElementTrait;
 
 /**
  * CSRF form element
@@ -26,18 +26,7 @@ use Zend\Form\FormInterface;
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Csrf extends \Zend\Form\Element\Csrf implements \Zend\Form\ElementPrepareAwareInterface
+class Csrf extends \Zend\Form\Element\Csrf
 {
-    /**
-     * Prepare the form element (mostly used for rendering purposes)
-     *
-     * @param  FormInterface $form
-     * @return mixed
-     */
-    public function prepareElement(FormInterface $form)
-    {
-        if (!$this->hasAttribute('id')) {
-            $this->setAttribute('id', md5($this->getName() . rand()));
-        }
-    }
+    use ElementTrait;
 }

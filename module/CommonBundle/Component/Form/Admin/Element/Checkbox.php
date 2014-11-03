@@ -18,7 +18,7 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use Zend\Form\FormInterface;
+use CommonBundle\Component\Form\ElementTrait;
 
 /**
  * Checkbox form element
@@ -27,16 +27,5 @@ use Zend\Form\FormInterface;
  */
 class Checkbox extends \Zend\Form\Element\Checkbox implements \Zend\Form\ElementPrepareAwareInterface
 {
-    /**
-     * Prepare the form element (mostly used for rendering purposes)
-     *
-     * @param  FormInterface $form
-     * @return mixed
-     */
-    public function prepareElement(FormInterface $form)
-    {
-        if (!$this->hasAttribute('id')) {
-            $this->setAttribute('id', md5($this->getName() . rand()));
-        }
-    }
+    use ElementTrait;
 }

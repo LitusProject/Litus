@@ -18,15 +18,14 @@
 
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
-use CommonBundle\Component\Form\ElementTrait,
-    Zend\Form\FormInterface;
+use CommonBundle\Component\Form\ElementTrait;
 
 /**
  * Select form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Select extends \Zend\Form\Element\Select implements \CommonBundle\Component\Form\ElementInterface, \Zend\Form\ElementPrepareAwareInterface
+class Select extends \Zend\Form\Element\Select implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
 
@@ -38,18 +37,5 @@ class Select extends \Zend\Form\Element\Select implements \CommonBundle\Componen
                 'class' => 'col-sm-2 control-label',
             )
         );
-    }
-
-    /**
-     * Prepare the form element (mostly used for rendering purposes)
-     *
-     * @param  FormInterface $form
-     * @return mixed
-     */
-    public function prepareElement(FormInterface $form)
-    {
-        if (!$this->hasAttribute('id')) {
-            $this->setAttribute('id', md5($this->getName() . rand()));
-        }
     }
 }

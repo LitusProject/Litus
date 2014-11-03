@@ -18,15 +18,14 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use CommonBundle\Component\Form\ElementTrait,
-    Zend\Form\FormInterface;
+use CommonBundle\Component\Form\ElementTrait;
 
 /**
  * File form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Form\ElementInterface, \Zend\Form\ElementPrepareAwareInterface
+class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait {
         ElementTrait::getInputSpecification as getTraitInputSpecification;
@@ -38,18 +37,5 @@ class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Fo
         $specification['type'] = 'Zend\InputFilter\FileInput';
 
         return $specification;
-    }
-
-    /**
-     * Prepare the form element (mostly used for rendering purposes)
-     *
-     * @param  FormInterface $form
-     * @return mixed
-     */
-    public function prepareElement(FormInterface $form)
-    {
-        if (!$this->hasAttribute('id')) {
-            $this->setAttribute('id', md5($this->getName() . rand()));
-        }
     }
 }

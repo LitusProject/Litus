@@ -18,33 +18,19 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use CommonBundle\Component\Form\ElementTrait,
-    Zend\Form\FormInterface;
+use CommonBundle\Component\Form\ElementTrait;
 
 /**
  * Radio form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Radio extends \Zend\Form\Element\Radio implements \CommonBundle\Component\Form\ElementInterface, \Zend\Form\ElementPrepareAwareInterface
+class Radio extends \Zend\Form\Element\Radio implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
 
     public function init()
     {
         $this->setLabelAttributes(array('class' => 'radio'));
-    }
-
-    /**
-     * Prepare the form element (mostly used for rendering purposes)
-     *
-     * @param  FormInterface $form
-     * @return mixed
-     */
-    public function prepareElement(FormInterface $form)
-    {
-        if (!$this->hasAttribute('id')) {
-            $this->setAttribute('id', md5($this->getName() . rand()));
-        }
     }
 }
