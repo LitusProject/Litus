@@ -58,11 +58,14 @@ class Edit extends Add
     private function _populateFromShift(Shift $shift)
     {
         $academic = $shift->getManager();
-
+        //print_r($shift->getEditRoles());
+            //$a = $b;
         $data = array(
             'manager_id' => $shift->getManager()->getId(),
             'start_date' => $shift->getStartDate()->format('d/m/Y H:i'),
             'end_date' => $shift->getEndDate()->format('d/m/Y H:i'),
+
+            'edit_roles' => $this->_createRolesPopulationArray($shift->getEditRoles()),
             'manager' => $academic->getFullName() . ($academic instanceof Academic ? ' - ' . $academic->getUniversityIdentification() : ''),
             'nb_responsibles' => $shift->getNbResponsibles(),
             'nb_volunteers' => $shift->getNbVolunteers(),
@@ -76,5 +79,25 @@ class Edit extends Add
         );
 
         $this->setData($data);
+    }
+
+    /**
+     * Returns an array that is in the right format to populate the roles field.
+     *
+     * @param  array $roles The shifts's edit roles
+     * @return array
+     */
+    private function _createRolesPopulationArray(array $roles)
+    {
+        $rolesArray = array();
+        foreach ($roles as $role) {
+            if ($role->getSystem()) {
+                continue;
+            }
+
+            $rolesArray[] = $role->getName();
+        }
+
+        return $rolesArray;
     }
 }
