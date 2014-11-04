@@ -21,6 +21,11 @@ namespace CommonBundle\Component\Form\Admin\Element;
 use Traversable,
     Zend\Stdlib\ArrayUtils;
 
+/**
+ * Typeahead form element
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class TypeAhead extends \CommonBundle\Component\Form\Fieldset
 {
     public function init()

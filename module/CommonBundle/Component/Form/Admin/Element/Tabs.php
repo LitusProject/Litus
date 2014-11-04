@@ -25,9 +25,9 @@ use CommonBundle\Component\Form\ElementTrait;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Tabs extends \Zend\Form\Element implements \Zend\Form\ElementPrepareAwareInterface
+class Tabs extends \Zend\Form\Element implements \CommonBundle\Component\Form\ElementInterface
 {
-    use ElementTrait;//exclude
+    use ElementTrait;
 
     /**
      * Seed attributes
