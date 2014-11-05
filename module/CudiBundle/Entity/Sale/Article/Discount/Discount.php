@@ -393,10 +393,10 @@ class Discount
      *
      * @return boolean
      */
-    public function alreadyApplied(Article $article, Person $person, EntityManager $entityManager)
+    public function alreadyApplied(Article $article, Person $person, EntityManager $entityManager, AcademicYear $academicYear)
     {
         return $entityManager->getRepository('CudiBundle\Entity\Sale\SaleItem')
-            ->findOneByArticleAndPersonAndDiscountType($article, $person, $this->getRawType()) != null;
+            ->findOneByArticleAndPersonAndDiscountType($article, $person, $this->getRawType(), $academicYear) != null;
     }
 
     /**

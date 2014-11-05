@@ -1063,22 +1063,27 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
-    public function findOneByArticleAndPersonAndDiscountType(ArticleEntity $article, Person $person, $discountType)
+    public function findOneByArticleAndPersonAndDiscountType(ArticleEntity $article, Person $person, $discountType, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.queueItem', 'q')
+            ->innerJoin('i.session', 's')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('q.person', ':person'),
                     $query->expr()->eq('i.article', ':article'),
-                    $query->expr()->eq('i.discountType', ':discountType')
+                    $query->expr()->eq('i.discountType', ':discountType'),
+                    $query->expr()->gt('s.openDate', ':start'),
+                    $query->expr()->lt('s.openDate', ':end')
                 )
             )
             ->setParameter('person', $person->getId())
             ->setParameter('article', $article->getId())
             ->setParameter('discountType', $discountType)
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate())
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
