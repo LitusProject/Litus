@@ -52,8 +52,23 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
                 ? ''
                 : $object->getEvent()->getId();
         $data['location'] = $object->getLocation()->getId();
+        $data['edit_roles'] = $this->_createRolesPopulationArray($object->getEditRoles());
 
         return $data;
+    }
+
+    private function _createRolesPopulationArray(array $roles)
+    {
+        $rolesArray = array();
+        foreach ($roles as $role) {
+            if ($role->getSystem()) {
+                continue;
+            }
+
+            $rolesArray[] = $role->getName();
+        }
+
+        return $rolesArray;
     }
 
     protected function doHydrate(array $data, $object = null)
