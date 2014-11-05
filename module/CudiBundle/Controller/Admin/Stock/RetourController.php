@@ -93,7 +93,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYear()->getCode(true);
 
-        $form = $this->getForm('cudi_stock_deliveries_retour', array(
+        $form = $this->getForm('cudi_stock_delivery_retour', array(
             'barcode_prefix' => $prefix,
         ));
 
@@ -105,7 +105,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($formData['article_id']);
+                    ->findOneById($formData['article']['id']);
 
                 $item = new Retour($article, $formData['number'], $this->getAuthentication()->getPersonObject(), $formData['comment']);
                 $this->getEntityManager()->persist($item);

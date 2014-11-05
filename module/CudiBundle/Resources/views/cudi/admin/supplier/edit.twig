@@ -1,1 +1,28 @@
-{% extends 'cudi/admin/supplier/add.twig' %}
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/supplier/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    <aside>
+        {% if hasAccess('cudi_admin_supplier_user', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Users</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the users!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('cudi_admin_supplier_user', {"action": "manage", "id": supplier.getId()}) }}">&rarr; Manage Users</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}

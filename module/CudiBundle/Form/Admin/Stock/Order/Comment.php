@@ -16,7 +16,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Admin\Stock\Orders;
+namespace CudiBundle\Form\Admin\Stock\Order;
 
 use CudiBundle\Entity\Stock\Order\Order,
     LogicException;

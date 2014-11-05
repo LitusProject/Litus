@@ -16,46 +16,22 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Admin\Stock\Orders;
-
-use CudiBundle\Entity\Stock\Order\Item,
-    LogicException;
+namespace CudiBundle\Form\Admin\Stock\Delivery;
 
 /**
- * Edit Order
+ * Add Delivery Directly
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends \CommonBundle\Component\Form\Admin\Form
+class AddDirect extends Add
 {
-    /**
-     * @var Item|null
-     */
-    private $item;
-
     public function init()
     {
-        if (null === $this->item) {
-            throw new LogicException('Cannot edit a null order item.');
-        }
-
         parent::init();
 
-        $this->get('number')
-            ->setValue($this->item->getNumber());
+        $this->remove('article');
 
         $this->remove('add')
-            ->addSubmit('Save', 'stock_edit', 'edit');
-    }
-
-    /**
-     * @param  Item $item
-     * @return self
-     */
-    public function setItem(Item $item)
-    {
-        $this->item = $item;
-
-        return $this;
+            ->addSubmit('Add', 'stock_add', 'add_delivery', array('id' => 'add_delivery'));
     }
 }

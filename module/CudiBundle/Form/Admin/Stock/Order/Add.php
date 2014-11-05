@@ -16,10 +16,12 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Admin\Stock\Deliveries;
+namespace CudiBundle\Form\Admin\Stock\Order;
+
+use CudiBundle\Component\Validator\Typeahead\Sale\Article as SaleArticleTypeaheadValidator;
 
 /**
- * Add Delivery
+ * Add Order
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -34,54 +36,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->setAttribute('id', 'deliveryForm');
-
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'add_with_virtual_order',
-            'attributes' => array(
-                'id' => 'addWithVirtualOrder',
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'article_id',
-            'attributes' => array(
-                'id' => 'articleId',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
+            'type'       => 'typeahead',
             'name'       => 'article',
             'label'      => 'Article',
             'required'   => true,
             'value'      => $this->barcodePrefix,
             'attributes' => array(
-                'autocomplete' => 'off',
-                'class'        => 'disableEnter',
-                'data-provide' => 'typeahead',
-                'id'           => 'articleSearch',
+                'id'           => 'article',
                 'style'        => 'width: 400px;',
             ),
             'options'    => array(
                 'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+                    'validators'  => array(
+                        new SaleArticleTypeaheadValidator($this->getEntityManager()),
                     ),
                 ),
             ),
@@ -94,7 +62,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required'   => true,
             'attributes' => array(
                 'autocomplete' => 'off',
-                'id'           => 'delivery_number',
+                'id'           => 'order_number',
             ),
             'options'    => array(
                 'input' => array(
@@ -116,7 +84,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $this->addSubmit('Add', 'stock_add', 'add', array('id' => 'stock_add'));
+        $this->addSubmit('Add', 'stock_add', 'add', array(
+            'data-help' => '<p>The article will be added to the order queue. This way a group of articles can be ordered for the same supplier.<p>
+                <p>To finish the order, you have to \'place\' it, this can be done by editing the order.</p>',
+            'id'        => 'stock_add',
+        ));
     }
 
     /**

@@ -16,27 +16,33 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Admin\Stock\Orders;
+namespace CudiBundle\Form\Admin\Stock\Delivery;
 
 /**
- * Add Order Directly
+ * Return to supplier (inverse of delivery)
+ *
+ * (named so because php complains when 'Return' is used)
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class AddDirect extends Add
+class Retour extends Add
 {
     public function init()
     {
         parent::init();
 
-        $this->remove('article_id')
-            ->remove('article');
-
-        $this->remove('add')
-            ->addSubmit('Add', 'stock_add', 'add_order', array(
-                'data-help' => '<p>The article will be added to the order queue. This way a group of articles can be ordered for the same supplier.<p>
-                    <p>To finish the order, you have to \'place\' it, this can be done by editing the order.</p>',
-                'id'        => 'stock_add',
-            ));
+        $this->add(array(
+            'type'     => 'textarea',
+            'name'     => 'comment',
+            'label'    => 'Comment',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
     }
 }

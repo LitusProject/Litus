@@ -199,8 +199,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $deliveryForm = $this->getForm('cudi_stock_deliveries_add-direct');
-        $orderForm = $this->getForm('cudi_stock_orders_add-direct');
+        $deliveryForm = $this->getForm('cudi_stock_delivery_add-direct');
+        $orderForm = $this->getForm('cudi_stock_order_add-direct');
         $stockForm = $this->getForm('cudi_stock_update', array('article' => $article));
 
         $virtual = $this->getEntityManager()

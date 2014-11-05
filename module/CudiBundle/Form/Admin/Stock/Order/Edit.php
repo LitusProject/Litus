@@ -16,38 +16,48 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CudiBundle\Form\Admin\Stock\Deliveries;
+namespace CudiBundle\Form\Admin\Stock\Order;
+
+use CudiBundle\Entity\Stock\Order\Item,
+    LogicException;
 
 /**
- * Return to supplier (inverse of delivery)
- *
- * (named so because php complains when 'Return' is used)
+ * Edit Order
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Retour extends Add
+class Edit extends Add
 {
+    /**
+     * @var Item|null
+     */
+    private $item;
+
     public function init()
     {
+        if (null === $this->item) {
+            throw new LogicException('Cannot edit a null order item.');
+        }
+
         parent::init();
 
-        $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'comment',
-            'label'    => 'Comment',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
+        $this->remove('article');
 
-        $field = new Textarea('comment');
-        $field->setLabel('Comment')
-            ->setRequired();
-        $this->add($field);
+        $this->get('number')
+            ->setValue($this->item->getNumber());
+
+        $this->remove('add')
+            ->addSubmit('Save', 'stock_edit', 'edit');
+    }
+
+    /**
+     * @param  Item $item
+     * @return self
+     */
+    public function setItem(Item $item)
+    {
+        $this->item = $item;
+
+        return $this;
     }
 }

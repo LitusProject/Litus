@@ -115,6 +115,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'form' => $form,
+                'supplier' => $supplier,
             )
         );
     }
