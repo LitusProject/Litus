@@ -28,9 +28,7 @@ use CommonBundle\Component\PassKit\Pass\Membership,
     Imagick,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
-    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -496,15 +494,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     {
         $form = $this->getForm('common_account_profile');
 
-        $upload = new FileUpload();
-        $inputFilter = $form->getInputFilter()->get('profile');
-        if ($inputFilter instanceof InputInterface) {
-            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
-        }
-
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
             $academic = $this->getAuthentication()->getPersonObject();
             $filePath = 'public' . $this->getEntityManager()
@@ -512,11 +506,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->getConfigValue('common.profile_path');
 
             if ($form->isValid()) {
-                if ($upload->isValid()) {
-                    $upload->receive();
+                $formData = $form->getData();
 
-                    $image = new Imagick($upload->getFileName('profile'));
-                    unlink($upload->getFileName('profile'));
+                if ($formData['profile']) {
+                    $image = new Imagick($formData['profile']['tmp_name']);
                 } else {
                     $image = new Imagick($filePath . '/' . $academic->getPhotoPath());
                 }
@@ -557,31 +550,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     )
                 );
             } else {
-                $errors = $form->getMessages();
-                $formErrors = array();
-
-                foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()])) {
-                        continue;
-                    }
-
-                    $formErrors[$element->getAttribute('id')] = array();
-
-                    foreach ($errors[$element->getName()] as $error) {
-                        $formErrors[$element->getAttribute('id')][] = $error;
-                    }
-                }
-
-                if (sizeof($upload->getMessages()) > 0) {
-                    $formErrors['profile'] = $upload->getMessages();
-                }
-
                 return new ViewModel(
                     array(
                         'result' => array(
                             'status' => 'error',
                             'form' => array(
-                                'errors' => $formErrors,
+                                'errors' => $form->getMessages(),
                             ),
                         ),
                     )

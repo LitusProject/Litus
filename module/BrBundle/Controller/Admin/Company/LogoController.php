@@ -20,8 +20,6 @@ namespace BrBundle\Controller\Admin\Company;
 
 use BrBundle\Entity\Company\Logo,
     Imagick,
-    Zend\File\Transfer\Adapter\Http as FileTransfer,
-    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
