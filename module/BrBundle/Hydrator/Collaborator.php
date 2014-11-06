@@ -16,40 +16,32 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BannerBundle\Hydrator\Node;
+namespace BrBundle\Hydrator;
 
-use BannerBundle\Entity\Node\Banner as BannerEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidDateException,
-    DateTime;
+use BrBundle\Entity\Collaborator as CollaboratorEntity;
 
 /**
- * This hydrator hydrates/extracts Banner data.
+ * This hydrator hydrates/extracts Collaborator data.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Banner extends \CommonBundle\Component\Hydrator\Hydrator
+class Collaborator extends \CommonBundle\Component\Hydrator\Hydrator
 {
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $std_keys = array('name', 'active', 'url');
+    private static $std_keys = array('number');
 
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new BannerEntity($this->getPerson());
+            $object = new CollaboratorEntity(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person')
+                    ->findOneById($data['person']['id'])
+            );
         }
-
-        $startDate = self::loadDateTime($data['start_date']);
-        $endDate = self::loadDateTime($data['end_date']);
-
-        if (null === $startDate || null === $endDate) {
-            throw new InvalidDateException();
-        }
-
-        $object->setStartDate($startDate)
-            ->setEndDate($endDate);
 
         return $this->stdHydrate($data, $object, self::$std_keys);
     }
@@ -60,12 +52,6 @@ class Banner extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
-
-        $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
-        $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
-        $data['active'] = $object->isActive();
-
-        return $data;
+        return $this->stdExtract($object, self::$std_keys);
     }
 }

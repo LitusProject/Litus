@@ -18,9 +18,6 @@
 
 namespace BrBundle\Form\Admin\Company\Job;
 
-use BrBundle\Entity\Company\Job,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit Job
  *
@@ -28,22 +25,13 @@ use BrBundle\Entity\Company\Job,
  */
 class Edit extends Add
 {
-    /**
-     * @param \BrBundle\Entity\Company\Job $job
-     * @param null|string|int              $name Optional name for the element
-     */
-    public function __construct(Job $job, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
         $this->remove('type');
+
         $this->remove('submit');
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'company_edit');
-        $this->add($field);
-
-        $this->populateFromJob($job);
+        $this->addSubmit('Save', 'company_edit');
     }
 }

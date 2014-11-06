@@ -18,13 +18,6 @@
 
 namespace BrBundle\Form\Admin\Collaborator;
 
-use BrBundle\Entity\Collaborator,
-    CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Edit an collaborator.
  *
@@ -33,29 +26,13 @@ use BrBundle\Entity\Collaborator,
  */
 class Edit extends Add
 {
-    /**
-     * @var \BrBundle\Entity\Collaborator
-     */
-    private $_collaborator;
-
-    /**
-     * @param \Doctrine\ORM\EntityManager           $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Product\Collaborator $collaborator  The collaborator to edit
-     * @param mixed                                 $opts          The validator's options
-     */
-    public function __construct(EntityManager $entityManager, Collaborator $collaborator, $options = null)
+    public function init()
     {
-        parent::__construct($entityManager, $options);
+        parent::init();
 
-        $this->_collaborator = $collaborator;
+        $this->remove('person');
 
         $this->remove('submit');
-
-        $field = new Submit('save');
-        $field->setValue('Save')
-            ->setAttribute('class', 'collaborator_edit');
-        $this->add($field);
-
-        $this->populateFromCollaborator($collaborator);
+        $this->addSubmit('Save', 'collaborator_edit');
     }
 }
