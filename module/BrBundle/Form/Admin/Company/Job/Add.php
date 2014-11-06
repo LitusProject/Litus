@@ -178,21 +178,4 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         return $sectorArray;
     }
-
-    /*public function populateFromJob(Job $job)
-    {
-        $this->setData(
-            array(
-                'job_name' => $job->getName(),
-                'description' => $job->getDescription(),
-                'benefits' => $job->getBenefits(),
-                'profile' => $job->getProfile(),
-                'contact' => $job->getContact(),
-                'city' => $job->getCity(),
-                'start_date' => $job->getStartDate()->format('d/m/Y H:i'),
-                'end_date' => $job->getEndDate()->format('d/m/Y H:i'),
-                'sector' => $job->getSectorCode(),
-            )
-        );
-    }*/
 }
