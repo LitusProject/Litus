@@ -224,6 +224,7 @@ class QueueItem
                 $this->_entityManager->persist($remainder);
                 $booking->setNumber($articles->{$booking->getArticle()->getId()})
                     ->setStatus('sold', $this->_entityManager);
+                $articles->{$booking->getArticle()->getId()} = 0;
             } else {
                 $articles->{$booking->getArticle()->getId()} -= $booking->getNumber();
                 $booking->setStatus('sold', $this->_entityManager);
