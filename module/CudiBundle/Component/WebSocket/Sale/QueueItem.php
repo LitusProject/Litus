@@ -224,6 +224,7 @@ class QueueItem
                 $this->_entityManager->persist($remainder);
                 $booking->setNumber($articles->{$booking->getArticle()->getId()})
                     ->setStatus('sold', $this->_entityManager);
+                $articles->{$booking->getArticle()->getId()} = 0;
             } else {
                 $articles->{$booking->getArticle()->getId()} -= $booking->getNumber();
                 $booking->setStatus('sold', $this->_entityManager);
@@ -346,7 +347,7 @@ class QueueItem
                         if (!$discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
                             continue;
                         }
-                        if ($discount->alreadyApplied($soldArticle['article'], $item->getPerson(), $this->_entityManager)) {
+                        if ($discount->alreadyApplied($soldArticle['article'], $item->getPerson(), $this->_entityManager, $this->_getCurrentAcademicYear())) {
                             continue;
                         }
                         $newPrice = $discount->apply($soldArticle['article']->getSellPrice());
@@ -435,7 +436,7 @@ class QueueItem
                 );
 
                 foreach ($booking->getArticle()->getDiscounts() as $discount) {
-                    if (!$discount->alreadyApplied($booking->getArticle(), $item->getPerson(), $this->_entityManager) &&
+                    if (!$discount->alreadyApplied($booking->getArticle(), $item->getPerson(), $this->_entityManager, $this->_getCurrentAcademicYear()) &&
                             $discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
                         $result['discounts'][] = array(
                             'type' => $discount->getRawType(),
@@ -476,7 +477,7 @@ class QueueItem
                 );
 
                 foreach ($article->getDiscounts() as $discount) {
-                    if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager) &&
+                    if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager, $this->_getCurrentAcademicYear()) &&
                             $discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
                         $result['discounts'][] = array(
                             'type' => $discount->getRawType(),
