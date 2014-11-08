@@ -90,6 +90,16 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
+        if ($this->getLanguage()->getName() == "English") {
+            $this->redirect()->toRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'cv',
+                    'language' => 'nl',
+                )
+            );
+        }
+
         $form = new AddForm($this->getEntityManager(), $person, $this->getCurrentAcademicYear(), $this->getLanguage());
 
         if ($this->getRequest()->isPost()) {
@@ -386,12 +396,6 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if ('' == $person->getPersonalEmail()) {
             $messages[] = '<li>';
             $messages[] = 'Your personal email address';
-            $messages[] = '</li>';
-        }
-
-        if ('' == $person->getPhotoPath()) {
-            $messages[] = '<li>';
-            $messages[] = 'Your photo';
             $messages[] = '</li>';
         }
 
