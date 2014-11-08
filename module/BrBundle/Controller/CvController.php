@@ -54,6 +54,16 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
+        if ($this->getLanguage()->getName() == "English") {
+            $this->redirect()->toRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'cv',
+                    'language' => 'nl',
+                )
+            );
+        }
+
         $messages = $this->_getBadAccountMessage($person);
         if ($messages !== null && !empty($messages)) {
             return new ViewModel(
@@ -86,16 +96,6 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             return new ViewModel(
                 array(
                     'messages' => array('The CV Book is currently not accepting entries.'),
-                )
-            );
-        }
-
-        if ($this->getLanguage()->getName() == "English") {
-            $this->redirect()->toRoute(
-                'br_cv_index',
-                array(
-                    'action' => 'cv',
-                    'language' => 'nl',
                 )
             );
         }
@@ -396,6 +396,12 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if ('' == $person->getPersonalEmail()) {
             $messages[] = '<li>';
             $messages[] = 'Your personal email address';
+            $messages[] = '</li>';
+        }
+
+        if ('' == $person->getPhotoPath()) {
+            $messages[] = '<li>';
+            $messages[] = 'Your photo';
             $messages[] = '</li>';
         }
 
