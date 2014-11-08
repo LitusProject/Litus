@@ -16,23 +16,21 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Form\Admin\Company;
+namespace BrBundle\Hydrator\User\Person;
 
-use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
-    BrBundle\Entity\Company;
+use BrBundle\Entity\User\Person\Corporate as CorporateEntity;
 
-/**
- * Edit a company.
- *
- * @author Kristof Mariën <kristof.marien@litus.cc>
- */
-class Edit extends Add
+class Corporate extends \CommonBundle\Hydrator\User\Person
 {
-    public function init()
+    protected function doHydrate(array $data, $object = null)
     {
-        parent::init();
+        $data['roles'] = array('corporate');
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'company_edit');
+        if (null === $object) {
+            $object = new CorporateEntity();
+            $object->setUsername($data['username']);
+        }
+
+        return parent::doHydrate($data, $object);
     }
 }

@@ -18,7 +18,8 @@
 
 namespace BrBundle\Entity;
 
-use BrBundle\Entity\User\Person\Corporate,
+use BrBundle\Entity\Company\Page,
+    BrBundle\Entity\User\Person\Corporate,
     CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Address,
     Doctrine\Common\Collections\ArrayCollection,
@@ -157,22 +158,8 @@ class Company
         'telecom' => 'Telecom',
     );
 
-    /**
-     * @param string                               $name        The company's name
-     * @param string                               $vatNumber   The company's VAT number
-     * @param \CommonBundle\Entity\General\Address $address     The company's address
-     * @param string                               $phoneNumber The company's telephone number
-     * @param string                               $website     The company's website
-     * @param string                               $sector      The company's sector
-     */
-    public function __construct($name, $vatNumber, Address $address, $phoneNumber, $website, $sector)
+    public function __construct()
     {
-        $this->setName($name);
-        $this->vatNumber = $vatNumber;
-        $this->address = $address;
-        $this->phoneNumber = $phoneNumber;
-        $this->website = $website;
-        $this->setSector($sector);
         $this->active = true;
 
         $this->contacts = new ArrayCollection();
@@ -197,11 +184,22 @@ class Company
     }
 
     /**
-     * @return \BrBundle\Entity\Company\Page
+     * @return Page
      */
     public function getPage()
     {
         return $this->page;
+    }
+
+    /**
+     * @param  Page $page
+     * @return self
+     */
+    public function setPage(Page $page)
+    {
+        $this->page = $page;
+
+        return $this;
     }
 
     /**
