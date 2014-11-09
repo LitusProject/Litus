@@ -54,6 +54,16 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
+        if ($this->getLanguage()->getName() == "English") {
+            $this->redirect()->toRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'cv',
+                    'language' => 'nl',
+                )
+            );
+        }
+
         $messages = $this->_getBadAccountMessage($person);
         if ($messages !== null && !empty($messages)) {
             return new ViewModel(

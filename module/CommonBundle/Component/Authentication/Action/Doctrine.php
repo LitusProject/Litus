@@ -103,7 +103,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
                 ->getConfigValue('system_mail_name');
 
             $mail = new Message();
-            $mail->setBody(str_replace('{{ code }}', $code->getCode() , $message))
+            $mail->setBody(str_replace(array('{{ name }}', '{{ code }}'), array($result->getPersonObject()->getFullName(), $code->getCode()), $message))
                 ->setFrom($mailaddress, $mailname)
                 ->addTo($result->getPersonObject()->getEmail(), $result->getPersonObject()->getFullName())
                 ->setSubject($subject);
