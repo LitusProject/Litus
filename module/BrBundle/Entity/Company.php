@@ -393,6 +393,9 @@ class Company
         return $this->contacts->toArray();
     }
 
+    /**
+     * @return string
+     */
     public function getSlug()
     {
         return $this->slug;

@@ -19,11 +19,7 @@
 namespace BrBundle\Form\Admin\Order;
 
 use BrBundle\Entity\Product\Order,
-    CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Edit an order.
@@ -33,30 +29,12 @@ use BrBundle\Entity\Product\Order,
  */
 class Edit extends Add
 {
-    /**
-     * @var \BrBundle\Entity\Product\Order
-     */
-    private $_order;
-
-    /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param \BrBundle\Entity\Product\Order            $order         The order to edit
-     * @param mixed                                     $opts          The validator's options
-     */
-    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, Order $order, $options = null)
+    public function init()
     {
-        parent::__construct($entityManager, $academicYear, $options);
-
-        $this->_order = $order;
+        parent::init();
 
         $this->remove('submit');
 
-        $field = new Submit('save');
-        $field->setValue('Save')
-            ->setAttribute('class', 'product_edit');
-        $this->add($field);
-
-        $this->populateFromOrder($order);
+        $this->addSubmit('Save', 'product_edit');
     }
 }

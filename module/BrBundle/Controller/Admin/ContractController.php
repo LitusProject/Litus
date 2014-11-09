@@ -20,11 +20,9 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
     BrBundle\Entity\Contract,
-    BrBundle\Entity\Contract\ContractEntry,
     BrBundle\Entity\Contract\ContractHistory,
     BrBundle\Entity\Invoice,
     BrBundle\Entity\Invoice\InvoiceEntry,
-    BrBundle\Form\Admin\Contract\Edit as EditForm,
     CommonBundle\Component\Util\File as FileUtil,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -94,32 +92,13 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $contract);
+        $form = $this->getForm('br_contract_edit', array('contract' => $contract));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $contract->setTitle($formData['title']);
-
-                $newVersionNb = 0;
-
-                foreach ($contract->getEntries() as $entry) {
-                    if ($entry->getVersion() == $contract->getVersion()) {
-                        $newVersionNb = $entry->getVersion() + 1;
-                        $newContractEntry = new ContractEntry($contract, $entry->getOrderEntry(), $entry->getPosition(), $newVersionNb);
-
-                        $this->getEntityManager()->persist($newContractEntry);
-
-                        $newContractEntry->setContractText($formData['entry_' . $entry->getId()]);
-                    }
-                }
-
-                $contract->setVersion($newVersionNb);
-
                 $history = new ContractHistory($contract);
                 $this->getEntityManager()->persist($history);
 

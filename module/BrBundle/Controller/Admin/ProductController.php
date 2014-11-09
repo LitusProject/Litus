@@ -18,11 +18,7 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Component\ContractParser\IllegalFormatException,
-    BrBundle\Component\ContractParser\Parser as BulletParser,
-    BrBundle\Entity\Product,
-    BrBundle\Form\Admin\Product\Add as AddForm,
-    BrBundle\Form\Admin\Product\Edit as EditForm,
+use BrBundle\Entity\Product,
     DateTime,
     Zend\View\Model\ViewModel;
 
@@ -52,53 +48,21 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('br_product_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                try {
-                    $p = new BulletParser();
-                    $p->parse($formData['contract_text']);
-                } catch (IllegalFormatException $e) {
-                    $this->flashMessenger()->error(
-                        'Parse error',
-                        'Line ' . $e->getLineNumber() . ': ' . $e->getMessage()
-                    );
-
-                    return new ViewModel(
-                            array(
-                                    'form' => $form,
-                            )
-                    );
-                }
-
-                $newProduct = new Product(
-                    $this->getEntityManager(),
-                    $formData['name'],
-                    $formData['description'],
-                    $formData['invoice_description'],
-                    $formData['contract_text'],
-                    $this->getAuthentication()->getPersonObject(),
-                    $formData['price'],
-                    $formData['vat_type'],
-                    $this->getCurrentAcademicYear(),
-                    DateTime::createFromFormat('d#m#Y', $formData['delivery_date'])
+                $product = $form->hydrateObject(
+                    new Product(
+                        $this->getAuthentication()->getPersonObject(),
+                        $this->getCurrentAcademicYear()
+                    )
                 );
 
-                if ('' != $formData['event']) {
-                    $newProduct->setEvent(
-                        $this->getEntityManager()
-                            ->getRepository('CalendarBundle\Entity\Node\Event')
-                            ->findOneById($formData['event'])
-                    );
-                }
-
-                $this->getEntityManager()->persist($newProduct);
+                $this->getEntityManager()->persist($product);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -130,49 +94,13 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $product);
+        $form = $this->getForm('br_product_edit', array('product' => $product));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                try {
-                    $p = new BulletParser();
-                    $p->parse($formData['contract_text']);
-                } catch (IllegalFormatException $e) {
-                    $this->flashMessenger()->error(
-                        'Parse error',
-                        'Line ' . $e->getLineNumber() . ': ' . $e->getMessage()
-                    );
-
-                    return new ViewModel(
-                            array(
-                                    'form' => $form,
-                            )
-                    );
-                }
-
-                $product->setEntityManager($this->getEntityManager())
-                    ->setName($formData['name'])
-                    ->setDescription($formData['description'])
-                    ->setContractTExt($formData['contract_text'])
-                    ->setPrice($formData['price'])
-                    ->setVatType($formData['vat_type'])
-                    ->setInvoiceDescription($formData['invoice_description']);
-
-                if ('' != $formData['event']) {
-                    $product->setEvent(
-                        $this->getEntityManager()
-                            ->getRepository('CalendarBundle\Entity\Node\Event')
-                            ->findOneById($formData['event'])
-                    );
-                } else {
-                    $product->setEvent(null);
-                }
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

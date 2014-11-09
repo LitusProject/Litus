@@ -20,6 +20,7 @@ namespace BrBundle\Entity\Product;
 
 use BrBundle\Entity\Collaborator,
     BrBundle\Entity\Company,
+    BrBundle\Entity\Contract,
     BrBundle\Entity\User\Person\Corporate as CorporatePerson,
     CommonBundle\Entity\User\Person,
     DateTime,
@@ -123,18 +124,14 @@ class Order
     private $_entityManager;
 
     /**
-     * @param \BrBundle\Entity\User\Person\Corporate $contact
-     * @param \BrBundle\Entity\Collaborator          $creationPerson
-     * @param boolean                                $taxFree
+     * @param Collaborator $creationPerson
      */
-    public function __construct(CorporatePerson $contact, Collaborator $creationPerson, $taxFree)
+    public function __construct(Collaborator $creationPerson)
     {
-        $this->setContact($contact);
         $this->creationTime = new DateTime();
         $this->creationPerson = $creationPerson;
         $this->orderEntries = new ArrayCollection();
         $this->old = false;
-        $this->setTaxFree($taxFree);
     }
 
     /**
@@ -208,6 +205,17 @@ class Order
     public function getContract()
     {
         return $this->contract;
+    }
+
+    /**
+     * @param  Contract $contract
+     * @return self
+     */
+    public function setContract(Contract $contract)
+    {
+        $this->contract = $contract;
+
+        return $this;
     }
 
     /**

@@ -128,27 +128,12 @@ class Product
     private $_entityManager;
 
     /**
-     * @param string                                    $name         The name of this section
-     * @param string                                    $description  The description on the invoice of this section
-     * @param string                                    $content      The content of this section
-     * @param \CommonBundle\Entity\User\Person          $author       The author of this section
-     * @param int                                       $price
-     * @param string                                    $vatType      see setVatType($vatType)
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academicYear
-     * @param DateTime                                  $deliveryDate The deliveryDate
+     * @param Person       $author       The author of this section
+     * @param AcademicYear $academicYear The current academicYear
      */
-    public function __construct(EntityManager $entityManager, $name, $description, $invoiceDescription, $contractText, Person $author, $price, $vatType, AcademicYear $academicYear, $deliveryDate)
+    public function __construct(Person $author, AcademicYear $academicYear)
     {
-        $this->_entityManager = $entityManager;
-
-        $this->setName($name);
-        $this->setDescription($description);
-        $this->setInvoiceDescription($invoiceDescription);
-        $this->setContractText($contractText);
         $this->setAuthor($author);
-        $this->setPrice($price);
-        $this->setVatType($vatType);
-        $this->setDeliveryDate($deliveryDate);
         $this->academicYear = $academicYear;
         $this->old = false;
     }
@@ -257,19 +242,11 @@ class Product
     }
 
     /**
-     * @param  string                    $vatType The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
-     * @throws \InvalidArgumentException
-     * @return \BrBundle\Entity\Product
+     * @param  string $vatType The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
+     * @return self
      */
     public function setVatType($vatType)
     {
-        $types = $this->_entityManager->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.vat_types');
-        $types = unserialize($types);
-        if (!isset($types[$vatType])) {
-            throw new \InvalidArgumentException('Invalid VAT type: ' . $vatType);
-        }
-
         $this->vatType = $vatType;
 
         return $this;
@@ -290,9 +267,11 @@ class Product
      */
     public function getVatPercentage()
     {
-        $types =  $this->_entityManager->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.vat_types');
-        $types = unserialize($types);
+        $types = unserialize(
+            $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.vat_types')
+        );
 
         return $types[$this->getVatType()];
     }

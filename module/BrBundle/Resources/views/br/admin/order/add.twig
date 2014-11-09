@@ -3,13 +3,6 @@
 {% block content %}
     {% include 'br/admin/order/partials/navigation.twig' %}
 
-    <div class="flashmessage error_message full_width contacts_error hide">
-        <div class="title">Error</div>
-        <div class="content">
-            <p>An error occurred while trying to fetch the contacts.</p>
-        </div>
-    </div>
-
     <div id="controller_action">
         {% include 'admin/partials/flashMessenger.twig' %}
 
@@ -24,28 +17,9 @@
             $('#company').change(function(){
                 var company = $('#company').val();
 
-                if (company == '') {
-                    $('#contact').empty();
-                    return;
-                }
-
-                $.post('{{ url('br_admin_company', {"action": "contacts"})}}' + company, function (data) {
-                    if (data) {
-                        var optionsAsString = "";
-                        $('#contact').empty();
-                        $(data).each(function(k, v){
-                            optionsAsString += "<option value='" + v['id'] + "'>" + v['value'] + "</option>";
-                        });
-                        $('#contact').append(optionsAsString);
-                    } else {
-                        errorContacts();
-                    }
-                }, 'json').error(errorContacts);
+                $('.company_contact').closest('.row').hide();
+                $('#company_contact_' + company).closest('.row').show();
             }).change();
         });
-        function errorContacts() {
-            $('.flashmessage').addClass('hide');
-            $('.contacts_error').removeClass('hide');
-        }
     </script>
 {% endblock %}
