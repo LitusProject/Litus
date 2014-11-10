@@ -18,6 +18,12 @@
 
 namespace BrBundle\Controller;
 
+
+
+
+
+
+
 use BrBundle\Entity\Cv\Entry as CvEntry,
     BrBundle\Entity\Cv\Language as CvLanguage,
     BrBundle\Form\Cv\Add as AddForm,
@@ -50,6 +56,16 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             return new ViewModel(
                 array(
                     'messages' => array('You must be a student to edit your CV.'),
+                )
+            );
+        }
+
+        if ($this->getLanguage()->getName() == "English") {
+            $this->redirect()->toRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'cv',
+                    'language' => 'nl',
                 )
             );
         }

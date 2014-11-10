@@ -4,7 +4,7 @@
 
     $(document).ready(function () {
         $('body').append(
-            helpButton = $('<div>', {'id': 'toggleHelpButton'}).append(
+            helpButton = $('<div>', {'id': 'helpButtonWrapper'}).append(
                 $('<div>').html('Help').css({
                     'float': 'right',
                     'margin-right': '5px',

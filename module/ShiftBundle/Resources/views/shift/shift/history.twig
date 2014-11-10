@@ -15,6 +15,14 @@
     {% if unPayedShifts and not praesidium %}
         {{ translate('You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shift(s). You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.')|replace({'%unPayedShifts%': unPayedShifts})|raw }}
     {% endif %}
+    <br><br>
+    {% if not praesidium %}
+        {{ translate('Your current shiftranking is <span class="label label-success">%ranking%</span>.')|replace({'%ranking%': ranking|capitalize})|raw }}
+    {% endif %}
+    <br>
+    {% if not praesidium and shiftsToNextRanking%}
+        {{ translate('You need to do <span class="label label-success">%shiftsToNextRanking%</span> more shift(s) to get the next ranking.')|replace({'%shiftsToNextRanking%': shiftsToNextRanking})|raw }}
+    {% endif %}
 
     {% if shiftsAsResponsible %}
         <h2>{{ translate('Shifts')}} {{ translate('As Responsible') }}:</h2>

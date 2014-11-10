@@ -18,6 +18,16 @@
 
 namespace ShiftBundle\Controller;
 
+
+
+
+
+
+
+
+
+
+
 use DateInterval,
     DateTime,
     ShiftBundle\Document\Token,
@@ -136,7 +146,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($dateSearchForm->isValid() && '' != $formData['date']) {
                     $formData = $dateSearchForm->getFormData($formData);
 
-                    $start_date = DateTime::createFromFormat('d/m/Y' , $formData['date']);
+                    $start_date = DateTime::createFromFormat('d/m/Y', $formData['date']);
                     if (!$start_date) {
                         $this->flashMessenger()->error(
                             'Error',
@@ -496,6 +506,27 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
+        $rankingCriteria = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.ranking_criteria')
+        );
+
+        $ranking = false;
+        $shiftsToNextRanking = $rankingCriteria[0]['limit'] - $shiftsAsVolunteerCount;
+
+        for ($i = 0; isset($rankingCriteria[$i]); $i++) {
+            if ($rankingCriteria[$i]['limit'] < $shiftsAsVolunteerCount) {
+                $ranking = $rankingCriteria[$i]['name'];
+
+                if (isset($rankingCriteria[$i+1])) {
+                    $shiftsToNextRanking = $rankingCriteria[$i+1]['limit'] - $shiftsAsVolunteerCount;
+                } else {
+                    $shiftsToNextRanking = 0;
+                }
+            }
+        }
+
         $shiftsAsResponsible = array();
         $shiftsAsResponsibleCount = 0;
         foreach ($asResponsible as $shift) {
@@ -527,6 +558,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'unPayedCoins' => $unPayedCoins,
                 'lastShift' => $lastShift->format('d/m/Y'),
                 'praesidium' => $praesidium,
+                'ranking' => $ranking,
+                'shiftsToNextRanking' => $shiftsToNextRanking,
             )
         );
     }

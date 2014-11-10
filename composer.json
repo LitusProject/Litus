@@ -4,6 +4,14 @@
         {
             "type": "vcs",
             "url": "https://github.com/LitusProject/EdpMarkdown"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/krmarien/zf2-assetic-module"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/krmarien/assetic"
         }
     ],
     "require": {
