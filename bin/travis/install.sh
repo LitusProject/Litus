@@ -21,10 +21,6 @@ curl -L http://npmjs.org/install.sh | sudo sh
 # install lessc
 sudo npm install -g less
 
-# patch assetic
-cd vendor/kriswallsmith/assetic
-wget -q -O../assetic.patch https://github.com/alex-pex/assetic/commit/380536cf8f7571a4301b4c42a3f6f8ce4636c48d.patch
-
 # Composer can install two branches
 # The patch differs for these two branches
 # Try master first
