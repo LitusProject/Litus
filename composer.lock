@@ -1028,12 +1028,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/krmarien/assetic.git",
-                "reference": "eb1a7af9d77d59e465ef810c96f3991a32827df1"
+                "reference": "f0eb521306ccc9319c9ea72034bf98154529b11f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/krmarien/assetic/zipball/eb1a7af9d77d59e465ef810c96f3991a32827df1",
-                "reference": "eb1a7af9d77d59e465ef810c96f3991a32827df1",
+                "url": "https://api.github.com/repos/krmarien/assetic/zipball/f0eb521306ccc9319c9ea72034bf98154529b11f",
+                "reference": "f0eb521306ccc9319c9ea72034bf98154529b11f",
                 "shasum": ""
             },
             "require": {
@@ -1096,7 +1096,7 @@
             "support": {
                 "source": "https://github.com/krmarien/assetic/tree/master"
             },
-            "time": "2014-11-09 20:22:27"
+            "time": "2014-11-10 15:45:58"
         },
         {
             "name": "packagist/yuicompressor-bin",
@@ -1252,12 +1252,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "f8b6e918a7d8e073efe14cbed7ae02df40ef19ed"
+                "reference": "b87cf88f88feee256c1e1ca85ec6677f38fcc238"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/f8b6e918a7d8e073efe14cbed7ae02df40ef19ed",
-                "reference": "f8b6e918a7d8e073efe14cbed7ae02df40ef19ed",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/b87cf88f88feee256c1e1ca85ec6677f38fcc238",
+                "reference": "b87cf88f88feee256c1e1ca85ec6677f38fcc238",
                 "shasum": ""
             },
             "require": {
@@ -1301,7 +1301,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-10-23 15:29:03"
+            "time": "2014-11-10 14:48:15"
         },
         {
             "name": "twitter/bootstrap",
@@ -1696,12 +1696,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "144f2778b4edf26b182438028acffb2a87c6ff89"
+                "reference": "825869155400bdca2a6f1c161d76a19381c957fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/144f2778b4edf26b182438028acffb2a87c6ff89",
-                "reference": "144f2778b4edf26b182438028acffb2a87c6ff89",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/825869155400bdca2a6f1c161d76a19381c957fa",
+                "reference": "825869155400bdca2a6f1c161d76a19381c957fa",
                 "shasum": ""
             },
             "require": {
