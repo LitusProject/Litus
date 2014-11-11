@@ -509,7 +509,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             if ($rankingCriteria[$i]['limit'] < $shiftsAsVolunteerCount) {
                 $ranking = $rankingCriteria[$i]['name'];
 
-                if (isset($rankingCriteria[$i+1])){
+                if (isset($rankingCriteria[$i+1])) {
                     $shiftsToNextRanking = $rankingCriteria[$i+1]['limit'] - $shiftsAsVolunteerCount;
                 } else {
                     $shiftsToNextRanking = 0;

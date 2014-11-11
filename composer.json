@@ -4,6 +4,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/LitusProject/EdpMarkdown"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/krmarien/assetic"
         }
     ],
     "require": {
