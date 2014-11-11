@@ -11,50 +11,45 @@
     <div class="flashmessage alert alert-success fade" id="vacancy_removed_success">
         <a class="close">&times;</a>
         <div class="content">
-            {{ translate('The removal of the vacancy was succesfully registered.  This will be reviewed by our corporate relations team.') }}
+            {{ translate('The removal of the vacancy was succesfully registered. This will be reviewed by our corporate relations team.') }}
         </div>
     </div>
 
     <h1>{{ translate('Vacancy') }}</h1>
 
-    <a class="btn btn-default" href="{{ url('br_corporate_vacancy', {'action': 'add'}) }}">{{ translate('Add other item') }}</a><br><br>
+    <p>
+        <a class="btn btn-success pull-right" href="{{ url('br_corporate_vacancy', {'action': 'add'}) }}" style="margin-bottom: 5px;">{{ translate('Add Item') }}</a>
+    </p>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-hover full-width">
                 {% for vacancy in paginator %}
                     {% if not vacancy.canShow() == false %}
-                    <tr>
-                        <td width="120">
-                            <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
-                                {% if vacancy.getCompany().getLogo() is not empty %}
-                                    <img width="120" src="/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}">
-                                {% else %}
-                                    <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
-                                {% endif %}
-                            </a>
-                        </td>
+                        <tr>
+                            <td width="120">
+                                <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
+                                    {% if vacancy.getCompany().getLogo() is not empty %}
+                                        <img width="120" src="/{{ logoPath }}/{{ vacancy.getCompany().getLogo() }}" alt="{{ vacancy.getCompany().getName() }}">
+                                    {% else %}
+                                        <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
+                                    {% endif %}
+                                </a>
+                            </td>
 
-                        <td>
-                            <strong>{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</strong>
-                            <br/>
-                            <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
-                            <br/>
-                            {{ vacancy.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
-                        </td>
-                        <td width="90">
-                            <br>
-                            <div class="col-md-2">
-                                <table>
-                                    <tr>
-                                        <td><a class="btn btn-info" href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">{{ translate('View') }}</a></td>
-                                        <td><a class="btn btn-primary" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': vacancy.getId()}) }}">{{ translate('Edit') }}</a></td>
-                                        <td><a class="btn btn-danger deleteVacancy" data-id="{{ vacancy.getId() }}" href="#">{{ translate('Delete') }}</a></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                {% endif %}
+                            <td>
+                                <strong>{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</strong>
+                                <br/>
+                                <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
+                                <br/>
+                                {{ vacancy.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+                            </td>
+                            <td width="230" style="vertical-align: middle;">
+                                <a class="btn btn-sm btn-info" href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">{{ translate('View') }}</a>
+                                <a class="btn btn-sm btn-primary" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': vacancy.getId()}) }}">{{ translate('Edit') }}</a>
+                                <a class="btn btn-sm btn-danger deleteVacancy" data-id="{{ vacancy.getId() }}" href="#">{{ translate('Delete') }}</a>
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% else %}
                     <div class="flashmessage alert alert-warning fade in">
                         <a class="close" data-dismiss="alert">&times;</a>

@@ -160,6 +160,8 @@ return Config::create(
                         'button'     => 'CommonBundle\Component\Form\Bootstrap\Element\Button',
                         'checkbox'   => 'CommonBundle\Component\Form\Bootstrap\Element\Checkbox',
                         'collection' => 'CommonBundle\Component\Form\Collection',
+                        'date'       => 'CommonBundle\Component\Form\Bootstrap\Element\Date',
+                        'datetime'   => 'CommonBundle\Component\Form\Bootstrap\Element\DateTime',
                         'file'       => 'CommonBundle\Component\Form\Bootstrap\Element\File',
                         'hidden'     => 'CommonBundle\Component\Form\Bootstrap\Element\Hidden',
                         'password'   => 'CommonBundle\Component\Form\Bootstrap\Element\Password',

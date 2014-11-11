@@ -3,6 +3,8 @@
 {% block content %}
     {% include 'br/admin/request/partials/navigation.twig' %}
 
+    {% include 'admin/partials/flashMessenger.twig' %}
+
     <div id="controller_action">
         <h1><b>Vacancies</b></h1>
         <table class="full_width manage">
@@ -19,8 +21,8 @@
                     <td>{{ request.getCreationTime().format('d/m/Y H:i') }}</td>
                     <td>{{ request.getRequestType()|upper }}</td>
                     <td class="actions">
-                        {% if hasAccess('br_admin_request', 'view') %}
-                            <a href="{{ url('br_admin_request', {"action": "view", "id": request.getId()}) }}" class="view">View</a>
+                        {% if hasAccess('br_career_vacancy', 'view') %}
+                            <a href="{{ url('br_career_vacancy', {"action": "view", "id": request.getJob().getId()}) }}" class="view">View</a>
                         {% endif %}
                         {% if hasAccess('br_admin_request', 'approve') %}
                             <a href="{{ url('br_admin_request', {"action": "approve", "id": request.getId()}) }}" class="accept_request">Approve</a>
@@ -48,8 +50,8 @@
                     <td>{{ request.getCreationTime().format('d/m/Y H:i') }}</td>
                     <td>{{ request.getRequestType()|upper }}</td>
                     <td class="actions">
-                        {% if hasAccess('br_admin_request', 'view') %}
-                            <a href="{{ url('br_admin_request', {"action": "view", "id": request.getId()}) }}" class="view">View</a>
+                        {% if hasAccess('br_career_internship', 'view') %}
+                            <a href="{{ url('br_career_internship', {"action": "view", "id": request.getJob().getId()}) }}" class="view">View</a>
                         {% endif %}
                         {% if hasAccess('br_admin_request', 'approve') %}
                             <a href="{{ url('br_admin_request', {"action": "approve", "id": request.getId()}) }}" class="accept_request">Approve</a>

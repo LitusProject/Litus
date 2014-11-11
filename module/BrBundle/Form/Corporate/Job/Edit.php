@@ -16,15 +16,9 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Form\Corporate\Internship;
+namespace BrBundle\Form\Corporate\Job;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use BrBundle\Entity\Company\Job;
 
 /**
  * Edit Job
@@ -35,19 +29,27 @@ use CommonBundle\Component\Form\Admin\Element\Select,
 class Edit extends Add
 {
     /**
-     * @param null|string|int $name Optional name for the element
+     * @var Job
      */
-    public function __construct($job, $name = null)
+    private $_job;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
         $this->remove('submit');
+        $this->addSubmit('Save Changes');
 
-        $field = new Submit('submit');
-        $field->setValue('Save Changes')
-            ->setAttribute('class', 'btn btn-primary');
-        $this->add($field);
+        if (null !== $this->_job) {
+            $hydrator = $this->getHydrator();
+            $this->populateValues($hydrator->extract($this->_job));
+        }
+    }
 
-        $this->populateFromJob($job);
+    public function setJob(Job $job)
+    {
+        $this->_job = $job;
+
+        return $this;
     }
 }

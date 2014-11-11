@@ -21,9 +21,6 @@ namespace BrBundle\Controller\Corporate;
 use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Job,
     BrBundle\Entity\Company\Request\RequestInternship,
-    BrBundle\Form\Corporate\Internship\Add as AddForm,
-    BrBundle\Form\Corporate\Internship\Edit as EditForm,
-    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -57,45 +54,28 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         );
     }
 
-    public function editAction()
+    public function addAction()
     {
-        if (!($oldJob = $this->_getJob())) {
-            return new ViewModel();
-        }
-
-        $form = new EditForm($oldJob);
+        $form = $this->getForm('br_corporate_job_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
                 $contact = $this->getAuthentication()->getPersonObject();
 
-                $job = new Job(
-                    $formData['job_name'],
-                    $formData['description'],
-                    $formData['benefits'],
-                    $formData['profile'],
-                    $formData['contact'],
-                    $formData['city'],
-                    $contact->getCompany(),
-                    'internship',
-                    self::_loadDate($formData['start_date']),
-                    self::_loadDate($formData['end_date']),
-                    $formData['sector']
+                $job = $form->hydrateObject(
+                    new Job($contact->getCompany(), 'internship')
                 );
 
                 $job->pending();
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new RequestInternship($job, 'edit', $contact, $oldJob);
+                $request = new RequestInternship($job, 'add', $contact);
 
                 $this->getEntityManager()->persist($request);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -121,40 +101,33 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         );
     }
 
-    public function addAction()
+    public function editAction()
     {
-        $form = new AddForm();
+        if (!($oldJob = $this->_getInternship())) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('br_corporate_job_edit', array('job' => $oldJob));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
                 $contact = $this->getAuthentication()->getPersonObject();
 
-                $job = new Job(
-                    $formData['job_name'],
-                    $formData['description'],
-                    $formData['benefits'],
-                    $formData['profile'],
-                    $formData['contact'],
-                    $formData['city'],
-                    $contact->getCompany(),
-                    'internship',
-                    self::_loadDate($formData['start_date']),
-                    self::_loadDate($formData['end_date']),
-                    $formData['sector']
+                $job = $form->hydrateObject(
+                    new Job($contact->getCompany(), 'internship')
                 );
 
                 $job->pending();
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new RequestInternship($job, 'add', $contact);
+                $request = new RequestInternship($job, 'edit', $contact, $oldJob);
 
                 $this->getEntityManager()->persist($request);
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -249,14 +222,5 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         }
 
         return $sectorArray;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

@@ -17,7 +17,9 @@
 
     <h1>{{ translate('Internship') }}</h1>
 
-    <a class="btn btn-default" href="{{ url('br_corporate_internship', {'action': 'add'}) }}">{{ translate('Add other item') }}</a><br><br>
+    <p>
+        <a class="btn btn-success pull-right" href="{{ url('br_corporate_internship', {'action': 'add'}) }}" style="margin-bottom: 5px;">{{ translate('Add Item') }}</a>
+    </p>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-hover full-width">
@@ -41,17 +43,10 @@
                             <br/>
                             {{ internship.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
                         </td>
-                        <td width="90">
-                            <br>
-                            <div class="col-md-2">
-                                <table>
-                                    <tr>
-                                        <td><a class="btn btn-info" href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">{{ translate('View') }}</a></td>
-                                        <td><a class="btn btn-primary" href="{{ url('br_corporate_internship', {'action': 'edit', 'id': internship.getId()}) }}">{{ translate('Edit') }}</a></td>
-                                        <td><a class="btn btn-danger deleteInternship" data-id="{{ internship.getId() }}" href="#">{{ translate('Delete') }}</a></td>
-                                    </tr>
-                                </table>
-                            </div>
+                        <td width="230" style="vertical-align: middle;">
+                            <a class="btn btn-sm btn-info" href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">{{ translate('View') }}</a>
+                            <a class="btn btn-sm btn-primary" href="{{ url('br_corporate_internship', {'action': 'edit', 'id': internship.getId()}) }}">{{ translate('Edit') }}</a>
+                            <a class="btn btn-sm btn-danger deleteInternship" data-id="{{ internship.getId() }}" href="#">{{ translate('Delete') }}</a>
                         </td>
                     </tr>
                 {% endif %}
