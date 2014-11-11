@@ -19,7 +19,6 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Company,
-    BrBundle\Form\Career\Search\Internship as InternshipSearchForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -31,34 +30,36 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
 {
     public function overviewAction()
     {
-        $internshipSearchForm = new InternshipSearchForm();
+        $internshipSearchForm = $this->getForm('br_career_search_internship');
 
         $query = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
             ->findAllActiveByTypeQuery('internship');
 
-        $formData = $this->getRequest()->getQuery();
-        $internshipSearchForm->setData($formData);
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $internshipSearchForm->setData($formData);
 
-        if ($internshipSearchForm->isValid()) {
-            $formData = $internshipSearchForm->getFormData($formData);
+            if ($internshipSearchForm->isValid()) {
+                $formData = $internshipSearchForm->getData();
 
-            $repository = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Company\Job');
+                $repository = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Company\Job');
 
-            if ('all' != $formData['sector']) {
-                if ('company' == $formData['searchType']) {
-                    $query = $repository->findAllActiveByTypeAndSectorQuery('internship', $formData['sector']);
-                } elseif ('internship' == $formData['searchType']) {
-                    $query = $repository->findAllActiveByTypeAndSectorByJobNameQuery('internship', $formData['sector']);
-                } elseif ('mostRecent' == $formData['searchType']) {
-                    $query = $repository->findAllActiveByTypeAndSectorByDateQuery('internship', $formData['sector']);
-                }
-            } else {
-                if ('internship' == $formData['searchType']) {
-                    $query = $repository->findAllActiveByTypeByJobNameQuery('internship');
-                } elseif ('mostRecent' == $formData['searchType']) {
-                    $query = $repository->findAllActiveByTypeByDateQuery('internship');
+                if ('all' != $formData['sector']) {
+                    if ('company' == $formData['searchType']) {
+                        $query = $repository->findAllActiveByTypeAndSectorQuery('internship', $formData['sector']);
+                    } elseif ('internship' == $formData['searchType']) {
+                        $query = $repository->findAllActiveByTypeAndSectorByJobNameQuery('internship', $formData['sector']);
+                    } elseif ('mostRecent' == $formData['searchType']) {
+                        $query = $repository->findAllActiveByTypeAndSectorByDateQuery('internship', $formData['sector']);
+                    }
+                } else {
+                    if ('internship' == $formData['searchType']) {
+                        $query = $repository->findAllActiveByTypeByJobNameQuery('internship');
+                    } elseif ('mostRecent' == $formData['searchType']) {
+                        $query = $repository->findAllActiveByTypeByDateQuery('internship');
+                    }
                 }
             }
         }
