@@ -174,10 +174,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'enable_options',
-            'label'    => 'Enable Options',
-            'required' => false,
+            'type'       => 'checkbox',
+            'name'       => 'enable_options',
+            'label'      => 'Enable Options',
+            'required'   => false,
+            'attributes' => array(
+                'id' => 'enable_options',
+            ),
         ));
 
         $this->add(array(
@@ -230,9 +233,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'collection',
             'name'       => 'options',
             'label'      => 'Options',
-            'attributes' => array(
-                'class' => 'half_width',
-            ),
             'options'    => array(
                 'count'                  => 0,
                 'should_create_template' => true,

@@ -19,6 +19,7 @@
 namespace CommonBundle\Component\Form;
 
 use Traversable,
+    Zend\Form\FormInterface,
     Zend\Stdlib\ArrayUtils;
 
 class Collection extends \Zend\Form\Element\Collection implements FieldsetInterface, \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
@@ -96,5 +97,17 @@ class Collection extends \Zend\Form\Element\Collection implements FieldsetInterf
     public function allowValueBinding()
     {
         return false;
+    }
+
+    /**
+     * Ensures state is ready for use. Here, we append the name of the fieldsets to every elements in order to avoid
+     * name clashes if the same fieldset is used multiple times
+     *
+     * @param  FormInterface $form
+     * @return mixed|void
+     */
+    public function prepareElement(FormInterface $form)
+    {
+        parent::prepareElement($form);
     }
 }

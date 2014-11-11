@@ -90,7 +90,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
             'label'      => 'Price Non Members',
             'required'   => true,
             'attributes' => array(
-                'class', 'price_non_members',
+                'class' => 'price_non_members',
             ),
             'options'    => array(
                 'input' => array(
