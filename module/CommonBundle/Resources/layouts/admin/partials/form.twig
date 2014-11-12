@@ -19,7 +19,7 @@
                         {{ _self.renderFieldset(element) }}
                     </fieldset>
                     {% if element.shouldCreateTemplate() %}
-                        <span id="data-template" data-template="{{ _self.renderFieldset(element.getTemplateElement())|escape }}"></span>
+                        <span id="data-template-{{ element.getName() }}" data-template="{{ ("<fieldset name=\"" ~ element.getTemplateElement().getName() ~ "\" class=\"" ~ element.getAttribute('class') ~ "\" id=\"" ~ element.getAttribute('id') ~ "\"><legend>" ~ element.getTemplateElement().getLabel() ~ "</legend>" ~ _self.renderFieldset(element.getTemplateElement()) ~ "</fieldset>")|escape }}"></span>
                     {% endif %}
                 {% else %}
                     <div name="{{ element.getName() }}" class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
