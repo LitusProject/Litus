@@ -19,10 +19,6 @@
 namespace BrBundle\Controller;
 
 use BrBundle\Entity\Cv\Entry as CvEntry,
-    BrBundle\Entity\Cv\Language as CvLanguage,
-    BrBundle\Form\Cv\Add as AddForm,
-    BrBundle\Form\Cv\Edit as EditForm,
-    CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
     Zend\View\Model\ViewModel;
 
@@ -36,7 +32,6 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     public function cvAction()
     {
         $person = $this->getAuthentication()->getPersonObject();
-        $languageError = null;
 
         if (null === $person) {
             return new ViewModel(
@@ -100,7 +95,13 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
-        $form = new AddForm($this->getEntityManager(), $person, $this->getCurrentAcademicYear(), $this->getLanguage());
+        $form = $this->getForm(
+            'br_cv_add',
+            array(
+                'academic' => $person,
+                'academicYear' => $this->getCurrentAcademicYear(),
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -108,61 +109,12 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $address = new Address(
-                    $person->getSecondaryAddress()->getStreet(),
-                    $person->getSecondaryAddress()->getNumber(),
-                    $person->getSecondaryAddress()->getMailbox(),
-                    $person->getSecondaryAddress()->getPostal(),
-                    $person->getSecondaryAddress()->getCity(),
-                    $person->getSecondaryAddress()->getCountryCode()
+                $entry = $form->hydrateObject(
+                    new CvEntry(
+                        $pesron,
+                        $this->getCurrentAcademicYear()
+                    )
                 );
-
-                $entry = new CvEntry(
-                    $person,
-                    $this->getCurrentAcademicYear(),
-                    $person->getFirstName(),
-                    $person->getLastName(),
-                    $person->getBirthDay(),
-                    $person->getSex(),
-                    $person->getPhoneNumber(),
-                    $person->getPersonalEmail(),
-                    $address,
-                    $formData['prior_degree'],
-                    $formData['prior_grade'],
-                    $this->getEntityManager()
-                        ->getRepository('SyllabusBundle\Entity\Study')
-                        ->findOneById($formData['degree']),
-                    $formData['grade'],
-                    $formData['bachelor_start'],
-                    $formData['bachelor_end'],
-                    $formData['master_start'],
-                    $formData['master_end'],
-                    $formData['additional_diplomas'],
-                    $formData['erasmus_period'],
-                    $formData['erasmus_location'],
-                    $formData['lang_extra'],
-                    $formData['computer_skills'],
-                    $formData['experiences'],
-                    $formData['thesis_summary'],
-                    $formData['field_of_interest'],
-                    $formData['mobility_europe'],
-                    $formData['mobility_world'],
-                    $formData['career_expectations'],
-                    $formData['hobbies'],
-                    $formData['profile_about']
-                );
-
-                for ($i = 0; $i < $formData['lang_count']; $i++) {
-                    if (!isset($formData['lang_name' . $i]) || '' === $formData['lang_name' . $i]) {
-                        continue;
-                    }
-
-                    $language = new CvLanguage($entry, $formData['lang_name' . $i],
-                        $formData['lang_written' . $i],
-                        $formData['lang_oral' . $i]);
-
-                    $this->getEntityManager()->persist($language);
-                }
 
                 $this->getEntityManager()->persist($entry);
                 $this->getEntityManager()->flush();
@@ -175,19 +127,12 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 );
 
                 return new ViewModel();
-            } else {
-                if (!$form->isValidLanguages($formData)) {
-                    $languageError = 'The number of languages must be between 1 and 5';
-                }
             }
         }
 
         return new ViewModel(
             array(
                 'form' => $form,
-                'languageError' => $languageError,
-                'oral_skills' => CvLanguage::$ORAL_SKILLS,
-                'written_skills' => CvLanguage::$WRITTEN_SKILLS,
                 'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
@@ -198,7 +143,6 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     public function editAction()
     {
         $person = $this->getAuthentication()->getPersonObject();
-        $languageError = null;
 
         if (null === $person) {
             return new ViewModel(
@@ -252,76 +196,20 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
-        $form = new EditForm($this->getEntityManager(), $person, $this->getCurrentAcademicYear(), $this->getLanguage());
+        $form = $this->getForm(
+            'br_cv_edit',
+            array(
+                'academic' => $person,
+                'academicYear' => $this->getCurrentAcademicYear(),
+                'entry' => $entry,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            $formData = $form->addLanguages($formData);
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $address = new Address(
-                    $person->getSecondaryAddress()->getStreet(),
-                    $person->getSecondaryAddress()->getNumber(),
-                    $person->getSecondaryAddress()->getMailbox(),
-                    $person->getSecondaryAddress()->getPostal(),
-                    $person->getSecondaryAddress()->getCity(),
-                    $person->getSecondaryAddress()->getCountryCode()
-                );
-
-                $entry->setFirstName($person->getFirstName())
-                    ->setLastName($person->getLastName())
-                    ->setBirthday($person->getBirthDay())
-                    ->setSex($person->getSex())
-                    ->setPhoneNumber($person->getPhoneNumber())
-                    ->setEmail($person->getPersonalEmail())
-                    ->setAddress($address)
-                    ->setPriorStudy($formData['prior_degree'])
-                    ->setPriorGrade($formData['prior_grade'] * 100)
-                    ->setStudy($this->getEntityManager()
-                        ->getRepository('SyllabusBundle\Entity\Study')
-                        ->findOneById($formData['degree']))
-                    ->setGrade($formData['grade'] * 100)
-                    ->setBachelorStart($formData['bachelor_start'])
-                    ->setBachelorEnd($formData['bachelor_end'])
-                    ->setMasterStart($formData['master_start'])
-                    ->setMasterEnd($formData['master_end'])
-                    ->setAdditionalDiplomas($formData['additional_diplomas'])
-                    ->setErasmusPeriod($formData['erasmus_period'])
-                    ->setErasmusLocation($formData['erasmus_location'])
-                    ->setLanguageExtra($formData['lang_extra'])
-                    ->setComputerSkills($formData['computer_skills'])
-                    ->setExperiences($formData['experiences'])
-                    ->setThesisSummary($formData['thesis_summary'])
-                    ->setFutureInterest($formData['field_of_interest'])
-                    ->setMobilityEurope($formData['mobility_europe'])
-                    ->setMobilityWorld($formData['mobility_world'])
-                    ->setCareerExpectations($formData['career_expectations'])
-                    ->setHobbies($formData['hobbies'])
-                    ->setAbout($formData['profile_about']);
-
-                // Clear all previous languages
-                $languages = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Cv\Language')
-                    ->findByEntry($entry);
-
-                foreach ($languages as $language) {
-                    $this->getEntityManager()->remove($language);
-                }
-
-                for ($i = 0; $i < $formData['lang_count']; $i++) {
-                    if (!isset($formData['lang_name' . $i]) || '' === $formData['lang_name' . $i]) {
-                        continue;
-                    }
-
-                    $language = new CvLanguage($entry, $formData['lang_name' . $i],
-                        $formData['lang_written' . $i],
-                        $formData['lang_oral' . $i]);
-
-                    $this->getEntityManager()->persist($language);
-                }
-
-                $this->getEntityManager()->persist($entry);
                 $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
@@ -332,21 +220,12 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 );
 
                 return new ViewModel();
-            } else {
-                if (!$form->isValidLanguages($formData)) {
-                    $languageError = 'The number of languages must be between 1 and 5';
-                }
             }
-        } else {
-            $form->populateFromEntry($entry);
         }
 
         return new ViewModel(
             array(
                 'form' => $form,
-                'languageError' => $languageError,
-                'oral_skills' => CvLanguage::$ORAL_SKILLS,
-                'written_skills' => CvLanguage::$WRITTEN_SKILLS,
                 'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
