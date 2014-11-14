@@ -67,25 +67,17 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             ->setAbout($data['profile']['about']);
 
         $address = $object->getAddress();
-        if (null !== $address) {
-            $address->setStreet($person->getSecondaryAddress()->getStreet())
-                ->setNumber($person->getSecondaryAddress()->getNumber())
-                ->setMailbox($person->getSecondaryAddress()->getMailbox())
-                ->setPostal($person->getSecondaryAddress()->getPostal())
-                ->setCity($person->getSecondaryAddress()->getCity())
-                ->setCountry($person->getSecondaryAddress()->getCountryCode());
-        } else {
-            $object->setAddress(
-                new AddressEntity(
-                    $person->getSecondaryAddress()->getStreet(),
-                    $person->getSecondaryAddress()->getNumber(),
-                    $person->getSecondaryAddress()->getMailbox(),
-                    $person->getSecondaryAddress()->getPostal(),
-                    $person->getSecondaryAddress()->getCity(),
-                    $person->getSecondaryAddress()->getCountryCode()
-                )
-            );
+        if (null === $address) {
+            $address = new AddressEntity();
+            $object->setAddress($address);
         }
+
+        $address->setStreet($person->getSecondaryAddress()->getStreet())
+            ->setNumber($person->getSecondaryAddress()->getNumber())
+            ->setMailbox($person->getSecondaryAddress()->getMailbox())
+            ->setPostal($person->getSecondaryAddress()->getPostal())
+            ->setCity($person->getSecondaryAddress()->getCity())
+            ->setCountry($person->getSecondaryAddress()->getCountryCode());
 
         $languages = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Language')

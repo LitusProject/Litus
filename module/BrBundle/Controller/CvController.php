@@ -114,13 +114,12 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            $formData = $form->addLanguages($formData);
             $form->setData($formData);
 
             if ($form->isValid()) {
                 $entry = $form->hydrateObject(
                     new CvEntry(
-                        $pesron,
+                        $person,
                         $this->getCurrentAcademicYear()
                     )
                 );
@@ -289,7 +288,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             $content .= '<li>' . $this->getTranslator()->translate('Your photo') . '</li>';
         }
 
-        if (null === $person->getBirthDay() || true) {
+        if (null === $person->getBirthDay()) {
             $content .= '<li>' . $this->getTranslator()->translate('Your birthday') . '</li>';
         }
 
