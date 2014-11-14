@@ -19,6 +19,7 @@
 namespace BrBundle\Controller;
 
 use BrBundle\Entity\Cv\Entry as CvEntry,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\User\Person\Academic,
     Zend\View\Model\ViewModel;
 
@@ -36,7 +37,9 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if (null === $person) {
             return new ViewModel(
                 array(
-                    'messages' => array('Please login to edit your CV.'),
+                    'messages' => array(
+                        new FlashMessage('danger', 'Error', 'Please login to edit your CV.'),
+                    ),
                 )
             );
         }
@@ -44,7 +47,9 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if (!($person instanceof Academic)) {
             return new ViewModel(
                 array(
-                    'messages' => array('You must be a student to edit your CV.'),
+                    'messages' => array(
+                        new FlashMessage('danger', 'Error', 'You must be a student to edit your CV.'),
+                    ),
                 )
             );
         }
@@ -59,13 +64,15 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
-        $messages = $this->_getBadAccountMessage($person);
-        if ($messages !== null && !empty($messages)) {
+        $message = $this->_getBadAccountMessage($person);
+        if ($message !== null) {
             return new ViewModel(
-                    array(
-                        'messages' => $messages,
-                    )
-                );
+                array(
+                    'messages' => array(
+                        $message,
+                    ),
+                )
+            );
         }
 
         $entry = $this->getEntityManager()
@@ -90,7 +97,9 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if (!$open) {
             return new ViewModel(
                 array(
-                    'messages' => array('The CV Book is currently not accepting entries.'),
+                    'messages' => array(
+                        new FlashMessage('danger', 'Error', 'The CV Book is currently not accepting entries.'),
+                    ),
                 )
             );
         }
@@ -147,7 +156,9 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if (null === $person) {
             return new ViewModel(
                 array(
-                    'messages' => array('Please login to edit your CV.'),
+                    'messages' => array(
+                        new FlashMessage('danger', 'Error', 'Please login to edit your CV.'),
+                    ),
                 )
             );
         }
@@ -155,16 +166,20 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if (!($person instanceof Academic)) {
             return new ViewModel(
                 array(
-                    'messages' => array('You must be a student to edit your CV.'),
+                    'messages' => array(
+                        new FlashMessage('danger', 'Error', 'You must be a student to edit your CV.'),
+                    ),
                 )
             );
         }
 
-        $messages = $this->_getBadAccountMessage($person);
-        if ($messages !== null && !empty($messages)) {
+        $message = $this->_getBadAccountMessage($person);
+        if ($message !== null) {
             return new ViewModel(
                 array(
-                    'messages' => $messages,
+                    'messages' => array(
+                        $message,
+                    ),
                 )
             );
         }
@@ -173,7 +188,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findOneByAcademic($person);
 
-        if (!$entry) {
+        if (null === $entry) {
             $this->redirect()->toRoute(
                 'br_cv_index',
                 array(
@@ -191,7 +206,9 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if (!$open) {
             return new ViewModel(
                 array(
-                    'messages' => array('The CV Book is currently not accepting entries.'),
+                    'messages' => array(
+                        new FlashMessage('danger', 'Error', 'The CV Book is currently not accepting entries.'),
+                    ),
                 )
             );
         }
@@ -240,62 +257,47 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
     private function _getBadAccountMessage(Academic $person)
     {
-        $messages = array();
+        $content = '';
 
         $studies = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
 
         if (empty($studies)) {
-            $messages[] = '<li>';
-            $messages[] = 'Your studies';
-            $messages[] = '</li>';
+            $content .= '<li>' . $this->getTranslator()->translate('Your studies') . '</li>';
         }
 
         $address = $person->getSecondaryAddress();
         if ($address === null || '' == $address->getStreet() || '' == $address->getNumber()
                 || '' == $address->getPostal() || '' == $address->getCity() || '' == $address->getCountryCode()) {
-            $messages[] = '<li>';
-            $messages[] = 'Your address';
-            $messages[] = '</li>';
+            $content .= '<li>' . $this->getTranslator()->translate('Your address') . '</li>';
         }
 
         if ('' == $person->getFirstName() || '' == $person->getLastName()) {
-            $messages[] = '<li>';
-            $messages[] = 'Your name';
-            $messages[] = '</li>';
+            $content .= '<li>' . $this->getTranslator()->translate('Your name') . '</li>';
         }
 
         if ('' == $person->getPhoneNumber()) {
-            $messages[] = '<li>';
-            $messages[] = 'Your phone number';
-            $messages[] = '</li>';
+            $content .= '<li>' . $this->getTranslator()->translate('Your phone number') . '</li>';
         }
 
         if ('' == $person->getPersonalEmail()) {
-            $messages[] = '<li>';
-            $messages[] = 'Your personal email address';
-            $messages[] = '</li>';
+            $content .= '<li>' . $this->getTranslator()->translate('Your personal email address') . '</li>';
         }
 
         if ('' == $person->getPhotoPath()) {
-            $messages[] = '<li>';
-            $messages[] = 'Your photo';
-            $messages[] = '</li>';
+            $content .= '<li>' . $this->getTranslator()->translate('Your photo') . '</li>';
         }
 
-        if (null === $person->getBirthDay()) {
-            $messages[] = '<li>';
-            $messages[] = 'Your birthday';
-            $messages[] = '</li>';
+        if (null === $person->getBirthDay() || true) {
+            $content .= '<li>' . $this->getTranslator()->translate('Your birthday') . '</li>';
         }
 
-        if ($messages) {
-            array_unshift($messages, 'The following information in your account is incomplete:', '<br/><ul>');
-            $messages[] = '</ul>';
-            $messages[] = 'To add your information to the CV Book, you must complete these. Please click <a href="{{editurl}}">here</a> to edit your account.';
-        }
+        if ($content != '') {
+            $content = $this->getTranslator()->translate('The following information in your account is incomplete:') . '<br/><ul>' . $content . '</ul>' .
+                $this->getTranslator()->translate('To add your information to the CV Book, you must complete these. Please click <a href="{{editurl}}">here</a> to edit your account.');
 
-        return $messages;
+            return new FlashMessage('danger', 'Error', $content);
+        }
     }
 }

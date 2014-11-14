@@ -5,11 +5,12 @@
         <h1>{% block title %}{{ translate('CV Book') }}{% endblock %}</h1>
     </div>
 
-    {% if not form %}
-        {% for message in messages %}
-        {% autoescape false %}
-            {{ translate(message)|replace({"{{editurl}}" : url('common_account', {action: 'edit', return: 'br_cv_index'})}) }}
-        {% endautoescape %}
+    {% if messages %}
+        {% for flashMessage in messages %}
+            <div class="flashmessage alert alert-{{ flashMessage.getType() }} fade in">
+                <a class="close" data-dismiss="alert">&times;</a>
+                {{ translate(flashMessage.getMessage())|replace({"{{editurl}}" : url('common_account', {action: 'edit', return: 'br_cv_index'})})|raw }}
+            </div>
         {% endfor %}
     {% else %}
         {% block intro_message %}
