@@ -18,10 +18,8 @@
 
 namespace FormBundle\Form\Admin\Form;
 
-use Doctrine\ORM\EntityManager,
-    FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\Form\Doodle,
-    Zend\Form\Element\Submit;
+use FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Form\Doodle;
 
 /**
  * Edit Form
@@ -32,114 +30,62 @@ use Doctrine\ORM\EntityManager,
 class Edit extends Add
 {
     /**
-     * @var \FormBundle\Entity\Node\Group\Mapping
+     * @var Form
      */
-    private $_group;
+    private $_form;
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Form            $form          The notification we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Form $form, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
-
-        $this->_group = $entityManager->getRepository('FormBundle\Entity\Node\Group\Mapping')
-            ->findOneByForm($form);
-
-        if (null !== $this->_group) {
-            $this->get('start_date')->setAttribute('disabled', 'disabled');
-            $this->get('end_date')->setAttribute('disabled', 'disabled');
-            $this->get('active')->setAttribute('disabled', 'disabled');
-            $this->get('max')->setAttribute('disabled', 'disabled');
-            $this->get('non_members')->setAttribute('disabled', 'disabled');
-            $this->get('editable_by_user')->setAttribute('disabled', 'disabled');
-        }
-
-        $this->remove('type');
-        if ($form instanceof Doodle) {
-            $this->remove('max');
-        } else {
-            $this->remove('names_visible_for_others');
-        }
+        parent::init();
 
         $this->setAttribute('class', $this->getAttribute('class') . ' half_width');
 
+        $group = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
+            ->findOneByForm($this->_form);
+
+        if (null !== $group) {
+            $this->get('start_date')
+                ->setAttribute('disabled', 'disabled')
+                ->setRequired(false);
+            $this->get('end_date')
+                ->setAttribute('disabled', 'disabled')
+                ->setRequired(false);
+            $this->get('active')
+                ->setAttribute('disabled', 'disabled')
+                ->setRequired(false);
+            $this->get('max')
+                ->setAttribute('disabled', 'disabled')
+                ->setRequired(false);
+            $this->get('non_member')
+                ->setAttribute('disabled', 'disabled')
+                ->setRequired(false);
+            $this->get('editable_by_user')
+                ->setAttribute('disabled', 'disabled')
+                ->setRequired(false);
+        }
+
+        $this->remove('type');
+        if ($this->_form instanceof Doodle) {
+            $this->remove('max');
+        } else {
+            $this->remove('names_visible_for_others');
+            $this->remove('reminder_mail');
+            $this->remove('reminder_mail_form');
+        }
+
         $this->remove('submit');
+        $this->addSubmit('Save', 'form_edit');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'form_edit');
-        $this->add($field);
-
-        $this->_populateFromForm($form);
+        if (null !== $this->_form) {
+            $this->bind($this->_form);
+        }
     }
 
-    private function _populateFromForm(Form $form)
+    public function setForm(Form $form)
     {
-        $data = array(
-            'start_date'            => $form->getStartDate()->format('d/m/Y H:i'),
-            'end_date'              => $form->getEndDate()->format('d/m/Y H:i'),
-            'active'                => $form->isActive(),
-            'max'                   => $form->getMax(),
-            'multiple'              => $form->isMultiple(),
-            'editable_by_user'      => $form->isEditableByUser(),
-            'send_guest_login_mail' => $form->sendGuestLoginMail(),
-            'non_members'           => $form->isNonMember(),
-            'mail'                  => $form->hasMail(),
-            'mail_from'             => $form->hasMail() ? $form->getMail()->getFrom() : '',
-            'mail_bcc'              => $form->hasMail() ? $form->getMail()->getBcc() : '',
-        );
+        $this->_form = $form;
 
-        foreach ($this->getLanguages() as $language) {
-            $data['title_' . $language->getAbbrev()] = $form->getTitle($language, false);
-            $data['introduction_' . $language->getAbbrev()] = $form->getIntroduction($language, false);
-            $data['submittext_' . $language->getAbbrev()] = $form->getSubmitText($language, false);
-            $data['updatetext_' . $language->getAbbrev()] = $form->getUpdateText($language, false);
-            if ($form->hasMail()) {
-                $data['mail_subject_' . $language->getAbbrev()] = $form->getMail()->getSubject($language, false);
-
-                if ($form->getMail()->getContent($language, false) != '') {
-                    $data['mail_body_' . $language->getAbbrev()] = $form->getMail()->getContent($language, false);
-                }
-            }
-        }
-
-        if ($form instanceof Doodle) {
-            $data['names_visible_for_others'] = $form->getNamesVisibleForOthers();
-            $data['reminder_mail'] = $form->hasReminderMail();
-
-            if ($form->hasReminderMail()) {
-                $data['reminder_mail_from'] = $form->getReminderMail()->getFrom();
-                $data['reminder_mail_bcc'] = $form->getReminderMail()->getBcc();
-
-                foreach ($this->getLanguages() as $language) {
-                    $data['reminder_mail_subject_' . $language->getAbbrev()] = $form->getReminderMail()->getSubject($language, false);
-
-                    if ($form->getReminderMail()->getContent($language, false) != '') {
-                        $data['reminder_mail_body_' . $language->getAbbrev()] = $form->getReminderMail()->getContent($language, false);
-                    }
-                }
-            }
-        }
-
-        $this->setData($data);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-
-        if (null !== $this->_group) {
-            $inputFilter->remove('start_date');
-            $inputFilter->remove('end_date');
-            $inputFilter->remove('active');
-            $inputFilter->remove('max');
-            $inputFilter->remove('non_members');
-            $inputFilter->remove('editable_by_user');
-        }
-
-        return $inputFilter;
+        return $this;
     }
 }

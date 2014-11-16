@@ -15,22 +15,28 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#languages a:first').click();
-            $('#mail_languages a:first').click();
-            $('#reminder_mail_languages a:first').click();
+            $('#mail_form\\[content\\]\\[languages\\] a:first').click();
+            $('#reminder_mail_form\\[content\\]\\[languages\\] a:first').click();
             $('textarea.md').gollum();
             $('#mail').bind('click change', toggleMail);
             toggleMail();
-            $('#reminder_mail').click(toggleReminder);
+            $('#reminder_mail').bind('click change', toggleReminder);
             toggleReminder();
             $('#send_guest_login_mail').change(toggleGuestMail);
 
-            $('#type').change(function () {
+            $('#form_type').change(function () {
                 if ($(this).val() == 'form') {
-                    $('form .doodle').closest('.row').hide();
-                    $('form .form').closest('.row').show();
+                    $('form .doodle_element').closest('.row').hide();
+                    $('form .doodle_element').each(function () {
+                        $(this).prop('checked', false).change();
+                    });
+                    $('form .form_element').closest('.row').show();
                 } else {
-                    $('form .form').closest('.row').hide();
-                    $('form .doodle').closest('.row').show();
+                    $('form .form_element').closest('.row').hide();
+                    $('form .form_element').each(function () {
+                        $(this).prop('checked', false).change();
+                    });
+                    $('form .doodle_element').closest('.row').show();
                 }
             }).change();
         });
