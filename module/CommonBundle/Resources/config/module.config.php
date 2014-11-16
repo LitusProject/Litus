@@ -194,8 +194,9 @@ return Config::create(
                         'time'       => 'CommonBundle\Component\Form\Admin\Element\Time',
                         'typeahead'  => 'CommonBundle\Component\Form\Admin\Element\TypeAhead',
 
-                        'tabcontent' => 'CommonBundle\Component\Form\Admin\Form\SubForm\TabContent',
-                        'tabpane'    => 'CommonBundle\Component\Form\Admin\Form\SubForm\TabPane',
+                        'tabpane'    => 'CommonBundle\Component\Form\Admin\Fieldset\Tabbable',
+                        'tabcontent' => 'CommonBundle\Component\Form\Admin\Fieldset\TabContent',
+                        'tabpane'    => 'CommonBundle\Component\Form\Admin\Fieldset\TabPane',
 
                         'fieldset'   => 'CommonBundle\Component\Form\Fieldset',
                     ),

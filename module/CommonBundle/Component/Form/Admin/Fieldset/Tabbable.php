@@ -16,33 +16,28 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Admin\Form;
+namespace CommonBundle\Component\Form\Admin\Fieldset;
 
 use CommonBundle\Component\Form\Admin\Fieldset\TabContent,
     CommonBundle\Component\Form\Admin\Fieldset\TabPane,
     CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language,
     Locale,
-    RuntimeException;
+    RuntimeException,
+    Zend\Form\FormInterface;
 
 /**
- * Extending Zend's form component, so that our forms look the way we want
+ * Extending Zend's fieldset component, so that our forms look the way we want
  * them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
+abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset
 {
-    /**
-     * @var string The prefix of the tab elements
-     */
-    private $prefix = '';
-
     public function init()
     {
         $languages = $this->getLanguages();
-        $prefix = $this->getPrefix();
 
         if (count($languages) === 0) {
             throw new RuntimeException('No languages found!');
@@ -57,13 +52,13 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
 
             $this->add(array(
                 'type'       => 'tabs',
-                'name'       => $prefix . 'languages',
+                'name'       => 'languages',
                 'attributes' => array(
-                    'id' => $prefix . 'languages',
+                    'id' => 'languages',
                 ),
             ));
 
-            $tabs = $this->get($prefix . 'languages');
+            $tabs = $this->get('languages');
             $tabContent = $this->createTabContent();
 
             $this->initBeforeTabs();
@@ -71,11 +66,11 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
             foreach ($languages as $language) {
                 $abbrev = $language->getAbbrev();
 
-                $pane = $this->createTabPane($prefix . 'tab_' . $abbrev);
+                $pane = $this->createTabPane('tab_' . $abbrev);
 
                 $this->addTab($pane, $language, $abbrev == $defaultLanguage);
 
-                $tabs->addTab(array($language->getName() => $this->escapeTabContentId('#' . $tabContent->getName() . '[' . $prefix . 'tab_' . $abbrev . ']')));
+                $tabs->addTab(array($language->getName() => '[' . $tabContent->getName() . '][' . 'tab_' . $abbrev . ']'));
                 $tabContent->add($pane);
             }
 
@@ -90,7 +85,7 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
      */
     private function createTabContent()
     {
-        $tabContent = new TabContent($this->getPrefix() . 'tab_content');
+        $tabContent = new TabContent('tab_content');
         $this->initElement($tabContent);
 
         return $tabContent;
@@ -120,32 +115,31 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
+     * Prepare the form element (mostly used for rendering purposes)
+     *
+     * @param  FormInterface $form
+     * @return mixed
+     */
+    public function prepareElement(FormInterface $form)
+    {
+        $tabs = $this->get('languages')->getAttribute('tabs');
+        foreach ($tabs as $language => $tab) {
+            $tabs[$language] = $this->escapeTabContentId('#' . $this->getName() . $tab);
+        }
+        $this->get('languages')->setAttribute('tabs', $tabs);
+
+        parent::prepareElement($form);
+
+        $this->get('languages')->setAttribute('id', $this->get('languages')->getName());
+    }
+
+    /**
      * @param  string $id The id of the tab content
      * @return string
      */
     private function escapeTabContentId($id)
     {
         return str_replace(array('[', ']'), array('\\[', '\\]'), $id);
-    }
-
-    /**
-     * @param  string $prefix
-     * @return self
-     */
-    public function setPrefix($prefix)
-    {
-        $this->prefix = $prefix;
-
-        return $this;
-    }
-
-    public function getPrefix()
-    {
-        if (null === $this->prefix || '' == $this->prefix) {
-            return '';
-        }
-
-        return $this->prefix . '_';
     }
 
     /**

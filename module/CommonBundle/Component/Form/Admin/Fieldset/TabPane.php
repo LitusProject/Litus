@@ -16,7 +16,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Admin\Form\SubForm;
+namespace CommonBundle\Component\Form\Admin\Fieldset;
 
 /**
  * Add tab pane sub form
