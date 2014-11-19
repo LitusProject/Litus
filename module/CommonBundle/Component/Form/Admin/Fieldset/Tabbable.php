@@ -66,41 +66,43 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset
             foreach ($languages as $language) {
                 $abbrev = $language->getAbbrev();
 
-                $pane = $this->createTabPane('tab_' . $abbrev);
+                $pane = $this->createTabPane($tabContent, 'tab_' . $abbrev);
 
                 $this->addTab($pane, $language, $abbrev == $defaultLanguage);
 
                 $tabs->addTab(array($language->getName() => '[' . $tabContent->getName() . '][' . 'tab_' . $abbrev . ']'));
-                $tabContent->add($pane);
             }
-
-            $this->add($tabContent);
         }
 
         $this->initAfterTabs();
     }
 
     /**
-     * @return SubForm\TabContent
+     * @return TabContent
      */
     private function createTabContent()
     {
-        $tabContent = new TabContent('tab_content');
-        $this->initElement($tabContent);
+        $this->add(array(
+            'type' => 'tabcontent',
+            'name' => 'tab_content',
+        ));
 
-        return $tabContent;
+        return $this->get('tab_content');
     }
 
     /**
-     * @param  string          $name
-     * @return SubForm\TabPane
+     * @param  TabContent $tabContent
+     * @param  string     $name
+     * @return TabPane
      */
-    private function createTabPane($name)
+    private function createTabPane(TabContent $tabContent, $name)
     {
-        $tabPane = new TabPane($name);
-        $this->initElement($tabPane);
+        $tabContent->add(array(
+            'type' => 'tabpane',
+            'name' => $name,
+        ));
 
-        return $tabPane;
+        return $tabContent->get($name);
     }
 
     /**
