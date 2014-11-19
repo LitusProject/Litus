@@ -49,9 +49,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#languages a:first').click();
-            $('#dropdown_languages a:first').click();
-            $('#timeslot_languages a:first').click();
-            $('#type').change(toggleType);
+            $('#dropdown_form\\[languages\\] a:first').click();
+            $('#timeslot_form\\[languages\\] a:first').click();
+            $('#form_type').change(toggleType);
             toggleType();
 
             $('#visible_if').change(function () {
@@ -81,9 +81,9 @@
 
         function toggleType() {
             $('.extra_form').addClass('hide');
-            $('.' + $('#type').val() + '_form').removeClass('hide');
+            $('.' + $('#form_type').val() + '_form').removeClass('hide');
 
-            if ($('#type').val() == 'timeslot') {
+            if ($('#form_type').val() == 'timeslot') {
                 $('.field_label').closest('.row').hide();
                 $('form #required, form #order').closest('.row').hide();
                 $('#visibility').hide();

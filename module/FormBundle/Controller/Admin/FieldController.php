@@ -29,8 +29,6 @@ use CommonBundle\Component\Controller\Exception\RuntimeException,
     FormBundle\Entity\Field\Translation\Option as OptionTranslationField,
     FormBundle\Entity\Field\Translation\TimeSlot as TimeSlotTranslationField,
     FormBundle\Entity\Translation,
-    FormBundle\Form\Admin\Field\Add as AddForm,
-    FormBundle\Form\Admin\Field\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -98,7 +96,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('FormBundle\Entity\Field')
             ->findLatestField($formSpecification);
 
-        $form = new AddForm($formSpecification, $this->getEntityManager(), $this->getParam('repeat') ? $latestField : null);
+        $form = $this->getForm('form_field_add', array('form' => $formSpecification));//new AddForm($formSpecification, $this->getEntityManager(), $this->getParam('repeat') ? $latestField : null);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

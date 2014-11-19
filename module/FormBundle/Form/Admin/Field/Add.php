@@ -18,18 +18,9 @@
 
 namespace FormBundle\Form\Admin\Field;
 
-use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
-    CommonBundle\Component\OldForm\Admin\Element\Collection,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Tabs,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Textarea,
-    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\OldForm\Admin\Form\SubForm\TabPane,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    Doctrine\ORM\EntityManager,
+use CommonBundle\Component\Form\FieldsetInterface,
+    CommonBundle\Entity\General\Language,
     FormBundle\Component\Validator\Required as RequiredValidator,
-    FormBundle\Component\Validator\StringField as StringFieldValidator,
     FormBundle\Entity\Field,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
@@ -37,218 +28,235 @@ use CommonBundle\Component\OldForm\Admin\Element\Checkbox,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\Form\Doodle,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    FormBundle\Entity\Node\Form\Doodle;
 
 /**
  * Add Field
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
     /**
-     * @var EntityManager
-     */
-    protected $_entityManager = null;
+    * @var Form
+    */
+    private $_form;
 
     /**
-     * @var Form
-     */
-    protected $_form;
+    * @var Field
+    */
+    private $_field;
 
-    /**
-     * @var Field
-     */
-    protected $_field;
-
-    /**
-     * @param Form            $form
-     * @param EntityManager   $entityManager
-     * @param Field|null      $lastField
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(Form $form, EntityManager $entityManager, Field $lastField = null ,$name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-        $this->_form = $form;
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'type',
+            'label'      => 'Type',
+            'required'   => true,
+            'attributes' => array(
+                'id'      => 'form_type',
+                'options' => $this->_form instanceof Doodle ? array('timeslot' => 'Time Slot') : Field::$POSSIBLE_TYPES,
+            ),
+        ));
 
-        $tabs = new Tabs('languages');
-        $this->add($tabs);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'order',
+            'label'      => 'Order',
+            'required'   => true,
+            'attributes' => array(
+                'id'        => 'order',
+                'data-help' => 'The display order of the fields, lower numbers are displayed first.',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'digits',
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $tabContent = new TabContent('tab_content');
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'required',
+            'label'      => 'Required',
+            'attributes' => array(
+                'id' => 'required',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'validators' => array(
+                        new RequiredValidator(),
+                    ),
+                ),
+            ),
+        ));
 
-        foreach ($this->getLanguages() as $language) {
-            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
+        $this->add(array(
+            'type' => 'form_field_field_string',
+            'name' => 'string_form',
+            'label' => 'String Options',
+            'attributes' => array(
+                'class' => 'string_form extra_form hide',
+            ),
+        ));
 
-            $pane = new TabPane('tab_' . $language->getAbbrev());
+        $this->add(array(
+            'type' => 'form_field_field_dropdown',
+            'name' => 'dropdown_form',
+            'label' => 'Options',
+            'attributes' => array(
+                'class' => 'dropdown_form extra_form hide',
+            ),
+        ));
 
-            $field = new Text('label_' . $language->getAbbrev());
-            $field->setLabel('Label')
-                ->setAttribute('class', 'field_label')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
-            $pane->add($field);
+        $this->add(array(
+            'type' => 'form_field_field_file',
+            'name' => 'file_form',
+            'label' => 'File Options',
+            'attributes' => array(
+                'class' => 'file_form extra_form hide',
+            ),
+        ));
 
-            $tabContent->add($pane);
-        }
+        $this->add(array(
+            'type' => 'form_field_field_timeslot',
+            'name' => 'timeslot_form',
+            'label' => 'Timeslot Options',
+            'attributes' => array(
+                'class' => 'timeslot_form extra_form hide',
+            ),
+        ));
 
-        $this->add($tabContent);
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'visibility',
+            'label'      => 'Visibility',
+            'attributes' => array(
+                'id' => 'visibility',
+            ),
+            'elements'   => array(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'visible_if',
+                    'label'      => 'Visible If',
+                    'required'   => true,
+                    'attributes' => array(
+                        'options' => $this->getVisibilityOptions(),
+                    ),
+                ),
+                array(
+                    'type'       => 'select',
+                    'name'       => 'visible_value',
+                    'label'      => 'Is',
+                    'required'   => true,
+                ),
+            ),
+        ));
 
-        $field = new Select('type');
-        $field->setLabel('Type')
-            ->setRequired();
-        $this->add($field);
-
-        if ($form instanceof Doodle) {
-            $field->setAttribute('options', array('timeslot' => 'Time Slot'));
-        } else {
-            $field->setAttribute('options', Field::$POSSIBLE_TYPES);
-        }
-
-        $field = new Text('order');
-        $field->setLabel('Order')
-            ->setAttribute('data-help', 'The display order of the fields, lower numbers are displayed first.')
-            ->setRequired(true);
-        $this->add($field);
-
-        $field = new Checkbox('required');
-        $field->setLabel('Required');
-        $this->add($field);
-
-        $string_form = new Collection('string_form');
-        $string_form->setLabel('String Options')
-            ->setAttribute('class', 'string_form extra_form hide');
-        $this->add($string_form);
-
-        $field = new Checkbox('multiline');
-        $field->setLabel('Multiline')
-            ->setAttribute('data-help', 'Allow multiple lines in the field (textarea).');
-        $string_form->add($field);
-
-        $field = new Text('charsperline');
-        $field->setLabel('Max. characters per line (or Infinite)')
-            ->setAttribute('data-help', 'The maximum numbers of characters on one line. Zero is infinite.');
-        $string_form->add($field);
-
-        $field = new Text('lines');
-        $field->setLabel('Max. number of lines (Multiline fields only)')
-            ->setAttribute('data-help', 'The maximum numbers of lines. Zero is infinite.');
-        $string_form->add($field);
-
-        $dropdown_form = new Collection('dropdown_form');
-        $dropdown_form->setLabel('Options')
-            ->setAttribute('class', 'dropdown_form extra_form hide');
-        $this->add($dropdown_form);
-
-        $dropdownTabs = new Tabs('dropdown_languages');
-        $dropdown_form->add($dropdownTabs);
-
-        $dropdownTabContent = new TabContent('dropdown_tab_content');
-
-        foreach ($this->getLanguages() as $language) {
-            $dropdownTabs->addTab(array($language->getName() => '#dropdown_tab_' . $language->getAbbrev()));
-
-            $pane = new TabPane('dropdown_tab_' . $language->getAbbrev());
-
-            $field = new Text('options_' . $language->getAbbrev());
-            $field->setLabel('Options')
-                ->setAttribute('data-help', 'The options comma separated.');
-            $pane->add($field);
-
-            $dropdownTabContent->add($pane);
-        }
-
-        $dropdown_form->add($dropdownTabContent);
-
-        $string_form = new Collection('file_form');
-        $string_form->setLabel('File Options')
-            ->setAttribute('class', 'file_form extra_form hide');
-        $this->add($string_form);
-
-        $field = new Text('max_size');
-        $field->setLabel('Max. size (in MB)')
-            ->setValue(4);
-        $string_form->add($field);
-
-        $timeslot_form = new Collection('timeslot_form');
-        $timeslot_form->setLabel('Time Slot Options')
-            ->setAttribute('class', 'timeslot_form extra_form hide');
-        $this->add($timeslot_form);
-
-        $field = new Text('timeslot_start_date');
-        $field->setLabel('Start Date')
-            ->setRequired()
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true);
-        $timeslot_form->add($field);
-
-        $field = new Text('timeslot_end_date');
-        $field->setLabel('End Date')
-            ->setRequired()
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true);
-        $timeslot_form->add($field);
-
-        $timeslotTabs = new Tabs('timeslot_languages');
-        $timeslot_form->add($timeslotTabs);
-
-        $timeslotTabContent = new TabContent('timeslot_tab_content');
-
-        foreach ($this->getLanguages() as $language) {
-            $timeslotTabs->addTab(array($language->getName() => '#timeslot_tab_' . $language->getAbbrev()));
-
-            $pane = new TabPane('timeslot_tab_' . $language->getAbbrev());
-
-            $field = new Text('timeslot_location_' . $language->getAbbrev());
-            $field->setLabel('Location');
-            $pane->add($field);
-
-            $field = new Textarea('timeslot_extra_info_' . $language->getAbbrev());
-            $field->setLabel('Extra Information');
-            $pane->add($field);
-
-            $timeslotTabContent->add($pane);
-        }
-
-        $timeslot_form->add($timeslotTabContent);
-
-        $visibility = new Collection('visibility');
-        $visibility->setLabel('Visibility');
-        $this->add($visibility);
-
-        $field = new Select('visible_if');
-        $field->setLabel('Visible If')
-            ->setRequired()
-            ->setAttribute('options', $this->getVisibilityOptions());
-        $visibility->add($field);
-
-        $field = new Select('visible_value');
-        $field->setLabel('Is')
-            ->setRequired();
-        $visibility->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'field_add');
-        $this->add($field);
-
-        $field = new Submit('submit_repeat');
-        $field->setValue('Add And Repeat')
-            ->setAttribute('class', 'field_add');
-        $this->add($field);
-
-        if (null !== $lastField) {
-            $this->populateFromField($lastField, true);
-        }
+        $this->addSubmit('Add', 'field_add');
+        $this->addSubmit('Add And Repeat', 'field_add', 'submit_repeat');
     }
 
-    public function populateFromField(Field $field, $repeat = false)
+    protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
+    {
+        $container->add(array(
+            'type'       => 'text',
+            'name'       => 'label',
+            'label'      => 'Label',
+            'required'   => $isDefault,
+            'attributes' => array(
+                'class' => 'field_label',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+    }
+
+    protected function getVisibilityOptions()
+    {
+        $options = array(0 => 'Always');
+        foreach ($this->_form->getFields() as $field) {
+            if (null !== $this->_field && $field->getId() == $this->_field->getId()) {
+                continue;
+            }
+
+            if ($field instanceof StringField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'string',
+                    ),
+                );
+            } elseif ($field instanceof DropdownField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'dropdown',
+                        'data-values' => $field->getOptions(),
+                    ),
+                );
+            } elseif ($field instanceof CheckboxField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'checkbox',
+                    ),
+                );
+            } elseif ($field instanceof FileField) {
+                $options[] = array(
+                    'label' => $field->getLabel(),
+                    'value' => $field->getId(),
+                    'attributes' => array(
+                        'data-type' => 'file',
+                    ),
+                );
+            }
+        }
+
+        return $options;
+    }
+
+    /**
+    * @param  Form $form
+    * @return self
+    */
+    public function setForm(Form $form)
+    {
+        $this->_form = $form;
+
+        return $this;
+    }
+
+    /**
+    * @param  Field $field
+    * @return self
+    */
+    public function setField(Field $field)
+    {
+        $this->_field = $field;
+
+        return $this;
+    }
+
+    /*public function populateFromField(Field $field, $repeat = false)
     {
         $data = array(
             'order'    => $field->getOrder(),
@@ -308,222 +316,5 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
         }
 
         $this->setData($data);
-    }
-
-    protected function getVisibilityOptions()
-    {
-        $options = array(0 => 'Always');
-        foreach ($this->_form->getFields() as $field) {
-            if (null !== $this->_field && $field->getId() == $this->_field->getId()) {
-                continue;
-            }
-
-            if ($field instanceof StringField) {
-                $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
-                    'attributes' => array(
-                        'data-type' => 'string',
-                    ),
-                );
-            } elseif ($field instanceof DropdownField) {
-                $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
-                    'attributes' => array(
-                        'data-type' => 'dropdown',
-                        'data-values' => $field->getOptions(),
-                    ),
-                );
-            } elseif ($field instanceof CheckboxField) {
-                $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
-                    'attributes' => array(
-                        'data-type' => 'checkbox',
-                    ),
-                );
-            } elseif ($field instanceof FileField) {
-                $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
-                    'attributes' => array(
-                        'data-type' => 'file',
-                    ),
-                );
-            }
-        }
-
-        return $options;
-    }
-
-    protected function getLanguages()
-    {
-        return $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
-    }
-
-    public function getInputFilter()
-    {
-        $isTimeSlot = $this->_isTimeSlot();
-
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        foreach ($this->getLanguages() as $language) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'label_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault() && !$isTimeSlot,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-        }
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'charsperline',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'digits',
-                        ),
-                        new StringFieldValidator(
-                            isset($this->data['multiline']) ? $this->data['multiline'] : null,
-                            isset($this->data['lines']) ? $this->data['lines'] : null
-                        ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'lines',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'digits',
-                        ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'max_size',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'digits',
-                        ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'order',
-                    'required' => !$isTimeSlot,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'digits',
-                        ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'required',
-                    'required' => false,
-                    'validators' => array(
-                        new RequiredValidator(),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'timeslot_start_date',
-                    'required' => $isTimeSlot,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'timeslot_end_date',
-                    'required' => $isTimeSlot,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => $isTimeSlot ? array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
-                        new DateCompareValidator('timeslot_start_date', 'd/m/Y H:i'),
-                    ) : array(),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'visible_if',
-                    'required' => false,
-                )
-            )
-        );
-
-        return $inputFilter;
-    }
-
-    protected function _isTimeSlot()
-    {
-        return (isset($this->data['type']) && $this->data['type'] == 'timeslot');
-    }
+    }*/
 }

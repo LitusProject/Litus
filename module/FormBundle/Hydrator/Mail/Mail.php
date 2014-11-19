@@ -36,7 +36,7 @@ class Mail extends \CommonBundle\Component\Hydrator\Hydrator
         $this->getEntityManager()->persist($object);
 
         foreach ($this->getLanguages() as $language) {
-            $mailData = $data['content']['tab_content']['tab_' . $language->getAbbrev()];
+            $mailData = $data['tab_content']['tab_' . $language->getAbbrev()];
             $translation = $object->getTranslation($language, false);
 
             if (null === $translation) {
@@ -65,10 +65,10 @@ class Mail extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$std_keys);
 
         foreach ($this->getLanguages() as $language) {
-            $data['content']['tab_content']['tab_' . $language->getAbbrev()]['subject'] = $object->getSubject($language, false);
+            $data['tab_content']['tab_' . $language->getAbbrev()]['subject'] = $object->getSubject($language, false);
 
             if ($object->getContent($language, false) != '') {
-                $data['content']['tab_content']['tab_' . $language->getAbbrev()]['body'] = $object->getContent($language, false);
+                $data['tab_content']['tab_' . $language->getAbbrev()]['body'] = $object->getContent($language, false);
             }
         }
 

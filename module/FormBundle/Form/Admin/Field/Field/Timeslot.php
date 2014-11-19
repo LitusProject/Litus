@@ -16,26 +16,53 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace FormBundle\Form\Admin\Form\Mail;
+namespace FormBundle\Form\Admin\Field\Field;
 
 use CommonBundle\Component\Form\FieldsetInterface,
+    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Entity\General\Language;
 
 /**
- * Add mail content
+ * Add Dropdown Field
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Content extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
+class Timeslot extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
 {
+    public function init()
+    {
+        $this->add(array(
+            'type'     => 'datetime',
+            'name'     => 'start_date',
+            'label'    => 'Start Date',
+            'required' => $this->isRequired(),
+        ));
+
+        $this->add(array(
+            'type'     => 'datetime',
+            'name'     => 'end_date',
+            'label'    => 'End Date',
+            'required' => $this->isRequired(),
+            'options'  => array(
+                'input' => array(
+                    'validators' => array(
+                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                    ),
+                ),
+            ),
+        ));
+
+        parent::init();
+    }
+
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
         $container->add(array(
-            'type'       => 'text',
-            'name'       => 'subject',
-            'label'      => 'Subject',
-            'required'   => $isDefault,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'location',
+            'label'    => 'Location',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -45,14 +72,11 @@ class Content extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
         ));
 
         $container->add(array(
-            'type'       => 'textarea',
-            'name'       => 'body',
-            'label'      => 'Body',
-            'required'   => $isDefault,
-            'attributes' => array(
-                'row'   => 20,
-            ),
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'extra_info',
+            'label'    => 'Extra Information',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
