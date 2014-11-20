@@ -52,4 +52,20 @@ class Dropdown extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
             ),
         ));
     }
+
+    public function getInputFilterSpecification()
+    {
+        $specs = parent::getInputFilterSpecification();
+
+        foreach ($this->getLanguages() as $language) {
+            $specs['tab_content']['tab_' . $language->getAbbrev()]['options']['required'] = $specs['tab_content']['tab_' . $language->getAbbrev()]['options']['required'] && $this->isRequired();
+        }
+
+        return $specs;
+    }
+
+    public function setRequired($required = true)
+    {
+        return $this->setElementRequired($required);
+    }
 }

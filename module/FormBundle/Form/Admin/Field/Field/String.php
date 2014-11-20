@@ -94,4 +94,9 @@ class String extends \CommonBundle\Component\Form\Fieldset
 
         return $specs;
     }
+
+    public function setRequired($required = true)
+    {
+        return $this->setElementRequired($required);
+    }
 }

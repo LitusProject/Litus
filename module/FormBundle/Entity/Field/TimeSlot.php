@@ -22,7 +22,6 @@ use CommonBundle\Entity\General\Language,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
-    FormBundle\Entity\Node\Form,
     IntlDateFormatter;
 
 /**
@@ -55,23 +54,6 @@ class TimeSlot extends Field
     private $timeslotTranslations;
 
     /**
-     * @param Form        $form
-     * @param integer     $order
-     * @param bool        $required
-     * @param Field|null  $visibityDecisionField
-     * @param string|null $visibilityValue
-     * @param DateTime    $startDate
-     * @param DateTime    $endDate
-     */
-    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, DateTime $startDate, DateTime $endDate)
-    {
-        parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
-
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-    }
-
-    /**
      * @return DateTime
      */
     public function getStartDate()
@@ -83,7 +65,7 @@ class TimeSlot extends Field
      * @param  DateTime $startDate
      * @return self
      */
-    public function setStartDate($startDate)
+    public function setStartDate(DateTime $startDate)
     {
         $this->startDate = $startDate;
 
@@ -102,7 +84,7 @@ class TimeSlot extends Field
      * @param  DateTime $endDate
      * @return self
      */
-    public function setEndDate($endDate)
+    public function setEndDate(DateTime $endDate)
     {
         $this->endDate = $endDate;
 

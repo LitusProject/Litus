@@ -35,14 +35,14 @@ class Timeslot extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
             'type'     => 'datetime',
             'name'     => 'start_date',
             'label'    => 'Start Date',
-            'required' => $this->isRequired(),
+            'required' => true,
         ));
 
         $this->add(array(
             'type'     => 'datetime',
             'name'     => 'end_date',
             'label'    => 'End Date',
-            'required' => $this->isRequired(),
+            'required' => true,
             'options'  => array(
                 'input' => array(
                     'validators' => array(
@@ -61,7 +61,7 @@ class Timeslot extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
             'type'     => 'text',
             'name'     => 'location',
             'label'    => 'Location',
-            'required' => $isDefault,
+            'required' => false,
             'options'  => array(
                 'input' => array(
                     'filters' => array(
@@ -75,7 +75,7 @@ class Timeslot extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
             'type'     => 'text',
             'name'     => 'extra_info',
             'label'    => 'Extra Information',
-            'required' => $isDefault,
+            'required' => false,
             'options'  => array(
                 'input' => array(
                     'filters' => array(
@@ -84,5 +84,20 @@ class Timeslot extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
                 ),
             ),
         ));
+    }
+
+    public function getInputFilterSpecification()
+    {
+        $specs = parent::getInputFilterSpecification();
+
+        $specs['start_date']['required'] = $this->isRequired();
+        $specs['end_date']['required'] = $this->isRequired();
+
+        return $specs;
+    }
+
+    public function setRequired($required = true)
+    {
+        return $this->setElementRequired($required);
     }
 }

@@ -37,15 +37,17 @@ use CommonBundle\Component\Form\FieldsetInterface,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
+    protected $hydrator = 'FormBundle\Hydrator\Field';
+
     /**
     * @var Form
     */
-    private $_form;
+    protected $_form;
 
     /**
     * @var Field
     */
-    private $_field;
+    protected $_field;
 
     public function init()
     {
@@ -102,36 +104,36 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
 
         $this->add(array(
-            'type' => 'form_field_field_string',
-            'name' => 'string_form',
-            'label' => 'String Options',
+            'type'       => 'form_field_field_string',
+            'name'       => 'string_form',
+            'label'      => 'String Options',
             'attributes' => array(
                 'class' => 'string_form extra_form hide',
             ),
         ));
 
         $this->add(array(
-            'type' => 'form_field_field_dropdown',
-            'name' => 'dropdown_form',
-            'label' => 'Options',
+            'type'       => 'form_field_field_dropdown',
+            'name'       => 'dropdown_form',
+            'label'      => 'Options',
             'attributes' => array(
                 'class' => 'dropdown_form extra_form hide',
             ),
         ));
 
         $this->add(array(
-            'type' => 'form_field_field_file',
-            'name' => 'file_form',
-            'label' => 'File Options',
+            'type'      => 'form_field_field_file',
+            'name'       => 'file_form',
+            'label'      => 'File Options',
             'attributes' => array(
                 'class' => 'file_form extra_form hide',
             ),
         ));
 
         $this->add(array(
-            'type' => 'form_field_field_timeslot',
-            'name' => 'timeslot_form',
-            'label' => 'Timeslot Options',
+            'type'       => 'form_field_field_timeslot',
+            'name'       => 'timeslot_form',
+            'label'      => 'Timeslot Options',
             'attributes' => array(
                 'class' => 'timeslot_form extra_form hide',
             ),
@@ -147,24 +149,32 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'elements'   => array(
                 array(
                     'type'       => 'select',
-                    'name'       => 'visible_if',
+                    'name'       => 'if',
                     'label'      => 'Visible If',
                     'required'   => true,
                     'attributes' => array(
+                        'id'      => 'visible_if',
                         'options' => $this->getVisibilityOptions(),
                     ),
                 ),
                 array(
                     'type'       => 'select',
-                    'name'       => 'visible_value',
+                    'name'       => 'value',
                     'label'      => 'Is',
                     'required'   => true,
+                    'attributes' => array(
+                        'id' => 'visible_value',
+                    ),
                 ),
             ),
         ));
 
         $this->addSubmit('Add', 'field_add');
         $this->addSubmit('Add And Repeat', 'field_add', 'submit_repeat');
+
+        if (null !== $this->_field) {
+            $this->bind($this->_field);
+        }
     }
 
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
@@ -189,7 +199,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
     protected function getVisibilityOptions()
     {
-        $options = array(0 => 'Always');
+        $options = array('always' => 'Always');
         foreach ($this->_form->getFields() as $field) {
             if (null !== $this->_field && $field->getId() == $this->_field->getId()) {
                 continue;
@@ -249,72 +259,61 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     * @param  Field $field
     * @return self
     */
-    public function setField(Field $field)
+    public function setField(Field $field = null)
     {
         $this->_field = $field;
 
         return $this;
     }
 
-    /*public function populateFromField(Field $field, $repeat = false)
+    public function getInputFilterSpecification()
     {
-        $data = array(
-            'order'    => $field->getOrder(),
-            'required' => $field->isRequired(),
-        );
+        $type = $this->_getType();
 
-        if ($field instanceof StringField) {
-            $data['type'] = 'string';
-        } elseif ($field instanceof DropdownField) {
-            $data['type'] = 'dropdown';
-        } elseif ($field instanceof CheckboxField) {
-            $data['type'] = 'checkbox';
-        } elseif ($field instanceof FileField) {
-            $data['type'] = 'file';
-        } elseif ($field instanceof TimeSlotField) {
-            $data['type'] = 'timeslot';
+        if ($type == 'string') {
+            $this->get('string_form')->setRequired();
+        } elseif ($type == 'dropdown') {
+            $this->get('dropdown_form')->setRequired();
+        } elseif ($type == 'file') {
+            $this->get('file_form')->setRequired();
+        } elseif ($type == 'timeslot') {
+            $this->get('timeslot_form')->setRequired();
         }
 
-        if ($field instanceof StringField) {
-            $data['charsperline'] = $field->getLineLength();
-            $data['multiline'] = $field->isMultiLine();
-            if ($field->isMultiLine()) {
-                $data['lines'] = $field->getLines();
+        $specs = parent::getInputFilterSpecification();
+
+        if ($type == 'timeslot') {
+            $specs['order']['required'] = false;
+            foreach ($this->getLanguages() as $language) {
+                $specs['tab_content']['tab_' . $language->getAbbrev()]['label']['required'] = false;
             }
-        } elseif ($field instanceof FileField) {
-            $data['max_size'] = $field->getMaxSize();
-        } elseif ($field instanceof TimeSlotField) {
-            if ($repeat) {
-                $interval = $field->getStartDate()->diff($field->getEndDate());
-                $startDate = clone $field->getStartDate();
-                $endDate = clone $field->getEndDate();
-                $startDate->add($interval);
-                $endDate->add($interval);
-            } else {
-                $startDate = $field->getStartDate();
-                $endDate = $field->getEndDate();
-            }
-            $data['timeslot_start_date'] = $startDate->format('d/m/Y H:i');
-            $data['timeslot_end_date'] = $endDate->format('d/m/Y H:i');
+            $specs['visibility']['if']['required'] = false;
+            $specs['visibility']['value']['required'] = false;
         }
 
-        foreach ($this->getLanguages() as $language) {
-            $data['label_' . $language->getAbbrev()] = $field->getLabel($language, false);
-
-            if ($field instanceof DropdownField) {
-                $data['options_' . $language->getAbbrev()] = $field->getOptions($language, false);
-            } elseif ($field instanceof TimeSlotField) {
-                $data['timeslot_location_' . $language->getAbbrev()] = $field->getLocation($language, false);
-                $data['timeslot_extra_info_' . $language->getAbbrev()] = $field->getExtraInformation($language, false);
-            }
+        if ($this->data['visibility']['if'] == 'always') {
+            $specs['visibility']['value']['required'] = false;
         }
 
-        if (null !== $field->getVisibilityDecissionField()) {
-            $data['visible_if'] = $field->getVisibilityDecissionField()->getId();
-            $data['visible_value'] = $field->getVisibilityValue();
-            $this->get('visibility')->get('visible_value')->setAttribute('data-current_value', $field->getVisibilityValue());
+        return $specs;
+    }
+
+    private function _getType()
+    {
+        if (null === $this->_field) {
+            return $this->data['type'];
         }
 
-        $this->setData($data);
-    }*/
+        if ($this->_field instanceof StringFieldEntity) {
+            return 'string';
+        } elseif ($this->_field instanceof DropdownFieldEntity) {
+            return 'dropdown';
+        } elseif ($this->_field instanceof CheckboxFieldEntity) {
+            return 'checkbox';
+        } elseif ($this->_field instanceof FileFieldEntity) {
+            return 'file';
+        } elseif ($this->_field instanceof TimeslotFieldEntity) {
+            return 'timeslot';
+        }
+    }
 }
