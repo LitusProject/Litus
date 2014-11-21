@@ -49,12 +49,17 @@ class String extends \CommonBundle\Component\Form\Fieldset
             ),
             'options'    => array(
                 'input' => array(
+                    'allow_empty'       => false,
+                    'continue_if_empty' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'digits',
+                            'name' => 'notempty',
+                            'options' => array(
+                                'null',
+                            ),
                         ),
                     ),
                 ),
@@ -87,9 +92,15 @@ class String extends \CommonBundle\Component\Form\Fieldset
     {
         $specs = parent::getInputFilterSpecification();
 
-        $specs['charsperline']['options']['input']['validators'][] = new StringFieldValidator(
-            isset($this->data['multiline']) ? $this->data['multiline'] : null,
-            isset($this->data['lines']) ? $this->data['lines'] : null
+        if ($this->get('charsperline')->getValue() != '') {
+            $specs['charsperline']['validators'][] = array(
+                'name' => 'digits',
+            );
+        }
+
+        $specs['charsperline']['validators'][] = new StringFieldValidator(
+            !empty($this->get('multiline')->getValue()) ? $this->get('multiline')->getValue() : null,
+            !empty($this->get('lines')->getValue()) ? $this->get('lines')->getValue() : null
         );
 
         return $specs;

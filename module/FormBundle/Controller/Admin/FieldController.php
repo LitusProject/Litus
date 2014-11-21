@@ -19,7 +19,6 @@
 namespace FormBundle\Controller\Admin;
 
 use CommonBundle\Component\Controller\Exception\RuntimeException,
-    DateTime,
     FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
@@ -379,14 +378,5 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $field;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

@@ -111,17 +111,6 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param FieldsetInterface $element The fieldset to configure
-     */
-    private function initElement(FieldsetInterface $element)
-    {
-        $element->init();
-        $this->getFormFactory()->configureFieldset($element, array());
-
-        $element->setFormFactory($this->getFormFactory());
-    }
-
-    /**
      * @param  string $id The id of the tab content
      * @return string
      */

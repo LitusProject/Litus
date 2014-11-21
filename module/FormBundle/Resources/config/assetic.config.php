@@ -39,6 +39,8 @@ return array(
             '@bootstrap_js_tab',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@gollum_css',
+            '@gollum_js',
             '@common_jqueryui',
             '@common_jquery_table_sort',
             '@common_jqueryui_datepicker',

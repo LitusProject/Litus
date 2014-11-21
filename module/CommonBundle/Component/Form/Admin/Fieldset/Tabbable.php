@@ -106,17 +106,6 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset
     }
 
     /**
-     * @param FieldsetInterface $element The fieldset to configure
-     */
-    private function initElement(FieldsetInterface $element)
-    {
-        $element->init();
-        $this->getFormFactory()->configureFieldset($element, array());
-
-        $element->setFormFactory($this->getFormFactory());
-    }
-
-    /**
      * Prepare the form element (mostly used for rendering purposes)
      *
      * @param  FormInterface $form

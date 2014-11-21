@@ -79,41 +79,18 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('form_group_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                $formData = $form->getFormData($formData);
-
-                $group = new Group($this->getAuthentication()->getPersonObject());
+                $group = $form->hydrateObject(
+                    new Group($this->getAuthentication()->getPersonObject())
+                );
 
                 $this->getEntityManager()->persist($group);
-
-                foreach ($languages as $language) {
-                    if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()]) {
-                        $translation = new GroupTranslation(
-                            $group,
-                            $language,
-                            $formData['title_' . $language->getAbbrev()],
-                            $formData['introduction_' . $language->getAbbrev()]
-                        );
-
-                        $this->getEntityManager()->persist($translation);
-                    }
-                }
-
-                $startForm = $this->getEntityManager()
-                    ->getRepository('FormBundle\Entity\Node\Form')
-                    ->findOneById($formData['start_form']);
-
-                $this->getEntityManager()->persist(new Mapping($startForm, $group, 1));
 
                 $this->getEntityManager()->flush();
 
@@ -164,58 +141,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $group);
+        $form = $this->getForm('form_group_edit', $group);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                $formData = $form->getFormData($formData);
-
-                if ($formData['max'] == '') {
-                    $max = 0;
-                } else {
-                    $max = $formData['max'];
-                }
-
-                $group->setStartDate(DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']))
-                        ->setEndDate(DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']))
-                        ->setActive($formData['active'])
-                        ->setMax($max)
-                        ->setEditableByUser($formData['editable_by_user'])
-                        ->setNonMember($formData['non_members']);
-
-                foreach ($languages as $language) {
-                    if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()]) {
-                        $translation = $group->getTranslation($language, false);
-
-                        if (null === $translation) {
-                            $translation = new GroupTranslation(
-                                $group,
-                                $language,
-                                $formData['title_' . $language->getAbbrev()],
-                                $formData['introduction_' . $language->getAbbrev()]
-                            );
-                        } else {
-                            $translation->setTitle($formData['title_' . $language->getAbbrev()])
-                                ->setIntroduction($formData['introduction_' . $language->getAbbrev()]);
-                        }
-
-                        $this->getEntityManager()->persist($translation);
-                    } else {
-                        $translation = $group->getTranslation($language, false);
-
-                        if ($translation !== null) {
-                            $this->getEntityManager()->remove($translation);
-                        }
-                    }
-                }
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -286,7 +218,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new MappingForm($this->getEntityManager());
+        $form = $this->getForm('form_group_mapping');
 
         if ($this->getRequest()->isPost()) {
             if (!$group->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
@@ -309,7 +241,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $form = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\Form')

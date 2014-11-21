@@ -33,7 +33,7 @@ use CommonBundle\Entity\General\Language,
 abstract class OptionSelector extends Field
 {
     /**
-     * @var array The translations of this field
+     * @var ArrayCollection The translations of this field
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\Translation\Option", mappedBy="field", cascade={"remove"})
      */

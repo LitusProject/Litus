@@ -28,11 +28,6 @@ use CommonBundle\Component\Form\FieldsetInterface,
  */
 class Dropdown extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
 {
-    public function init()
-    {
-        parent::init();
-    }
-
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
         $container->add(array(
