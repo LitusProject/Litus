@@ -19,7 +19,6 @@
 namespace FormBundle\Controller\Admin;
 
 use FormBundle\Entity\ViewerMap,
-    FormBundle\Form\Admin\Viewer\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -85,22 +84,18 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('form_viewer_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person');
-                if ($formData['person_id'] == '') {
-                    $person = $repository->findOneByUsername($formData['person_name']);
-                } else {
-                    $person = $repository->findOneById($formData['person_id']);
-                }
+                $person = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person')
+                    ->findOneById($formData['person']['id']);
 
                 $repositoryCheck = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\ViewerMap')
@@ -117,14 +112,10 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
                         'This user has already been given access to this list!'
                     );
                 } else {
-                    foreach ($group->getForms() as $form) {
-                        $viewer = new ViewerMap(
-                            $form->getForm(),
-                            $person,
-                            $formData['edit'],
-                            $formData['mail']
+                    foreach ($group->getForms() as $formMapping) {
+                        $this->getEntityManager()->persist(
+                            $form->hydrateObject(new ViewerMap($formMapping->getForm()))
                         );
-                        $this->getEntityManager()->persist($viewer);
                     }
 
                     $this->getEntityManager()->flush();
