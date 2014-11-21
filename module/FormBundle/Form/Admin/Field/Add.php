@@ -205,7 +205,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 continue;
             }
 
-            if ($field instanceof StringField) {
+            if ($field instanceof StringFieldEntity) {
                 $options[] = array(
                     'label' => $field->getLabel(),
                     'value' => $field->getId(),
@@ -213,7 +213,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         'data-type' => 'string',
                     ),
                 );
-            } elseif ($field instanceof DropdownField) {
+            } elseif ($field instanceof DropdownFieldEntity) {
                 $options[] = array(
                     'label' => $field->getLabel(),
                     'value' => $field->getId(),
@@ -222,7 +222,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         'data-values' => $field->getOptions(),
                     ),
                 );
-            } elseif ($field instanceof CheckboxField) {
+            } elseif ($field instanceof CheckboxFieldEntity) {
                 $options[] = array(
                     'label' => $field->getLabel(),
                     'value' => $field->getId(),
@@ -230,7 +230,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         'data-type' => 'checkbox',
                     ),
                 );
-            } elseif ($field instanceof FileField) {
+            } elseif ($field instanceof FileFieldEntity) {
                 $options[] = array(
                     'label' => $field->getLabel(),
                     'value' => $field->getId(),
