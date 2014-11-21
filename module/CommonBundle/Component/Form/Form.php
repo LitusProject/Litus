@@ -123,14 +123,13 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
      */
     public function addFieldset($label, $name)
     {
-        $fieldset = new Fieldset($name);
-        $fieldset->setLabel($label);
+        $this->add(array(
+            'type' => 'fieldset',
+            'name' => $name,
+            'label' => $label,
+        ));
 
-        $this->getFormFactory()->configureFieldset($fieldset, array());
-
-        $this->add($fieldset);
-
-        return $fieldset;
+        return $this->get($name);
     }
 
     /**

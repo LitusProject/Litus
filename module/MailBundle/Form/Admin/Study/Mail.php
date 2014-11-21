@@ -18,8 +18,7 @@
 
 namespace MailBundle\Form\Admin\Study;
 
-use CommonBundle\Component\Validator\Proxy as ProxyValidator,
-    CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
     MailBundle\Component\Validator\MultiMail as MultiMailValidator,
     Zend\Validator\NotEmpty as NotEmptyValidator;
 
@@ -125,126 +124,90 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $selectMessage = null;
         $storedMessages = $this->_getStoredMessages();
         if (1 < count($storedMessages)) {
-            $selectMessage = $this->addFieldset('Select Message', 'select_message');
-
-            $selectMessage->add(array(
-                'type'       => 'select',
-                'name'       => 'stored_message',
-                'label'      => 'Stored Message',
-                'attributes' => array(
-                    'style' => 'max-width: 100%;',
-                ),
-                'options'    => array(
-                    'options' => $storedMessages,
+            $this->add(array(
+                'type'     => 'fieldset',
+                'name'     => 'select_message',
+                'label'    => 'Select Message',
+                'elements' => array(
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'stored_message',
+                        'label'      => 'Stored Message',
+                        'attributes' => array(
+                            'style' => 'max-width: 100%;',
+                        ),
+                        'options'    => array(
+                            'options' => $storedMessages,
+                        ),
+                    ),
                 ),
             ));
         }
 
-        $fieldset = $this->addFieldset('Compose Message', 'compose_message');
-
-        $fieldset->add(array(
-            'type'       => 'text',
-            'name'       => 'subject',
-            'label'      => 'Subject',
-            'attributes' => array(
-                'style' => 'width: 400px;',
-            ),
-            'options'    => array(
-                'label_attributes' => array(
-                    'class' => 'required',
-                ),
-                'input' => array(
-                    'allow_empty' => false,
-                    'continue_if_empty' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'notempty',
-                            'options' => array(
-                                'type' => 'null',
-                            ),
-                        ),
-                        new ProxyValidator(
-                            new NotEmptyValidator(),
-                            function () use ($selectMessage) {
-                                return null === $selectMessage || $selectMessage->get('stored_message')->getValue() == '';
-                            }
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $fieldset->add(array(
-            'type'       => 'textarea',
-            'name'       => 'message',
-            'label'      => 'Message',
-            'attributes' => array(
-                'style' => 'width: 500px; height: 200px;',
-            ),
-            'options'    => array(
-                'label_attributes' => array(
-                    'class' => 'required',
-                ),
-                'input' => array(
-                    'allow_empty' => false,
-                    'continue_if_empty' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'notempty',
-                            'options' => array(
-                                'type' => 'null',
-                            ),
-                        ),
-                        new ProxyValidator(
-                            new NotEmptyValidator(),
-                            function () use ($selectMessage) {
-                                return null === $selectMessage || $selectMessage->get('stored_message')->getValue() == '';
-                            }
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $fieldset->add(array(
-            'type'       => 'file',
-            'name'       => 'file',
-            'label'      => 'Attachments',
-            'attributes' => array(
-                'multiple' => true,
-                'data-help' => 'The maximum file size is ' . self::FILESIZE . '.',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name' => 'filesize',
-                            'options' => array(
-                                'max' => self::FILESIZE,
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
         $this->add(array(
-            'type'       => 'submit',
-            'name'       => 'send',
-            'value'      => 'Send',
-            'attributes' => array(
-                'class' => 'mail',
+            'type'     => 'fieldset',
+            'name'     => 'compose_message',
+            'label'    => 'Compose Message',
+            'elements' => array(
+                array(
+                    'type'       => 'text',
+                    'name'       => 'subject',
+                    'label'      => 'Subject',
+                    'required'   => true,
+                    'attributes' => array(
+                        'style' => 'width: 400px;',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'textarea',
+                    'name'       => 'message',
+                    'label'      => 'Message',
+                    'required'   => true,
+                    'attributes' => array(
+                        'style' => 'width: 500px; height: 200px;',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'file',
+                    'name'       => 'file',
+                    'label'      => 'Attachments',
+                    'attributes' => array(
+                        'multiple' => true,
+                        'data-help' => 'The maximum file size is ' . self::FILESIZE . '.',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'validators' => array(
+                                array(
+                                    'name' => 'filesize',
+                                    'options' => array(
+                                        'max' => self::FILESIZE,
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
             ),
         ));
+
+        $this->addSubmit('Send', 'mail', 'Send');
     }
 
     /**
@@ -300,5 +263,17 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         }
 
         return $storedMessagesTitles;
+    }
+
+    public function getInputFilterSpecification()
+    {
+        $specs = parent::getInputFilterSpecification();
+
+        if ($this->has('select_message') && $this->get('select_message')->get('stored_message')->getValue() != '') {
+            $specs['compose_message']['subject']['required'] = false;
+            $specs['compose_message']['message']['required'] = false;
+        }
+
+        return $specs;
     }
 }
