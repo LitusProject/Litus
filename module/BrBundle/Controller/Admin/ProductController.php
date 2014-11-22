@@ -19,7 +19,6 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Product,
-    DateTime,
     Zend\View\Model\ViewModel;
 
 /**

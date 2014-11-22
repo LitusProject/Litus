@@ -18,7 +18,8 @@
 
 namespace BrBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CalendarBundle\Entity\Node\Event,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\EntityManager,
@@ -63,7 +64,7 @@ class Product
     private $contractText;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The author of this product
+     * @var Person The author of this product
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="author", referencedColumnName="id")
@@ -71,7 +72,7 @@ class Product
     private $author;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear
+     * @var AcademicYear
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
@@ -79,7 +80,7 @@ class Product
     private $academicYear;
 
     /**
-     * @var \CalendarBundle\Entity\Node\Event The shift's event
+     * @var Event The shift's event
      *
      * @ORM\ManyToOne(targetEntity="CalendarBundle\Entity\Node\Event")
      * @ORM\JoinColumn(name="event", referencedColumnName="id")
@@ -87,7 +88,7 @@ class Product
     private $event;
 
     /**
-     * @var \DateTime The date of delivery
+     * @var DateTime The date of delivery
      *
      * @ORM\Column(name="delivery_date", type="datetime", nullable=true)
      */
@@ -123,7 +124,7 @@ class Product
     private $invoiceDescription;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
@@ -139,7 +140,7 @@ class Product
     }
 
     /**
-     * @return \BrBundle\Entity\Product
+     * @return self
      */
     public function setOld()
     {
@@ -173,8 +174,8 @@ class Product
     }
 
     /**
-     * @param  string                            $name The name of this section
-     * @return \BrBundle\Entity\Contract\Section
+     * @param  string $name The name of this section
+     * @return self
      */
     public function setName($name)
     {
@@ -188,7 +189,7 @@ class Product
     }
 
     /**
-     * @return \Litus\Entity\Users\Person
+     * @return Person
      */
     public function getAuthor()
     {
@@ -196,8 +197,8 @@ class Product
     }
 
     /**
-     * @param  \Litus\Entity\Users\Person $author The author of this section
-     * @return \BrBundle\Entity\Product
+     * @param  Person $author The author of this section
+     * @return self
      */
     public function setAuthor(Person $author)
     {
@@ -219,8 +220,8 @@ class Product
     }
 
     /**
-     * @param  string                   $content The content of this section
-     * @return \BrBundle\Entity\Product
+     * @param  string $content The content of this section
+     * @return self
      */
     public function setContractText($contractText)
     {
@@ -277,8 +278,8 @@ class Product
     }
 
     /**
-     * @param  float                    $price
-     * @return \BrBundle\Entity\Product
+     * @param  float $price
+     * @return self
      */
     public function setPrice($price)
     {
@@ -308,8 +309,8 @@ class Product
     }
 
     /**
-     * @param  string|null              $description
-     * @return \BrBundle\Entity\Product
+     * @param  string $description
+     * @return self
      */
     public function setDescription($description)
     {
@@ -331,8 +332,8 @@ class Product
     }
 
     /**
-     * @param  string|null              $description
-     * @return \BrBundle\Entity\Product
+     * @param  string $description
+     * @return self
      */
     public function setInvoiceDescription($description)
     {
@@ -346,7 +347,7 @@ class Product
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Organization\Unit
+     * @return Event
      */
     public function getEvent()
     {
@@ -354,10 +355,10 @@ class Product
     }
 
     /**
-     * @param  \CalendarBundle\Entity\Node\Event $event
-     * @return \ShiftBundle\Entity\Shift
+     * @param  Event $event
+     * @return self
      */
-    public function setEvent($event)
+    public function setEvent(Event $event)
     {
         $this->event = $event;
 
@@ -373,8 +374,8 @@ class Product
     }
 
     /**
-     * @param  DateTime|null            $deliveryDate
-     * @return \BrBundle\Entity\Product
+     * @param  DateTime $deliveryDate
+     * @return self
      */
     public function setDeliveryDate($deliveryDate)
     {
@@ -384,7 +385,8 @@ class Product
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  EntityManager $entityManager
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {

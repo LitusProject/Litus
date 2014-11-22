@@ -19,8 +19,6 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Page,
-    CommonBundle\Entity\General\Address,
     Imagick,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Validator\File\IsImage as IsImageValidator,

@@ -27,11 +27,17 @@ class IllegalFormatException extends \Exception
 {
     private $lineNb;
 
+    /**
+     * @param integer $lineNumber
+     */
     public function setLineNumber($lineNumber)
     {
         $this->lineNb = $lineNumber;
     }
 
+    /**
+    * @return integer
+    */
     public function getLineNumber()
     {
         return $this->lineNb;

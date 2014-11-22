@@ -91,8 +91,6 @@ class Logo
 
     /**
      * @param Company $company The event's company
-     * @param string  $type    The type to the logo
-     * @param string  $url     The url to the website
      */
     public function __construct(Company $company)
     {

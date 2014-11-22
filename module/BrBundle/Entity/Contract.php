@@ -20,14 +20,11 @@ namespace BrBundle\Entity;
 
 use BrBundle\Entity\Collaborator,
     BrBundle\Entity\Company,
-    BrBundle\Entity\Contract\Composition,
     BrBundle\Entity\Contract\ContractEntry,
-    BrBundle\Entity\Contract\Section,
     BrBundle\Entity\Product\Order,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,7 +45,7 @@ class Contract
     private $id;
 
     /**
-     * @var \BrBundle\Entity\Product\Order The contract accompanying this order
+     * @var Order The contract accompanying this order
      *
      * @ORM\OneToOne(targetEntity="BrBundle\Entity\Product\Order")
      * @ORM\JoinColumn(name="product_order", referencedColumnName="id")
@@ -56,14 +53,14 @@ class Contract
     private $order;
 
     /**
-     * @var \DateTime The date and time when this contract was written
+     * @var DateTime The date and time when this contract was written
      *
      * @ORM\Column(type="datetime")
      */
     private $date;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The author of this contract
+     * @var Person The author of this contract
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Collaborator")
      * @ORM\JoinColumn(name="author", referencedColumnName="id")
@@ -71,7 +68,7 @@ class Contract
     private $author;
 
     /**
-     * @var \BrBundle\Entity\Company The company for which this contract is meant
+     * @var Company The company for which this contract is meant
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
      * @ORM\JoinColumn(name="company", referencedColumnName="id")
@@ -143,10 +140,10 @@ class Contract
     private $version;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $author   The author of this contract
-     * @param Company                          $company  The company for which this contract is meant
-     * @param int                              $discount The discount associated with this contract
-     * @param string                           $title    The title of the contract
+     * @param Person  $author   The author of this contract
+     * @param Company $company  The company for which this contract is meant
+     * @param int     $discount The discount associated with this contract
+     * @param string  $title    The title of the contract
      */
     public function __construct(Order $order, Collaborator $author, Company $company, $discount, $title)
     {
