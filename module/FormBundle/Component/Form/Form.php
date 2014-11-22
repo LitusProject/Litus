@@ -93,44 +93,24 @@ class Form
 
                         $entityManager->remove($fieldEntry);
                     }
-                } elseif (!isset($formData['field-' . $field->getId()])) {
-                    $upload = new FileUpload();
-                    $inputFilter = $form->getInputFilter()->get('field-' . $field->getId());
-                    if ($inputFilter instanceof InputInterface) {
-                        $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
-                    }
-
-                    if ($upload->isValid('field-' . $field->getId())) {
-                        if (null === $fieldEntry || $fieldEntry->getValue() == '') {
-                            do {
-                                $fileName = sha1(uniqid());
-                            } while (file_exists($filePath . '/' . $fileName));
-                        } else {
-                            $fileName = $fieldEntry->getValue();
-                            if (file_exists($filePath . '/' . $fileName)) {
-                                unlink($filePath . '/' . $fileName);
-                            }
+                } elseif (is_array($formData['field-' . $field->getId()])) {
+                    if (null === $fieldEntry || $fieldEntry->getValue() == '') {
+                        do {
+                            $fileName = sha1(uniqid());
+                        } while (file_exists($filePath . '/' . $fileName));
+                    } else {
+                        $fileName = $fieldEntry->getValue();
+                        if (file_exists($filePath . '/' . $fileName)) {
+                            unlink($filePath . '/' . $fileName);
                         }
-
-                        $readableValue = basename($upload->getFileName('field-' . $field->getId()));
-
-                        $upload->addFilter('Rename', $filePath . '/' . $fileName, 'field-' . $field->getId());
-                        $upload->receive('field-' . $field->getId());
-
-                        $value = $fileName;
                     }
 
-                    $errors = $upload->getMessages();
+                    move_uploaded_file($formData['field-' . $field->getId()]['tmp_name'], $filePath . '/' . $fileName);
 
-                    if (!$field->isRequired() && isset($errors['fileUploadErrorNoFile'])) {
-                        unset($errors['fileUploadErrorNoFile']);
-                    }
+                    $readableValue = basename($formData['field-' . $field->getId()]['name']);
+                    $value = $fileName;
 
-                    if (sizeof($errors) > 0) {
-                        $form->setMessages(array('field-' . $field->getId() => $errors));
-
-                        return false;
-                    } elseif ($value == '' && null !== $fieldEntry) {
+                    if ($value == '' && null !== $fieldEntry) {
                         $value = $fieldEntry->getValue();
                     }
                 }

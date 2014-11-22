@@ -64,8 +64,8 @@
                 if ($this.data('visible_if_element') !== undefined) {
                     $this.closest('.form-group').hide();
                     form.find('#field-' + $this.data('visible_if_element')).bind('change keyup', function () {
-                        if ($(this).attr('type') == 'text') {
-                            if ($(this).val() !== '') {
+                        if ($(this).attr('type') == 'text' || $(this).is('textarea')) {
+                            if ($(this).val() != '') {
                                 $this.closest('.form-group').show();
                             } else {
                                 $this.closest('.form-group').hide();
