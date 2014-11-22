@@ -41,7 +41,6 @@ class Edit extends Add
 
         foreach ($this->_form->getFields() as $fieldSpecification) {
             if ($fieldSpecification instanceof FileFieldEntity) {
-                echo 'not required';
                 $specs['field-' . $fieldSpecification->getId()]['required'] = false;
             }
         }
