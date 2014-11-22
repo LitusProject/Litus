@@ -26,7 +26,6 @@ use CommonBundle\Entity\General\Language,
     FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Entity\Node\Form as FormSpecification,
     FormBundle\Entity\Node\GuestInfo,
-    FormBundle\Form\SpecifiedForm\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\PhpEnvironment\Request,
     Zend\InputFilter\InputInterface,
@@ -41,7 +40,7 @@ use CommonBundle\Entity\General\Language,
  */
 class Form
 {
-    public static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, FormSpecification $formSpecification, $formData, Language $language, AddForm $form, EntityManager $entityManager, MailTransport $mailTransport = null, Url $url = null, Request $request)
+    public static function save(FormEntry $formEntry = null, Person $person = null, GuestInfo $guestInfo = null, FormSpecification $formSpecification, $formData, Language $language, EntityManager $entityManager, MailTransport $mailTransport = null, Url $url = null, Request $request)
     {
         if ($person === null && $guestInfo == null) {
             $guestInfo = new GuestInfo(

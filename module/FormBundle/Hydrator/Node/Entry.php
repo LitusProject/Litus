@@ -22,8 +22,6 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 class Entry extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array();
-
     protected function doHydrate(array $data, $object = null)
     {
         throw new InvalidObjectException('Cannot create an entry');

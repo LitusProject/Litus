@@ -221,10 +221,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  GuesetInfo $guestInfo
+    * @param  GuestInfo $guestInfo
     * @return self
     */
-    public function setGuestInfo(GuesetInfo $guestInfo = null)
+    public function setGuestInfo(GuestInfo $guestInfo = null)
     {
         $this->_guestInfo = $guestInfo;
 

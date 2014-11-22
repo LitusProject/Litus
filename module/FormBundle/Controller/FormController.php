@@ -181,7 +181,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid() || $isDraft) {
                 $formData = $form->getData();
 
-                $result = FormHelper::save(null, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
+                $result = FormHelper::save(null, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
 
                 if (!$result) {
                     return new ViewModel(
@@ -604,7 +604,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid() || $isDraft) {
                 $formData = $form->getData();
 
-                $result = FormHelper::save($entry, $person, $guestInfo, $entry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
+                $result = FormHelper::save($entry, $person, $guestInfo, $entry->getForm(), $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
 
                 if (!$result) {
                     return new ViewModel(
