@@ -18,13 +18,7 @@
 
 namespace FormBundle\Form\Manage\SpecifiedForm;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Collection,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Hidden,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    CommonBundle\Entity\General\Language,
-    Doctrine\ORM\EntityManager,
-    FormBundle\Entity\Node\Form;
+use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
 
 /**
  * Specifield Form Add
@@ -33,73 +27,134 @@ use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
  */
 class Add extends \FormBundle\Form\SpecifiedForm\Add
 {
-    /**
-     * @param EntityManager   $entityManager
-     * @param Language        $language
-     * @param Form            $form
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Language $language, Form $form, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $language, $form, null, $name);
+        parent::init();
 
         $this->remove('first_name');
         $this->remove('last_name');
         $this->remove('email');
         $this->remove('save_as_draft');
 
-        $field = new Checkbox('is_guest');
-        $field->setLabel('Is Guest');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'is_guest',
+            'label'      => 'Is Guest',
+            'attributes' => array(
+                'id' => 'is_guest',
+            ),
+        ));
 
-        $personForm = new Collection('person_form');
-        $personForm->setLabel('Person')
-            ->setAttribute('id', 'person_form');
-        $this->add($personForm);
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'person_form',
+            'label'      => 'Person',
+            'elements'   => array(
+                array(
+                    'type'       => 'typeahead',
+                    'name'       => 'person',
+                    'label'      => 'Person',
+                    'required'   => true,
+                    'options'    => array(
+                        'input' => array(
+                            'validators' => array(
+                                new PersonTypeaheadValidator($this->getEntityManager()),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Hidden('person_id');
-        $field->setAttribute('id', 'personId');
-        $personForm->add($field);
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'guest_form',
+            'label'      => 'Guest',
+            'elements'   => array(
+                array(
+                    'type'       => 'text',
+                    'name'       => 'guest_first_name',
+                    'label'      => 'First Name',
+                    'required'   => true,
+                    'attributes' => array(
+                        'id' => 'guest_first_name',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'guest_last_name',
+                    'label'      => 'Last Name',
+                    'required'   => true,
+                    'attributes' => array(
+                        'id' => 'guest_last_name',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'guest_email',
+                    'label'      => 'Email',
+                    'required'   => true,
+                    'attributes' => array(
+                        'id' => 'guest_email',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array('name' => 'EmailAddress'),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('person');
-        $field->setLabel('Person')
-            ->setAttribute('id', 'personSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $personForm->add($field);
+        $this->add(array(
+            'type'  => 'fieldset',
+            'name'  => 'fields_form',
+            'label' => 'Form',
+        ));
 
-        $guest = new Collection('guest_form');
-        $guest->setLabel('Guest')
-            ->setAttribute('id', 'guest_form');
-        $this->add($guest);
-
-        $field = new Text('first_name');
-        $field->setLabel('First Name')
-            ->setRequired(true);
-        $guest->add($field);
-
-        $field = new Text('last_name');
-        $field->setLabel('Last Name')
-            ->setRequired(true);
-        $guest->add($field);
-
-        $field = new Text('email');
-        $field->setLabel('Email Address')
-            ->setRequired(true);
-        $guest->add($field);
-
-        $fields = new Collection('fields_form');
-        $fields->setLabel('Form');
-        $this->add($fields);
+        $fieldsForm = $this->get('fields_form');
 
         foreach ($this->getElements() as $name => $element) {
-            if ($name == 'submit' || $name == 'is_guest') {
+            if ($name == 'submit' || $name == 'is_guest' || $name = 'csrf') {
                 continue;
             }
 
             $this->remove($name);
-            $fields->add($element);
+            $fieldsForm->add($element);
         }
+    }
+
+    public function getInputFilterSpecification()
+    {
+        $specs = parent::getInputFilterSpecification();
+
+        $isGuest = isset($this->data['is_guest']) && $this->data['is_guest'];
+
+        if ($isGuest) {
+            unset($specs['person_form']);
+        } else {
+            unset($specs['guest_form']);
+        }
+
+        return $specs;
     }
 }

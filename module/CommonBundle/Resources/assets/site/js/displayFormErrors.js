@@ -8,7 +8,7 @@
                 var list = $this.find('ul.errors');
                 if (list.length == 0) {
                     list = $('<ul>', {'class': 'errors'});
-                    $this.closest('.form-group').addClass('has-error').find('input').after(
+                    $this.closest('.form-group').addClass('has-error').find('input, textarea, select').after(
                         $('<div>', {'class': 'help-block'}).append(list)
                     );
                 }

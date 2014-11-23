@@ -272,23 +272,19 @@
 
             e.preventDefault();
             var sendMail = $('#sendMailModal');
-            sendMail.find('.confirm').click(function () {
+            sendMail.find('.confirm').unbind('click').click(function () {
                 sendMail.find('form').ajaxSubmit({
                     dataType: 'json',
                     success: function (data) {
                         if (data.errors) {
                             $('.flashmessage').addClass('hide');
                             sendMail.find('ul.errors').remove();
-                            sendMail.find('.form-group').removeClass('error');
-                            for(element in data.errors) {
-                                var list = $('<ul>', {'class': 'errors'});
-                                for (error in data.errors[element])
-                                    list.append($('<li>').html(data.errors[element][error]));
-                                var div = $('<div>', {'class': 'help-block'}).append(list);
-                                sendMail.find('#' + element).closest('.form-group').addClass('error').find('.controls').append(div);
-                            }
+                            sendMail.find('.form-group').removeClass('has.error');
+                            $('#sendMailModal form').displayFormErrors(data.errors);
                         } else {
                             $('.flashmessage').removeClass('in');
+                            sendMail.find('ul.errors').remove();
+                            sendMail.find('.form-group').removeClass('has-error');
                             $('#mail_send_success').addClass('in');
                             sendMail.modal('hide');
                         }

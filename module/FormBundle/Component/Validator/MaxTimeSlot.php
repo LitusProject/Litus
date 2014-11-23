@@ -36,7 +36,7 @@ class MaxTimeSlot extends \Zend\Validator\AbstractValidator
     * @var array The error messages
     */
     protected $messageTemplates = array(
-        self::TO_MANY         => 'To many time slots were selected',
+        self::TO_MANY         => 'Too many time slots were selected',
     );
 
     /**
@@ -72,7 +72,7 @@ class MaxTimeSlot extends \Zend\Validator\AbstractValidator
         $num = 0;
 
         foreach ($this->_form->getFields() as $field) {
-            $num += isset($context['field-' . $field->getId()]);
+            $num += isset($context['field-' . $field->getId()]) && $context['field-' . $field->getId()];
         }
 
         if ($num > 1 && !$this->_form->isMultiple()) {

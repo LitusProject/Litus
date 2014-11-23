@@ -117,6 +117,7 @@ return array(
             '@form_manage_css',
             '@common_jquery_form',
             '@common_remote_typeahead',
+            '@display_form_error_js',
         ),
         'form_manage_group' => array(
             '@common_jquery',
