@@ -18,227 +18,259 @@
 
 namespace FormBundle\Form\SpecifiedForm;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    CommonBundle\Entity\General\Language,
+use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager,
     FormBundle\Component\Exception\UnsupportedTypeException,
+    FormBundle\Component\Validator\MaxTimeSlot as MaxTimeSlotValidator,
     FormBundle\Component\Validator\TimeSlot as TimeSlotValidator,
-    FormBundle\Entity\Field\TimeSlot as TimeSlotField,
-    FormBundle\Entity\Node\Entry,
-    FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Field\TimeSlot as TimeSlotFieldEntity,
+    FormBundle\Entity\Node\Entry as EntryEntity,
     FormBundle\Entity\Node\Form\Doodle as DoodleEntity,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
 
 /**
  * Specifield Form Doodle
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Doodle extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @var Form
-     */
-    protected $_form;
-
-    /**
-     * @var array
-     */
-    private $_occupiedSlots;
-
-    /**
-     * @var EntityManager
-     */
-    private $_entityManager;
+    protected $hydrator = 'FormBundle\Hydrator\Node\Entry';
 
     /**
      * @var Person
      */
-    private $_person;
+    protected $_person;
 
     /**
-     * @param EntityManager   $entityManager
-     * @param Language        $language
-     * @param Form            $form
-     * @param null|Person     $person
-     * @param Entry|null      $entry
-     * @param boolean         $forceEdit
-     * @param null|string|int $name          Optional name for the element
+     * @var GuestInfo
      */
-    public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, Entry $entry = null, $forceEdit = false, $name = null)
+    protected $_guestInfo;
+
+    /**
+     * @var DoodleEntity
+     */
+     protected $_form;
+
+    /**
+     * @var Language
+     */
+    protected $_language;
+
+    /**
+     * @var EntryEntity
+     */
+    protected $_entry;
+
+    /**
+     * @var boolean
+     */
+    protected $_forceEdit;
+
+    /**
+     * @var array
+     */
+    protected $_occupiedSlots;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        if (!($form instanceof DoodleEntity)) {
-            return;
+        $editable = $this->_form->canBeSavedBy($this->_person) || $this->_forceEdit;
+
+        if (null === $this->_person) {
+            $this->add(array(
+                'type'     => 'text',
+                'name'     => 'first_name',
+                'label'    => 'First Name',
+                'required' => true,
+                'value'    => $this->_guestInfo ? $this->_guestInfo->getFirstName() : '',
+                'options'  => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            ));
+
+            $this->add(array(
+                'type'     => 'text',
+                'name'     => 'last_name',
+                'label'    => 'Last Name',
+                'required' => true,
+                'value'    => $this->_guestInfo ? $this->_guestInfo->getLastName() : '',
+                'options'  => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            ));
+
+            $this->add(array(
+                'type'     => 'text',
+                'name'     => 'email',
+                'label'    => 'Email',
+                'required' => true,
+                'value'    => $this->_guestInfo ? $this->_guestInfo->getEmail() : '',
+                'options'  => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'emailaddress',
+                            ),
+                        ),
+                    ),
+                ),
+            ));
         }
 
-        // Create guest fields
-        if (null === $person) {
-            $field = new Text('first_name');
-            $field->setLabel('First Name')
-                ->setRequired(true);
-            $this->add($field);
+        $occupiedSlots = $this->getOccupiedSlots();
 
-            $field = new Text('last_name');
-            $field->setLabel('Last Name')
-                ->setRequired(true);
-            $this->add($field);
-
-            $field = new Text('email');
-            $field->setLabel('Email Address')
-                ->setRequired(true);
-            $this->add($field);
-        }
-
-        $this->_entityManager = $entityManager;
-        $this->_form = $form;
-        $this->_person = $person;
-
-        $this->_occupiedSlots = $this->_getOccupiedSlots($entityManager, $form, $person);
-
-        $editable = $form->canBeSavedBy($person) || $forceEdit;
-
-        // Fetch the fields through the repository to have the correct order
-        $fields = $entityManager
+        $fields = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Field')
-            ->findAllByForm($form);
+            ->findAllByForm($this->_form);
 
         foreach ($fields as $fieldSpecification) {
-            if ($fieldSpecification instanceof TimeSlotField) {
-                $field = new Checkbox('field-' . $fieldSpecification->getId());
-                $field->setAttribute('class', 'checkbox');
-
-                if (!$editable) {
-                    $field->setAttribute('disabled', 'disabled');
+            if ($fieldSpecification instanceof TimeSlotFieldEntity) {
+                if (isset($occupiedSlots[$fieldSpecification->getId()])) {
+                    $validators = array(
+                        array(
+                            'name' => 'Identical',
+                            'options' => array(
+                                'token' => '0',
+                            ),
+                        ),
+                    );
+                } else {
+                    $validators = array(
+                        new TimeSlotValidator($fieldSpecification, $this->getEntityManager(), $this->_person),
+                    );
                 }
+
+                $validators[] = new MaxTimeSlotValidator($this->_form);
+
+                $this->add(array(
+                    'type'       => 'checkbox',
+                    'name'       => 'field-' . $fieldSpecification->getId(),
+                    'class'      => 'checkbox',
+                    'attributes' => array(
+                        'id'       => 'field-' . $fieldSpecification->getId(),
+                        'disabled' => (!$editable || isset($occupiedSlots[$fieldSpecification->getId()])) ? 'disabled' : '',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'validators' => $validators,
+                        ),
+                    ),
+                ));
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
             }
-
-            $this->add($field);
         }
 
         if ($editable) {
-            $field = new Submit('submit');
-            $field->setValue($form->getSubmitText($language))
-                ->setAttribute('class', 'btn btn-primary');
-            $this->add($field);
+            $this->addSubmit($this->_form->getSubmitText($this->_language));
         }
 
-        if (null !== $entry) {
-            $this->populateFromEntry($entry);
+        if (null !== $this->_entry) {
+            $hydrator = $this->getHydrator();
+            $this->populateValues($hydrator->extract($this->_entry));
         }
-
-        $this->_disableOccupiedSlots($this->_occupiedSlots);
     }
 
-    private function _getOccupiedSlots(EntityManager $entityManager, Form $form, Person $person = null)
+    /**
+     * @param  Person $person
+     * @return self
+     */
+    public function setPerson(Person $person = null)
     {
-        $formEntries = $entityManager
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($form);
+        $this->_person = $person;
 
-        $occupiedSlots = array();
-        foreach ($formEntries as $formEntry) {
-            if (null !== $person && $formEntry->getCreationPerson() == $person) {
-                continue;
-            }
+        return $this;
+    }
 
-            foreach ($formEntry->getFieldEntries() as $fieldEntry) {
-                $occupiedSlots[$fieldEntry->getField()->getId()] = $formEntry->getPersonInfo()->getFullName();
-            }
-        }
+    /**
+     * @param  GuestInfo $guestInfo
+     * @return self
+     */
+    public function setGuestInfo(GuestInfoEntity $guestInfo = null)
+    {
+        $this->_guestInfo = $guestInfo;
 
-        return $occupiedSlots;
+        return $this;
+    }
+
+    /**
+     * @param  DoodleEntity $form
+     * @return self
+     */
+    public function setForm(DoodleEntity $form)
+    {
+        $this->_form = $form;
+
+        return $this;
+    }
+
+    /**
+     * @param  Language $language
+     * @return self
+     */
+    public function setLanguage(Language $language)
+    {
+        $this->_language = $language;
+
+        return $this;
+    }
+
+    /**
+     * @param  Entry $entry
+     * @return self
+     */
+    public function setEntry(EntryEntity $entry = null)
+    {
+        $this->_entry = $entry;
+
+        return $this;
+    }
+
+    /**
+    * @param  boolean $forceEdit
+    * @return self
+    */
+    public function setForceEdit($forceEdit)
+    {
+        $this->_forceEdit = $forceEdit;
+
+        return $this;
     }
 
     public function getOccupiedSlots()
     {
-        return $this->_occupiedSlots;
-    }
-
-    public function populateFromEntry(Entry $entry)
-    {
-        $formData = $this->data == null ? array() : $this->data;
-
-        if ($entry->isGuestEntry()) {
-            $formData['first_name'] = $entry->getGuestInfo()->getFirstName();
-            $formData['last_name'] = $entry->getGuestInfo()->getLastName();
-            $formData['email'] = $entry->getGuestInfo()->getEmail();
+        if (null !== $this->_occupiedSlots) {
+            return $this->_occupiedSlots;
         }
 
-        foreach ($entry->getFieldEntries() as $fieldEntry) {
-            $formData['field-' . $fieldEntry->getField()->getId()] = true;
-        }
+        $formEntries = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Node\Entry')
+            ->findAllByForm($this->_form);
 
-        $this->setData($formData);
-    }
+        $this->_occupiedSlots = array();
+        foreach ($formEntries as $formEntry) {
+            if (null !== $this->_person && $formEntry->getCreationPerson() == $this->_person) {
+                continue;
+            }
 
-    public function populateFromGuestInfo(GuestInfo $guestInfo)
-    {
-        $data = $this->data == null ? array() : $this->data;
-
-        $data['first_name'] = $guestInfo->getFirstName();
-        $data['last_name'] = $guestInfo->getLastName();
-        $data['email'] = $guestInfo->getEmail();
-
-        $this->setData($data);
-    }
-
-    private function _disableOccupiedSlots(array $occupiedSlots)
-    {
-        foreach ($occupiedSlots as $id => $slot) {
-            $this->get('field-' . $id)->setAttribute('disabled', 'disabled');
-        }
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        foreach ($this->_form->getFields() as $fieldSpecification) {
-            if ($fieldSpecification instanceof TimeSlotField) {
-                if (isset($this->_occupiedSlots[$fieldSpecification->getId()])) {
-                    $inputFilter->add(
-                        $factory->createInput(
-                            array(
-                                'name'     => 'field-' . $fieldSpecification->getId(),
-                                'required' => false,
-                                'validators' => array(
-                                    array(
-                                        'name' => 'Identical',
-                                        'options' => array(
-                                            'token' => '0',
-                                        ),
-                                    ),
-                                ),
-                            )
-                        )
-                    );
-                } else {
-                    $inputFilter->add(
-                        $factory->createInput(
-                            array(
-                                'name'     => 'field-' . $fieldSpecification->getId(),
-                                'required' => false,
-                                'validators' => array(
-                                    new TimeSlotValidator($fieldSpecification, $this->_entityManager, $this->_person),
-                                ),
-                            )
-                        )
-                    );
-                }
-            } else {
-                throw new UnsupportedTypeException('This field type is unknown!');
+            foreach ($formEntry->getFieldEntries() as $fieldEntry) {
+                $this->_occupiedSlots[$fieldEntry->getField()->getId()] = $formEntry->getPersonInfo()->getFullName();
             }
         }
 
-        return $inputFilter;
+        return $this->_occupiedSlots;
     }
 }

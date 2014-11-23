@@ -92,7 +92,14 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('FormBundle\Entity\Field')
             ->findLatestField($formSpecification);
 
-        $form = $this->getForm('form_field_add', array('form' => $formSpecification, 'field' => $this->getParam('repeat') ? $latestField : null));
+        $form = $this->getForm(
+            'form_field_add',
+            array(
+                'form' => $formSpecification,
+                'field' => $this->getParam('repeat') ? $latestField : null,
+                'repeat' => $this->getParam('repeat') == '1',
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -186,7 +193,14 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = $this->getForm('form_field_edit', array('form' => $field->getForm(), 'field' => $field));
+        $form = $this->getForm(
+            'form_field_add',
+            array(
+                'form' => $field->getForm(),
+                'field' => $field,
+                'repeat' => false,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

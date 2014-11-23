@@ -26,9 +26,9 @@ use CommonBundle\Component\Validator\FieldLineLength as LengthValidator,
     FormBundle\Entity\Field\Dropdown as DropdownFieldEntity,
     FormBundle\Entity\Field\File as FileFieldEntity,
     FormBundle\Entity\Field\String as StringFieldEntity,
-    FormBundle\Entity\Node\Entry,
-    FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\GuestInfo;
+    FormBundle\Entity\Node\Entry as EntryEntity,
+    FormBundle\Entity\Node\Form\Form as FormEntity,
+    FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
 
 /**
  * Specifield Form Add
@@ -46,12 +46,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_person;
 
     /**
-    * @var GuestInfo
+    * @var GuestInfoEntity
     */
     protected $_guestInfo;
 
     /**
-     * @var Form
+     * @var FormEntity
      */
     protected $_form;
 
@@ -61,7 +61,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_language;
 
     /**
-    * @var Entry
+    * @var EntryEntity
     */
     protected $_entry;
 
@@ -72,6 +72,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function init()
     {
+        if (!($this->_form instanceof FormEntity)) {
+            return;
+        }
+
         if (null === $this->_person) {
             $this->add(array(
                 'type'     => 'text',
@@ -221,10 +225,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  GuestInfo $guestInfo
+    * @param  GuestInfoEntity $guestInfo
     * @return self
     */
-    public function setGuestInfo(GuestInfo $guestInfo = null)
+    public function setGuestInfo(GuestInfoEntity $guestInfo = null)
     {
         $this->_guestInfo = $guestInfo;
 
@@ -232,10 +236,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  Form $form
+    * @param  FormEntity $form
     * @return self
     */
-    public function setForm(Form $form)
+    public function setForm(FormEntity $form)
     {
         $this->_form = $form;
 
@@ -254,10 +258,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  Entry $entry
+    * @param  EntryEntity $entry
     * @return self
     */
-    public function setEntry(Entry $entry = null)
+    public function setEntry(EntryEntity $entry = null)
     {
         $this->_entry = $entry;
 

@@ -18,7 +18,8 @@
 
 namespace FormBundle\Hydrator\Node;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
+    FormBundle\Entity\Field\TimeSlot as TimeSlotFieldEntity;
 
 class Entry extends \CommonBundle\Component\Hydrator\Hydrator
 {

@@ -20,8 +20,10 @@ namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language,
     DateTime,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
+    FormBundle\Entity\Node\Form,
     IntlDateFormatter;
 
 /**
@@ -47,11 +49,21 @@ class TimeSlot extends Field
     private $endDate;
 
     /**
-     * @var array The translations of this field
+     * @var ArrayCollection The translations of this field
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\Translation\TimeSlot", mappedBy="timeslot", cascade={"remove"})
      */
     private $timeslotTranslations;
+
+    /**
+    * @param Form $form
+    */
+    public function __construct(Form $form)
+    {
+        parent::__construct($form);
+
+        $this->timeslotTranslations = new ArrayCollection();
+    }
 
     /**
      * @return DateTime

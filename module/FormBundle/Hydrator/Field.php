@@ -86,7 +86,7 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
         } elseif ($object instanceof TimeslotFieldEntity) {
             $timeslotData = $data['timeslot_form'];
             $object->setStartDate(self::loadDateTime($timeslotData['start_date']))
-                ->setEndDate($timeslotData['end_date']);
+                ->setEndDate(self::loadDateTime($timeslotData['end_date']));
 
             foreach ($this->getLanguages() as $language) {
                 $languageData = $timeslotData['tab_content']['tab_' . $language->getAbbrev()];
@@ -171,7 +171,7 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
             $data['type'] = 'timeslot';
             $data['timeslot_form'] = array(
                 'start_date' => $object->getStartDate()->format('d/m/Y H:i'),
-                'start_date' => $object->getStartDate()->format('d/m/Y H:i'),
+                'end_date' => $object->getEndDate()->format('d/m/Y H:i'),
             );
 
             foreach ($this->getLanguages() as $language) {

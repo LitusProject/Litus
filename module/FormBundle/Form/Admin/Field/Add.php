@@ -49,6 +49,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     */
     protected $_field;
 
+    /**
+    * @var boolean
+    */
+    protected $_repeat;
+
     public function init()
     {
         parent::init();
@@ -173,7 +178,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->addSubmit('Add And Repeat', 'field_add', 'submit_repeat');
 
         if (null !== $this->_field) {
-            $this->bind($this->_field);
+            if ($this->_repeat) {
+                $field = clone $this->_field;
+                if ($this->_field instanceof TimeslotFieldEntity) {
+                    $interval = $field->getStartDate()->diff($field->getEndDate());
+                    $startDate = $field->getStartDate();
+                    $endDate = $field->getEndDate();
+                    $startDate->add($interval);
+                    $endDate->add($interval);
+                }
+                $hydrator = $this->getHydrator();
+                $this->populateValues($hydrator->extract($field));
+            } else {
+                $hydrator = $this->getHydrator();
+                $this->populateValues($hydrator->extract($this->_field));
+            }
         }
     }
 
@@ -262,6 +281,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     public function setField(Field $field = null)
     {
         $this->_field = $field;
+
+        return $this;
+    }
+
+    /**
+    * @param  boolean $repeat
+    * @return self
+    */
+    public function setRepeat($repeat)
+    {
+        $this->_repeat = $repeat;
 
         return $this;
     }

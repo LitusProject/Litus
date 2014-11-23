@@ -344,6 +344,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $formEntry = null;
+        $guestInfo = null;
         if (null !== $person) {
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
@@ -360,17 +361,23 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry);
-        if (isset($guestInfo)) {
-            $form->populateFromGuestInfo($guestInfo);
-        }
+        $form = $this->getForm(
+            'form_specified-form_doodle',
+            array(
+                'form' => $formSpecification,
+                'person' => $person,
+                'language' => $this->getLanguage(),
+                'entry' => $formEntry,
+                'guest_info' => $guestInfo,
+            )
+        );
 
         if ($this->getRequest()->isPost() && $formSpecification->canBeSavedBy($person)) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
                 DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
 
                 $this->flashMessenger()->success(
@@ -467,17 +474,23 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $person, $formEntry);
-        if (isset($guestInfo)) {
-            $form->populateFromGuestInfo($guestInfo);
-        }
+        $form = $this->getForm(
+            'form_specified-form_doodle',
+            array(
+                'form' => $formSpecification,
+                'person' => $person,
+                'language' => $this->getLanguage(),
+                'entry' => $formEntry,
+                'guest_info' => $guestInfo,
+            )
+        );
 
         if ($this->getRequest()->isPost() && $formSpecification->canBeSavedBy($person)) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
                 DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
 
                 return new ViewModel(
@@ -486,26 +499,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     )
                 );
             } else {
-                $errors = $form->getMessages();
-                $formErrors = array();
-
-                foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()])) {
-                        continue;
-                    }
-
-                    $formErrors[$element->getAttribute('id')] = array();
-
-                    foreach ($errors[$element->getName()] as $error) {
-                        $formErrors[$element->getAttribute('id')][] = $error;
-                    }
-                }
-
                 return new ViewModel(
                     array(
                         'result' => (object) array(
                             'status' => 'error',
-                            'errors' => $formErrors,
+                            'errors' => $form->getMessages(),
                         ),
                     )
                 );
@@ -907,7 +905,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');
 
-        return $cookies->offsetExists(GuestInfo::$cookieNamespace);
+        return isset($cookies) && $cookies->offsetExists(GuestInfo::$cookieNamespace);
     }
 
     /**

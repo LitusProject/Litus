@@ -44,6 +44,8 @@ abstract class OptionSelector extends Field
     */
     public function __construct(Form $form)
     {
+        parent::__construct($form);
+
         $this->optionTranslations = new ArrayCollection();
     }
 
