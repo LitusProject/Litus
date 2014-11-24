@@ -81,7 +81,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                 return new ViewModel();
             }
-            var_dump($form->getMessages());
         }
 
         return new ViewModel(
@@ -106,8 +105,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $entries = $order->getEntries();
-
-        $oldContract = $order->getContract();
 
         $currentProducts = array();
         foreach ($entries as $entry) {

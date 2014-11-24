@@ -33,7 +33,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 {
     public function overviewAction()
     {
-        $person = $this->getAuthentication()->getPersonObject();
+        if (!($person = $this->_getPerson())) {
+            return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -59,22 +61,24 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
     {
         $form = $this->getForm('br_corporate_job_add');
 
+        if (!($person = $this->_getPerson())) {
+            return new ViewModel();
+        }
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $contact = $this->getAuthentication()->getPersonObject();
-
                 $job = $form->hydrateObject(
-                    new Job($contact->getCompany(), 'vacancy')
+                    new Job($person->getCompany(), 'vacancy')
                 );
 
                 $job->pending();
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new RequestVacancy($job, 'add', $contact);
+                $request = new RequestVacancy($job, 'add', $person);
 
                 $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();
@@ -108,6 +112,10 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             return new ViewModel();
         }
 
+        if (!($person = $this->_getPerson())) {
+            return new ViewModel();
+        }
+
         $form = $this->getForm('br_corporate_job_edit', array('job' => $oldJob));
 
         if ($this->getRequest()->isPost()) {
@@ -115,17 +123,15 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $contact = $this->getAuthentication()->getPersonObject();
-
                 $job = $form->hydrateObject(
-                    new Job($contact->getCompany(), 'vacancy')
+                    new Job($person->getCompany(), 'vacancy')
                 );
 
                 $job->pending();
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new RequestVacancy($job, 'edit', $contact, $oldJob);
+                $request = new RequestVacancy($job, 'edit', $person, $oldJob);
 
                 $this->getEntityManager()->persist($request);
 
@@ -160,9 +166,11 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             return new ViewModel();
         }
 
-        $contact = $this->getAuthentication()->getPersonObject();
+        if (!($person = $this->_getPerson())) {
+            return new ViewModel();
+        }
 
-        $request = new RequestVacancy($vacancy, 'delete', $contact);
+        $request = new RequestVacancy($vacancy, 'delete', $person);
 
         $this->getEntityManager()->persist($request);
         $this->getEntityManager()->flush();
@@ -264,5 +272,26 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         }
 
         return $job;
+    }
+
+    private function _getPerson()
+    {
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if ($person === null || !($person instanceof Corporate)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login to view the CV book.'
+            );
+
+            $this->redirect()->toRoute(
+                'br_corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+        }
+
+        return $person;
     }
 }

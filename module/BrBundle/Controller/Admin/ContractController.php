@@ -256,7 +256,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 return new ViewModel();
             }
 
-            $contractComposition = array();
             foreach ($sections['contractComposition'] as $position => $id) {
                 $contractEntry = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Contract\ContractEntry')

@@ -32,7 +32,9 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 {
     public function overviewAction()
     {
-        $person = $this->getAuthentication()->getPersonObject();
+        if (!($person = $this->_getPerson())) {
+            return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -107,6 +109,10 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             return new ViewModel();
         }
 
+        if (!($person = $this->_getPerson())) {
+            return new ViewModel();
+        }
+
         $form = $this->getForm('br_corporate_job_edit', array('job' => $oldJob));
 
         if ($this->getRequest()->isPost()) {
@@ -114,17 +120,15 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $contact = $this->getAuthentication()->getPersonObject();
-
                 $job = $form->hydrateObject(
-                    new Job($contact->getCompany(), 'internship')
+                    new Job($person->getCompany(), 'internship')
                 );
 
                 $job->pending();
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new RequestInternship($job, 'edit', $contact, $oldJob);
+                $request = new RequestInternship($job, 'edit', $person, $oldJob);
 
                 $this->getEntityManager()->persist($request);
 
@@ -159,9 +163,11 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             return new ViewModel();
         }
 
-        $contact = $this->getAuthentication()->getPersonObject();
+        if (!($person = $this->_getPerson())) {
+            return new ViewModel();
+        }
 
-        $request = new RequestInternship($internship, 'delete', $contact);
+        $request = new RequestInternship($internship, 'delete', $person);
 
         $this->getEntityManager()->persist($request);
         $this->getEntityManager()->flush();
@@ -222,5 +228,26 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         }
 
         return $sectorArray;
+    }
+
+    private function _getPerson()
+    {
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if ($person === null || !($person instanceof Corporate)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login to view the CV book.'
+            );
+
+            $this->redirect()->toRoute(
+                'br_corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+        }
+
+        return $person;
     }
 }

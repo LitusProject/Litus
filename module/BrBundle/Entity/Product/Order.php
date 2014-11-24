@@ -46,7 +46,7 @@ class Order
     private $id;
 
     /**
-     * @var \BrBundle\Entity\User\Person\Corporate The contact used in this order
+     * @var CorporatePerson The contact used in this order
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\User\Person\Corporate")
      * @ORM\JoinColumn(name="contact", referencedColumnName="id")
@@ -54,7 +54,7 @@ class Order
     private $contact;
 
     /**
-     * @var \BrBundle\Entity\Contract The contract accompanying this order
+     * @var Contract The contract accompanying this order
      *
      * @ORM\OneToOne(
      *      targetEntity="BrBundle\Entity\Contract",
@@ -78,7 +78,7 @@ class Order
     private $invoice;
 
     /**
-     * @var \BrBundle\Entity\Product\OrderEntry The entries in this order
+     * @var OrderEntry The entries in this order
      *
      * @ORM\OneToMany(
      *      targetEntity="BrBundle\Entity\Product\OrderEntry",
@@ -90,14 +90,14 @@ class Order
     private $orderEntries;
 
     /**
-     * @var \DateTime The time of creation of this node
+     * @var DateTime The time of creation of this node
      *
      * @ORM\Column(name="creation_time", type="datetime")
      */
     private $creationTime;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person who created this node
+     * @var Person The person who created this node
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Collaborator")
      * @ORM\JoinColumn(name="creation_person", referencedColumnName="id")
@@ -119,7 +119,7 @@ class Order
     private $taxFree;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
@@ -151,7 +151,7 @@ class Order
     }
 
     /**
-     * @return \BrBundle\Entity\User\Person\Corporate
+     * @return CorporatePerson
      */
     public function getContact()
     {
@@ -159,7 +159,7 @@ class Order
     }
 
     /**
-     * @ return \BrBundle\Entity\Product\Order
+     * @return self
      */
     public function setContact(CorporatePerson $contact)
     {
@@ -169,7 +169,7 @@ class Order
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreationTime()
     {
@@ -177,7 +177,7 @@ class Order
     }
 
     /**
-     * @return \BrBundle\Entity\Collaborator
+     * @return Collaborator
      */
     public function getCreationPerson()
     {
@@ -192,6 +192,10 @@ class Order
         return $this->orderEntries->toArray();
     }
 
+    /**
+     * @param  OrderEntry $entry
+     * @return self
+     */
     public function setEntry(OrderEntry $entry)
     {
         $this->orderEntries->add($entry);
@@ -200,7 +204,7 @@ class Order
     }
 
     /**
-     * @return \BrBundle\Entity\Contract
+     * @return Contract
      */
     public function getContract()
     {
@@ -250,8 +254,9 @@ class Order
     }
 
     /**
-     * @note    This order gets set to old.
-     *          This means the boolean $old is set to true.
+     * @return bool
+     * @note   This order gets set to old.
+     *              This means the boolean $old is set to true.
      */
     public function setOld()
     {
@@ -267,11 +272,14 @@ class Order
     }
 
     /**
-     * @param boolean $taxfree
+     * @param  boolean $taxfree
+     * @return self
      */
     public function setTaxFree($taxFree)
     {
         $this->taxFree = $taxFree;
+
+        return $this;
     }
 
     /**
@@ -295,7 +303,8 @@ class Order
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  EntityManager $entityManager
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {
