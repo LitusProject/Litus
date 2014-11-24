@@ -21,6 +21,7 @@ namespace BrBundle\Controller\Corporate;
 use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Job,
     BrBundle\Entity\Company\Request\RequestInternship,
+    BrBundle\Entity\User\Person\Corporate,
     Zend\View\Model\ViewModel;
 
 /**
@@ -230,6 +231,9 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         return $sectorArray;
     }
 
+    /**
+     * @return Corporate
+     */
     private function _getPerson()
     {
         $person = $this->getAuthentication()->getPersonObject();

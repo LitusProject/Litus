@@ -315,6 +315,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         return $result;
     }
 
+    /**
+     * @return Corporate
+     */
     private function _getPerson()
     {
         $person = $this->getAuthentication()->getPersonObject();

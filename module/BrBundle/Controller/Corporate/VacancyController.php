@@ -21,6 +21,7 @@ namespace BrBundle\Controller\Corporate;
 use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Job,
     BrBundle\Entity\Company\Request\RequestVacancy,
+    BrBundle\Entity\User\Person\Corporate,
     Zend\View\Model\ViewModel;
 
 /**
@@ -274,6 +275,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         return $job;
     }
 
+    /**
+     * @return Corporate
+     */
     private function _getPerson()
     {
         $person = $this->getAuthentication()->getPersonObject();

@@ -236,23 +236,17 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         'status' => 'success',
                         'info' => array(
                             'info' => array(
-                                'name' => $fileName,
+                                'name' => $event->getPoster(),
                             ),
                         ),
                     )
                 );
             } else {
-                $formErrors = array();
-
-                if (sizeof($upload->getMessages()) > 0) {
-                    $formErrors['poster'] = $upload->getMessages();
-                }
-
                 return new ViewModel(
                     array(
                         'status' => 'error',
                         'form' => array(
-                            'errors' => $formErrors,
+                            'errors' => $form->getMessages(),
                         ),
                     )
                 );
