@@ -410,7 +410,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     public function isOtherOrganizationEnabled()
     {
-        return $enableOtherOrganization = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_other_organization');
     }

@@ -38,7 +38,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $this->getAuthentication()->forget();
 

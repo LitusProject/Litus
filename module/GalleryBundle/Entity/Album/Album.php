@@ -65,7 +65,7 @@ class Album
     private $dateActivity;
 
     /**
-     * @var array The translations of this album
+     * @var ArrayCollection The translations of this album
      *
      * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Translation", mappedBy="album", cascade={"persist", "remove"})
      */
@@ -86,7 +86,7 @@ class Album
     private $watermark;
 
     /**
-     * @var array The photos of this album
+     * @var ArrayCollection The photos of this album
      *
      * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Photo", mappedBy="album", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id": "ASC"})

@@ -180,7 +180,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         if (null !== $this->_field) {
             if ($this->_repeat) {
                 $field = clone $this->_field;
-                if ($this->_field instanceof TimeslotFieldEntity) {
+                if ($field instanceof TimeslotFieldEntity) {
                     $interval = $field->getStartDate()->diff($field->getEndDate());
                     $startDate = $field->getStartDate();
                     $endDate = $field->getEndDate();

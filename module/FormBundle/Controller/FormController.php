@@ -299,7 +299,6 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $person = $this->getAuthentication()->getPersonObject();
-        $guestInfo = null;
 
         if ($person === null && !$formSpecification->isNonMember()) {
             return new ViewModel(

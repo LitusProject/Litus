@@ -58,8 +58,6 @@ class Rule extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $startTime = null;
-
         if ($object->getStartTime() === $object->getEndTime()) {
             $startTime = $endTime = null;
         } else {

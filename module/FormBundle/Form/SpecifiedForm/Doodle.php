@@ -196,7 +196,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @param  GuestInfo $guestInfo
+     * @param  GuestInfoEntity $guestInfo
      * @return self
      */
     public function setGuestInfo(GuestInfoEntity $guestInfo = null)

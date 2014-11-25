@@ -71,7 +71,7 @@ class CashRegister
     }
 
     /**
-     * @return MoneyUnit/Amount[]
+     * @return array
      */
     public function getMoneyUnitAmounts()
     {
@@ -79,7 +79,7 @@ class CashRegister
     }
 
       /**
-     * @return BankDevice/Amount[]
+     * @return array
      */
     public function getBankDeviceAmounts()
     {

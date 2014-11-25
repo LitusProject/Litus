@@ -18,7 +18,8 @@
 
 namespace LogisticsBundle\Hydrator\Reservation;
 
-use LogisticsBundle\Entity\Reservation\PianoReservation as PianoReservationEntity;
+use CommonBundle\Entity\User\Person\Academic,
+    LogisticsBundle\Entity\Reservation\PianoReservation as PianoReservationEntity;
 
 class PianoReservation extends \CommonBundle\Component\Hydrator\Hydrator
 {

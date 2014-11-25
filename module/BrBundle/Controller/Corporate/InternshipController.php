@@ -59,6 +59,10 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function addAction()
     {
+        if (!($person = $this->_getPerson())) {
+            return new ViewModel();
+        }
+
         $form = $this->getForm('br_corporate_job_add');
 
         if ($this->getRequest()->isPost()) {
@@ -66,17 +70,15 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $contact = $this->getAuthentication()->getPersonObject();
-
                 $job = $form->hydrateObject(
-                    new Job($contact->getCompany(), 'internship')
+                    new Job($person->getCompany(), 'internship')
                 );
 
                 $job->pending();
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new RequestInternship($job, 'add', $contact);
+                $request = new RequestInternship($job, 'add', $person);
 
                 $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();

@@ -18,7 +18,8 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CudiBundle\Entity\Sale\Article\Restriction\Amount as AmountRestriction,
+use CommonBundle\Component\Controller\Exception\RuntimeException,
+    CudiBundle\Entity\Sale\Article\Restriction\Amount as AmountRestriction,
     CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction,
     CudiBundle\Entity\Sale\Article\Restriction\Study as StudyRestriction,
     Zend\View\Model\ViewModel;
@@ -58,6 +59,8 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 
                         $restriction->addStudy($study);
                     }
+                } else {
+                    throw new RuntimeException("Unsupported restriction type");
                 }
 
                 $this->getEntityManager()->persist($restriction);

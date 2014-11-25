@@ -121,7 +121,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData($formData);
+                $formData = $form->getData();
 
                 $this->getEntityManager()->persist(
                     new SubjectEnrollment(

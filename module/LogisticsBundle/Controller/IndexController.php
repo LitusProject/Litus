@@ -321,7 +321,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         $this->getResponse()->setHeaders($headers);
 
         $icsFile = new TmpFile();
-        $icsGenerator = new IcsGenerator($icsFile, $this->getEntityManager(), $this->getDocumentManager(), $this->getParam('token'));
+        new IcsGenerator($icsFile, $this->getEntityManager(), $this->getDocumentManager(), $this->getParam('token'));
 
         return new ViewModel(
             array(

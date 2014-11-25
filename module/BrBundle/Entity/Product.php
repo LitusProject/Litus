@@ -287,7 +287,7 @@ class Product
             throw new \InvalidArgumentException('Invalid price');
         }
 
-        $this->price = $price * 100;
+        $this->price = (int) ($price * 100);
 
         return $this;
     }

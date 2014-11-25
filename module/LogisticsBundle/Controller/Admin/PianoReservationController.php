@@ -77,7 +77,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                             ->getConfigValue('logistics.piano_new_reservation_confirmed')
                     );
 
-                    if (!($language = $player->getLanguage())) {
+                    if (!($language = $reservation->getPlayer()->getLanguage())) {
                         $language = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');

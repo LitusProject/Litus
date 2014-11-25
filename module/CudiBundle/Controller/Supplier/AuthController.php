@@ -36,7 +36,7 @@ class AuthController extends \CudiBundle\Component\Controller\SupplierController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $this->getAuthentication()->authenticate(
                     $formData['username'], $formData['password'], $formData['remember_me']

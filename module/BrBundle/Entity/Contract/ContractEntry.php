@@ -177,7 +177,7 @@ class ContractEntry
             throw new \InvalidArgumentException("Position must be a positive number");
         }
 
-        $this->position = round($position);
+        $this->position = (int) round($position);
 
         return $this;
     }

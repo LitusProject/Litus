@@ -18,8 +18,7 @@
 
 namespace MailBundle\Entity\MailingList\Entry\Person;
 
-use Doctrine\ORM\Mapping as ORM,
-    MailBundle\Entity\MailingList;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for the list entry of an external person.
@@ -49,16 +48,6 @@ class External extends \MailBundle\Entity\MailingList\Entry\Person
      * @ORM\Column(type="string")
      */
     private $email;
-
-    /**
-     * Creates a new list entry for the given list with the given mail address.
-     *
-     * @param MailingList $list The list for this entry
-     */
-    public function __construct(MailingList $list)
-    {
-        parent::__construct($list);
-    }
 
     /**
      * @return string

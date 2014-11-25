@@ -419,7 +419,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData($formData);
+                $formData = $form->getData();
 
                 $persons = array();
 

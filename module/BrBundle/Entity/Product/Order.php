@@ -21,6 +21,7 @@ namespace BrBundle\Entity\Product;
 use BrBundle\Entity\Collaborator,
     BrBundle\Entity\Company,
     BrBundle\Entity\Contract,
+    BrBundle\Entity\Invoice,
     BrBundle\Entity\User\Person\Corporate as CorporatePerson,
     CommonBundle\Entity\User\Person,
     DateTime,
@@ -66,7 +67,7 @@ class Order
     private $contract;
 
     /**
-     * @var \BrBundle\Entity\Invoice The invoice accompanying this order
+     * @var Invoice The invoice accompanying this order
      *
      * @ORM\OneToOne(
      *      targetEntity="BrBundle\Entity\Invoice",

@@ -32,8 +32,6 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 {
     public function loginAction()
     {
-        $form = $this->getForm('wiki_auth_login');
-
         if ($this->getAuthentication()->isAuthenticated()) {
             if ($this->getAuthentication()->isExternallyAuthenticated()) {
                 $this->redirectAfterAuthentication();
@@ -45,11 +43,14 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                 'Notice',
                 'You have to login again to go the wiki.'
             );
-
-            $form->setUsername(
-                $this->getAuthentication()->getPersonObject()->getUsername()
-            );
         }
+
+        $form = $this->getForm(
+            'wiki_auth_login',
+            array(
+                'username' => $this->getAuthentication()->isAuthenticated() ? $this->getAuthentication()->getPersonObject()->getUsername() : null,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

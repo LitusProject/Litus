@@ -253,7 +253,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     {
         $storedMessages = $this->getDocumentManager()
             ->getRepository('MailBundle\Document\Message')
-            ->findAll(array(), array('creationTime' => 'DESC'));
+            ->findAll();
 
         $storedMessagesTitles = array(
             '' => '',

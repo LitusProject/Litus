@@ -174,9 +174,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $resultString = str_replace('%end%', $end_date->format('d/m/Y'), $resultString);
         }
 
-        $academicYear = $this->getCurrentAcademicYear();
-        $now = new DateTime();
-
         if (!isset($resultString)) {
             $resultString = 'Results';
         }

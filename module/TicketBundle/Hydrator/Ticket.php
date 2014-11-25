@@ -25,11 +25,6 @@ class Ticket extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected $entity = 'TicketBundle\Entity\Event';
 
-    /**
-     * @static @var string[]
-     */
-    private static $std_keys = array();
-
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {

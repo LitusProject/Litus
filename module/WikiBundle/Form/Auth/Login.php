@@ -25,19 +25,34 @@ namespace WikiBundle\Form\Auth;
  */
 class Login extends \CommonBundle\Form\Auth\Login
 {
+    /**
+     * @var string
+     */
+    private $_username;
+
     public function init()
     {
         parent::init();
+
+        if (null !== $this->_username) {
+            $this->get('username')
+                ->setValue($this->_username)
+                ->setAttribute('disabled', 'disabled');
+        }
 
         $this->get('remember_me')
             ->setValue(true)
             ->setAttribute('disabled', 'disabled');
     }
 
+    /**
+     * @param  string $username
+     * @return self
+     */
     public function setUsername($username)
     {
-        $this->get('username')
-            ->setValue($username)
-            ->setAttribute('disabled', 'disabled');
+        $this->_username = $username;
+
+        return $this;
     }
 }

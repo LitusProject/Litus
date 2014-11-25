@@ -24,8 +24,6 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
 
 class Group extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array();
-
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {

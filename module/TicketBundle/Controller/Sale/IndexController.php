@@ -39,7 +39,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $tickets = $form->hydrateObject($event);
+                $form->hydrateObject($event);
                 $formData = $form->getData();
 
                 $this->getEntityManager()->flush();

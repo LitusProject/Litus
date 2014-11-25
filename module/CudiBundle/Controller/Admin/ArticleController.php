@@ -327,18 +327,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $article = new External(
-            $previous->getTitle(),
-            $previous->getAuthors(),
-            $previous->getPublishers(),
-            $previous->getYearPublished(),
-            $previous->getISBN(),
-            $previous->getUrl(),
-            $previous->getType(),
-            $previous->isDownloadable(),
-            $previous->isSameAsPreviousYear()
-        );
-        $article->setVersionNumber($previous->getVersionNumber());
+        $article = new External();
+        $article->setTitle($previous->getTitle())
+            ->setAuthors($previous->getAuthors())
+            ->setPublishers($previous->getPublishers())
+            ->setYearPublished($previous->getYearPublished())
+            ->setISBN($previous->getISBN())
+            ->setUrl($previous->getUrl())
+            ->setType($previous->getType())
+            ->setDownloadable($previous->isDownloadable())
+            ->setSameAsPreviousYear($previous->isSameAsPreviousYear())
+            ->setVersionNumber($previous->getVersionNumber());
         $this->getEntityManager()->persist($article);
 
         $previous->setEntityManager($this->getEntityManager());
@@ -419,27 +418,26 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Article\Option\Color')
             ->findOneByName('White');
 
-        $article = new Internal(
-            $previous->getTitle(),
-            $previous->getAuthors(),
-            $previous->getPublishers(),
-            $previous->getYearPublished(),
-            $previous->getISBN(),
-            $previous->getUrl(),
-            $previous->getType(),
-            $previous->isDownloadable(),
-            $previous->isSameAsPreviousYear(),
-            0,
-            0,
-            $binding,
-            true,
-            true,
-            $frontColor,
-            false,
-            false,
-            false
-        );
-        $article->setVersionNumber($previous->getVersionNumber());
+        $article = new Internal();
+        $article->setTitle($previous->getTitle())
+            ->setAuthors($previous->getAuthors())
+            ->setPublishers($previous->getPublishers())
+            ->setYearPublished($previous->getYearPublished())
+            ->setISBN($previous->getISBN())
+            ->setUrl($previous->getUrl())
+            ->setType($previous->getType())
+            ->setDownloadable($previous->isDownloadable())
+            ->setSameAsPreviousYear($previous->isSameAsPreviousYear())
+            ->setNbBlackAndWhite(0)
+            ->setNbColored(0)
+            ->setBinding($binding)
+            ->setIsOfficial(true)
+            ->setIsRectoVerso(true)
+            ->setFrontColor($frontColor)
+            ->setIsPerforated(false)
+            ->setIsColored(false)
+            ->setIsHardCovered(false)
+            ->setVersionNumber($previous->getVersionNumber());
         $this->getEntityManager()->persist($article);
 
         $previous->setEntityManager($this->getEntityManager());

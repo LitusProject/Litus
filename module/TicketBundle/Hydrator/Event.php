@@ -91,7 +91,6 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                                 null,
                                 null,
                                 null,
-                                null,
                                 $object->generateTicketNumber($this->getEntityManager())
                             )
                         );
@@ -117,7 +116,6 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                         new Ticket(
                             $object,
                             'empty',
-                            null,
                             null,
                             null,
                             null,

@@ -236,7 +236,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         'status' => 'success',
                         'info' => array(
                             'info' => array(
-                                'name' => $event->getPoster(),
+                                'name' => $event->getEvent()->getPoster(),
                             ),
                         ),
                     )

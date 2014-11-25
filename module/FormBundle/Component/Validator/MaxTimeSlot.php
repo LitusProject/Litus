@@ -40,14 +40,15 @@ class MaxTimeSlot extends \Zend\Validator\AbstractValidator
     );
 
     /**
-    * @var Doode
+    * @var Doodle
     */
     private $_form;
 
     /**
     * Sets validator options
     *
-    * @param  Doode         $form
+    * @param Doodle     $form
+    * @param array|null $opts
     */
     public function __construct(Doodle $form, $opts = null)
     {

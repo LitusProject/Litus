@@ -18,7 +18,8 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Session;
 
-use CudiBundle\Entity\Sale\Session\Restriction\Name as NameRestriction,
+use CommonBundle\Component\Controller\Exception\RuntimeException,
+    CudiBundle\Entity\Sale\Session\Restriction\Name as NameRestriction,
     CudiBundle\Entity\Sale\Session\Restriction\Study as StudyRestriction,
     CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction,
     Zend\View\Model\ViewModel;
@@ -64,6 +65,8 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 
                         $restriction->addStudy($study);
                     }
+                } else {
+                    throw new RuntimeException("Unsupported restriction type");
                 }
 
                 $this->getEntityManager()->persist($restriction);

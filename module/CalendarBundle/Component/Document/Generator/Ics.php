@@ -54,6 +54,11 @@ class Ics
     private $_suffix;
 
     /**
+     * @var string
+     */
+    private $_url;
+
+    /**
      * @param TmpFile       $file
      * @param EntityManager $entityManager
      * @param Language      $language

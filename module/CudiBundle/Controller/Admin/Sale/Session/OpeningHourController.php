@@ -20,7 +20,6 @@ namespace CudiBundle\Controller\Admin\Sale\Session;
 
 use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
     CudiBundle\Entity\Sale\Session\OpeningHour\Translation,
-    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -195,14 +194,5 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         return $openingHour;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

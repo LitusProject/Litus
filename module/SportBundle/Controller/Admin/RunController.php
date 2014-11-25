@@ -131,8 +131,6 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                     );
 
                     $this->getEntityManager()->persist($newRunner);
-
-                    $groupMembers[] = $newRunner;
                 } else {
                     $repositoryCheck->setGroup($group);
                 }

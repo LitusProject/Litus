@@ -24,7 +24,6 @@ use CommonBundle\Component\PassKit\Pass\Membership,
     CommonBundle\Entity\User\Person,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CudiBundle\Entity\Sale\Booking,
-    DateTime,
     Imagick,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
@@ -616,14 +615,5 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $this->getParam('return')
             );
         }
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date . ' 00:00') ?: null;
     }
 }

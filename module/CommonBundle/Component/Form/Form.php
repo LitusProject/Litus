@@ -21,7 +21,6 @@ namespace CommonBundle\Component\Form;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     CommonBundle\Component\Validator\FormAwareInterface,
     RuntimeException,
-    Zend\Form\FieldsetInterface,
     Zend\Form\FormInterface,
     Zend\InputFilter\InputFilterAwareInterface,
     Zend\InputFilter\InputProviderInterface,

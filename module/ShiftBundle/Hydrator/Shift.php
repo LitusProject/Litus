@@ -19,6 +19,7 @@
 namespace ShiftBundle\Hydrator;
 
 use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
+    CommonBundle\Entity\User\Person\Academic,
     ShiftBundle\Entity\Shift as ShiftEntity;
 
 class Shift extends \CommonBundle\Component\Hydrator\Hydrator

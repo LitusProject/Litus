@@ -104,7 +104,6 @@ class Barcode extends EntityRepository
 
     public function findAllByBarcodeAndOrganization($barcode, AcademicYear $academicYear, Organization $organization)
     {
-        $persons = array(0);
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('a.id')
             ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
@@ -121,7 +120,7 @@ class Barcode extends EntityRepository
             ->getResult();
 
         foreach ($resultSet as $result) {
-            $$ids = array(0);
+            $ids = array(0);
             $query = $this->_em->createQueryBuilder();
             $resultSet = $query->select('a.id')
                 ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')

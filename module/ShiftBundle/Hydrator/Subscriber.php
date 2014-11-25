@@ -26,8 +26,6 @@ class Subscriber extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected $entity = 'ShiftBundle\Entity\Shift';
 
-    private static $std_keys = array();
-
     protected function doExtract($object = null)
     {
         return array();

@@ -60,7 +60,7 @@ class Contract
     private $date;
 
     /**
-     * @var Person The author of this contract
+     * @var Collaborator The author of this contract
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Collaborator")
      * @ORM\JoinColumn(name="author", referencedColumnName="id")
@@ -208,7 +208,7 @@ class Contract
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function setOrder(Order $order)
     {
@@ -224,7 +224,7 @@ class Contract
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDate()
     {
@@ -232,7 +232,7 @@ class Contract
     }
 
     /**
-     * @return Contract
+     * @return self
      */
     public function setDate()
     {
@@ -242,7 +242,7 @@ class Contract
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person
+     * @return Collaborator
      */
     public function getAuthor()
     {
@@ -251,8 +251,8 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param  \CommonBundle\Entity\User\Person $author
-     * @return Contract
+     * @param  Collaborator              $author
+     * @return self
      */
     public function setAuthor(Collaborator $author)
     {
@@ -275,8 +275,8 @@ class Contract
 
     /**
      * @throws \InvalidArgumentException
-     * @param  \BrBundle\Entity\Company  $company
-     * @return Contract
+     * @param  Company                   $company
+     * @return self
      */
     public function setCompany(Company $company)
     {
@@ -289,6 +289,10 @@ class Contract
         return $this;
     }
 
+    /**
+     * @param  int  $discount
+     * @return self
+     */
     public function setDiscount($discount)
     {
         if ($discount < 0) {
@@ -319,7 +323,7 @@ class Contract
     /**
      * @throws \InvalidArgumentException
      * @param  string                    $title The title of the contract
-     * @return Contract
+     * @return self
      */
     public function setTitle($title)
     {
@@ -341,8 +345,8 @@ class Contract
     }
 
     /**
-     * @param  bool     $dirty
-     * @return Contract
+     * @param  bool $dirty
+     * @return self
      */
     public function setDirty($dirty = true)
     {
@@ -360,11 +364,12 @@ class Contract
     }
 
     /**
-     *
+     * @param  bool $signed
+     * @return self
      */
-    public function setSigned($bool = true)
+    public function setSigned($signed = true)
     {
-        $this->signed = $bool;
+        $this->signed = $signed;
 
         return $this;
     }
@@ -380,7 +385,7 @@ class Contract
     /**
      * @throws \InvalidArgumentException
      * @param  int                       $invoiceNb
-     * @return Contract
+     * @return self
      */
     public function setInvoiceNb($invoiceNb = -1)
     {
@@ -406,8 +411,8 @@ class Contract
     }
 
     /**
-     * @param  int      $contractNb
-     * @return Contract
+     * @param  int  $contractNb
+     * @return self
      */
     public function setContractNb($contractNb)
     {
@@ -430,7 +435,7 @@ class Contract
 
     /**
      * @return array
-     * @note    The array that is returned only contains the most recent entries.
+     * @note   The array that is returned only contains the most recent entries.
      */
     public function getEntries()
     {
@@ -448,8 +453,8 @@ class Contract
     }
 
     /**
-     * @param  ContractEntry             $entry
-     * @return \BrBundle\Entity\Contract
+     * @param  ContractEntry $entry
+     * @return self
      */
     public function setEntry(ContractEntry $entry)
     {

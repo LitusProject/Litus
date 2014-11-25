@@ -380,7 +380,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
                     )
                 );
             }
-            var_dump($form->getMessages());
         }
 
         return new ViewModel(
@@ -565,7 +564,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
         $file = new CsvFile();
 
-        $language = $this->getLanguage();
         $heading = array('ID', 'Submitter', 'Submitted');
         if ($viewerMap->isMail()) {
             $heading[] = 'Email';
@@ -629,7 +627,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->findAllByField($field);
 
         $tmpFile = new TmpFile();
-        $zipGenerator = new ZipGenerator($tmpFile, $this->getEntityManager(), $this->getLanguage(), $entries);
+        new ZipGenerator($tmpFile, $this->getEntityManager(), $this->getLanguage(), $entries);
 
         $headers = new Headers();
         $headers->addHeaders(array(

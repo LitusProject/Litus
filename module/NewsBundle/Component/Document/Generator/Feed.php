@@ -202,7 +202,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                         'news',
                         array(
                             'action' => 'view',
-                            'name' => $item->getName($this->_language),
+                            'name' => $item->getName(),
                         )
                     )
                 ),
@@ -213,7 +213,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                         'news',
                         array(
                             'action' => 'view',
-                            'name' => $item->getName($this->_language),
+                            'name' => $item->getName(),
                         )
                     )
                 ),

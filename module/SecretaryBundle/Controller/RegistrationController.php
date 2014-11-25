@@ -23,7 +23,6 @@ use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as Shibbol
     CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    DateTime,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
     Zend\Mvc\MvcEvent,
@@ -750,14 +749,5 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $this->getParam('identification'), '', true
             );
         }
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date . ' 00:00') ?: null;
     }
 }

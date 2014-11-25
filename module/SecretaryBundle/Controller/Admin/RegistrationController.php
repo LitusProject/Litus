@@ -198,13 +198,13 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 }
 
                 $metaData = new MetaData(
-                    $academic,
-                    $academicYear,
-                    true,
-                    $formData['irreeel'],
-                    $formData['bakske'],
-                    $formData['tshirt_size']
+                    $registration->getAcademic(),
+                    $registration->getAcademicYear()
                 );
+                $metaData->setBecomeMember(false)
+                    ->setReceiveIrReeelAtCudi($formData['irreeel'])
+                    ->setBakskeByMail($formData['bakske'])
+                    ->setTshirtSize($formData['tshirt_size']);
                 $this->getEntityManager()->persist($metaData);
 
                 $organizationMap = $this->getEntityManager()
@@ -322,12 +322,12 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 if (null === $metaData) {
                     $metaData = new MetaData(
                         $registration->getAcademic(),
-                        $registration->getAcademicYear(),
-                        false,
-                        $formData['irreeel'],
-                        $formData['bakske'],
-                        $formData['tshirt_size']
+                        $registration->getAcademicYear()
                     );
+                    $metaData->setBecomeMember(false)
+                        ->setReceiveIrReeelAtCudi($formData['irreeel'])
+                        ->setBakskeByMail($formData['bakske'])
+                        ->setTshirtSize($formData['tshirt_size']);
                     $this->getEntityManager()->persist($metaData);
                 } else {
                     $metaData->setReceiveIrReeelAtCudi($formData['irreeel'])
@@ -604,10 +604,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 }
 
                 return new Ean12($person, $barcode);
-                break;
             case 'qr':
                 return new Qr($person, $barcode);
-                break;
             default:
                 return null;
         }
