@@ -71,17 +71,10 @@ class GuestInfo
 
     /**
      * @param EntityManager $entityManager
-     * @param string        $firstName
-     * @param string        $lastName
-     * @param string        $email
      * @param Request       $request
      */
-    public function __construct(EntityManager $entityManager, $firstName, $lastName, $email, Request $request)
+    public function __construct(EntityManager $entityManager, Request $request)
     {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->email = $email;
-
         do {
             $sessionId = md5(uniqid(rand(), true));
 

@@ -73,12 +73,9 @@ class Doodle extends \FormBundle\Form\SpecifiedForm\Doodle
             'elements'   => array(
                 array(
                     'type'       => 'text',
-                    'name'       => 'guest_first_name',
+                    'name'       => 'first_name',
                     'label'      => 'First Name',
                     'required'   => true,
-                    'attributes' => array(
-                        'id' => 'guest_first_name',
-                    ),
                     'options'    => array(
                         'input' => array(
                             'filters'  => array(
@@ -89,12 +86,9 @@ class Doodle extends \FormBundle\Form\SpecifiedForm\Doodle
                 ),
                 array(
                     'type'       => 'text',
-                    'name'       => 'guest_last_name',
+                    'name'       => 'last_name',
                     'label'      => 'Last Name',
                     'required'   => true,
-                    'attributes' => array(
-                        'id' => 'guest_last_name',
-                    ),
                     'options'    => array(
                         'input' => array(
                             'filters'  => array(
@@ -105,12 +99,9 @@ class Doodle extends \FormBundle\Form\SpecifiedForm\Doodle
                 ),
                 array(
                     'type'       => 'text',
-                    'name'       => 'guest_email',
+                    'name'       => 'email',
                     'label'      => 'Email',
                     'required'   => true,
-                    'attributes' => array(
-                        'id' => 'guest_email',
-                    ),
                     'options'    => array(
                         'input' => array(
                             'filters'  => array(
@@ -134,7 +125,7 @@ class Doodle extends \FormBundle\Form\SpecifiedForm\Doodle
         $fieldsForm = $this->get('fields_form');
 
         foreach ($this->getElements() as $name => $element) {
-            if ($name == 'submit' || $name == 'is_guest' || $name == 'csrf') {
+            if (strpos($name, 'field-') !== 0) {
                 continue;
             }
 

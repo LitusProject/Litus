@@ -35,7 +35,7 @@ use CommonBundle\Entity\General\Language,
  */
 class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    protected $hydrator = 'FormBundle\Hydrator\Node\Entry';
+    protected $hydrator = 'FormBundle\Hydrator\Node\Entry\Doodle';
 
     /**
      * @var Person
@@ -179,8 +179,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         if (null !== $this->_entry) {
-            $hydrator = $this->getHydrator();
-            $this->populateValues($hydrator->extract($this->_entry));
+            $this->bind($this->_entry);
         }
     }
 

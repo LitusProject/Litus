@@ -26,10 +26,7 @@ use CommonBundle\Entity\General\Language,
     FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Entity\Node\Form as FormSpecification,
     FormBundle\Entity\Node\GuestInfo,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\PhpEnvironment\Request,
-    Zend\InputFilter\InputInterface,
-    Zend\Mail\Message,
     Zend\Mail\Transport\TransportInterface as MailTransport,
     Zend\Mvc\Controller\Plugin\Url;
 
@@ -50,7 +47,6 @@ class Form
                 $formData['email'],
                 $request
             );
-            $entityManager->persist($guestInfo);
         }
 
         if (null === $formEntry) {
@@ -90,7 +86,7 @@ class Form
                             unlink($filePath . '/' . $fieldEntry->getValue());
                         }
 
-                        $entityManager->remove($fieldEntry);
+                        $formEntry->removeFieldEntry($fieldEntry);
                     }
                 } elseif (is_array($formData['field-' . $field->getId()])) {
                     if (null === $fieldEntry || $fieldEntry->getValue() == '') {
@@ -122,7 +118,6 @@ class Form
                 } else {
                     $fieldEntry = new FieldEntry($formEntry, $field, $value, $readableValue);
                     $formEntry->addFieldEntry($fieldEntry);
-                    $entityManager->persist($fieldEntry);
                 }
             }
         }
@@ -131,29 +126,7 @@ class Form
 
         if (!isset($formData['save_as_draft'])) {
             if ($formSpecification->hasMail() && isset($mailTransport) && isset($url)) {
-                $urlString = (('on' === $request->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . $request->getServer('HTTP_HOST') . $url->fromRoute(
-                    'form_view',
-                    array(
-                        'action' => 'login',
-                        'id' => $formSpecification->getId(),
-                        'key' => $formEntry->getGuestInfo() ? $formEntry->getGuestInfo()->getSessionId() : '',
-                    )
-                );
-                $mailAddress = $formSpecification->getMail()->getFrom();
-
-                $mail = new Message();
-                $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $language, $urlString))
-                    ->setFrom($mailAddress)
-                    ->setSubject($formSpecification->getMail()->getSubject())
-                    ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
-
-                if ($formSpecification->getMail()->getBcc()) {
-                    $mail->addBcc($mailAddress);
-                }
-
-                if ('development' != getenv('APPLICATION_ENV')) {
-                    $mailTransport->send($mail);
-                }
+                Mail::send($formEntry, $formSpecification, $language, $mailTransport, $url, $request);
             }
         }
 

@@ -23,8 +23,9 @@ use CommonBundle\Component\Util\File\TmpFile,
     FormBundle\Component\Document\Generator\Doodle as DoodleGenerator,
     FormBundle\Component\Document\Generator\Form as FormGenerator,
     FormBundle\Component\Document\Generator\Zip as ZipGenerator,
-    FormBundle\Component\Form\Doodle as DoodleHelper,
-    FormBundle\Component\Form\Form as FormHelper,
+    FormBundle\Component\Form\Mail as MailHelper,
+    FormBundle\Entity\Node\Entry as FormEntry,
+    FormBundle\Entity\Node\GuestInfo,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -363,9 +364,17 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         ->findOneById($formData['person_form']['person']['id']);
                 }
 
-                $data = array_merge($formData['fields_form'], isset($formData['guest_form']) ? $formData['guest_form'] : array());
+                $formEntry = new FormEntry($person, $formSpecification);
+                if (null === $person) {
+                    $formEntry->setGuestInfo(
+                        new GuestInfo($this->getEntityManager(), $this->getRequest())
+                    );
+                }
 
-                DoodleHelper::save(null, $person, null, $formSpecification, $data, $this->getLanguage(), $this->getEntityManager(), null, null, $this->getRequest());
+                $formEntry = $form->hydrateObject($formEntry);
+
+                $this->getEntityManager()->persist($formEntry);
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -453,9 +462,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                DoodleHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), null, null, $this->getRequest());
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Success',

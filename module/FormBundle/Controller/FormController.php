@@ -19,8 +19,8 @@
 namespace FormBundle\Controller;
 
 use DateTime,
-    FormBundle\Component\Form\Doodle as DoodleHelper,
-    FormBundle\Component\Form\Form as FormHelper,
+    FormBundle\Component\Form\Mail as MailHelper,
+    FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Group,
     FormBundle\Entity\Node\GuestInfo,
@@ -376,8 +376,21 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
+                $formEntry = new FormEntry($person, $formSpecification);
+                if (null === $person) {
+                    $formEntry->setGuestInfo(
+                        new GuestInfo($this->getEntityManager(), $this->getRequest())
+                    );
+                }
+
+                $formEntry = $form->hydrateObject($formEntry);
+
+                $this->getEntityManager()->persist($formEntry);
+                $this->getEntityManager()->flush();
+
+                if ($formSpecification->hasMail()) {
+                    MailHelper::send($formEntry, $formSpecification, $this->getLanguage(), $this->getMailTransport(), $this->url(), $this->getRequest());
+                }
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -489,8 +502,23 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-                DoodleHelper::save($formEntry, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
+                if (null === $formEntry) {
+                    $formEntry = new FormEntry($person, $formSpecification);
+                    if (null === $person) {
+                        $formEntry->setGuestInfo(
+                            new GuestInfo($this->getEntityManager(), $this->getRequest())
+                        );
+                    }
+                }
+
+                $formEntry = $form->hydrateObject($formEntry);
+
+                $this->getEntityManager()->persist($formEntry);
+                $this->getEntityManager()->flush();
+
+                if ($formSpecification->hasMail()) {
+                    MailHelper::send($formEntry, $formSpecification, $this->getLanguage(), $this->getMailTransport(), $this->url(), $this->getRequest());
+                }
 
                 return new ViewModel(
                     array(
