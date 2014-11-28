@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Entity\User\Barcode,
-    CommonBundle\Entity\General\Address,
+use CommonBundle\Entity\General\Address,
+    CommonBundle\Entity\User\Barcode,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
@@ -50,10 +50,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 'CommonBundle\Entity\User\Person\Academic',
                 $this->getParam('page'),
                 array(
-                    'canLogin' => 'true'
+                    'canLogin' => 'true',
                 ),
                 array(
-                    'username' => 'ASC'
+                    'username' => 'ASC',
                 )
             );
         }
@@ -84,7 +84,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 if (isset($formData['roles'])) {
                     foreach ($formData['roles'] as $role) {
-                        if ('student' == $role) continue;
+                        if ('student' == $role) {
+                            continue;
+                        }
                         $roles[] = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
                             ->findOneByName($role);
@@ -148,7 +150,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'common_admin_academic',
                     array(
-                        'action' => 'add'
+                        'action' => 'add',
                     )
                 );
 
@@ -165,8 +167,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($academic = $this->_getAcademic()))
+        if (!($academic = $this->_getAcademic())) {
             return new ViewModel();
+        }
 
         $form = new EditForm(
             $this->getCache(), $this->getEntityManager(), $this->getCurrentAcademicYear(), $academic
@@ -186,7 +189,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 if (isset($formData['roles'])) {
                     foreach ($formData['roles'] as $role) {
-                        if ('student' == $role) continue;
+                        if ('student' == $role) {
+                            continue;
+                        }
                         $roles[] = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\Acl\Role')
                             ->findOneByName($role);
@@ -200,8 +205,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $formData['university_email'])) . $studentDomain;
 
                 $birthday = DateTime::createFromFormat('d/m/Y H:i', $formData['birthday'] . ' 00:00');
-                if(!$birthday)
+                if (!$birthday) {
                     $birthday = null;
+                }
                 $academic->setFirstName($formData['first_name'])
                     ->setLastName($formData['last_name'])
                     ->setEmail($formData['email'])
@@ -353,8 +359,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function activateAction()
     {
-        if (!($academic = $this->_getAcademic()))
+        if (!($academic = $this->_getAcademic())) {
             return new ViewModel();
+        }
 
         $academic->activate(
             $this->getEntityManager(),
@@ -384,8 +391,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($academic = $this->_getAcademic()))
+        if (!($academic = $this->_getAcademic())) {
             return new ViewModel();
+        }
 
         $sessions = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Session')
@@ -502,7 +510,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'common_admin_academic',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -522,7 +530,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'common_admin_academic',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

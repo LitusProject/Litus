@@ -33,8 +33,9 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear())) {
             return new ViewModel();
+        }
 
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
@@ -50,8 +51,9 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
     public function subjectAction()
     {
-        if (!($subject = $this->_getSubject()))
+        if (!($subject = $this->_getSubject())) {
             return new ViewModel();
+        }
 
         $academicYear = $this->getCurrentAcademicYear();
 
@@ -62,8 +64,9 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         );
 
         $currentArticles = array();
-        foreach($articleMappings as $mapping)
+        foreach ($articleMappings as $mapping) {
             $currentArticles[$mapping['article']->getId()] = $mapping['article']->getId();
+        }
 
         $previous = clone $academicYear->getStartDate();
         $previous->sub(new DateInterval('P1Y'));
@@ -79,8 +82,9 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         );
 
         foreach ($previousArticleMappings as $key => $mapping) {
-            if (isset($currentArticles[$mapping['article']->getId()]))
+            if (isset($currentArticles[$mapping['article']->getId()])) {
                 unset($previousArticleMappings[$key]);
+            }
         }
 
         $profMappings = $this->getEntityManager()
@@ -138,8 +142,9 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear())) {
             return new ViewModel();
+        }
 
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
@@ -197,8 +202,9 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
     private function _getSubject()
     {
-        if (!($academicYear = $this->getCurrentAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
+        }
 
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

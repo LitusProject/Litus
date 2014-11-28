@@ -21,13 +21,13 @@ namespace MailBundle\Form\Admin\Study;
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CommonBundle\Component\Form\Admin\Element\Collection,
     CommonBundle\Component\Form\Admin\Element\File,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Element\Select,
     MailBundle\Component\Validator\MultiMail as MultiMailValidator,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Send Mail
@@ -48,18 +48,21 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $this->setAttribute('accept-charset', 'utf-8');
 
         $studyNames = array();
-        foreach($studies as $study)
+        foreach ($studies as $study) {
             $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
+        }
 
         $groupNames = array();
-        foreach($groups as $group)
+        foreach ($groups as $group) {
             $groupNames[$group->getId()] = $group->getName();
+        }
 
         $storedMessagesTitles = array(
-            '' => ''
+            '' => '',
         );
-        foreach ($storedMessages as $storedMessage)
+        foreach ($storedMessages as $storedMessage) {
             $storedMessagesTitles[$storedMessage->getId()] = '(' . $storedMessage->getCreationTime()->format('d/m/Y') . ') ' . $storedMessage->getSubject();
+        }
 
         if (0 != count($studyNames)) {
             $field = new Select('studies');
@@ -180,7 +183,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         array(
                             'name' => 'emailAddress',
-                        )
+                        ),
                     ),
                 )
             )
@@ -195,7 +198,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new MultiMailValidator()
+                        new MultiMailValidator(),
                     ),
                 )
             )

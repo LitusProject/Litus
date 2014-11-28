@@ -49,8 +49,9 @@ EOT
         }
 
         $socket = $this->createSocket();
-        if (null === $socket)
+        if (null === $socket) {
             return 2;
+        }
 
         $socket->process();
     }

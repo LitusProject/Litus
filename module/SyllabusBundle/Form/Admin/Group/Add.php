@@ -18,16 +18,16 @@
 
 namespace SyllabusBundle\Form\Admin\Group;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
+use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Element\Checkbox,
     Doctrine\ORM\EntityManager,
     MailBundle\Component\Validator\MultiMail as MultiMailValidator,
     SyllabusBundle\Component\Validator\Group\Name as NameValidator,
     SyllabusBundle\Entity\Group,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Group

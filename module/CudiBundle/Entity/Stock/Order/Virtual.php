@@ -67,7 +67,7 @@ class Virtual
     {
         $this->article = $article;
         $this->number = $number;
-        $this->dateCreated = new DateTime;
+        $this->dateCreated = new DateTime();
     }
 
     /**

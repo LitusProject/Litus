@@ -29,8 +29,9 @@ class GroupController extends \FormBundle\Component\Controller\FormController
 {
     public function indexAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject()))
+        if (!($person = $this->getAuthentication()->getPersonObject())) {
             return new ViewModel();
+        }
 
         $groups = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
@@ -45,12 +46,13 @@ class GroupController extends \FormBundle\Component\Controller\FormController
 
     public function viewAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject()))
+        if (!($person = $this->getAuthentication()->getPersonObject())) {
             return new ViewModel();
+        }
 
-        if(!($group = $this->_getGroup()))
-
+        if (!($group = $this->_getGroup())) {
             return new ViewModel();
+        }
 
         $viewerMap = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
@@ -65,7 +67,7 @@ class GroupController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 
@@ -96,7 +98,7 @@ class GroupController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage_group',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 
@@ -116,7 +118,7 @@ class GroupController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage_group',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 

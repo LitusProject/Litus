@@ -18,8 +18,8 @@
 
 namespace LogisticsBundle\Form\Admin\Driver;
 
-use LogisticsBundle\Entity\Driver,
-    Doctrine\ORM\EntityManager,
+use Doctrine\ORM\EntityManager,
+    LogisticsBundle\Entity\Driver,
     Zend\Form\Element\Submit;
 
 /**

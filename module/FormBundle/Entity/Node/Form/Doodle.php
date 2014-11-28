@@ -73,15 +73,17 @@ class Doodle extends BaseForm
      */
     public function canBeSavedBy(Person $person = null)
     {
-        if ($this->isEditableByUser() || null === $person)
+        if ($this->isEditableByUser() || null === $person) {
             return true;
+        }
 
         $formEntry = $this->_entityManager
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findOneByFormAndPerson($this, $person);
 
-        if (null === $formEntry)
+        if (null === $formEntry) {
             return true;
+        }
 
         return sizeof($formEntry->getFieldEntries()) == 0;
     }
@@ -92,8 +94,9 @@ class Doodle extends BaseForm
     public function getFields()
     {
         $fields = array();
-        foreach(parent::getFields() as $field)
+        foreach (parent::getFields() as $field) {
             $fields[$field->getStartDate()->getTimestamp() . $field->getId()] = $field;
+        }
 
         ksort($fields);
 

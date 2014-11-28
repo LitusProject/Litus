@@ -19,11 +19,11 @@
 namespace CommonBundle;
 
 use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
-    Zend\Mvc\MvcEvent,
+    Symfony\Component\Console\Application as ConsoleApplication,
     Zend\Console\Request as ConsoleRequest,
+    Zend\Mvc\MvcEvent,
     Zend\ServiceManager\ServiceLocatorInterface,
-    Zend\ServiceManager\ServiceManager,
-    Symfony\Component\Console\Application as ConsoleApplication;
+    Zend\ServiceManager\ServiceManager;
 
 class Module
 {
@@ -34,8 +34,9 @@ class Module
         $events       = $application->getEventManager();
         $sharedEvents = $events->getSharedManager();
 
-        if ('production' == getenv('APPLICATION_ENV'))
+        if ('production' == getenv('APPLICATION_ENV')) {
             $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('lilo'), 'handleMvcEvent'));
+        }
 
         $injectTemplateListener = new InjectTemplateListener();
         $sharedEvents->attach('Zend\Stdlib\DispatchableInterface', MvcEvent::EVENT_DISPATCH, array($injectTemplateListener, 'injectTemplate'), 0);

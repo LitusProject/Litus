@@ -23,6 +23,7 @@ use PageBundle\Entity\Node\Page,
     PageBundle\Form\Admin\Page\Add as AddForm,
     PageBundle\Form\Admin\Page\Edit as EditForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\Validator\File\IsImage as IsImageValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -35,25 +36,27 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $pages = $this->_search();
+        }
 
         if (!isset($pages)) {
             $pages = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Node\Page')
                 ->findBy(
                     array(
-                        'endTime' => null
+                        'endTime' => null,
                     ),
                     array(
-                        'name' => 'ASC'
+                        'name' => 'ASC',
                     )
                 );
         }
 
         foreach ($pages as $key => $page) {
-            if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject()))
+            if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
                 unset($pages[$key]);
+            }
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -139,7 +142,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'page_admin_page',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -156,8 +159,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($page = $this->_getPage()))
+        if (!($page = $this->_getPage())) {
             return new ViewModel();
+        }
 
         if (null !== $page->getEndTime()) {
             $activeVersion = $this->getEntityManager()
@@ -168,7 +172,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     'page_admin_page',
                     array(
                         'action' => 'edit',
-                        'id'     => $activeVersion->getId()
+                        'id'     => $activeVersion->getId(),
                     )
                 );
         }
@@ -265,7 +269,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'page_admin_page',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -275,7 +279,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'form' => $form
+                'form' => $form,
             )
         );
     }
@@ -284,8 +288,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($page = $this->_getPage()))
+        if (!($page = $this->_getPage())) {
             return;
+        }
 
         $page->close();
 
@@ -294,8 +299,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
-                )
+                    'status' => 'success',
+                ),
             )
         );
     }
@@ -307,8 +312,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
             $upload = new FileUpload();
 
-            if ('image' == $formData['type'])
+            if ('image' == $formData['type']) {
                 $upload->addValidator(new IsImageValidator(array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')));
+            }
 
             if ($upload->isValid()) {
                 $filePath = $this->getEntityManager()
@@ -333,7 +339,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     array(
                         'result' => array(
                             'name' => $url,
-                        )
+                        ),
                     )
                 );
             }
@@ -349,8 +355,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $pages = $this->_search();
 
         foreach ($pages as $key => $page) {
-            if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject()))
+            if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
                 unset($pages[$key]);
+            }
         }
 
         $numResults = $this->getEntityManager()
@@ -398,7 +405,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'page_admin_page',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -418,7 +425,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'page_admin_page',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -434,7 +441,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'page_admin_page',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

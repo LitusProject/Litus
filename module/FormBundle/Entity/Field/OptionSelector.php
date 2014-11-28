@@ -46,8 +46,9 @@ abstract class OptionSelector extends Field
     {
         $translation = $this->getOptionTranslation($language, $allowFallback);
 
-        if (null !== $translation)
+        if (null !== $translation) {
             return $translation->getOptions();
+        }
 
         return '';
     }
@@ -61,8 +62,9 @@ abstract class OptionSelector extends Field
     {
         $translation = $this->getOptionTranslation($language, $allowFallback);
 
-        if (null !== $translation)
+        if (null !== $translation) {
             return $translation->getOptionsArray();
+        }
 
         return array();
     }
@@ -75,15 +77,18 @@ abstract class OptionSelector extends Field
     public function getOptionTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->optionTranslations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language)
+            if (null !== $language && $translation->getLanguage() == $language) {
                 return $translation;
+            }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault())
+            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
                 $fallbackTranslation = $translation;
+            }
         }
 
-        if ($allowFallback && isset($fallbackTranslation))
+        if ($allowFallback && isset($fallbackTranslation)) {
             return $fallbackTranslation;
+        }
 
         return null;
     }
@@ -95,8 +100,9 @@ abstract class OptionSelector extends Field
      */
     public function getValueString(Language $language, $value)
     {
-        if (isset($this->getOptionsArray($language)[$value]))
+        if (isset($this->getOptionsArray($language)[$value])) {
             return $this->getOptionsArray($language)[$value];
+        }
 
         return '';
     }

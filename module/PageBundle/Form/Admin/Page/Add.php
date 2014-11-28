@@ -19,18 +19,18 @@
 namespace PageBundle\Form\Admin\Page;
 
 use CommonBundle\Component\Form\Admin\Element\Select,
+    CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Element\Tabs,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
     CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
     Doctrine\ORM\EntityManager,
     PageBundle\Component\Validator\Title as TitleValidator,
     PageBundle\Entity\Category,
     PageBundle\Entity\Node\Page,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Page
@@ -124,12 +124,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->getRepository('PageBundle\Entity\Category')
             ->findAll();
 
-        if (empty($categories))
+        if (empty($categories)) {
             throw new \RuntimeException('There needs to be at least one category before you can add a page');
+        }
 
         $categoryOptions = array();
-        foreach($categories as $category)
+        foreach ($categories as $category) {
             $categoryOptions[$category->getId()] = $category->getName();
+        }
 
         asort($categoryOptions);
 
@@ -143,11 +145,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ->findByCategory($category, array('name' => 'ASC'));
 
         $pageOptions = array(
-            '' => ''
+            '' => '',
         );
         foreach ($pages as $page) {
-            if ($page->getTitle() != $exclude)
+            if ($page->getTitle() != $exclude) {
                 $pageOptions[$page->getId()] = $page->getTitle();
+            }
         }
 
         return $pageOptions;
@@ -161,12 +164,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $rolesArray = array();
         foreach ($roles as $role) {
-            if (!$role->getSystem())
+            if (!$role->getSystem()) {
                 $rolesArray[$role->getName()] = $role->getName();
+            }
         }
 
-        if (empty($rolesArray))
+        if (empty($rolesArray)) {
             throw new \RuntimeException('There needs to be at least one role before you can add a page');
+        }
 
         return $rolesArray;
     }
@@ -192,8 +197,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 )
             );
 
-            if ($language->getAbbrev() !== \Locale::getDefault())
+            if ($language->getAbbrev() !== \Locale::getDefault()) {
                 continue;
+            }
 
             $inputFilter->add(
                 $factory->createInput(

@@ -308,8 +308,9 @@ class Company
     public function getFullWebsite()
     {
         $result =  $this->getWebsite();
-        if (false === strpos($result, 'http://'))
+        if (false === strpos($result, 'http://')) {
             $result = 'http://' . $result;
+        }
 
         return $result;
     }
@@ -328,8 +329,9 @@ class Company
      */
     public function setSector($sector)
     {
-        if (!self::isValidSector($sector))
+        if (!self::isValidSector($sector)) {
             throw new \InvalidArgumentException('The sector is not valid');
+        }
 
         $this->sector = $sector;
 
@@ -423,8 +425,9 @@ class Company
      */
     public function getCvBookArchiveYears()
     {
-        if (null === $this->cvBookArchiveYears || '' == $this->cvBookArchiveYears)
+        if (null === $this->cvBookArchiveYears || '' == $this->cvBookArchiveYears) {
             return array();
+        }
 
         try {
             return unserialize($this->cvBookArchiveYears);

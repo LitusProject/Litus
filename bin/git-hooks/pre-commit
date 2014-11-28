@@ -1,0 +1,231 @@
+#!/bin/bash
+#
+# A pre-commit git hook for the Litus Project.
+#
+# The hook can be controlled using a .git-hooks file in the project root:
+# - PHP_VALID=1 # or 0, enables or disables checking of the php code is valid, enabled by default
+# - PHP_CS=1 # or 0, enables or disables php-cs-fixer, enabled by default if php-cs-fixer is available
+# - STD_WHITESPACE=1 # or 0, enables or disables git whitespace checking, enabled by default
+# - GIT_STASH=1 # or 0, enables or disables stashing all untracked changes before running the hook
+#
+# @license AGPLv3
+# @author Bram Gotink <bram.gotink@litus.cc>
+
+# Helper functions
+#
+
+log_success() {
+    echo -e "\033[1m\033[32m$@" "\033[0m"
+}
+
+log_info() {
+    echo -e "\033[1m\033[34m$@" "\033[0m"
+}
+
+log_warning() {
+    echo -e "\033[1m\033[33m$@" "\033[0m"
+}
+
+log_error() {
+    echo -e "\033[1m\033[31m$@" "\033[0m"
+}
+
+# Initialization
+#
+
+if git rev-parse --verify HEAD >/dev/null 2>&1
+then
+    against=HEAD
+else
+    # Initial commit: diff against an empty tree object
+    against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+fi
+
+# Redirect output to stderr.
+exec 1>&2
+
+# Fail on error
+set -e
+
+# Default configuration
+PHP_VALID=1
+PHP_CS=1
+STD_WHITESPACE=1
+GIT_STASH=1
+
+# Source configuration
+if [ -f ./.git-hooks ]
+then
+    source ./.git-hooks
+fi
+
+# Before running: git-stash
+#
+
+if [ $GIT_STASH -eq 1 ]
+then
+    # if there are no changes, don't stash
+    if git diff --quiet
+    then
+        log_info 'There are no unstaged changes, no need to stash'
+
+        GIT_STASH=0
+
+    # look for cases where stashing doesn't work
+
+    elif [ -f .git/MERGE_HEAD ]
+    then
+        log_warning 'This appears to be a merge commit.'
+        log_warning "Stashing doesn't work in merge commits, so note that all checks will include untracked changes!"
+
+        log_warning "If this is not a merge commit, see your local manpage for help."
+
+        GIT_STASH=0
+
+    elif [ -f .git/CHERRY_PICK_HEAD ]
+    then
+        log_warning 'This appears to be a cherry-pick commit.'
+        log_warning "Stashing doesn't work in cherry-picks, so note that all checks will include untracked changes!"
+
+        log_warning "If this is not a cherry-pick, see your local manpage for help."
+
+        GIT_STASH=0
+    fi
+fi
+
+if [ $GIT_STASH -eq 1 ]
+then
+    # make a commit of all staged changes without running the hooks!
+    git commit --quiet --no-verify --message='pre-commit hook commit --DO NOT PUSH--'
+
+    # now make the stash
+    git stash save --include-untracked --quiet 'pre-commit hook stash'
+
+    # undo the commit, but keep staged stuff staged
+    git reset --quiet --soft HEAD^
+
+    log_info 'Untracked changes have been stashed'
+fi
+
+abort=0
+
+# Check 1 (always check this): only allow ASCII filenames
+#
+
+# If you want to allow non-ASCII filenames set this variable to true.
+allownonascii=$(git config --bool hooks.allownonascii || echo '0')
+
+# Cross platform projects tend to avoid non-ASCII filenames; prevent
+# them from being added to the repository. We exploit the fact that the
+# printable range starts at the space character and ends with tilde.
+if [ "$allownonascii" != "true" ] &&
+    # Note that the use of brackets around a tr range is ok here, (it's
+    # even required, for portability to Solaris 10's /usr/bin/tr), since
+    # the square bracket bytes happen to fall in the designated range.
+    test $(git diff --cached --name-only --diff-filter=A -z $against |
+      LC_ALL=C tr -d '[ -~]\0' | wc -c) != 0
+then
+    cat <<\EOF | while read line; do log_error "$line"; done
+Error: Attempt to add a non-ASCII file name.
+
+This can cause problems if you want to work with people on other platforms.
+
+To be portable it is advisable to rename the file.
+
+If you know what you are doing you can disable this check using:
+
+  git config hooks.allownonascii true
+EOF
+    abort=1
+fi
+
+# Check 2: check php consistency before running php-cs-fixer
+#
+
+check_php() {
+    local output='';
+    local status=0;
+
+    for file in $(git diff --cached --name-only --diff-filter=ACMR $against)
+    do
+        if echo "$file" | grep -q -E '\.php$'
+        then
+            output=$(php -l "$file" 2>&1)
+            status=$?
+            if [ $status -ne 0 ]
+            then
+                echo -e -n "\r\033[K"
+                log_error "$output"
+                return $status
+            else
+                echo -e -n "\r\033[K"
+                echo -n "$output"
+            fi
+        fi
+    done
+
+    echo -e -n "\r\033[K"
+    log_success "PHP syntax checked"
+}
+
+if [ $abort -ne 1 ] && [ $PHP_VALID -eq 1 ]
+then
+    check_php || abort=1
+fi
+
+# Check 3: run php-cs-fixer
+#
+
+if [ $abort -ne 1 ] && [ $PHP_CS -eq 1 ] && [ -f vendor/litus/php-cs/Resources/git-hooks/pre-commit.sh ]
+then
+    vendor/litus/php-cs/Resources/git-hooks/pre-commit.sh || abort=1
+
+    # Check PHP validity again, to make sure php-cs-fixer hasn't broken stuff
+    if [ $abort -ne 1 ]
+    then
+        log_success "php-cs-fixer is finished"
+
+        if [ $PHP_VALID -eq 1 ]
+        then
+            if ! check_php
+            then
+                log_error "Php-cs-fixer seems to have broken code."
+                abort=1
+            fi
+        fi
+    fi
+fi
+
+# Check 4: If there are whitespace errors, print the offending file names and fail.
+#
+
+if [ $abort -ne 1 ] && [ $STD_WHITESPACE -eq 1 ]
+then
+    git diff-index --check --cached $against -- || abort=1
+
+    if [ $abort -eq 1 ]
+    then
+        log_error 'Whitespace errors found'
+    else
+        log_success 'No whitespace errors found'
+    fi
+fi
+
+# After running: unstash changes
+#
+
+if [ $GIT_STASH -eq 1 ]
+then
+    status=0
+    git stash pop --quiet || status=$?
+
+    if [ $status -eq 0 ]
+    then
+        log_info 'Stashed changes have been reapplied'
+    else
+        log_error "The stashed changes couldn\'t be re-applied, please solve the merge conflicts before continuing."
+        log_info "The untracked changes can also be found in the most recent git stash (stash@{0})"
+    fi
+fi
+
+exit $abort

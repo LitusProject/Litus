@@ -40,8 +40,9 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneById($this->getParam('id'));
 
-        if (null == $event)
+        if (null == $event) {
             throw new Exception('No valid event is given');
+        }
 
         $result = parent::onDispatch($e);
 
@@ -74,7 +75,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             'controller'     => 'common_index',
 
             'auth_route'     => 'ticket_sale_index',
-            'redirect_route' => 'ticket_sale_index'
+            'redirect_route' => 'ticket_sale_index',
         );
     }
 }

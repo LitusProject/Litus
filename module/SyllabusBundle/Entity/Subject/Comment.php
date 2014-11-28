@@ -19,11 +19,11 @@
 namespace SyllabusBundle\Entity\Subject;
 
 use CommonBundle\Entity\User\Person,
-    SyllabusBundle\Entity\Subject,
     DateTime,
-    InvalidArgumentException,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
-    Doctrine\Common\Collections\ArrayCollection;
+    InvalidArgumentException,
+    SyllabusBundle\Entity\Subject;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Subject\Comment")
@@ -97,7 +97,7 @@ class Comment
      * @var array The possible types of a comment
      */
     private static $POSSIBLE_TYPES = array(
-        'external', 'internal'
+        'external', 'internal',
     );
 
     /**
@@ -114,8 +114,9 @@ class Comment
         $this->date = new DateTime();
         $this->subject = $subject;
 
-        if (!self::isValidCommentType($type))
+        if (!self::isValidCommentType($type)) {
             throw new InvalidArgumentException('The comment type is not valid.');
+        }
         $this->type = $type;
 
         $this->replies = new ArrayCollection();

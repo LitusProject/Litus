@@ -89,8 +89,9 @@ EOT
                 + $deltaRepository->findTotalByArticleAndPeriod($article, $period)
                 - $retourRepository->findTotalByArticleAndPeriod($article, $period);
 
-            if ($number < 0)
+            if ($number < 0) {
                 $number = 0;
+            }
 
             if ($article->getStockValue() != $number) {
                 $this->writeln('Updated "' . $article->getMainArticle()->getTitle() . '": <comment>'
@@ -104,8 +105,9 @@ EOT
                 $bookings = $bookingRepository->findLastAssignedByArticle($article);
 
                 foreach ($bookings as $booking) {
-                    if ($nbToMuchAssigned <= 0)
+                    if ($nbToMuchAssigned <= 0) {
                         break;
+                    }
                     $booking->setStatus('booked', $em);
                     $nbToMuchAssigned -= $booking->getNumber();
                 }

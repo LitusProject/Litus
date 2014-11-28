@@ -85,7 +85,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 $this->redirect()->toRoute(
                     'cudi_admin_supplier',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -102,8 +102,9 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($supplier = $this->_getSupplier()))
+        if (!($supplier = $this->_getSupplier())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($supplier);
 
@@ -137,7 +138,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
                 $this->redirect()->toRoute(
                     'cudi_admin_supplier',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -166,7 +167,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_supplier',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -186,7 +187,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
             $this->redirect()->toRoute(
                 'cudi_admin_supplier',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

@@ -47,14 +47,14 @@ return array(
         'value'       => serialize(
             array(
                 '1' => array(
-                    array('start' => '19:00', 'end' => '22:00')
+                    array('start' => '19:00', 'end' => '22:00'),
                 ), // Monday
                 '2' => array(
-                    array('start' => '19:00', 'end' => '22:00')
+                    array('start' => '19:00', 'end' => '22:00'),
                 ), // Tuesday
                 '3' => null, // Wednesday
                 '4' => array(
-                    array('start' => '19:00', 'end' => '22:00')
+                    array('start' => '19:00', 'end' => '22:00'),
                 ), // Thursday
                 '5' => null, // Friday
                 '6' => null, // Saturday
@@ -83,7 +83,7 @@ It is important you always have the accompanying letter with you if you are goin
 
 VTK
 
--- This is an automatically generated email, please do not reply --'
+-- This is an automatically generated email, please do not reply --',
                 ),
                 'nl' => array(
                     'subject' => 'Nieuwe Piano Reservatie',
@@ -96,11 +96,11 @@ Het is belangrijk dat je de begeleidende brief steeds bij je hebt als je gaat sp
 
 VTK
 
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
             )
         ),
-        'description' => 'The mail sent when a new piano reservation is created'
+        'description' => 'The mail sent when a new piano reservation is created',
     ),
     array(
         'key'         => 'logistics.piano_new_reservation_confirmed',
@@ -117,7 +117,7 @@ It is important you always have the accompanying letter with you if you are goin
 
 VTK
 
--- This is an automatically generated email, please do not reply --'
+-- This is an automatically generated email, please do not reply --',
                 ),
                 'nl' => array(
                     'subject' => 'Nieuwe Piano Reservatie',
@@ -130,11 +130,11 @@ Het is belangrijk dat je de begeleidende brief steeds bij je hebt als je gaat sp
 
 VTK
 
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
             )
         ),
-        'description' => 'The mail sent when a new piano reservation is created and confirmed'
+        'description' => 'The mail sent when a new piano reservation is created and confirmed',
     ),
     array(
         'key'         => 'logistics.icalendar_uid_suffix',

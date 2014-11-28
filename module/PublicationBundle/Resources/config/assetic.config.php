@@ -59,6 +59,7 @@ return array(
             '@site_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
             '@bootstrap_js_carousel',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
@@ -71,7 +72,7 @@ return array(
     'collections' => array(
         'archive_css' => array(
             'assets' => array(
-                'archive/less/archive.less'
+                'archive/less/archive.less',
             ),
             'filters' => array('less'),
             'options' => array(

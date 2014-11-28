@@ -104,14 +104,15 @@ class InvoiceEntry
      */
     private function _setVersion($versionNmbr)
     {
-        if($versionNmbr < 0)
+        if ($versionNmbr < 0) {
             throw new \InvalidArgumentException("version number must be larger or equal to zero");
+        }
 
         $this->version = $versionNmbr;
     }
 
     /**
-     * @param  int                                   $text
+     * @param  string                                $text
      * @return \BrBundle\Entity\Invoice\InvoiceEntry
      */
     public function setInvoiceText($text)

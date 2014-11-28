@@ -21,9 +21,9 @@ namespace MailBundle\Form\Admin\Message;
 use CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Form\Admin\Element\Textarea,
     MailBundle\Document\Message,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Edit Message
@@ -63,7 +63,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
     {
         $data = array(
             'subject' => $message->getSubject(),
-            'body' => $message->getBody()
+            'body' => $message->getBody(),
         );
 
         $this->setData($data);

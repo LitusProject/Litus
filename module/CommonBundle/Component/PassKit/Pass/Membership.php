@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Component\PassKit\Pass;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Util\File\TmpFile,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Util\File\TmpFile,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -104,7 +104,7 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
             'non_member'        => 'Non-Member',
             'honorary_member'   => 'Honorary Member',
             'supportive_member' => 'Supportive Member',
-            'praesidium'        => 'Praesidium'
+            'praesidium'        => 'Praesidium',
         ));
 
         $this->addLanguage('nl', array(
@@ -115,7 +115,7 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
             'non_member'        => 'Niet-Lid',
             'honorary_member'   => 'Erelid',
             'supportive_member' => 'Steunend Lid',
-            'praesidium'        => 'Praesidium'
+            'praesidium'        => 'Praesidium',
         ));
 
         return json_encode(
@@ -139,7 +139,7 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
                         array(
                             'key'   => 'member',
                             'value' => $this->_authenticatedPerson->getFullName(),
-                        )
+                        ),
                     ),
                     'secondaryFields' => array(
                         array(

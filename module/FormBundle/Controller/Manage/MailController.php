@@ -33,8 +33,9 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($formSpecification = $this->_getForm()))
+        if (!($formSpecification = $this->_getForm())) {
             return new ViewModel();
+        }
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
@@ -61,13 +62,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getFormData($formData);
 
-                $mailAddress = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('system_mail_address');
-
-                $mailName = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('system_mail_name');
+                $mailAddress = $formSpecification->getMail()->getFrom();
 
                 $entries = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\Entry')
@@ -76,12 +71,13 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                 foreach ($entries as $entry) {
                     $mail = new Message();
                     $mail->setBody($formData['message'])
-                        ->setFrom($mailAddress, $mailName)
+                        ->setFrom($mailAddress)
                         ->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName())
                         ->setSubject($formData['subject']);
 
-                    if ('development' != getenv('APPLICATION_ENV'))
+                    if ('development' != getenv('APPLICATION_ENV')) {
                         $this->getMailTransport()->send($mail);
+                    }
                 }
 
                 return new ViewModel(
@@ -95,8 +91,9 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                 $formErrors = array();
 
                 foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()]))
+                    if (!isset($errors[$element->getName()])) {
                         continue;
+                    }
 
                     $formErrors[$element->getAttribute('id')] = array();
                     foreach ($errors[$element->getName()] as $errorKey => $error) {
@@ -108,7 +105,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                     array(
                         'status' => 'error',
                         'form' => array(
-                            'errors' => $formErrors
+                            'errors' => $formErrors,
                         ),
                     )
                 );
@@ -117,7 +114,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "error")
+                'result' => (object) array("status" => "error"),
             )
         );
     }
@@ -133,7 +130,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'form_admin_form',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -153,7 +150,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'form_admin_form',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

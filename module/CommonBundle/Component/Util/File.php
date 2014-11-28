@@ -34,14 +34,15 @@ class File
      */
     public static function getRealFilename($filename)
     {
-        if ($filename === null)
+        if ($filename === null) {
             return null;
+        }
 
         // Skip the replace, saves time
-        if (DIRECTORY_SEPARATOR === '/')
+        if (DIRECTORY_SEPARATOR === '/') {
             return $filename;
+        }
 
         return str_replace('/', DIRECTORY_SEPARATOR, $filename);
     }
-
 }

@@ -18,8 +18,8 @@
 
 namespace QuizBundle\Repository;
 
-use QuizBundle\Entity\Quiz as QuizEntity,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    QuizBundle\Entity\Quiz as QuizEntity;
 
 /**
  * Team
@@ -66,9 +66,9 @@ class Team extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if($resultSet === null)
-
+        if ($resultSet === null) {
             return 1;
+        }
 
         return $resultSet + 1;
     }

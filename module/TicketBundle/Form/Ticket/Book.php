@@ -18,14 +18,14 @@
 
 namespace TicketBundle\Form\Ticket;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Select,
+use CommonBundle\Component\Form\Bootstrap\Element\Select,
+    CommonBundle\Component\Form\Bootstrap\Element\Submit,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
     TicketBundle\Entity\Event,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Book Tickets
@@ -123,7 +123,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                         'required' => true,
                         'validators' => array(
                             new NumberTicketsValidator($this->_entityManager, $this->_event, $this->_person),
-                        )
+                        ),
                     )
                 )
             );
@@ -136,7 +136,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                             'required' => true,
                             'validators' => array(
                                 new NumberTicketsValidator($this->_entityManager, $this->_event, $this->_person),
-                            )
+                            ),
                         )
                     )
                 );
@@ -150,7 +150,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                             'required' => true,
                             'validators' => array(
                                 new NumberTicketsValidator($this->_entityManager, $this->_event, $this->_person),
-                            )
+                            ),
                         )
                     )
                 );
@@ -163,7 +163,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'required' => true,
                                 'validators' => array(
                                     new NumberTicketsValidator($this->_entityManager, $this->_event, $this->_person),
-                                )
+                                ),
                             )
                         )
                     );

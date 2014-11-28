@@ -42,8 +42,9 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         foreach ($statuses as $status) {
             $identification = $status->getPerson()->getUniversityIdentification();
-            if (!isset($result[$identification]))
+            if (!isset($result[$identification])) {
                 $result[$identification] = array();
+            }
 
             $result[$identification][] = array(
                 'academic' => $status->getPerson()->getId(),
@@ -60,8 +61,9 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         foreach ($rules as $rule) {
             $identification = $rule->getAcademic($this->getEntityManager())->getUniversityIdentification();
-            if (!isset($result[$identification]))
+            if (!isset($result[$identification])) {
                 $result[$identification] = array();
+            }
 
             $result[$identification][] = array(
                 'academic' => $rule->getAcademic($this->getEntityManager())->getId(),
@@ -74,7 +76,7 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         return new ViewModel(
             array(
-                'result' => (object) $result
+                'result' => (object) $result,
             )
         );
     }
@@ -88,8 +90,9 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (!($academic = $this->_getAcademic()))
+        if (!($academic = $this->_getAcademic())) {
             return $this->error(500, 'The person does not exist');
+        }
 
         $log = new Log($academic);
 

@@ -23,7 +23,6 @@ use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Request\RequestVacancy,
     BrBundle\Form\Corporate\Vacancy\Add as AddForm,
     BrBundle\Form\Corporate\Vacancy\Edit as EditForm,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
     DateTime,
     Zend\View\Model\ViewModel;
 
@@ -61,8 +60,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function editAction()
     {
-        if (!($oldJob = $this->_getJob()))
+        if (!($oldJob = $this->_getJob())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($oldJob);
 
@@ -84,8 +84,8 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                     $formData['city'],
                     $contact->getCompany(),
                     'vacancy',
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    self::_loadDate($formData['start_date']),
+                    self::_loadDate($formData['end_date']),
                     $formData['sector']
                 );
 
@@ -144,8 +144,8 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                     $formData['city'],
                     $contact->getCompany(),
                     'vacancy',
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['start_date']),
-                    DateTime::createFromFormat('d#m#Y H#i', $formData['end_date']),
+                    self::_loadDate($formData['start_date']),
+                    self::_loadDate($formData['end_date']),
                     $formData['sector']
                 );
 
@@ -183,8 +183,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function deleteAction()
     {
-        if (!($vacancy = $this->_getVacancy()))
+        if (!($vacancy = $this->_getVacancy())) {
             return new ViewModel();
+        }
 
         $contact = $this->getAuthentication()->getPersonObject();
 
@@ -211,7 +212,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             $this->redirect()->toRoute(
                 'br_corporate_vacancy',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -231,7 +232,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             $this->redirect()->toRoute(
                 'br_corporate_vacancy',
                 array(
-                    'action' => 'overview'
+                    'action' => 'overview',
                 )
             );
 
@@ -244,8 +245,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
     private function _getSectors()
     {
         $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector)
+        foreach (Company::$possibleSectors as $key => $sector) {
             $sectorArray[$key] = $sector;
+        }
 
         return $sectorArray;
     }
@@ -261,7 +263,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -281,7 +283,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             $this->redirect()->toRoute(
                 'br_admin_company',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -289,5 +291,14 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         }
 
         return $job;
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

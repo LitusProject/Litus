@@ -17,8 +17,9 @@
  */
 
 $result = pg_query($connection, 'SELECT id FROM acl.actions WHERE resource = \'form_view\' AND name = \'view\'');
-if (0 == pg_num_rows($result))
+if (0 == pg_num_rows($result)) {
     throw new \RuntimeException('The ACL action form_view.view does not exist');
+}
 $id = pg_fetch_row($result)[0];
 
 $result = pg_query($connection, 'SELECT * FROM acl.roles_actions_map WHERE action = \'' . $id . '\'');

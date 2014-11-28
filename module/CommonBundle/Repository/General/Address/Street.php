@@ -18,8 +18,8 @@
 
 namespace CommonBundle\Repository\General\Address;
 
-use CommonBundle\Entity\General\Address\City as CityEntity,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\Address\City as CityEntity;
 
 /**
  * Street

@@ -18,17 +18,17 @@
 
 namespace SyllabusBundle\Form\Admin\Subject\Study;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Checkbox,
+use CommonBundle\Component\Form\Admin\Element\Checkbox,
+    CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
     SyllabusBundle\Component\Validator\Subject\Study as StudyValidator,
-    SyllabusBundle\Entity\Subject,
     SyllabusBundle\Entity\StudySubjectMap,
-    Zend\InputFilter\InputFilter,
+    SyllabusBundle\Entity\Subject,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Study to Subject

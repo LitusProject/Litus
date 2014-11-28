@@ -18,13 +18,13 @@
 
 namespace FormBundle\Form\Manage\SpecifiedForm;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Collection,
-    CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
+use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
+    CommonBundle\Component\Form\Bootstrap\Element\Collection,
     CommonBundle\Component\Form\Bootstrap\Element\Hidden,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Entity\General\Language,
-    FormBundle\Entity\Node\Form,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    FormBundle\Entity\Node\Form;
 
 /**
  * Specifield Form Add
@@ -94,8 +94,9 @@ class Add extends \FormBundle\Form\SpecifiedForm\Add
         $this->add($fields);
 
         foreach ($this->getElements() as $name => $element) {
-            if ($name == 'submit' || $name == 'is_guest')
+            if ($name == 'submit' || $name == 'is_guest') {
                 continue;
+            }
 
             $this->remove($name);
             $fields->add($element);

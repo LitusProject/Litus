@@ -26,5 +26,4 @@ namespace CommonBundle\Component\Acl\Driver\Exception;
  */
 class RuntimeException extends \RuntimeException
 {
-
 }

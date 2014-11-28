@@ -61,7 +61,7 @@ abstract class Request
     private $creationTime;
 
     /**
-     * @var string The type of the request
+     * @var boolean True if the request has been handled, false if not.
      *
      * @ORM\Column(type="boolean")
      */
@@ -74,6 +74,9 @@ abstract class Request
         $this->handled = false;
     }
 
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;

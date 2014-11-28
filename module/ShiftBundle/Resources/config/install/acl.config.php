@@ -19,19 +19,19 @@
 return array(
     'shiftbundle' => array(
         'shift_admin_shift' => array(
-            'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search'
+            'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search',
         ),
         'shift_admin_shift_counter' => array(
-            'delete', 'index', 'payed', 'payout', 'search', 'units', 'view'
+            'delete', 'index', 'payed', 'payout', 'search', 'units', 'view',
         ),
         'shift_admin_shift_ranking' => array(
-            'index'
+            'index',
         ),
         'shift_admin_shift_subscription' => array(
             'manage', 'delete',
         ),
         'shift' => array(
-            'export', 'history', 'index', 'responsible', 'signOut', 'volunteer'
+            'export', 'history', 'index', 'responsible', 'signOut', 'volunteer',
         ),
     ),
 );

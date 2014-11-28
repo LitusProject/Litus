@@ -22,9 +22,9 @@ use CommonBundle\Component\Controller\Exception\RuntimeException,
     DateTime,
     FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
-    FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
     FormBundle\Entity\Field\File as FileField,
+    FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Field\Translation\Option as OptionTranslationField,
     FormBundle\Entity\Field\Translation\TimeSlot as TimeSlotTranslationField,
@@ -42,8 +42,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($formSpecification = $this->_getForm()))
+        if (!($formSpecification = $this->_getForm())) {
             return new ViewModel();
+        }
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
@@ -73,8 +74,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($formSpecification = $this->_getForm()))
+        if (!($formSpecification = $this->_getForm())) {
             return new ViewModel();
+        }
 
         if (!$formSpecification->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
@@ -170,8 +172,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     case 'timeslot':
                         $startDate = self::_loadDate($formData['timeslot_start_date']);
                         $endDate = self::_loadDate($formData['timeslot_end_date']);
-                        if (!$startDate && !$endDate)
+                        if (!$startDate && !$endDate) {
                             throw new RuntimeException('Invalid date given');
+                        }
 
                         $field = new TimeSlotField(
                             $formSpecification,
@@ -184,8 +187,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         );
 
                         foreach ($languages as $language) {
-                            if ('' == $formData['timeslot_location_' . $language->getAbbrev()] && '' == $formData['timeslot_extra_info_' . $language->getAbbrev()])
+                            if ('' == $formData['timeslot_location_' . $language->getAbbrev()] && '' == $formData['timeslot_extra_info_' . $language->getAbbrev()]) {
                                 continue;
+                            }
                             $translation = new TimeSlotTranslationField(
                                 $field,
                                 $language,
@@ -256,8 +260,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($field = $this->_getField()))
+        if (!($field = $this->_getField())) {
             return new ViewModel();
+        }
 
         if (!$field->getForm()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
@@ -334,8 +339,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         $translation = $field->getTimeSlotTranslation($language, false);
 
                         if ('' == $formData['timeslot_location_' . $language->getAbbrev()] && '' == $formData['timeslot_extra_info_' . $language->getAbbrev()]) {
-                            if (null !== $translation)
+                            if (null !== $translation) {
                                 $this->getEntityManager()->remove($translation);
+                            }
                             continue;
                         }
 
@@ -404,11 +410,11 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($field = $this->_getField()))
+        if (!($field = $this->_getField())) {
             return new ViewModel();
+        }
 
         if (!$field->getForm()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-
             $this->flashMessenger()->error(
                 'Error',
                 'You are not authorized to edit this form!'
@@ -428,8 +434,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByField($field);
 
-        foreach ($entries as $entry)
+        foreach ($entries as $entry) {
             $this->getEntityManager()->remove($entry);
+        }
 
         $this->getEntityManager()->remove($field);
         $this->getEntityManager()->flush();
@@ -445,19 +452,19 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if(!($formSpecification = $this->_getForm()))
-
+        if (!($formSpecification = $this->_getForm())) {
             return new ViewModel();
+        }
 
-        if(!$this->getRequest()->isPost())
-
+        if (!$this->getRequest()->isPost()) {
             return new ViewModel();
+        }
 
         $data = $this->getRequest()->getPost();
 
-        if(!$data['items'])
-
+        if (!$data['items']) {
             return new ViewModel();
+        }
 
         foreach ($data['items'] as $order => $id) {
             $field = $this->getEntityManager()
@@ -472,7 +479,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'result' => array(
                     'status' => 'success',
-                )
+                ),
             )
         );
     }
@@ -488,7 +495,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'form_admin_form',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -508,7 +515,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'form_admin_form',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

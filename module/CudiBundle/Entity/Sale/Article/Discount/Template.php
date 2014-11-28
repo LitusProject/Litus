@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Entity\Sale\Article\Discount;
 
-use CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\Mapping as ORM,
-    CommonBundle\Entity\General\Organization;
+use CommonBundle\Entity\General\Organization,
+    CudiBundle\Entity\Sale\Article,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Discount\Template")
@@ -148,7 +148,7 @@ class Template
      */
     public function setValue($value)
     {
-        $this->value = $value;
+        $this->value = (int) (str_replace(',', '.', $value) * 100);
 
         return $this;
     }

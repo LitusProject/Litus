@@ -59,11 +59,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function overviewAction()
     {
-        if (!($period = $this->getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod())) {
             return new ViewModel();
+        }
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $orders = $this->_search($period);
+        }
 
         if (!isset($orders)) {
             $orders = $this->getEntityManager()
@@ -92,8 +94,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function searchAction()
     {
-        if (!($period = $this->getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod())) {
             return new ViewModel();
+        }
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -129,11 +132,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function supplierAction()
     {
-        if (!($supplier = $this->_getSupplier()))
+        if (!($supplier = $this->_getSupplier())) {
             return new ViewModel();
+        }
 
-        if (!($period = $this->getActiveStockPeriod()))
+        if (!($period = $this->getActiveStockPeriod())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -158,8 +163,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($order = $this->_getOrder()))
+        if (!($order = $this->_getOrder())) {
             return new ViewModel();
+        }
 
         $suppliers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')
@@ -261,8 +267,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function editItemAction()
     {
-        if (!($item = $this->_getOrderItem()))
+        if (!($item = $this->_getOrderItem())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($item);
 
@@ -313,8 +320,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($item = $this->_getOrderItem()))
+        if (!($item = $this->_getOrderItem())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($item);
         $this->getEntityManager()->flush();
@@ -328,8 +336,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function placeAction()
     {
-        if (!($order = $this->_getOrder()))
+        if (!($order = $this->_getOrder())) {
             return new ViewModel();
+        }
 
         $order->setOrdered();
 
@@ -353,14 +362,15 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function pdfAction()
     {
-        if (!($order = $this->_getOrder()))
+        if (!($order = $this->_getOrder())) {
             return new ViewModel();
+        }
 
         $file = new TmpFile();
         $document = new OrderPdfGenerator($this->getEntityManager(), $order, $this->getParam('order'), $file);
         $document->generate();
 
-        $filename = 'order_' . $order->getDateOrdered()->format('Y_m_d') . '.pdf';
+        $filename = 'order ' . $order->getDateOrdered()->format('Ymd') . '.pdf';
 
         $headers = new Headers();
         $headers->addHeaders(array(
@@ -378,8 +388,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function exportAction()
     {
-        if (!($order = $this->_getOrder()))
+        if (!($order = $this->_getOrder())) {
             return new ViewModel();
+        }
 
         $order->setDeliveryDate(\DateTime::createFromFormat('d-m-Y', $this->getParam('date')));
         $this->getEntityManager()->flush();
@@ -406,8 +417,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function cancelAction()
     {
-        if (!($order = $this->_getOrder()))
+        if (!($order = $this->_getOrder())) {
             return new ViewModel();
+        }
 
         $order->setCanceled();
 
@@ -448,7 +460,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_stock_order',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -468,7 +480,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_stock_order',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -489,7 +501,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_stock_order',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -509,7 +521,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_stock_order',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -533,7 +545,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_stock_order',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -553,7 +565,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_stock_order',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

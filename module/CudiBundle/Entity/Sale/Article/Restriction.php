@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Entity\Sale\Article;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\User\Person,
+use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;

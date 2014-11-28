@@ -55,8 +55,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
      */
     public function __construct(
         EntityManager $entityManager, $entityName, $expire, StorageInterface $storage, $namespace, $cookieSuffix, Action $action
-    )
-    {
+    ) {
         parent::__construct($storage, $namespace, $cookieSuffix, $expire, $action);
 
         $this->_entityManager = $entityManager;
@@ -81,8 +80,9 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     public function authenticate(DoctrineAdapter $adapter = null, $rememberMe = false, $shibboleth = false)
     {
         $result = null;
-        if (null == $this->_request)
+        if (null == $this->_request) {
             return;
+        }
 
         $server = $this->_request->getServer();
 
@@ -111,12 +111,14 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
 
                 $result = $adapterResult;
 
-                if (isset($this->_action))
+                if (isset($this->_action)) {
                     $this->_action->succeededAction($result);
+                }
             } else {
                 $result = $adapterResult;
-                if (isset($this->_action))
+                if (isset($this->_action)) {
                     $this->_action->failedAction($adapterResult);
+                }
             }
         } else {
             $session = $this->_entityManager->getRepository($this->_entityName)->findOneById(
@@ -145,7 +147,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
                         Result::SUCCESS,
                         $session->getPerson()->getUsername(),
                         array(
-                             'Authentication successful'
+                             'Authentication successful',
                         ),
                         $session->getPerson(),
                         $session
@@ -178,8 +180,9 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
      */
     public function clearIdentity()
     {
-        if (!$this->hasIdentity())
+        if (!$this->hasIdentity()) {
             return;
+        }
 
         $session = $this->_entityManager->getRepository($this->_entityName)->findOneById(
             $this->getIdentity()
@@ -204,8 +207,9 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     public function hasIdentity()
     {
         if ($this->getStorage()->isEmpty() || $this->getStorage()->read() == '') {
-            if ($this->_hasCookie())
+            if ($this->_hasCookie()) {
                 $this->getStorage()->write($this->_getCookie());
+            }
         }
 
         return !$this->getStorage()->isEmpty();

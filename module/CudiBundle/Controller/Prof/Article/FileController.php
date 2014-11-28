@@ -36,8 +36,9 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $mappings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\File\Mapping')
@@ -49,8 +50,9 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndEntityIdAndAction('file', $mapping->getId(), 'remove');
 
-            if (!isset($actions[0]))
+            if (!isset($actions[0])) {
                 $fileMappings[] = $mapping;
+            }
         }
 
         $form = new AddForm();
@@ -81,8 +83,9 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
 
-        if (!($mapping = $this->_getFileMapping()))
+        if (!($mapping = $this->_getFileMapping())) {
             return new ViewModel();
+        }
 
         $file = $mapping->getFile();
 
@@ -107,8 +110,9 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
     public function uploadAction()
     {
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $form = new AddForm();
         $formData = $this->getRequest()->getPost();
@@ -116,8 +120,9 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
         $upload = new FileUpload();
         $inputFilter = $form->getInputFilter()->get('file');
-        if ($inputFilter instanceof InputInterface)
+        if ($inputFilter instanceof InputInterface) {
             $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+        }
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
@@ -166,7 +171,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                             'description' => $file->getDescription(),
                             'id' => $file->getId(),
                             'mappingId' => $mapping->getId(),
-                        )
+                        ),
                     ),
                 )
             );
@@ -175,8 +180,9 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             $formErrors = array();
 
             foreach ($form->getElements() as $key => $element) {
-                if (!isset($errors[$element->getName()]))
+                if (!isset($errors[$element->getName()])) {
                     continue;
+                }
 
                 $formErrors[$element->getAttribute('id')] = array();
 
@@ -185,14 +191,15 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                 }
             }
 
-            if (sizeof($upload->getMessages()) > 0)
+            if (sizeof($upload->getMessages()) > 0) {
                 $formErrors['file'] = $upload->getMessages();
+            }
 
             return new ViewModel(
                 array(
                     'status' => 'error',
                     'form' => array(
-                        'errors' => $formErrors
+                        'errors' => $formErrors,
                     ),
                 )
             );
@@ -203,15 +210,17 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getFileMapping()))
+        if (!($mapping = $this->_getFileMapping())) {
             return new ViewModel();
+        }
 
         if ($mapping->isProf()) {
             $actions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
                 ->findAllByEntityAndEntityIdAndAction('file', $mapping->getId(), 'add');
-            foreach ($actions as $action)
+            foreach ($actions as $action) {
                 $this->getEntityManager()->remove($action);
+            }
 
             $this->getEntityManager()->remove($mapping);
         } else {

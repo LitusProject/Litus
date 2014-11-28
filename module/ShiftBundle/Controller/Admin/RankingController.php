@@ -44,6 +44,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
         );
 
         $ranking = array();
+
         for ($i = 0; isset($rankingCriteria[$i]); $i++) {
             if ($i != (count($rankingCriteria) - 1)) {
                 $volunteers = $this->getEntityManager()
@@ -63,7 +64,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
                 if (!$person->isPraesidium($academicYear)) {
                     $ranking[$rankingCriteria[$i]['name']][] = array(
                         'person' => $person,
-                        'shiftCount' => $volunteer['shiftCount']
+                        'shiftCount' => $volunteer['shiftCount'],
                     );
                 }
             }
@@ -73,7 +74,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'activeAcademicYear' => $academicYear,
                 'academicYears' => $academicYears,
-                'ranking' => $ranking
+                'ranking' => $ranking,
             )
         );
     }
@@ -81,8 +82,9 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
     private function _getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear'))
+        if (null !== $this->getParam('academicyear')) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
@@ -94,7 +96,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'shift_admin_shift_counter',
                 array(
-                    'action' => 'index'
+                    'action' => 'index',
                 )
             );
 

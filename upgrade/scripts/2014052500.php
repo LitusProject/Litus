@@ -19,16 +19,18 @@
 pg_query($connection, 'INSERT INTO acl.resources VALUES (\'secretary_admin_export\', \'secretarybundle\')');
 
 $result = pg_query($connection, 'SELECT id FROM acl.actions WHERE resource = \'secretary_admin_registration\' AND name = \'export\'');
-if (0 == pg_num_rows($result))
+if (0 == pg_num_rows($result)) {
     throw new \RuntimeException('The ACL action secretary_admin_registration.export does not exist');
+}
 
 $id = pg_fetch_row($result)[0];
 
 pg_query($connection, 'UPDATE acl.actions SET resource = \'secretary_admin_export\' WHERE id = \'' . $id . '\'');
 
 $result = pg_query($connection, 'SELECT id FROM acl.actions WHERE resource = \'secretary_admin_registration\' AND name = \'download\'');
-if (0 == pg_num_rows($result))
+if (0 == pg_num_rows($result)) {
     throw new \RuntimeException('The ACL action secretary_admin_registration.download does not exist');
+}
 
 $id = pg_fetch_row($result)[0];
 

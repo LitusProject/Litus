@@ -4,7 +4,7 @@
 
     $(document).ready(function () {
         $('body').append(
-            helpButton = $('<div>', {'id': 'toggleHelpButton'}).append(
+            helpButton = $('<div>', {'id': 'helpButtonWrapper'}).append(
                 $('<div>').html('Help').css({
                     'float': 'right',
                     'margin-right': '5px',
@@ -15,8 +15,8 @@
                     'border': '1px solid #000',
                     'border-top': 'none',
                     'z-index': 1000
-                })
-            ).hide().click(toggleHelp)
+                }).click(toggleHelp)
+            ).hide()
         );
 
         helpButton.toggle($('[data-help]:visible').length > 0);

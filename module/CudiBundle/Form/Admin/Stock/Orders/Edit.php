@@ -21,8 +21,8 @@ namespace CudiBundle\Form\Admin\Stock\Orders;
 use CommonBundle\Component\Form\Admin\Element\Text,
     CudiBundle\Entity\Stock\Order\Item,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Edit Order

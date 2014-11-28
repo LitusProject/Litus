@@ -19,17 +19,17 @@
 namespace CudiBundle\Form\Admin\Sales\Article\Restrictions;
 
 use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Hidden,
+    CommonBundle\Component\Form\Admin\Element\Select,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Util\AcademicYear,
     CudiBundle\Component\Validator\Sales\Article\Restrictions\Exists as RestrictionValidator,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\Article\Restriction,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Restriction
@@ -104,20 +104,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function _getStudies()
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
+        $academicYear = AcademicYear::getOrganizationYear($this->_entityManager);
 
         $studies = $this->_entityManager
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findAllParentsByAcademicYear($academicYear);
 
         $options = array();
-        foreach($studies as $study)
+        foreach ($studies as $study) {
             $options[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
+        }
 
         return $options;
     }

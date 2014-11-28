@@ -19,9 +19,9 @@
 namespace SyllabusBundle\Form\Admin\Subject\Reply;
 
 use CommonBundle\Component\Form\Admin\Element\Textarea,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Reply

@@ -22,9 +22,9 @@ use DateTime,
     MailBundle\Form\Admin\Cudi\Mail as MailForm,
     Markdown_Parser,
     Zend\Mail\Message,
-    Zend\Mime\Part,
-    Zend\Mime\Mime,
     Zend\Mime\Message as MimeMessage,
+    Zend\Mime\Mime,
+    Zend\Mime\Part,
     Zend\View\Model\ViewModel;
 
 /**
@@ -86,8 +86,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 $this->getEntityManager()->flush();
 
                 foreach ($statuses as $status) {
-                    if ('' == $status->getPerson()->getEmail())
+                    if ('' == $status->getPerson()->getEmail()) {
                         continue;
+                    }
 
                     $allSubjects = $this->getEntityManager()
                         ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
@@ -100,13 +101,15 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         }
                     }
 
-                    if (empty($subjects))
+                    if (empty($subjects)) {
                         continue;
+                    }
 
                     $text = '';
                     for ($i = 0; isset($subjects[$i]); $i++) {
-                        if ($i != 0)
-                             $text .= PHP_EOL;
+                        if ($i != 0) {
+                            $text .= PHP_EOL;
+                        }
 
                         $text .= '    [' . $subjects[$i]->getCode() . '] - ' . $subjects[$i]->getName();
                     }
@@ -151,11 +154,13 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         );
                     }
 
-                    if ('development' != getenv('APPLICATION_ENV'))
+                    if ('development' != getenv('APPLICATION_ENV')) {
                         $this->getMailTransport()->send($mail);
+                    }
 
-                    if ($formData['test_it'])
+                    if ($formData['test_it']) {
                         break;
+                    }
                 }
 
                 $this->flashMessenger()->success(
@@ -166,7 +171,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'mail_admin_prof',
                     array(
-                        'action' => 'cudi'
+                        'action' => 'cudi',
                     )
                 );
 

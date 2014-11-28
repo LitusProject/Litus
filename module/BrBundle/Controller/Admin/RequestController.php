@@ -47,8 +47,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
-        if (!($request = $this->_getRequest()))
+        if (!($request = $this->_getRequest())) {
             return new ViewModel();
+        }
 
         switch ($request->getJob()->getType()) {
             case 'internship':
@@ -56,7 +57,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
                     'br_career_internship',
                     array(
                         'action' => 'view',
-                        'id' => $request->getJob()->getId()
+                        'id' => $request->getJob()->getId(),
                     )
                 );
                 break;
@@ -66,7 +67,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
                     'br_career_vacancy',
                     array(
                         'action' => 'view',
-                        'id' => $request->getJob()->getId()
+                        'id' => $request->getJob()->getId(),
                     )
                 );
                 break;
@@ -77,8 +78,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewEditAction()
     {
-        if (!($request = $this->_getRequest()))
+        if (!($request = $this->_getRequest())) {
             return new ViewModel();
+        }
 
         switch ($request->getJob()->getType()) {
             case 'internship':
@@ -86,7 +88,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
                     'br_career_internship',
                     array(
                         'action' => 'view',
-                        'id' => $request->getEditJob()->getId()
+                        'id' => $request->getEditJob()->getId(),
                     )
                 );
                 break;
@@ -96,7 +98,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
                     'br_career_vacancy',
                     array(
                         'action' => 'view',
-                        'id' => $request->getEditJob()->getId()
+                        'id' => $request->getEditJob()->getId(),
                     )
                 );
                 break;
@@ -107,8 +109,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function approveAction()
     {
-        if (!($request = $this->_getRequest()))
+        if (!($request = $this->_getRequest())) {
             return new ViewModel();
+        }
 
         $request->approveRequest();
         $request->handled();
@@ -123,7 +126,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         $this->redirect()->toRoute(
             'br_admin_request',
             array(
-                'action' => 'manage'
+                'action' => 'manage',
             )
         );
 
@@ -132,8 +135,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function rejectAction()
     {
-        if (!($request = $this->_getRequest()))
+        if (!($request = $this->_getRequest())) {
             return new ViewModel();
+        }
 
         $request->rejectRequest();
         $request->handled();
@@ -148,7 +152,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         $this->redirect()->toRoute(
             'br_admin_request',
             array(
-                'action' => 'manage'
+                'action' => 'manage',
             )
         );
 
@@ -166,7 +170,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'br_admin_request',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -186,7 +190,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'br_admin_request',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -199,8 +203,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
     private function _getSectors()
     {
         $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector)
+        foreach (Company::$possibleSectors as $key => $sector) {
             $sectorArray[$key] = $sector;
+        }
 
         return $sectorArray;
     }

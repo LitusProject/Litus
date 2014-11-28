@@ -37,8 +37,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $saleArticle = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -78,8 +79,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($article = $this->_getArticle()))
+        if (!($article = $this->_getArticle())) {
             return new ViewModel();
+        }
 
         $form = new AddForm();
         $formData = $this->getRequest()->getPost();
@@ -87,8 +89,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
         $upload = new FileUpload();
         $inputFilter = $form->getInputFilter()->get('file');
-        if ($inputFilter instanceof InputInterface)
+        if ($inputFilter instanceof InputInterface) {
             $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+        }
 
         if ($form->isValid() && $upload->isValid()) {
             $formData = $form->getFormData($formData);
@@ -140,8 +143,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $formErrors = array();
 
             foreach ($form->getElements() as $key => $element) {
-                if (!isset($errors[$element->getName()]))
+                if (!isset($errors[$element->getName()])) {
                     continue;
+                }
 
                 $formErrors[$element->getAttribute('id')] = array();
 
@@ -150,8 +154,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                 }
             }
 
-            if (sizeof($upload->getMessages()) > 0)
+            if (sizeof($upload->getMessages()) > 0) {
                 $formErrors['file'] = $upload->getMessages();
+            }
 
             return new ViewModel(
                 array(
@@ -166,8 +171,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($mapping = $this->_getFileMapping()))
+        if (!($mapping = $this->_getFileMapping())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($mapping);
 
@@ -213,8 +219,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getFileMapping()))
+        if (!($mapping = $this->_getFileMapping())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($mapping);
         $this->getEntityManager()->flush();
@@ -232,8 +239,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
 
-        if (!($mapping = $this->_getFileMapping()))
+        if (!($mapping = $this->_getFileMapping())) {
             return new ViewModel();
+        }
 
         $file = $mapping->getFile();
 
@@ -258,8 +266,9 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function frontAction()
     {
-        if (!($article = $this->_getSaleArticle()))
+        if (!($article = $this->_getSaleArticle())) {
             return new ViewModel();
+        }
 
         $file = new TmpFile();
         $document = new FrontGenerator($this->getEntityManager(), $article, $file);
@@ -290,7 +299,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -310,7 +319,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -331,7 +340,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -351,7 +360,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -375,7 +384,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -395,7 +404,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'cudi_admin_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

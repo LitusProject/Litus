@@ -25,8 +25,8 @@ use CalendarBundle\Entity\Node\Event,
     CalendarBundle\Form\Admin\Event\Poster as PosterForm,
     DateTime,
     Imagick,
-    Zend\Http\Headers,
     Zend\File\Transfer\Adapter\Http as FileTransfer,
+    Zend\Http\Headers,
     Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
@@ -119,7 +119,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'calendar_admin_calendar',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -136,8 +136,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $event);
 
@@ -193,7 +194,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'calendar_admin_calendar',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -213,8 +214,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($event);
         $this->getEntityManager()->flush();
@@ -222,7 +224,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -230,8 +232,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editPosterAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $form = new PosterForm();
         $form->setAttribute(
@@ -255,8 +258,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function uploadAction()
     {
-        if (!($event = $this->_getEvent()))
+        if (!($event = $this->_getEvent())) {
             return new ViewModel();
+        }
 
         $form = new PosterForm();
 
@@ -267,8 +271,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
             $upload = new FileTransfer();
             $inputFilter = $form->getInputFilter()->get('poster');
-            if ($inputFilter instanceof InputInterface)
+            if ($inputFilter instanceof InputInterface) {
                 $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+            }
 
             if ($upload->isValid()) {
                 $upload->receive();
@@ -300,21 +305,22 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                         'info' => array(
                             'info' => array(
                                 'name' => $fileName,
-                            )
-                        )
+                            ),
+                        ),
                     )
                 );
             } else {
                 $formErrors = array();
 
-                if (sizeof($upload->getMessages()) > 0)
+                if (sizeof($upload->getMessages()) > 0) {
                     $formErrors['poster'] = $upload->getMessages();
+                }
 
                 return new ViewModel(
                     array(
                         'status' => 'error',
                         'form' => array(
-                            'errors' => $formErrors
+                            'errors' => $formErrors,
                         ),
                     )
                 );
@@ -330,8 +336,9 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function posterAction()
     {
-        if (!($event = $this->_getEventByPoster()))
+        if (!($event = $this->_getEventByPoster())) {
             return new ViewModel();
+        }
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -368,7 +375,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'calendar_admin_calendar',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -388,7 +395,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'calendar_admin_calendar',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -412,7 +419,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'calendar_admin_calendar',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -432,7 +439,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $this->redirect()->toRoute(
                 'calendar_admin_calendar',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

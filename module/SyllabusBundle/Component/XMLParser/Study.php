@@ -21,13 +21,12 @@ namespace SyllabusBundle\Component\XMLParser;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
-    DateTime,
     Doctrine\ORM\EntityManager,
     SyllabusBundle\Entity\AcademicYearMap,
     SyllabusBundle\Entity\Study as StudyEntity,
+    SyllabusBundle\Entity\StudySubjectMap,
     SyllabusBundle\Entity\Subject as SubjectEntity,
     SyllabusBundle\Entity\SubjectProfMap,
-    SyllabusBundle\Entity\StudySubjectMap,
     Zend\Http\Client as HttpClient,
     Zend\Mail\Transport\TransportInterface;
 
@@ -79,8 +78,9 @@ class Study
         $this->_mailTransport = $mailTransport;
         $this->_callback = $callback;
 
-        if ($this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')->getConfigValue('syllabus.enable_update') != '1')
+        if ($this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')->getConfigValue('syllabus.enable_update') != '1') {
             return;
+        }
 
         $this->_academicYear = $this->_getAcademicYear();
         $urls = $this->_getUrls();
@@ -213,12 +213,14 @@ class Study
     private function _createSubjects($data, $studies)
     {
         $this->_callback('create_subjects');
-        if (!isset($data->modulegroep))
+        if (!isset($data->modulegroep)) {
             return;
+        }
 
         foreach ($data->modulegroep as $subjects) {
-            if ($subjects->tonen_in_programmagids != 'True')
+            if ($subjects->tonen_in_programmagids != 'True') {
                 continue;
+            }
 
             if ($subjects->toegestane_combinaties->children()->count() > 0) {
                 $activeStudies = array();
@@ -261,8 +263,9 @@ class Study
                         $subject->setName(html_entity_decode(trim((string) $subjectData->titel)));
                     }
 
-                    if (!isset($this->_subjects[$code]))
+                    if (!isset($this->_subjects[$code])) {
                         $this->_createProf($subject, $subjectData->docenten->children());
+                    }
 
                     $this->_subjects[$code] = $subject;
 
@@ -284,8 +287,9 @@ class Study
                 }
             }
 
-            if ($subjects->modulegroep->count() > 0)
+            if ($subjects->modulegroep->count() > 0) {
                 $this->_createSubjects($subjects, $activeStudies);
+            }
         }
     }
 
@@ -313,7 +317,7 @@ class Study
                         array(
                             $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\Acl\Role')
-                                ->findOneByName('prof')
+                                ->findOneByName('prof'),
                         ),
                         trim($profData->voornaam),
                         trim($profData->familienaam),
@@ -326,8 +330,9 @@ class Study
                     $prof->activate($this->getEntityManager(), $this->_mailTransport, true);
 
                     $image = $this->_getProfImage($identification, $info['photo']);
-                    if ($image)
+                    if ($image) {
                         $prof->setPhotoPath($image);
+                    }
 
                     $this->getEntityManager()->persist($prof);
                     $this->_profs[$identification] = $prof;
@@ -366,22 +371,25 @@ class Study
             ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
             ->findByAcademicYear($this->_academicYear);
 
-        foreach($mapping as $map)
+        foreach ($mapping as $map) {
             $this->getEntityManager()->remove($map);
+        }
 
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
             ->findByAcademicYear($this->_academicYear);
 
-        foreach($mapping as $map)
+        foreach ($mapping as $map) {
             $this->getEntityManager()->remove($map);
+        }
 
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findByAcademicYear($this->_academicYear);
 
-        foreach($mapping as $map)
+        foreach ($mapping as $map) {
             $this->getEntityManager()->remove($map);
+        }
 
         $this->getEntityManager()->flush();
     }
@@ -403,16 +411,18 @@ class Study
             ->send();
 
         preg_match('/<noscript>([a-zA-Z0-9\[\]\s\-]*)<\/noscript>/', $response->getBody(), $matches);
-        if (count($matches) > 1)
+        if (count($matches) > 1) {
             $returnArray['email'] = str_replace(array(' [dot] ', ' [at] '), array('.', '@'), $matches[1]);
-        else
+        } else {
             $returnArray['email'] = null;
+        }
 
         preg_match('/tel\s\.([0-9\+\s]*)/', $response->getBody(), $matches);
-        if (count($matches) > 1)
+        if (count($matches) > 1) {
             $returnArray['phone'] = trim(str_replace(' ', '', $matches[1]));
-        else
+        } else {
             $returnArray['phone'] = null;
+        }
 
         return $returnArray;
     }
@@ -427,7 +437,7 @@ class Study
         $headers = get_headers($url);
         if ($headers[0] != 'HTTP/1.1 404 Not Found' && $headers[0] != 'HTTP/1.1 302 Moved Temporarily') {
             file_put_contents('/tmp/' . $identification, file_get_contents($url));
-            $finfo = new \finfo;
+            $finfo = new \finfo();
             $fileinfo = $finfo->file('/tmp/' . $identification, FILEINFO_MIME);
             $mimetype = substr($fileinfo, 0, strpos($fileinfo, ';'));
 
@@ -513,11 +523,11 @@ class Study
             $url = str_replace(
                 array(
                     '{{ language }}',
-                    '{{ id }}'
+                    '{{ id }}',
                 ),
                 array(
                     $study['language'],
-                    $study['id']
+                    $study['id'],
                 ),
                 $departmentUrl
             );
@@ -528,7 +538,7 @@ class Study
                 $urls[] = str_replace(
                     array(
                         '{{ language }}',
-                        '{{ id }}'
+                        '{{ id }}',
                     ),
                     array(
                         strtolower((string) $study->taal->code),

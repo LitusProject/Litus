@@ -22,9 +22,9 @@ use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\EntityManager,
     FormBundle\Entity\Entry as FieldEntry,
+    FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Entity\Node\Form as FormEntity,
     FormBundle\Entity\Node\GuestInfo,
-    FormBundle\Entity\Node\Entry as FormEntry,
     Zend\Http\PhpEnvironment\Request,
     Zend\Mail\Message,
     Zend\Mail\Transport\TransportInterface as MailTransport,
@@ -66,8 +66,9 @@ class Doodle
                 $formEntry->addFieldEntry($fieldEntry);
                 $entityManager->persist($fieldEntry);
 
-                if (!$formSpecification->isMultiple())
+                if (!$formSpecification->isMultiple()) {
                     break;
+                }
             }
         }
 
@@ -79,7 +80,7 @@ class Doodle
                 array(
                     'action' => 'login',
                     'id' => $formSpecification->getId(),
-                    'key' => $formEntry->getGuestInfo() ? $formEntry->getGuestInfo()->getSessionId() : ''
+                    'key' => $formEntry->getGuestInfo() ? $formEntry->getGuestInfo()->getSessionId() : '',
                 )
             );
             $mailAddress = $formSpecification->getMail()->getFrom();
@@ -90,11 +91,13 @@ class Doodle
                 ->setSubject($formSpecification->getMail()->getSubject())
                 ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());
 
-            if ($formSpecification->getMail()->getBcc())
+            if ($formSpecification->getMail()->getBcc()) {
                 $mail->addBcc($mailAddress);
+            }
 
-            if ('development' != getenv('APPLICATION_ENV'))
+            if ('development' != getenv('APPLICATION_ENV')) {
                 $mailTransport->send($mail);
+            }
         }
     }
 }

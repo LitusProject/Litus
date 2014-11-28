@@ -36,8 +36,9 @@ class Utf8
      */
     public static function utf8ToHtml($utf8, $encodeTags = false)
     {
-        if ($utf8 === null)
+        if ($utf8 === null) {
             return null;
+        }
 
         if (!is_string($utf8)) {
             throw new Exception\InvalidArgumentException(
@@ -66,7 +67,7 @@ class Utf8
                 $ascii1 = ord($utf8[$i+1]);
                 $ascii2 = ord($utf8[$i+2]);
                 $unicode = (15 & $ascii) * 4096 + (63 & $ascii1) * 64 + (63 & $ascii2);
-                $result .= '&#x' . dechex($unicode) .';';
+                $result .= '&#x' . dechex($unicode) . ';';
                 $i += 2;
             } elseif ($ascii < 248) {
                 // Four-byte character

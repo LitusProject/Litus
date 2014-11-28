@@ -61,9 +61,9 @@ class Credential extends \CommonBundle\Component\Authentication\Adapter\Doctrine
                 array(
                     'code' => Result::FAILURE_CREDENTIAL_INVALID,
                     'messages' => array(
-                        'The supplied credential is invalid'
+                        'The supplied credential is invalid',
                     ),
-                    'personObject' => $this->getPersonObject()
+                    'personObject' => $this->getPersonObject(),
                 )
             );
         } elseif (!$this->getPersonObject()->canLogin() || $this->getPersonObject()->getCode() !== null) {
@@ -71,9 +71,9 @@ class Credential extends \CommonBundle\Component\Authentication\Adapter\Doctrine
                 array(
                     'code' => Result::FAILURE,
                     'messages' => array(
-                        'The given identity cannot login'
+                        'The given identity cannot login',
                     ),
-                    'personObject' => $this->getPersonObject()
+                    'personObject' => $this->getPersonObject(),
                 )
             );
         } else {
@@ -88,9 +88,9 @@ class Credential extends \CommonBundle\Component\Authentication\Adapter\Doctrine
                     'code' => Result::SUCCESS,
                     'identity' => $this->getIdentity(),
                     'message' => array(
-                        'Authentication successful'
+                        'Authentication successful',
                     ),
-                    'personObject' => $this->getPersonObject()
+                    'personObject' => $this->getPersonObject(),
                 )
             );
         }

@@ -58,8 +58,9 @@ class Url extends \Zend\Mvc\Controller\Plugin\Url
      */
     public function fromRoute($route = null, $params = array(), $options = array(), $reuseMatchedParams = false)
     {
-        if (!isset($params['language']) && $this->_language)
+        if (!isset($params['language']) && $this->_language) {
             $params['language'] = $this->_language->getAbbrev();
+        }
 
         return parent::fromRoute($route, $params, $options, $reuseMatchedParams);
     }

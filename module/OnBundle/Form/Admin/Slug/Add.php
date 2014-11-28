@@ -21,9 +21,9 @@ namespace OnBundle\Form\Admin\Slug;
 use CommonBundle\Component\Form\Admin\Element\Text,
     Doctrine\ODM\MongoDB\DocumentManager,
     OnBundle\Component\Validator\Name as NameValidator,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Slug

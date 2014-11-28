@@ -22,10 +22,10 @@ return array(
             'add', 'delete', 'edit', 'manage',
         ),
         'publication_admin_edition_html' => array(
-            'add', 'delete', 'manage', 'upload'
+            'add', 'delete', 'manage', 'upload',
         ),
         'publication_admin_edition_pdf' => array(
-            'add', 'delete', 'manage', 'upload', 'view'
+            'add', 'delete', 'manage', 'upload', 'view',
         ),
         'publication_edition_html' => array(
             'view',
@@ -33,5 +33,5 @@ return array(
         'publication_archive' => array(
             'overview', 'view', 'year',
         ),
-    )
+    ),
 );

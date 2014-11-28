@@ -226,8 +226,9 @@ abstract class Article
     {
         $title = trim($title);
 
-        if (strlen($title) == 0)
+        if (strlen($title) == 0) {
             throw new InvalidArgumentException('The article title is not valid.');
+        }
 
         $this->title = $title;
 
@@ -289,8 +290,9 @@ abstract class Article
      */
     public function setYearPublished($yearPublished)
     {
-        if (empty($yearPublished))
+        if (empty($yearPublished)) {
             $yearPublished = null;
+        }
         $this->yearPublished = $yearPublished;
 
         return $this;
@@ -351,10 +353,11 @@ abstract class Article
      */
     public function setISBN($isbn)
     {
-        if (strlen($isbn) == 0)
+        if (strlen($isbn) == 0) {
             $this->isbn = null;
-        else
+        } else {
             $this->isbn = $isbn;
+        }
 
         return $this;
     }
@@ -398,8 +401,9 @@ abstract class Article
 
         $saleArticle = $this->getSaleArticle();
 
-        if ($saleArticle instanceof SaleArticle && $isHistory == true)
+        if ($saleArticle instanceof SaleArticle && $isHistory == true) {
             $saleArticle->setIsHistory(true);
+        }
 
         return $this;
     }
@@ -431,8 +435,9 @@ abstract class Article
      */
     public function setIsDraft($isDraft)
     {
-        if ($isDraft)
+        if ($isDraft) {
             $this->setIsProf(true);
+        }
 
         $this->isDraft = $isDraft;
 
@@ -502,8 +507,9 @@ abstract class Article
      */
     public function setType($type)
     {
-        if (!self::isValidArticleType($type))
+        if (!self::isValidArticleType($type)) {
             throw new \InvalidArgumentException('The article type is not valid.');
+        }
         $this->type = $type;
 
         return $this;
@@ -514,8 +520,9 @@ abstract class Article
      */
     public function getSaleArticle()
     {
-        if (null == $this->_entityManager)
+        if (null == $this->_entityManager) {
             return null;
+        }
 
         return $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')

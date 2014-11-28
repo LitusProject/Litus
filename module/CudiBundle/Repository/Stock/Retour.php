@@ -18,10 +18,10 @@
 
 namespace CudiBundle\Repository\Stock;
 
-use CudiBundle\Entity\Sale\Article,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Stock\Period as PeriodEntity,
-    CudiBundle\Entity\Supplier,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    CudiBundle\Entity\Supplier;
 
 /**
  * Retour
@@ -48,8 +48,9 @@ class Retour extends EntityRepository
             ->setParameter('startDate', $period->getStartDate())
             ->orderBy('r.timestamp', 'DESC');
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery();
 
@@ -71,8 +72,9 @@ class Retour extends EntityRepository
             ->setParameter('article', $article)
             ->setParameter('startDate', $period->getStartDate());
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery()
             ->getSingleScalarResult();
@@ -94,8 +96,9 @@ class Retour extends EntityRepository
             ->setParameter('startDate', $period->getStartDate())
             ->orderBy('r.timestamp', 'DESC');
 
-        if (!$period->isOpen())
+        if (!$period->isOpen()) {
             $query->setParameter('endDate', $period->getEndDate());
+        }
 
         $resultSet = $query->getQuery();
 

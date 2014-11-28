@@ -46,7 +46,7 @@ class Activity extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The activity has already a ticket system'
+        self::NOT_VALID => 'The activity has already a ticket system',
     );
 
     /**
@@ -63,7 +63,6 @@ class Activity extends \Zend\Validator\AbstractValidator
         $this->_entityManager = $entityManager;
         $this->_event = $event;
     }
-
 
     /**
      * Returns true if these does not exceed max
@@ -84,8 +83,13 @@ class Activity extends \Zend\Validator\AbstractValidator
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneByActivity($activity);
 
-        if (null === $event || $event->getId() == $this->_event->getId())
+        if (null === $event) {
             return true;
+        }
+
+        if ($event->getId() == $this->_event->getId()) {
+            return true;
+        }
 
         $this->error(self::NOT_VALID);
 

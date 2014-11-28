@@ -18,10 +18,10 @@
 
 namespace CudiBundle\Command;
 
-use DateTime,
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    CommonBundle\Entity\General\AcademicYear,
     DateInterval,
-    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear;
+    DateTime;
 
 /**
  * Updates catalog
@@ -85,7 +85,7 @@ EOT
                             'unbookable' => array(),
                             'added' => array(),
                             'removed' => array(),
-                        )
+                        ),
                     );
                 }
 
@@ -115,7 +115,7 @@ EOT
                             'unbookable' => array(),
                             'added' => array(),
                             'removed' => array(),
-                        )
+                        ),
                     );
                 }
 
@@ -131,7 +131,7 @@ EOT
         $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Added articles.');
 
         foreach ($logs as $log) {
-            $subjectMap= $log->getSubjectMap($this->getEntityManager());
+            $subjectMap = $log->getSubjectMap($this->getEntityManager());
 
             if (!isset($subjects[$subjectMap->getSubject()->getId()])) {
                 $subjects[$subjectMap->getSubject()->getId()] = array(
@@ -141,7 +141,7 @@ EOT
                         'unbookable' => array(),
                         'added' => array(),
                         'removed' => array(),
-                    )
+                    ),
                 );
             }
 
@@ -156,7 +156,7 @@ EOT
         $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Removed articles.');
 
         foreach ($logs as $log) {
-            $subjectMap= $log->getSubjectMap($this->getEntityManager());
+            $subjectMap = $log->getSubjectMap($this->getEntityManager());
 
             if (!isset($subjects[$subjectMap->getSubject()->getId()])) {
                 $subjects[$subjectMap->getSubject()->getId()] = array(
@@ -166,7 +166,7 @@ EOT
                         'unbookable' => array(),
                         'added' => array(),
                         'removed' => array(),
-                    )
+                    ),
                 );
             }
 
@@ -230,22 +230,27 @@ EOT
 
             $updates = '';
             foreach ($academicSubjects as $subject) {
-                if (!isset($subjects[$subject->getSubject()->getId()]))
+                if (!isset($subjects[$subject->getSubject()->getId()])) {
                     continue;
+                }
 
                 $updates .= '* ' . $subject->getSubject()->getName() . ' (' . $subject->getSubject()->getCode() . ')' . "\r\n";
 
-                foreach($subjects[$subject->getSubject()->getId()]['updates']['bookable'] as $log)
+                foreach ($subjects[$subject->getSubject()->getId()]['updates']['bookable'] as $log) {
                     $updates .= '  - ' . $log->getMainArticle()->getTitle() . ' ' . $bookableText[1] . "\r\n";
+                }
 
-                foreach($subjects[$subject->getSubject()->getId()]['updates']['unbookable'] as $log)
+                foreach ($subjects[$subject->getSubject()->getId()]['updates']['unbookable'] as $log) {
                     $updates .= '  - ' . $log->getMainArticle()->getTitle() . ' ' . $unbookableText[1] . "\r\n";
+                }
 
-                foreach($subjects[$subject->getSubject()->getId()]['updates']['added'] as $log)
+                foreach ($subjects[$subject->getSubject()->getId()]['updates']['added'] as $log) {
                     $updates .= '  - ' . $log->getTitle() . ' ' . $addedText[1] . "\r\n";
+                }
 
-                foreach($subjects[$subject->getSubject()->getId()]['updates']['removed'] as $log)
+                foreach ($subjects[$subject->getSubject()->getId()]['updates']['removed'] as $log) {
                     $updates .= '  - ' . $log->getTitle() . ' ' . $removedText[1] . "\r\n";
+                }
             }
 
             if ($updates != '') {
@@ -270,10 +275,11 @@ EOT
             }
         }
 
-        if ($sendMails)
+        if ($sendMails) {
             $this->writeln('<comment>' . $counter . '</comment> mails have been sent.');
-        else
+        } else {
             $this->writeln('<comment>' . $counter . '</comment> mails would have been sent.');
+        }
     }
 
     private function _getCurrentAcademicYear()

@@ -18,8 +18,8 @@
 
 namespace BrBundle\Entity\Company\Request;
 
-use BrBundle\Entity\Company\Request,
-    BrBundle\Entity\Company\Job,
+use BrBundle\Entity\Company\Job,
+    BrBundle\Entity\Company\Request,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -31,15 +31,6 @@ use BrBundle\Entity\Company\Request,
  */
 class RequestVacancy extends \BrBundle\Entity\Company\Request
 {
-    /**
-     * @var request's ID
-     *
-     * @ORM\Id
-     * @ORM\Column(type="bigint")
-     * @ORM\GeneratedValue
-     */
-    private $id;
-
     /**
      * @var string The type of the request
      *
@@ -79,14 +70,16 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
         $this->job = $job;
         $this->_setRequestType($requestType);
 
-        if (null !== $editJob)
+        if (null !== $editJob) {
             $this->editJob = $editJob;
+        }
     }
 
     private function _setRequestType($type)
     {
-        if (!in_array($type, self::$possibleRequests))
+        if (!in_array($type, self::$possibleRequests)) {
             throw new Exception("The requested type does not exist for the vacancy requests");
+        }
 
         $this->requestType = $type;
     }

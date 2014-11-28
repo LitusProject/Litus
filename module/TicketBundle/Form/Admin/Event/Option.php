@@ -22,8 +22,8 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
     CommonBundle\Component\Form\Admin\Element\Text,
     CommonBundle\Component\Validator\Price as PriceValidator,
     Ticketbundle\Entity\Event,
-    Zend\InputFilter\InputFilterProviderInterface,
-    Zend\Form\Fieldset;
+    Zend\Form\Fieldset,
+    Zend\InputFilter\InputFilterProviderInterface;
 
 /**
  * Add Option
@@ -47,11 +47,13 @@ class Option extends Fieldset implements InputFilterProviderInterface
         $this->add($field);
 
         $field = new Text('price_members');
-        $field->setLabel('Price Members');
+        $field->setLabel('Price Members')
+            ->setRequired(true);
         $this->add($field);
 
         $field = new Text('price_non_members');
         $field->setLabel('Price Non Members')
+            ->setRequired(true)
             ->setAttribute('class', $field->getAttribute('class') . ' price_non_members');
         $this->add($field);
     }
@@ -70,7 +72,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                 'validators' => array(
                     array(
                         'name' => 'int',
-                    )
+                    ),
                 ),
             ),
             array(
@@ -87,7 +89,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
-                    new PriceValidator()
+                    new PriceValidator(),
                 ),
             ),
             array(
@@ -97,7 +99,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
-                    new PriceValidator()
+                    new PriceValidator(),
                 ),
             ),
         );

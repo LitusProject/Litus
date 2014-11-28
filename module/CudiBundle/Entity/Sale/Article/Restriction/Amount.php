@@ -73,17 +73,12 @@ class Amount extends Restriction
      */
     public function canBook(Person $person, EntityManager $entityManager)
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
+        $academicYear = AcademicYear::getUniversityYear($entityManager);
 
         $amount = sizeof(
             $entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
+                ->findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
                     $this->getArticle(),
                     $person,
                     $academicYear

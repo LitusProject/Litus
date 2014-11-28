@@ -229,7 +229,7 @@ class QueueItem
      * @return integer
      */
     public function getQueueNumber()
-        {
+    {
         return $this->queueNumber;
     }
 
@@ -256,13 +256,15 @@ class QueueItem
      */
     public function setStatus($status)
     {
-        if (!self::isValidQueueStatus($status))
+        if (!self::isValidQueueStatus($status)) {
             throw new InvalidArgumentException('The queue status is not valid.');
+        }
 
         $this->status = $status;
 
-        if ($status != 'sold' && $status != 'selling')
+        if ($status != 'sold' && $status != 'selling') {
             $this->payDesk = null;
+        }
 
         switch ($status) {
             case 'signed_in':
@@ -319,8 +321,9 @@ class QueueItem
      */
     public function setPayMethod($payMethod)
     {
-        if (!self::isValidPayMethod($payMethod) && $payMethod !== null)
+        if (!self::isValidPayMethod($payMethod) && $payMethod !== null) {
             throw new InvalidArgumentException('The pay method is not valid.');
+        }
 
         $this->payMethod = $payMethod;
 
@@ -332,8 +335,10 @@ class QueueItem
      */
     public function getPayMethod()
     {
-        if (!self::isValidPayMethod($this->payMethod))
+        if (!self::isValidPayMethod($this->payMethod)) {
             return '';
+        }
+
         return self::$POSSIBLE_PAY_METHODS[$this->payMethod];
     }
 

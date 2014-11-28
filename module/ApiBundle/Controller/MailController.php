@@ -19,8 +19,8 @@
 namespace ApiBundle\Controller;
 
 use CommonBundle\Component\Util\File\TmpFile,
-    MailBundle\Component\Archive\Generator\MailingList\Zip,
     MailBundle\Component\Archive\Generator\MailingList\Tar,
+    MailBundle\Component\Archive\Generator\MailingList\Zip,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -38,16 +38,14 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findAll();
 
         $headers = new Headers();
-        $headers->addHeaders(
-            array(
-                'Content-Type' => 'text/plain'
-            )
-        );
+        $headers->addHeaders(array(
+            'Content-Type' => 'text/plain',
+        ));
         $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
             array(
-                'aliases' => $aliases
+                'aliases' => $aliases,
             )
         );
     }
@@ -63,8 +61,9 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('MailBundle\Entity\MailingList')
             ->findAll();
 
-        if (0 == count($lists))
+        if (0 == count($lists)) {
             throw new \RuntimeException('There needs to be at least one list before an archive can be created');
+        }
 
         $archive = new TmpFile();
         $generator = ('zip' != $this->getParam('type'))
@@ -82,7 +81,7 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         return new ViewModel(
             array(
-                'data' => $archive->getContent()
+                'data' => $archive->getContent(),
             )
         );
     }

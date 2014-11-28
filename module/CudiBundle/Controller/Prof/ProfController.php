@@ -31,11 +31,13 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
 {
     public function addAction()
     {
-        if (!($subject = $this->_getSubject()))
+        if (!($subject = $this->_getSubject())) {
             return new ViewModel();
+        }
 
-        if (!($academicYear = $this->getCurrentAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear())) {
             return new ViewModel();
+        }
 
         $form = new AddForm();
 
@@ -90,8 +92,9 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping()))
+        if (!($mapping = $this->_getMapping())) {
             return new ViewModel();
+        }
 
         if ($mapping->getProf()->getId() == $this->getAuthentication()->getPersonObject()->getId()) {
             return new ViewModel(
@@ -139,8 +142,9 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
 
     private function _getSubject($id = null)
     {
-        if (!($academicYear = $this->getCurrentAcademicYear()))
+        if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
+        }
 
         $id = $id == null ? $this->getParam('id') : $id;
 

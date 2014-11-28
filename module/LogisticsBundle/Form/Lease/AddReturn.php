@@ -22,11 +22,11 @@ use CommonBundle\Component\Form\Bootstrap\Element\Hidden,
     CommonBundle\Component\Form\Bootstrap\Element\Text,
     CommonBundle\Component\Form\Bootstrap\Element\Textarea,
     CommonBundle\Component\Validator\Price as PriceValidator,
-    LogisticsBundle\Component\Validator\LeaseValidator,
     Doctrine\ORM\EntityManager,
-    Zend\InputFilter\InputFilter,
+    LogisticsBundle\Component\Validator\LeaseValidator,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * The form used to register a returned item.
@@ -85,7 +85,6 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
         $field->setValue('Return')
             ->setAttribute('class', 'btn btn-primary');
         $this->add($field);
-
     }
 
     public function getInputFilter()
@@ -170,6 +169,5 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
         );
 
         return $inputFilter;
-
     }
 }

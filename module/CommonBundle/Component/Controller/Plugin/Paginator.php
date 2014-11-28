@@ -18,15 +18,15 @@
 
 namespace CommonBundle\Component\Controller\Plugin;
 
-use Zend\Mvc\Exception,
-    Zend\Paginator\Paginator as ZendPaginator,
-    Zend\Paginator\Adapter\ArrayAdapter,
-    Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator,
-    DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter,
-    Zend\ServiceManager\ServiceLocatorAwareInterface,
-    Zend\ServiceManager\ServiceLocatorInterface,
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter,
+    Doctrine\ORM\Query,
     Doctrine\ORM\QueryBuilder,
-    Doctrine\ORM\Query;
+    Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator,
+    Zend\Mvc\Exception,
+    Zend\Paginator\Adapter\ArrayAdapter,
+    Zend\Paginator\Paginator as ZendPaginator,
+    Zend\ServiceManager\ServiceLocatorAwareInterface,
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * A controller plugin containing some utility methods for pagination.
@@ -58,8 +58,9 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
      */
     public function setItemsPerPage($itemsPerPage)
     {
-        if (!is_int($itemsPerPage) || $itemsPerPage < 0)
+        if (!is_int($itemsPerPage) || $itemsPerPage < 0) {
             throw new Exception\InvalidArgumentException('The number of items per page has to be positive integer');
+        }
 
         $this->_itemsPerPage = $itemsPerPage;
     }
@@ -129,10 +130,12 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
                 ->getRepository($entity)
                 ->createQueryBuilder('e');
         /* @var $qb \Doctrine\ORM\QueryBuilder */
-        foreach(array_keys($conditions) as $fieldName)
-            $qb->andWhere('e.'.$fieldName.' = :'.$fieldName);
-        foreach($orderBy as $fieldName=>$orientation)
-            $qb->addOrderBy('e.'.$fieldName, $orientation);
+        foreach (array_keys($conditions) as $fieldName) {
+            $qb->andWhere('e.' . $fieldName . ' = :' . $fieldName);
+        }
+        foreach ($orderBy as $fieldName => $orientation) {
+            $qb->addOrderBy('e.' . $fieldName, $orientation);
+        }
         $qb->setParameters($conditions);
 
         return $this->createFromQuery($qb, $currentPage);
@@ -168,12 +171,14 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
         $currentPage = $currentPage == 0 ? $currentPage = 1 : $currentPage;
 
         $prefix = array();
-        if ($currentPage > 1)
+        if ($currentPage > 1) {
             $prefix = array_fill(0, $this->_itemsPerPage * ($currentPage - 1), true);
+        }
 
         $suffix = array();
-        if ($totalNumber - ($this->_itemsPerPage * ($currentPage)) > 0)
+        if ($totalNumber - ($this->_itemsPerPage * ($currentPage)) > 0) {
             $suffix = array_fill(0, $totalNumber - ($this->_itemsPerPage * ($currentPage)), true);
+        }
 
         $data = array_merge(
             $prefix,
@@ -203,11 +208,13 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     {
         $params = $this->getController()->getEvent()->getRouteMatch()->getParams();
         foreach ($params as $key => $param) {
-            if ('' === $param)
+            if ('' === $param) {
                 unset($params[$key]);
+            }
 
-            if (isset($params['page']))
+            if (isset($params['page'])) {
                 unset($params['page']);
+            }
         }
 
         $query = $this->getController()->getEvent()->getRequest()->getQuery();

@@ -71,6 +71,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
 
+        $result->showCookieBanner = !isset($_COOKIE['cookie_permission']);
+
         $e->setResult($result);
 
         return $result;
@@ -89,7 +91,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             'controller'     => 'common_auth',
 
             'auth_route'     => 'common_auth',
-            'redirect_route' => 'common_index'
+            'redirect_route' => 'common_index',
         );
     }
 
@@ -123,7 +125,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                     array(
                         'category' => $category,
                         'parent' => null,
-                        'endTime' => null
+                        'endTime' => null,
                     )
                 );
 
@@ -132,7 +134,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 ->findBy(
                     array(
                         'category' => $category,
-                        'parent' => null
+                        'parent' => null,
                     )
                 );
 
@@ -141,11 +143,12 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                     'type'  => 'page',
                     'id'    => $page->getId(),
                     'name'  => $page->getName(),
-                    'title' => $page->getTitle($this->getLanguage())
+                    'title' => $page->getTitle($this->getLanguage()),
                 );
 
-                if ($activeItem < 0 && $this->getParam('controller') == 'page' && $this->getParam('name') == $page->getName())
+                if ($activeItem < 0 && $this->getParam('controller') == 'page' && $this->getParam('name') == $page->getName()) {
                     $activeItem = $i;
+                }
             }
 
             foreach ($links as $link) {
@@ -156,25 +159,29 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                     'url'  => $link->getUrl($this->getLanguage()),
                 );
 
-                if ($activeItem < 0 && strpos($this->getRequest()->getRequestUri(), $link->getUrl($this->getLanguage())) === 0)
+                if ($activeItem < 0 && strpos($this->getRequest()->getRequestUri(), $link->getUrl($this->getLanguage())) === 0) {
                     $activeItem = $i;
+                }
             }
 
             $sort = array();
-            foreach ($menu[$i]['items'] as $key => $value)
+            foreach ($menu[$i]['items'] as $key => $value) {
                 $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+            }
 
             array_multisort($sort, $menu[$i]['items']);
 
             $i++;
         }
 
-        if ($activeItem >= 0)
+        if ($activeItem >= 0) {
             $menu[$activeItem]['active'] = true;
+        }
 
         $sort = array();
-        foreach ($menu as $key => $value)
+        foreach ($menu as $key => $value) {
             $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+        }
 
         array_multisort($sort, $menu);
 
@@ -226,7 +233,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             $submenu[$i] = array(
                 'type'  => 'category',
                 'name'  => $category->getName(),
-                'items' => array()
+                'items' => array(),
             );
 
             $pages = $this->getEntityManager()
@@ -255,8 +262,9 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             }
 
             $sort = array();
-            foreach ($submenu[$i]['items'] as $key => $value)
+            foreach ($submenu[$i]['items'] as $key => $value) {
                 $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+            }
 
             array_multisort($sort, $submenu[$i]['items']);
 
@@ -264,8 +272,9 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $sort = array();
-        foreach ($submenu as $key => $value)
+        foreach ($submenu as $key => $value) {
             $sort[$key] = isset($value['title']) ? $value['title'] : $value['name'];
+        }
 
         array_multisort($sort, $submenu);
 
@@ -285,10 +294,12 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         try {
             if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
-                if (false === getenv('SERVED_BY'))
+                if (false === getenv('SERVED_BY')) {
                     throw new Exception\ShibbolethUrlException('The SERVED_BY environment variable does not exist');
-                if (!isset($shibbolethUrl[getenv('SERVED_BY')]))
+                }
+                if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {
                     throw new Exception\ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+                }
 
                 $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
             }
@@ -299,8 +310,9 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $shibbolethUrl .= '%3Fsource=site';
 
         $server = $this->getRequest()->getServer();
-        if (isset($server['HTTP_HOST']) && isset($server['REQUEST_URI']))
+        if (isset($server['HTTP_HOST']) && isset($server['REQUEST_URI'])) {
             $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $server['HTTP_HOST'] . $server['REQUEST_URI']);
+        }
 
         return $shibbolethUrl;
     }

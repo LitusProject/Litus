@@ -19,8 +19,8 @@
 namespace PageBundle\Entity\Category;
 
 use CommonBundle\Entity\General\Language,
-    PageBundle\Entity\Category,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    PageBundle\Entity\Category;
 
 /**
  * This entity represents a translation of a category.

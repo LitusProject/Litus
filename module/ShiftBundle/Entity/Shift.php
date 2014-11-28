@@ -18,13 +18,13 @@
 
 namespace ShiftBundle\Entity;
 
-use DateInterval,
-    DateTime,
-    CalendarBundle\Entity\Node\Event,
+use CalendarBundle\Entity\Node\Event,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Location,
     CommonBundle\Entity\General\Organization\Unit,
     CommonBundle\Entity\User\Person,
+    DateInterval,
+    DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
@@ -348,8 +348,9 @@ class Shift
      */
     public function addResponsible(EntityManager $entityManager, Responsible $responsible)
     {
-        if (!$this->canHaveAsResponsible($entityManager, $responsible->getPerson()))
+        if (!$this->canHaveAsResponsible($entityManager, $responsible->getPerson())) {
             throw new \InvalidArgumentException('The given responsible cannot be added to this shift');
+        }
 
         $this->responsibles->add($responsible);
 
@@ -385,22 +386,26 @@ class Shift
      */
     public function canHaveAsResponsible(EntityManager $entityManager, Person $person)
     {
-        if (!$person->isPraesidium($this->getAcademicYear()))
+        if (!$person->isPraesidium($this->getAcademicYear())) {
             return false;
+        }
 
         $shifts = $entityManager->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByPerson($person);
 
         foreach ($shifts as $shift) {
-            if ($shift === $this)
+            if ($shift === $this) {
                 return false;
+            }
 
-            if ($this->getStartDate() < $shift->getEndDate() && $shift->getStartDate() < $this->getEndDate())
+            if ($this->getStartDate() < $shift->getEndDate() && $shift->getStartDate() < $this->getEndDate()) {
                 return false;
+            }
         }
 
-        if ($this->countResponsibles() >= $this->getNbResponsibles())
+        if ($this->countResponsibles() >= $this->getNbResponsibles()) {
             return false;
+        }
 
         return true;
     }
@@ -439,8 +444,9 @@ class Shift
      */
     public function addVolunteer(EntityManager $entityManager, Volunteer $volunteer)
     {
-        if (!$this->canHaveAsVolunteer($entityManager, $volunteer->getPerson()))
+        if (!$this->canHaveAsVolunteer($entityManager, $volunteer->getPerson())) {
             throw new \InvalidArgumentException('The given volunteer cannot be added to this shift');
+        }
 
         $this->volunteers->add($volunteer);
 
@@ -480,11 +486,13 @@ class Shift
             ->findAllActiveByPerson($person);
 
         foreach ($shifts as $shift) {
-            if ($shift === $this)
+            if ($shift === $this) {
                 return false;
+            }
 
-            if ($this->getStartDate() < $shift->getEndDate() && $shift->getStartDate() < $this->getEndDate())
+            if ($this->getStartDate() < $shift->getEndDate() && $shift->getStartDate() < $this->getEndDate()) {
                 return false;
+            }
         }
 
         if ($this->countVolunteers() >= $this->getNbVolunteers()) {
@@ -499,8 +507,9 @@ class Shift
                 $getStartDate = clone $this->getStartDate();
 
                 if ($volunteer->getPerson()->isPraesidium($this->getAcademicYear())) {
-                    if (!$person->isPraesidium($this->getAcademicYear()) && $getStartDate->sub($responsibleSignoutTreshold) > $now)
+                    if (!$person->isPraesidium($this->getAcademicYear()) && $getStartDate->sub($responsibleSignoutTreshold) > $now) {
                         return true;
+                    }
                 }
             }
 
@@ -651,8 +660,9 @@ class Shift
 
         $getStartDate = clone $this->getStartDate();
 
-        if ($getStartDate->sub($signoutTreshold) < $now)
-             return false;
+        if ($getStartDate->sub($signoutTreshold) < $now) {
+            return false;
+        }
 
         return true;
     }
@@ -706,15 +716,18 @@ class Shift
      */
     public function canBeEditedBy(Person $person = null)
     {
-        if (null == $person)
+        if (null == $person) {
             return false;
+        }
 
-        if ($this->getCreationPerson()->getId() === $person->getId())
+        if ($this->getCreationPerson()->getId() === $person->getId()) {
             return true;
+        }
 
         foreach ($person->getFlattenedRoles() as $role) {
-            if ($this->editRoles->contains($role) || $role->getName() == 'editor')
+            if ($this->editRoles->contains($role) || $role->getName() == 'editor') {
                 return true;
+            }
         }
 
         return false;

@@ -139,10 +139,11 @@ class Entry
      */
     public function getPersonInfo()
     {
-        if (!$this->isGuestEntry())
+        if (!$this->isGuestEntry()) {
             return $this->creationPerson;
-        else
+        } else {
             return $this->guestInfo;
+        }
     }
 
     /**

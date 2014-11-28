@@ -12,6 +12,8 @@ var currentView = 'selectPaydesk';
         articleTypeahead: '',
         membershipArticles: [{'id': 0, 'barcode': 0, 'title': '', 'price': 0}],
 
+        tPrint: 'Print',
+        tPrintNext: 'Print Next',
         tPaydeskSelectTitle: 'Select Paydesk',
         tPaydeskChoose: 'Choose',
         tErrorTitle: 'Error',
@@ -52,6 +54,8 @@ var currentView = 'selectPaydesk';
         var settings = $this.data('saleAppSettings');
 
         queue = $.queue({
+            tPrint: settings.tPrint,
+            tPrintNext: settings.tPrintNext,
             lightVersion: settings.lightVersion,
             personTypeahead: settings.personTypeahead,
             translateStatus: settings.translateStatus,
@@ -111,6 +115,9 @@ var currentView = 'selectPaydesk';
                     })
                 });
             },
+            printNextInQueue: function () {
+                queue.queue('printNextInQueue');
+            },
         });
 
         sale = $this.sale({
@@ -167,6 +174,9 @@ var currentView = 'selectPaydesk';
                         'articleId': articleId,
                     })
                 });
+            },
+            printNextInQueue: function () {
+                queue.queue('printNextInQueue');
             },
         });
 

@@ -33,8 +33,16 @@ class Printer
     public static function signInTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
     {
         $academic = $queueItem->getPerson();
-        if (!($academic instanceof Academic))
+        if (!($academic instanceof Academic)) {
             return;
+        }
+
+        $printCollect = (int) $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.print_collect_as_signin');
+        if (1 === $printCollect) {
+            return self::collectTicket($entityManager, $printer, $queueItem, $bookings);
+        }
 
         $articles = array();
         $totalPrice = 0;
@@ -72,8 +80,9 @@ class Printer
     public static function collectTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $bookings)
     {
         $academic = $queueItem->getPerson();
-        if (!($academic instanceof Academic))
+        if (!($academic instanceof Academic)) {
             return;
+        }
 
         $articles = array();
         $totalPrice = 0;
@@ -111,8 +120,9 @@ class Printer
     public static function saleTicket(EntityManager $entityManager, $printer, EntityQueueItem $queueItem, $saleItems)
     {
         $academic = $queueItem->getPerson();
-        if (!($academic instanceof Academic))
+        if (!($academic instanceof Academic)) {
             return;
+        }
 
         $articles = array();
         $totalPrice = 0;
@@ -151,16 +161,18 @@ class Printer
         $enablePrinters = $entityManager->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_printers');
 
-        if (!$enablePrinters)
+        if (!$enablePrinters) {
             return;
+        }
 
         $printers = unserialize(
             $entityManager->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.printers')
         );
 
-        if (!isset($printers[$printer]))
+        if (!isset($printers[$printer])) {
             return;
+        }
 
         $data['title'] = $entityManager->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.ticket_title');

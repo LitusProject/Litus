@@ -18,14 +18,14 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Entity\User\Person,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
+    CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Article as ArticleEntity,
     CudiBundle\Entity\Sale\Session as SessionEntity,
     CudiBundle\Entity\Supplier,
-    DateTime,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+    DateTime;
 
 /**
  * SaleItem
@@ -58,8 +58,9 @@ class SaleItem extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -86,8 +87,9 @@ class SaleItem extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -114,8 +116,9 @@ class SaleItem extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -213,8 +216,9 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         }
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -261,8 +265,9 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         }
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -319,8 +324,9 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         }
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -372,8 +378,9 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         }
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -422,8 +429,9 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         }
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -472,8 +480,9 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         }
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -520,8 +529,9 @@ class SaleItem extends EntityRepository
                 ->getSingleScalarResult();
         }
 
-        if (null == $resultSet)
+        if (null == $resultSet) {
             return 0;
+        }
 
         return $resultSet;
     }
@@ -563,7 +573,7 @@ class SaleItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('article', '%' . strtolower($article) . '%')
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
             ->orderBy('i.timestamp', 'DESC')
@@ -604,7 +614,7 @@ class SaleItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
             ->orderBy('i.timestamp', 'DESC')
@@ -645,7 +655,7 @@ class SaleItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('discount', '%'.strtolower($discount).'%')
+            ->setParameter('discount', '%' . strtolower($discount) . '%')
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
             ->orderBy('i.timestamp', 'DESC')
@@ -657,10 +667,11 @@ class SaleItem extends EntityRepository
     public function findAllByTypeAndAcademicYearQuery($type, AcademicYear $academicYear)
     {
         $entity = 'CudiBundle\Entity\Sale\SaleItem';
-        if ('prof' == $type)
+        if ('prof' == $type) {
             $entity = 'CudiBundle\Entity\Sale\SaleItem\Prof';
-        elseif ('external' == $type)
+        } elseif ('external' == $type) {
             $entity = 'CudiBundle\Entity\Sale\SaleItem\External';
+        }
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -708,7 +719,7 @@ class SaleItem extends EntityRepository
                     $query->expr()->like($query->expr()->lower('m.title'), ':article')
                 )
             )
-            ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('article', '%' . strtolower($article) . '%')
             ->setParameter('session', $session)
             ->orderBy('i.timestamp', 'DESC')
             ->getQuery();
@@ -744,7 +755,7 @@ class SaleItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('session', $session)
             ->orderBy('i.timestamp', 'DESC')
             ->getQuery();
@@ -784,7 +795,7 @@ class SaleItem extends EntityRepository
                     $query->expr()->like($query->expr()->lower('i.discountType'), ':discount')
                 )
             )
-            ->setParameter('discount', '%'.strtolower($discount).'%')
+            ->setParameter('discount', '%' . strtolower($discount) . '%')
             ->setParameter('session', $session)
             ->orderBy('i.timestamp', 'DESC')
             ->getQuery();
@@ -849,7 +860,7 @@ class SaleItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('article', $article)
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
@@ -896,7 +907,7 @@ class SaleItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('discount', '%'.strtolower($discount).'%')
+            ->setParameter('discount', '%' . strtolower($discount) . '%')
             ->setParameter('article', $article)
             ->setParameter('start', $academicYear->getStartDate())
             ->setParameter('end', $academicYear->getEndDate())
@@ -944,7 +955,7 @@ class SaleItem extends EntityRepository
                     $query->expr()->like($query->expr()->lower('m.title'), ':article')
                 )
             )
-            ->setParameter('article', '%'.strtolower($article).'%')
+            ->setParameter('article', '%' . strtolower($article) . '%')
             ->setParameter('supplier', $supplier)
             ->orderBy('i.timestamp', 'DESC')
             ->getQuery();
@@ -981,7 +992,7 @@ class SaleItem extends EntityRepository
                     )
                 )
             )
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('supplier', $supplier)
             ->orderBy('i.timestamp', 'DESC')
             ->getQuery();
@@ -1023,7 +1034,7 @@ class SaleItem extends EntityRepository
                     $query->expr()->like($query->expr()->lower('i.discountType'), ':discount')
                 )
             )
-            ->setParameter('discount', '%'.strtolower($discount).'%')
+            ->setParameter('discount', '%' . strtolower($discount) . '%')
             ->setParameter('supplier', $supplier)
             ->orderBy('i.timestamp', 'DESC')
             ->getQuery();
@@ -1052,22 +1063,27 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
-    public function findOneByArticleAndPersonAndDiscountType(ArticleEntity $article, Person $person, $discountType)
+    public function findOneByArticleAndPersonAndDiscountType(ArticleEntity $article, Person $person, $discountType, AcademicYear $academicYear)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.queueItem', 'q')
+            ->innerJoin('i.session', 's')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('q.person', ':person'),
                     $query->expr()->eq('i.article', ':article'),
-                    $query->expr()->eq('i.discountType', ':discountType')
+                    $query->expr()->eq('i.discountType', ':discountType'),
+                    $query->expr()->gt('s.openDate', ':start'),
+                    $query->expr()->lt('s.openDate', ':end')
                 )
             )
             ->setParameter('person', $person->getId())
             ->setParameter('article', $article->getId())
             ->setParameter('discountType', $discountType)
+            ->setParameter('start', $academicYear->getStartDate())
+            ->setParameter('end', $academicYear->getEndDate())
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

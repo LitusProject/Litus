@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <event name="Openingscantus" date="26 September 2012">
-	<our_union short_name="VTK">
-		<name>VTK vzw</name>
-	    <logo>data/images/logo/logo.svg</logo>
-	</our_union>
-	<shifts>
-		<shift>
-			<date>26/09/2012 14:00-18:00</date>
-			<name>Inschrijven</name>
-			<manager>Pieter Maene</manager>
-			<people>
-				<person>
-					<name>Pieter Maene</name>
-					<phone_number>+32478650979</phone_number>
-					<responsible>1</responsible>
-				</person>
-				<person>
-					<name>Pieter Maene</name>
-					<phone_number>+32478650979</phone_number>
-					<responsible>1</responsible>
-				</person>
-				<person>
-					<name>Pieter Maene</name>
-					<phone_number>+32478650979</phone_number>
-					<responsible>1</responsible>
-				</person>
-				<person>
-					<name>Pieter Maene</name>
-					<phone_number>+32478650979</phone_number>
-					<responsible>1</responsible>
-				</person>
-			</people>
-		</shift>
-		<shift>
-			<date>26/09/2012 14:00-18:00</date>
-			<name>Inschrijven</name>
-			<manager>Pieter Maene</manager>
-			<people></people>
-		</shift>
-		<shift>
-			<date>26/09/2012 14:00-18:00</date>
-			<name>Inschrijven</name>
-			<manager>Pieter Maene</manager>
-			<people>
-				<person>
-					<name>Pieter Maene</name>
-					<phone_number>+32478650979</phone_number>
-					<responsible>1</responsible>
-				</person>
-				<person>
-					<name>Pieter Maene</name>
-					<phone_number>+32478650979</phone_number>
-					<responsible>1</responsible>
-				</person>
-				<person>
-					<name>Pieter Maene</name>
-					<phone_number>+32478650979</phone_number>
-					<responsible>1</responsible>
-				</person>
-				<person>
-					<name>Pieter Maene</name>
-					<phone_number>+32478650979</phone_number>
-					<responsible>1</responsible>
-				</person>
-			</people>
-		</shift>
-	</shifts>
+    <our_union short_name="VTK">
+        <name>VTK vzw</name>
+        <logo>data/images/logo/logo.svg</logo>
+    </our_union>
+    <shifts>
+        <shift>
+            <date>26/09/2012 14:00-18:00</date>
+            <name>Inschrijven</name>
+            <manager>Pieter Maene</manager>
+            <people>
+                <person>
+                    <name>Pieter Maene</name>
+                    <phone_number>+32478650979</phone_number>
+                    <responsible>1</responsible>
+                </person>
+                <person>
+                    <name>Pieter Maene</name>
+                    <phone_number>+32478650979</phone_number>
+                    <responsible>1</responsible>
+                </person>
+                <person>
+                    <name>Pieter Maene</name>
+                    <phone_number>+32478650979</phone_number>
+                    <responsible>1</responsible>
+                </person>
+                <person>
+                    <name>Pieter Maene</name>
+                    <phone_number>+32478650979</phone_number>
+                    <responsible>1</responsible>
+                </person>
+            </people>
+        </shift>
+        <shift>
+            <date>26/09/2012 14:00-18:00</date>
+            <name>Inschrijven</name>
+            <manager>Pieter Maene</manager>
+            <people></people>
+        </shift>
+        <shift>
+            <date>26/09/2012 14:00-18:00</date>
+            <name>Inschrijven</name>
+            <manager>Pieter Maene</manager>
+            <people>
+                <person>
+                    <name>Pieter Maene</name>
+                    <phone_number>+32478650979</phone_number>
+                    <responsible>1</responsible>
+                </person>
+                <person>
+                    <name>Pieter Maene</name>
+                    <phone_number>+32478650979</phone_number>
+                    <responsible>1</responsible>
+                </person>
+                <person>
+                    <name>Pieter Maene</name>
+                    <phone_number>+32478650979</phone_number>
+                    <responsible>1</responsible>
+                </person>
+                <person>
+                    <name>Pieter Maene</name>
+                    <phone_number>+32478650979</phone_number>
+                    <responsible>1</responsible>
+                </person>
+            </people>
+        </shift>
+    </shifts>
 </event>

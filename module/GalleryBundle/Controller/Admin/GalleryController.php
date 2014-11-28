@@ -20,15 +20,15 @@ namespace GalleryBundle\Controller\Admin;
 
 use DateTime,
     GalleryBundle\Entity\Album\Album,
-    GalleryBundle\Entity\Album\Translation,
     GalleryBundle\Entity\Album\Photo,
+    GalleryBundle\Entity\Album\Translation,
     GalleryBundle\Form\Admin\Album\Add as AddForm,
     GalleryBundle\Form\Admin\Album\Edit as EditForm,
     Imagick,
     ImagickPixel,
     Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\IsImage as ImageValidator,
+    Zend\Validator\File\Size as SizeValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -112,8 +112,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($album = $this->_getAlbum()))
+        if (!($album = $this->_getAlbum())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $album);
 
@@ -154,7 +155,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                 $this->redirect()->toRoute(
                     'gallery_admin_gallery',
                     array(
-                        'action' => 'manage'
+                        'action' => 'manage',
                     )
                 );
 
@@ -173,8 +174,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($album = $this->_getAlbum()))
+        if (!($album = $this->_getAlbum())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($album);
 
@@ -183,7 +185,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -191,8 +193,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function photosAction()
     {
-        if (!($album = $this->_getAlbum()))
+        if (!($album = $this->_getAlbum())) {
             return new ViewModel();
+        }
 
         $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -215,8 +218,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addPhotosAction()
     {
-        if (!($album = $this->_getAlbum()))
+        if (!($album = $this->_getAlbum())) {
             return new ViewModel();
+        }
 
         return new ViewModel(
             array(
@@ -227,17 +231,20 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function deletePhotoAction()
     {
-        if (!($photo = $this->_getPhoto()))
+        if (!($photo = $this->_getPhoto())) {
             return new ViewModel();
+        }
 
         $filePath = 'public' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('gallery.path') . '/' . $photo->getAlbum()->getId() . '/';
 
-        if (file_exists($filePath . $photo->getFilePath()))
+        if (file_exists($filePath . $photo->getFilePath())) {
             unlink($filePath . $photo->getFilePath());
-        if (file_exists($filePath . $photo->getThumbPath()))
+        }
+        if (file_exists($filePath . $photo->getThumbPath())) {
             unlink($filePath . $photo->getThumbPath());
+        }
 
         $this->getEntityManager()->remove($photo);
         $this->getEntityManager()->flush();
@@ -245,7 +252,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -253,21 +260,23 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function uploadAction()
     {
-        if (!($album = $this->_getAlbum()))
+        if (!($album = $this->_getAlbum())) {
             return new ViewModel();
+        }
 
         $filePath = 'public' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('gallery.path') . '/' . $album->getId() . '/';
 
         if (!file_exists($filePath . 'thumbs/')) {
-            if (!file_exists($filePath))
+            if (!file_exists($filePath)) {
                 mkdir($filePath);
+            }
             mkdir($filePath . 'thumbs/');
         }
 
         $upload = new FileUpload();
-        $upload->addValidator(new SizeValidator(array('max' => '5MB')));
+        $upload->addValidator(new SizeValidator(array('max' => '15mb')));
         $upload->addValidator(new ImageValidator(array('mimeType' => 'image/jpeg')));
 
         if ($upload->isValid()) {
@@ -327,7 +336,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $image->writeImage($filePath . $filename);
 
             $thumb->cropThumbnailImage(150, 150);
-            $thumb->writeImage($filePath . 'thumbs/'. $filename);
+            $thumb->writeImage($filePath . 'thumbs/' . $filename);
 
             $photo = new Photo($album, $filename);
             $this->getEntityManager()->persist($photo);
@@ -336,7 +345,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel(
                 array(
                     'result' => array(
-                        'status' => 'success'
+                        'status' => 'success',
                     ),
                 )
             );
@@ -347,7 +356,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'error'
+                    'status' => 'error',
                 ),
             )
         );
@@ -355,8 +364,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function censorPhotoAction()
     {
-        if (!($photo = $this->_getPhoto()))
+        if (!($photo = $this->_getPhoto())) {
             return new ViewModel();
+        }
 
         $photo->setCensored(true);
         $this->getEntityManager()->flush();
@@ -373,8 +383,9 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function unCensorPhotoAction()
     {
-        if (!($photo = $this->_getPhoto()))
+        if (!($photo = $this->_getPhoto())) {
             return new ViewModel();
+        }
 
         $photo->setCensored(false);
         $this->getEntityManager()->flush();
@@ -400,7 +411,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'gallery_admin_gallery',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -420,7 +431,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'gallery_admin_gallery',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -441,7 +452,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'gallery_admin_gallery',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -461,7 +472,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'gallery_admin_gallery',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

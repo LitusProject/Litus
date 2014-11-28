@@ -46,7 +46,7 @@ class Recursion extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The study cannot be chosen'
+        self::NOT_VALID => 'The study cannot be chosen',
     );
 
     /**
@@ -64,7 +64,6 @@ class Recursion extends \Zend\Validator\AbstractValidator
         $this->_study = $study;
     }
 
-
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field is valid.
@@ -81,8 +80,9 @@ class Recursion extends \Zend\Validator\AbstractValidator
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findOneByKulId($context['parent_id']);
 
-        if (null === $parent)
+        if (null === $parent) {
             return true;
+        }
 
         if ($parent->getId() == $this->_study->getId()) {
             $this->error(self::NOT_VALID);

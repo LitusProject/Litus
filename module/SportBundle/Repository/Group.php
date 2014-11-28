@@ -46,8 +46,9 @@ class Group extends EntityRepository
         $count = ($count % 6);
 
         // avoid second query if not needed
-        if (0 === $count)
+        if (0 === $count) {
             return array();
+        }
 
         $builder = $this->_em->createQueryBuilder();
 

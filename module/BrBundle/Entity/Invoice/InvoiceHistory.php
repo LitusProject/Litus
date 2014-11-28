@@ -95,5 +95,4 @@ class InvoiceHistory
     {
         return $this->version;
     }
-
 }

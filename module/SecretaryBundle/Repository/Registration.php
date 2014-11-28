@@ -18,10 +18,10 @@
 
 namespace SecretaryBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
     DateTime;
 
 /**
@@ -87,7 +87,7 @@ class Registration extends EntityRepository
                     $organization == null ? '1=1' : $query->expr()->in('a.id', $ids)
                 )
             )
-            ->setParameter('universityIdentification', '%'.strtolower($universityIdentification).'%')
+            ->setParameter('universityIdentification', '%' . strtolower($universityIdentification) . '%')
             ->setParameter('academicYear', $academicYear)
             ->orderBy('r.timestamp', 'ASC')
             ->getQuery()
@@ -146,7 +146,7 @@ class Registration extends EntityRepository
                     $organization == null ? '1=1' : $query->expr()->in('a.id', $ids)
                 )
             )
-            ->setParameter('name', '%'.strtolower($name).'%')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('academicYear', $academicYear)
             ->orderBy('r.timestamp', 'ASC')
             ->getQuery()
@@ -157,43 +157,19 @@ class Registration extends EntityRepository
 
     public function findAllByBarcode($barcode, AcademicYear $academicYear, Organization $organization = null)
     {
-        if (!is_numeric($barcode))
+        if (!is_numeric($barcode)) {
             return array();
-
-        $ids = array(0);
-        if ($organization !== null) {
-            $query = $this->_em->createQueryBuilder();
-            $resultSet = $query->select('a.id')
-                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
-                ->innerJoin('m.academic', 'a')
-                ->where(
-                    $query->expr()->andX(
-                        $query->expr()->eq('m.organization', ':organization'),
-                        $query->expr()->eq('m.academicYear', ':academicYear')
-                    )
-                )
-                ->setParameter('organization', $organization)
-                ->setParameter('academicYear', $academicYear)
-                ->getQuery()
-                ->getResult();
-
-            foreach ($resultSet as $result) {
-                $ids[] = $result['id'];
-            }
         }
 
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('b')
-            ->from('CommonBundle\Entity\User\Barcode', 'b')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode'),
-                    $organization == null ? '1=1' : $query->expr()->in('b.person', $ids)
-                )
-            )
-            ->setParameter('barcode', '%'.$barcode.'%')
-            ->getQuery()
-            ->getResult();
+        if (null === $organization) {
+            $resultSet = $this->_em
+                ->getRepository('CommonBundle\Entity\User\Barcode')
+                ->findAllByBarcode($barcode);
+        } else {
+            $resultSet = $this->_em
+                ->getRepository('CommonBundle\Entity\User\Barcode')
+                ->findAllByBarcodeAndOrganization($barcode, $academicYear, $organization);
+        }
 
         $ids = array(0);
         foreach ($resultSet as $result) {

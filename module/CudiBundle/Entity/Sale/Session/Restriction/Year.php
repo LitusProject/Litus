@@ -110,8 +110,9 @@ class Year extends Restriction
             ->getYearsByPerson($person);
 
         foreach ($years as $year) {
-            if ($year >= $this->startValue && $year <= $this->endValue)
+            if ($year >= $this->startValue && $year <= $this->endValue) {
                 return true;
+            }
         }
 
         return false;

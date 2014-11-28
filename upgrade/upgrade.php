@@ -41,8 +41,9 @@ $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'
 $lastUpgrade = pg_fetch_row($result)[0];
 
 foreach (new DirectoryIterator(__DIR__ . '/scripts') as $fileInfo) {
-    if($fileInfo->isDot() || $fileInfo->getFilename() === 'README.md')
+    if ($fileInfo->isDot() || $fileInfo->getFilename() === 'README.md') {
         continue;
+    }
 
     $files[] = $fileInfo->getFilename();
 }
@@ -55,8 +56,9 @@ $options = getopt("f:");
 include 'util.php';
 
 foreach ($files as $file) {
-    if ($file <= $lastUpgrade . '.php' && !(isset($options['f']) && $options['f'] . '.php' == $file))
+    if ($file <= $lastUpgrade . '.php' && !(isset($options['f']) && $options['f'] . '.php' == $file)) {
         continue;
+    }
 
     echo 'Upgrade ' . substr($file, 0, strrpos($file, '.')) . PHP_EOL;
     include __DIR__ . '/scripts/' . $file;

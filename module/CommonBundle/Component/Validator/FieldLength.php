@@ -41,7 +41,7 @@ class FieldLength extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This field exceeds the maximum character count.'
+        self::NOT_VALID => 'This field exceeds the maximum character count.',
     );
 
     /**
@@ -70,8 +70,9 @@ class FieldLength extends \Zend\Validator\AbstractValidator
 
         $value = preg_replace('/\r\n|\r|\n/s', str_repeat(' ', $this->_newlineLength), $value);
 
-        if (strlen($value) <= $this->_maxLength)
+        if (strlen($value) <= $this->_maxLength) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

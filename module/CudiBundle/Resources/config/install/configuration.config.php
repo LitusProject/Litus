@@ -107,7 +107,7 @@ The opening hours of Cudi are:
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --'
+-- This is an automatically generated email, please do not reply --',
                 ),
                 'nl' => array(
                     'subject' => 'Nieuwe Toewijzingen',
@@ -125,11 +125,11 @@ De openingsuren van cudi zijn:
 
 VTK Cudi
 
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
             )
         ),
-        'description' => 'The mail sent when a booking is assigned'
+        'description' => 'The mail sent when a booking is assigned',
     ),
     array(
         'key'         => 'cudi.booking_expire_warning_mail',
@@ -151,7 +151,7 @@ The opening hours of Cudi are:
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --'
+-- This is an automatically generated email, please do not reply --',
                 ),
                 'nl' => array(
                     'subject' => 'Waarschuwing Vervallen Toewijzingen',
@@ -169,11 +169,11 @@ De openingsuren van cudi zijn:
 
 VTK Cudi
 
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
             )
         ),
-        'description' => 'The mail sent when a booking is about to expire'
+        'description' => 'The mail sent when a booking is about to expire',
     ),
     array(
         'key'         => 'cudi.booking_expire_mail',
@@ -188,7 +188,7 @@ The following bookings have expired:
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --'
+-- This is an automatically generated email, please do not reply --',
                 ),
                 'nl' => array(
                     'subject' => 'Vervallen Toewijzingen',
@@ -199,11 +199,11 @@ De volgende reservaties zijn vervallen:
 
 VTK Cudi
 
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
             )
         ),
-        'description' => 'The mail sent when a booking is expired'
+        'description' => 'The mail sent when a booking is expired',
     ),
     array(
         'key'         => 'cudi.queue_item_barcode_prefix',
@@ -245,17 +245,17 @@ VTK Cudi
         'key'         => 'cudi.sell_prices',
         'value'       => serialize(
             array(
-                'binding_glued'     => 83,
-                'binding_stapled'   => 7,
-                'binding_none'      => 20,
-                'recto_bw'          => 2,
-                'recto_verso_bw'    => 2,
-                'recto_color'       => 7,
-                'recto_verso_color' => 7,
+                'binding_glued'     => 83000,
+                'binding_stapled'   => 7000,
+                'binding_none'      => 20000,
+                'recto_bw'          => 2000,
+                'recto_verso_bw'    => 2000,
+                'recto_color'       => 7000,
+                'recto_verso_color' => 7000,
                 'hardcover'         => 0,
             )
         ),
-        'description' => 'The purchase prices of an internal article (multiplied by 100)',
+        'description' => 'The purchase prices of an internal article (multiplied by 100000)',
     ),
     array(
         'key'         => 'cudi.front_address_name',
@@ -386,7 +386,7 @@ The catalog of our cudi has been updated:
 
 VTK Cudi
 
--- This is an automatically generated email, please do not reply --'
+-- This is an automatically generated email, please do not reply --',
                 ),
                 'nl' => array(
                     'subject' => 'Catalogus Aanpassingen',
@@ -397,7 +397,7 @@ De catalogus van onze cudi is aangepast:
 
 VTK Cudi
 
--- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --'
+-- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
             )
         ),
@@ -439,5 +439,25 @@ VTK Cudi
         'key'         => 'cudi.booking_only_member',
         'value'       => '0',
         'description' => 'Enable bookings only for members (this will add a member restriction to all sale articles)',
+    ),
+    array(
+        'key'         => 'cudi.print_collect_as_signin',
+        'value'       => '0',
+        'description' => 'Print collect ticket on sign-in instead of sign-in ticket.',
+    ),
+    array(
+        'key'         => 'cudi.signing_printer',
+        'value'       => 'signin',
+        'description' => 'Printer used to print sign-in tickets.',
+    ),
+    array(
+        'key'         => 'cudi.enable_sale_article_barcode_check',
+        'value'       => '1',
+        'description' => 'Enable the barcode checks for sale articles.',
+    ),
+    array(
+        'key'         => 'cudi.enable_assign_after_stock_update',
+        'value'       => '1',
+        'description' => 'Enable assign after updating the stock (enable_automatic_assignment must also be enabled).',
     ),
 );

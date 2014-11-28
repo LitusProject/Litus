@@ -19,13 +19,13 @@
 namespace PublicationBundle\Controller\Admin\Edition;
 
 use DateTime,
-    PublicationBundle\Entity\Publication,
     PublicationBundle\Entity\Edition\Html as HtmlEdition,
+    PublicationBundle\Entity\Publication,
     PublicationBundle\Form\Admin\Edition\Html\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\InputFilter\InputInterface,
-    Zend\Validator\File\Size as SizeValidator,
     Zend\Validator\File\Extension as ExtensionValidator,
+    Zend\Validator\File\Size as SizeValidator,
     Zend\View\Model\ViewModel,
     \ZipArchive;
 
@@ -38,8 +38,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($publication = $this->_getPublication()))
+        if (!($publication = $this->_getPublication())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -59,8 +60,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($publication = $this->_getPublication()))
+        if (!($publication = $this->_getPublication())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager(), $publication, $this->getCurrentAcademicYear());
         $form->setAttribute(
@@ -84,8 +86,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
     public function uploadAction()
     {
-        if (!($publication = $this->_getPublication()))
+        if (!($publication = $this->_getPublication())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager(), $publication, $this->getCurrentAcademicYear());
         $formData = $this->getRequest()->getPost();
@@ -93,8 +96,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
         $upload = new FileUpload();
         $inputFilter = $form->getInputFilter()->get('file');
-        if ($inputFilter instanceof InputInterface)
+        if ($inputFilter instanceof InputInterface) {
             $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+        }
 
         $date = self::_loadDate($formData['date']);
 
@@ -140,13 +144,14 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 $fileName
             );
 
-            if (!file_exists($filePath . $fileName))
+            if (!file_exists($filePath . $fileName)) {
                 mkdir($filePath . $fileName, 0775, true);
+            }
 
             $zipFileName = $upload->getFileName('file');
             $upload->receive();
 
-            $zip = new ZipArchive;
+            $zip = new ZipArchive();
 
             if (true === $zip->open($zipFileName)) {
                 $zip->extractTo($filePath . $fileName);
@@ -193,8 +198,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             $formErrors = array();
 
             foreach ($form->getElements() as $key => $element) {
-                if (!isset($errors[$element->getName()]))
+                if (!isset($errors[$element->getName()])) {
                     continue;
+                }
 
                 $formErrors[$element->getAttribute('id')] = array();
 
@@ -203,8 +209,9 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 }
             }
 
-            if (sizeof($upload->getMessages()) > 0)
+            if (sizeof($upload->getMessages()) > 0) {
                 $formErrors['file'] = $upload->getMessages();
+            }
 
             return new ViewModel(
                 array(
@@ -221,16 +228,18 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($edition = $this->_getEdition()))
+        if (!($edition = $this->_getEdition())) {
             return new ViewModel();
+        }
 
         $publicFilePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('publication.public_html_directory');
         $filePath = 'public' . $publicFilePath;
 
-        if (file_exists($filePath . $edition->getFileName()))
+        if (file_exists($filePath . $edition->getFileName())) {
             $this->_rrmdir($filePath . $edition->getFileName());
+        }
         $this->getEntityManager()->remove($edition);
         $this->getEntityManager()->flush();
 
@@ -252,7 +261,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'publication_admin_publication',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -272,7 +281,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'publication_admin_publication',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -293,7 +302,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'publication_admin_publication',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -313,7 +322,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'publication_admin_publication',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -329,11 +338,12 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     private function _rrmdir($dir)
     {
         foreach (glob($dir . '/*') as $file) {
-            if(is_dir($file))
+            if (is_dir($file)) {
                 $this->_rrmdir($file);
-            else
+            } else {
                 unlink($file);
             }
+        }
         rmdir($dir);
     }
 

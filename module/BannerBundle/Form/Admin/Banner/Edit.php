@@ -18,8 +18,8 @@
 
 namespace BannerBundle\Form\Admin\Banner;
 
-use Doctrine\ORM\EntityManager,
-    BannerBundle\Entity\Node\Banner,
+use BannerBundle\Entity\Node\Banner,
+    Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit;
 
 /**

@@ -8,16 +8,24 @@
     {% include 'shift/shift/partials/navigation.twig' %}
 
     <div style="text-align: justify;">
-    	{{ translate('Here you can see some statistics about shifts you have done before.') }}
+        {{ translate('Here you can see some statistics about shifts you have done before.') }}
     </div>
     <br>
 
-    {% if unPayedShifts %}
+    {% if unPayedShifts and not praesidium %}
         {{ translate('You have currently <span class="label label-info">%unPayedShifts%</span> unpayed shift(s). You can get your reward from the vice-preases at \'blok 6\'. This reward will expire at the end of this academic year.')|replace({'%unPayedShifts%': unPayedShifts})|raw }}
+    {% endif %}
+    <br><br>
+    {% if not praesidium %}
+        {{ translate('Your current shiftranking is <span class="label label-success">%ranking%</span>.')|replace({'%ranking%': ranking|capitalize})|raw }}
+    {% endif %}
+    <br>
+    {% if not praesidium and shiftsToNextRanking%}
+        {{ translate('You need to do <span class="label label-success">%shiftsToNextRanking%</span> more shift(s) to get the next ranking.')|replace({'%shiftsToNextRanking%': shiftsToNextRanking})|raw }}
     {% endif %}
 
     {% if shiftsAsResponsible %}
-    	<h2>{{ translate('Shifts')}} {{ translate('As Responsible') }}:</h2>
+        <h2>{{ translate('Shifts')}} {{ translate('As Responsible') }}:</h2>
 
         <dl class="dl-horizontal">
             {% for unit in shiftsAsResponsible %}
@@ -29,9 +37,9 @@
             <dd>{{ totalAsResponsible }}</dd>
         </dl>
 
-    	<h2>{{ translate('Shifts')}} {{ translate('As Volunteer') }}:</h2>
+        <h2>{{ translate('Shifts')}} {{ translate('As Volunteer') }}:</h2>
     {% else %}
-    	<h2>{{ translate('Shifts')}}:</h2>
+        <h2>{{ translate('Shifts')}}:</h2>
     {% endif %}
 
     {% if shiftsAsVolunteer%}

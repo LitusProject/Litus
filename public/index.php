@@ -16,11 +16,13 @@
  * @license http://litus.cc/LICENSE
  */
 
-if (false === getenv('APPLICATION_ENV'))
+if (false === getenv('APPLICATION_ENV')) {
     putenv('APPLICATION_ENV=development');
+}
 
-if (false === getenv('ORGANIZATION'))
+if (false === getenv('ORGANIZATION')) {
     putenv('ORGANIZATION=Litus');
+}
 
 if ('development' == getenv('APPLICATION_ENV')) {
     ini_set('display_errors', true);
@@ -31,8 +33,9 @@ if ('development' == getenv('APPLICATION_ENV')) {
 
 set_error_handler(
     function ($errorNb, $errorString, $errorFile, $errorLine) {
-        if (0 !== error_reporting())
+        if (0 !== error_reporting()) {
             throw new ErrorException($errorString, $errorNb, 0, $errorFile, $errorLine);
+        }
     }
 );
 

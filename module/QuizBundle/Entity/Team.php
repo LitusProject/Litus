@@ -76,7 +76,7 @@ class Team
         $this->quiz = $quiz;
         $this->name = $name;
         $this->number = $number;
-        $this->points = new ArrayCollection;
+        $this->points = new ArrayCollection();
     }
 
     /**

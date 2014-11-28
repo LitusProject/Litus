@@ -19,8 +19,8 @@
 namespace PublicationBundle\Controller\Admin\Edition;
 
 use DateTime,
-    PublicationBundle\Entity\Publication,
     PublicationBundle\Entity\Edition\Pdf as PdfEdition,
+    PublicationBundle\Entity\Publication,
     PublicationBundle\Form\Admin\Edition\Pdf\Add as AddForm,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
@@ -36,8 +36,9 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function manageAction()
     {
-        if (!($publication = $this->_getPublication()))
+        if (!($publication = $this->_getPublication())) {
             return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -57,8 +58,9 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
     public function addAction()
     {
-        if (!($publication = $this->_getPublication()))
+        if (!($publication = $this->_getPublication())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager(), $publication, $this->getCurrentAcademicYear());
         $form->setAttribute(
@@ -82,8 +84,9 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
     public function uploadAction()
     {
-        if (!($publication = $this->_getPublication()))
+        if (!($publication = $this->_getPublication())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager(), $publication, $this->getCurrentAcademicYear());
         $formData = $this->getRequest()->getPost();
@@ -91,8 +94,9 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
         $upload = new FileUpload();
         $inputFilter = $form->getInputFilter()->get('file');
-        if ($inputFilter instanceof InputInterface)
+        if ($inputFilter instanceof InputInterface) {
             $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
+        }
 
         $date = self::_loadDate($formData['date']);
 
@@ -141,8 +145,9 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             $formErrors = array();
 
             foreach ($form->getElements() as $key => $element) {
-                if (!isset($errors[$element->getName()]))
+                if (!isset($errors[$element->getName()])) {
                     continue;
+                }
 
                 $formErrors[$element->getAttribute('id')] = array();
 
@@ -151,8 +156,9 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
                 }
             }
 
-            if (sizeof($upload->getMessages()) > 0)
+            if (sizeof($upload->getMessages()) > 0) {
                 $formErrors['file'] = $upload->getMessages();
+            }
 
             return new ViewModel(
                 array(
@@ -169,15 +175,17 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($edition = $this->_getEdition()))
+        if (!($edition = $this->_getEdition())) {
             return new ViewModel();
+        }
 
         $filePath = 'public' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('publication.public_pdf_directory');
 
-        if (file_exists($filePath . $edition->getFileName()))
+        if (file_exists($filePath . $edition->getFileName())) {
             unlink($filePath . $edition->getFileName());
+        }
 
         $this->getEntityManager()->remove($edition);
         $this->getEntityManager()->flush();
@@ -191,8 +199,9 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
     public function viewAction()
     {
-        if (!($edition = $this->_getEdition()))
+        if (!($edition = $this->_getEdition())) {
             return new ViewModel();
+        }
 
         $filePath = 'public' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -231,7 +240,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'publication_admin_publication',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -251,7 +260,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'publication_admin_publication',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -271,7 +280,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'publication_admin_publication',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -291,7 +300,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             $this->redirect()->toRoute(
                 'publication_admin_publication',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

@@ -18,8 +18,8 @@
 
 namespace SportBundle\Repository;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Lap
@@ -107,8 +107,9 @@ class Lap extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        if (1 == $nbResults)
+        if (1 == $nbResults) {
             return isset($resultSet[0]) ? $resultSet[0] : null;
+        }
 
         return $resultSet;
     }
@@ -151,5 +152,26 @@ class Lap extends EntityRepository
             ->getResult();
 
         return $resultSet[0][1];
+    }
+
+    public function getRunnersAndCount(AcademicYear $academicYear)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('IDENTITY(l.runner) runner','COUNT(l.runner) lapCount')
+            ->from('SportBundle\Entity\Lap', 'l')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('l.academicYear', ':academicYear'),
+                    $query->expr()->isNotNull('l.startTime'),
+                    $query->expr()->isNotNull('l.endTime')
+                )
+            )
+            ->groupBy('l.runner')
+            ->orderBy('lapCount','DESC')
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
     }
 }

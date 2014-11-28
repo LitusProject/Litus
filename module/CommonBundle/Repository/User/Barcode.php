@@ -18,7 +18,9 @@
 
 namespace CommonBundle\Repository\User;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Organization;
 
 /**
  * Barcode
@@ -30,17 +32,28 @@ class Barcode extends EntityRepository
 {
     public function findOneByBarcode($barcode)
     {
-        if (!is_numeric($barcode))
-            return null;
+        $ean12Result = null;
+        if (is_numeric($barcode)) {
+            $eanBarcode = $barcode;
+            if (strlen($barcode) == 13) {
+                $eanBarcode = floor($barcode / 10);
+            }
 
-        if (strlen($barcode) == 13)
-            $barcode = floor($barcode / 10);
-        if (strlen($barcode) > 12)
-            return null;
+            $query = $this->_em->createQueryBuilder();
+            $ean12Result = $query->select('b')
+                ->from('CommonBundle\Entity\User\Barcode\Ean12', 'b')
+                ->where(
+                    $query->expr()->eq('b.barcode', ':barcode')
+                )
+                ->setParameter('barcode', $eanBarcode)
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult();
+        }
 
         $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('b')
-            ->from('CommonBundle\Entity\User\Barcode', 'b')
+        $qrResult = $query->select('b')
+            ->from('CommonBundle\Entity\User\Barcode\Qr', 'b')
             ->where(
                 $query->expr()->eq('b.barcode', ':barcode')
             )
@@ -49,6 +62,120 @@ class Barcode extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
 
-        return $resultSet;
+        if (null !== $ean12Result && null !== $qrResult) {
+            throw new \RuntimeException('Found both an EAN-12 and QR code for this barcode');
+        }
+
+        return null !== $ean12Result ? $ean12Result : $qrResult;
+    }
+
+    public function findAllByBarcode($barcode)
+    {
+        $ean12Result = array();
+        if (is_numeric($barcode)) {
+            $eanBarcode = $barcode;
+            if (strlen($barcode) == 13) {
+                $eanBarcode = floor($barcode / 10);
+            }
+
+            $query = $this->_em->createQueryBuilder();
+            $ean12Result = $query->select('b')
+                ->from('CommonBundle\Entity\User\Barcode\Ean12', 'b')
+                ->where(
+                    $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
+                )
+                ->setParameter('barcode', strtolower($eanBarcode) . '%')
+                ->getQuery()
+                ->getResult();
+        }
+
+        $query = $this->_em->createQueryBuilder();
+        $qrResult = $query->select('b')
+            ->from('CommonBundle\Entity\User\Barcode\Qr', 'b')
+            ->where(
+                $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode')
+            )
+            ->setParameter('barcode', strtolower($barcode) . '%')
+            ->getQuery()
+            ->getResult();
+
+        return array_merge($qrResult, $ean12Result);
+    }
+
+    public function findAllByBarcodeAndOrganization($barcode, AcademicYear $academicYear, Organization $organization)
+    {
+        $persons = array(0);
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('a.id')
+            ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+            ->innerJoin('m.academic', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.organization', ':organization'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('organization', $organization)
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        foreach ($resultSet as $result) {
+            $$ids = array(0);
+            $query = $this->_em->createQueryBuilder();
+            $resultSet = $query->select('a.id')
+                ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
+                ->innerJoin('m.academic', 'a')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->eq('m.organization', ':organization'),
+                        $query->expr()->eq('m.academicYear', ':academicYear')
+                    )
+                )
+                ->setParameter('organization', $organization)
+                ->setParameter('academicYear', $academicYear)
+                ->getQuery()
+                ->getResult();
+
+            foreach ($resultSet as $result) {
+                $ids[] = $result['id'];
+            }
+        }
+
+        $ean12Result = array();
+        if (is_numeric($barcode)) {
+            $eanBarcode = $barcode;
+            if (strlen($barcode) == 13) {
+                $eanBarcode = floor($barcode / 10);
+            }
+
+            $query = $this->_em->createQueryBuilder();
+            $ean12Result = $query->select('b')
+                ->from('CommonBundle\Entity\User\Barcode\Ean12', 'b')
+                ->where(
+                    $query->expr()->andX(
+                        $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode'),
+                        $query->expr()->in('b.person', $ids)
+                    )
+                )
+                ->setParameter('barcode', strtolower($eanBarcode) . '%')
+                ->getQuery()
+                ->getResult();
+        }
+
+        $query = $this->_em->createQueryBuilder();
+        $qrResult = $query->select('b')
+            ->from('CommonBundle\Entity\User\Barcode\Qr', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode'),
+                    $query->expr()->in('b.person', $ids)
+                )
+            )
+            ->setParameter('barcode', strtolower($barcode) . '%')
+            ->getQuery()
+            ->getResult();
+
+        return array_merge($qrResult, $ean12Result);
     }
 }

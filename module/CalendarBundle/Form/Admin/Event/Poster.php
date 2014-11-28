@@ -19,9 +19,9 @@
 namespace CalendarBundle\Form\Admin\Event;
 
 use CommonBundle\Component\Form\Admin\Element\File,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Event poster form.

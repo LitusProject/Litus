@@ -46,7 +46,7 @@ class Date extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The booking close date cannot be after the event'
+        self::NOT_VALID => 'The booking close date cannot be after the event',
     );
 
     /**
@@ -75,15 +75,17 @@ class Date extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (!is_numeric($context['event']))
+        if (!is_numeric($context['event'])) {
             return false;
+        }
 
         $activity = $this->_entityManager
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneById($context['event']);
 
-        if (null === $activity || $activity->getStartDate() >= DateTime::createFromFormat($this->_format, $value))
+        if (null === $activity || $activity->getStartDate() >= DateTime::createFromFormat($this->_format, $value)) {
             return true;
+        }
 
         $this->error(self::NOT_VALID);
 

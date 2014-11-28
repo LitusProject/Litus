@@ -69,8 +69,9 @@ EOT
         $sessions = $em->getRepository('CommonBundle\Entity\User\Session')
             ->findAllExpired();
 
-        foreach($sessions as $session)
+        foreach ($sessions as $session) {
             $em->remove($session);
+        }
 
         $this->writeln('Removed <comment>' . count($sessions) . '</comment> expired sessions');
 
@@ -83,8 +84,9 @@ EOT
         $sessions = $em->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
             ->findAllExpired();
 
-        foreach($sessions as $session)
+        foreach ($sessions as $session) {
             $em->remove($session);
+        }
 
         $this->writeln('Removed <comment>' . count($sessions) . '</comment> expired Shibboleth codes');
 

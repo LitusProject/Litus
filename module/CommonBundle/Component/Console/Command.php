@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Component\Console;
 
-use Zend\ServiceManager\ServiceLocatorAwareTrait,
-    Symfony\Component\Console\Input\InputInterface as Input,
-    Symfony\Component\Console\Output\OutputInterface as Output;
+use Symfony\Component\Console\Input\InputInterface as Input,
+    Symfony\Component\Console\Output\OutputInterface as Output,
+    Zend\ServiceManager\ServiceLocatorAwareTrait;
 
 abstract class Command extends \Symfony\Component\Console\Command\Command implements \Zend\ServiceManager\ServiceLocatorAwareInterface
 {
@@ -171,8 +171,9 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      */
     protected function getCache()
     {
-        if ($this->getServiceLocator()->has('cache'))
+        if ($this->getServiceLocator()->has('cache')) {
             return $this->getServiceLocator()->get('cache');
+        }
 
         return null;
     }

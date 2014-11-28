@@ -73,7 +73,7 @@ class LeaseController extends AdminController
                     )
                 );
 
-                return new ViewModel;
+                return new ViewModel();
             }
         }
 
@@ -86,8 +86,9 @@ class LeaseController extends AdminController
 
     public function editAction()
     {
-        if (!($item = $this->_getItem()))
+        if (!($item = $this->_getItem())) {
             return new ViewModel();
+        }
 
         $form  = new EditItemForm($this->getEntityManager(), $item);
 
@@ -129,8 +130,9 @@ class LeaseController extends AdminController
     {
         $this->initAjax();
 
-        if (!($item = $this->_getItem()))
+        if (!($item = $this->_getItem())) {
             return new ViewModel();
+        }
 
         $leaseRepo = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Lease\Lease');
@@ -139,7 +141,7 @@ class LeaseController extends AdminController
             return new ViewModel(
                 array(
                     'result' => array(
-                        'status' => 'unreturned_leases'
+                        'status' => 'unreturned_leases',
                     ),
                 )
             );
@@ -157,7 +159,7 @@ class LeaseController extends AdminController
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -197,7 +199,7 @@ class LeaseController extends AdminController
             $this->redirect()->toRoute(
                 'logistics_admin_lease',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

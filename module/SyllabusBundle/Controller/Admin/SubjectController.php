@@ -20,8 +20,8 @@ namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Entity\Subject,
     SyllabusBundle\Entity\StudySubjectMap,
+    SyllabusBundle\Entity\Subject,
     SyllabusBundle\Form\Admin\Subject\Add as AddForm,
     SyllabusBundle\Form\Admin\Subject\Edit as EditForm,
     Zend\View\Model\ViewModel;
@@ -35,11 +35,13 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
-        if (null !== $this->getParam('field'))
+        if (null !== $this->getParam('field')) {
             $subjects = $this->_search($academicYear);
+        }
 
         if (!isset($subjects)) {
             $subjects = $this->getEntityManager()
@@ -68,8 +70,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($this->getEntityManager());
 
@@ -123,11 +126,13 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($subject = $this->_getSubject()))
+        if (!($subject = $this->_getSubject())) {
             return new ViewModel();
+        }
 
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $form = new EditForm($this->getEntityManager(), $subject);
 
@@ -194,8 +199,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return new ViewModel();
+        }
 
         $subjects = $this->_search($academicYear);
 
@@ -225,8 +231,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->_getAcademicYear()))
+        if (!($academicYear = $this->_getAcademicYear())) {
             return;
+        }
 
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject')
@@ -275,7 +282,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -295,7 +302,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -308,8 +315,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     private function _getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear'))
+        if (null !== $this->getParam('academicyear')) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
         if (null === $academicYear) {
@@ -321,7 +329,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             $this->redirect()->toRoute(
                 'syllabus_admin_study',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

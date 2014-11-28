@@ -28,8 +28,8 @@ use CommonBundle\Component\Form\Admin\Element\Select,
     CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction,
     Doctrine\ORM\EntityManager,
     Zend\Form\Element\Submit,
-    Zend\InputFilter\InputFilter,
-    Zend\InputFilter\Factory as InputFactory;
+    Zend\InputFilter\Factory as InputFactory,
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Sale Session content
@@ -117,20 +117,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function _getStudies()
     {
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
+        $academicYear = AcademicYear::getOrganizationYear($this->_entityManager);
 
         $studies = $this->_entityManager
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findAllParentsByAcademicYear($academicYear);
 
         $options = array();
-        foreach($studies as $study)
+        foreach ($studies as $study) {
             $options[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
+        }
 
         return $options;
     }
@@ -149,7 +145,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new ExistsValidator($this->_entityManager, $this->_session)
+                        new ExistsValidator($this->_entityManager, $this->_session),
                     ),
                 )
             )
@@ -177,7 +173,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            new ValuesValidator('start_value_name')
+                            new ValuesValidator('start_value_name'),
                         ),
                     )
                 )
@@ -204,7 +200,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            new ValuesValidator('start_value_year')
+                            new ValuesValidator('start_value_year'),
                         ),
                     )
                 )

@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Repository\Prof;
 
-use CommonBundle\Entity\User\Person,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\User\Person;
 
 /**
  * Action

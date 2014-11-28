@@ -18,12 +18,11 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use CommonBundle\Component\Util\File\TmpFile,
-     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
-     CommonBundle\Component\Util\Xml\Object as XmlObject,
-     BrBundle\Entity\Contract,
-     BrBundle\Entity\Invoice as InvoiceEntity,
-     Doctrine\ORM\EntityManager;
+use BrBundle\Entity\Invoice as InvoiceEntity,
+    CommonBundle\Component\Util\File\TmpFile,
+    CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
+    CommonBundle\Component\Util\Xml\Object as XmlObject,
+    Doctrine\ORM\EntityManager;
 
 /**
  * Generate a PDF for an invoice.
@@ -79,10 +78,11 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $logo = $configs->getConfigValue('organization_logo');
         $unionVat = $configs->getConfigValue('br.vat_number');
 
-        if ('' == $this->_invoice->getVATContext())
+        if ('' == $this->_invoice->getVATContext()) {
             $vatTypeExplanation = "";
-        else
-            $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation')." ".$this->_invoice->getVATContext();
+        } else {
+            $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation') . " " . $this->_invoice->getVATContext();
+        }
 
         $subEntries = unserialize($configs->getConfigValue('br.invoice_below_entries'))['nl'];
 
@@ -108,7 +108,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                         ),
                         new XmlObject('price', null, XmlObject::fromString('<euro/>' . number_format($price, 2))),
                         new XmlObject('amount', null, $entry->getOrderEntry()->getQuantity() . ''),
-                        new XmlObject('vat_type', null, $vatTypes[$product->getVatType()] . '%')
+                        new XmlObject('vat_type', null, $vatTypes[$product->getVatType()] . '%'),
                     )
                 );
 
@@ -129,24 +129,25 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $discount = $this->_invoice->getOrder()->getContract()->getDiscount();
         if (0 != $discount) {
-            if('' == $this->_invoice->getOrder()->getContract()->getDiscountContext())
+            if ('' == $this->_invoice->getOrder()->getContract()->getDiscountContext()) {
                 $entries[] = new XmlObject('entry', null,
                 array(
                     new XmlObject('description', null,"Korting"),
                     new XmlObject('price', null, XmlObject::fromString('- <euro/>' . number_format($discount, 2))),
                     new XmlObject('amount', null, ' '),
-                    new XmlObject('vat_type', null, ' ')
+                    new XmlObject('vat_type', null, ' '),
                 )
             );
-            else
+            } else {
                 $entries[] = new XmlObject('entry', null,
                     array(
                         new XmlObject('description', null,$this->_invoice->getOrder()->getContract()->getDiscountContext()),
                         new XmlObject('price', null, XmlObject::fromString('- <euro/>' . number_format($discount, 2))),
                         new XmlObject('amount', null, ' '),
-                        new XmlObject('vat_type', null, ' ')
+                        new XmlObject('vat_type', null, ' '),
                     )
                 );
+            }
         }
 
         $totalExclusive = $totalExclusive - $discount;
@@ -161,7 +162,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                         new XmlObject('invoice_date', null, $invoiceDate),
                         new XmlObject('expiration_date', null, $dueDate),
                         new XmlObject('vat_client', null, $clientVat),
-                        new XmlObject('reference', null, $reference)
+                        new XmlObject('reference', null, $reference),
                     )
                 ),
 
@@ -201,11 +202,11 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                                     'country',
                                     null,
                                     $unionAddressArray['country']
-                                )
+                                ),
                             )
                         ),
                         new XmlObject('logo', null, $logo),
-                        new XmlObject('vat_number', null, $unionVat)
+                        new XmlObject('vat_number', null, $unionVat),
                     )
                 ),
 
@@ -245,9 +246,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                                     'country',
                                     null,
                                     $company->getAddress()->getCountry()
-                                )
+                                ),
                             )
-                        )
+                        ),
                     )
                 ),
 
@@ -258,7 +259,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                         new XmlObject('vat_type_explanation', null, $vatTypeExplanation),
                         new XmlObject('price_excl', null, XmlObject::fromString('<euro/>' . number_format($totalExclusive, 2))),
                         new XmlObject('price_vat', null, XmlObject::fromString('<euro/>' . number_format($totalVat, 2))),
-                        new XmlObject('price_incl', null, XmlObject::fromString('<euro/>' . number_format($total, 2)))
+                        new XmlObject('price_incl', null, XmlObject::fromString('<euro/>' . number_format($total, 2))),
                     )
                 ),
 
@@ -266,7 +267,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
                 new XmlObject('footer'),
 
-                new XmlObject('sale_conditions_nl')
+                new XmlObject('sale_conditions_nl'),
             )
         ));
     }

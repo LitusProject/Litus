@@ -28,10 +28,9 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
     CudiBundle\Entity\Article,
     CudiBundle\Entity\Article\Internal as InternalArticle,
     Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\Validator\Subject\Code as SubjectValidator,
-    Zend\InputFilter\InputFilter,
+    Zend\Form\Element\Submit,
     Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Zend\InputFilter\InputFilter;
 
 /**
  * Add Article
@@ -205,8 +204,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $bindingOptions = array();
-        foreach($bindings as $item)
+        foreach ($bindings as $item) {
             $bindingOptions[$item->getId()] = $item->getName();
+        }
 
         return $bindingOptions;
     }
@@ -218,8 +218,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $colorOptions = array();
-        foreach($colors as $item)
+        foreach ($colors as $item) {
             $colorOptions[$item->getId()] = $item->getName();
+        }
 
         return $colorOptions;
     }
@@ -236,7 +237,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'downloadable' => $article->isDownloadable(),
             'same_as_previous_year' => $article->isSameAsPreviousYear(),
             'type' => $article->getType(),
-            'internal' => $article->isInternal()
+            'internal' => $article->isInternal(),
         );
 
         if ($article instanceof InternalArticle) {
@@ -325,7 +326,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'isbn',
                             'options' => array(
-                                'type' => 'auto'
+                                'type' => 'auto',
                             ),
                         ),
                     ),
@@ -412,39 +413,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         if (isset($this->data['type']) && $this->data['type'] !== 'common' && isset($this->data['subject_id'])) {
-            if ('' == $this->data['subject_id'] && $this->has('subject')) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'subject',
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
+            $inputFilter->add(
+                $factory->createInput(
+                    array(
+                        'name'     => 'subject_id',
+                        'required' => true,
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'int',
                             ),
-                            'validators' => array(
-                                new SubjectValidator($this->_entityManager),
-                            ),
-                        )
+                        ),
                     )
-                );
-            } else {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'subject_id',
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'int',
-                                ),
-                            ),
-                        )
-                    )
-                );
-            }
+                )
+            );
         }
 
         return $inputFilter;

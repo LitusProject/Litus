@@ -18,11 +18,11 @@
 
 namespace CalendarBundle\Form\Admin\Event;
 
-use Doctrine\ORM\EntityManager,
-    CalendarBundle\Component\Validator\Name as EventNameValidator,
+use CalendarBundle\Component\Validator\Name as EventNameValidator,
     CalendarBundle\Entity\Node\Event,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\Form\Element\Submit;
+    Doctrine\ORM\EntityManager,
+    Zend\Form\Element\Submit,
+    Zend\InputFilter\Factory as InputFactory;
 
 /**
  * Edit an event.
@@ -57,8 +57,9 @@ class Edit extends Add
         $data = array(
             'start_date' => $event->getStartDate()->format('d/m/Y H:i'),
         );
-        if ($event->getEndDate())
+        if ($event->getEndDate()) {
             $data['end_date'] = $event->getEndDate()->format('d/m/Y H:i');
+        }
 
         foreach ($this->getLanguages() as $language) {
             $data['location_' . $language->getAbbrev()] = $event->getLocation($language, false);

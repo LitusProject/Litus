@@ -56,7 +56,7 @@ class Edit extends \CommonBundle\Form\Admin\Role\Add
             array(
                 'name' => $role->getName(),
                 'parents' => $this->_createParentsPopulationArray($role->getParents()),
-                'actions' => $this->_createActionsPopulationArray($role->getActions())
+                'actions' => $this->_createActionsPopulationArray($role->getActions()),
             )
         );
     }

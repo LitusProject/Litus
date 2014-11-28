@@ -32,8 +32,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz())) {
             return new ViewModel();
+        }
 
         $rounds = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Round')
@@ -66,8 +67,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($team = $this->_getTeam()) || !($round = $this->_getRound()))
+        if (!($team = $this->_getTeam()) || !($round = $this->_getRound())) {
             return new ViewModel();
+        }
 
         $point = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Point')
@@ -90,7 +92,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel(
                 array(
                     'result' => array(
-                        'status' => 'error'
+                        'status' => 'error',
                     ),
                 )
             );
@@ -101,7 +103,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success'
+                    'status' => 'success',
                 ),
             )
         );
@@ -109,8 +111,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($quiz = $this->_getQuiz()))
+        if (!($quiz = $this->_getQuiz())) {
             return new ViewModel();
+        }
 
         $rounds = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Round')
@@ -128,8 +131,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         $totals = array();
         foreach ($allPoints as $point) {
             $points[$point->getTeam()->getId()][$point->getRound()->getId()] = $point->getPoint();
-            if(!isset($totals[$point->getTeam()->getId()]))
+            if (!isset($totals[$point->getTeam()->getId()])) {
                 $totals[$point->getTeam()->getId()] = 0;
+            }
             $totals[$point->getTeam()->getId()] += $point->getPoint();
         }
 
@@ -147,7 +151,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
                 'teams' => $teams_indexed,
                 'points' => $points,
                 'total_points' => $totals,
-                'order'=> $this->getRequest()->getQuery('order', 'ASC'),
+                'order' => $this->getRequest()->getQuery('order', 'ASC'),
             )
         );
     }
@@ -191,7 +195,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -207,7 +211,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -251,7 +255,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -267,7 +271,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -311,7 +315,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -327,7 +331,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'quiz_admin_quiz',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

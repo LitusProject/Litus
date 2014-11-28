@@ -33,8 +33,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 {
     public function manageAction()
     {
-        if (!($article = $this->_getSaleArticle()))
+        if (!($article = $this->_getSaleArticle())) {
             return new ViewModel();
+        }
 
         $form = new AddForm($article, $this->getEntityManager());
 
@@ -103,8 +104,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($restriction = $this->_getRestriction()))
+        if (!($restriction = $this->_getRestriction())) {
             return new ViewModel();
+        }
 
         $this->getEntityManager()->remove($restriction);
         $this->getEntityManager()->flush();
@@ -127,7 +129,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -147,7 +149,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -168,7 +170,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 
@@ -188,7 +190,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             $this->redirect()->toRoute(
                 'cudi_admin_sales_article',
                 array(
-                    'action' => 'manage'
+                    'action' => 'manage',
                 )
             );
 

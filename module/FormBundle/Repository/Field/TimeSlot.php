@@ -125,8 +125,9 @@ class TimeSlot extends EntityRepository
             ->getResult();
 
         $ids = array(0);
-        foreach($reminderDoodles as $doodle)
+        foreach ($reminderDoodles as $doodle) {
             $ids[] = $doodle->getId();
+        }
 
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('t')
