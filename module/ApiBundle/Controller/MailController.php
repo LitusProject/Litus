@@ -52,6 +52,11 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
+    public function getAliasesAction()
+    {
+        return $this->aliasesAction();
+    }
+
     public function listsArchiveAction()
     {
         $lists = $this->getEntityManager()
@@ -80,5 +85,10 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
                 'data' => $archive->getContent()
             )
         );
+    }
+
+    public function getListsArchiveAction()
+    {
+        return $this->listsArchiveAction();
     }
 }

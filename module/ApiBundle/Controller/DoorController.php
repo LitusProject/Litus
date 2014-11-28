@@ -30,7 +30,7 @@ use CommonBundle\Entity\User\Person\Academic,
  */
 class DoorController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function getRulesAction()
+    public function rlesAction()
     {
         $this->initJson();
 
@@ -77,6 +77,11 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
                 'result' => (object) $result
             )
         );
+    }
+
+    public function getRulesAction()
+    {
+        return $this->rulesAction();
     }
 
     public function logAction()

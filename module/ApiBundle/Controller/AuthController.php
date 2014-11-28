@@ -62,6 +62,11 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
+    public function getPersonAction()
+    {
+        return $this->personAction();
+    }
+
     /**
      * @return Person|null
      */
