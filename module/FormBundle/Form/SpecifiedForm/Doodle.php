@@ -43,7 +43,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $_person;
 
     /**
-     * @var GuestInfo
+     * @var GuestInfoEntity
      */
     protected $_guestInfo;
 

@@ -220,7 +220,7 @@ class Product
     }
 
     /**
-     * @param  string $content The content of this section
+     * @param  string $contractText The content of this section
      * @return self
      */
     public function setContractText($contractText)
@@ -235,7 +235,7 @@ class Product
     }
 
     /**
-     * @return string
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {

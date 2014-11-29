@@ -19,12 +19,13 @@
 namespace BrBundle\Component\ContractParser;
 
 /**
- *
- *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class IllegalFormatException extends \Exception
 {
+    /**
+     * @var integer
+     */
     private $lineNb;
 
     /**

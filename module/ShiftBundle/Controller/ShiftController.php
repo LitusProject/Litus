@@ -101,9 +101,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         'The given search query was invalid!'
                     );
                 }
-            }
-
-            if (isset($formData['unit'])) {
+            } elseif (isset($formData['unit'])) {
                 $unitSearchForm->setData($formData);
 
                 if ($unitSearchForm->isValid() && '' != $formData['unit']) {
@@ -125,9 +123,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         'The given search query was invalid!'
                     );
                 }
-            }
-
-            if (isset($formData['date'])) {
+            } elseif (isset($formData['date'])) {
                 $dateSearchForm->setData($formData);
 
                 if ($dateSearchForm->isValid() && '' != $formData['date']) {

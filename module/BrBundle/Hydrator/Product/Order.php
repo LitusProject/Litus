@@ -97,7 +97,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         if (isset($data['new_product'])) {
-            $products = $this->getEntityManager()
+            $product = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Product')
                 ->findByAcademicYear($data['new_product']);
 

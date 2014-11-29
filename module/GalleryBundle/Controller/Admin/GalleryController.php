@@ -440,13 +440,4 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         return $album;
     }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y', $date) ?: null;
-    }
 }

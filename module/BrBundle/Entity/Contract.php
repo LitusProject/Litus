@@ -22,7 +22,6 @@ use BrBundle\Entity\Collaborator,
     BrBundle\Entity\Company,
     BrBundle\Entity\Contract\ContractEntry,
     BrBundle\Entity\Product\Order,
-    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -140,10 +139,11 @@ class Contract
     private $version;
 
     /**
-     * @param Person  $author   The author of this contract
-     * @param Company $company  The company for which this contract is meant
-     * @param int     $discount The discount associated with this contract
-     * @param string  $title    The title of the contract
+     * @param Order        $order    The order of this contract
+     * @param Collaborator $author   The author of this contract
+     * @param Company      $company  The company for which this contract is meant
+     * @param int          $discount The discount associated with this contract
+     * @param string       $title    The title of the contract
      */
     public function __construct(Order $order, Collaborator $author, Company $company, $discount, $title)
     {
@@ -200,7 +200,7 @@ class Contract
     }
 
     /**
-     * @return int
+     * @return Order
      */
     public function getOrder()
     {
@@ -208,11 +208,14 @@ class Contract
     }
 
     /**
-     * @return DateTime
+     * @param  Order $order
+     * @return self
      */
     public function setOrder(Order $order)
     {
-        return $this->order = $order;
+        $this->order = $order;
+
+        return $this;
     }
 
     /**
@@ -399,7 +402,7 @@ class Contract
     }
 
     /**
-     * @return int
+     * @return string
      *
      * @note    The contractnumber gets constructed by the following format "AAxYYY"
      *          With AA the $contractStartNb, x the personal number of the collaborator who created the contract and

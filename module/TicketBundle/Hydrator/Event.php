@@ -20,7 +20,8 @@ namespace TicketBundle\Hydrator;
 
 use DateTime,
     TicketBundle\Entity\Event as EventEntity,
-    TicketBundle\Entity\Option;
+    TicketBundle\Entity\Option,
+    TicketBundle\Entity\Ticket as TicketEntity;
 
 class Event extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -85,7 +86,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                 if ($data['number_of_tickets'] >= $object->getNumberOfTickets()) {
                     for ($i = $object->getNumberOfTickets(); $i < $data['number_of_tickets']; $i++) {
                         $this->getEntityManager()->persist(
-                            new Ticket(
+                            new TicketEntity(
                                 $object,
                                 'empty',
                                 null,
@@ -113,7 +114,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             } else { // tickets weren't generated yet, but are now
                 for ($i = 0 ; $i < $data['number_of_tickets'] ; $i++) {
                     $this->getEntityManager()->persist(
-                        new Ticket(
+                        new TicketEntity(
                             $object,
                             'empty',
                             null,

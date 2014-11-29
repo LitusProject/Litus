@@ -19,20 +19,29 @@
 namespace BrBundle\Component\ContractParser;
 
 /**
- *
- *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class LastEntriesState extends EntryState
 {
+    /**
+     * @var array
+     */
     private $lastEntries;
 
+    /**
+     * @param array $entries
+     * @param Entry
+     */
     public function __construct($entries, $entry)
     {
         parent::__construct($entry);
         $this->lastEntries = $entries;
     }
 
+    /**
+     * @param  string $text
+     * @return self
+     */
     public function addEntry($text)
     {
         $entry = new Entry($text);
@@ -41,6 +50,10 @@ class LastEntriesState extends EntryState
         return $this;
     }
 
+    /**
+     * @param  string        $text
+     * @return LastTextState
+     */
     public function addText($text)
     {
         $t = new Text($text);
@@ -50,6 +63,9 @@ class LastEntriesState extends EntryState
         return new LastTextState($t, $this->getEntry());
     }
 
+    /**
+     * @param string $text
+     */
     public function passOn($indent, $text)
     {
         $this->lastEntries->passOn($indent, $text);

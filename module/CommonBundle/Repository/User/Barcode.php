@@ -119,8 +119,9 @@ class Barcode extends EntityRepository
             ->getQuery()
             ->getResult();
 
+        $ids = array(0);
+
         foreach ($resultSet as $result) {
-            $ids = array(0);
             $query = $this->_em->createQueryBuilder();
             $resultSet = $query->select('a.id')
                 ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')

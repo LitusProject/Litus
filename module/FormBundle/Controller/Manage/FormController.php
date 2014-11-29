@@ -187,8 +187,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         ->findOneById($formData['person_form']['person']['id']);
                 }
 
-                $data = array_merge($formData['fields_form'], isset($formData['guest_form']) ? $formData['guest_form'] : array());
-
                 $formEntry = new FormEntry($person, $formSpecification);
                 if (null === $person) {
                     $formEntry->setGuestInfo(

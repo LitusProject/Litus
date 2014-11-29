@@ -335,7 +335,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->setISBN($previous->getISBN())
             ->setUrl($previous->getUrl())
             ->setType($previous->getType())
-            ->setDownloadable($previous->isDownloadable())
+            ->setIsDownloadable($previous->isDownloadable())
             ->setSameAsPreviousYear($previous->isSameAsPreviousYear())
             ->setVersionNumber($previous->getVersionNumber());
         $this->getEntityManager()->persist($article);
@@ -426,7 +426,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->setISBN($previous->getISBN())
             ->setUrl($previous->getUrl())
             ->setType($previous->getType())
-            ->setDownloadable($previous->isDownloadable())
+            ->setIsDownloadable($previous->isDownloadable())
             ->setSameAsPreviousYear($previous->isSameAsPreviousYear())
             ->setNbBlackAndWhite(0)
             ->setNbColored(0)

@@ -97,7 +97,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
                     $mail = new Message();
                     $mail->setBody(
-                            str_replace('{{ name }}', $player->getFullName(),
+                            str_replace('{{ name }}', $reservation->getPlayer()->getFullName(),
                                 str_replace('{{ start }}', $formatterDate->format($reservation->getStartDate()),
                                     str_replace('{{ end }}', $formatterDate->format($reservation->getEndDate()), $message)
                                 )
@@ -295,14 +295,5 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
         }
 
         return $reservation;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('D d#m#Y H#i', $date) ?: null;
     }
 }

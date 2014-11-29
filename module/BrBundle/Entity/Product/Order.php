@@ -79,7 +79,7 @@ class Order
     private $invoice;
 
     /**
-     * @var OrderEntry The entries in this order
+     * @var ArrayCollection The entries in this order
      *
      * @ORM\OneToMany(
      *      targetEntity="BrBundle\Entity\Product\OrderEntry",

@@ -265,13 +265,4 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
         return $reservation;
     }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
-    }
 }

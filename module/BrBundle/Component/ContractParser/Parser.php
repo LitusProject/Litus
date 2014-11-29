@@ -19,12 +19,13 @@
 namespace BrBundle\Component\ContractParser;
 
 /**
- *
- *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class Parser
 {
+    /**
+     * @var Entry
+     */
     private $rootEntry;
 
     public function __construct()
@@ -32,6 +33,9 @@ class Parser
         $this->rootEntry = new EntriesOnlyEntry();
     }
 
+    /**
+     * @param string $text
+     */
     public function parse($text)
     {
         $lines = explode("\n", $text);
@@ -50,11 +54,17 @@ class Parser
         }
     }
 
+    /**
+     * @param string $line
+     */
     protected function parseLine($line)
     {
         $this->rootEntry->parse($line);
     }
 
+    /**
+     * @return string
+     */
     public function getXml()
     {
         $XmlNodeVisitor = new XmlNodeVisitor();

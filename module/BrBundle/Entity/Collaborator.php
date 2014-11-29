@@ -30,7 +30,7 @@ use CommonBundle\Entity\User\Person,
 class Collaborator
 {
     /**
-     * @var string The company's ID
+     * @var integer The company's ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")

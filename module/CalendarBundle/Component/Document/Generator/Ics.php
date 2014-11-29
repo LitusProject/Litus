@@ -54,7 +54,7 @@ class Ics
     private $_suffix;
 
     /**
-     * @var string
+     * @var Url
      */
     private $_url;
 
