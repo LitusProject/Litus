@@ -106,7 +106,6 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     }
 
     /**
-     * @param  News        $item
      * @return XmlObject[]
      */
     private function _generateHeader()

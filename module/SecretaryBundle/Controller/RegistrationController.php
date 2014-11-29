@@ -586,7 +586,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         return $this->_saveStudiesAction(
             $academic,
             $this->getCurrentAcademicYear(),
-            $this->getRequest()->getPost()
+            $this->getRequest()->getPost()->toArray()
         );
     }
 
@@ -625,7 +625,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         return $this->_saveSubjectAction(
             $academic,
             $this->getCurrentAcademicYear(),
-            $this->getRequest()->getPost()
+            $this->getRequest()->getPost()->toArray()
         );
     }
 

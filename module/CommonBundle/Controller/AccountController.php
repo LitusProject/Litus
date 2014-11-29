@@ -368,7 +368,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return $this->_saveStudiesAction(
             $this->getAuthentication()->getPersonObject(),
             $this->getCurrentAcademicYear(),
-            $this->getRequest()->getPost()
+            $this->getRequest()->getPost()->toArray()
         );
     }
 
@@ -414,7 +414,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return $this->_saveSubjectAction(
             $this->getAuthentication()->getPersonObject(),
             $this->getCurrentAcademicYear(),
-            $this->getRequest()->getPost()
+            $this->getRequest()->getPost()->toArray()
         );
     }
 

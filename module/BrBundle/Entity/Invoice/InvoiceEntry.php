@@ -123,7 +123,7 @@ class InvoiceEntry
     }
 
     /**
-     * @return text
+     * @return string
      */
     public function getInvoiceText()
     {

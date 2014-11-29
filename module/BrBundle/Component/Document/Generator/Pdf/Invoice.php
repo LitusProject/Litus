@@ -273,7 +273,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
     }
 
     /**
-     * @param  string $vat;
+     * @param  string $vat
      * @return string
      */
     private function _VATFormat($vat)

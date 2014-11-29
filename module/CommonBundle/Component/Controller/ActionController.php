@@ -441,8 +441,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * Retrieve lilo from the DI container.
      *
-     * @param  string $message
-     * @param  array  $tags
+     * @param  string   $message
+     * @param  string[] $tags
      * @return void
      */
     protected function logToLilo($message, array $tags = array())
