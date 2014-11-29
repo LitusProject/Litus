@@ -200,8 +200,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->addSubmit($this->_form->getSubmitText($this->_language));
 
         if (null !== $this->_entry) {
-            $hydrator = $this->getHydrator();
-            $this->populateValues($hydrator->extract($this->_entry));
+            $this->bind($this->_entry);
 
             foreach ($this->_entry->getFieldEntries() as $fieldEntry) {
                 if ($fieldEntry->getField() instanceof FileFieldEntity) {

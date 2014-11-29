@@ -189,16 +189,17 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
                 $data = array_merge($formData['fields_form'], isset($formData['guest_form']) ? $formData['guest_form'] : array());
 
-                $result = FormHelper::save(null, $person, null, $formSpecification, $data, $this->getLanguage(), $this->getEntityManager(), null, null, $this->getRequest());
-
-                if (!$result) {
-                    return new ViewModel(
-                        array(
-                            'formSpecification' => $formSpecification,
-                            'form'          => $form,
-                        )
+                $formEntry = new FormEntry($person, $formSpecification);
+                if (null === $person) {
+                    $formEntry->setGuestInfo(
+                        new GuestInfo($this->getEntityManager(), $this->getRequest())
                     );
                 }
+
+                $formEntry = $form->hydrateObject($formEntry);
+
+                $this->getEntityManager()->persist($formEntry);
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -281,22 +282,13 @@ class FormController extends \FormBundle\Component\Controller\FormController
         );
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $result = FormHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), null, null, $this->getRequest());
-
-                if (!$result) {
-                    return new ViewModel(
-                        array(
-                            'specification' => $formEntry->getForm(),
-                            'form'          => $form,
-                        )
-                    );
-                }
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Succes',

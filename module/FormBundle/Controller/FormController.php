@@ -157,6 +157,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 'guest_info' => $guestInfo,
             )
         );
+
         if (isset($draftVersion)) {
             $form->setAttribute(
                 'action',
@@ -179,18 +180,20 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $isDraft = null !== $this->getRequest()->getPost()->get('save_as_draft');
 
             if ($form->isValid() || $isDraft) {
-                $formData = $form->getData();
-
-                $result = FormHelper::save(null, $person, $guestInfo, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
-
-                if (!$result) {
-                    return new ViewModel(
-                        array(
-                            'specification' => $formSpecification,
-                            'form'          => $form,
-                            'entries'       => $entries,
-                        )
+                $formEntry = new FormEntry($person, $formSpecification);
+                if (null === $person) {
+                    $formEntry->setGuestInfo(
+                        new GuestInfo($this->getEntityManager(), $this->getRequest())
                     );
+                }
+
+                $formEntry = $form->hydrateObject($formEntry);
+
+                $this->getEntityManager()->persist($formEntry);
+                $this->getEntityManager()->flush();
+
+                if ($formSpecification->hasMail() && !$isDraft) {
+                    MailHelper::send($formEntry, $formSpecification, $this->getLanguage(), $this->getMailTransport(), $this->url(), $this->getRequest());
                 }
 
                 if (!$isDraft) {
@@ -546,27 +549,27 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($entry = $this->_getEntry())) {
+        if (!($formEntry = $this->_getEntry())) {
             return $this->notFoundAction();
         }
 
-        $entry->getForm()->setEntityManager($this->getEntityManager());
+        $formEntry->getForm()->setEntityManager($this->getEntityManager());
 
         $now = new DateTime();
-        if ($now < $entry->getForm()->getStartDate() || $now > $entry->getForm()->getEndDate() || !$entry->getForm()->isActive()) {
+        if ($now < $formEntry->getForm()->getStartDate() || $now > $formEntry->getForm()->getEndDate() || !$formEntry->getForm()->isActive()) {
             return new ViewModel(
                 array(
                     'message'       => 'This form is currently closed.',
-                    'specification' => $entry->getForm(),
+                    'specification' => $formEntry->getForm(),
                 )
             );
         }
 
-        $group = $this->_getGroup($entry->getForm());
+        $group = $this->_getGroup($formEntry->getForm());
         $progressBarInfo = null;
 
         if (null !== $group) {
-            $progressBarInfo = $this->_progressBarInfo($group, $entry->getForm());
+            $progressBarInfo = $this->_progressBarInfo($group, $formEntry->getForm());
 
             if ($progressBarInfo['uncompleted_before_current'] > 0) {
                 $this->flashMessenger()->warn(
@@ -593,7 +596,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         if (null !== $person) {
             $draftVersion = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findDraftVersionByFormAndPerson($entry->getForm(), $person);
+                ->findDraftVersionByFormAndPerson($formEntry->getForm(), $person);
         } elseif ($this->_isCookieSet()) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')
@@ -602,19 +605,19 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             if ($guestInfo) {
                 $draftVersion = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\Entry')
-                    ->findDraftVersionByFormAndGuestInfo($entry->getForm(), $guestInfo);
+                    ->findDraftVersionByFormAndGuestInfo($formEntry->getForm(), $guestInfo);
             }
         }
 
         $form = $this->getForm(
             'form_specified-form_edit',
             array(
-                'form' => $entry->getForm(),
+                'form' => $formEntry->getForm(),
                 'person' => $person,
                 'language' => $this->getLanguage(),
-                'entry' => $entry,
+                'entry' => $formEntry,
                 'guest_info' => $guestInfo,
-                'is_draft' => isset($draftVersion) && $draftVersion != $entry,
+                'is_draft' => isset($draftVersion) && $draftVersion != $formEntry,
             )
         );
 
@@ -627,17 +630,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $isDraft = null !== $this->getRequest()->getPost()->get('save_as_draft');
 
             if ($form->isValid() || $isDraft) {
-                $formData = $form->getData();
+                $formEntry = $form->hydrateObject($formEntry);
 
-                $result = FormHelper::save($entry, $person, $guestInfo, $entry->getForm(), $formData, $this->getLanguage(), $this->getEntityManager(), $this->getMailTransport(), $this->url(), $this->getRequest());
+                $this->getEntityManager()->persist($formEntry);
+                $this->getEntityManager()->flush();
 
-                if (!$result) {
-                    return new ViewModel(
-                        array(
-                            'specification' => $entry->getForm(),
-                            'form'          => $form,
-                        )
-                    );
+                if ($formEntry->getForm()->hasMail() && !$isDraft) {
+                    MailHelper::send($formEntry, $formEntry->getForm(), $this->getLanguage(), $this->getMailTransport(), $this->url(), $this->getRequest());
                 }
 
                 if (!$isDraft) {
@@ -652,7 +651,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     );
                 }
 
-                $this->_redirectFormComplete($group, $progressBarInfo, $entry->getForm(), $isDraft);
+                $this->_redirectFormComplete($group, $progressBarInfo, $formEntry->getForm(), $isDraft);
 
                 return new ViewModel();
             }
@@ -660,7 +659,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'specification'   => $entry->getForm(),
+                'specification'   => $formEntry->getForm(),
                 'form'            => $form,
                 'group'           => $group,
                 'progressBarInfo' => $progressBarInfo,
