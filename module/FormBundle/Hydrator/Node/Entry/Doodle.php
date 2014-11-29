@@ -54,8 +54,7 @@ class Doodle extends \FormBundle\Hydrator\Node\Entry
             $object->removeFieldEntry($fieldEntry);
         }
         $this->getEntityManager()->flush();
-        var_dump($data);
-        exit;
+
         foreach ($object->getForm()->getFields() as $field) {
             if (isset($fieldData['field-' . $field->getId()]) && $fieldData['field-' . $field->getId()]) {
                 $fieldEntry = new FieldEntryEntity($object, $field, '1');

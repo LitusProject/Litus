@@ -155,20 +155,25 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
                 $validators[] = new MaxTimeSlotValidator($this->_form);
 
-                $this->add(array(
+                $field = array(
                     'type'       => 'checkbox',
                     'name'       => 'field-' . $fieldSpecification->getId(),
                     'class'      => 'checkbox',
                     'attributes' => array(
                         'id'       => 'field-' . $fieldSpecification->getId(),
-                        'disabled' => (!$editable || isset($occupiedSlots[$fieldSpecification->getId()])) ? 'disabled' : '',
                     ),
                     'options'    => array(
                         'input' => array(
                             'validators' => $validators,
                         ),
                     ),
-                ));
+                );
+
+                if (!$editable || isset($occupiedSlots[$fieldSpecification->getId()])) {
+                    $field['attributes']['disabled'] = 'disabled';
+                }
+
+                $this->add($field);
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
             }
@@ -261,7 +266,8 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->_occupiedSlots = array();
         foreach ($formEntries as $formEntry) {
-            if (null !== $this->_person && $formEntry->getCreationPerson() == $this->_person) {
+            if ((null !== $this->_person && $formEntry->getCreationPerson() == $this->_person) ||
+                (null !== $this->_guestInfo && $formEntry->getGuestInfo() == $this->_guestInfo)) {
                 continue;
             }
 

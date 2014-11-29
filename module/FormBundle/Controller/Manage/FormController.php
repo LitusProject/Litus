@@ -451,12 +451,12 @@ class FormController extends \FormBundle\Component\Controller\FormController
             array(
                 'form' => $formSpecification,
                 'person' => $formEntry->getCreationPerson(),
+                'guestInfo' => $formEntry->getGuestInfo(),
                 'language' => $this->getLanguage(),
                 'entry' => $formEntry,
                 'forceEdit' => true,
             )
         );
-
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
