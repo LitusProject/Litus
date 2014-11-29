@@ -22,7 +22,6 @@ use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Front as FrontGenerator,
     CudiBundle\Entity\File\File,
     Zend\Http\Headers,
-    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**

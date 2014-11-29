@@ -20,7 +20,6 @@ namespace FormBundle\Entity\Node\Form;
 
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
-    DateTime,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Mail\Mail,
     FormBundle\Entity\Node\Entry,

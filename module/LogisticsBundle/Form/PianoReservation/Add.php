@@ -19,7 +19,6 @@
 namespace LogisticsBundle\Form\PianoReservation;
 
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CommonBundle\Entity\General\Language,
     DateInterval,
     DateTime,
     IntlDateFormatter,

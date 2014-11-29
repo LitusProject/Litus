@@ -119,6 +119,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         );
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Article|null
+     */
     private function _getSaleArticle()
     {
         if (null === $this->getParam('id')) {
@@ -160,6 +163,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         return $article;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Article\Restriction|null
+     */
     private function _getRestriction()
     {
         if (null === $this->getParam('id')) {

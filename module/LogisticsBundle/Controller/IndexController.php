@@ -22,8 +22,6 @@ use CommonBundle\Component\Util\File\TmpFile as TmpFile,
     DateTime,
     LogisticsBundle\Component\Document\Generator\Ics as IcsGenerator,
     LogisticsBundle\Document\Token,
-    LogisticsBundle\Entity\Driver,
-    LogisticsBundle\Entity\Reservation\ReservableResource,
     LogisticsBundle\Entity\Reservation\VanReservation,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;

@@ -21,7 +21,6 @@ namespace FormBundle\Component\Form;
 use CommonBundle\Entity\General\Language,
     FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Entity\Node\Form as FormEntity,
-    FormBundle\Entity\Node\GuestInfo,
     Zend\Http\PhpEnvironment\Request,
     Zend\Mail\Message,
     Zend\Mail\Transport\TransportInterface as MailTransport,

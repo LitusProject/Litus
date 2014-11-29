@@ -63,7 +63,7 @@ class Event extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @param  Language $langauge
+     * @param  Language $language
      * @return self
      */
     public function setLanguage(Language $language)

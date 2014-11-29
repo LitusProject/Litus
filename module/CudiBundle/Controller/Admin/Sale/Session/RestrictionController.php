@@ -117,6 +117,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         );
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Session|null
+     */
     private function _getSession()
     {
         if (null === $this->getParam('id')) {
@@ -158,6 +161,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         return $session;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Session\Restriction|null
+     */
     private function _getRestriction()
     {
         if (null === $this->getParam('id')) {

@@ -22,7 +22,6 @@ use CalendarBundle\Entity\Node\Event,
     CommonBundle\Component\Controller\Plugin\Url,
     CommonBundle\Component\Util\File\TmpFile as TmpFile,
     CommonBundle\Entity\General\Language,
-    Doctrine\ODM\MongoDB\DocumentManager,
     Doctrine\ORM\EntityManager,
     Zend\Http\PhpEnvironment\Request;
 

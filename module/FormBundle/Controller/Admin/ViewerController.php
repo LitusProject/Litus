@@ -225,6 +225,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @return \FormBundle\Entity\Node\Form|null
+     */
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
@@ -266,6 +269,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
         return $formSpecification;
     }
 
+    /**
+     * @return \FormBundle\Entity\ViewerMap|null
+     */
     private function _getViewer()
     {
         if (null === $this->getParam('id')) {

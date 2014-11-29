@@ -18,14 +18,9 @@
 
 namespace FormBundle\Controller\Admin;
 
-use DateTime,
-    FormBundle\Entity\Node\Group,
+use FormBundle\Entity\Node\Group,
     FormBundle\Entity\Node\Group\Mapping,
-    FormBundle\Entity\Node\Translation\Group as GroupTranslation,
     FormBundle\Entity\ViewerMap,
-    FormBundle\Form\Admin\Group\Add as AddForm,
-    FormBundle\Form\Admin\Group\Edit as EditForm,
-    FormBundle\Form\Admin\Group\Mapping as MappingForm,
     Zend\View\Model\ViewModel;
 
 /**

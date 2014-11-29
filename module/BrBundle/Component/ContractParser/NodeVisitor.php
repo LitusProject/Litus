@@ -29,12 +29,12 @@ interface NodeVisitor
     public function visitEntry(Entry $entry);
 
     /**
-     * @param array $entries
+     * @param Entries $entries
      */
-    public function visitEntries($entries);
+    public function visitEntries(Entries $entries);
 
     /**
-     * @param string $text
+     * @param Text $text
      */
-    public function visitText($text);
+    public function visitText(Text $text);
 }

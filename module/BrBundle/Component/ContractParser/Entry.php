@@ -29,7 +29,7 @@ class Entry implements Node
     private $indent;
 
     /**
-     * @var NewState
+     * @var EntryState
      */
     private $state;
 

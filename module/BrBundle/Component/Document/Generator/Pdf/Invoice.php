@@ -272,6 +272,10 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         ));
     }
 
+    /**
+     * @param  string $vat;
+     * @return string
+     */
     private function _VATFormat($vat)
     {
         return substr_replace(substr_replace(substr_replace($vat, " ", 2,0),".",7,0),".",11,0);

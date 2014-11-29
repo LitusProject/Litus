@@ -19,9 +19,7 @@
 namespace CudiBundle\Controller\Admin\Sale;
 
 use CommonBundle\Component\Util\WebSocket as WebSocketUtil,
-    CommonBundle\Entity\General\Bank\BankDevice\Amount as BankDeviceAmount,
     CommonBundle\Entity\General\Bank\CashRegister,
-    CommonBundle\Entity\General\Bank\MoneyUnit\Amount as MoneyUnitAmount,
     CudiBundle\Entity\Sale\Session,
     Zend\View\Model\ViewModel;
 

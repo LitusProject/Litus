@@ -18,7 +18,8 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-use BrBundle\Entity\Company\Logo,
+use BrBundle\Entity\Company,
+    BrBundle\Entity\Company\Logo,
     Imagick,
     Zend\View\Model\ViewModel;
 
@@ -183,6 +184,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @return Company
+     */
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
@@ -224,6 +228,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
         return $company;
     }
 
+    /**
+     * @return Logo
+     */
     private function _getLogo()
     {
         if (null === $this->getParam('id')) {

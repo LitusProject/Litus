@@ -18,10 +18,8 @@
 
 namespace BrBundle\Form\Admin\Order;
 
-use BrBundle\Component\Validator\ProductName as ProductNameValidator,
-    BrBundle\Entity\Company,
+use BrBundle\Entity\Company,
     BrBundle\Entity\Product\Order,
-    CommonBundle\Component\Validator\Price as PriceValidator,
     CommonBundle\Entity\General\AcademicYear;
 
 /**

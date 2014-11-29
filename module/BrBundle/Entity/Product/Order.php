@@ -98,7 +98,7 @@ class Order
     private $creationTime;
 
     /**
-     * @var Person The person who created this node
+     * @var Collaborator The person who created this node
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Collaborator")
      * @ORM\JoinColumn(name="creation_person", referencedColumnName="id")
@@ -255,7 +255,6 @@ class Order
     }
 
     /**
-     * @return bool
      * @note   This order gets set to old.
      *              This means the boolean $old is set to true.
      */
@@ -273,7 +272,7 @@ class Order
     }
 
     /**
-     * @param  boolean $taxfree
+     * @param  boolean $taxFree
      * @return self
      */
     public function setTaxFree($taxFree)

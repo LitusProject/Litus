@@ -336,7 +336,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->setUrl($previous->getUrl())
             ->setType($previous->getType())
             ->setIsDownloadable($previous->isDownloadable())
-            ->setSameAsPreviousYear($previous->isSameAsPreviousYear())
+            ->setIsSameAsPreviousYear($previous->isSameAsPreviousYear())
             ->setVersionNumber($previous->getVersionNumber());
         $this->getEntityManager()->persist($article);
 
@@ -427,7 +427,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->setUrl($previous->getUrl())
             ->setType($previous->getType())
             ->setIsDownloadable($previous->isDownloadable())
-            ->setSameAsPreviousYear($previous->isSameAsPreviousYear())
+            ->setIsSameAsPreviousYear($previous->isSameAsPreviousYear())
             ->setNbBlackAndWhite(0)
             ->setNbColored(0)
             ->setBinding($binding)
@@ -518,6 +518,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         }
     }
 
+    /**
+     * @return \CudiBundle\Entity\Article|null
+     */
     private function _getArticle()
     {
         if (null === $this->getParam('id')) {

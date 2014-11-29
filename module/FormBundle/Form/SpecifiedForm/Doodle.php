@@ -233,7 +233,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @param  Entry $entry
+     * @param  EntryEntity|null $entry
      * @return self
      */
     public function setEntry(EntryEntity $entry = null)

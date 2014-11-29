@@ -18,8 +18,7 @@
 
 namespace DoorBundle\Hydrator;
 
-use DateTime,
-    DoorBundle\Document\Rule as RuleDocument;
+use DoorBundle\Document\Rule as RuleDocument;
 
 class Rule extends \CommonBundle\Component\Hydrator\Hydrator
 {

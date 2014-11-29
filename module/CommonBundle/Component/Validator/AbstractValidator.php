@@ -28,7 +28,7 @@ abstract class AbstractValidator extends \Zend\Validator\AbstractValidator
     /**
      * @param  array|ElementInterface|null $context
      * @param  string|array                $path
-     * @return mixed|false
+     * @return string
      */
     protected static function getFormValue($context = null, $path)
     {

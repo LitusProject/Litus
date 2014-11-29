@@ -284,6 +284,10 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         }
     }
 
+    /**
+     * @param  boolean       $allowSigned
+     * @return Contract|null
+     */
     private function _getContract($allowSigned = true)
     {
         if (null === $this->getParam('id')) {

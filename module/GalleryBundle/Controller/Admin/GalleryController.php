@@ -18,10 +18,8 @@
 
 namespace GalleryBundle\Controller\Admin;
 
-use DateTime,
-    GalleryBundle\Entity\Album\Album,
+use GalleryBundle\Entity\Album\Album,
     GalleryBundle\Entity\Album\Photo,
-    GalleryBundle\Entity\Album\Translation,
     Imagick,
     ImagickPixel,
     Zend\File\Transfer\Adapter\Http as FileUpload,

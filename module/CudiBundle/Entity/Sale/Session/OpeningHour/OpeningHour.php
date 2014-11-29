@@ -77,9 +77,7 @@ class OpeningHour
     private $translations;
 
     /**
-     * @param DateTime $startDate
-     * @param DateTime $endDate
-     * @param Person   $person
+     * @param Person $person
      */
     public function __construct(Person $person)
     {

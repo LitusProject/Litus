@@ -19,9 +19,7 @@
 namespace BrBundle\Entity\Contract;
 
 use BrBundle\Entity\Contract,
-    BrBundle\Entity\Product\OrderEntry,
     Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**

@@ -18,8 +18,7 @@
 
 namespace TicketBundle\Hydrator;
 
-use DateTime,
-    TicketBundle\Entity\Event as EventEntity,
+use TicketBundle\Entity\Event as EventEntity,
     TicketBundle\Entity\Option,
     TicketBundle\Entity\Ticket as TicketEntity;
 

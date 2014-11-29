@@ -79,6 +79,9 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
         $this->editJob = $editJob;
     }
 
+    /**
+     * @param string $type
+     */
     private function _setRequestType($type)
     {
         if (!in_array($type, self::$possibleRequests)) {

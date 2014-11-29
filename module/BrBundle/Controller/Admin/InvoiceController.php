@@ -19,6 +19,7 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
+    BrBundle\Entity\Invoice,
     BrBundle\Entity\Invoice\InvoiceHistory,
     CommonBundle\Component\Util\File as FileUtil,
     DateTime,
@@ -199,6 +200,10 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    /**
+     * @param  boolean      $allowPaid
+     * @return Invoice|null
+     */
     private function _getInvoice($allowPaid = true)
     {
         if (null === $this->getParam('id')) {

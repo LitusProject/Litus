@@ -42,9 +42,9 @@ class XmlNodeVisitor implements NodeVisitor
     }
 
     /**
-     * @param array $entries
+     * @param Entries $entries
      */
-    public function visitEntries($entries)
+    public function visitEntries(Entries $entries)
     {
         $this->string .= '<entries>';
         foreach ($entries->getEntries() as $entry) {
@@ -55,9 +55,9 @@ class XmlNodeVisitor implements NodeVisitor
     }
 
     /**
-     * @param string
+     * @param Text $text
      */
-    public function visitText($text)
+    public function visitText(Text $text)
     {
         $this->string .= $text->getText();
     }

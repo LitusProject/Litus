@@ -19,9 +19,7 @@
 namespace BrBundle\Entity\Invoice;
 
 use BrBundle\Entity\Invoice,
-    BrBundle\Entity\Product\OrderEntry,
     Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -63,7 +61,7 @@ class InvoiceHistory
     private $version;
 
     /**
-     * @param \BrBundle\Entity\Invoice $invoice
+     * @param Invoice $invoice
      */
     public function __construct(Invoice $invoice)
     {

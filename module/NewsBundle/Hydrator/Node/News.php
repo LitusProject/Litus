@@ -18,8 +18,7 @@
 
 namespace NewsBundle\Hydrator\Node;
 
-use DateTime,
-    NewsBundle\Entity\Node\News as NewsEntity,
+use NewsBundle\Entity\Node\News as NewsEntity,
     NewsBundle\Entity\Node\Translation as TranslationEntity;
 
 /**

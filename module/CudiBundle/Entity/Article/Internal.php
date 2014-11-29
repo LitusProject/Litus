@@ -21,8 +21,7 @@ namespace CudiBundle\Entity\Article;
 use CudiBundle\Entity\Article\Option\Binding,
     CudiBundle\Entity\Article\Option\Color,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article\Internal")

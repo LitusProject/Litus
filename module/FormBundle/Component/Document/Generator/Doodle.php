@@ -31,7 +31,7 @@ class Doodle extends \CommonBundle\Component\Document\Generator\Csv
 {
     /**
      * @param EntityManager $entityManager
-     * @param ViewMap       $viewerMap
+     * @param ViewerMap     $viewerMap
      * @param Language      $language
      */
     public function __construct(EntityManager $entityManager, ViewerMap $viewerMap, Language $language)

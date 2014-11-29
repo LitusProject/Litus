@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Stock;
 
-use Zend\Form\Element\Submit;
-
 /**
  * Export Stock
  *

@@ -22,7 +22,6 @@ use CudiBundle\Entity\Article,
     CudiBundle\Entity\File\File,
     CudiBundle\Entity\Prof\Action,
     Zend\Http\Headers,
-    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**

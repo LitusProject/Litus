@@ -18,9 +18,6 @@
 
 namespace BrBundle\Form\Admin\Company;
 
-use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
-    BrBundle\Entity\Company;
-
 /**
  * Edit a company.
  *

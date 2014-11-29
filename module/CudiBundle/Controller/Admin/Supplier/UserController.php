@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Supplier;
 
-use CudiBundle\Entity\User\Person\Supplier as SupplierPerson,
-    CudiBundle\Form\Admin\Supplier\User\Edit as EditForm,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * UserController

@@ -18,8 +18,7 @@
 
 namespace FormBundle\Controller\Admin;
 
-use CommonBundle\Component\Controller\Exception\RuntimeException,
-    FormBundle\Component\Exception\UnsupportedTypeException,
+use FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
     FormBundle\Entity\Field\File as FileField,
@@ -312,6 +311,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return \FormBundle\Entity\Node\Form|null
+     */
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
@@ -353,6 +355,9 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         return $formSpecification;
     }
 
+    /**
+     * @return \FormBundle\Entity\Field|null
+     */
     private function _getField()
     {
         if (null === $this->getParam('id')) {

@@ -71,7 +71,7 @@ class Study extends Restriction
     }
 
     /**
-     * @param  SyllabusBundle\Entity\Study $study
+     * @param  StudyEntity $study
      * @return self
      */
     public function addStudy(StudyEntity $study)

@@ -20,7 +20,6 @@ namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     SecretaryBundle\Component\Document\Generator\Registration as CsvGenerator,
-    SecretaryBundle\Form\Admin\Export\Export as ExportForm,
     Zend\View\Model\ViewModel;
 
 /**

@@ -79,8 +79,6 @@ class Group
 
     /**
      * @param AcademicYear $academicYear
-     * @param string       $name
-     * @param array        $happyHours
      */
     public function __construct(AcademicYear $academicYear)
     {
@@ -116,7 +114,7 @@ class Group
     }
 
     /**
-     * @return Academicyear
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {

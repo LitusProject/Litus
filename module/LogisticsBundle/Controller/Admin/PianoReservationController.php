@@ -18,8 +18,7 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use DateTime,
-    IntlDateFormatter,
+use IntlDateFormatter,
     LogisticsBundle\Entity\Reservation\PianoReservation,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
@@ -108,7 +107,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                                 ->getRepository('CommonBundle\Entity\General\Config')
                                 ->getConfigValue('system_mail_address')
                         )
-                        ->addTo($player->getEmail(), $player->getFullName())
+                        ->addTo($reservation->getPlayer()->getEmail(), $reservation->getPlayer()->getFullName())
                         ->addTo(
                             $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')

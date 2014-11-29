@@ -60,6 +60,11 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
         );
     }
 
+    /**
+     * @param EntityManager $entityManager
+     * @param AcademicYear  $academicYear
+     * @param int           $semester
+     */
     private function _getData(EntityManager $entityManager, AcademicYear $academicYear, $semester)
     {
         $articles = $entityManager

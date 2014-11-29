@@ -119,7 +119,7 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param  string $name
+     * @param  string $email
      * @return self
      */
     public function setEmail($email)

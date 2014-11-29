@@ -138,7 +138,7 @@ class Rule
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getStartTimeReadable()
     {
@@ -165,7 +165,7 @@ class Rule
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getEndTimeReadable()
     {

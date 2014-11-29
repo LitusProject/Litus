@@ -134,7 +134,7 @@ class Comment
     }
 
     /**
-     * @param  string $type
+     * @param  string $text
      * @return self
      */
     public function setText($text)

@@ -19,8 +19,7 @@
 namespace MailBundle\Form\Admin\Study;
 
 use CommonBundle\Entity\General\AcademicYear,
-    MailBundle\Component\Validator\MultiMail as MultiMailValidator,
-    Zend\Validator\NotEmpty as NotEmptyValidator;
+    MailBundle\Component\Validator\MultiMail as MultiMailValidator;
 
 /**
  * Send Mail

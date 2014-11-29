@@ -531,7 +531,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return SaleArticle
+     * @return SaleArticle|null
      */
     private function _getSaleArticle()
     {
@@ -574,6 +574,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return $article;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Article|null
+     */
     private function _getArticle()
     {
         if (null === $this->getParam('id')) {
@@ -615,6 +618,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return $article;
     }
 
+    /**
+     * @return int
+     */
     private function _getSemester()
     {
         $semester = $this->getParam('semester');

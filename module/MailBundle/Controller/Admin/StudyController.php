@@ -18,9 +18,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\InputFilter\InputInterface,
-    Zend\Mail\Message,
+use Zend\Mail\Message,
     Zend\Mime\Message as MimeMessage,
     Zend\Mime\Mime,
     Zend\Mime\Part,

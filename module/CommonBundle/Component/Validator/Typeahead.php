@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager,
-    RuntimeException;
+use Doctrine\ORM\EntityManager;
 
 abstract class Typeahead extends \Zend\Validator\AbstractValidator
 {

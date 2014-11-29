@@ -19,7 +19,6 @@
 namespace CudiBundle\Controller\Admin\Sale\Session;
 
 use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
-    CudiBundle\Entity\Sale\Session\OpeningHour\Translation,
     Zend\View\Model\ViewModel;
 
 /**

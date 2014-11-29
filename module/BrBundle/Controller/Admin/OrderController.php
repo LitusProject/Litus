@@ -18,7 +18,8 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Product\Order,
+use BrBundle\Entity\Collaborator,
+    BrBundle\Entity\Product\Order,
     Zend\View\Model\ViewModel;
 
 /**
@@ -350,6 +351,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         return $entry;
     }
 
+    /**
+     * @return Collaborator
+     */
     private function _getCollaborator()
     {
         $collaborator = $this->getEntityManager()

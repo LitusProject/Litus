@@ -18,8 +18,7 @@
 
 namespace BrBundle\Form\Cv;
 
-use BrBundle\Entity\Cv\Entry as CvEntry,
-    CommonBundle\Component\Validator\Decimal as DecimalValidator,
+use CommonBundle\Component\Validator\Decimal as DecimalValidator,
     CommonBundle\Component\Validator\FieldLength as LengthValidator,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic;

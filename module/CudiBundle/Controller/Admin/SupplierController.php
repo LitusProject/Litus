@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Address,
-    CudiBundle\Entity\Supplier,
+use CudiBundle\Entity\Supplier,
     Zend\View\Model\ViewModel;
 
 /**

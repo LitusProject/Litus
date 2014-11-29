@@ -18,9 +18,7 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use DateTime,
-    LogisticsBundle\Entity\Driver,
-    LogisticsBundle\Entity\Reservation\ReservableResource,
+use LogisticsBundle\Entity\Driver,
     LogisticsBundle\Entity\Reservation\VanReservation,
     Zend\View\Model\ViewModel;
 

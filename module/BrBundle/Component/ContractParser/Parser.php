@@ -24,7 +24,7 @@ namespace BrBundle\Component\ContractParser;
 class Parser
 {
     /**
-     * @var Entry
+     * @var EntriesOnlyEntry
      */
     private $rootEntry;
 

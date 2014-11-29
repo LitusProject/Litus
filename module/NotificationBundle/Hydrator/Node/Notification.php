@@ -19,8 +19,6 @@
 namespace NotificationBundle\Hydrator\Node;
 
 use CommonBundle\Component\Hydrator\Exception\InvalidDateException,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    DateTime,
     NotificationBundle\Entity\Node\Notification as NotificationEntity,
     NotificationBundle\Entity\Node\Translation as TranslationEntity;
 

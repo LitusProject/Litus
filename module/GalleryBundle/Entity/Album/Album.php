@@ -94,9 +94,7 @@ class Album
     private $photos;
 
     /**
-     * @param Person   $person
-     * @param DateTime $date
-     * @param boolean  $watermark
+     * @param Person $person
      */
     public function __construct(Person $person)
     {
@@ -249,7 +247,7 @@ class Album
     }
 
     /**
-     * @return array
+     * @return ArrayCollection
      */
     public function getPhotos()
     {

@@ -18,9 +18,6 @@
 
 namespace BrBundle\Form\Admin\Order;
 
-use BrBundle\Entity\Product\Order,
-    CommonBundle\Entity\General\AcademicYear;
-
 /**
  * Edit an order.
  *

@@ -18,8 +18,7 @@
 
 namespace OnBundle\Hydrator;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    OnBundle\Document\Slug as SlugDocument;
+use OnBundle\Document\Slug as SlugDocument;
 
 /**
  * This hydrator hydrates/extracts slug data.

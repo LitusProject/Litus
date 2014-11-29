@@ -18,9 +18,6 @@
 
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
-use Traversable,
-    Zend\Stdlib\ArrayUtils;
-
 /**
  * Typeahead form element
  *

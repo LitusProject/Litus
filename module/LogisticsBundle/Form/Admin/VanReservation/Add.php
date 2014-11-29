@@ -20,7 +20,6 @@ namespace LogisticsBundle\Form\Admin\VanReservation;
 
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
-    CommonBundle\Entity\General\AcademicYear,
     LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\VanReservation;
 

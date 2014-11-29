@@ -18,10 +18,7 @@
 
 namespace TicketBundle\Controller\Admin;
 
-use DateTime,
-    TicketBundle\Entity\Event,
-    TicketBundle\Entity\Option,
-    TicketBundle\Entity\Ticket,
+use TicketBundle\Entity\Event,
     Zend\View\Model\ViewModel;
 
 /**

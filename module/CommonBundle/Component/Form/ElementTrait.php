@@ -146,13 +146,13 @@ trait ElementTrait
     abstract public function setAttribute($name, $value);
 
     /**
-     * @param $name
+     * @param  string     $name
      * @return mixed|null
      */
     abstract public function getAttribute($name);
 
     /**
-     * @param          $name
+     * @param  string  $name
      * @return boolean
      */
     abstract public function hasAttribute($name);

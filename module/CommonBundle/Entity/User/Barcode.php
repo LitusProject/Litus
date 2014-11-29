@@ -74,8 +74,7 @@ abstract class Barcode
     /**
      * Constructs a new barcode
      *
-     * @param Person  $person
-     * @param integer $barcode
+     * @param Person $person
      */
     public function __construct(Person $person)
     {

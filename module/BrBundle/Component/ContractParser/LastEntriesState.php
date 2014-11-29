@@ -24,15 +24,15 @@ namespace BrBundle\Component\ContractParser;
 class LastEntriesState extends EntryState
 {
     /**
-     * @var array
+     * @var Entries
      */
     private $lastEntries;
 
     /**
-     * @param array $entries
-     * @param Entry
+     * @param Entries $entries
+     * @param Entry   $entry
      */
-    public function __construct($entries, $entry)
+    public function __construct(Entries $entries, Entry $entry)
     {
         parent::__construct($entry);
         $this->lastEntries = $entries;

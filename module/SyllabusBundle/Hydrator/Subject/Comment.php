@@ -18,8 +18,7 @@
 
 namespace SyllabusBundle\Hydrator\Subject;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    SyllabusBundle\Entity\Subject\Comment as CommentEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 class Comment extends \CommonBundle\Component\Hydrator\Hydrator
 {

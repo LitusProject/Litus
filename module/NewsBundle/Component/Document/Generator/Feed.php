@@ -88,7 +88,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     }
 
     /**
-     * @return array
+     * @return XmlObject[]
      */
     private function _generateContent()
     {
@@ -106,8 +106,8 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     }
 
     /**
-     * @param  News      $item
-     * @return XmlObject
+     * @param  News        $item
+     * @return XmlObject[]
      */
     private function _generateHeader()
     {

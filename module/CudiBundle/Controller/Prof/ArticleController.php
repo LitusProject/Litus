@@ -19,7 +19,6 @@
 namespace CudiBundle\Controller\Prof;
 
 use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Article\External,
     CudiBundle\Entity\Article\Internal,
     CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Prof\Action,

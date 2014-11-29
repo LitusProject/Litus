@@ -19,8 +19,7 @@
 namespace FormBundle\Hydrator\Node;
 
 use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    FormBundle\Entity\Node\Group\Mapping as MappingEntity,
-    FormBundle\Entity\Node\Translation\Group as GroupTranslationEntity;
+    FormBundle\Entity\Node\Group\Mapping as MappingEntity;
 
 class Group extends \CommonBundle\Component\Hydrator\Hydrator
 {
