@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7a5d83d8857a6b9aad354dd497689ea2",
+    "hash": "90bd0ec4482237d66a93e7efaa1f0c42",
     "packages": [
         {
             "name": "EvanDotPro/EdpMarkdown",
@@ -1149,12 +1149,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "2fc3644d2e10e14935b2c79e57a5185281eb1eb7"
+                "reference": "8c47430b88b646f91a0255fea7aef72dc7ca57e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/2fc3644d2e10e14935b2c79e57a5185281eb1eb7",
-                "reference": "2fc3644d2e10e14935b2c79e57a5185281eb1eb7",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/8c47430b88b646f91a0255fea7aef72dc7ca57e1",
+                "reference": "8c47430b88b646f91a0255fea7aef72dc7ca57e1",
                 "shasum": ""
             },
             "require": {
@@ -1173,7 +1173,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
@@ -1197,7 +1197,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-11-03 03:55:50"
+            "time": "2014-11-10 18:00:54"
         },
         {
             "name": "symfony/process",
@@ -1359,17 +1359,17 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/krmarien/zf2-assetic-module.git",
-                "reference": "57385b2b69b9c82967ffd1a0eea37d9587b707d9"
+                "url": "https://github.com/widmogrod/zf2-assetic-module.git",
+                "reference": "0b95eb47d1627dcf5fe7c62d1e734a714e76d0c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/krmarien/zf2-assetic-module/zipball/57385b2b69b9c82967ffd1a0eea37d9587b707d9",
-                "reference": "57385b2b69b9c82967ffd1a0eea37d9587b707d9",
+                "url": "https://api.github.com/repos/widmogrod/zf2-assetic-module/zipball/0b95eb47d1627dcf5fe7c62d1e734a714e76d0c4",
+                "reference": "0b95eb47d1627dcf5fe7c62d1e734a714e76d0c4",
                 "shasum": ""
             },
             "require": {
-                "kriswallsmith/assetic": "dev-master",
+                "kriswallsmith/assetic": "~1.2",
                 "php": ">=5.3.3"
             },
             "require-dev": {
@@ -1389,6 +1389,7 @@
                     "Module.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1403,17 +1404,14 @@
             "description": "Zend Framework 2 module that provides complete integration of Assetic library",
             "homepage": "https://github.com/widmogrod/zf2-assetic-module",
             "keywords": [
+                "JS",
                 "assetic",
                 "assets",
                 "css",
-                "js",
                 "less",
                 "resources"
             ],
-            "support": {
-                "source": "https://github.com/krmarien/zf2-assetic-module/tree/master"
-            },
-            "time": "2014-11-10 09:05:41"
+            "time": "2014-11-10 22:10:58"
         },
         {
             "name": "zendframework/zend-developer-tools",
@@ -1696,12 +1694,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "144f2778b4edf26b182438028acffb2a87c6ff89"
+                "reference": "825869155400bdca2a6f1c161d76a19381c957fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/144f2778b4edf26b182438028acffb2a87c6ff89",
-                "reference": "144f2778b4edf26b182438028acffb2a87c6ff89",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/825869155400bdca2a6f1c161d76a19381c957fa",
+                "reference": "825869155400bdca2a6f1c161d76a19381c957fa",
                 "shasum": ""
             },
             "require": {
@@ -1829,12 +1827,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "dcf345d5ed96bc6c3b4521c1989670d2c9e5014e"
+                "reference": "8e5829263631e686bf4d1254b02411263b8fa228"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/dcf345d5ed96bc6c3b4521c1989670d2c9e5014e",
-                "reference": "dcf345d5ed96bc6c3b4521c1989670d2c9e5014e",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/8e5829263631e686bf4d1254b02411263b8fa228",
+                "reference": "8e5829263631e686bf4d1254b02411263b8fa228",
                 "shasum": ""
             },
             "require": {
@@ -1854,7 +1852,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
@@ -1878,7 +1876,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "http://symfony.com",
-            "time": "2014-11-03 03:55:50"
+            "time": "2014-11-10 18:00:54"
         },
         {
             "name": "symfony/filesystem",
@@ -1887,12 +1885,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Filesystem.git",
-                "reference": "7d97789ea01c3c76ecaa59b954d162777033cbd4"
+                "reference": "d369d79337045fdcb2c47d1cacc128367bd18b98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Filesystem/zipball/7d97789ea01c3c76ecaa59b954d162777033cbd4",
-                "reference": "7d97789ea01c3c76ecaa59b954d162777033cbd4",
+                "url": "https://api.github.com/repos/symfony/Filesystem/zipball/d369d79337045fdcb2c47d1cacc128367bd18b98",
+                "reference": "d369d79337045fdcb2c47d1cacc128367bd18b98",
                 "shasum": ""
             },
             "require": {
@@ -1901,7 +1899,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
@@ -1925,7 +1923,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "http://symfony.com",
-            "time": "2014-09-22 15:54:44"
+            "time": "2014-11-10 18:00:54"
         },
         {
             "name": "symfony/finder",
@@ -1934,12 +1932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "d556a66cbe5b2b81e7abc75b4066b057fbc7af94"
+                "reference": "cd7fe8483f071508e9440b9966ff0aeb70b840a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/d556a66cbe5b2b81e7abc75b4066b057fbc7af94",
-                "reference": "d556a66cbe5b2b81e7abc75b4066b057fbc7af94",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/cd7fe8483f071508e9440b9966ff0aeb70b840a0",
+                "reference": "cd7fe8483f071508e9440b9966ff0aeb70b840a0",
                 "shasum": ""
             },
             "require": {
@@ -1948,7 +1946,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
@@ -1972,7 +1970,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
-            "time": "2014-10-26 07:46:28"
+            "time": "2014-11-10 18:00:54"
         },
         {
             "name": "symfony/stopwatch",
