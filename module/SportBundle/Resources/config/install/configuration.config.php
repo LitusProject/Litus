@@ -34,7 +34,7 @@ return array(
     ),
     array(
         'key'         => 'sport.queue_socket_public',
-        'value'       => '127.0.0.1:8897',
+        'value'       => ':8897',
         'description' => 'The public address for the websocket of the queue',
     ),
     array(
