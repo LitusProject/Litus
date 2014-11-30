@@ -18,6 +18,8 @@
 
 namespace CommonBundle\Controller;
 
+
+
 use DateInterval,
     DateTime,
     Zend\View\Model\ViewModel;
@@ -41,6 +43,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'bookings' => $this->_getBookings(),
                 'calendarItems' => $this->_getCalendarItems(),
+                'wiki' => $this->_getWiki(),
                 'cudi' => $this->_getCudiInfo(),
                 'newsItems' => $this->_getNewsItems(),
                 'notifications' => $notifications,
@@ -243,5 +246,17 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         return $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
+    }
+
+    private function _getWiki()
+    {
+        return array(
+            'enable' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.wiki_button'),
+            'url' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('wiki.url'),
+        );
     }
 }
