@@ -36,4 +36,11 @@ class Update extends \CommonBundle\Component\Console\Command\WebSocket
     {
         return 'update';
     }
+
+    protected function isSocketEnabled()
+    {
+        return '1' === $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('syllabus.update_socket_enabled');
+    }
 }

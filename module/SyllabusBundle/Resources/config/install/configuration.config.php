@@ -33,6 +33,11 @@ return array(
         'description' => 'The key used for the websocket of the queue',
     ),
     array(
+        'key'         => 'syllabus.queue_socket_enabled',
+        'value'       => '1',
+        'description' => 'Whether the queue socket is enabled',
+    ),
+    array(
         'key'         => 'search_max_results',
         'value'       => '30',
         'description' => 'The maximum number of search results shown',

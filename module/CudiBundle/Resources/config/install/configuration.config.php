@@ -221,6 +221,11 @@ VTK Cudi
         'description' => 'The public address for the websocket of the queue',
     ),
     array(
+        'key'         => 'cudi.queue_socket_enabled',
+        'value'       => '1',
+        'description' => 'Whether the cudi queue socket is enabled',
+    ),
+    array(
         'key'         => 'cudi.queue_socket_key',
         'value'       => md5(uniqid(rand(), true)),
         'description' => 'The key used for the websocket of the queue',
