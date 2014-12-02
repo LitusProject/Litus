@@ -218,10 +218,10 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * @return \Symfony\Component\Console\Helper\DialogHelper
+     * @return \Symfony\Component\Console\Helper\QuestionHelper
      */
-    protected function getDialog()
+    protected function getQuestion()
     {
-        return $this->getHelperSet()->get('dialog');
+        return $this->getHelperSet()->get('question');
     }
 }

@@ -20,7 +20,8 @@ namespace CommonBundle\Command;
 
 use CommonBundle\Entity\User\Person\Academic,
     DateTime,
-    Symfony\Component\Console\Input\InputArgument;
+    Symfony\Component\Console\Input\InputArgument,
+    Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Destroy the personal data of an account.
@@ -63,11 +64,8 @@ EOT
 
         $fullName = $person->getFullName();
 
-        $confirmed = $this->getDialog()->askConfirmation(
-            $this->output,
-            'Do you want to destroy the account of ' . $person->getFullName() . '? [y/n]: ',
-            false
-        );
+        $question = new ConfirmationQuestion('Do you want to destroy the account of ' . $person->getFullName() . '? [y/n]: ', false);
+        $confirmed = $this->getQuestion()->ask($this->input, $this->output, $question);
 
         if ($confirmed) {
             $person->setUsername(substr(md5(time()), 0, 50));
