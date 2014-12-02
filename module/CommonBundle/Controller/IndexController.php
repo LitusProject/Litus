@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Controller;
 
-
-
 use DateInterval,
     DateTime,
     Zend\View\Model\ViewModel;
