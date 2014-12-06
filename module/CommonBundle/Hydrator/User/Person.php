@@ -24,7 +24,7 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
 
 abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array(
+    protected static $std_keys = array(
         'first_name',
         'last_name',
         'email',

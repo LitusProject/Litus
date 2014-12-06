@@ -23,7 +23,7 @@ use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
 
 class Academic extends \CommonBundle\Hydrator\User\Person
 {
-    private static $std_keys = array(
+    protected static $std_keys = array(
         'university_identification', 'personal_email',
     );
 
