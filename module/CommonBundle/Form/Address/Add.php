@@ -156,7 +156,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Element\Collection
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'digits',
+                        'name'    => 'alnum',
+                        'options' => array(
+                            'allowWhiteSpace' => true,
+                        ),
                     ),
                 ),
             )
