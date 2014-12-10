@@ -23,6 +23,9 @@ return array(
             'cudi_prof_auth' => array(
                 'login', 'logout', 'shibboleth',
             ),
+            'cudi_sale_auth' => array(
+                'login', 'logout', 'shibboleth',
+            ),
             'cudi_opening_hour' => array(
                 'week',
             ),
