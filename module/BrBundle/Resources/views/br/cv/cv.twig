@@ -62,7 +62,11 @@
                 currentCount++;
             }
 
-            addLanguage();
+            if (currentCount == 0 || $('input[name="languages[' + (currentCount - 1) + '][language_name]"]').val().length > 0) {
+                addLanguage();
+            } else {
+                $('input[name="languages[' + (currentCount - 1) + '][language_name]"]').keyup(triggerKeyUp);
+            }
         });
 
         function triggerKeyUp() {
@@ -80,6 +84,9 @@
             currentCount++;
 
             $('form > fieldset#languages').append(template);
+            $('fieldset[name="languages[' + (currentCount - 1) + ']"] .count').each(function() {
+                $(this).fieldCount()
+            });
             $('input[name="languages[' + (currentCount - 1) + '][language_name]"]').keyup(triggerKeyUp);
         }
     </script>

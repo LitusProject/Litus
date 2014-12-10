@@ -1,12 +1,56 @@
-    function updateButton() {
+(function ($) {
+    var defaults = {
+        onProgress: function () {},
+        onSubmitted: function () {},
+        onSubmit: function () {},
+        onError: function () {},
+    };
+
+    var methods = {
+        init: function (options) {
+            var label = $(this).closest('.form-group').find('label');
+            label.append('(<span class="count-label"></span>)');
+            _updateLabel($(this));
+            $(this).unbind('propertychange keyup input paste change').bind('propertychange keyup input paste change', function() {
+                _updateLabel($(this));
+            });
+
+            return this;
+        }
+    };
+
+    $.fn.fieldCount = function (method) {
+        if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || ! method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('Method ' +  method + ' does not exist on $.formUploadProgress');
+        }
+    };
+
+    function _updateLabel(element) {
+        var label = element.closest('.form-group').find('label');
+        var cnt = _getRemaining(element);
+        var el = label.find('.count-label');
+        if (cnt < 0)
+            el.addClass('count-negative');
+        else
+            el.removeClass('count-negative');
+        el.html(cnt);
+        _updateButton();
+    }
+
+    function _updateButton() {
         var enabled = true;
         $('.count').each(function() {
-            if (getRemaining($(this)) < 0) {
+            if (_getRemaining($(this)) < 0) {
                 enabled = false;
                 $(this).closest('.form-group').addClass('error');
             } else {
-                if ($(this).closest('.form-group').find('.help-block ul li').length == 0)
+                if ($(this).closest('.form-group').find('.help-block ul li').length == 0) {
                     $(this).closest('.form-group').removeClass('error');
+                }
             }
         });
         if (enabled) {
@@ -16,28 +60,7 @@
         }
     }
 
-    function addLabel(element) {
-        var label = $('.control-label[for=' + element.attr('id') + ']');
-        label.append('(<span class="count-label"></span>)');
-        updateLabel(element);
-        element.bind("propertychange keyup input paste", function() {
-            updateLabel($(this));
-        });
-    }
-
-    function updateLabel(element) {
-        var label = $('.control-label[for=' + element.attr('id') + ']');
-        var cnt = getRemaining(element);
-        var el = label.find('.count-label');
-        if (cnt < 0)
-            el.addClass('count-negative');
-        else
-            el.removeClass('count-negative');
-        el.html(cnt);
-        updateButton();
-    }
-
-    function getRemaining(element) {
+    function _getRemaining(element) {
         if (element.is("[data-count]")) {
             var max = element.attr('data-count');
             var val = element.val();
@@ -56,9 +79,10 @@
             return Math.round(nrlines * linelen - len);
         }
     }
+}) (jQuery);
 
 $(document).ready(function () {
     $('.count').each(function() {
-        addLabel($(this));
+        $(this).fieldCount();
     });
 });

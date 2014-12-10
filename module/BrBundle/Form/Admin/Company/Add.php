@@ -190,6 +190,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->addSubmit('Add', 'company_add');
+
+        if (null !== $this->company) {
+            $this->bind($this->company);
+        }
     }
 
     private function _getSectors()

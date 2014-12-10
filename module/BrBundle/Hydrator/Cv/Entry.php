@@ -86,6 +86,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
         foreach ($languages as $language) {
             $this->getEntityManager()->remove($language);
         }
+        $this->getEntityManager()->flush();
 
         foreach ($data['languages'] as $languageData) {
             if (!isset($languageData['language_name']) || '' === $languageData['language_name']) {
