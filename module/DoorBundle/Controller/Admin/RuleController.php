@@ -35,7 +35,8 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         $paginator = $this->paginator()->createFromArray(
             $this->getDocumentManager()
                 ->getRepository('DoorBundle\Document\Rule')
-                ->findAll(),
+                ->findAll()
+                ->toArray(),
             $this->getParam('page')
         );
 

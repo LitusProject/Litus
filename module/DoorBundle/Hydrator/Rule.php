@@ -40,11 +40,11 @@ class Rule extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         if (isset($data['start_time']) && null !== $data['start_time']) {
-            $object->setStartTime(self::loadTime($data['start_time']));
+            $object->setStartTime(self::loadTime($data['start_time'])->format('Hi'));
         }
 
         if (isset($data['end_time']) && null !== $data['end_time']) {
-            $object->setEndTime(self::loadTime($data['end_time']));
+            $object->setEndTime(self::loadTime($data['end_time'])->format('Hi'));
         }
 
         return $object->setStartDate(self::loadDateTime($data['start_date'] . ' 00:00'))
