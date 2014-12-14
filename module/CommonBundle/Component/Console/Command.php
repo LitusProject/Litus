@@ -19,6 +19,7 @@
 namespace CommonBundle\Component\Console;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    Exception,
     Symfony\Component\Console\Input\InputInterface as Input,
     Symfony\Component\Console\Output\OutputInterface as Output,
     Zend\ServiceManager\ServiceLocatorAwareTrait as ZendServiceLocatorAwareTrait;
@@ -46,7 +47,16 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
         $this->input = $input;
         $this->output = $output;
 
-        return $this->executeCommand();
+        try {
+            return $this->executeCommand();
+        } catch (Exception $e) {
+            if ('production' == getenv('APPLICATION_ENV')) {
+                $this->getService('lilo')
+                    ->sendException($e);
+            }
+
+            throw $e;
+        }
     }
 
     /**
@@ -140,10 +150,10 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * @return \Symfony\Component\Console\Helper\DialogHelper
+     * @return \Symfony\Component\Console\Helper\QuestionHelper
      */
-    protected function getDialog()
+    protected function getQuestion()
     {
-        return $this->getHelperSet()->get('dialog');
+        return $this->getHelperSet()->get('question');
     }
 }

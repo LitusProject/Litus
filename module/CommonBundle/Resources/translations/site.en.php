@@ -116,4 +116,6 @@ return array(
 
     'VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.' => 'VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.',
     'Privacy Policy' => 'Privacy Policy',
+
+    'Wiki' => 'Exam wiki',
 );

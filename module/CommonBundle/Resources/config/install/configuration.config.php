@@ -120,7 +120,7 @@ VTK',
                             'mailbox' => '1',
                             'postal' => '3001',
                             'city' => 'Heverlee',
-                            'country' => 'Belgium',)),
+                            'country' => 'Belgium', )),
             'description' => 'The address of the organization',
     ),
     array(
@@ -454,5 +454,10 @@ You can remove any installed cookies from your computer or mobile device at any 
         'key'         => 'last_upgrade',
         'value'       => '2014092300',
         'description' => 'The last Litus schema update performed on this system',
+    ),
+    array(
+        'key'         => 'common.wiki_button',
+        'value'       => '0',
+        'description' => 'Boolean that displays the wiki button on the homepage',
     ),
 );
