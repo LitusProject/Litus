@@ -85,7 +85,7 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             ));
         }
 
-        if ('' != $data['university']['status']) {
+        if (!empty($data['university']['status'])) {
             if (null !== $object->getUniversityStatus($academicYear)) {
                 $object->getUniversityStatus($academicYear)
                     ->setStatus($data['university']['status']);

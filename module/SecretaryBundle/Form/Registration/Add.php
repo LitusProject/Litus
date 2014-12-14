@@ -164,30 +164,41 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'       => 'text',
-                    'name'       => 'university_identification',
-                    'label'      => 'University Identification',
-                    'value'      => $this->identification,
-                    'attributes' => array(
-                        'disabled' => true,
-                    ),
-                ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'university_email',
-                    'label'      => 'University E-mail',
-                    'value'      => $universityEmail,
-                    'required'   => true,
-                    'attributes' => array(
-                        'id' => 'university_email',
-                    ),
-                    'options'    => array(
-                        'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
+                    'type'     => 'fieldset',
+                    'name'     => 'university',
+                    'elements' => array(
+                        array(
+                            'type'       => 'hidden',
+                            'name'       => 'identification',
+                            'value'      => $this->identification,
+                        ),
+                        array(
+                            'type'       => 'text',
+                            'name'       => 'identification_visible',
+                            'label'      => 'University Identification',
+                            'value'      => $this->identification,
+                            'attributes' => array(
+                                'disabled' => true,
                             ),
-                            'validators' => array(
-                                new NoAtValidator(),
+                        ),
+                        array(
+                            'type'       => 'text',
+                            'name'       => 'email',
+                            'label'      => 'University E-mail',
+                            'value'      => $universityEmail,
+                            'required'   => true,
+                            'attributes' => array(
+                                'id' => 'university_email',
+                            ),
+                            'options'    => array(
+                                'input' => array(
+                                    'filters'  => array(
+                                        array('name' => 'StringTrim'),
+                                    ),
+                                    'validators' => array(
+                                        new NoAtValidator(),
+                                    ),
+                                ),
                             ),
                         ),
                     ),
