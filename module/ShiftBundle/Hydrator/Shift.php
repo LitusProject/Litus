@@ -18,10 +18,10 @@
 
 namespace ShiftBundle\Hydrator;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
+use CommonBundle\Entity\User\Person\Academic,
     ShiftBundle\Entity\Shift as ShiftEntity;
 
-class Shift extends CommonBundle\Component\Hydrator\Hydrator
+class Shift extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $std_keys = array(
         'nb_responsibles',
@@ -42,18 +42,33 @@ class Shift extends CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$std_keys);
 
-        $data['manager_id'] = $manager->getId();
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
-        $data['manager'] = $manager->getFullName()
+        $data['manager']['id'] = $manager->getId();
+        $data['manager']['value'] = $manager->getFullName()
                 . ($manager instanceof Academic ? ' - ' . $manager->getUniversityIdentification() : '');
         $data['unit'] = $object->getUnit()->getId();
         $data['event'] = null === $object->getEvent()
                 ? ''
                 : $object->getEvent()->getId();
         $data['location'] = $object->getLocation()->getId();
+        $data['edit_roles'] = $this->_createRolesPopulationArray($object->getEditRoles());
 
         return $data;
+    }
+
+    private function _createRolesPopulationArray(array $roles)
+    {
+        $rolesArray = array();
+        foreach ($roles as $role) {
+            if ($role->getSystem()) {
+                continue;
+            }
+
+            $rolesArray[] = $role->getName();
+        }
+
+        return $rolesArray;
     }
 
     protected function doHydrate(array $data, $object = null)
@@ -70,12 +85,9 @@ class Shift extends CommonBundle\Component\Hydrator\Hydrator
                 ->setEndDate(self::loadDateTime($data['end_date']));
         }
 
-        $peopleRepository = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Academic');
-
-        $manager = ('' == $data['manager_id'])
-            ? $peopleRepository->findOneByUsername($data['manager'])
-            : $peopleRepository->findOneById($data['manager_id']);
+        $manager = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findOneById($data['manager']['id']);
 
         $editRoles = array();
         if (isset($data['edit_roles'])) {

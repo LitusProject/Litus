@@ -20,128 +20,28 @@ namespace BrBundle\Form\Admin\Company\Job;
 
 use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Job,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    CommonBundle\Component\OldForm\Admin\Element\Textarea,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    CommonBundle\Component\Validator\DateCompare as DateCompareValidator;
 
 /**
  * Add Job
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    protected $hydrator = 'BrBundle\Hydrator\Company\Job';
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Text('job_name');
-        $field->setLabel('Job Name')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('start_date');
-        $field->setLabel('Start Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('end_date');
-        $field->setLabel('End Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Select('sector');
-        $field->setLabel('Sector')
-            ->setAttribute('options', $this->_getSectors());
-        $this->add($field);
-
-        $field = new Textarea('description');
-        $field->setLabel('Description')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Textarea('benefits');
-        $field->setLabel('Benefits')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Textarea('profile');
-        $field->setLabel('Profile')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Textarea('contact');
-        $field->setLabel('Contact Information')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('city');
-        $field->setLabel('City')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Select('type');
-        $field->setLabel('Type')
-            ->setAttribute('options', Job::$possibleTypes)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'company_add');
-        $this->add($field);
-    }
-
-    private function _getSectors()
-    {
-        $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
-    }
-
-    public function populateFromJob(Job $job)
-    {
-        $this->setData(
-            array(
-                'job_name' => $job->getName(),
-                'description' => $job->getDescription(),
-                'benefits' => $job->getBenefits(),
-                'profile' => $job->getProfile(),
-                'contact' => $job->getContact(),
-                'city' => $job->getCity(),
-                'start_date' => $job->getStartDate()->format('d/m/Y H:i'),
-                'end_date' => $job->getEndDate()->format('d/m/Y H:i'),
-                'sector' => $job->getSectorCode(),
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'job_name',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'name',
+            'label'      => 'Job Name',
+            'required'   => true,
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -153,123 +53,129 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'start_date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
+        $this->add(array(
+            'type'       => 'datetime',
+            'name'       => 'start_date',
+            'label'      => 'Start Date',
+            'required'   => true,
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'end_date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
+        $this->add(array(
+            'type'       => 'datetime',
+            'name'       => 'end_date',
+            'label'      => 'End Date',
+            'required'   => true,
+            'options'    => array(
+                'input' => array(
                     'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
                         new DateCompareValidator('start_date', 'd/m/Y H:i'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'sector',
-                    'required' => false,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'sector',
+            'label'      => 'Sector',
+            'attributes' => array(
+                'options' => $this->_getSectors(),
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'description',
+            'label'      => 'Description',
+            'required'   => true,
+            'options' => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'description',
-                    'required' => true,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'benefits',
+            'label'      => 'Benefits',
+            'required'   => true,
+            'options' => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'benefits',
-                    'required' => true,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'profile',
+            'label'      => 'Profile',
+            'required'   => true,
+            'options' => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'profile',
-                    'required' => true,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'contact',
+            'label'      => 'Contact Information',
+            'required'   => true,
+            'options' => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'contact',
-                    'required' => true,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'city',
+            'label'      => 'City',
+            'required'   => true,
+            'options' => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'city',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'type',
+            'label'      => 'Type',
+            'attributes' => array(
+                'options' => Job::$possibleTypes,
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'company_add');
+    }
+
+    private function _getSectors()
+    {
+        $sectorArray = array();
+        foreach (Company::$possibleSectors as $key => $sector) {
+            $sectorArray[$key] = $sector;
+        }
+
+        return $sectorArray;
     }
 }

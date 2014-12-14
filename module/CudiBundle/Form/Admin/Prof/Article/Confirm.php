@@ -35,7 +35,7 @@ class Confirm extends \CudiBundle\Form\Admin\Article\Add
 
         parent::init();
 
-        $this->remove('subject');
+        $this->remove('subject_form');
 
         $this->remove('submit')
             ->addSubmit('Confirm', 'article_add');

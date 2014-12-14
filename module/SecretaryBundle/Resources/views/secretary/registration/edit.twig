@@ -7,7 +7,7 @@
 
     {% include 'secretary/registration/partials/navigation.twig' %}
 
-    {% if organizations|length > 1 or enableOtherOrganization %}
+    {% if (organizations|length > 1 or enableOtherOrganization) and not isPost %}
         <div id="organizationSelector">
             <p style="text-align: center;">{{ translate('Choose your study:') }}</p>
             <ul style="list-style: none; width: 300px; margin: 0 auto;">
@@ -28,7 +28,7 @@
             </ul>
         </div>
     {% endif %}
-    <div id="registerForm"{% if organizations|length > 1 or enableOtherOrganization %} style="display: none;"{% endif %}>
+    <div id="registerForm"{% if (organizations|length > 1 or enableOtherOrganization) and not isPost %} style="display: none;"{% endif %}>
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
@@ -85,40 +85,67 @@
                 {% endfor %}
             };
 
-            {% if organizations|length > 1 or enableOtherOrganization %}
+            var $form = $('#registerForm');
+
+            {% if (organizations|length > 1 or enableOtherOrganization) and not isPost %}
                 $('#organizationSelector a').click(function (e) {
-                    e.preventDefault();
                     $('#organizationSelector').hide();
-                    $('#registerForm').show();
-                    $('#registerForm #organization').val($(this).data('id')).closest('.form-group').hide();
+                    $form
+                        .show()
+                        .find('#organization')
+                        .val($(this).data('id'))
+                        .closest('.form-group')
+                            .hide();
 
                     if ($(this).data('id') == 0) {
-                        $('#registerForm #become_member').closest('.form-group').hide();
-                        $('#registerForm #become_member').prop('checked', false);
+                        $form.find('#become_member')
+                            .closest('.form-group')
+                                .hide()
+                            .end()
+                            .prop('checked', false);
                     } else {
-                        $('#registerForm #become_member').prop('checked', true);
-                        $('#registerForm #become_member').closest('.form-group').show();
-                        $('#registerForm #become_member').closest('label').html($('#registerForm #become_member').closest('label').html().replace('{ price }', membershipArticles[$(this).data('id')]));
+                        $form.find('#become_member')
+                            .prop('checked', true)
+                            .closest('.form-group')
+                                .show()
+                            .end()
+                            .closest('label')
+                                .html(
+                                    $form.find('#become_member')
+                                        .closest('label')
+                                        .html()
+                                        .replace('{ price }', membershipArticles[$(this).data('id')])
+                                );
                     }
+
+                    return false;
                 });
             {% else %}
-                $('#registerForm #organization').closest('.form-group').hide();
-                $('#registerForm #become_member').closest('label').html($('#registerForm #become_member').closest('label').html().replace('{ price }', membershipArticles[$('#registerForm #organization').val()]));
+                $form.find('#organization')
+                    .closest('.form-group')
+                        .hide();
+                $form.find('#become_member')
+                    .closest('label')
+                    .html(
+                        $form.find('#become_member')
+                            .closest('label')
+                            .html()
+                            .replace('{ price }', membershipArticles[$form.find('#organization').val()])
+                    );
             {% endif %}
 
             $('#conditions').parent().append(
                 conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
             );
             conditionsLink.click(function (e) {
+                e.preventDefault();
                 $('#modalTermsAndCoditions').modal();
-
-                return false;
             });
 
-            $form = $('#register_form');
-
             $('#register').click(function (e) {
-                if (!$('#become_member').is(':checked') && $form.find('#organization').val() != 0) {
+                e.preventDefault();
+
+                if (!$('#become_member').is(':checked') && && !$('#become_member').is(':disabled') && $form.find('#organization').val() != 0) {
                     $('#modalMemberWarning')
                         .modal()
                         .find('.confirm')
@@ -128,42 +155,27 @@
                 } else {
                     $form.submit();
                 }
-
-                return false;
             });
 
-            $form
-                .find('#organization')
-                .closest('.form-group')
-                    .hide();
-            if ($form.find('#organization').val() == 0) {
-                $form.find('#become_member')
-                    .prop('checked', false)
-                    .closest('.form-group')
-                        .hide();
-            } else {
-                $form.find('#become_member')
-                    .prop('checked', true)
-                    .closest('.form-group')
-                        .show()
-                    .end()
-                    .closest('label')
-                        .html(
-                            $form.find('#become_member')
-                                .closest('label')
-                                .html()
-                                .replace('{ price }', membershipArticles[$('#register_form #organization').val()])
-                        );
-            }
+            {% if selectedOrganization %}
+                $('#organization > option[value="{{ selectedOrganization.getId() }}"]').click();
+            {% elseif isPost %}
+                $('#organization > option[value="0"]').click();
+            {% endif %}
 
             $('.primary-address .city').change(cityChange);
-            $('#become_member').change(toggleMember);
             toggleMember();
             cityChange();
 
             $('#university_email').wrap('<div class=\"input-group\" />');
             $('#university_email').after('<span class=\"input-group-addon\">{{ studentDomain }}</span>');
+
+            $('#first_name, #last_name').blur(nameChange);
         });
+
+        function nameChange() {
+            $('#university_email').val($('#first_name').val().toLowerCase() + "." + $('#last_name').val().toLowerCase().replace(/ /g, ""));
+        }
 
         function cityChange() {
             var $primaryAddress = $('.primary-address');
@@ -197,13 +209,23 @@
         }
 
         function toggleMember() {
-            if ($('#become_member').is(':checked'))
-                $('#organization_info .form-group').show();
-            else
-                $('#organization_info .form-group').hide();
+            var $form = $('#registerForm');
 
-            $('#become_member, #conditions, #bakske').closest('.form-group').show();
-            $form.find('#organization').closest('.form-group').hide();
+            if ($form.find('#become_member').is(':checked'))
+                $form.find('#organization_info .form-group').show();
+            else
+                $form.find('#organization_info .form-group').hide();
+
+            $form.find('#become_member')
+                .closest('.form-group')
+                    .toggle($('#registerForm').find('#organization').val() !== '0');
+
+            $form.find('#conditions, #bakske')
+                .closest('.form-group')
+                    .show();
+            $form.find('#organization')
+                .closest('.form-group')
+                    .hide();
         }
     </script>
 {% endblock %}

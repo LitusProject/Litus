@@ -19,7 +19,6 @@
 namespace SportBundle\Controller\Run;
 
 use SportBundle\Entity\Group,
-    SportBundle\Entity\Runner,
     Zend\View\Model\ViewModel;
 
 /**
@@ -31,15 +30,11 @@ class GroupController extends \SportBundle\Component\Controller\RunController
 {
     public function addAction()
     {
-        $allMembers = array(
-            'one', 'two', 'three', 'four', 'five',
-        );
-
-        $form = $this->getForm('sport_group_add', array('all_members' => $allMembers));
+        $form = $this->getForm('sport_group_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            foreach ($allMembers as $memberNb) {
+            foreach (Group::$ALL_MEMBERS as $memberNb) {
                 $memberData = $formData['user_' . $memberNb];
 
                 if (
@@ -58,57 +53,12 @@ class GroupController extends \SportBundle\Component\Controller\RunController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $groupData = $formData['group_information'];
-
-                $newGroup = new Group(
-                    $this->getCurrentAcademicYear(),
-                    $groupData['name'],
-                    array(
-                        $groupData['happy_hour_one'],
-                        $groupData['happy_hour_two'],
-                    )
+                $group = $form->hydrateObject(
+                    new Group($this->getCurrentAcademicYear())
                 );
 
-                $groupMembers = array();
-                foreach ($allMembers as $memberNb) {
-                    $memberData = $formData['user_' . $memberNb];
-
-                    $repositoryCheck = $this->getEntityManager()
-                        ->getRepository('SportBundle\Entity\Runner')
-                        ->findOneByUniversityIdentification($memberData['university_identification']);
-
-                    if (null === $repositoryCheck) {
-                        $academic = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                            ->findOneByUniversityIdentification($memberData['university_identification']);
-
-                        $department = $this->getEntityManager()
-                            ->getRepository('SportBundle\Entity\Department')
-                            ->findOneById($memberData['department']);
-
-                        $newRunner = new Runner(
-                            $memberData['first_name'],
-                            $memberData['last_name'],
-                            $academic,
-                            $newGroup,
-                            $department
-                        );
-
-                        $this->getEntityManager()->persist($newRunner);
-
-                        $groupMembers[] = $newRunner;
-                    } else {
-                        if (null === $repositoryCheck->getGroup()) {
-                            $repositoryCheck->setGroup($newGroup);
-                            $groupMembers[] = $repositoryCheck;
-                        }
-                    }
-                }
-
-                if (0 != count($groupMembers)) {
-                    $this->getEntityManager()->persist($newGroup);
+                if (null !== $group) {
+                    $this->getEntityManager()->persist($group);
 
                     $this->getEntityManager()->flush();
 
@@ -156,6 +106,10 @@ class GroupController extends \SportBundle\Component\Controller\RunController
             }
         }
 
-        return new ViewModel();
+        return new ViewModel(
+            array(
+                'result' => (object) array(),
+            )
+        );
     }
 }

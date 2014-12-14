@@ -53,7 +53,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
                 $docent = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findOneById($formData['prof_id']);
+                    ->findOneById($formData['prof']['id']);
 
                 $mapping = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\SubjectProfMap')

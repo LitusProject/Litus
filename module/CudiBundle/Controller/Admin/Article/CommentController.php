@@ -47,14 +47,12 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $comment = new Comment(
-                    $this->getEntityManager(),
-                    $this->getAuthentication()->getPersonObject(),
-                    $article,
-                    $formData['text'],
-                    $formData['type']
+                $comment = $form->hydrateObject(
+                    new Comment(
+                        $this->getEntityManager(),
+                        $this->getAuthentication()->getPersonObject(),
+                        $article
+                    )
                 );
 
                 $this->getEntityManager()->persist($comment);

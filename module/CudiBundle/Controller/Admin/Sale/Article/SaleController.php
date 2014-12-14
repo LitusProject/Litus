@@ -39,7 +39,7 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_sales_article_sales_add');
+        $form = $this->getForm('cudi_sale_article_sale_add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

@@ -27,6 +27,8 @@ use CudiBundle\Entity\Comment\Comment;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'CudiBundle\Hydrator\Comment\Comment';
+
     public function init()
     {
         parent::init();

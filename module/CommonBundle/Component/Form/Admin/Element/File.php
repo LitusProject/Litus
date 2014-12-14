@@ -31,13 +31,6 @@ class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Fo
         ElementTrait::getInputSpecification as getTraitInputSpecification;
     }
 
-    public function setName($name)
-    {
-        $this->setAttribute('id', $name);
-
-        return parent::setName($name);
-    }
-
     public function getInputSpecification()
     {
         $specification = $this->getTraitInputSpecification();

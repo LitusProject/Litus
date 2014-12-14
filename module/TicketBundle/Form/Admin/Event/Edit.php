@@ -59,18 +59,18 @@ class Edit extends Add
 
     public function getInputFilterSpecification()
     {
-        $inputs = parent::getInputFilterSpecification();
+        $specs = parent::getInputFilterSpecification();
 
-        foreach ($inputs as $key => $input) {
-            if ($input['name'] == 'event') {
-                $inputs[$key]['validators'] = array(
+        foreach ($specs as $key => $spec) {
+            if (isset($spec['name']) && $spec['name'] == 'event') {
+                $specs[$key]['validators'] = array(
                     new ActivityValidator($this->getEntityManager(), $this->event),
                 );
                 break;
             }
         }
 
-        return $inputs;
+        return $specs;
     }
 
     /**

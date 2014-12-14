@@ -18,9 +18,8 @@
 
 namespace LogisticsBundle\Form\Admin\VanReservation;
 
-use CommonBundle\Component\Validator\Academic as AcademicValidator,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
+    CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
     LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\VanReservation;
 
@@ -41,14 +40,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function init()
     {
         parent::init();
-
-        $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'passenger_id',
-            'attributes' => array(
-                'id' => 'passengerId',
-            ),
-        ));
 
         $this->add(array(
             'type'     => 'datetime',
@@ -128,13 +119,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
+            'type'       => 'typeahead',
             'name'       => 'passenger',
             'label'      => 'Passenger',
-            'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-                'id'           => 'passengerSearch',
+            'required'   => false,
+            'options'    => array(
+                'input' => array(
+                    'validators'  => array(
+                        new PersonTypeaheadValidator($this->getEntityManager()),
+                    ),
+                ),
             ),
         ));
 
@@ -170,46 +164,5 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         return $driversArray;
-    }
-
-    public function getInputFilterSpecification()
-    {
-        $specs = parent::getInputFilterSpecification();
-
-        if (isset($this->data['passenger_id']) && '' != $this->data['passenger_id']) {
-            $specs['passenger_id'] = array(
-                'name' => 'passenger_id',
-                'required' => false,
-                'filters' => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    new AcademicValidator(
-                        $this->getEntityManager(),
-                        array(
-                            'byId' => true,
-                        )
-                    ),
-                ),
-            );
-        } else {
-            $specs['passenger'] = array(
-                'name' => 'passenger',
-                'required' => false,
-                'filters' => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    new AcademicValidator(
-                        $this->getEntityManager(),
-                        array(
-                            'byId' => false,
-                        )
-                    ),
-                ),
-            );
-        }
-
-        return $specs;
     }
 }

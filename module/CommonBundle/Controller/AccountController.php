@@ -22,14 +22,12 @@ use CommonBundle\Component\PassKit\Pass\Membership,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\User\Credential,
     CommonBundle\Entity\User\Person,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CudiBundle\Entity\Sale\Booking,
-    DateTime,
     Imagick,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
-    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -135,16 +133,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-        $oldTshirtSize = null;
-        if ($metaData !== null) {
-            $oldTshirtSize = $metaData->getTshirtSize();
-        }
-
-        $termsAndConditions = $this->_getTermsAndConditions();
-
         $enableOtherOrganization = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_other_organization');
+
+        $termsAndConditions = $this->_getTermsAndConditions();
 
         if (null !== $metaData) {
             $form = $this->getForm('common_account_edit', array(
@@ -164,25 +157,72 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $membershipArticles = array();
         foreach ($ids as $organization => $id) {
+            echo $id;
             $membershipArticles[$organization] = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($id);
         }
 
+        $tshirts = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.tshirt_article')
+        );
+
+        $oldTshirtBooking = null;
+        $oldTshirtSize = null;
+        if (null !== $metaData) {
+            if ($enableRegistration) {
+                if (null !== $metaData->getTshirtSize()) {
+                    $oldTshirtBooking = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Booking')
+                        ->findOneAssignedByArticleAndPersonInAcademicYear(
+                            $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sale\Article')
+                                ->findOneById($tshirts[$metaData->getTshirtSize()]),
+                            $academic,
+                            $this->getCurrentAcademicYear()
+                        );
+                }
+            }
+            $oldTshirtSize = $metaData->getTshirtSize();
+        }
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost()->toArray();
-
             $formData['academic']['university_identification'] = $academic->getUniversityIdentification();
+
             if ($metaData && $metaData->becomeMember()) {
                 $formData['organization_info']['become_member'] = true;
-            } elseif (!isset($formData['organization_info']['become_member'])) {
-                $formData['organization_info']['become_member'] = false;
+            } else {
+                $formData['organization_info']['become_member'] = isset($formData['organization_info']['become_member'])
+                    ? $formData['organization_info']['become_member']
+                    : false;
+            }
+
+            $organizationData = $formData['organization_info'];
+
+            if (isset($organizationData['organization'])) {
+                if (0 == $organizationData['organization'] && $enableOtherOrganization) {
+                    $selectedOrganization = null;
+                } else {
+                    $selectedOrganization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($organizationData['organization']);
+                }
+            } else {
+                $selectedOrganization = current(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findAll()
+                );
             }
 
             $form->setData($formData);
 
             if ($form->isValid()) {
                 $formData = $form->getData();
+                $organizationData = $formData['organization_info'];
 
                 if (null === $metaData) {
                     $metaData = $form->hydrateObject();
@@ -190,55 +230,27 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     $this->getEntityManager()->persist($metaData);
                 }
 
-                if (isset($formData['organization_info']['organization'])) {
-                    if (0 == $formData['organization_info']['organization'] && $enableOtherOrganization) {
-                        $organization = null;
-                    } else {
-                        $organization = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Organization')
-                            ->findOneById($formData['organization_info']['organization']);
-
-                        $this->_setOrganization(
+                if ($academic->canHaveOrganizationStatus($this->getCurrentAcademicYear())) {
+                    $academic->addOrganizationStatus(
+                        new OrganizationStatus(
                             $academic,
-                            $this->getCurrentAcademicYear(),
-                            $organization
-                        );
-                    }
-                } else {
-                    $organization = current(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Organization')
-                            ->findAll()
-                    );
-
-                    $this->_setOrganization(
-                        $academic,
-                        $this->getCurrentAcademicYear(),
-                        $organization
+                            'non_member',
+                            $this->getCurrentAcademicYear()
+                        )
                     );
                 }
 
-                $tshirts = unserialize(
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.tshirt_article')
-                );
+                if (null !== $selectedOrganization) {
+                    $this->_setOrganization(
+                        $academic,
+                        $this->getCurrentAcademicYear(),
+                        $selectedOrganization
+                    );
+                }
 
                 if ($enableRegistration) {
-                    if (null !== $oldTshirtSize && $oldTshirtSize != $metaData->getTshirtSize()) {
-                        $booking = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sale\Booking')
-                            ->findOneAssignedByArticleAndPersonInAcademicYear(
-                                $this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                                    ->findOneById($tshirts[$metaData->getTshirtSize()]),
-                                $academic,
-                                $this->getCurrentAcademicYear()
-                            );
-
-                        if ($booking !== null) {
-                            $this->getEntityManager()->remove($booking);
-                        }
+                    if (null !== $oldTshirtBooking && $oldTshirtSize != $metaData->getTshirtSize()) {
+                        $this->getEntityManager()->remove($oldTshirtBooking);
                     }
 
                     $membershipArticles = array();
@@ -254,8 +266,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                             ->findOneById($articleId);
                     }
 
-                    if ($metaData->becomeMember() && null !== $organization) {
-                        $this->_bookRegistrationArticles($academic, $formData['tshirt_size'], $organization, $this->getCurrentAcademicYear());
+                    if ($metaData->becomeMember() && null !== $selectedOrganization) {
+                        $this->_bookRegistrationArticles($academic, $organizationData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
@@ -356,7 +368,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return $this->_saveStudiesAction(
             $this->getAuthentication()->getPersonObject(),
             $this->getCurrentAcademicYear(),
-            $this->getRequest()->getPost()
+            $this->getRequest()->getPost()->toArray()
         );
     }
 
@@ -402,7 +414,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return $this->_saveSubjectAction(
             $this->getAuthentication()->getPersonObject(),
             $this->getCurrentAcademicYear(),
-            $this->getRequest()->getPost()
+            $this->getRequest()->getPost()->toArray()
         );
     }
 
@@ -481,15 +493,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     {
         $form = $this->getForm('common_account_profile');
 
-        $upload = new FileUpload();
-        $inputFilter = $form->getInputFilter()->get('profile');
-        if ($inputFilter instanceof InputInterface) {
-            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
-        }
-
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
             $academic = $this->getAuthentication()->getPersonObject();
             $filePath = 'public' . $this->getEntityManager()
@@ -497,11 +505,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->getConfigValue('common.profile_path');
 
             if ($form->isValid()) {
-                if ($upload->isValid()) {
-                    $upload->receive();
+                $formData = $form->getData();
 
-                    $image = new Imagick($upload->getFileName('profile'));
-                    unlink($upload->getFileName('profile'));
+                if ($formData['profile']) {
+                    $image = new Imagick($formData['profile']['tmp_name']);
                 } else {
                     $image = new Imagick($filePath . '/' . $academic->getPhotoPath());
                 }
@@ -542,31 +549,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     )
                 );
             } else {
-                $errors = $form->getMessages();
-                $formErrors = array();
-
-                foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()])) {
-                        continue;
-                    }
-
-                    $formErrors[$element->getAttribute('id')] = array();
-
-                    foreach ($errors[$element->getName()] as $error) {
-                        $formErrors[$element->getAttribute('id')][] = $error;
-                    }
-                }
-
-                if (sizeof($upload->getMessages()) > 0) {
-                    $formErrors['profile'] = $upload->getMessages();
-                }
-
                 return new ViewModel(
                     array(
                         'result' => array(
                             'status' => 'error',
                             'form' => array(
-                                'errors' => $formErrors,
+                                'errors' => $form->getMessages(),
                             ),
                         ),
                     )
@@ -627,14 +615,5 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $this->getParam('return')
             );
         }
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date . ' 00:00') ?: null;
     }
 }

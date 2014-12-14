@@ -71,6 +71,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
 
+        $result->showCookieBanner = !isset($_COOKIE['cookie_permission']);
+
         $e->setResult($result);
 
         return $result;

@@ -22,7 +22,9 @@ use BrBundle\Entity\Company,
     BrBundle\Entity\User\Status\Corporate as CorporateStatus,
     CommonBundle\Component\Util\AcademicYear,
     Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException,
+    RuntimeException;
 
 /**
  * This is a person that represents a contact in a company.
@@ -45,26 +47,26 @@ class Corporate extends \CommonBundle\Entity\User\Person
      */
     private $corporateStatuses;
 
-    /**
-     * @param \BrBundle\Entity\Company $company     The user's company
-     * @param string                   $username    The user's username
-     * @param array                    $roles       The user's roles
-     * @param string                   $firstName   The user's first name
-     * @param string                   $lastName    The user's last name
-     * @param string                   $email       The user's e-mail address
-     * @param string                   $phoneNumber The user's phone number
-     * @param string                   $sex         The users sex
-     */
-    public function __construct(Company $company, $username, array $roles, $firstName, $lastName, $email, $phoneNumber = null, $sex = null)
+    public function __construct()
     {
-        parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
+        parent::__construct();
 
-        $this->company = $company;
         $this->corporateStatuses = new ArrayCollection();
     }
 
     /**
-     * @return \BrBundle\Entity\Company
+     * @param  Company $company
+     * @return self
+     */
+    public function setCompany(Company $company)
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * @return Company
      */
     public function getCompany()
     {
@@ -74,19 +76,19 @@ class Corporate extends \CommonBundle\Entity\User\Person
     /**
      * Adds a corporate status to the list, if possible.
      *
-     * @param  \BrBundle\Entity\User\Status\Corporate $corporateStatus
-     * @return \BrBundle\Entity\User\Person\Corporate
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
+     * @param  CorporateStatus          $corporateStatus
+     * @return self
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function addCorporateStatus(CorporateStatus $corporateStatus)
     {
         if (null === $corporateStatus) {
-            throw new \InvalidArgumentException('Invalid status');
+            throw new InvalidArgumentException('Invalid status');
         }
 
         if (!$this->canHaveCorporateStatus()) {
-            throw \RuntimeException('The corporate status cannot be set');
+            throw RuntimeException('The corporate status cannot be set');
         }
 
         $this->corporateStatuses->add($corporateStatus);

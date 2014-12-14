@@ -71,6 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'       => 'actions',
             'label'      => 'Allowed Actions',
             'attributes' => array(
+                'id'       => 'actions',
                 'multiple' => true,
                 'options'  => $this->createActionsArray(),
                 'style'    => 'height: 300px;',

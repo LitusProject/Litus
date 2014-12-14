@@ -60,16 +60,6 @@ class Mail
     private $translations;
 
     /**
-     * @param string  $from
-     * @param boolean $bcc
-     */
-    public function __construct($from, $bcc)
-    {
-        $this->from = $from;
-        $this->bcc = $bcc;
-    }
-
-    /**
      * @var int
      */
     public function getId()

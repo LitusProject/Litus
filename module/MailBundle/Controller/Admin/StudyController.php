@@ -18,9 +18,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\InputFilter\InputInterface,
-    Zend\Mail\Message,
+use Zend\Mail\Message,
     Zend\Mime\Message as MimeMessage,
     Zend\Mime\Mime,
     Zend\Mime\Part,
@@ -76,7 +74,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     }
 
                     foreach ($formData['compose_message']['file'] as $file) {
-                        if ($file['size'] === NULL) {
+                        if (!$file['size']) {
                             continue;
                         }
 

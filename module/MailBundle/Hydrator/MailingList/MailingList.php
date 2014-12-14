@@ -41,7 +41,7 @@ class MailingList extends \CommonBundle\Component\Hydrator\Hydrator
 
         $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneById($data['person_id']);
+            ->findOneById($data['person']['id']);
 
         $admin = new ListAdminEntity($list, $academic, true);
         $this->getEntityManager()->persist($admin);

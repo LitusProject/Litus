@@ -90,6 +90,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
             if ($form->isValid()) {
                 $list = $form->hydrateObject();
+
+                $this->getEntityManager()->persist($list);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

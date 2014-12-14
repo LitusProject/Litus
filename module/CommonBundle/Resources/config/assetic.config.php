@@ -105,6 +105,7 @@ return array(
             '@common_jquery',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
             '@bootstrap_js_carousel',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
@@ -115,6 +116,7 @@ return array(
             '@common_jquery',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
             '@bootstrap_js_carousel',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
@@ -128,6 +130,7 @@ return array(
             '@common_jquery',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
             '@bootstrap_js_carousel',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
@@ -141,11 +144,23 @@ return array(
             '@common_jquery',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
             '@bootstrap_js_carousel',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
 
             '@common_holder_js',
+        ),
+        'common_privacy' => array(
+            '@bootstrap_css',
+            '@site_css',
+            '@common_jquery',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
         ),
     ),
 
@@ -267,6 +282,13 @@ return array(
         'admin_js' => array(
             'assets'  => array(
                 'admin/js/*.js',
+            ),
+            'filters' => array('js'),
+        ),
+
+        'display_form_error_js' => array(
+            'assets' => array(
+                'site/js/displayFormErrors.js',
             ),
             'filters' => array('js'),
         ),

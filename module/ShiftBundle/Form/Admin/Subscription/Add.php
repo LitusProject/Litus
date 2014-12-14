@@ -18,7 +18,7 @@
 
 namespace ShiftBundle\Form\Admin\Subscription;
 
-use CommonBundle\Component\Validator\Academic as AcademicValidator;
+use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
 
 /**
  * Add a subscription to a shift
@@ -27,27 +27,23 @@ use CommonBundle\Component\Validator\Academic as AcademicValidator;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'ShiftBundle\Hydrator\Subscriber';
+
     public function init()
     {
         parent::init();
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'person_name',
+            'type'       => 'typeahead',
+            'name'       => 'person',
             'label'      => 'Name',
             'required'   => true,
-            'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-                'id'           => 'personSearch',
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'person_id',
-            'attributes' => array(
-                'id' => 'personId',
+            'options' => array(
+                'input' => array(
+                    'validators' => array(
+                        new PersonTypeaheadValidator($this->getEntityManager()),
+                    ),
+                ),
             ),
         ));
 
@@ -58,46 +54,5 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->addSubmit('Add', 'add');
-    }
-
-    public function getInputFilterSpecification()
-    {
-        if (!isset($this->data['person_id']) || '' == $this->data['person_id']) {
-            return array(
-                array(
-                    'name' => 'person_name',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new AcademicValidator(
-                            $this->getEntityManager(),
-                            array(
-                                'byId' => false,
-                            )
-                        ),
-                    ),
-                ),
-            );
-        } else {
-            return array(
-                array(
-                    'name' => 'person_id',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new AcademicValidator(
-                            $this->getEntityManager(),
-                            array(
-                                'byId' => true,
-                            )
-                        ),
-                    ),
-                ),
-            );
-        }
     }
 }

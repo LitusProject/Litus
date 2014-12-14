@@ -28,11 +28,4 @@ use CommonBundle\Component\Form\ElementTrait;
 class Textarea extends \Zend\Form\Element\Textarea implements \CommonBundle\Component\Form\ElementInterface
 {
     use ElementTrait;
-
-    public function setName($name)
-    {
-        $this->setAttribute('id', $name);
-
-        return parent::setName($name);
-    }
 }

@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Hydrator\Sale;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    CudiBundle\Entity\Sale\Article as ArticleEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 class Article extends \CommonBundle\Component\Hydrator\Hydrator
 {

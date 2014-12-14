@@ -30,52 +30,52 @@
 {% endblock %}
 
 {% block content_script %}
-    <script>
-    var ajax_requests_pending = 0;
-    $(document).ready(function () {
-        $('#rounds_tab li:first').addClass('active');
-        $('#rounds_tab-content .tab-pane:first').addClass('active');
+    <script type="text/javascript">
+        var ajax_requests_pending = 0;
+        $(document).ready(function () {
+            $('#rounds_tab li:first').addClass('active');
+            $('#rounds_tab-content .tab-pane:first').addClass('active');
 
-        $('.roundScore').keyup(function (e) {
-            if (e.keyCode == 13) {
-                var next = $(this).parent().parent().next().find('.roundScore');
-                next.focus().select();
-                if (next.find('.roundScore').length == 0)
-                    $(this).blur();
-            }
-        }).blur(function () {
-            var field = $(this);
-            field.parent().parent().removeClass('has-success').removeClass('has-error').find('.help-block').addClass('hide');
-            if (parseInt(field.val(), 10) > parseInt(field.attr('max'),10)) {
-                field.parent().parent().addClass('error');
-                return;
-            }
-            ajax_requests_pending++;
-            var url = '{{ url('quiz_quiz', {'action': 'update', 'quizid': quiz.getId()})}}'+$(this).data('round') + '/' + $(this).data('team')
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: {score: $(this).val()},
-                dataType: 'json',
-                success: function (data) {
-                    if (data.status == 'success') {
-                        field.parent().parent().addClass('has-success');
-                    } else {
-                        field.parent().parent().addClass('has-error').find('.help-block').removeClass('hide');
-                    }
-                    ajax_requests_pending--;
-                },
-                error: function () {
-                    field.parent().parent().addClass('has-error').find('.help-block').removeClass('hide');
-                    ajax_requests_pending--;
+            $('.roundScore').keyup(function (e) {
+                if (e.keyCode == 13) {
+                    var next = $(this).parent().parent().next().find('.roundScore');
+                    next.focus().select();
+                    if (next.find('.roundScore').length == 0)
+                        $(this).blur();
                 }
+            }).blur(function () {
+                var field = $(this);
+                field.parent().parent().removeClass('has-success').removeClass('has-error').find('.help-block').addClass('hide');
+                if (parseInt(field.val(), 10) > parseInt(field.attr('max'),10)) {
+                    field.parent().parent().addClass('has-error');
+                    return;
+                }
+                ajax_requests_pending++;
+                var url = '{{ url('quiz_quiz', {'action': 'update', 'quizid': quiz.getId()})}}'+$(this).data('round') + '/' + $(this).data('team')
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: {score: $(this).val()},
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == 'success') {
+                            field.parent().parent().addClass('has-success');
+                        } else {
+                            field.parent().parent().addClass('has-error').find('.help-block').removeClass('hide');
+                        }
+                        ajax_requests_pending--;
+                    },
+                    error: function () {
+                        field.parent().parent().addClass('has-error').find('.help-block').removeClass('hide');
+                        ajax_requests_pending--;
+                    }
+                });
             });
         });
-    });
 
-    $(window).on('beforeunload', function() {
-        if(ajax_requests_pending > 0)
-            return 'Not all scores have been saved. Are you sure you want to leave this page?';
-    });
+        $(window).on('beforeunload', function() {
+            if(ajax_requests_pending > 0)
+                return 'Not all scores have been saved. Are you sure you want to leave this page?';
+        });
     </script>
 {% endblock %}

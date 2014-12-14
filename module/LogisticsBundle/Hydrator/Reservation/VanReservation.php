@@ -37,8 +37,8 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
             : -1;
 
         if (null !== $object->getPassenger()) {
-            $data['passenger_id'] = $object->getPassenger()->getId();
-            $data['passenger_name'] = $object->getPassenger()->getName();
+            $data['passenger']['id'] = $object->getPassenger()->getId();
+            $data['passenger']['value'] = $object->getPassenger()->getFullName();
         }
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
@@ -61,15 +61,9 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
             ->getRepository('LogisticsBundle\Entity\Driver')
             ->findOneById($data['driver']);
 
-        if ('' == $data['passenger_id']) {
-            $passenger = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findOneByUsername($data['passenger']);
-        } else {
-            $passenger = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findOneById($data['passenger_id']);
-        }
+        $passenger = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findOneById($data['passenger']['id']);
 
         if (null !== $driver) {
             $object->setDriver($driver);

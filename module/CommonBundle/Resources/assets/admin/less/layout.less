@@ -47,11 +47,12 @@ h2 {
     background: @cBase;
 }
 
-#toggleHelpButton {
+#helpButtonWrapper {
     position: fixed;
     top: 0;
     left: 50%;
     width: @layoutWidth;
+    height: 0;
     margin-left: -@layoutWidth/2;
 }
 
@@ -528,6 +529,10 @@ h2 {
         width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing))/2 !important;
         float: left;
         margin-right: @defaultSpacing;
+
+        .gollum-editor {
+            width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing))*3/4 !important;
+        }
     }
 
     aside {
@@ -690,4 +695,12 @@ dl {
     cursor: pointer;
     text-indent: 0;
     text-transform: uppercase;
+}
+
+.ui-widget-content {
+    button {
+        height: auto;
+        margin: 0;
+        text-indent: 0;
+    }
 }

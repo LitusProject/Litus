@@ -18,7 +18,7 @@
 
 namespace LogisticsBundle\Form\Admin\Driver;
 
-use LogisticsBundle\Component\Validator\Driver as DriverValidator;
+use LogisticsBundle\Component\Validator\Typeahead\Driver as DriverTypeaheadValidator;
 
 /**
  * The form used to add a new Driver
@@ -43,63 +43,28 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'person_name',
+            'type'       => 'typeahead',
+            'name'       => 'person',
             'label'      => 'Name',
             'required'   => true,
-            'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-                'id'           => 'personSearch',
-            ),
             'options'    => array(
                 'input' => array(
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
                     'validators' => array(
-                        new DriverValidator(
-                            $this->getEntityManager(),
-                            array(
-                                'byId' => false,
-                            )
-                        ),
+                        new DriverTypeaheadValidator($this->getEntityManager()),
                     ),
                 ),
             ),
         ));
 
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'person_id',
+            'type'       => 'text',
+            'name'       => 'color',
+            'label'      => 'Color',
+            'value'      => '#888888',
             'attributes' => array(
-                'id' => 'personId',
+                'id' => 'color',
             ),
             'options'    => array(
-                'input' => array(
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new DriverValidator(
-                            $this->getEntityManager(),
-                            array(
-                                'byId' => true,
-                            )
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'    => 'text',
-            'name'    => 'color',
-            'label'   => 'Color',
-            'value'   => '#888888',
-            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -127,18 +92,5 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->addSubmit('Add', 'driver_add');
-    }
-
-    public function getInputFilterSpecification()
-    {
-        $specs = parent::getInputFilterSpecification();
-
-        if (!isset($this->data['person_id']) || '' == $this->data['person_id']) {
-            unset($specs['person_id']);
-        } else {
-            unset($specs['person_name']);
-        }
-
-        return $specs;
     }
 }

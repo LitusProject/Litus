@@ -25,41 +25,24 @@ namespace SyllabusBundle\Form\Admin\Group\Study;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    /**
+     * @var array All possible studies
+     */
+    private $_studies;
+
     public function init()
     {
         parent::init();
 
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'study_id',
-            'attributes' => array(
-                'id' => 'studyId',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
-            'name'       => 'study',
-            'label'      => 'Study',
+            'type'       => 'select',
+            'name'       => 'studies',
+            'label'      => 'Studies',
             'required'   => true,
             'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-                'id'           => 'studySearch',
-                'style'        => 'width: 500px',
+                'multiple' => true,
+                'style'    => 'max-width: 100%;',
+                'options'  => $this->_getStudyNames(),
             ),
             'options'    => array(
                 'input' => array(
@@ -71,5 +54,29 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->addSubmit('Add', 'add');
+    }
+
+    /**
+     * @return array
+     */
+    private function _getStudyNames()
+    {
+        $studyNames = array();
+        foreach ($this->_studies as $study) {
+            $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
+        }
+
+        return $studyNames;
+    }
+
+    /**
+     * @param  array All possible studies
+     * @return self
+     */
+    public function setStudies(array $studies)
+    {
+        $this->_studies = $studies;
+
+        return $this;
     }
 }

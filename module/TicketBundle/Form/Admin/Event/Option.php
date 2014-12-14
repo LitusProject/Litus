@@ -36,8 +36,21 @@ class Option extends Fieldset implements InputFilterProviderInterface
         $this->setLabel('Option');
 
         $this->add(array(
-            'type' => 'hidden',
-            'name' => 'option_id',
+            'type'     => 'hidden',
+            'name'     => 'option_id',
+            'required' => false,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                ),
+            ),
         ));
 
         $this->add(array(
@@ -45,6 +58,13 @@ class Option extends Fieldset implements InputFilterProviderInterface
             'name'       => 'option',
             'label'      => 'Name',
             'required'   => true,
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
         ));
 
         $this->add(array(
@@ -52,6 +72,16 @@ class Option extends Fieldset implements InputFilterProviderInterface
             'name'     => 'price_members',
             'label'    => 'Price Members',
             'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator(),
+                    ),
+                ),
+            ),
         ));
 
         $this->add(array(
@@ -60,55 +90,31 @@ class Option extends Fieldset implements InputFilterProviderInterface
             'label'      => 'Price Non Members',
             'required'   => true,
             'attributes' => array(
-                'class', 'price_non_members',
+                'class' => 'price_non_members',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new PriceValidator(),
+                    ),
+                ),
             ),
         ));
     }
 
     public function getInputFilterSpecification()
     {
-        $required = $this->get('option')->getValue() && strlen($this->get('option')->getValue()) > 0 ? true : false;
+        $specs = parent::getInputFilterSpecification();
 
-        return array(
-            array(
-                'name'     => 'option_id',
-                'required' => false,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'int',
-                    ),
-                ),
-            ),
-            array(
-                'name'     => 'option',
-                'required' => $required,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-            ),
-            array(
-                'name'     => 'price_members',
-                'required' => $required,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    new PriceValidator(),
-                ),
-            ),
-            array(
-                'name'     => 'price_non_members',
-                'required' => isset($_POST['only_members']) && $_POST['only_members'] ? false : $required,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    new PriceValidator(),
-                ),
-            ),
-        );
+        $required = $this->get('option')->getValue() && strlen($this->get('option')->getValue()) > 0;
+
+        $specs['option']['required'] = $required;
+        $specs['price_members']['required'] = $required;
+        $specs['price_non_members']['required'] = isset($_POST['only_members']) && $_POST['only_members'] ? false : $required;
+
+        return $specs;
     }
 }

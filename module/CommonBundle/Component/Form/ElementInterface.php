@@ -18,13 +18,15 @@
 
 namespace CommonBundle\Component\Form;
 
+use Zend\Form\FormInterface;
+
 /**
  * Extending Zend's form element component, so that our forms look the way we want
  * them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-interface ElementInterface extends \Zend\Form\ElementInterface, \Zend\InputFilter\InputProviderInterface
+interface ElementInterface extends \Zend\Form\ElementInterface, \Zend\InputFilter\InputProviderInterface, \Zend\Form\ElementPrepareAwareInterface
 {
     /**
      * Specifies whether this element is a required field.
@@ -46,4 +48,12 @@ interface ElementInterface extends \Zend\Form\ElementInterface, \Zend\InputFilte
      * @return self
      */
     public function addClass($class);
+
+    /**
+     * Prepare the form element (mostly used for rendering purposes)
+     *
+     * @param  FormInterface $form
+     * @return mixed
+     */
+    public function prepareElement(FormInterface $form);
 }

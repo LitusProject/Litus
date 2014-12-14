@@ -58,7 +58,7 @@ class Member extends Restriction
     }
 
     /**
-     * @return string|null
+     * @return string
      */
     public function getValue()
     {

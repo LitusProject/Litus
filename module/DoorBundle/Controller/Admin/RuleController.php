@@ -32,14 +32,13 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromDocument(
-            'DoorBundle\Document\Rule',
+        $paginator = $this->paginator()->createFromArray(
+            $this->getDocumentManager()
+                ->getRepository('DoorBundle\Document\Rule')
+                ->findAll()
+                ->toArray(),
             $this->getParam('page')
         );
-
-        $paginator = $this->getDocumentManager()
-            ->getRepository('DoorBundle\Document\Rule')
-            ->findAll();
 
         return new ViewModel(
             array(
@@ -119,6 +118,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
+                'academic' => $rule->getAcademic($this->getEntityManager()),
                 'form' => $form,
             )
         );
@@ -126,14 +126,12 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
     public function oldAction()
     {
-        $paginator = $this->paginator()->createFromDocument(
-            'DoorBundle\Document\Rule',
+        $paginator = $this->paginator()->createFromArray(
+            $this->getDocumentManager()
+                ->getRepository('DoorBundle\Document\Rule')
+                ->findOld(),
             $this->getParam('page')
         );
-
-        $paginator = $this->getDocumentManager()
-            ->getRepository('DoorBundle\Document\Rule')
-            ->findOld();
 
         return new ViewModel(
             array(

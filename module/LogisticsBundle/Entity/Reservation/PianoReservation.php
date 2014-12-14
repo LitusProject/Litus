@@ -19,7 +19,6 @@
 namespace LogisticsBundle\Entity\Reservation;
 
 use CommonBundle\Entity\User\Person,
-    DateTime,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -58,6 +57,7 @@ class PianoReservation extends Reservation
         parent::__construct($resource, $creator);
 
         $this->confirmed = false;
+        $this->setReason('');
     }
 
     /**

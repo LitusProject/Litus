@@ -138,6 +138,14 @@ class Rule
     }
 
     /**
+     * @return string
+     */
+    public function getStartTimeReadable()
+    {
+        return self::intToTime($this->startTime);
+    }
+
+    /**
      * @param  int  $startTime
      * @return self
      */
@@ -154,6 +162,14 @@ class Rule
     public function getEndTime()
     {
         return $this->endTime;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEndTimeReadable()
+    {
+        return self::intToTime($this->endTime);
     }
 
     /**
@@ -186,5 +202,28 @@ class Rule
     {
         return $entityManager->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($this->academic);
+    }
+
+    /**
+     * Prints an integer time as hh:mm
+     *
+     * @param  int|null $time
+     * @return string
+     */
+    private static function intToTime($time)
+    {
+        $hour = floor($time / 100);
+        $mins = $time % 100;
+
+        if ($mins < 10) {
+            $mins = '0' . $mins;
+        }
+
+        if ($hour < 10) {
+            // jQuery timepicker needs hh:mm
+            $hour = '0' . $hour;
+        }
+
+        return $hour . ':' . $mins;
     }
 }

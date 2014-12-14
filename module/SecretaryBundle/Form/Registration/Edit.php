@@ -51,6 +51,6 @@ class Edit extends Add
         }
 
         $this->get('register')
-            ->setLabel('Save');
+            ->setValue('Save');
     }
 }

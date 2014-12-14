@@ -528,6 +528,26 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
+     * @return \CommonBundle\Component\Form\Factory
+     */
+    protected function getFormFactory()
+    {
+        return $this->getServiceLocator()->get('formfactory.bootstrap');
+    }
+
+    /**
+     * @param  string                            $name
+     * @param  array|object|null                 $data
+     * @return \CommonBundle\Component\Form\Form
+     */
+    public function getForm($name, $data = null)
+    {
+        $form = $this->getFormFactory()->create(array('type' => $name), $data);
+
+        return $form;
+    }
+
+    /**
      * Authenticates an application if an API key is provided.
      *
      * @return boolean

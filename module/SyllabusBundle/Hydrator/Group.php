@@ -45,8 +45,16 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $extraMembers = unserialize($object->getExtraMembers()) or array();
-        $excludedMembers = unserialize($object->getExcludedMembers()) or array();
+        $extraMembers = unserialize($object->getExtraMembers());
+        $excludedMembers = unserialize($object->getExcludedMembers());
+
+        if (!$extraMembers) {
+            $extraMembers = array();
+        }
+
+        if (!$excludedMembers) {
+            $excludedMembers = array();
+        }
 
         $data = $this->stdExtract($object, self::$std_keys);
 

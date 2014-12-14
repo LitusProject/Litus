@@ -66,13 +66,7 @@
                     } else if (data.errors) {
                         $('.flashmessage').addClass('hide');
                         $('.poster_upload_error').removeClass('hide');
-                        $('#uploadPoster').find('ul.errors').remove();
-                        for(element in data.errors) {
-                            var list = $('<ul>', {class: 'errors'})
-                            for (error in data.errors[element])
-                                list.append($('<li>').html(data.errors[element][error]));
-                            $('#uploadPoster').find('#' + element).parent().parent().after(list);
-                        }
+                        $('#uploadPoster').displayFormErrors(data.errors);
                     } else if (data.info) {
                         window.location.reload();
                     }

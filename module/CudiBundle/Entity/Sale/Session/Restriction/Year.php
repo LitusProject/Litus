@@ -75,7 +75,7 @@ class Year extends Restriction
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getStartValue()
     {
@@ -83,7 +83,7 @@ class Year extends Restriction
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getEndValue()
     {

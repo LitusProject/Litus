@@ -109,7 +109,6 @@ class Academic extends \CommonBundle\Repository\User\Person
 
     public function findAllByBarcodeQuery($barcode)
     {
-        $query = $this->_em->createQueryBuilder();
         $barcodes = $this->_em
             ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findAllByBarcode($barcode);

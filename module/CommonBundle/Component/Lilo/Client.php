@@ -70,7 +70,7 @@ class Client
      * @param  string $tags    The tags associated with the message
      * @return void
      */
-    public function sendLog($message, $tags = '')
+    public function sendLog($message, array $tags = array())
     {
         $this->_connection->send(
             new LogData($message, $tags)

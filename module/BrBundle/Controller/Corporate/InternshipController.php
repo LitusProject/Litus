@@ -21,9 +21,7 @@ namespace BrBundle\Controller\Corporate;
 use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Job,
     BrBundle\Entity\Company\Request\RequestInternship,
-    BrBundle\Form\Corporate\Internship\Add as AddForm,
-    BrBundle\Form\Corporate\Internship\Edit as EditForm,
-    DateTime,
+    BrBundle\Entity\User\Person\Corporate,
     Zend\View\Model\ViewModel;
 
 /**
@@ -35,7 +33,9 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 {
     public function overviewAction()
     {
-        $person = $this->getAuthentication()->getPersonObject();
+        if (!($person = $this->_getPerson())) {
+            return new ViewModel();
+        }
 
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
@@ -57,45 +57,30 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         );
     }
 
-    public function editAction()
+    public function addAction()
     {
-        if (!($oldJob = $this->_getJob())) {
+        if (!($person = $this->_getPerson())) {
             return new ViewModel();
         }
 
-        $form = new EditForm($oldJob);
+        $form = $this->getForm('br_corporate_job_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $contact = $this->getAuthentication()->getPersonObject();
-
-                $job = new Job(
-                    $formData['job_name'],
-                    $formData['description'],
-                    $formData['benefits'],
-                    $formData['profile'],
-                    $formData['contact'],
-                    $formData['city'],
-                    $contact->getCompany(),
-                    'internship',
-                    self::_loadDate($formData['start_date']),
-                    self::_loadDate($formData['end_date']),
-                    $formData['sector']
+                $job = $form->hydrateObject(
+                    new Job($person->getCompany(), 'internship')
                 );
 
                 $job->pending();
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new RequestInternship($job, 'edit', $contact, $oldJob);
+                $request = new RequestInternship($job, 'add', $person);
 
                 $this->getEntityManager()->persist($request);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -121,40 +106,35 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         );
     }
 
-    public function addAction()
+    public function editAction()
     {
-        $form = new AddForm();
+        if (!($oldJob = $this->_getInternship())) {
+            return new ViewModel();
+        }
+
+        if (!($person = $this->_getPerson())) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('br_corporate_job_edit', array('job' => $oldJob));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $contact = $this->getAuthentication()->getPersonObject();
-
-                $job = new Job(
-                    $formData['job_name'],
-                    $formData['description'],
-                    $formData['benefits'],
-                    $formData['profile'],
-                    $formData['contact'],
-                    $formData['city'],
-                    $contact->getCompany(),
-                    'internship',
-                    self::_loadDate($formData['start_date']),
-                    self::_loadDate($formData['end_date']),
-                    $formData['sector']
+                $job = $form->hydrateObject(
+                    new Job($person->getCompany(), 'internship')
                 );
 
                 $job->pending();
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new RequestInternship($job, 'add', $contact);
+                $request = new RequestInternship($job, 'edit', $person, $oldJob);
 
                 $this->getEntityManager()->persist($request);
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -186,9 +166,11 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             return new ViewModel();
         }
 
-        $contact = $this->getAuthentication()->getPersonObject();
+        if (!($person = $this->_getPerson())) {
+            return new ViewModel();
+        }
 
-        $request = new RequestInternship($internship, 'delete', $contact);
+        $request = new RequestInternship($internship, 'delete', $person);
 
         $this->getEntityManager()->persist($request);
         $this->getEntityManager()->flush();
@@ -252,11 +234,26 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     }
 
     /**
-     * @param  string        $date
-     * @return DateTime|null
+     * @return Corporate
      */
-    private static function _loadDate($date)
+    private function _getPerson()
     {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if ($person === null || !($person instanceof Corporate)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login to view the CV book.'
+            );
+
+            $this->redirect()->toRoute(
+                'br_corporate_index',
+                array(
+                    'language' => $this->getLanguage()->getAbbrev(),
+                )
+            );
+        }
+
+        return $person;
     }
 }

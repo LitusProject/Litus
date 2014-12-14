@@ -73,7 +73,7 @@ class Academic extends \Zend\Validator\AbstractValidator
 
         $academic = $this->_entityManager
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneById($context['person_id']);
+            ->findOneById($context['id']);
 
         $entry = $this->_entityManager
             ->getRepository('MailBundle\Entity\MailingList\Entry\Person\Academic')

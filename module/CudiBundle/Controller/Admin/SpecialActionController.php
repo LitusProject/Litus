@@ -36,7 +36,7 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
 
     public function irreeelAction()
     {
-        $form = $this->getForm('cudi_special-actions_irreeel_assign');
+        $form = $this->getForm('cudi_special-action_irreeel_assign');
 
         $academicYear = $this->getCurrentAcademicYear();
 
@@ -49,7 +49,7 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
                 $number = 0;
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($formData['article_id']);
+                    ->findOneById($formData['article']['id']);
 
                 $criteria = array('academicYear' => $academicYear->getId());
 
@@ -118,7 +118,7 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
 
                     $this->flashMessenger()->success(
                         'SUCCESS',
-                        'There are <b>' . $number . '</b> ' . $article->getMainArticle()->getTitle() . ' would be assigned!'
+                        'There are <b>' . $number . '</b> ' . $article->getMainArticle()->getTitle() . ' that would be assigned!'
                     );
 
                     $this->redirect()->toRoute(

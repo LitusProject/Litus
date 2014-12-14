@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Address,
-    CudiBundle\Entity\Supplier,
+use CudiBundle\Entity\Supplier,
     Zend\View\Model\ViewModel;
 
 /**
@@ -115,6 +114,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'form' => $form,
+                'supplier' => $supplier,
             )
         );
     }

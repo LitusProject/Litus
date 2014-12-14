@@ -35,24 +35,33 @@
         });
 
         function cityChange() {
-            var city = $('.city option:selected').val();
+            var $primaryAddress = $('.primary-address');
 
-            $('.street, .number, .mailbox')
-                .closest('.row')
-                    .hide();
-            $('.other')
-                .hide();
+            var city = $primaryAddress
+                .find('.city option:selected')
+                .val();
 
-            if (city == 'other') {
-                $('.other')
-                    .show();
-                $('.number, .mailbox')
+            $primaryAddress
+                .find('.other')
+                    .hide()
+                .end()
+                .find('.street, .number, .mailbox')
                     .closest('.row')
-                        .show();
-            } else if (city !== '') {
-                $('.mailbox, .number, .street-' + city)
-                    .closest('.row')
-                        .show();
+                        .hide();
+
+            if (city === 'other') {
+                $primaryAddress
+                    .find('.other')
+                        .show()
+                    .end()
+                    .find('.number, .mailbox')
+                        .closest('.row')
+                            .show();
+            } else if (city != 0) {
+                $primaryAddress
+                    .find('.street-' + city + ', .number, .mailbox')
+                        .closest('.row')
+                            .show();
             }
         }
     </script>

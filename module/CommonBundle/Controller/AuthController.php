@@ -38,7 +38,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $this->getAuthentication()->forget();
 
@@ -165,7 +165,11 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
                         return new ViewModel();
                     }
+                } else {
+                    $this->logToLilo('Code not valid (' . $this->getParam('identification') . ')', array('auth'));
                 }
+            } else {
+                $this->logToLilo('No code specifier (' . $this->getParam('identification') . ')', array('auth'));
             }
         }
 

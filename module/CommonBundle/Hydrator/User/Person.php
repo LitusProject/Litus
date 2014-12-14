@@ -19,11 +19,12 @@
 namespace CommonBundle\Hydrator\User;
 
 use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
+    CommonBundle\Entity\User\Barcode\Ean12 as Barcode,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
 
 abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array(
+    protected static $std_keys = array(
         'first_name',
         'last_name',
         'email',

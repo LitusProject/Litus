@@ -18,6 +18,8 @@
 
 namespace CudiBundle\Form\Prof\Mapping;
 
+use CudiBundle\Component\Validator\Typeahead\Article as ArticleTypeaheadValidator;
+
 /**
  * Add Mapping
  *
@@ -30,40 +32,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'article_id',
-            'attributes' => array(
-                'id' => 'articleId',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
+            'type'       => 'typeahead',
             'name'       => 'article',
             'label'      => 'Article',
             'required'   => true,
             'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-                'id'           => 'articleSearch',
+                'id' => 'article',
             ),
             'options'    => array(
                 'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+                    'validators'  => array(
+                        new ArticleTypeaheadValidator($this->getEntityManager()),
                     ),
                 ),
             ),

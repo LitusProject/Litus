@@ -27,6 +27,11 @@ use CommonBundle\Entity\General\AcademicYear;
  */
 class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
+    /**
+     * @var AcademicYear
+     */
+    private $_academicYear;
+
     public function init()
     {
         parent::init();

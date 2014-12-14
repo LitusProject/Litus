@@ -73,13 +73,8 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $comment = new Comment(
-                    $this->getAuthentication()->getPersonObject(),
-                    $subject,
-                    $formData['text'],
-                    $formData['type']
+                $comment = $form->hydrateObject(
+                    new Comment($this->getAuthentication()->getPersonObject(), $subject)
                 );
 
                 $this->getEntityManager()->persist($comment);
@@ -128,10 +123,10 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         );
 
         if ($this->getRequest()->isPost()) {
-            $post = $this->getRequest()->getPost();
+            $formData = $this->getRequest()->getPost();
 
-            if (isset($post['mark_as_read'])) {
-                $markAsReadForm->setData($post);
+            if (isset($formData['mark_as_read'])) {
+                $markAsReadForm->setData($formData);
 
                 if ($markAsReadForm->isValid()) {
                     if ($comment->isRead()) {
@@ -158,15 +153,11 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     return new ViewModel();
                 }
             } else {
-                $form->setData($post);
+                $form->setData($formData);
 
                 if ($form->isValid()) {
-                    $formData = $form->getData();
-
-                    $reply = new Reply(
-                        $this->getAuthentication()->getPersonObject(),
-                        $comment,
-                        $formData['text']
+                    $reply = $form->hydrateObject(
+                        new Reply($this->getAuthentication()->getPersonObject(), $comment)
                     );
 
                     $this->getEntityManager()->persist($reply);

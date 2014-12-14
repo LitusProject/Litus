@@ -75,10 +75,10 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
+            if ($form->isValid()) {
+                $startDate = self::_loadDate($formData['start_date']);
+                $endDate = self::_loadDate($formData['end_date']);
 
-            if ($form->isValid() && $startDate && $endDate) {
                 $formData = $form->getData();
                 $interval = $startDate->diff($endDate);
 
@@ -148,10 +148,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
-
-            if ($form->isValid() && $startDate && $endDate) {
+            if ($form->isValid()) {
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -287,12 +284,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $shifts = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Shift')
-            ->findBy(array('event' => $event), array('startDate' => 'ASC'));
-
         $file = new TmpFile();
-        $document = new PdfGenerator($this->getEntityManager(), $event, $shifts, $file);
+        $document = new PdfGenerator($this->getEntityManager(), $event, $file);
         $document->generate();
 
         $headers = new Headers();

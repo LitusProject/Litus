@@ -119,12 +119,14 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+                $formData = $form->getData();
+
                 if ($formData['academic_add']) {
                     $formData = $formData['academic'];
 
                     $academic = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneById($formData['academic_id']);
+                        ->findOneById($formData['academic']['id']);
 
                     $promotion = $this->getEntityManager()
                         ->getRepository('SecretaryBundle\Entity\Promotion\Academic')

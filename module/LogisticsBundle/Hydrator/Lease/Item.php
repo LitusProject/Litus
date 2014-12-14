@@ -18,7 +18,7 @@
 
 namespace LogisticsBundle\Hydrator\Lease;
 
-use LogicException\Entity\Lease\Item as ItemEntity;
+use LogisticsBundle\Entity\Lease\Item as ItemEntity;
 
 class Item extends \CommonBundle\Component\Hydrator\Hydrator
 {

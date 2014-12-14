@@ -18,66 +18,46 @@
 
 namespace BrBundle\Form\Admin\Company;
 
-use CommonBundle\Component\OldForm\Admin\Element\File,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Company logo form.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Logo extends \CommonBundle\Component\OldForm\Admin\Form
+class Logo extends \CommonBundle\Component\Form\Admin\Form
 {
     const FILESIZE = '2MB';
 
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
         $this->setAttribute('enctype', 'multipart/form-data');
 
-        $field = new File('logo');
-        $field->setLabel('Logo')
-            ->setAttribute('data-help', 'The logo must be an image of max ' . self::FILESIZE . '.')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'image_edit');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'logo',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'file',
+            'name'       => 'logo',
+            'label'      => 'Logo',
+            'required'   => true,
+            'attributes' => array(
+                'data-help' => 'The logo must be an image of max ' . self::FILESIZE . '.',
+            ),
+            'options'    => array(
+                'input' => array(
                     'validators' => array(
                         array(
                             'name' => 'fileisimage',
                         ),
                         array(
-                            'name' => 'filefilessize',
+                            'name' => 'filesize',
                             'options' => array(
                                 'max' => self::FILESIZE,
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Save', 'image_edit');
     }
 }

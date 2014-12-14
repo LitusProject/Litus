@@ -292,10 +292,11 @@ class Booking
 
     /**
      * @param  string                   $status
+     * @param  EntityManager            $entityManager
      * @throws InvalidArgumentException
      * @return self
      */
-    public function setStatus($status, $entityManager)
+    public function setStatus($status, EntityManager $entityManager)
     {
         switch ($status) {
             case 'booked':

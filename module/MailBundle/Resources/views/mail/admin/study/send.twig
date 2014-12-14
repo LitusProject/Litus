@@ -34,7 +34,7 @@
                 }, 10);
             });
 
-            $('#select_message\\[stored_message\\]').change(function () {
+            $('[name="select_message[stored_message]"]').change(function () {
                 $('#compose_message').toggle($(this).val() == '');
             }).change();
         });

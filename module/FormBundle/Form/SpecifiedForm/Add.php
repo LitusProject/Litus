@@ -18,220 +18,263 @@
 
 namespace FormBundle\Form\SpecifiedForm;
 
-use CommonBundle\Component\OldForm\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\OldForm\Bootstrap\Element\File,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Select,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Text,
-    CommonBundle\Component\OldForm\Bootstrap\Element\Textarea,
-    CommonBundle\Component\Validator\FieldLineLength as LengthValidator,
+use CommonBundle\Component\Validator\FieldLineLength as LengthValidator,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager,
     FormBundle\Component\Exception\UnsupportedTypeException,
-    FormBundle\Entity\Field\Checkbox as CheckboxField,
-    FormBundle\Entity\Field\Dropdown as DropdownField,
-    FormBundle\Entity\Field\File as FileField,
-    FormBundle\Entity\Field\String as StringField,
-    FormBundle\Entity\Node\Entry,
-    FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\GuestInfo,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity,
+    FormBundle\Entity\Field\Dropdown as DropdownFieldEntity,
+    FormBundle\Entity\Field\File as FileFieldEntity,
+    FormBundle\Entity\Field\String as StringFieldEntity,
+    FormBundle\Entity\Node\Entry as EntryEntity,
+    FormBundle\Entity\Node\Form\Form as FormEntity,
+    FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
 
 /**
  * Specifield Form Add
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Bootstrap\Form
+class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
+    protected $hydrator = 'FormBundle\Hydrator\Node\Entry';
+
     /**
-     * @var Form
+     * @var Person
+     */
+    protected $_person;
+
+    /**
+    * @var GuestInfoEntity
+    */
+    protected $_guestInfo;
+
+    /**
+     * @var FormEntity
      */
     protected $_form;
 
     /**
-     * @param EntityManager   $entityManager
-     * @param Language        $language
-     * @param Form            $form
-     * @param null|Person     $person
-     * @param null|string|int $name          Optional name for the element
+    * @var Language
+    */
+    protected $_language;
+
+    /**
+    * @var EntryEntity
+    */
+    protected $_entry;
+
+    /**
+     * @var boolean
      */
-    public function __construct(EntityManager $entityManager, Language $language, Form $form, Person $person = null, $name = null)
+    protected $_isDraft;
+
+    public function init()
     {
-        parent::__construct($name);
-
-        // Create guest fields
-        if (null === $person) {
-            $field = new Text('first_name');
-            $field->setLabel('First Name')
-                ->setRequired(true);
-            $this->add($field);
-
-            $field = new Text('last_name');
-            $field->setLabel('Last Name')
-                ->setRequired(true);
-            $this->add($field);
-
-            $field = new Text('email');
-            $field->setLabel('Email Address')
-                ->setRequired(true);
-            $this->add($field);
+        if (!($this->_form instanceof FormEntity)) {
+            return;
         }
 
-        $this->_form = $form;
+        if (null === $this->_person) {
+            $this->add(array(
+                'type'     => 'text',
+                'name'     => 'first_name',
+                'label'    => 'First Name',
+                'required' => true,
+                'value'    => $this->_guestInfo ? $this->_guestInfo->getFirstName() : '',
+                'options'  => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            ));
 
-        // Fetch the fields through the repository to have the correct order
-        $fields = $entityManager
+            $this->add(array(
+                'type'     => 'text',
+                'name'     => 'last_name',
+                'label'    => 'Last Name',
+                'required' => true,
+                'value'    => $this->_guestInfo ? $this->_guestInfo->getLastName() : '',
+                'options'  => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            ));
+
+            $this->add(array(
+                'type'     => 'text',
+                'name'     => 'email',
+                'label'    => 'Email',
+                'required' => true,
+                'value'    => $this->_guestInfo ? $this->_guestInfo->getEmail() : '',
+                'options'  => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'emailaddress',
+                            ),
+                        ),
+                    ),
+                ),
+            ));
+        }
+
+        $fields = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Field')
-            ->findAllByForm($form);
+            ->findAllByForm($this->_form);
 
         foreach ($fields as $fieldSpecification) {
-            if ($fieldSpecification instanceof StringField) {
+            $specification = array(
+                'name'       => 'field-' . $fieldSpecification->getId(),
+                'label'      => $fieldSpecification->getLabel($this->_language),
+                'required'   => $fieldSpecification->isRequired(),
+                'attributes' => array(
+                    'id' => 'field-' . $fieldSpecification->getId(),
+                ),
+            );
+            if ($fieldSpecification instanceof StringFieldEntity) {
                 if ($fieldSpecification->isMultiLine()) {
-                    $field = new Textarea('field-' . $fieldSpecification->getId());
-                    $field->setAttribute('rows', 3);
+                    $specification['type'] = 'textarea';
+                    $specification['attributes']['rows'] = 3;
                 } else {
-                    $field = new Text('field-' . $fieldSpecification->getId());
+                    $specification['type'] = 'text';
                 }
 
-                $field->setLabel($fieldSpecification->getLabel($language))
-                    ->setRequired($fieldSpecification->isRequired());
+                $specification['options']['input']['filters'] = array(
+                    array('name' => 'StringTrim'),
+                );
 
                 if ($fieldSpecification->hasLengthSpecification()) {
-                    $field->setAttribute('class', $field->getAttribute('class') . ' count')
-                        ->setAttribute('maxlength', $fieldSpecification->getLineLength())
-                        ->setAttribute('data-linelen', $fieldSpecification->getLineLength())
-                        ->setAttribute('data-linecount', $fieldSpecification->getLines());
+                    $specification['attributes']['class'] = 'count';
+                    $specification['attributes']['maxlength'] = $fieldSpecification->getLineLength();
+                    $specification['attributes']['data-linelen'] = $fieldSpecification->getLineLength();
+                    $specification['attributes']['data-linecount'] = $fieldSpecification->getLines();
+
+                    $specification['options']['input']['validators'] = array(
+                        new LengthValidator(
+                            $fieldSpecification->getLineLength(),
+                            $fieldSpecification->getLines()
+                        ),
+                    );
                 }
-            } elseif ($fieldSpecification instanceof DropdownField) {
-                $field = new Select('field-' . $fieldSpecification->getId());
-                $field->setLabel($fieldSpecification->getLabel($language))
-                    ->setAttribute('options', $fieldSpecification->getOptionsArray($language));
-            } elseif ($fieldSpecification instanceof CheckboxField) {
-                $field = new Checkbox('field-' . $fieldSpecification->getId());
-                $field->setLabel($fieldSpecification->getLabel($language));
-            } elseif ($fieldSpecification instanceof FileField) {
-                $field = new File('field-' . $fieldSpecification->getId());
-                $field->setLabel($fieldSpecification->getLabel($language));
+            } elseif ($fieldSpecification instanceof DropdownFieldEntity) {
+                $specification['type'] = 'select';
+                $specification['attributes']['options'] = $fieldSpecification->getOptionsArray($this->_language);
+            } elseif ($fieldSpecification instanceof CheckboxFieldEntity) {
+                $specification['type'] = 'checkbox';
+            } elseif ($fieldSpecification instanceof FileFieldEntity) {
+                $this->setAttribute('enctype', 'multipart/form-data');
+                $specification['type'] = 'file';
+                $specification['options']['input']['validators'] = array(
+                    array(
+                        'name' => 'filesize',
+                        'options' => array(
+                            'max' => $fieldSpecification->getMaxSize() . 'MB',
+                        ),
+                    ),
+                );
             } else {
                 throw new UnsupportedTypeException('This field type is unknown!');
             }
 
             if (null !== $fieldSpecification->getVisibilityDecissionField()) {
-                $field->setAttribute('data-visible_if_element', $fieldSpecification->getVisibilityDecissionField()->getId())
-                    ->setAttribute('data-visible_if_value', $fieldSpecification->getVisibilityValue());
+                $specification['attributes']['data-visible_if_element'] = $fieldSpecification->getVisibilityDecissionField()->getId();
+                $specification['attributes']['data-visible_if_value'] = $fieldSpecification->getVisibilityValue();
             }
-            $this->add($field);
+            $this->add($specification);
         }
 
-        if ($form->isEditableByUser()) {
-            $field = new Submit('save_as_draft');
-            $field->setValue('Save as Draft')
-                ->setAttribute('class', 'btn btn-info');
-            $this->add($field);
+        if ($this->_form->isEditableByUser() && !$this->_isDraft) {
+            $this->addSubmit('Save as Draft', 'btn-info', 'save_as_draft');
         }
 
-        $field = new Submit('submit');
-        $field->setValue($form->getSubmitText($language))
-            ->setAttribute('class', 'btn btn-primary');
-        $this->add($field);
-    }
+        $this->addSubmit($this->_form->getSubmitText($this->_language));
 
-    public function populateFromEntry(Entry $entry)
-    {
-        $formData = $this->data == null ? array() : $this->data;
+        if (null !== $this->_entry) {
+            $this->bind($this->_entry);
 
-        if ($entry->isGuestEntry()) {
-            $formData['first_name'] = $entry->getGuestInfo()->getFirstName();
-            $formData['last_name'] = $entry->getGuestInfo()->getLastName();
-            $formData['email'] = $entry->getGuestInfo()->getEmail();
+            foreach ($this->_entry->getFieldEntries() as $fieldEntry) {
+                if ($fieldEntry->getField() instanceof FileFieldEntity) {
+                    $this->get('field-' . $fieldEntry->getField()->getId())
+                        ->setAttribute('data-file', $fieldEntry->getValue())
+                        ->setAttribute('data-name', $fieldEntry->getReadableValue());
+                }
+            }
         }
-
-        foreach ($entry->getFieldEntries() as $fieldEntry) {
-            $formData['field-' . $fieldEntry->getField()->getId()] = $fieldEntry->getValue();
-        }
-
-        $this->setData($formData);
     }
 
     /**
-     * @param boolean $hasDraft
+     * @param  Person $person
+     * @return self
      */
-    public function hasDraft($hasDraft)
+    public function setPerson(Person $person = null)
     {
-        if ($hasDraft) {
-            $this->get('save_as_draft')->setAttribute('disabled', 'disabled');
-        } else {
-            $this->get('save_as_draft')->setAttribute('disabled', null);
-        }
+        $this->_person = $person;
+
+        return $this;
     }
 
-    public function populateFromGuestInfo(GuestInfo $guestInfo)
+    /**
+    * @param  GuestInfoEntity $guestInfo
+    * @return self
+    */
+    public function setGuestInfo(GuestInfoEntity $guestInfo = null)
     {
-        $data = $this->data == null ? array() : $this->data;
+        $this->_guestInfo = $guestInfo;
 
-        $data['first_name'] = $guestInfo->getFirstName();
-        $data['last_name'] = $guestInfo->getLastName();
-        $data['email'] = $guestInfo->getEmail();
-
-        $this->setData($data);
+        return $this;
     }
 
-    public function getInputFilter()
+    /**
+    * @param  FormEntity $form
+    * @return self
+    */
+    public function setForm(FormEntity $form)
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
+        $this->_form = $form;
 
-        foreach ($this->_form->getFields() as $fieldSpecification) {
-            if ($fieldSpecification instanceof StringField) {
-                $validators = array();
-                if ($fieldSpecification->hasLengthSpecification()) {
-                    $validators[] = new LengthValidator(
-                        $fieldSpecification->getLineLength(),
-                        $fieldSpecification->getLines()
-                    );
-                }
+        return $this;
+    }
 
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'field-' . $fieldSpecification->getId(),
-                            'required' => $fieldSpecification->isRequired(),
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => $validators,
-                        )
-                    )
-                );
-            } elseif ($fieldSpecification instanceof CheckboxField) {
-                // Do nothing
-            } elseif ($fieldSpecification instanceof DropdownField) {
-                // Do nothing
-            } elseif ($fieldSpecification instanceof FileField) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'field-' . $fieldSpecification->getId(),
-                            'required' => false,
-                            'validators' => array(
-                                array(
-                                    'name' => 'filefilessize',
-                                    'options' => array(
-                                        'max' => $fieldSpecification->getMaxSize() . 'MB',
-                                    ),
-                                ),
-                            ),
-                        )
-                    )
-                );
-            } else {
-                throw new UnsupportedTypeException('This field type is unknown!');
-            }
-        }
+    /**
+    * @param  Language $language
+    * @return self
+    */
+    public function setLanguage(Language $language)
+    {
+        $this->_language = $language;
 
-        return $inputFilter;
+        return $this;
+    }
+
+    /**
+    * @param  EntryEntity $entry
+    * @return self
+    */
+    public function setEntry(EntryEntity $entry = null)
+    {
+        $this->_entry = $entry;
+
+        return $this;
+    }
+
+    /**
+    * @param  boolean $isDraft
+    * @return self
+    */
+    public function isDraft($isDraft)
+    {
+        $this->_isDraft = $isDraft;
+
+        return $this;
     }
 }

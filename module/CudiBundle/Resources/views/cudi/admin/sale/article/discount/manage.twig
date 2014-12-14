@@ -97,16 +97,16 @@
                     method: 'percentage',
                     rounding: 'none',
                     apply_once: false
-                },
+                }{% if templates|length > 0 %},{% endif %}
                 {% for template in templates %}
                 '{{ template.getId() }}': {
                     value: '{{ (template.getValue()/100)|number_format(2) }}',
-                    type: '{{ template.getType() }}',
+                    type: '{{ template.getType()|lower }}',
                     organization: '{% if null != template.getOrganization() %}{{ template.getOrganization().getId() }}{% else %}0{% endif %}',
                     method: '{{ template.getMethod() }}',
-                    rounding: '{{ template.getRounding() }}',
-                    apply_once: {{ template.applyOnce() }}
-                },
+                    rounding: '{{ template.getRounding()|lower }}',
+                    apply_once: {% if template.applyOnce() %}true{% else %}false{% endif %}
+                }{% if not loop.last %},{% endif %}
                 {% endfor %}
             };
 
@@ -137,7 +137,7 @@
                     ? templates[0]
                     : templates[template];
 
-                ['value', 'type', 'organization', 'method', 'rounding'].forEach(function (p) {
+                ['value', 'type', 'organization', 'method', 'rounding', 'apply_once'].forEach(function (p) {
                     $form.find('.' + p)
                         .val(template[p]);
                 });

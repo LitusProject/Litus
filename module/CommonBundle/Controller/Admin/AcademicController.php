@@ -67,6 +67,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+                $formData = $form->getData();
                 $academic = $form->hydrateObject();
 
                 $this->getEntityManager()->persist($academic);

@@ -107,7 +107,7 @@ class Comment
      * @param  string                   $text    The content of the comment
      * @param  string                   $type    The type of the comment
      */
-    public function __construct(Person $person, Subject $subject, $text, $type)
+    public function __construct(Person $person, Subject $subject, $text = '', $type = 'internal')
     {
         $this->person = $person;
         $this->text = $text;
@@ -156,6 +156,17 @@ class Comment
     }
 
     /**
+     * @param  string  $text
+     * @return Comment
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getSummary($length = 50)
@@ -185,6 +196,17 @@ class Comment
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @param  string  $type
+     * @return Comment
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
     }
 
     /**

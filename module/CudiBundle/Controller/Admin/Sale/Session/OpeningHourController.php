@@ -19,8 +19,6 @@
 namespace CudiBundle\Controller\Admin\Sale\Session;
 
 use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
-    CudiBundle\Entity\Sale\Session\OpeningHour\Translation,
-    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -66,7 +64,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
 
     public function addAction()
     {
-        $form = $this->getForm('cudi_sales_session_opening-hour_add');
+        $form = $this->getForm('cudi_sale_session_opening-hour_add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -107,7 +105,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_sales_session_opening-hour_edit', $openingHour);
+        $form = $this->getForm('cudi_sale_session_opening-hour_edit', $openingHour);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -195,14 +193,5 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         return $openingHour;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

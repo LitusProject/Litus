@@ -33,6 +33,10 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class RegistrationController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
+    /**
+     * @param Academic     $academic
+     * @param AcademicYear $academicYear
+     */
     protected function _studiesAction(Academic $academic, AcademicYear $academicYear)
     {
         $studies = $this->getEntityManager()
@@ -56,6 +60,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    /**
+     * @param Academic     $academic
+     * @param AcademicYear $academicYear
+     * @param array        $data
+     */
     protected function _saveStudiesAction(Academic $academic, AcademicYear $academicYear, $data)
     {
         $enrollments = $this->getEntityManager()
@@ -121,7 +130,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $this->getEntityManager()->persist(
                     new SubjectEnrollment(
@@ -129,7 +138,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         $academicYear,
                         $this->getEntityManager()
                             ->getRepository('SyllabusBundle\Entity\Subject')
-                            ->findOneById($formData['subject_id'])
+                            ->findOneById($formData['subject']['id'])
                     )
                 );
 
@@ -199,6 +208,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    /**
+     * @param Academic     $academic
+     * @param AcademicYear $academicYear
+     * @param array        $data
+     */
     protected function _saveSubjectAction(Academic $academic, AcademicYear $academicYear, $data)
     {
         $enrollments = $this->getEntityManager()
@@ -247,6 +261,12 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         return preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $email)) . $studentDomain;
     }
 
+    /**
+     * @param Academic     $academic
+     * @param string       $tshirtSize
+     * @param Organization $organization
+     * @param AcademicYear $academicYear
+     */
     protected function _bookRegistrationArticles(Academic $academic, $tshirtSize, Organization $organization, AcademicYear $academicYear)
     {
         RegistrationArticles::book(
@@ -261,6 +281,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    /**
+     * @return string
+     */
     protected function _getTermsAndConditions()
     {
         $termsAndConditions = unserialize(
@@ -272,6 +295,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         return $termsAndConditions[$this->getLanguage()->getAbbrev()];
     }
 
+    /**
+     * @param Academic     $academic
+     * @param AcademicYear $academicYear
+     * @param Organization $organization
+     */
     protected function _setOrganization(Academic $academic, AcademicYear $academicYear, Organization $organization)
     {
         $map = $this->getEntityManager()

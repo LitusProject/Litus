@@ -56,11 +56,11 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
             $startDate = null;
             $endDate = null;
             foreach ($form->getWeeks() as $key => $week) {
-                if (isset($formData['submit_' . $key])) {
+                if (isset($formData['week_' . $key]['submit'])) {
                     $weekIndex = $key;
 
-                    $startDate = self::_loadDate($formData['start_date_' . $weekIndex]);
-                    $endDate = self::_loadDate($formData['end_date_' . $weekIndex]);
+                    $startDate = self::_loadDate($formData['week_' . $key]['start_date']);
+                    $endDate = self::_loadDate($formData['week_' . $key]['end_date']);
                     break;
                 }
             }
@@ -199,6 +199,6 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private static function _loadDate($date)
     {
-        return DateTime::createFromFormat('D d#m#Y H#i', $date) ?: null;
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

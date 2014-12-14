@@ -17,37 +17,37 @@
                 $(this).closest('.flashmessage').removeClass('in');
             });
 
-            $('#personSearch').typeaheadRemote(
+            $('#person').typeaheadRemote(
                 {
                     source: '{{ url("common_admin_academic_typeahead")}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#personId').val($(this).data('value').id);
+                    $('[name="person[id]"]').val($(this).data('value').id);
                     searchPrice();
                 } else {
-                    $('#personId').val('');
+                    $('[name="person[id]"]').val('');
                 }
             });
 
-            $('#articleSearch').typeaheadRemote(
+            $('#article').typeaheadRemote(
                 {
                     source: '{{ url("cudi_admin_sales_article_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#articleId').val($(this).data('value').id);
+                    $('[name="article[id]"]').val($(this).data('value').id);
                     searchPrice();
                 } else {
-                    $('#articleId').val('');
+                    $('[name="article[id]"]').val('');
                 }
             });
         });
 
         function searchPrice() {
             {% if hasAccess('cudi_sale_sale', 'returnPrice') %}
-            if ($('#articleId').val() != '' && $('#personId').val() != '') {
-                $.post('{{ url('cudi_sale_sale', {'action': 'returnPrice', "session": session.getId()}) }}', {'person': $('#personId').val(), 'article': $('#articleId').val()}, function (data) {
+            if ($('[name="article[id]"]').val() != '' && $('[name="person[id]"]').val() != '') {
+                $.post('{{ url('cudi_sale_sale', {'action': 'returnPrice', "session": session.getId()}) }}', {'person': $('[name="article[id]"]').val(), 'article': $('[name="person[id]"]').val()}, function (data) {
                     if (data !== undefined && data.price) {
                         $('#returnMessage .price').html('&euro; ' + (data.price/100).toFixed(2));
                         $('#returnMessage').addClass('in');

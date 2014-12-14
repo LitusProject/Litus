@@ -18,8 +18,6 @@
 
 namespace LogisticsBundle\Form\Admin\PianoReservation;
 
-use LogicException;
-
 /**
  * This form allows the user to edit the reservation.
  *
@@ -29,10 +27,6 @@ class Edit extends Add
 {
     public function init()
     {
-        if (null !== $this->reservation) {
-            throw new LogicException('Cannot edit null reservation');
-        }
-
         parent::init();
 
         $this->remove('submit')

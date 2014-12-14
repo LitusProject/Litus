@@ -37,6 +37,7 @@ class Search extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'      => 'Search String',
             'required'   => true,
             'attributes' => array(
+                'id'      => 'search_string',
                 'pattern' => '.{3}.*',
             ),
         ));

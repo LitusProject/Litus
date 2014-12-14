@@ -18,10 +18,8 @@
 
 namespace GalleryBundle\Controller\Admin;
 
-use DateTime,
-    GalleryBundle\Entity\Album\Album,
+use GalleryBundle\Entity\Album\Album,
     GalleryBundle\Entity\Album\Photo,
-    GalleryBundle\Entity\Album\Translation,
     Imagick,
     ImagickPixel,
     Zend\File\Transfer\Adapter\Http as FileUpload,
@@ -43,7 +41,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $this->getParam('page'),
             array(),
             array(
-                'dateActivity' => 'ASC',
+                'dateActivity' => 'DESC',
             )
         );
 
@@ -235,7 +233,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $upload = new FileUpload();
-        $upload->addValidator(new SizeValidator(array('max' => '5MB')));
+        $upload->addValidator(new SizeValidator(array('max' => '15mb')));
         $upload->addValidator(new ImageValidator(array('mimeType' => 'image/jpeg')));
 
         if ($upload->isValid()) {
@@ -439,14 +437,5 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         return $album;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y', $date) ?: null;
     }
 }

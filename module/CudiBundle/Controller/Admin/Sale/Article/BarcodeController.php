@@ -34,7 +34,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_sales_article_barcodes_add');
+        $form = $this->getForm('cudi_sale_article_barcode_add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -72,6 +72,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
+                'form' => $form,
                 'article' => $article,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),

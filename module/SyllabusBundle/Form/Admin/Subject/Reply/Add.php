@@ -25,6 +25,8 @@ namespace SyllabusBundle\Form\Admin\Subject\Reply;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'SyllabusBundle\Hydrator\Subject\Reply';
+
     public function init()
     {
         parent::init();

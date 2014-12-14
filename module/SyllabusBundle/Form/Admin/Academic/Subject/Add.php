@@ -18,6 +18,8 @@
 
 namespace SyllabusBundle\Form\Admin\Academic\Subject;
 
+use SyllabusBundle\Component\Validator\Typeahead\Subject as SubjectTypeaheadValidator;
+
 /**
  * Add Study
  *
@@ -30,41 +32,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'subject_id',
-            'attributes' => array(
-                'id' => 'subjectId',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'       => 'text',
+            'type'       => 'typeahead',
             'name'       => 'subject',
             'label'      => 'Subject',
             'required'   => true,
             'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-                'id'           => 'subjectSearch',
                 'style'        => 'width: 500px',
             ),
             'options'    => array(
                 'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+                    'validators' => array(
+                        new SubjectTypeaheadValidator($this->getEntityManager()),
                     ),
                 ),
             ),

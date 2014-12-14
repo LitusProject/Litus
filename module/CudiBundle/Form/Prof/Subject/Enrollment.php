@@ -30,7 +30,7 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
     /**
      * @var StudentEnrollment|null
      */
-    private $enrollment;
+    private $_enrollment;
 
     public function init()
     {
@@ -41,7 +41,7 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'students',
             'label'      => 'Students',
             'required'   => true,
-            'value'      => null !== $this->enrollment ? $enrollment->getNumber() : '',
+            'value'      => null !== $this->_enrollment ? $this->_enrollment->getNumber() : '',
             'attributes' => array(
                 'autocomplete' => 'off',
             ),
@@ -68,7 +68,7 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     public function setEnrollment(StudentEnrollment $enrollment = null)
     {
-        $this->enrollment = $enrollment;
+        $this->_enrollment = $enrollment;
 
         return $this;
     }

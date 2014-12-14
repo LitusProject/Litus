@@ -29,8 +29,7 @@ class Edit extends Add
     {
         parent::init();
 
-        $this->remove('person_id')
-            ->remove('person_name');
+        $this->remove('person');
 
         $this->remove('submit')
             ->addSubmit('Save', 'driver_edit');

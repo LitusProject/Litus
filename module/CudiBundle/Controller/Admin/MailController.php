@@ -65,25 +65,11 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                     )
                 );
             } else {
-                $errors = $form->getMessages();
-                $formErrors = array();
-
-                foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()])) {
-                        continue;
-                    }
-
-                    $formErrors[$element->getAttribute('id')] = array();
-                    foreach ($errors[$element->getName()] as $errorKey => $error) {
-                        $formErrors[$element->getAttribute('id')][] = $element->getMessages()[$errorKey];
-                    }
-                }
-
                 return new ViewModel(
                     array(
                         'status' => 'error',
                         'form' => array(
-                            'errors' => $formErrors,
+                            'errors' => $form->getMessages(),
                         ),
                     )
                 );

@@ -82,11 +82,11 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
                 $person = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person')
-                    ->findOneById($formData['person_id']);
+                    ->findOneById($formData['person']['id']);
 
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($formData['article_id']);
+                    ->findOneById($formData['article']['id']);
 
                 $queueItem = new QueueItem($this->getEntityManager(), $person, $session);
                 $queueItem->setStatus('sold');

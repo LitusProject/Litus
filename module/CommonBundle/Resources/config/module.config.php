@@ -160,6 +160,8 @@ return Config::create(
                         'button'     => 'CommonBundle\Component\Form\Bootstrap\Element\Button',
                         'checkbox'   => 'CommonBundle\Component\Form\Bootstrap\Element\Checkbox',
                         'collection' => 'CommonBundle\Component\Form\Collection',
+                        'date'       => 'CommonBundle\Component\Form\Bootstrap\Element\Date',
+                        'datetime'   => 'CommonBundle\Component\Form\Bootstrap\Element\DateTime',
                         'file'       => 'CommonBundle\Component\Form\Bootstrap\Element\File',
                         'hidden'     => 'CommonBundle\Component\Form\Bootstrap\Element\Hidden',
                         'password'   => 'CommonBundle\Component\Form\Bootstrap\Element\Password',
@@ -192,8 +194,9 @@ return Config::create(
                         'time'       => 'CommonBundle\Component\Form\Admin\Element\Time',
                         'typeahead'  => 'CommonBundle\Component\Form\Admin\Element\TypeAhead',
 
-                        'tabcontent' => 'CommonBundle\Component\Form\Admin\Form\SubForm\TabContent',
-                        'tabpane'    => 'CommonBundle\Component\Form\Admin\Form\SubForm\TabPane',
+                        'tabpane'    => 'CommonBundle\Component\Form\Admin\Fieldset\Tabbable',
+                        'tabcontent' => 'CommonBundle\Component\Form\Admin\Fieldset\TabContent',
+                        'tabpane'    => 'CommonBundle\Component\Form\Admin\Fieldset\TabPane',
 
                         'fieldset'   => 'CommonBundle\Component\Form\Fieldset',
                     ),

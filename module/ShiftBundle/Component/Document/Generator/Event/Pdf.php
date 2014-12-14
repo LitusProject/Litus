@@ -47,23 +47,24 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
      *
      * @param EntityManager $entityManager
      * @param Event         $event         The event
-     * @param array         $shifts        The shifts for this event
      * @param TmpFile       $file          The file to write to
      */
-    public function __construct(EntityManager $entityManager, Event $event, array $shifts, TmpFile $file)
+    public function __construct(EntityManager $entityManager, Event $event, TmpFile $file)
     {
         $filePath = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shift.pdf_generator_path');
 
         parent::__construct(
-               $entityManager,
+            $entityManager,
             $filePath . '/event/event.xsl',
             $file->getFilename()
         );
 
         $this->_event = $event;
-        $this->_shifts = $shifts;
+        $this->_shifts = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift')
+            ->findBy(array('event' => $event), array('startDate' => 'ASC'));
     }
 
     /**

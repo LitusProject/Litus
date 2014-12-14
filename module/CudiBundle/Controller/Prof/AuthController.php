@@ -38,7 +38,7 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $this->getAuthentication()->forget();
 

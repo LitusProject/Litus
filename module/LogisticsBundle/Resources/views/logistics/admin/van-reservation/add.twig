@@ -14,15 +14,15 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#passengerSearch').typeaheadRemote(
+            $('#passenger').typeaheadRemote(
                 {
                     source: '{{ url("common_admin_academic_typeahead", {}) }}',
                 }
             ).change(function(e) {
                 if ($(this).data('value')) {
-                    $('#passengerId').val($(this).data('value').id);
+                    $('[name="passenger[id]"]').val($(this).data('value').id);
                 } else {
-                    $('#passengerId').val('');
+                    $('[name="passenger[id]"]').val('');
                 }
             });
         });

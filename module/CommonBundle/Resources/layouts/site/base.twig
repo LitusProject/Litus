@@ -288,12 +288,54 @@
         </div>
     </footer>
 
+    {% if showCookieBanner %}
+        <div class="cookie-banner">
+            <div class="container">
+                {% autoescape false %}
+                    <p>{{ translate('VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.')|replace({'%url%': url('common_privacy')}) }}</p>
+                    <button type="button" class="btn btn-default cookie-permission">{{ translate('Continue') }}</button>
+                {% endautoescape %}
+            </div>
+        </div>
+
+        <div id="cookie-policy" class="modal fade">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>{{ translate('Cookie Policy') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{ cookiePolicy }}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal">{{ translate('Close') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     {{ inlineScript() }}
 
     <script type="text/javascript">
         $(document).ready(function () {
             $('#carouselHeader .item-0').addClass('active');
             $('.carousel').carousel();
+
+            {% if showCookieBanner %}
+                $('.cookie-permission').click(function () {
+                    $('.cookie-banner').hide();
+                    var d = new Date();
+                    d.setTime(d.getTime() + (31*24*60*60*1000));
+                    document.cookie="cookie_permission=true;expires="+d.toUTCString();
+                });
+
+                $('.view-cookie-policy').click(function (e) {
+                    e.preventDefault();
+                    $('#cookie-policy').modal();
+                });
+            {% endif %}
         });
     </script>
 

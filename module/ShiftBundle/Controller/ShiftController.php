@@ -101,9 +101,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         'The given search query was invalid!'
                     );
                 }
-            }
-
-            if (isset($formData['unit'])) {
+            } elseif (isset($formData['unit'])) {
                 $unitSearchForm->setData($formData);
 
                 if ($unitSearchForm->isValid() && '' != $formData['unit']) {
@@ -125,9 +123,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                         'The given search query was invalid!'
                     );
                 }
-            }
-
-            if (isset($formData['date'])) {
+            } elseif (isset($formData['date'])) {
                 $dateSearchForm->setData($formData);
 
                 if ($dateSearchForm->isValid() && '' != $formData['date']) {
@@ -173,9 +169,6 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $resultString = str_replace('%start%', $start_date->format('d/m/Y'), $resultString);
             $resultString = str_replace('%end%', $end_date->format('d/m/Y'), $resultString);
         }
-
-        $academicYear = $this->getCurrentAcademicYear();
-        $now = new DateTime();
 
         if (!isset($resultString)) {
             $resultString = 'Results';
@@ -465,14 +458,15 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $shiftsAsVolunteerCount = 0;
         $unPayedShifts = 0;
         $unPayedCoins = 0;
-        $lastShift = new DateTime();
+        $lastShift = new DateTime('2000-01-01');
         foreach ($asVolunteer as $shift) {
             if ($shift->getStartDate() > $now) {
                 continue;
             }
 
-            //if ($shift->getEndDate() > $lastShift)
+            if ($shift->getEndDate() > $lastShift) {
                 $lastShift = $shift->getEndDate();
+            }
 
             if (!isset($shiftsAsVolunteer[$shift->getUnit()->getId()])) {
                 $shiftsAsVolunteer[$shift->getUnit()->getId()] = array(
@@ -488,6 +482,27 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($volunteer->getPerson() == $this->getAuthentication()->getPersonObject() && !($volunteer->isPayed())) {
                     $unPayedShifts += 1;
                     $unPayedCoins += $shift->getReward();
+                }
+            }
+        }
+
+        $rankingCriteria = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.ranking_criteria')
+        );
+
+        $ranking = false;
+        $shiftsToNextRanking = $rankingCriteria[0]['limit'] - $shiftsAsVolunteerCount;
+
+        for ($i = 0; isset($rankingCriteria[$i]); $i++) {
+            if ($rankingCriteria[$i]['limit'] < $shiftsAsVolunteerCount) {
+                $ranking = $rankingCriteria[$i]['name'];
+
+                if (isset($rankingCriteria[$i+1])) {
+                    $shiftsToNextRanking = $rankingCriteria[$i+1]['limit'] - $shiftsAsVolunteerCount;
+                } else {
+                    $shiftsToNextRanking = 0;
                 }
             }
         }
@@ -511,6 +526,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $shiftsAsResponsibleCount++;
         }
 
+        $praesidium = $this->getAuthentication()->getPersonObject()->isPraesidium($academicYear);
+
         return new ViewModel(
             array(
                 'shiftsAsVolunteer' => $shiftsAsVolunteer,
@@ -520,6 +537,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'unPayedShifts' => $unPayedShifts,
                 'unPayedCoins' => $unPayedCoins,
                 'lastShift' => $lastShift->format('d/m/Y'),
+                'praesidium' => $praesidium,
+                'ranking' => $ranking,
+                'shiftsToNextRanking' => $shiftsToNextRanking,
             )
         );
     }

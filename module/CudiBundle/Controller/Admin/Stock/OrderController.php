@@ -168,7 +168,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
 
-        $form = $this->getForm('cudi_stock_orders_comment', array(
+        $form = $this->getForm('cudi_stock_order_comment', array(
             'order' => $order,
         ));
 
@@ -213,7 +213,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYear()->getCode(true);
 
-        $form = $this->getForm('cudi_stock_orders_add', array(
+        $form = $this->getForm('cudi_stock_order_add', array(
             'barcode_prefix' => $prefix,
         ));
 
@@ -227,7 +227,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($formData['article_id']);
+                    ->findOneById($formData['article']['id']);
 
                 $item = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Order')
@@ -271,7 +271,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_stock_orders_edit', array(
+        $form = $this->getForm('cudi_stock_order_edit', array(
             'item' => $item,
         ));
 

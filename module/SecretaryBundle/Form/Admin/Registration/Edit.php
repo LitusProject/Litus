@@ -43,7 +43,6 @@ class Edit extends Add
     {
         parent::init();
 
-        $this->remove('person_id');
         $this->remove('person');
 
         $this->add(array(

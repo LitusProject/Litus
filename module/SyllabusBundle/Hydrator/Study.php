@@ -33,7 +33,7 @@ class Study extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setParent(
             $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Study')
-                ->findOneById($data['parent_id'])
+                ->findOneById($data['parent']['id'])
         );
 
         return $this->stdHydrate($data, $object, self::$std_keys);
@@ -47,8 +47,8 @@ class Study extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$std_keys);
 
-        $data['parent_id'] = $object->getParent() ? $object->getParent()->getId() : '';
-        $data['parent'] = $object->getParent() ? $object->getParent()->getFullTitle() : '';
+        $data['parent']['id'] = $object->getParent() ? $object->getParent()->getId() : '';
+        $data['parent']['value'] = $object->getParent() ? $object->getParent()->getFullTitle() : '';
 
         return $data;
     }

@@ -18,9 +18,7 @@
 
 namespace CommonBundle\Hydrator\General\Bank;
 
-use CommonBundle\Entity\General\Bank\BankDevice\Amount as BankDeviceAmount,
-    CommonBundle\Entity\General\Bank\CashRegister as CashRegisterEntity,
-    CommonBundle\Entity\General\Bank\MoneyUnit\Amount as MoneyUnitAmount;
+use CommonBundle\Entity\General\Bank\CashRegister as CashRegisterEntity;
 
 class CashRegister extends \CommonBundle\Component\Hydrator\Hydrator
 {

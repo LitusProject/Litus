@@ -18,9 +18,7 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use DateTime,
-    LogisticsBundle\Entity\Driver,
-    LogisticsBundle\Entity\Reservation\ReservableResource,
+use LogisticsBundle\Entity\Driver,
     LogisticsBundle\Entity\Reservation\VanReservation,
     Zend\View\Model\ViewModel;
 
@@ -264,14 +262,5 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         }
 
         return $reservation;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

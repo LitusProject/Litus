@@ -18,9 +18,9 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\AcademicYear,
+use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    SyllabusBundle\Component\Document\Generator\Group as CsvGenerator,
     SyllabusBundle\Entity\StudyGroupMap,
     Zend\View\Model\ViewModel;
 
@@ -168,7 +168,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = $this->getForm('syllabus_group_study_add');
+        $studies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findAllParentsByAcademicYear($academicYear);
+
+        $form = $this->getForm('syllabus_group_study_add', array('studies' => $studies));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -176,29 +180,33 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                $study = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\Study')
-                    ->findOneById($formData['study_id']);
+                $studyIds = $formData['studies'];
+                if ($studyIds) {
+                    foreach ($studyIds as $studyId) {
+                        $study = $this->getEntityManager()
+                            ->getRepository('SyllabusBundle\Entity\Study')
+                            ->findOneById($studyId);
 
-                $map = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
-                    ->findOneByStudyGroupAndAcademicYear($study, $group, $academicYear);
-
-                if (null !== $map) {
+                        $map = $this->getEntityManager()
+                            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+                            ->findOneByStudyGroupAndAcademicYear($study, $group, $academicYear);
+                        if (null === $map) {
+                            $this->getEntityManager()->persist(new StudyGroupMap($study, $group, $academicYear));
+                        }
+                    }
+                } else {
                     $this->flashMessenger()->error(
                         'Error',
-                        'The group study mapping already existed!'
-                    );
-                } else {
-                    $this->getEntityManager()->persist(new StudyGroupMap($study, $group, $academicYear));
-
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->success(
-                        'Succes',
-                        'The group study mapping was successfully added!'
+                        'No studies were selected to add to the group!'
                     );
                 }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The group study mapping was successfully added!'
+                );
 
                 $this->redirect()->toRoute(
                     'syllabus_admin_group',
@@ -278,65 +286,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $mappings = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
-            ->findAllByGroupAndAcademicYear($group, $academicYear);
-
-        $academics = array();
-
-        foreach ($mappings as $mapping) {
-            $study = $mapping->getStudy();
-            $enrollments = $this->getEntityManager()
-                ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                ->findAllByStudyAndAcademicYear($study, $academicYear);
-
-            foreach ($enrollments as $enrollment) {
-                $ac = $enrollment->getAcademic();
-
-                $primaryAddress = $ac->getPrimaryAddress();
-                $secondaryAddress = $ac->getSecondaryAddress();
-
-                $academics[$ac->getId()] = array(
-                    'academicFirstName'               => $ac->getFirstName(),
-                    'academicLastName'                => $ac->getLastName(),
-                    'academicEmail'                   => $ac->getEmail(),
-                    'academicPrimaryAddressStreet'    => $primaryAddress ? $primaryAddress->getStreet() : '',
-                    'academicPrimaryAddressNumber'    => $primaryAddress ? $primaryAddress->getNumber() : '',
-                    'academicPrimaryAddressMailbox'   => $primaryAddress ? $primaryAddress->getMailbox() : '',
-                    'academicPrimaryAddressPostal'    => $primaryAddress ? $primaryAddress->getPostal() : '',
-                    'academicPrimaryAddressCity'      => $primaryAddress ? $primaryAddress->getCity() : '',
-                    'academicPrimaryAddressCountry'   => $primaryAddress ? $primaryAddress->getCountry() : '',
-                    'academicSecondaryAddressStreet'  => $secondaryAddress ? $secondaryAddress->getStreet() : '',
-                    'academicSecondaryAddressNumber'  => $secondaryAddress ? $secondaryAddress->getNumber() : '',
-                    'academicSecondaryAddressMailbox' => $secondaryAddress ? $secondaryAddress->getMailbox() : '',
-                    'academicSecondaryAddressPostal'  => $secondaryAddress ? $secondaryAddress->getPostal() : '',
-                    'academicSecondaryAddressCity'    => $secondaryAddress ? $secondaryAddress->getCity() : '',
-                    'academicSecondaryAddressCountry' => $secondaryAddress ? $secondaryAddress->getCountry() : '',
-                    'study'                           => $study->getFullTitle(),
-                );
-            }
-        }
-
-        $header = array(
-            'First name',
-            'Last name',
-            'Email',
-            'Street (Primary Address)',
-            'Number (Primary Address)',
-            'Mailbox (Primary Address)',
-            'Postal (Primary Address)',
-            'City (Primary Address)',
-            'Country (Primary Address)',
-            'Street (Secondary Address)',
-            'Number (Secondary Address)',
-            'Mailbox (Secondary Address)',
-            'Postal (Secondary Address)',
-            'City (Secondary Address)',
-            'Country (Secondary Address)',
-            'Study',
-        );
         $exportFile = new CsvFile();
-        $csvGenerator = new CsvGenerator($header, $academics);
+        $csvGenerator = new CsvGenerator($this->getEntityManager(), $group, $academicYear);
         $csvGenerator->generateDocument($exportFile);
 
         $this->getResponse()->getHeaders()

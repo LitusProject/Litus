@@ -68,8 +68,7 @@ class Team
     private $points;
 
     /**
-     * @param Quiz   $quiz
-     * @param string $name
+     * @param Quiz $quiz
      */
     public function __construct(Quiz $quiz)
     {

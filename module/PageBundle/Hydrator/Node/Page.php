@@ -32,7 +32,7 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        $newPage = new Page($this->getPerson());
+        $newPage = new PageEntity($this->getPerson());
 
         if (null !== $object && null !== $object->getName()) {
             $object->close();
@@ -141,12 +141,5 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
         $data['parent_' . $object->getCategory()->getId()] = null !== $object->getParent() ? $object->getParent()->getId() : '';
 
         return $data;
-    }
-
-    private function getLanguages()
-    {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
     }
 }

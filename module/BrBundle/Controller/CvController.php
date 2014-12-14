@@ -19,10 +19,7 @@
 namespace BrBundle\Controller;
 
 use BrBundle\Entity\Cv\Entry as CvEntry,
-    BrBundle\Entity\Cv\Language as CvLanguage,
-    BrBundle\Form\Cv\Add as AddForm,
-    BrBundle\Form\Cv\Edit as EditForm,
-    CommonBundle\Entity\General\Address,
+    CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\User\Person\Academic,
     Zend\View\Model\ViewModel;
 
@@ -36,12 +33,13 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     public function cvAction()
     {
         $person = $this->getAuthentication()->getPersonObject();
-        $languageError = null;
 
         if (null === $person) {
             return new ViewModel(
                 array(
-                    'messages' => array('Please login to edit your CV.'),
+                    'messages' => array(
+                        new FlashMessage('danger', 'Error', 'Please login to edit your CV.'),
+                    ),
                 )
             );
         }
@@ -49,29 +47,43 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if (!($person instanceof Academic)) {
             return new ViewModel(
                 array(
-                    'messages' => array('You must be a student to edit your CV.'),
+                    'messages' => array(
+                        new FlashMessage('danger', 'Error', 'You must be a student to edit your CV.'),
+                    ),
                 )
             );
         }
 
-        $messages = $this->_getBadAccountMessage($person);
-        if ($messages !== null && !empty($messages)) {
+        if ($this->getLanguage()->getName() == "English") {
+            $this->redirect()->toRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'cv',
+                    'language' => 'nl',
+                )
+            );
+        }
+
+        $message = $this->_getBadAccountMessage($person);
+        if ($message !== null) {
             return new ViewModel(
-                    array(
-                        'messages' => $messages,
-                    )
-                );
+                array(
+                    'messages' => array(
+                        $message,
+                    ),
+                )
+            );
         }
 
         $entry = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findOneByAcademic($person);
 
-        if (!$entry) {
+        if ($entry !== null) {
             $this->redirect()->toRoute(
                 'br_cv_index',
                 array(
-                    'action' => 'cv',
+                    'action' => 'edit',
                 )
             );
 
@@ -85,74 +97,32 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if (!$open) {
             return new ViewModel(
                 array(
-                    'messages' => array('The CV Book is currently not accepting entries.'),
+                    'messages' => array(
+                        new FlashMessage('danger', 'Error', 'The CV Book is currently not accepting entries.'),
+                    ),
                 )
             );
         }
 
-        $form = new AddForm($this->getEntityManager(), $person, $this->getCurrentAcademicYear(), $this->getLanguage());
+        $form = $this->getForm(
+            'br_cv_add',
+            array(
+                'academic' => $person,
+                'academicYear' => $this->getCurrentAcademicYear(),
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            $formData = $form->addLanguages($formData);
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $address = new Address(
-                    $person->getSecondaryAddress()->getStreet(),
-                    $person->getSecondaryAddress()->getNumber(),
-                    $person->getSecondaryAddress()->getMailbox(),
-                    $person->getSecondaryAddress()->getPostal(),
-                    $person->getSecondaryAddress()->getCity(),
-                    $person->getSecondaryAddress()->getCountryCode()
+                $entry = $form->hydrateObject(
+                    new CvEntry(
+                        $person,
+                        $this->getCurrentAcademicYear()
+                    )
                 );
-
-                $entry = new CvEntry(
-                    $person,
-                    $this->getCurrentAcademicYear(),
-                    $person->getFirstName(),
-                    $person->getLastName(),
-                    $person->getBirthDay(),
-                    $person->getSex(),
-                    $person->getPhoneNumber(),
-                    $person->getPersonalEmail(),
-                    $address,
-                    $formData['prior_degree'],
-                    $formData['prior_grade'],
-                    $this->getEntityManager()
-                        ->getRepository('SyllabusBundle\Entity\Study')
-                        ->findOneById($formData['degree']),
-                    $formData['grade'],
-                    $formData['bachelor_start'],
-                    $formData['bachelor_end'],
-                    $formData['master_start'],
-                    $formData['master_end'],
-                    $formData['additional_diplomas'],
-                    $formData['erasmus_period'],
-                    $formData['erasmus_location'],
-                    $formData['lang_extra'],
-                    $formData['computer_skills'],
-                    $formData['experiences'],
-                    $formData['thesis_summary'],
-                    $formData['field_of_interest'],
-                    $formData['mobility_europe'],
-                    $formData['mobility_world'],
-                    $formData['career_expectations'],
-                    $formData['hobbies'],
-                    $formData['profile_about']
-                );
-
-                for ($i = 0; $i < $formData['lang_count']; $i++) {
-                    if (!isset($formData['lang_name' . $i]) || '' === $formData['lang_name' . $i]) {
-                        continue;
-                    }
-
-                    $language = new CvLanguage($entry, $formData['lang_name' . $i],
-                        $formData['lang_written' . $i],
-                        $formData['lang_oral' . $i]);
-
-                    $this->getEntityManager()->persist($language);
-                }
 
                 $this->getEntityManager()->persist($entry);
                 $this->getEntityManager()->flush();
@@ -165,19 +135,12 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 );
 
                 return new ViewModel();
-            } else {
-                if (!$form->isValidLanguages($formData)) {
-                    $languageError = 'The number of languages must be between 1 and 5';
-                }
             }
         }
 
         return new ViewModel(
             array(
                 'form' => $form,
-                'languageError' => $languageError,
-                'oral_skills' => CvLanguage::$ORAL_SKILLS,
-                'written_skills' => CvLanguage::$WRITTEN_SKILLS,
                 'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
@@ -188,12 +151,13 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     public function editAction()
     {
         $person = $this->getAuthentication()->getPersonObject();
-        $languageError = null;
 
         if (null === $person) {
             return new ViewModel(
                 array(
-                    'messages' => array('Please login to edit your CV.'),
+                    'messages' => array(
+                        new FlashMessage('danger', 'Error', 'Please login to edit your CV.'),
+                    ),
                 )
             );
         }
@@ -201,16 +165,20 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if (!($person instanceof Academic)) {
             return new ViewModel(
                 array(
-                    'messages' => array('You must be a student to edit your CV.'),
+                    'messages' => array(
+                        new FlashMessage('danger', 'Error', 'You must be a student to edit your CV.'),
+                    ),
                 )
             );
         }
 
-        $messages = $this->_getBadAccountMessage($person);
-        if ($messages !== null && !empty($messages)) {
+        $message = $this->_getBadAccountMessage($person);
+        if ($message !== null) {
             return new ViewModel(
                 array(
-                    'messages' => $messages,
+                    'messages' => array(
+                        $message,
+                    ),
                 )
             );
         }
@@ -219,7 +187,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findOneByAcademic($person);
 
-        if (!$entry) {
+        if (null === $entry) {
             $this->redirect()->toRoute(
                 'br_cv_index',
                 array(
@@ -237,81 +205,27 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         if (!$open) {
             return new ViewModel(
                 array(
-                    'messages' => array('The CV Book is currently not accepting entries.'),
+                    'messages' => array(
+                        new FlashMessage('danger', 'Error', 'The CV Book is currently not accepting entries.'),
+                    ),
                 )
             );
         }
 
-        $form = new EditForm($this->getEntityManager(), $person, $this->getCurrentAcademicYear(), $this->getLanguage());
+        $form = $this->getForm(
+            'br_cv_edit',
+            array(
+                'academic' => $person,
+                'academicYear' => $this->getCurrentAcademicYear(),
+                'entry' => $entry,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            $formData = $form->addLanguages($formData);
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $address = new Address(
-                    $person->getSecondaryAddress()->getStreet(),
-                    $person->getSecondaryAddress()->getNumber(),
-                    $person->getSecondaryAddress()->getMailbox(),
-                    $person->getSecondaryAddress()->getPostal(),
-                    $person->getSecondaryAddress()->getCity(),
-                    $person->getSecondaryAddress()->getCountryCode()
-                );
-
-                $entry->setFirstName($person->getFirstName())
-                    ->setLastName($person->getLastName())
-                    ->setBirthday($person->getBirthDay())
-                    ->setSex($person->getSex())
-                    ->setPhoneNumber($person->getPhoneNumber())
-                    ->setEmail($person->getPersonalEmail())
-                    ->setAddress($address)
-                    ->setPriorStudy($formData['prior_degree'])
-                    ->setPriorGrade($formData['prior_grade'] * 100)
-                    ->setStudy($this->getEntityManager()
-                        ->getRepository('SyllabusBundle\Entity\Study')
-                        ->findOneById($formData['degree']))
-                    ->setGrade($formData['grade'] * 100)
-                    ->setBachelorStart($formData['bachelor_start'])
-                    ->setBachelorEnd($formData['bachelor_end'])
-                    ->setMasterStart($formData['master_start'])
-                    ->setMasterEnd($formData['master_end'])
-                    ->setAdditionalDiplomas($formData['additional_diplomas'])
-                    ->setErasmusPeriod($formData['erasmus_period'])
-                    ->setErasmusLocation($formData['erasmus_location'])
-                    ->setLanguageExtra($formData['lang_extra'])
-                    ->setComputerSkills($formData['computer_skills'])
-                    ->setExperiences($formData['experiences'])
-                    ->setThesisSummary($formData['thesis_summary'])
-                    ->setFutureInterest($formData['field_of_interest'])
-                    ->setMobilityEurope($formData['mobility_europe'])
-                    ->setMobilityWorld($formData['mobility_world'])
-                    ->setCareerExpectations($formData['career_expectations'])
-                    ->setHobbies($formData['hobbies'])
-                    ->setAbout($formData['profile_about']);
-
-                // Clear all previous languages
-                $languages = $this->getEntityManager()
-                    ->getRepository('BrBundle\Entity\Cv\Language')
-                    ->findByEntry($entry);
-
-                foreach ($languages as $language) {
-                    $this->getEntityManager()->remove($language);
-                }
-
-                for ($i = 0; $i < $formData['lang_count']; $i++) {
-                    if (!isset($formData['lang_name' . $i]) || '' === $formData['lang_name' . $i]) {
-                        continue;
-                    }
-
-                    $language = new CvLanguage($entry, $formData['lang_name' . $i],
-                        $formData['lang_written' . $i],
-                        $formData['lang_oral' . $i]);
-
-                    $this->getEntityManager()->persist($language);
-                }
-
-                $this->getEntityManager()->persist($entry);
                 $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
@@ -322,21 +236,12 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 );
 
                 return new ViewModel();
-            } else {
-                if (!$form->isValidLanguages($formData)) {
-                    $languageError = 'The number of languages must be between 1 and 5';
-                }
             }
-        } else {
-            $form->populateFromEntry($entry);
         }
 
         return new ViewModel(
             array(
                 'form' => $form,
-                'languageError' => $languageError,
-                'oral_skills' => CvLanguage::$ORAL_SKILLS,
-                'written_skills' => CvLanguage::$WRITTEN_SKILLS,
                 'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
@@ -351,62 +256,47 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
     private function _getBadAccountMessage(Academic $person)
     {
-        $messages = array();
+        $content = '';
 
         $studies = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($person, $this->getCurrentAcademicYear());
 
         if (empty($studies)) {
-            $messages[] = '<li>';
-            $messages[] = 'Your studies';
-            $messages[] = '</li>';
+            $content .= '<li>' . $this->getTranslator()->translate('Your studies') . '</li>';
         }
 
         $address = $person->getSecondaryAddress();
         if ($address === null || '' == $address->getStreet() || '' == $address->getNumber()
                 || '' == $address->getPostal() || '' == $address->getCity() || '' == $address->getCountryCode()) {
-            $messages[] = '<li>';
-            $messages[] = 'Your address';
-            $messages[] = '</li>';
+            $content .= '<li>' . $this->getTranslator()->translate('Your address') . '</li>';
         }
 
         if ('' == $person->getFirstName() || '' == $person->getLastName()) {
-            $messages[] = '<li>';
-            $messages[] = 'Your name';
-            $messages[] = '</li>';
+            $content .= '<li>' . $this->getTranslator()->translate('Your name') . '</li>';
         }
 
         if ('' == $person->getPhoneNumber()) {
-            $messages[] = '<li>';
-            $messages[] = 'Your phone number';
-            $messages[] = '</li>';
+            $content .= '<li>' . $this->getTranslator()->translate('Your phone number') . '</li>';
         }
 
         if ('' == $person->getPersonalEmail()) {
-            $messages[] = '<li>';
-            $messages[] = 'Your personal email address';
-            $messages[] = '</li>';
+            $content .= '<li>' . $this->getTranslator()->translate('Your personal email address') . '</li>';
         }
 
         if ('' == $person->getPhotoPath()) {
-            $messages[] = '<li>';
-            $messages[] = 'Your photo';
-            $messages[] = '</li>';
+            $content .= '<li>' . $this->getTranslator()->translate('Your photo') . '</li>';
         }
 
         if (null === $person->getBirthDay()) {
-            $messages[] = '<li>';
-            $messages[] = 'Your birthday';
-            $messages[] = '</li>';
+            $content .= '<li>' . $this->getTranslator()->translate('Your birthday') . '</li>';
         }
 
-        if ($messages) {
-            array_unshift($messages, 'The following information in your account is incomplete:', '<br/><ul>');
-            $messages[] = '</ul>';
-            $messages[] = 'To add your information to the CV Book, you must complete these. Please click <a href="{{editurl}}">here</a> to edit your account.';
-        }
+        if ($content != '') {
+            $content = $this->getTranslator()->translate('The following information in your account is incomplete:') . '<br/><ul>' . $content . '</ul>' .
+                $this->getTranslator()->translate('To add your information to the CV Book, you must complete these. Please click <a href="{{editurl}}">here</a> to edit your account.');
 
-        return $messages;
+            return new FlashMessage('danger', 'Error', $content);
+        }
     }
 }

@@ -20,7 +20,8 @@ namespace CommonBundle\Form\Admin\Academic;
 
 use CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CommonBundle\Entity\User\Status\University as UniversityStatus;
+    CommonBundle\Entity\User\Status\University as UniversityStatus,
+    SecretaryBundle\Component\Validator\NoAt as NoAtValidator;
 
 /**
  * Add Academic
@@ -141,6 +142,25 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                                 array(
                                     'name' => 'alnum',
                                 ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'email',
+                    'label'      => 'University E-mail',
+                    'attributes' => array(
+                        'id'        => 'university_email',
+                        'data-help' => 'The univeristy email, without @ sign.',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new NoAtValidator(),
                             ),
                         ),
                     ),

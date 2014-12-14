@@ -18,7 +18,8 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CudiBundle\Entity\Sale\Article\Restriction\Amount as AmountRestriction,
+use CommonBundle\Component\Controller\Exception\RuntimeException,
+    CudiBundle\Entity\Sale\Article\Restriction\Amount as AmountRestriction,
     CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction,
     CudiBundle\Entity\Sale\Article\Restriction\Study as StudyRestriction,
     Zend\View\Model\ViewModel;
@@ -36,7 +37,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_sales_article_restrictions_add', array('article' => $article));
+        $form = $this->getForm('cudi_sale_article_restriction_add', array('article' => $article));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -58,6 +59,8 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 
                         $restriction->addStudy($study);
                     }
+                } else {
+                    throw new RuntimeException("Unsupported restriction type");
                 }
 
                 $this->getEntityManager()->persist($restriction);
@@ -116,6 +119,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         );
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Article|null
+     */
     private function _getSaleArticle()
     {
         if (null === $this->getParam('id')) {
@@ -157,6 +163,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         return $article;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Article\Restriction|null
+     */
     private function _getRestriction()
     {
         if (null === $this->getParam('id')) {

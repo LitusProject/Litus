@@ -156,7 +156,9 @@
 
         {% if authenticatedPerson is not null %}
         function saveRegistration() {
-            var data = {};
+            var data = {
+                'csrf': $('form input[name="csrf"]').val()
+            };
             $('#doodle input[type=checkbox]').each(function () {
                 if ($(this).is(':checked')) {
                     data[$(this).attr('name')] = true;
@@ -171,10 +173,10 @@
                     $('#entry_saved_success').removeClass('in');
                     $('#entry_saved_error').addClass('in');
 
-                    $('#doodle tr.error').removeClass('error');
+                    $('#doodle tr.error').removeClass('danger');
                     if (data !== undefined && data.errors) {
                         $.each(data.errors, function (key, value) {
-                            $('#' + key).closest('tr').addClass('error');
+                            $('#' + key).closest('tr').addClass('danger');
                         });
                     }
                 }

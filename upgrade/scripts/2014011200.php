@@ -59,9 +59,7 @@ $result = pg_query($connection, 'SELECT P.html AS html, E.title AS title, PUB.ti
 $htmlDir = 'public/_publications/html';
 if (!file_exists($htmlDir)) {
     mkdir($htmlDir, 0775, true);
-}
-
-while ($edition = pg_fetch_object($result)) {
+} while ($edition = pg_fetch_object($result)) {
     $startAcademicYear = new DateTime($edition->start);
     $academicYears[$startAcademicYear->format('y')] = $startAcademicYear->format('y');
     $oldFileName = 'public/_publications/' . $startAcademicYear->format('y') . ($startAcademicYear->format('y') + 1) .

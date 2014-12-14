@@ -71,7 +71,7 @@ class CashRegister
     }
 
     /**
-     * @return MoneyUnit/Amount[]
+     * @return array
      */
     public function getMoneyUnitAmounts()
     {
@@ -79,7 +79,7 @@ class CashRegister
     }
 
       /**
-     * @return BankDevice/Amount[]
+     * @return array
      */
     public function getBankDeviceAmounts()
     {
@@ -127,7 +127,7 @@ class CashRegister
      * Set the amount for a unit.
      *
      * @param MoneyUnit $unit
-     * @param int
+     * @param int       $newAmount
      *
      * @return self
      */
@@ -171,7 +171,7 @@ class CashRegister
      * Set the amount for a bank device
      *
      * @param BankDevice $device
-     * @param float      $amount
+     * @param float      $newAmount
      *
      * @return self
      */

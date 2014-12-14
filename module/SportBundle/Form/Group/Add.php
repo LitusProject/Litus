@@ -18,6 +18,8 @@
 
 namespace SportBundle\Form\Group;
 
+use SportBundle\Entity\Group;
+
 /**
  * Add a group of friends.
  *
@@ -26,10 +28,7 @@ namespace SportBundle\Form\Group;
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @var string[] An array containing all members that should be created
-     */
-    private $allMembers = array();
+    protected $hydrator = 'SportBundle\Hydrator\Group';
 
     public function init()
     {
@@ -61,7 +60,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'name'       => 'happy_hour_one',
                     'label'      => 'First Happy Hour',
                     'attributes' => array(
-                        'options' => $this->generateHappyHours(20),
+                        'options' => $this->_generateHappyHours(20),
                     ),
                 ),
                 array(
@@ -69,34 +68,23 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'name'       => 'happy_hour_two',
                     'label'      => 'Second Happy Hour',
                     'attributes' => array(
-                        'options' => $this->generateHappyHours(8),
+                        'options' => $this->_generateHappyHours(8),
                     ),
                 ),
             ),
         ));
 
-        foreach ($allMembers as $i => $memberNb) {
-            $this->generateMemberForm($memberNb, ($i < 2));
+        foreach (Group::$ALL_MEMBERS as $i => $memberNb) {
+            $this->_generateMemberForm($memberNb, ($i < 2));
         }
 
         $this->addSubmit('Submit');
     }
 
     /**
-     * @param  string[] $allMembers
-     * @return self
-     */
-    public function setAllMembers(array $allMembers)
-    {
-        $this->allMembers = $allMembers;
-
-        return $this;
-    }
-
-    /**
      * @param integer $startTime
      */
-    private function generateHappyHours($startTime)
+    private function _generateHappyHours($startTime)
     {
         $optionsArray = array();
         for ($i = 0; $i < 6; $i++) {
@@ -123,7 +111,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         return $this->_cleanHappyHoursArray($optionsArray, $groups);
     }
 
-    private function cleanHappyHoursArray(array $optionsArray, array $groups)
+    private function _cleanHappyHoursArray(array $optionsArray, array $groups)
     {
         $returnArray = $optionsArray;
         foreach ($groups as $group) {
@@ -144,7 +132,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     /**
      * @param string $memberNb
      */
-    private function generateMemberForm($memberNb, $required = false)
+    private function _generateMemberForm($memberNb, $required = false)
     {
         $this->add(array(
             'type'       => 'fieldset',
@@ -155,10 +143,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
             'elements'   => array(
                 array(
-                    'type'    => 'text',
-                    'name'    => 'university_identification',
-                    'label'   => 'University Identification',
-                    'options' => array(
+                    'type'       => 'text',
+                    'name'       => 'university_identification',
+                    'label'      => 'University Identification',
+                    'attributes' => array(
+                        'id' => 'university_identification_' . $memberNb,
+                    ),
+                    'options'    => array(
                         'input' => array(
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
@@ -198,16 +189,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Department',
                     'requied'    => $required,
                     'attributes' => array(
-                        'options' => $this->getDepartments(),
+                        'options' => $this->_getDepartments(),
                     ),
                 ),
             ),
         ));
     }
 
-    private function getDepartments()
+    private function _getDepartments()
     {
-        $departments = $this->_entityManager
+        $departments = $this->getEntityManager()
             ->getRepository('SportBundle\Entity\Department')
             ->findAll();
 

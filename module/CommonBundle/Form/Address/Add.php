@@ -106,7 +106,10 @@ class Add extends \CommonBundle\Component\Form\Fieldset
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'digits',
+                            'name' => 'alnum',
+                            'options' => array(
+                                'allowWhiteSpace' => true,
+                            ),
                         ),
                     ),
                 ),
@@ -152,10 +155,11 @@ class Add extends \CommonBundle\Component\Form\Fieldset
     {
         $this->get('street')->setRequired($required);
         $this->get('number')->setRequired($required);
+        $this->get('mailbox')->setRequired(false);
         $this->get('postal')->setRequired($required);
         $this->get('city')->setRequired($required);
 
-        return parent::setRequired($required);
+        return $this;
     }
 
     private function getCountries()

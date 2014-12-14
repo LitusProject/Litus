@@ -68,7 +68,7 @@ class LeaseController extends LogisticsController
 
     public function historyAction()
     {
-        if (!($item = $this->_getItem($this->getRequest()->getQuery('barcode')))) {
+        if (!($item = $this->_getItem($this->getRequest()->getQuery('searchItem')['id']))) {
             return new ViewModel();
         }
 
@@ -90,13 +90,16 @@ class LeaseController extends LogisticsController
 
     public function typeaheadAction()
     {
+        $this->initAjax();
+
         $query = $this->getRequest()->getQuery('q');
         $purpose = $this->getRequest()->getQuery('purpose');
+
         $results = array();
         if ($query !== null) {
             $items = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Lease\Item')
-                ->findAllByName($query);
+                ->findAllByNameOrBarcode($query);
             $leaseRepo = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Lease\Lease');
 
@@ -109,7 +112,7 @@ class LeaseController extends LogisticsController
                 }
 
                 $results[] = array(
-                    'id' => $item->getBarcode(),
+                    'id' => $item->getId(),
                     'value' => $item->getName(),
                     'additional_info' => $item->getAdditionalInfo(),
                 );
@@ -119,36 +122,6 @@ class LeaseController extends LogisticsController
         return new ViewModel(
             array(
                 'result' => $results,
-            )
-        );
-    }
-
-    public function availabilityCheckAction()
-    {
-        $barcode = $this->getParam('id');
-        $item = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Lease\Item')
-            ->findOneByBarcode($barcode);
-
-        if ($item) {
-            $leases = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Lease\Lease')
-                ->findUnreturnedByItem($item);
-            if (count($leases) > 0) {
-                $status = 'leased';
-            } else {
-                $status = 'returned';
-            }
-        } else {
-            $status = 'noSuchItem';
-        }
-
-        return new ViewModel(
-            array(
-                'result' => array(
-                    'status' => $status,
-                    'additional_info' => $item->getAdditionalInfo(),
-                ),
             )
         );
     }
@@ -167,7 +140,7 @@ class LeaseController extends LogisticsController
 
                     $item = $this->getEntityManager()
                         ->getRepository('LogisticsBundle\Entity\Lease\Item')
-                        ->findOneByBarcode($formData['barcode']);
+                        ->findOneById($formData['leaseItem']['id']);
 
                     $lease = new Lease(
                         $item,
@@ -214,7 +187,7 @@ class LeaseController extends LogisticsController
 
                     $item = $this->getEntityManager()
                         ->getRepository('LogisticsBundle\Entity\Lease\Item')
-                        ->findOneByBarcode($data['barcode']);
+                        ->findOneById($data['returnItem']['id']);
 
                     $lease = current($this->getEntityManager()
                         ->getRepository('LogisticsBundle\Entity\Lease\Lease')
@@ -280,28 +253,15 @@ class LeaseController extends LogisticsController
         return $lease;
     }
 
-    private function _getItem($barcode = null)
+    private function _getItem($id = null)
     {
-        if ($this->getParam('id') === null && $barcode === null) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No id or barcode was given to identify the item!'
-            );
-
-            $this->redirect()->toRoute('logistics_lease');
-
-            return;
+        if (null === $id) {
+            $id = $this->getParam('id');
         }
 
-        if ($barcode) {
-            $item = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Lease\Item')
-                ->findOneByBarcode($barcode);
-        } else {
-            $item = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Lease\Item')
-                ->find($this->getParam('id'));
-        }
+        $item = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Lease\Item')
+            ->findOneById($id);
 
         if ($item === null) {
             $this->flashMessenger()->error(

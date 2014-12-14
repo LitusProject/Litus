@@ -116,6 +116,10 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
         return $this->doHydrate($array, $object);
     }
 
+    /**
+     * @param mixed|null $object
+     * @param string     $method
+     */
     private function checkType($object = null, $method)
     {
         if (null !== $object && null !== $this->entity) {
@@ -223,7 +227,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     /**
      * Returns the logged in user. The return value is null if no one is logged in.
      *
-     * @return \CommonModule\Entity\User\Person
+     * @return \CommonModule\Entity\User\Person|null
      */
     public function getPerson()
     {

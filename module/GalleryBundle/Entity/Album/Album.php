@@ -65,7 +65,7 @@ class Album
     private $dateActivity;
 
     /**
-     * @var array The translations of this album
+     * @var ArrayCollection The translations of this album
      *
      * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Translation", mappedBy="album", cascade={"persist", "remove"})
      */
@@ -86,7 +86,7 @@ class Album
     private $watermark;
 
     /**
-     * @var array The photos of this album
+     * @var ArrayCollection The photos of this album
      *
      * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Photo", mappedBy="album", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id": "ASC"})
@@ -94,9 +94,7 @@ class Album
     private $photos;
 
     /**
-     * @param Person   $person
-     * @param DateTime $date
-     * @param boolean  $watermark
+     * @param Person $person
      */
     public function __construct(Person $person)
     {
@@ -249,7 +247,7 @@ class Album
     }
 
     /**
-     * @return array
+     * @return ArrayCollection
      */
     public function getPhotos()
     {

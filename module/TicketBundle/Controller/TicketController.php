@@ -40,7 +40,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findAllByEventAndPerson($event, $this->getAuthentication()->getPersonObject());
 
-        $form = $this->getForm('ticket_ticket_book', array('event' => $event));
+        $form = $this->getForm('ticket_ticket_book', array('event' => $event, 'person' => $this->getAuthentication()->getPersonObject()));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

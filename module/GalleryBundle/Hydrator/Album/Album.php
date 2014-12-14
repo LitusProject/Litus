@@ -38,7 +38,7 @@ class Album extends \CommonBundle\Component\Hydrator\Hydrator
         $data['tab_content'] = array();
         foreach ($this->getLanguages() as $language) {
             $data['tab_content']['tab_' . $language->getAbbrev()] = array(
-                'title' => $object->getTitle($language),
+                'title' => $object->getTitle($language, false),
             );
         }
 

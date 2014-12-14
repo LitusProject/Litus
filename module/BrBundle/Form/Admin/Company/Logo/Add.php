@@ -20,121 +20,62 @@ namespace BrBundle\Form\Admin\Company\Logo;
 
 use BrBundle\Component\Validator\Logo\Type as TypeValidator,
     BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Logo,
-    CommonBundle\Component\OldForm\Admin\Element\File,
-    CommonBundle\Component\OldForm\Admin\Element\Select,
-    CommonBundle\Component\OldForm\Admin\Element\Text,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    BrBundle\Entity\Company\Logo;
 
 /**
  * Add Logo
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Add extends \CommonBundle\Component\OldForm\Admin\Form
+class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'BrBundle\Hydrator\Company\Logo';
+
     const FILESIZE = '10MB';
 
     /**
-     * @var \Doctrine\ORM\EntityManager The Doctrine EntityManager
-     */
-    private $_entityManager;
-
-    /**
-     * @var \BrBundle\Entity\Company The company to add the logo
+     * @var Company The company to add the logo
      */
     private $_company;
 
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Company The company to add the logo
-     * @param null|string|int             $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Company $company, $name = null)
+    public function init()
     {
-        parent::__construct($name);
-
-        $this->_entityManager = $entityManager;
-        $this->_company = $company;
+        parent::init();
 
         $this->setAttribute('enctype', 'multipart/form-data');
 
-        $field = new File('logo');
-        $field->setLabel('Logo')
-            ->setAttribute('data-help', 'The logo must be an image of max ' . self::FILESIZE . '.')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('url');
-        $field->setLabel('URL')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Select('type');
-        $field->setLabel('Type')
-            ->setAttribute('options', Logo::$POSSIBLE_TYPES)
-            ->setAttribute('data-help', 'The location where the logo will be used:
-            <ul>
-                <li><b>Homepage:</b> In the footer of the website</li>
-                <li><b>Cudi:<br> In the footer of the queue screen at Cudi</li>
-            </ul>')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'logo_add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'logo',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'file',
+            'name'       => 'logo',
+            'label'      => 'Logo',
+            'required'   => true,
+            'attributes' => array(
+                'data-help' => 'The logo must be an image of max ' . self::FILESIZE . '.',
+            ),
+            'options'    => array(
+                'input' => array(
                     'validators' => array(
                         array(
                             'name' => 'fileisimage',
                         ),
                         array(
-                            'name' => 'filefilessize',
+                            'name' => 'filesize',
                             'options' => array(
                                 'max' => self::FILESIZE,
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'type',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new TypeValidator($this->_entityManager, $this->_company),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'url',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'url',
+            'label'    => 'URL',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -143,10 +84,43 @@ class Add extends \CommonBundle\Component\OldForm\Admin\Form
                             'name' => 'uri',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'type',
+            'label'      => 'Type',
+            'required'   => true,
+            'attributes' => array(
+                'options' => Logo::$POSSIBLE_TYPES,
+                'data-help' => 'The location where the logo will be used:
+                    <ul>
+                        <li><b>Homepage:</b> In the footer of the website</li>
+                        <li><b>Cudi:<br> In the footer of the queue screen at Cudi</li>
+                    </ul>',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'validators' => array(
+                        new TypeValidator($this->getEntityManager(), $this->_company),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->addSubmit('Add', 'logo_add');
+    }
+
+    /**
+     * @param  Company $company
+     * @return self
+     */
+    public function setCompany(Company $company)
+    {
+        $this->_company = $company;
+
+        return $this;
     }
 }

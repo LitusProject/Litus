@@ -18,8 +18,7 @@
 
 namespace ShiftBundle\Form\Admin\Shift;
 
-use CommonBundle\Entity\User\Person\Academic,
-    LogicException,
+use LogicException,
     Shiftbundle\Entity\Shift;
 
 /**

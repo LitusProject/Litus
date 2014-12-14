@@ -18,8 +18,7 @@
 
 namespace BannerBundle\Entity\Node;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
+use DateTime,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -71,14 +70,6 @@ class Banner extends \CommonBundle\Entity\Node
      * @ORM\Column(type="text")
      */
     private $url;
-
-    /**
-     * @param \CommonBundle\Entity\User\Person $person
-     */
-    public function __construct(Person $person)
-    {
-        parent::__construct($person);
-    }
 
     /**
      * @param string $name

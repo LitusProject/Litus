@@ -18,18 +18,15 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
+use CommonBundle\Component\Form\ElementTrait;
+
 /**
  * CSRF form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Csrf extends \Zend\Form\Element\Csrf
+class Csrf extends \Zend\Form\Element\Csrf implements \CommonBundle\Component\Form\ElementInterface
 {
-    public function setName($name)
-    {
-        $this->setAttribute('id', $name);
-
-        return parent::setName($name);
-    }
+    use ElementTrait;
 }

@@ -86,6 +86,7 @@ class FormElementManager extends \Zend\Form\FormElementManager
     {
         if ($element instanceof FormFactoryAwareInterface) {
             $element->setFormFactory(new Factory($this));
+            $factory = $element->getFormFactory();
 
             if ($this->serviceLocator instanceof ServiceLocatorInterface
                 && $this->serviceLocator->has('InputFilterManager')

@@ -439,6 +439,20 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
+     * Retrieve lilo from the DI container.
+     *
+     * @param  string   $message
+     * @param  string[] $tags
+     * @return void
+     */
+    protected function logToLilo($message, array $tags = array())
+    {
+        if ('development' != getenv('APPLICATION_ENV')) {
+            $this->getServiceLocator()->get('lilo')->sendLog($message, $tags);
+        }
+    }
+
+    /**
      * Redirects after a successful authentication.
      * If this returns null, no redirection will take place.
      *

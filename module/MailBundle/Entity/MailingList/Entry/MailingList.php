@@ -38,16 +38,6 @@ class MailingList extends \MailBundle\Entity\MailingList\Entry
     private $entry;
 
     /**
-     * Creates a new list entry for the given list with the given list.
-     *
-     * @param MailingListEntity $list The list for this entry
-     */
-    public function __construct(MailingListEntity $list)
-    {
-        parent::__construct($list);
-    }
-
-    /**
      * @return MailingListEntity
      */
     public function getEntry()

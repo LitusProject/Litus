@@ -72,14 +72,10 @@ class Page
     private $years;
 
     /**
-     * @param Company $company     The company
-     * @param string  $summary     The page's summary
-     * @param string  $description The page's description
+     * @param Company $company The company
      */
-    public function __construct(Company $company, $summary, $description)
+    public function __construct(Company $company)
     {
-        $this->setSummary($summary);
-        $this->setDescription($description);
         $this->company = $company;
         $this->years = new ArrayCollection();
     }

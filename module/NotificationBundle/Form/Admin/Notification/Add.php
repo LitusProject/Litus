@@ -49,6 +49,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'name'       => 'end_date',
             'label'      => 'End Date',
             'required'   => true,
+            'options'    => array(
+                'input' => array(
+                    'validators' => array(
+                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                    ),
+                ),
+            ),
         ));
 
         $this->add(array(

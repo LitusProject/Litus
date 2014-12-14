@@ -18,17 +18,14 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
+use CommonBundle\Component\Form\ElementTrait;
+
 /**
  * Checkbox form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Checkbox extends \Zend\Form\Element\Checkbox
+class Checkbox extends \Zend\Form\Element\Checkbox implements \CommonBundle\Component\Form\ElementInterface
 {
-    public function setName($name)
-    {
-        $this->setAttribute('id', $name);
-
-        return parent::setName($name);
-    }
+    use ElementTrait;
 }

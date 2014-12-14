@@ -19,7 +19,6 @@
 namespace CudiBundle\Controller\Prof;
 
 use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Article\External,
     CudiBundle\Entity\Article\Internal,
     CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Prof\Action,
@@ -82,7 +81,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $academicYear
                     );
 
-                $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['mandatory']);
+                $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['subject']['mandatory']);
                 $mapping->setIsProf(true);
                 $this->getEntityManager()->persist($mapping);
 
@@ -251,7 +250,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $this->getEntityManager()->persist($action);
                     }
                 } else {
-                    $form->hydateObject($article);
+                    $form->hydrateObject($article);
 
                     $article->setIsDraft($formData['draft']);
                 }

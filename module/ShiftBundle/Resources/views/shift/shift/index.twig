@@ -61,6 +61,7 @@
 
                 {% do form.prepare() %}
                 {{ form().openTag(dateSearchForm)|raw }}
+                    {{ formElement(dateSearchForm.get('csrf'))|raw }}
                     <div class="form-group">
                         <div class="input-group">
                             {{ formElement(dateSearchForm.get('date'))|raw }}
@@ -77,6 +78,7 @@
 
                 {% do form.prepare() %}
                 {{ form().openTag(eventSearchForm)|raw }}
+                    {{ formElement(eventSearchForm.get('csrf'))|raw }}
                     <div class="form-group">
                         <div class="input-group">
                             {{ formElement(eventSearchForm.get('event'))|raw }}
@@ -93,6 +95,7 @@
 
                 {% do form.prepare() %}
                 {{ form().openTag(unitSearchForm)|raw }}
+                    {{ formElement(unitSearchForm.get('csrf'))|raw }}
                     <div class="form-group">
                         <div class="input-group">
                             {{ formElement(unitSearchForm.get('unit'))|raw }}

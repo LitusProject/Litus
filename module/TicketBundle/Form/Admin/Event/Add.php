@@ -47,73 +47,140 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'options' => $this->createEventsArray(),
             ),
+            'options' => array(
+                'input' => array(
+                    'filter' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        new ActivityValidator($this->getEntityManager()),
+                    ),
+                ),
+            ),
         ));
 
         $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'active',
-            'label' => 'Active',
+            'type'     => 'checkbox',
+            'name'     => 'active',
+            'label'    => 'Active',
+            'required' => false,
         ));
 
         $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'bookable',
-            'label' => 'Bookable',
+            'type'     => 'checkbox',
+            'name'     => 'bookable',
+            'label'    => 'Bookable',
+            'required' => false,
         ));
 
         $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'bookable_praesidium',
-            'label' => 'Bookable For Praesidium',
+            'type'     => 'checkbox',
+            'name'     => 'bookable_praesidium',
+            'label'    => 'Bookable For Praesidium',
+            'required' => false,
         ));
 
         $this->add(array(
             'type'       => 'datetime',
             'name'       => 'bookings_close_date',
             'label'      => 'Booking Close Date',
+            'required'   => false,
+            'options' => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'date',
+                            'options' => array(
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
+                        new DateCompareValidator('now', 'd/m/Y H:i'),
+                        new DateValidator($this->getEntityManager(), 'd/m/Y H:i'),
+                    ),
+                ),
+            ),
         ));
 
         $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'generate_tickets',
-            'label' => 'Generate Tickets (needed to print out ticket)',
+            'type'     => 'checkbox',
+            'name'     => 'generate_tickets',
+            'label'    => 'Generate Tickets (needed to print out ticket)',
+            'required' => false,
         ));
 
         $this->add(array(
-            'type'  => 'text',
-            'name'  => 'number_of_tickets',
-            'label' => 'Number Of Tickets (0: No Limit)',
-            'value' => 0,
+            'type'     => 'text',
+            'name'     => 'number_of_tickets',
+            'label'    => 'Number Of Tickets (0: No Limit)',
+            'value'    => 0,
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'int'),
+                        array(
+                            'name' => 'greaterthan',
+                            'options' => array(
+                                'min' => 0,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         ));
 
         $this->add(array(
-            'type'  => 'text',
-            'name'  => 'limit_per_person',
-            'label' => 'Maximum Number Of Tickets Per Person (0: No Limit)',
-            'value' => 0,
+            'type'     => 'text',
+            'name'     => 'limit_per_person',
+            'label'    => 'Maximum Number Of Tickets Per Person (0: No Limit)',
+            'value'    => 0,
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'int'),
+                    ),
+                ),
+            ),
         ));
 
         $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'allow_remove',
-            'label' => 'Allow Users To Remove Reservations',
+            'type'     => 'checkbox',
+            'name'     => 'allow_remove',
+            'label'    => 'Allow Users To Remove Reservations',
+            'required' => false,
         ));
 
         $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'only_members',
-            'label' => 'Only Members',
+            'type'     => 'checkbox',
+            'name'     => 'only_members',
+            'label'    => 'Only Members',
+            'required' => false,
         ));
 
         $this->add(array(
-            'type' => 'hidden',
-            'name' => 'enable_options_hidden',
+            'type'     => 'hidden',
+            'name'     => 'enable_options_hidden',
+            'required' => false,
         ));
 
         $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'enable_options',
-            'label' => 'Enable Options',
+            'type'       => 'checkbox',
+            'name'       => 'enable_options',
+            'label'      => 'Enable Options',
+            'required'   => false,
+            'attributes' => array(
+                'id' => 'enable_options',
+            ),
         ));
 
         $this->add(array(
@@ -129,6 +196,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'name'     => 'price_members',
                     'label'    => 'Price Members',
                     'required' => true,
+                    'options' => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                new PriceValidator(),
+                            ),
+                        ),
+                    ),
                 ),
                 array(
                     'type'       => 'text',
@@ -140,6 +217,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'options' => array(
                         'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
                             'validators' => array(
                                 new PriceValidator(),
                             ),
@@ -153,9 +233,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'collection',
             'name'       => 'options',
             'label'      => 'Options',
-            'attributes' => array(
-                'class' => 'half_width',
-            ),
             'options'    => array(
                 'count'                  => 0,
                 'should_create_template' => true,
@@ -187,112 +264,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function getInputFilterSpecification()
     {
-        $inputFilter = array();
+        $specs = parent::getInputFilterSpecification();
 
-        $inputFilter[] = array(
-            'name'     => 'event',
-            'required' => true,
-            'filter' => array(
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                new ActivityValidator($this->getEntityManager()),
-            ),
-        );
+        if (!$this->data['generate_tickets']) {
+            foreach ($specs['number_of_tickets']['validators'] as $key => $validator) {
+                if ('greaterthan' == $validator['name']) {
+                    unset($specs['number_of_tickets']['validators'][$key]);
+                }
+            }
+        }
 
-        $inputFilter[] = array(
-            'name'     => 'bookings_close_date',
-            'required' => false,
-            'filters'  => array(
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                array(
-                    'name' => 'date',
-                    'options' => array(
-                        'format' => 'd/m/Y H:i',
-                    ),
-                ),
-                new DateCompareValidator('now', 'd/m/Y H:i'),
-                new DateValidator($this->getEntityManager(), 'd/m/Y H:i'),
-            ),
-        );
-
-        if (isset($this->data['generate_tickets']) && $this->data['generate_tickets']) {
-            $inputFilter[] = array(
-                'name'     => 'number_of_tickets',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'int'),
-                    array(
-                        'name' => 'greaterthan',
-                        'options' => array(
-                            'min' => 0,
-                        ),
-                    ),
-                ),
-            );
+        if ((isset($this->data['enable_options']) && $this->data['enable_options']) || (isset($this->data['enable_options_hidden']) && $this->data['enable_options_hidden']) == '1') {
+            unset($specs['prices']);
         } else {
-            $inputFilter[] = array(
-                'name'     => 'number_of_tickets',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'int'),
-                ),
-            );
+            $specs['prices']['price_non_members']['required'] = !(isset($this->data['only_members']) && $this->data['only_members']);
         }
 
-        $inputFilter[] = array(
-            'name'     => 'limit_per_person',
-            'required' => true,
-            'filters'  => array(
-                array('name' => 'StringTrim'),
-            ),
-            'validators' => array(
-                array('name' => 'int'),
-            ),
-        );
-
-        $inputFilter[] = array(
-            'name'     => 'enable_options_hidden',
-            'required' => false,
-        );
-
-        if ((!isset($this->data['enable_options']) || !$this->data['enable_options']) &&
-            (!isset($this->data['enable_options_hidden']) || $this->data['enable_options_hidden'] != '1')) {
-            $optionsForm = array(
-                array(
-                    'name'     => 'price_members',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new PriceValidator(),
-                    ),
-                ),
-                array(
-                    'name'     => 'price_non_members',
-                    'required' => isset($this->data['only_members']) && $this->data['only_members'] ? false : true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new PriceValidator(),
-                    ),
-                ),
-            );
-
-            $inputFilter['prices'] = $this->getInputFilterFactory()
-                ->createInputFilter($optionsForm);
-        }
-
-        return $inputFilter;
+        return $specs;
     }
 }

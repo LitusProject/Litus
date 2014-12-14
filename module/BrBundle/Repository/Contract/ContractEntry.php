@@ -39,7 +39,7 @@ class ContractEntry extends EntityRepository
         return $highestVersion;
     }
 
-    public function findAllContractEntriesByContract(Contract $Contract)
+    public function findAllContractEntriesByContract(Contract $contract)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')
@@ -55,7 +55,7 @@ class ContractEntry extends EntityRepository
         return $resultSet;
     }
 
-    public function findContractEntriesByContractAndVersion(Contract $Contract, $version)
+    public function findContractEntriesByContractAndVersion(Contract $contract, $version)
     {
         $query = $this->_em->createQueryBuilder();
         $resultSet = $query->select('c')

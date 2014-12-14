@@ -18,8 +18,7 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use DateTime,
-    IntlDateFormatter,
+use IntlDateFormatter,
     LogisticsBundle\Entity\Reservation\PianoReservation,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
@@ -77,7 +76,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                             ->getConfigValue('logistics.piano_new_reservation_confirmed')
                     );
 
-                    if (!($language = $player->getLanguage())) {
+                    if (!($language = $reservation->getPlayer()->getLanguage())) {
                         $language = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
@@ -97,7 +96,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
                     $mail = new Message();
                     $mail->setBody(
-                            str_replace('{{ name }}', $player->getFullName(),
+                            str_replace('{{ name }}', $reservation->getPlayer()->getFullName(),
                                 str_replace('{{ start }}', $formatterDate->format($reservation->getStartDate()),
                                     str_replace('{{ end }}', $formatterDate->format($reservation->getEndDate()), $message)
                                 )
@@ -108,7 +107,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                                 ->getRepository('CommonBundle\Entity\General\Config')
                                 ->getConfigValue('system_mail_address')
                         )
-                        ->addTo($player->getEmail(), $player->getFullName())
+                        ->addTo($reservation->getPlayer()->getEmail(), $reservation->getPlayer()->getFullName())
                         ->addTo(
                             $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
@@ -172,7 +171,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                             ->getConfigValue('logistics.piano_new_reservation_confirmed')
                     );
 
-                    if (!($language = $player->getLanguage())) {
+                    if (!($language = $reservation->getPlayer()->getLanguage())) {
                         $language = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Language')
                             ->findOneByAbbrev('en');
@@ -183,7 +182,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
                     $mail = new Message();
                     $mail->setBody(
-                            str_replace('{{ name }}', $player->getFullName(),
+                            str_replace('{{ name }}', $reservation->getPlayer()->getFullName(),
                                 str_replace('{{ start }}', $reservation->getStartDate()->format('D d/m/Y H:i'),
                                     str_replace('{{ end }}', $reservation->getEndDate()->format('D d/m/Y H:i'), $message)
                                 )
@@ -194,7 +193,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                                 ->getRepository('CommonBundle\Entity\General\Config')
                                 ->getConfigValue('system_mail_address')
                         )
-                        ->addTo($player->getEmail(), $player->getFullName())
+                        ->addTo($reservation->getPlayer()->getEmail(), $reservation->getPlayer()->getFullName())
                         ->addTo(
                             $this->getEntityManager()
                                 ->getRepository('CommonBundle\Entity\General\Config')
@@ -295,14 +294,5 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
         }
 
         return $reservation;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('D d#m#Y H#i', $date) ?: null;
     }
 }

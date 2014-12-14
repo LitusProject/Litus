@@ -18,15 +18,9 @@
 
 namespace FormBundle\Controller\Admin;
 
-use DateTime,
-    FormBundle\Entity\Mail\Mail,
-    FormBundle\Entity\Mail\Translation as MailTranslation,
-    FormBundle\Entity\Node\Form\Doodle,
+use FormBundle\Entity\Node\Form\Doodle,
     FormBundle\Entity\Node\Form\Form,
-    FormBundle\Entity\Node\Translation\Form as FormTranslation,
     FormBundle\Entity\ViewerMap,
-    FormBundle\Form\Admin\Form\Add as AddForm,
-    FormBundle\Form\Admin\Form\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -83,103 +77,26 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('form_form_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
-
-            if ($form->isValid() && $startDate && $endDate) {
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                $formData = $form->getFormData($formData);
-
-                if ($formData['max'] == '') {
-                    $max = 0;
-                } else {
-                    $max = $formData['max'];
-                }
+            if ($form->isValid()) {
+                $formData = $form->getData();
 
                 if ($formData['type'] == 'doodle') {
-                    $form = new Doodle(
-                        $this->getAuthentication()->getPersonObject(),
-                        $startDate,
-                        $endDate,
-                        $formData['active'],
-                        $formData['multiple'],
-                        $formData['non_members'],
-                        $formData['editable_by_user'],
-                        $formData['send_guest_login_mail'],
-                        $formData['names_visible_for_others']
-                    );
-
-                    if ($formData['reminder_mail']) {
-                        $mail = new Mail($formData['reminder_mail_from'], $formData['reminder_mail_bcc']);
-                        $this->getEntityManager()->persist($mail);
-
-                        foreach ($languages as $language) {
-                            $translation = new MailTranslation(
-                                $mail,
-                                $language,
-                                $formData['reminder_mail_subject_' . $language->getAbbrev()],
-                                $formData['reminder_mail_body_' . $language->getAbbrev()]
-                            );
-                            $this->getEntityManager()->persist($translation);
-                        }
-                        $form->setReminderMail($mail);
-                    }
+                    $formEntity = new Doodle($this->getAuthentication()->getPersonObject());
                 } else {
-                    $form = new Form(
-                        $this->getAuthentication()->getPersonObject(),
-                        $startDate,
-                        $endDate,
-                        $formData['active'],
-                        $max,
-                        $formData['multiple'],
-                        $formData['non_members'],
-                        $formData['editable_by_user'],
-                        $formData['send_guest_login_mail']
-                    );
+                    $formEntity = new Form($this->getAuthentication()->getPersonObject());
                 }
 
-                $this->getEntityManager()->persist($form);
+                $formEntity = $form->hydrateObject($formEntity);
 
-                if ($formData['mail']) {
-                    $mail = new Mail($formData['mail_from'], $formData['mail_bcc']);
-                    $this->getEntityManager()->persist($mail);
-                    foreach ($languages as $language) {
-                        $translation = new MailTranslation(
-                            $mail,
-                            $language,
-                            $formData['mail_subject_' . $language->getAbbrev()],
-                            $formData['mail_body_' . $language->getAbbrev()]
-                        );
-                        $this->getEntityManager()->persist($translation);
-                    }
-                    $form->setMail($mail);
-                }
+                $this->getEntityManager()->persist($formEntity);
 
-                foreach ($languages as $language) {
-                    if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()] && '' != $formData['submittext_' . $language->getAbbrev()]) {
-                        $translation = new FormTranslation(
-                            $form,
-                            $language,
-                            $formData['title_' . $language->getAbbrev()],
-                            $formData['introduction_' . $language->getAbbrev()],
-                            $formData['submittext_' . $language->getAbbrev()],
-                            $formData['updatetext_' . $language->getAbbrev()]
-                        );
-
-                        $this->getEntityManager()->persist($translation);
-                    }
-                }
-
-                $map = new ViewerMap($form, $this->getAuthentication()->getPersonObject(), true, true);
+                $map = new ViewerMap($formEntity, $this->getAuthentication()->getPersonObject(), true, true);
 
                 $this->getEntityManager()->persist($map);
 
@@ -194,7 +111,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     'form_admin_form',
                     array(
                         'action' => 'edit',
-                        'id' => $form->getId(),
+                        'id' => $formEntity->getId(),
                     )
                 );
 
@@ -237,142 +154,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $formSpecification);
+        $form = $this->getForm('form_form_edit', array('form' => $formSpecification));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
-
-            if ($form->isValid() && $startDate && $endDate) {
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                $formData = $form->getFormData($formData);
-
-                $group = $this->getEntityManager()
-                    ->getRepository('FormBundle\Entity\Node\Group\Mapping')
-                    ->findOneByForm($formSpecification);
-
-                if (null === $group) {
-                    if ($formData['max'] == '') {
-                        $max = 0;
-                    } else {
-                        $max = $formData['max'];
-                    }
-
-                    $formSpecification->setStartDate($startDate)
-                        ->setEndDate($endDate)
-                        ->setActive($formData['active'])
-                        ->setMax($max)
-                        ->setEditableByUser($formData['editable_by_user'])
-                        ->setNonMember($formData['non_members'])
-                        ->setSendGuestLoginMail($formData['send_guest_login_mail']);
-                }
-
-                $formSpecification->setMultiple($formData['multiple']);
-
-                if ($formSpecification instanceof Doodle) {
-                    $formSpecification->setNamesVisibleForOthers($formData['names_visible_for_others']);
-
-                    if ($formData['reminder_mail']) {
-                        $mail = $formSpecification->getReminderMail();
-
-                        if (null === $mail) {
-                            $mail = new Mail($formData['reminder_mail_from'], $formData['reminder_mail_bcc']);
-                            $this->getEntityManager()->persist($mail);
-                        } else {
-                            $mail->setFrom($formData['reminder_mail_from'])
-                                ->setBcc($formData['reminder_mail_bcc']);
-                        }
-
-                        foreach ($languages as $language) {
-                            $translation = $mail->getTranslation($language, false);
-
-                            if (null === $translation) {
-                                $translation = new MailTranslation(
-                                    $mail,
-                                    $language,
-                                    $formData['reminder_mail_subject_' . $language->getAbbrev()],
-                                    $formData['reminder_mail_body_' . $language->getAbbrev()]
-                                );
-                                $this->getEntityManager()->persist($translation);
-                            } else {
-                                $translation->setSubject($formData['reminder_mail_subject_' . $language->getAbbrev()])
-                                    ->setContent($formData['reminder_mail_body_' . $language->getAbbrev()]);
-                            }
-                        }
-                        $formSpecification->setReminderMail($mail);
-                    } else {
-                        $formSpecification->setReminderMail(null);
-                    }
-                }
-
-                if ($formData['mail']) {
-                    $mail = $formSpecification->getMail();
-
-                    if (null === $mail) {
-                        $mail = new Mail($formData['mail_from'], $formData['mail_bcc']);
-                        $this->getEntityManager()->persist($mail);
-                    } else {
-                        $mail->setFrom($formData['mail_from'])
-                            ->setBcc($formData['mail_bcc']);
-                    }
-
-                    foreach ($languages as $language) {
-                        $translation = $mail->getTranslation($language, false);
-
-                        if (null === $translation) {
-                            $translation = new MailTranslation(
-                                $mail,
-                                $language,
-                                $formData['mail_subject_' . $language->getAbbrev()],
-                                $formData['mail_body_' . $language->getAbbrev()]
-                            );
-                            $this->getEntityManager()->persist($translation);
-                        } else {
-                            $translation->setSubject($formData['mail_subject_' . $language->getAbbrev()])
-                                ->setContent($formData['mail_body_' . $language->getAbbrev()]);
-                        }
-                    }
-                    $formSpecification->setMail($mail);
-                } else {
-                    $formSpecification->setMail(null);
-                }
-
-                foreach ($languages as $language) {
-                    if ('' != $formData['title_' . $language->getAbbrev()] && '' != $formData['introduction_' . $language->getAbbrev()] && '' != $formData['submittext_' . $language->getAbbrev()]) {
-                        $translation = $formSpecification->getTranslation($language, false);
-
-                        if (null === $translation) {
-                            $translation = new FormTranslation(
-                                $formSpecification,
-                                $language,
-                                $formData['title_' . $language->getAbbrev()],
-                                $formData['introduction_' . $language->getAbbrev()],
-                                $formData['submittext_' . $language->getAbbrev()],
-                                $formData['updatetext_' . $language->getAbbrev()]
-                            );
-                        } else {
-                            $translation->setTitle($formData['title_' . $language->getAbbrev()])
-                                ->setIntroduction($formData['introduction_' . $language->getAbbrev()])
-                                ->setSubmitText($formData['submittext_' . $language->getAbbrev()])
-                                ->setUpdateText($formData['updatetext_' . $language->getAbbrev()]);
-                        }
-
-                        $this->getEntityManager()->persist($translation);
-                    } else {
-                        $translation = $formSpecification->getTranslation($language, false);
-
-                        if ($translation !== null) {
-                            $this->getEntityManager()->remove($translation);
-                        }
-                    }
-                }
-
+            if ($form->isValid()) {
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -514,14 +302,5 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $form;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

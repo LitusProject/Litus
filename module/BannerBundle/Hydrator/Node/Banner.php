@@ -19,8 +19,7 @@
 namespace BannerBundle\Hydrator\Node;
 
 use BannerBundle\Entity\Node\Banner as BannerEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidDateException,
-    DateTime;
+    CommonBundle\Component\Hydrator\Exception\InvalidDateException;
 
 /**
  * This hydrator hydrates/extracts Banner data.
@@ -41,8 +40,8 @@ class Banner extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new BannerEntity($this->getPerson());
         }
 
-        $startDate = self::_loadDate($data['start_date']);
-        $endDate = self::_loadDate($data['end_date']);
+        $startDate = self::loadDateTime($data['start_date']);
+        $endDate = self::loadDateTime($data['end_date']);
 
         if (null === $startDate || null === $endDate) {
             throw new InvalidDateException();
@@ -67,14 +66,5 @@ class Banner extends \CommonBundle\Component\Hydrator\Hydrator
         $data['active'] = $object->isActive();
 
         return $data;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

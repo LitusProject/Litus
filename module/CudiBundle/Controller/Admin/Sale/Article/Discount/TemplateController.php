@@ -48,7 +48,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
 
     public function addAction()
     {
-        $form = $this->getForm('cudi_sales_article_discounts_template_add');
+        $form = $this->getForm('cudi_sale_article_discount_template_add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -112,7 +112,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_sales_article_discounts_template_edit', $template);
+        $form = $this->getForm('cudi_sale_article_discount_template_edit', $template);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

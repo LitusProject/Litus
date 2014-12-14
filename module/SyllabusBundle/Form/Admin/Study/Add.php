@@ -20,6 +20,7 @@ namespace SyllabusBundle\Form\Admin\Study;
 
 use SyllabusBundle\Component\Validator\Study\KulId as KulIdValidator,
     SyllabusBundle\Component\Validator\Study\Recursion as RecursionValidator,
+    SyllabusBundle\Component\Validator\Typeahead\Study as StudyTypeaheadValidator,
     SyllabusBundle\Entity\Study;
 
 /**
@@ -100,49 +101,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'parent_id',
-            'attributes' => array(
-                'id' => 'parentId',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $validators = array();
+        $validators = array(
+            new StudyTypeaheadValidator($this->getEntityManager()),
+        );
 
         if (null !== $this->study) {
             $validators[] = new RecursionValidator($this->getEntityManager(), $this->study);
         }
 
         $this->add(array(
-            'type'       => 'text',
+            'type'       => 'typeahead',
             'name'       => 'parent',
             'label'      => 'Parent',
             'required'   => true,
             'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-                'id'           => 'studySearch',
                 'style'        => 'width: 400px',
             ),
             'options'    => array(
                 'input' => array(
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
                     'validators' => $validators,
                 ),
             ),

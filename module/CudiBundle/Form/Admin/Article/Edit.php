@@ -35,7 +35,7 @@ class Edit extends Add
 
         parent::init();
 
-        $this->remove('subject');
+        $this->remove('subject_form');
 
         if ($this->article->getType() == 'common') {
             $this->get('article')

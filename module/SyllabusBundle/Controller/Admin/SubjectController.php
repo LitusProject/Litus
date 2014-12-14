@@ -82,7 +82,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
-                    ->findOneById($formData['study_id']);
+                    ->findOneById($formData['study']['id']);
 
                 $subject = $form->hydrateObject();
 

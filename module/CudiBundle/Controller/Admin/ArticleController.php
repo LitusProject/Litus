@@ -80,21 +80,16 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->getEntityManager()->persist($article);
 
                 if ($formData['article']['type'] != 'common') {
-                    if ($formData['subject']['id'] == '') {
-                        $subject = $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\Subject')
-                            ->findOneByCode($formData['subject']['name']);
-                    } else {
-                        $subject = $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\Subject')
-                            ->findOneById($formData['subject']['id']);
-                    }
+                    $subject = $this->getEntityManager()
+                        ->getRepository('SyllabusBundle\Entity\Subject')
+                        ->findOneById($formData['subject_form']['subject']['id']);
+
                     $mapping = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                         ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
 
                     if (null === $mapping) {
-                        $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
+                        $mapping = new SubjectMap($article, $subject, $academicYear, $formData['subject_form']['mandatory']);
                         $this->getEntityManager()->persist($mapping);
                         $this->getEntityManager()->persist(new SubjectMapAddedLog($this->getAuthentication()->getPersonObject(), $mapping));
                     }
@@ -332,18 +327,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $article = new External(
-            $previous->getTitle(),
-            $previous->getAuthors(),
-            $previous->getPublishers(),
-            $previous->getYearPublished(),
-            $previous->getISBN(),
-            $previous->getUrl(),
-            $previous->getType(),
-            $previous->isDownloadable(),
-            $previous->isSameAsPreviousYear()
-        );
-        $article->setVersionNumber($previous->getVersionNumber());
+        $article = new External();
+        $article->setTitle($previous->getTitle())
+            ->setAuthors($previous->getAuthors())
+            ->setPublishers($previous->getPublishers())
+            ->setYearPublished($previous->getYearPublished())
+            ->setISBN($previous->getISBN())
+            ->setUrl($previous->getUrl())
+            ->setType($previous->getType())
+            ->setIsDownloadable($previous->isDownloadable())
+            ->setIsSameAsPreviousYear($previous->isSameAsPreviousYear())
+            ->setVersionNumber($previous->getVersionNumber());
         $this->getEntityManager()->persist($article);
 
         $previous->setEntityManager($this->getEntityManager());
@@ -424,27 +418,26 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Article\Option\Color')
             ->findOneByName('White');
 
-        $article = new Internal(
-            $previous->getTitle(),
-            $previous->getAuthors(),
-            $previous->getPublishers(),
-            $previous->getYearPublished(),
-            $previous->getISBN(),
-            $previous->getUrl(),
-            $previous->getType(),
-            $previous->isDownloadable(),
-            $previous->isSameAsPreviousYear(),
-            0,
-            0,
-            $binding,
-            true,
-            true,
-            $frontColor,
-            false,
-            false,
-            false
-        );
-        $article->setVersionNumber($previous->getVersionNumber());
+        $article = new Internal();
+        $article->setTitle($previous->getTitle())
+            ->setAuthors($previous->getAuthors())
+            ->setPublishers($previous->getPublishers())
+            ->setYearPublished($previous->getYearPublished())
+            ->setISBN($previous->getISBN())
+            ->setUrl($previous->getUrl())
+            ->setType($previous->getType())
+            ->setIsDownloadable($previous->isDownloadable())
+            ->setIsSameAsPreviousYear($previous->isSameAsPreviousYear())
+            ->setNbBlackAndWhite(0)
+            ->setNbColored(0)
+            ->setBinding($binding)
+            ->setIsOfficial(true)
+            ->setIsRectoVerso(true)
+            ->setFrontColor($frontColor)
+            ->setIsPerforated(false)
+            ->setIsColored(false)
+            ->setIsHardCovered(false)
+            ->setVersionNumber($previous->getVersionNumber());
         $this->getEntityManager()->persist($article);
 
         $previous->setEntityManager($this->getEntityManager());
@@ -525,6 +518,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         }
     }
 
+    /**
+     * @return \CudiBundle\Entity\Article|null
+     */
     private function _getArticle()
     {
         if (null === $this->getParam('id')) {

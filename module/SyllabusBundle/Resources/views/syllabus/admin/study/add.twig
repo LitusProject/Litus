@@ -16,16 +16,16 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#studySearch').typeaheadRemote(
+            $('#parent').typeaheadRemote(
                 {
                     source: '{{ url('syllabus_admin_study_typeahead', {'academicyear': currentAcademicYear.getCode()})}}',
                     items: 30,
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#parentId').val($(this).data('value').id);
+                    $('[name="parent[id]"]').val($(this).data('value').id);
                 } else {
-                    $('#parentId').val('');
+                    $('[name="parent[id]"]').val('');
                 }
             });
         });

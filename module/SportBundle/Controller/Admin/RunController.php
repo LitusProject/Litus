@@ -21,6 +21,8 @@ namespace SportBundle\Controller\Admin;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\WebSocket as WebSocketUtil,
     DateInterval,
+    DateTime,
+    SportBundle\Entity\Runner,
     Zend\View\Model\ViewModel;
 
 /**
@@ -92,6 +94,73 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
+    public function editGroupAction()
+    {
+        if (!($group = $this->_getGroup())) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('sport_group_edit');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+
+                $academic = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                    ->findOneById($formData['person']['id']);
+
+                $repositoryCheck = $this->getEntityManager()
+                    ->getRepository('SportBundle\Entity\Runner')
+                    ->findOneByUniversityIdentification($academic->getUniversityIdentification());
+
+                if (null === $repositoryCheck) {
+                    $department = $this->getEntityManager()
+                        ->getRepository('SportBundle\Entity\Department')
+                        ->findOneById($formData['department']);
+
+                    $newRunner = new Runner(
+                        $academic->getFirstName(),
+                        $academic->getLastName(),
+                        $academic,
+                        $group,
+                        $department
+                    );
+
+                    $this->getEntityManager()->persist($newRunner);
+                } else {
+                    $repositoryCheck->setGroup($group);
+                }
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The group was successfully edited!'
+                );
+
+                $this->redirect()->toRoute(
+                    'sport_admin_run',
+                    array(
+                        'action' => 'groups',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+                'group' => $group,
+            )
+        );
+    }
+
     public function departmentsAction()
     {
         $paginator = $this->paginator()->createFromEntity(
@@ -116,42 +185,50 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
-    public function pastaAction()
+    public function rewardAction()
     {
-        $runners = $this->getEntityManager()
-            ->getRepository('SportBundle\Entity\Runner')
-            ->findAll();
+        $laps = $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Lap')
+            ->findByAcademicYear($this->_getAcademicYear());
 
-        $pastaRunners = array();
-        foreach ($runners as $runner) {
-            $runner->setEntityManager($this->getEntityManager());
+        $rewardTimeLimit = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('sport.reward_time_limit');
 
-            foreach ($runner->getLaps($this->_getAcademicYear()) as $lap) {
-                if (
+        $rewardRunners = array();
+        foreach ($laps as $lap) {
+            if (
                     null !== $lap->getEndTime()
-                    && $this->_convertDateIntervalToSeconds($lap->getLapTime()) <= 88
+                    && $this->_convertDateIntervalToSeconds($lap->getLapTime()) <= $rewardTimeLimit
                 ) {
-                    if (isset($pastaRunners[$runner->getId()])) {
-                        $pastaRunners[$runner->getId()]['count']++;
-                    } else {
-                        $pastaRunners[$runner->getId()] = array(
-                            'name'  => $runner->getFullName(),
-                            'count' => 1,
-                        );
-                    }
+                $runner = $lap->getRunner();
+                $runner->setEntityManager($this->getEntityManager());
+                if (isset($rewardRunners[$runner->getId()])) {
+                    $rewardRunners[$runner->getId()]['count']++;
+                } else {
+                    $rewardRunners[$runner->getId()] = array(
+                        'name'  => $runner->getFullName(),
+                        'count' => 1,
+                    );
                 }
             }
         }
 
         $paginator = $this->paginator()->createFromArray(
-            $pastaRunners,
+            $rewardRunners,
             $this->getParam('page')
         );
+
+        $d1 = new DateTime();
+        $d2 = new DateTime();
+        $d2->add(new DateInterval('PT' . $rewardTimeLimit . 'S'));
+        $timeLimit = $d2->diff($d1);
 
         return new ViewModel(
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'timeLimit' => $timeLimit,
             )
         );
     }
@@ -175,16 +252,12 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel();
         }
 
-        $form = $this->getForm('sport_runner_edit');
+        $form = $this->getForm('sport_runner_edit', $runner);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $runner->setRunnerIdentification($formData['runner_identification']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -232,6 +305,59 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                 'key' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('sport.queue_socket_key'),
+            )
+        );
+    }
+
+    public function runnersAction()
+    {
+        $runners = $this->getEntityManager()
+                ->getRepository('SportBundle\Entity\Lap')
+                ->getRunnersAndCount($this->_getAcademicYear());
+
+        $runnersList = array();
+        foreach ($runners as $runner) {
+            $runnerEntity = $this->getEntityManager()
+                ->getRepository('SportBundle\Entity\Runner')
+                ->findOneById($runner['runner']);
+
+            $runnerEntity->setEntityManager($this->getEntityManager());
+
+            $name = $runnerEntity->getFullName();
+            $points = $runnerEntity->getPoints($this->_getAcademicYear());
+
+            $totalTime = 0;
+            $laps = $runnerEntity->getLaps($this->_getAcademicYear());
+            foreach ($laps as $lap) {
+                $lapTime = $lap->getLapTime();
+                $totalTime = $totalTime + $lapTime->h*3600 + $lapTime->i*60 + $lapTime->s;
+            }
+
+            $d1 = new DateTime();
+            $d2 = new DateTime();
+            $d2->add(new DateInterval('PT' . round($totalTime/count($laps)) . 'S'));
+            $avarage = $d2->diff($d1);
+
+            array_push($runnersList,
+                array(
+                    'name' => $name,
+                    'laps' => count($laps),
+                    'points' => $points,
+                    'avarage' => $avarage,
+                )
+            );
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $runnersList,
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'academicYear' => $this->_getAcademicYear(),
             )
         );
     }
@@ -324,5 +450,49 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     private function _convertDateIntervalToSeconds(DateInterval $interval)
     {
         return $interval->h*3600 + $interval->i*60 + $interval->s;
+    }
+
+    /**
+     * @return Group
+     */
+    private function _getGroup()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the group!'
+            );
+
+            $this->redirect()->toRoute(
+                'sport_admin_run',
+                array(
+                    'action' => 'groups',
+                )
+            );
+
+            return;
+        }
+
+        $group = $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Group')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $group) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No group with the given ID was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'sport_admin_run',
+                array(
+                    'action' => 'groups',
+                )
+            );
+
+            return;
+        }
+
+        return $group;
     }
 }

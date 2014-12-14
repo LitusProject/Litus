@@ -155,7 +155,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
-                    ->findOneById($formData['study_id']);
+                    ->findOneById($formData['study']['id']);
 
                 $enrollment = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
@@ -240,7 +240,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 $subject = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Subject')
-                    ->findOneById($formData['subject_id']);
+                    ->findOneById($formData['subject']['id']);
 
                 $enrollment = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')

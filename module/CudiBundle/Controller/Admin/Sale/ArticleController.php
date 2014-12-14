@@ -75,7 +75,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function exportAction()
     {
-        $form = $this->getForm('cudi_sales_article_export');
+        $form = $this->getForm('cudi_sale_article_export');
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
@@ -92,7 +92,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function downloadAction()
     {
-        $form = $this->getForm('cudi_sales_article_export');
+        $form = $this->getForm('cudi_sale_article_export');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -136,7 +136,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $article->setEntityManager($this->getEntityManager());
 
-        $form = $this->getForm('cudi_sales_article_add');
+        $form = $this->getForm('cudi_sale_article_add');
 
         $precalculatedSellPrice = 0;
         $precalculatedPurchasePrice = 0;
@@ -198,7 +198,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_sales_article_edit', array('article' => $saleArticle));
+        $form = $this->getForm('cudi_sale_article_edit', array('article' => $saleArticle));
 
         $mainArticle = $saleArticle->getMainArticle();
 
@@ -274,7 +274,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_sales_article_view', array('article' => $saleArticle));
+        $form = $this->getForm('cudi_sale_article_view', array('article' => $saleArticle));
 
         return new ViewModel(
             array(
@@ -412,14 +412,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = $this->getForm('cudi_sales_article_mail');
+        $form = $this->getForm('cudi_sale_article_mail');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $persons = array();
 
@@ -531,7 +531,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return SaleArticle
+     * @return SaleArticle|null
      */
     private function _getSaleArticle()
     {
@@ -574,6 +574,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return $article;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Article|null
+     */
     private function _getArticle()
     {
         if (null === $this->getParam('id')) {
@@ -615,6 +618,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return $article;
     }
 
+    /**
+     * @return int
+     */
     private function _getSemester()
     {
         $semester = $this->getParam('semester');

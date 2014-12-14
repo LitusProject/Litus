@@ -87,7 +87,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                         ->findAllByStatus($status, $this->getCurrentAcademicYear(false));
                 }
 
-                $mail->addTo($mailAddress, $mailName);
+                $mail->addTo($formData['from'], $formData['name']);
 
                 if (!$formData['test']) {
                     $addresses = array();

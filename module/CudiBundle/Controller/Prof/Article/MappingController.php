@@ -47,8 +47,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                if (!($article = $this->_getArticle($formData['article_id']))) {
-                    return;
+                if (!($article = $this->_getArticle($formData['article']['id']))) {
+                    return new ViewModel();
                 }
 
                 $mapping = $this->getEntityManager()

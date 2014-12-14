@@ -35,7 +35,7 @@ class Log extends \CommonBundle\Component\Lilo\Data
      * Construct a new Exception object.
      *
      * @param string $message
-     * @param string $tags
+     * @param array  $tags
      */
     public function __construct($message, $tags)
     {

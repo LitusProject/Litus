@@ -18,6 +18,8 @@
 
 namespace SecretaryBundle\Form\Admin\Promotion;
 
+use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
+
 /**
  * Add Promotion form
  *
@@ -34,6 +36,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'       => 'academic_add',
             'label'      => 'Academic',
             'value'      => true,
+            'attributes' => array(
+                'id' => 'academic_add',
+            ),
         ));
 
         $this->add(array(
@@ -45,39 +50,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
             'elements'   => array(
                 array(
-                    'type'       => 'hidden',
-                    'name'       => 'academic_id',
+                    'type'       => 'typeahead',
+                    'name'       => 'academic',
                     'required'   => true,
-                    'attributes' => array(
-                        'id'       => 'academicId',
-                    ),
                     'options'    => array(
                         'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
                             'validators' => array(
-                                array(
-                                    'name' => 'int',
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'academic_name',
-                    'label'      => 'Academic',
-                    'required'   => true,
-                    'attributes' => array(
-                        'id'           => 'academicSearch',
-                        'autocomplete' => 'off',
-                        'data-provide' => 'typeahead',
-                    ),
-                    'options'    => array(
-                        'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
+                                new PersonTypeaheadValidator($this->getEntityManager()),
                             ),
                         ),
                     ),

@@ -19,6 +19,7 @@
 namespace ShiftBundle\Form\Admin\Shift;
 
 use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
+    CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
     RuntimeException;
 
 /**
@@ -33,27 +34,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function init()
     {
         parent::init();
-
-        $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'manager_id',
-            'attributes' => array(
-                'id' => 'managerId',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'required'   => true,
-                    'filters'    => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
 
         $this->add(array(
             'type'     => 'datetime',
@@ -93,13 +73,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
             'options'    => array(
                 'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'int'),
-                        ),
+                        array('name' => 'int'),
                     ),
                 ),
             ),
@@ -115,13 +93,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
             'options'    => array(
                 'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'int'),
-                        ),
+                        array('name' => 'int'),
                     ),
                 ),
             ),
@@ -138,21 +114,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
+            'type'       => 'typeahead',
             'name'       => 'manager',
             'label'      => 'Manager',
             'required'   => true,
-            'attributes' => array(
-                'autocomplete' => 'off',
-                'data-provide' => 'typeahead',
-                'id'           => 'managerSearch',
-            ),
             'options'    => array(
                 'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+                        new PersonTypeaheadValidator($this->getEntityManager()),
                     ),
                 ),
             ),
@@ -165,13 +137,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'int'),
-                        ),
+                        array('name' => 'int'),
                     ),
                 ),
             ),
@@ -184,13 +154,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
                     'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'int'),
-                        ),
+                        array('name' => 'int'),
                     ),
                 ),
             ),
@@ -248,10 +216,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
                     ),
                 ),
             ),
@@ -267,10 +233,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
             'options'    => array(
                 'input' => array(
-                    'validators' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
                     ),
                 ),
             ),

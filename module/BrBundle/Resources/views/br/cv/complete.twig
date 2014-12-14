@@ -5,5 +5,8 @@
         <h1>{{ translate('CV Book') }}</h1>
     </div>
 
-    {{ translate('Your entry has been recorded in the CV Book.') }}
+    <div class="flashmessage alert alert-success fade in">
+        <a class="close" data-dismiss="alert">&times;</a>
+        {{ translate('Your entry has been recorded in the CV Book.') }}
+    </div>
 {% endblock %}
