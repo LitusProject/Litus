@@ -57,11 +57,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'    => 'text',
-            'name'    => 'color',
-            'label'   => 'Color',
-            'value'   => '#888888',
-            'options' => array(
+            'type'       => 'text',
+            'name'       => 'color',
+            'label'      => 'Color',
+            'value'      => '#888888',
+            'attributes' => array(
+                'id' => 'color',
+            ),
+            'options'    => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),

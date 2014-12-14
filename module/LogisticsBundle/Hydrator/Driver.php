@@ -44,14 +44,20 @@ class Driver extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $person = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findOneById($data['person']['id']);
+            $object = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Driver')
+                ->findOneByPerson($data['person']['id']);
 
-            $object = new DriverEntity($person);
-        } else {
-            $object->setRemoved(false);
+            if (null === $object) {
+                $person = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                    ->findOneById($data['person']['id']);
+
+                $object = new DriverEntity($person);
+            }
         }
+
+        $object->setRemoved(false);
 
         $years = array();
         $repository = $this->getEntityManager()
