@@ -137,7 +137,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->setBookingsCloseDate($closeDate)
             ->setTicketsGenerated($generateTickets)
             ->setPriceMembers($priceMembers)
-            ->setPriceNonMembers($priceNonMembers);
+            ->setPriceNonMembers($priceNonMembers)
+            ->setAllowRemove($data['allow_remove']);
 
         return $this->stdHydrate($data, $object, self::$std_keys);
     }
