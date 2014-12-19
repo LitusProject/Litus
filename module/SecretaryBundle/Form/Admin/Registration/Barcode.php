@@ -51,7 +51,7 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'options' => BarcodeEntity::$possibleTypes,
             ),
-            'value'      => $this->getPerson()->getBarcode(),
+            'value'      => $this->getPerson()->getBarcode() ? $this->getPerson()->getBarcode()->getType() : '',
         ));
 
         $this->add(array(

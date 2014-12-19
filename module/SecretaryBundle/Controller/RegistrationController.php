@@ -170,7 +170,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $form = $this->getForm('secretary_registration_add', array(
                     'identification' => $this->getParam('identification'),
-                    'extra_info'     => unserialize($code->getInfo()),
+                    'extra_info'     => null !== $code ? unserialize($code->getInfo()) : array(),
                 ));
 
                 $formData = $this->getRequest()->getPost()->toArray();
@@ -250,7 +250,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getAuthenticationService()
                     );
 
-                    $this->getEntityManager()->remove($code);
+                    if (null !== $code) {
+                        $this->getEntityManager()->remove($code);
+                    }
                     $this->getEntityManager()->flush();
 
                     $authentication->authenticate(
@@ -293,7 +295,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $form = $this->getForm('secretary_registration_add', array(
                     'identification' => $this->getParam('identification'),
-                    'extra_info'     => unserialize($code->getInfo()),
+                    'extra_info'     => null !== $code ? unserialize($code->getInfo()) : array(),
                 ));
 
                 return new ViewModel(
@@ -691,7 +693,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        if (null !== $code) {
+        if (null !== $code || 'development' == getenv('APPLICATION_ENV')) {
             return true;
         }
 
