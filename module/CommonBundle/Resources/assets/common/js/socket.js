@@ -13,9 +13,9 @@
         init : function (options) {
             var settings = $.extend(defaults, options);
 
-            url = options.url
-            if (url.startsWith(':')) {
-                url = document.location.host + url
+            url = options.url;
+            if (url[0] == ':') {
+                url = document.location.host + url;
             }
 
             if ($(document).data(settings.name + '_options') && $(document).data(settings.name + '_options').ssl_enabled) {
