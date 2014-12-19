@@ -34,8 +34,6 @@ class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->setAttribute('class', 'form-inline');
-
         $this->add(array(
             'type'       => 'select',
             'name'       => 'unit',
