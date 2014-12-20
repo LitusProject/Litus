@@ -269,7 +269,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $new = $form->hydrateObject();
 
-                // ZF2 doesn't pass form values if their input element is disabled...
                 $new->setType($article->getType());
 
                 $this->getEntityManager()->persist($new);

@@ -35,6 +35,7 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Event',
             'required'   => true,
             'attributes' => array(
+                'id'      => 'event',
                 'options' => $this->createEventsArray(),
             ),
         ));

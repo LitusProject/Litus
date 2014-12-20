@@ -30,7 +30,6 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::init();
 
         $this->setAttribute('class', 'form-inline');
-        $this->setAttribute('enctype', 'multipart/form-data');
 
         $this->add(array(
             'type'       => 'hidden',

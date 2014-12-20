@@ -101,6 +101,14 @@ class Internal extends \CudiBundle\Entity\Article
      */
     private $frontPage;
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->nbBlackAndWhite = 0;
+        $this->nbColored = 0;
+    }
+
     /**
      * @return int
      */

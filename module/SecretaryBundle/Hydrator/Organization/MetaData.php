@@ -66,7 +66,7 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 
             $academicEntity = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findOneByUniversityIdentification($academic['university_identification']);
+                ->findOneByUniversityIdentification($academic['university']['identification']);
 
             $academic = $this->getHydrator('CommonBundle\Hydrator\User\Person\Academic')
                 ->hydrate($academic, $academicEntity);

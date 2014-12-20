@@ -73,7 +73,11 @@ class Academic extends \CommonBundle\Hydrator\User\Person
 
         if (null === $object) {
             $object = new AcademicEntity();
-            $object->setUsername($data['username']);
+            if (isset($data['username'])) {
+                $object->setUsername($data['username']);
+            } else {
+                $object->setUsername($data['university']['identification']);
+            }
 
             $object->setRoles(array(
                 $this->getEntityManager()
@@ -99,9 +103,12 @@ class Academic extends \CommonBundle\Hydrator\User\Person
                 );
             }
         } else {
-            $object->removeUniversityStatus(
-                $object->getUniversityStatus($academicYear)
-            );
+            $status = $object->getUniversityStatus($academicYear);
+            if (null !== $status) {
+                $object->removeUniversityStatus(
+                    $object->getUniversityStatus($academicYear)
+                );
+            }
         }
 
         $studentDomain = $this->getEntityManager()

@@ -168,6 +168,7 @@ class Article
         $this->setMainArticle($mainArticle);
         $this->timestamp = new DateTime();
         $this->stockValue = 0;
+        $this->isHistory = false;
     }
 
     /**

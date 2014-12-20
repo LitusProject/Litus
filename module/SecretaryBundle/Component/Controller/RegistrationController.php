@@ -150,7 +150,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 );
 
                 $this->redirect()->toRoute(
-                    'common_account',
+                    $this->getParam('controller'),
                     array(
                         'action' => 'subjects',
                     )

@@ -546,7 +546,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         foreach ($laps as $lap) {
             $total += $this->_convertDateIntervalToSeconds($lap->getLapTime());
         }
-        $average = $total / count($laps);
+        if (count($laps) == 0) {
+            $average = 0;
+        } else {
+            $average = $total / count($laps);
+        }
 
         return floor($average / 60) . ':' . ($average % 60 < 10 ? '0' . $average % 60 : $average % 60);
     }

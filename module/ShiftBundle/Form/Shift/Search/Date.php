@@ -36,8 +36,6 @@ class Date extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $this->setAttribute('class', 'form-inline');
-
         $now = new DateTime();
 
         $this->add(array(

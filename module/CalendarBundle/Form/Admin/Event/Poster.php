@@ -32,7 +32,6 @@ class Poster extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->setAttribute('id', 'uploadPoster');
-        $this->setAttribute('enctype', 'multipart/form-data');
 
         $this->add(array(
             'type'       => 'file',

@@ -76,7 +76,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 $subject = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
                     ->findOneBySubjectIdAndProfAndAcademicYear(
-                        $formData['subject']['id'],
+                        $formData['subject']['subject']['id'],
                         $this->getAuthentication()->getPersonObject(),
                         $academicYear
                     );
@@ -111,7 +111,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             array(
                 'form' => $form,
                 'isPost' => $this->getRequest()->isPost(),
-                'isInternalPost' => isset($formData) && $formData['internal'] ? true : false,
+                'isInternalPost' => isset($form->getData()['internal']) && $form->getData()['internal'] ? true : false,
             )
         );
     }
@@ -155,7 +155,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $academicYear
                     );
 
-                $mapping = new SubjectMap($article, $mappingProf->getSubject(), $academicYear, $formData['mandatory']);
+                $mapping = new SubjectMap(
+                    $article,
+                    $mappingProf->getSubject(),
+                    $academicYear,
+                    isset($formData['subject']['mandatory']) ? $formData['subject']['mandatory'] : false
+                );
                 $mapping->setIsProf(true);
                 $this->getEntityManager()->persist($mapping);
 
@@ -242,7 +247,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         }
                     }
 
-                    $duplicate->setIsDraft($formData['draft']);
+                    $duplicate->setIsDraft($formData['draft'] ? true : false);
 
                     if ($edited) {
                         $this->getEntityManager()->persist($duplicate);
@@ -252,7 +257,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 } else {
                     $form->hydrateObject($article);
 
-                    $article->setIsDraft($formData['draft']);
+                    $article->setIsDraft($formData['draft'] ? true : false);
                 }
 
                 $this->getEntityManager()->flush();

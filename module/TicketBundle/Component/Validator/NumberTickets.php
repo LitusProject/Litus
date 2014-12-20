@@ -94,18 +94,20 @@ class NumberTickets extends \Zend\Validator\AbstractValidator implements FormAwa
     {
         $this->setValue($value);
 
+        $optionsForm = $this->_form->has('options_form') ? $this->_form->get('options_form') : $this->_form;
+
         $number = 0;
         if (count($this->_event->getOptions()) == 0) {
-            $number += $this->_form->get('options_form')->get('number_member')->getValue();
+            $number += $optionsForm->get('number_member')->getValue();
             if (!$this->_event->isOnlyMembers()) {
-                $number += $this->_form->get('options_form')->get('number_non_member')->getValue();
+                $number += $optionsForm->get('number_non_member')->getValue();
             }
         } else {
             $options = $this->_event->getOptions();
             foreach ($options as $option) {
-                $number += $this->_form->get('options_form')->get('option_' . $option->getId() . '_number_member')->getValue();
+                $number += $optionsForm->get('option_' . $option->getId() . '_number_member')->getValue();
                 if (!$this->_event->isOnlyMembers()) {
-                    $number += $this->_form->get('options_form')->get('option_' . $option->getId() . '_number_non_member')->getValue();
+                    $number += $optionsForm->get('option_' . $option->getId() . '_number_non_member')->getValue();
                 }
             }
         }

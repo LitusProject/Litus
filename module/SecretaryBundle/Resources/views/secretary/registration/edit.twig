@@ -28,7 +28,7 @@
             </ul>
         </div>
     {% endif %}
-    <div id="registerForm"{% if (organizations|length > 1 or enableOtherOrganization) and not isPost %} style="display: none;"{% endif %}>
+    <div id="register_form"{% if (organizations|length > 1 or enableOtherOrganization) and not isPost %} style="display: none;"{% endif %}>
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
@@ -85,7 +85,30 @@
                 {% endfor %}
             };
 
-            var $form = $('#registerForm');
+            var $form = $('#register_form');
+
+            $('#conditions').parent().append(
+                conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
+            );
+            conditionsLink.click(function (e) {
+                e.preventDefault();
+                $('#modalTermsAndCoditions').modal();
+            });
+
+            $('#register').click(function (e) {
+                e.preventDefault();
+
+                if (!$('#become_member').is(':checked') && !$('#become_member').is(':disabled') && $form.find('#organization').val() != 0) {
+                    $('#modalMemberWarning')
+                        .modal()
+                        .find('.confirm')
+                            .one('click', function () {
+                                $form.submit();
+                        });
+                } else {
+                    $form.submit();
+                }
+            });
 
             {% if (organizations|length > 1 or enableOtherOrganization) and not isPost %}
                 $('#organizationSelector a').click(function (e) {
@@ -133,29 +156,6 @@
                             .replace('{ price }', membershipArticles[$form.find('#organization').val()])
                     );
             {% endif %}
-
-            $('#conditions').parent().append(
-                conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
-            );
-            conditionsLink.click(function (e) {
-                e.preventDefault();
-                $('#modalTermsAndCoditions').modal();
-            });
-
-            $('#register').click(function (e) {
-                e.preventDefault();
-
-                if (!$('#become_member').is(':checked') && && !$('#become_member').is(':disabled') && $form.find('#organization').val() != 0) {
-                    $('#modalMemberWarning')
-                        .modal()
-                        .find('.confirm')
-                            .one('click', function () {
-                                $form.submit();
-                        });
-                } else {
-                    $form.submit();
-                }
-            });
 
             {% if selectedOrganization %}
                 $('#organization > option[value="{{ selectedOrganization.getId() }}"]').click();
@@ -209,7 +209,7 @@
         }
 
         function toggleMember() {
-            var $form = $('#registerForm');
+            var $form = $('#register_form');
 
             if ($form.find('#become_member').is(':checked'))
                 $form.find('#organization_info .form-group').show();
@@ -218,7 +218,7 @@
 
             $form.find('#become_member')
                 .closest('.form-group')
-                    .toggle($('#registerForm').find('#organization').val() !== '0');
+                    .toggle($('#register_form').find('#organization').val() !== '0');
 
             $form.find('#conditions, #bakske')
                 .closest('.form-group')
