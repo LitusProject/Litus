@@ -165,6 +165,8 @@ abstract class Article
     {
         $this->timestamp = new DateTime();
         $this->isDraft = false;
+        $this->isHistory = false;
+        $this->isProf = false;
     }
 
     /**

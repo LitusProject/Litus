@@ -20,7 +20,8 @@ namespace CudiBundle\Form\Prof\Article;
 
 use CommonBundle\Component\Validator\Uri as UriValidator,
     CommonBundle\Component\Validator\Year as YearValidator,
-    CudiBundle\Entity\Article;
+    CudiBundle\Entity\Article,
+    SyllabusBundle\Component\Validator\Typeahead\Subject as SubjectTypeaheadValidator;
 
 /**
  * Add Article
@@ -158,9 +159,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'  => 'checkbox',
-                    'name'  => 'internal',
-                    'label' => 'Internal Article',
+                    'type'       => 'checkbox',
+                    'name'       => 'internal',
+                    'label'      => 'Internal Article',
+                    'attributes' => array(
+                        'id' => 'internal',
+                    ),
                 ),
             ),
         ));
@@ -209,39 +213,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
             'elements'   => array(
                 array(
-                    'type'       => 'hidden',
-                    'name'       => 'id',
-                    'attributes' => array(
-                        'id' => 'subjectId',
-                    ),
-                    'options'    => array(
-                        'input' => array(
-                            'required' => true,
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'int',
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-                array(
-                    'type'       => 'text',
-                    'name'       => 'name',
+                    'type'       => 'typeahead',
+                    'name'       => 'subject',
                     'label'      => 'Subject',
                     'required'   => true,
                     'attributes' => array(
-                        'autocomplete' => 'off',
-                        'data-provide' => 'typeahead',
                         'id'           => 'subjectSearch',
                     ),
                     'options'    => array(
                         'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
+                            'validators'  => array(
+                                new SubjectTypeaheadValidator($this->getEntityManager()),
                             ),
                         ),
                     ),

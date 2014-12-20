@@ -42,11 +42,13 @@ class AddWithSubject extends Add
         parent::init();
 
         $this->get('subject')
+            ->get('subject')
             ->get('id')
             ->setAttribute('value', $this->subject->getId());
 
         $this->get('subject')
-            ->get('name')
+            ->get('subject')
+            ->get('value')
             ->setAttribute('value', $this->subject->getCode() . ' - ' . $this->subject->getName())
             ->setAttribute('disabled', 'disabled');
     }

@@ -98,19 +98,22 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('CudiBundle\Entity\Article\Option\Binding')
                 ->findOneById($data['internal']['binding']);
 
-            $frontPageColor = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Article\Option\Color')
-                ->findOneById($data['internal']['front_color']);
+            $frontPageColor = null;
+            if (isset($data['internal']['front_color'])) {
+                $frontPageColor = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article\Option\Color')
+                    ->findOneById($data['internal']['front_color']);
+            }
 
             $this->stdHydrate($data['internal'], $object, self::$internal_keys);
 
             $object->setBinding($binding)
-                ->setIsOfficial($data['internal']['official'])
+                ->setIsOfficial(isset($data['internal']['official']) ? $data['internal']['official'] : true)
                 ->setIsRectoVerso($data['internal']['rectoverso'])
                 ->setFrontColor($frontPageColor)
                 ->setIsPerforated($data['internal']['perforated'])
                 ->setIsColored($data['internal']['colored'])
-                ->setIsHardCovered($data['internal']['hardcovered']);
+                ->setIsHardCovered(isset($data['internal']['hardcovered']) ? $data['internal']['hardcovered'] : false);
         }
 
         return $object;
