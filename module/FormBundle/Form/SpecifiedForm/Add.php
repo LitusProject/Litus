@@ -172,7 +172,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             } elseif ($fieldSpecification instanceof CheckboxFieldEntity) {
                 $specification['type'] = 'checkbox';
             } elseif ($fieldSpecification instanceof FileFieldEntity) {
-                $this->setAttribute('enctype', 'multipart/form-data');
                 $specification['type'] = 'file';
                 $specification['options']['input']['validators'] = array(
                     array(

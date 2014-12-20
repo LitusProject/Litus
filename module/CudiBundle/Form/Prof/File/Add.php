@@ -30,7 +30,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::init();
 
         $this->setAttribute('id', 'uploadFile');
-        $this->setAttribute('enctype', 'multipart/form-data');
 
         $this->add(array(
             'type'     => 'text',

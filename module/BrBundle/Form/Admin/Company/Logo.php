@@ -31,8 +31,6 @@ class Logo extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->setAttribute('enctype', 'multipart/form-data');
-
         $this->add(array(
             'type'       => 'file',
             'name'       => 'logo',
