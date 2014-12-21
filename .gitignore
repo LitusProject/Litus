@@ -26,3 +26,6 @@ public/_br/img
 # Exclude Composer configuration and dependencies
 vendor/
 composer.phar
+
+# Vagrant related directory
+.vagrant
