@@ -1,0 +1,7 @@
+<?php
+
+return array(
+    'litus' => array(
+        'node_prefix' => '/usr',
+    ),
+);

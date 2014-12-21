@@ -20,9 +20,12 @@ namespace CommonBundle\Component\Assetic\Filter;
 
 class Less extends \Assetic\Filter\LessFilter
 {
-    public function __construct()
+    /**
+     * @param string $prefix
+     */
+    public function __construct($prefix = '/usr/local')
     {
-        parent::__construct('/usr/local/bin/node', array('/usr/local/lib/node_modules'));
+        parent::__construct($prefix . '/bin/node', array($prefix . '/lib/node_modules'));
         $this->setCompress(true);
     }
 }

@@ -35,7 +35,10 @@ class ServiceFactory extends \AsseticBundle\ServiceFactory
             : array();
         $configuration = new Config($configuration);
 
-        $filterManager->setServiceLocator(new ServiceManager($configuration));
+        $filterManager->setServiceLocator(
+            (new ServiceManager($configuration))
+                ->addPeeringServiceManager($serviceLocator)
+        );
 
         return $asseticService;
     }

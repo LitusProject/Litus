@@ -144,9 +144,11 @@ return Config::create(
         ),
         'assetic_filters' => array(
             'invokables' => array(
-                'css'  => 'CommonBundle\Component\Assetic\Filter\Css',
-                'js'   => 'CommonBundle\Component\Assetic\Filter\Js',
-                'less' => 'CommonBundle\Component\Assetic\Filter\Less',
+                'css' => 'CommonBundle\Component\Assetic\Filter\Css',
+                'js'  => 'CommonBundle\Component\Assetic\Filter\Js',
+            ),
+            'factories' => array(
+                'less' => 'CommonBundle\Component\Assetic\Filter\Factory\Less',
             ),
         ),
         'authentication_sessionstorage' => array(
