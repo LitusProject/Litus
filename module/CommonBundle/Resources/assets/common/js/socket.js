@@ -15,7 +15,7 @@
 
             url = options.url;
             if (url[0] == ':') {
-                url = document.location.host + url;
+                url = document.location.hostname + url;
             }
 
             if ($(document).data(settings.name + '_options') && $(document).data(settings.name + '_options').ssl_enabled) {
