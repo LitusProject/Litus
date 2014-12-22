@@ -452,7 +452,7 @@ You can remove any installed cookies from your computer or mobile device at any 
     ),
     array(
         'key'         => 'last_upgrade',
-        'value'       => '2014092300',
+        'value'       => '2014122200',
         'description' => 'The last Litus schema update performed on this system',
     ),
     array(
