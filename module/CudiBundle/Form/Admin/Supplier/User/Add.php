@@ -18,9 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Supplier\User;
 
-use Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
-
 /**
  * Add a user to the database.
  *
@@ -29,19 +26,15 @@ use Doctrine\ORM\EntityManager,
  */
 class Add extends \CommonBundle\Form\Admin\Person\Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    protected $hydrator = 'CudiBundle\Hydrator\User\Person\Supplier';
+
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
         $this->remove('roles');
 
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'user_add');
-        $this->add($field);
+        $this->remove('submit')
+            ->addSubmit('Add', 'user_add');
     }
 }

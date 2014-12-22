@@ -18,6 +18,8 @@
 
 namespace CudiBundle\Component\Document\Generator;
 
+
+
 use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article\Discount\Discount,
     Doctrine\ORM\EntityManager;
@@ -60,6 +62,11 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
         );
     }
 
+    /**
+     * @param EntityManager $entityManager
+     * @param AcademicYear  $academicYear
+     * @param int           $semester
+     */
     private function _getData(EntityManager $entityManager, AcademicYear $academicYear, $semester)
     {
         $articles = $entityManager

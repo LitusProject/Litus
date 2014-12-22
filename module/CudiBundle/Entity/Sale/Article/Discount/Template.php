@@ -18,6 +18,8 @@
 
 namespace CudiBundle\Entity\Sale\Article\Discount;
 
+
+
 use CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\Mapping as ORM;
@@ -83,29 +85,9 @@ class Template
      * @var Organization|null The organization for the discount
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization")
-     * @ORM\JoinColumn(name="organization", referencedColumnName="id")
+     * @ORM\JoinColumn(name="organization", referencedColumnName="id", nullable=true)
      */
     private $organization;
-
-    /**
-     * @param string            $name         The name of the discount
-     * @param integer           $value        The value of the discount
-     * @param string            $method       The method of the discount
-     * @param string            $type         The type of the discount
-     * @param string            $rounding     The type of the rounding
-     * @param boolean           $applyOnce    Apply the discount only once
-     * @param Organization|null $organization The organization for the discount
-     */
-    public function __construct($name, $value, $method, $type, $rounding, $applyOnce = false, Organization $organization = null)
-    {
-        $this->name = $name;
-        $this->value = (int) (str_replace(',', '.', $value) * 100);
-        $this->method = $method;
-        $this->type = $type;
-        $this->rounding = $rounding;
-        $this->applyOnce = $applyOnce;
-        $this->organization = $organization;
-    }
 
     /**
      * @return integer
@@ -200,10 +182,10 @@ class Template
     }
 
     /**
-     * @param  Organization $organization
+     * @param  Organization|null $organization
      * @return self
      */
-    public function setOrganization(Organization $organization)
+    public function setOrganization(Organization $organization = null)
     {
         $this->organization = $organization;
 

@@ -18,142 +18,80 @@
 
 namespace GalleryBundle\Form\Admin\Album;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Tabs,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
-    Doctrine\ORM\EntityManager,
+
+
+
+use CommonBundle\Component\Form\FieldsetInterface,
+    CommonBundle\Entity\General\Language,
     GalleryBundle\Component\Validator\Name as NameValidator,
-    GalleryBundle\Entity\Album\Album,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    GalleryBundle\Entity\Album\Album;
 
 /**
  * Add an album.
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $hydrator = 'GalleryBundle\Hydrator\Album\Album';
 
     /**
-     * @var Album
+     * @var Album|null
      */
     protected $album = null;
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
-        parent::__construct($name);
-
-        $this->_entityManager = $entityManager;
-
-        $tabs = new Tabs('languages');
-        $this->add($tabs);
-
-        $tabContent = new TabContent('tab_content');
-
-        foreach ($this->_getLanguages() as $language) {
-            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
-
-            $pane = new TabPane('tab_' . $language->getAbbrev());
-
-            $field = new Text('title_' . $language->getAbbrev());
-            $field->setLabel('Title')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
-            $pane->add($field);
-
-            $tabContent->add($pane);
-        }
-
-        $this->add($tabContent);
-
-        $field = new Text('date');
-        $field->setLabel('Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Checkbox('watermark');
-        $field->setLabel('Watermark')
-            ->setValue(true)
-            ->setAttribute('data-help', 'Embed a watermark into to photo\'s of this album. (Will only be applied to new uploaded photo\'s)');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'gallery_add');
-        $this->add($field);
-    }
-
-    public function populateFromAlbum(Album $album)
-    {
-        $data = array(
-            'date' => $album->getDate()->format('d/m/Y'),
-            'watermark' => $album->hasWatermark(),
-        );
-        foreach ($this->_getLanguages() as $language) {
-            $data['title_' . $language->getAbbrev()] = $album->getTitle($language);
-        }
-        $this->setData($data);
-    }
-
-    protected function _getLanguages()
-    {
-        return $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        foreach ($this->_getLanguages() as $language) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'title_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault(),
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new NameValidator($this->_entityManager, $this->album),
-                        ),
-                    )
-                )
-            );
-        }
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'date',
-                    'required' => true,
+        $container->add(array(
+            'type'     => 'text',
+            'name'     => 'title',
+            'label'    => 'Title',
+            'required' => $isDefault,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y',
-                            ),
-                        ),
+                        new NameValidator($this->getEntityManager(), $this->album),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
+    }
 
-        return $inputFilter;
+    protected function initAfterTabs()
+    {
+        $this->add(array(
+            'type'       => 'date',
+            'name'       => 'date',
+            'label'      => 'Date',
+            'required'   => true,
+        ));
+
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'watermark',
+            'label'      => 'Watermark',
+            'value'      => true,
+            'attributes' => array(
+                'data-help' => 'Embed a watermark into to photo\'s of this album. (Will only be applied to new uploaded photo\'s)',
+            ),
+        ));
+
+        $this->addSubmit('Add', 'gallery_add');
+
+        if (null !== $this->album) {
+            $this->bind($this->album);
+        }
+    }
+
+    /**
+     * @param  Album $album
+     * @return self
+     */
+    public function setAlbum(Album $album)
+    {
+        $this->album = $album;
+
+        return $this;
     }
 }

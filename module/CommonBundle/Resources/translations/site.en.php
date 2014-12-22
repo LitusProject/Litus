@@ -59,6 +59,7 @@ return array(
     'Activate' => 'Activate',
     'Password' => 'Password',
     'Verify Password' => 'Verify Password',
+    'Your account was succesfully activated!' => 'Your account was succesfully activated!',
     'Overview' => 'Overview',
     'Edit' => 'Edit',
     'Studies' => 'Studies',
@@ -108,6 +109,10 @@ return array(
 
     'Enroll' => 'Enroll',
     'Unsubscribe' => 'Unsubscribe',
+
+    'This person does not exits' => 'This person does not exits',
+    'The selected file is too large.' => 'The selected file is too large.',
+    'An error occurred while uploading your profile image.' => 'An error occurred while uploading your profile image.',
 
     'VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.' => 'VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.',
     'Privacy Policy' => 'Privacy Policy',

@@ -18,9 +18,10 @@
 
 namespace CudiBundle\Controller\Prof\Article;
 
+
+
 use CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Prof\Action,
-    CudiBundle\Form\Prof\Mapping\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -40,17 +41,16 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
         }
 
-        $form = new AddForm();
+        $form = $this->getForm('cudi_prof_mapping_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
-                if (!($article = $this->_getArticle($formData['article_id']))) {
-                    return;
+                if (!($article = $this->_getArticle($formData['article']['id']))) {
+                    return new ViewModel();
                 }
 
                 $mapping = $this->getEntityManager()

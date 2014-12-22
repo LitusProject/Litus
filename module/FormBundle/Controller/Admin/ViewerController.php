@@ -18,8 +18,8 @@
 
 namespace FormBundle\Controller\Admin;
 
+
 use FormBundle\Entity\ViewerMap,
-    FormBundle\Form\Admin\Viewer\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -111,23 +111,18 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('form_viewer_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person');
-                if ($formData['person_id'] == '') {
-                    // No autocompletion used, we assume the username was entered
-                    $person = $repository->findOneByUsername($formData['person_name']);
-                } else {
-                    $person = $repository->findOneById($formData['person_id']);
-                }
+                $person = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person')
+                    ->findOneById($formData['person']['id']);
 
                 $repositoryCheck = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\ViewerMap')
@@ -144,14 +139,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                         'This user has already been given access to this list!'
                     );
                 } else {
-                    $viewer = new ViewerMap(
-                        $formSpecification,
-                        $person,
-                        $formData['edit'],
-                        $formData['mail']
+                    $this->getEntityManager()->persist(
+                        $form->hydrateObject(new ViewerMap($formSpecification))
                     );
-
-                    $this->getEntityManager()->persist($viewer);
 
                     $this->getEntityManager()->flush();
 
@@ -236,6 +226,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @return \FormBundle\Entity\Node\Form|null
+     */
     private function _getForm()
     {
         if (null === $this->getParam('id')) {
@@ -277,6 +270,9 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
         return $formSpecification;
     }
 
+    /**
+     * @return \FormBundle\Entity\ViewerMap|null
+     */
     private function _getViewer()
     {
         if (null === $this->getParam('id')) {

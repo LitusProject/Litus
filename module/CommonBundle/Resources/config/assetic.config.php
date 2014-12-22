@@ -286,6 +286,13 @@ return array(
             'filters' => array('js'),
         ),
 
+        'display_form_error_js' => array(
+            'assets' => array(
+                'site/js/displayFormErrors.js',
+            ),
+            'filters' => array('js'),
+        ),
+
         'site_css' => array(
             'assets' => array(
                 'site/less/base.less',

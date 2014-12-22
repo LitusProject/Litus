@@ -18,15 +18,9 @@
 
 namespace CudiBundle\Form\Admin\Supplier;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
-    CommonBundle\Form\Admin\Address\Add as AddressForm,
-    CudiBundle\Entity\Supplier,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+
+use CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
+    CudiBundle\Entity\Supplier;
 
 /**
  * Add Supplier
@@ -35,118 +29,73 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var \CommonBundle\Form\Admin\Address\Add
-     */
-    private $_addressForm;
+    protected $hydrator = 'CudiBundle\Hydrator\Supplier';
 
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Text('name');
-        $field->setLabel('Name')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('phone_number');
-        $field->setLabel('Phone Number')
-            ->setAttribute('placeholder', '+CCAAANNNNNN');
-        $this->add($field);
-
-        $field = new Checkbox('contact');
-        $field->setLabel('Contact');
-        $this->add($field);
-
-        $this->_addressForm = new AddressForm('address', 'address');
-        $this->_addressForm->setLabel('Address');
-        $this->add($this->_addressForm);
-
-        $field = new Text('vat_number');
-        $field->setLabel('VAT Number');
-        $this->add($field);
-
-        $field = new Select('template');
-        $field->setLabel('Template')
-            ->setAttribute('options', Supplier::$POSSIBLE_TEMPLATES)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'supplier_add');
-        $this->add($field);
-    }
-
-    public function populateFromSupplier(Supplier $supplier)
-    {
-        $data = array(
-            'name' => $supplier->getName(),
-            'phone_number' => $supplier->getPhoneNumber(),
-            'vat_number' => $supplier->getVatNumber(),
-            'contact' => $supplier->isContact(),
-            'template' => $supplier->getTemplate(),
-            'address_address_street' => $supplier->getAddress()->getStreet(),
-            'address_address_number' => $supplier->getAddress()->getNumber(),
-            'address_address_mailbox' => $supplier->getAddress()->getMailbox(),
-            'address_address_postal' => $supplier->getAddress()->getPostal(),
-            'address_address_city' => $supplier->getAddress()->getCity(),
-            'address_address_country' => $supplier->getAddress()->getCountryCode(),
-        );
-
-        $this->setData($data);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-
-        $inputs = $this->_addressForm->getInputs();
-        foreach ($inputs as $input) {
-            $inputFilter->add($input);
-        }
-
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'name',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'phone_number',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'phone_number',
+            'label'      => 'Phone Number',
+            'attributes' => array(
+                'placeholder' => '+CCAAANNNNNN',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         new PhoneNumberValidator(),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'template',
-                    'required' => true,
-                )
-            )
-        );
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'contact',
+            'label' => 'Contact',
+        ));
 
-        return $inputFilter;
+        $this->add(array(
+            'type'  => 'common_address_add',
+            'name'  => 'address',
+            'label' => 'Address',
+        ));
+
+        $this->add(array(
+            'type'  => 'text',
+            'name'  => 'vat_number',
+            'label' => 'VAT Number',
+        ));
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'template',
+            'label'      => 'Template',
+            'required'   => true,
+            'attributes' => array(
+                'options' => Supplier::$POSSIBLE_TEMPLATES,
+            ),
+        ));
+
+        $this->addSubmit('Add', 'supplier_add');
     }
 }

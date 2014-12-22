@@ -379,6 +379,21 @@ return array(
                 ),
             ),
         ),
+        'br_corporate_jobfair' => array(
+            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/corporate/jobfair[/:action[/:id]][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'       => '[0-9_-]*',
+                    'language' => '[a-z]{2}',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_corporate_jobfair',
+                    'action'     => 'overview',
+                ),
+            ),
+        ),
         'br_corporate_vacancy' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -445,6 +460,7 @@ return array(
         'br_corporate_index'        => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'           => 'BrBundle\Controller\Corporate\CvController',
         'br_corporate_auth'         => 'BrBundle\Controller\Corporate\AuthController',
+        'br_corporate_jobfair'      => 'BrBundle\Controller\Corporate\JobfairController',
         'br_corporate_vacancy'      => 'BrBundle\Controller\Corporate\VacancyController',
         'br_corporate_internship'   => 'BrBundle\Controller\Corporate\InternshipController',
 

@@ -18,9 +18,15 @@
 
 namespace GalleryBundle\Entity\Album;
 
+
+
+
+
+
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     DateTime,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     Locale;
 
@@ -64,9 +70,9 @@ class Album
     private $dateActivity;
 
     /**
-     * @var array The translations of this album
+     * @var ArrayCollection The translations of this album
      *
-     * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Translation", mappedBy="album", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Translation", mappedBy="album", cascade={"persist", "remove"})
      */
     private $translations;
 
@@ -85,25 +91,23 @@ class Album
     private $watermark;
 
     /**
-     * @var array The photos of this album
+     * @var ArrayCollection The photos of this album
      *
-     * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Photo", mappedBy="album", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="GalleryBundle\Entity\Album\Photo", mappedBy="album", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id": "ASC"})
      */
     private $photos;
 
     /**
-     * @param Person   $person
-     * @param DateTime $date
-     * @param boolean  $watermark
+     * @param Person $person
      */
-    public function __construct(Person $person, DateTime $date, $watermark = true)
+    public function __construct(Person $person)
     {
         $this->createTime = new DateTime();
         $this->createPerson = $person;
-        $this->dateActivity = $date;
-        $this->name = $date->format('d_m_Y_H_i');
-        $this->watermark = $watermark;
+
+        $this->translations = new ArrayCollection();
+        $this->photos = new ArrayCollection();
     }
 
     /**
@@ -138,6 +142,10 @@ class Album
     {
         $this->dateActivity = $date;
 
+        if (null === $this->name) {
+            $this->name = $date->format('d_m_Y_H_i');
+        }
+
         return $this;
     }
 
@@ -147,6 +155,33 @@ class Album
     public function getDate()
     {
         return $this->dateActivity;
+    }
+
+    /**
+     * @param  Translation $translation
+     * @return self
+     */
+    public function addTranslation(Translation $translation)
+    {
+        $existing = $this->getTranslation($translation->getLanguage(), false);
+        if (null !== $existing) {
+            $this->removeTranslation($existing);
+        }
+
+        $this->translations->add($translation);
+
+        return $this;
+    }
+
+    /**
+     * @param  Translation $translation
+     * @return self
+     */
+    public function removeTranslation(Translation $translation)
+    {
+        $this->translations->remove($translation);
+
+        return $this;
     }
 
     /**
@@ -217,7 +252,7 @@ class Album
     }
 
     /**
-     * @return array
+     * @return ArrayCollection
      */
     public function getPhotos()
     {

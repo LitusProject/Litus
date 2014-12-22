@@ -5,10 +5,26 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    <div id="controller_action">
+    <div id="controller_action" class="half_width">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
+
+    <aside>
+        {% if hasAccess('calendar_admin_calendar', 'editPoster') %}
+            <div class="sidebox">
+                <div class="title">Edit Poster</div>
+                   <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the poster of this event!</i>
+                    </p>
+                    <p>
+                           <a href="{{ url('calendar_admin_calendar', {"action": "editPoster", "id": event.getId()}) }}">&rarr; Edit Poster</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 {% endblock %}
 
 {% block content_script %}

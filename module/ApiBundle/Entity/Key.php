@@ -18,6 +18,10 @@
 
 namespace ApiBundle\Entity;
 
+
+
+
+
 use CommonBundle\Component\Acl\RoleAware,
     CommonBundle\Entity\Acl\Role,
     DateTime,
@@ -82,22 +86,16 @@ class Key implements RoleAware
     private $roles;
 
     /**
-     * @param string  $host
-     * @param string  $code
-     * @param boolean $checkHost
-     * @param array   $roles
-     * @param int     $expirationTime
+     * @param string $code
+     * @param int    $expirationTime
      */
-    public function __construct($host, $code, $checkHost, $roles, $expirationTime = 157680000)
+    public function __construct($code, $expirationTime = /* 5 years */ 157680000)
     {
         $this->expirationTime = new DateTime(
             'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
 
-        $this->host = $host;
         $this->code = $code;
-        $this->checkHost = $checkHost;
-        $this->roles = new ArrayCollection($roles);
     }
 
     /**

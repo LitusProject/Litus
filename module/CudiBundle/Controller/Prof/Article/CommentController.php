@@ -18,9 +18,10 @@
 
 namespace CudiBundle\Controller\Prof\Article;
 
+
+
 use CudiBundle\Entity\Article,
     CudiBundle\Entity\Comment\Comment,
-    CudiBundle\Form\Prof\Comment\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -40,14 +41,13 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('CudiBundle\Entity\Comment\Mapping')
             ->findByArticle($article);
 
-        $form = new AddForm();
+        $form = $this->getForm('cudi_prof_comment_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $comment = new Comment(
                     $this->getEntityManager(),

@@ -18,6 +18,7 @@
 
 namespace FormBundle\Entity\Mail;
 
+
 use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM;
 
@@ -58,16 +59,6 @@ class Mail
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Mail\Translation", mappedBy="mail", cascade={"remove"})
      */
     private $translations;
-
-    /**
-     * @param string  $from
-     * @param boolean $bcc
-     */
-    public function __construct($from, $bcc)
-    {
-        $this->from = $from;
-        $this->bcc = $bcc;
-    }
 
     /**
      * @var int

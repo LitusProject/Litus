@@ -18,13 +18,18 @@
 
 namespace ApiBundle\Controller;
 
+
+
+
+
+
+
 use ApiBundle\Document\Code\Authorization as AuthorizationCode,
     ApiBundle\Document\Token\Access as AccessToken,
     ApiBundle\Document\Token\Refresh as RefreshToken,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Form\Auth\Login as LoginForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -46,14 +51,14 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
         $this->getSessionStorage()->key = $this->getRequest()->getQuery('client_id');
 
-        $form = new LoginForm();
+        $form = $this->getForm('common_auth_login');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $this->getAuthentication()->forget();
 

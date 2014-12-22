@@ -18,11 +18,15 @@
 
 namespace CalendarBundle\Component\Document\Generator;
 
+
+
+
+
+
 use CalendarBundle\Entity\Node\Event,
     CommonBundle\Component\Controller\Plugin\Url,
     CommonBundle\Component\Util\File\TmpFile as TmpFile,
     CommonBundle\Entity\General\Language,
-    Doctrine\ODM\MongoDB\DocumentManager,
     Doctrine\ORM\EntityManager,
     Zend\Http\PhpEnvironment\Request;
 
@@ -52,6 +56,11 @@ class Ics
      * @var string
      */
     private $_suffix;
+
+    /**
+     * @var Url
+     */
+    private $_url;
 
     /**
      * @param TmpFile       $file

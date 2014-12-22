@@ -540,6 +540,10 @@ h2 {
         width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing))/2 !important;
         float: left;
         margin-right: @defaultSpacing;
+
+        .gollum-editor {
+            width: (@layoutWidth - (@leftSidebarWidth + @sideboxWidth + 4 * @defaultSpacing))*3/4 !important;
+        }
     }
 
     aside {
@@ -702,4 +706,12 @@ dl {
     cursor: pointer;
     text-indent: 0;
     text-transform: uppercase;
+}
+
+.ui-widget-content {
+    button {
+        height: auto;
+        margin: 0;
+        text-indent: 0;
+    }
 }

@@ -18,6 +18,10 @@
 
 namespace CudiBundle\Entity;
 
+
+
+
+
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\Organization,
@@ -93,28 +97,6 @@ class Supplier
      * @var EntityManager The EntityManager instance
      */
     private $_entityManager;
-
-    /**
-     * @param string  $name
-     * @param string  $phoneNumber
-     * @param Address $address
-     * @param string  $vatNumber
-     * @param string  $template
-     * @param boolean $contact
-     */
-    public function __construct($name, $phoneNumber, Address $address, $vatNumber, $template, $contact = false)
-    {
-        if (!self::isValidTemplate($template)) {
-            throw new \InvalidArgumentException('The template is not valid.');
-        }
-
-        $this->setName($name)
-            ->setPhoneNumber($phoneNumber)
-            ->setAddress($address)
-            ->setVatNumber($vatNumber)
-            ->setTemplate($template)
-            ->setContact($contact);
-    }
 
     /**
      * @param  string  $template

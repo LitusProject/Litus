@@ -18,8 +18,7 @@
 
 namespace MailBundle\Entity\MailingList\Entry\Person;
 
-use Doctrine\ORM\Mapping as ORM,
-    MailBundle\Entity\MailingList;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for the list entry of an external person.
@@ -51,28 +50,22 @@ class External extends \MailBundle\Entity\MailingList\Entry\Person
     private $email;
 
     /**
-     * Creates a new list entry for the given list with the given mail address.
-     *
-     * @param MailingList $list      The list for this entry
-     * @param string      $firstName The first name to add
-     * @param string      $lastName  The last name to add
-     * @param string      $email     The e-mail address to add
-     */
-    public function __construct(MailingList $list, $firstName, $lastName, $email)
-    {
-        parent::__construct($list);
-
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->email = $email;
-    }
-
-    /**
      * @return string
      */
     public function getFirstName()
     {
         return $this->firstName;
+    }
+
+    /**
+     * @param  string   $firstName
+     * @return External
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
     }
 
     /**
@@ -84,10 +77,32 @@ class External extends \MailBundle\Entity\MailingList\Entry\Person
     }
 
     /**
+     * @param  string   $lastName
+     * @return External
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getEmailAddress()
     {
         return $this->email;
+    }
+
+    /**
+     * @param  string   $email
+     * @return External
+     */
+    public function setEmailAddress($email)
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }

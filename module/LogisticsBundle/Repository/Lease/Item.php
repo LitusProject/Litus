@@ -42,4 +42,23 @@ class Item extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findAllByNameOrBarcodeQuery($string)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('i')
+            ->from('LogisticsBundle\Entity\Lease\Item', 'i')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->like($query->expr()->lower('i.name'), ':name'),
+                    $query->expr()->like($query->expr()->concat('i.barcode', '\'\''), ':barcode')
+                )
+            )
+            ->setParameter('name', '%' . strtolower($string) . '%')
+            ->setParameter('barcode', strtolower($string) . '%')
+            ->setMaxResults(20)
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

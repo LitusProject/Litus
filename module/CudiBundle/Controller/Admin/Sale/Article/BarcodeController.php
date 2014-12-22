@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
+
 use CudiBundle\Entity\Sale\Article\Barcode,
-    CudiBundle\Form\Admin\Sales\Article\Barcodes\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -35,14 +35,13 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('cudi_sale_article_barcode_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $article->addBarcode(new Barcode($article, $formData['barcode']));
 
@@ -74,6 +73,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
+                'form' => $form,
                 'article' => $article,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),

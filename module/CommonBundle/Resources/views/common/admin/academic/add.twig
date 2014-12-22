@@ -10,3 +10,15 @@
         {{ forms.renderForm(form) }}
     </div>
 {% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#first_name, #last_name').blur(nameChange);
+        });
+
+        function nameChange() {
+            $('#university_email').val($('#first_name').val().toLowerCase() + "." + $('#last_name').val().toLowerCase().replace(/ /g, ""));
+        }
+    </script>
+{% endblock %}

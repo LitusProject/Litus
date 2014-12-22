@@ -18,10 +18,7 @@
 
 namespace BrBundle\Form\Admin\Company\User;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
+use CommonBundle\Entity\User\Person;
 
 /**
  * Edit a user's data.
@@ -29,48 +26,19 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends \CommonBundle\Form\Admin\Person\Add
+class Edit extends \CommonBundle\Form\Admin\Person\Edit
 {
-    /**
-     * @param \Doctrine\ORM\EntityManager      $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\User\Person $person        The person we're going to modify
-     * @param null|string|int                  $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Person $person, $name = null)
+    protected $hydrator = 'BrBundle\Hydrator\User\Person\Corporate';
+
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
-        $this->remove('username');
-        $this->remove('roles');
+        $this->remove('system_roles')
+            ->remove('unit_roles')
+            ->remove('roles');
 
-        $field = new Text('code');
-        $field->setLabel('Code')
-            ->setAttribute('disabled', 'disabled');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'user_edit');
-        $this->add($field);
-
-        $this->setData(
-            array(
-                'first_name' => $person->getFirstName(),
-                'last_name' => $person->getLastName(),
-                'email' => $person->getEmail(),
-                'telephone' => $person->getPhonenumber(),
-                'sex' => $person->getSex(),
-                'code' => $person->getCode() ? $person->getCode()->getCode() : '',
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-
-        $inputFilter->remove('username');
-
-        return $inputFilter;
+        $this->remove('submit')
+            ->addSubmit('Save', 'user_edit');
     }
 }

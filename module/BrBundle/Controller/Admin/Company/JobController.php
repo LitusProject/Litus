@@ -18,10 +18,8 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
+
 use BrBundle\Entity\Company\Job,
-    BrBundle\Form\Admin\Company\Job\Add as AddForm,
-    BrBundle\Form\Admin\Company\Job\Edit as EditForm,
-    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -63,32 +61,18 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel();
         }
 
-        $form = new AddForm();
+        $form = $this->getForm('br_company_job_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
+            if ($form->isValid()) {
+                $formData = $form->getData();
 
-            if ($form->isValid() && $startDate && $endDate) {
-                $formData = $form->getFormData($formData);
-
-                $job = new Job(
-                    $formData['job_name'],
-                    $formData['description'],
-                    $formData['benefits'],
-                    $formData['profile'],
-                    $formData['contact'],
-                    $formData['city'],
-                    $company,
-                    $formData['type'],
-                    $startDate,
-                    $endDate,
-                    $formData['sector']
+                $job = $form->hydrateObject(
+                    new Job($company, $formData['type'])
                 );
-
                 $job->approve();
 
                 $this->getEntityManager()->persist($job);
@@ -125,28 +109,13 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel();
         }
 
-        $form = new EditForm($job);
+        $form = $this->getForm('br_company_job_edit', $job);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
-
-            if ($form->isValid() && $startDate && $endDate) {
-                $formData = $form->getFormData($formData);
-
-                $job->setName($formData['job_name'])
-                    ->setDescription($formData['description'])
-                    ->setBenefits($formData['benefits'])
-                    ->setProfile($formData['profile'])
-                    ->setContact($formData['contact'])
-                    ->setCity($formData['city'])
-                    ->setStartDate($startDate)
-                    ->setEndDate($endDate)
-                    ->setSector($formData['sector']);
-
+            if ($form->isValid()) {
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -278,14 +247,5 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
         }
 
         return $job;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

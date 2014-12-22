@@ -18,10 +18,13 @@
 
 namespace ShiftBundle\Controller\Admin;
 
+
+
+
+
 use ShiftBundle\Entity\Shift,
     ShiftBundle\Entity\Shift\Responsible,
     ShiftBundle\Entity\Shift\Volunteer,
-    ShiftBundle\Form\Admin\Subscription\Add as AddForm,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -41,46 +44,33 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         $responsibles = $shift->getResponsibles();
         $volunteers = $shift->getVolunteers();
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('shift_subscription_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $subscriber = $form->hydrateObject($shift);
 
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
-                if ($formData['person_id'] == '') {
-                    $person = $repository->findOneByUsername($formData['person_name']);
-                } else {
-                    $person = $repository->findOneById($formData['person_id']);
+                if (null === $subscriber) {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'Unable to add the given person to the shift!'
+                    );
+
+                    $this->redirect()->toRoute(
+                        'shift_admin_shift_subscription',
+                        array(
+                            'action' => 'manage',
+                            'id' => $shift->getId(),
+                        )
+                    );
+
+                    return new ViewModel();
                 }
 
-                if ($formData['responsible']) {
-                    if (!$shift->canHaveAsResponsible($this->getEntityManager(), $person)) {
-                        $this->_invalidAdd($shift);
-
-                        return new ViewModel();
-                    }
-
-                    $responsible = new Responsible($person, $this->getCurrentAcademicYear());
-                    $shift->addResponsible($this->getEntityManager(), $responsible);
-                    $this->getEntityManager()->persist($responsible);
-                    $this->getEntityManager()->flush();
-                } else {
-                    if (!$shift->canHaveAsVolunteer($this->getEntityManager(), $person)) {
-                        $this->_invalidAdd($shift);
-
-                        return new ViewModel();
-                    }
-
-                    $volunteer = new Volunteer($person);
-                    $shift->addVolunteer($this->getEntityManager(), $volunteer);
-                    $this->getEntityManager()->persist($volunteer);
-                    $this->getEntityManager()->flush();
-                }
+                $this->getEntityManager()->persist($subscriber);
+                $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
                     'shift_admin_shift_subscription',
@@ -282,21 +272,5 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         return $shift;
-    }
-
-    private function _invalidAdd(Shift $shift)
-    {
-        $this->flashMessenger()->error(
-            'Error',
-            'Unable to add the given person to the shift!'
-        );
-
-        $this->redirect()->toRoute(
-            'shift_admin_shift_subscription',
-            array(
-                'action' => 'manage',
-                'id' => $shift->getId(),
-            )
-        );
     }
 }

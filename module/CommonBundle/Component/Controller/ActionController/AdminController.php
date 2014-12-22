@@ -18,6 +18,9 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
+
+
+
 use CommonBundle\Component\Util\NamedPriorityQueue,
     CommonBundle\Entity\General\Language,
     Zend\Mvc\MvcEvent,
@@ -132,14 +135,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    /**
-     * Get the current academic year.
-     *
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
-    protected function getCurrentAcademicYear($organization = true)
+    public function findCurrentAcademicYear()
     {
-        return parent::getCurrentAcademicYear($organization);
+        return $this->getCurrentAcademicYear(true);
     }
 
     private function _addToMenu($controller, $settings, &$menu)
@@ -231,5 +229,13 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             'general'  => $general,
             'submenus' => $submenus,
         );
+    }
+
+    /**
+     * @return \CommonBundle\Component\Form\Factory
+     */
+    protected function getFormFactory()
+    {
+        return $this->getServiceLocator()->get('formfactory.admin');
     }
 }

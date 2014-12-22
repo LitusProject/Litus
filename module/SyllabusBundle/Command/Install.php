@@ -18,11 +18,6 @@
 
 namespace SyllabusBundle\Command;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    DateInterval,
-    DateTime;
-
 /**
  * InstallController
  *
@@ -31,55 +26,4 @@ use CommonBundle\Component\Util\AcademicYear,
  */
 class Install extends \CommonBundle\Component\Console\Command\Install
 {
-    protected function postInstall()
-    {
-        $this->write('Installing Academic Year...');
-        $this->_installAcademicYear();
-        $this->writeln(' done.', true);
-    }
-
-    private function _installAcademicYear()
-    {
-        $now = new DateTime('now');
-        $startAcademicYear = AcademicYear::getStartOfAcademicYear(
-            $now
-        );
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        $organizationStart = str_replace(
-            '{{ year }}',
-            $startAcademicYear->format('Y'),
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('start_organization_year')
-        );
-        $organizationStart = new DateTime($organizationStart);
-
-        if (null === $academicYear) {
-            $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-            $this->getEntityManager()->persist($academicYear);
-            $this->getEntityManager()->flush();
-        }
-
-        $organizationStart->add(
-            new DateInterval('P1Y')
-        );
-
-        if ($organizationStart < new DateTime()) {
-            $academicYear = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\AcademicYear')
-                ->findOneByStart($organizationStart);
-            if (null == $academicYear) {
-                $startAcademicYear = AcademicYear::getEndOfAcademicYear(
-                    $organizationStart
-                );
-                $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
-                $this->getEntityManager()->persist($academicYear);
-                $this->getEntityManager()->flush();
-            }
-        }
-    }
 }

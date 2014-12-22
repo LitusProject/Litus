@@ -18,10 +18,12 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
+
+
 use CudiBundle\Entity\Sale\SaleItem\External as ExternalItem,
     CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem,
-    CudiBundle\Form\Admin\Sales\Article\Sales\Add as AddForm,
     Zend\View\Model\ViewModel;
+
 /**
  * SaleController
  *
@@ -39,14 +41,13 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = new AddForm();
+        $form = $this->getForm('cudi_sale_article_sale_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 if ('prof' == $formData['sale_to']) {
                     $saleItem = new ProfItem(

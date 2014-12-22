@@ -18,10 +18,6 @@
 
 namespace PageBundle\Form\Admin\Link;
 
-use Doctrine\ORM\EntityManager,
-    PageBundle\Entity\Link,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit Link
  *
@@ -30,36 +26,12 @@ use Doctrine\ORM\EntityManager,
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Link            $link          The link we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Link $link, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
         $this->remove('submit');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'link_edit');
-        $this->add($field);
-
-        $this->_populateFromLink($link);
-    }
-
-    private function _populateFromLink(Link $link)
-    {
-        $data = array();
-        foreach ($this->getLanguages() as $language) {
-            $data['name_' . $language->getAbbrev()] = $link->getName($language, false);
-            $data['url_' . $language->getAbbrev()] = $link->getUrl($language, false);
-        }
-
-        $data['category'] = $link->getCategory()->getId();
-        $data['parent_' . $link->getCategory()->getId()] = null !== $link->getParent() ? $link->getParent()->getId() : '';
-
-        $this->setData($data);
+        $this->addSubmit('Save', 'link_edit');
     }
 }

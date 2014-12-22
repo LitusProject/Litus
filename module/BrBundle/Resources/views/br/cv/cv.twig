@@ -5,11 +5,12 @@
         <h1>{% block title %}{{ translate('CV Book') }}{% endblock %}</h1>
     </div>
 
-    {% if not form %}
-        {% for message in messages %}
-        {% autoescape false %}
-            {{ translate(message)|replace({"{{editurl}}" : url('common_account', {action: 'edit', return: 'br_cv_index'})}) }}
-        {% endautoescape %}
+    {% if messages %}
+        {% for flashMessage in messages %}
+            <div class="flashmessage alert alert-{{ flashMessage.getType() }} fade in">
+                <a class="close" data-dismiss="alert">&times;</a>
+                {{ translate(flashMessage.getMessage())|replace({"{{editurl}}" : url('common_account', {action: 'edit', return: 'br_cv_index'})})|raw }}
+            </div>
         {% endfor %}
     {% else %}
         {% block intro_message %}
@@ -55,76 +56,38 @@
 
 {% block content_script %}
     <script type="text/javascript">
-        function addRemoveButton(i) {
-            $('#lang_delete' + i).unbind('click').click(function() {
-                $('.lang_control' + i).remove();
-            });
-        }
-
-        $(document).ready(function() {
-            {% if languageError %}
-                $('#language_add').after('\
-                    <div class="help-block" style="margin-left:221px;">\
-                        <ul>\
-                            <li>{{languageError}}</li>\
-                        </ul>\
-                    </div>');
-            {% endif %}
-
-            // Add delete buttons to existing language fields
-            var count = parseInt($('#lang_count').val());
-            for (i = 1; i < count; i++) {
-                $('#lang_name' + i).after(
-                    $('<button>', {'type': 'button', 'id': 'lang_delete' + i, 'class': 'btn btn-danger'}).html('{{ translate("Remove Language") }}')
-                );
-
-                $('#lang_name' + i).closest('.form-group').addClass('lang_control' + i);
-                $('#lang_oral' + i).closest('.form-group').addClass('lang_control' + i);
-                $('#lang_written' + i).closest('.form-group').addClass('lang_control' + i);
-
-                addRemoveButton(i);
+        var currentCount = 0;
+        $(document).ready(function () {
+            while ($('input[name="languages[' + (currentCount) + '][language_name]"]').length) {
+                currentCount++;
             }
 
-            $('#language_add').click(function() {
-                var i = parseInt($('#lang_count').val());
-
-                $('#language_add').before(
-                    $('<div>', {'class': 'form-group lang_control' + i}).append(
-                        $('<label>', {'class': 'col-sm-2 control-label', 'for': 'lang_name' + i}).html('{{ translate("Language") }} '),
-                        $('<div>', {'class': 'col-sm-10'}).append(
-                            $('<input>', {'type': 'text', 'name': 'lang_name' + i, 'id': 'lang_name' + i, 'class': 'form-control count', 'required': 'required', 'data-count': '30'}),
-                            $('<button>', {'type': 'button', 'id': 'lang_delete' + i, 'class': 'btn btn-danger'}).html('{{ translate("Remove Language") }}')
-                        )
-                    ),
-                    $('<div>', {'class': 'form-group lang_control' + i}).append(
-                        $('<label>', {'class': 'col-sm-2 control-label', 'for': 'lang_oral' + i}).html('{{ translate("Language") }}'),
-                        $('<div>', {'class': 'col-sm-10'}).append(
-                            $('<select>', {'name': 'lang_oral' + i, 'id': 'lang_oral' + i, 'class': 'form-control', 'required': 'required'}).append(
-                                {% for key,value in oral_skills %}
-                                    $('<option>', {'value': '{{key}}'}).html('{{ translate(value) }}'){% if not loop.last %},{% endif %}
-                                {% endfor %}
-                            )
-                        )
-                    ),
-                    $('<div>', {'class': 'form-group lang_control' + i}).append(
-                        $('<label>', {'class': 'col-sm-2 control-label', 'for': 'lang_written' + i}).html('{{ translate("Language") }}'),
-                        $('<div>', {'class': 'col-sm-10'}).append(
-                            $('<select>', {'name': 'lang_written' + i, 'id': 'lang_written' + i, 'class': 'form-control', 'required': 'required'}).append(
-                                {% for key,value in written_skills %}
-                                    $('<option>', {'value': '{{key}}'}).html('{{ translate(value) }}'){% if not loop.last %},{% endif %}
-                                {% endfor %}
-                            )
-                        )
-                    )
-                );
-
-                addLabel($('#lang_name' + i));
-
-                addRemoveButton(i);
-
-                $('#lang_count').val(i + 1);
-            });
-
+            if (currentCount == 0 || $('input[name="languages[' + (currentCount - 1) + '][language_name]"]').val().length > 0) {
+                addLanguage();
+            } else {
+                $('input[name="languages[' + (currentCount - 1) + '][language_name]"]').keyup(triggerKeyUp);
+            }
         });
+
+        function triggerKeyUp() {
+            if ($(this).val().length > 0) {
+                $(this).unbind('keyup');
+                addLanguage();
+            }
+        }
+
+        function addLanguage() {
+            if (currentCount >= 5)
+                return;
+            var template = $('#data-template-languages').data('template');
+            template = template.replace(/__index__/g, currentCount);
+            currentCount++;
+
+            $('form > fieldset#languages').append(template);
+            $('fieldset[name="languages[' + (currentCount - 1) + ']"] .count').each(function() {
+                $(this).fieldCount()
+            });
+            $('input[name="languages[' + (currentCount - 1) + '][language_name]"]').keyup(triggerKeyUp);
+        }
     </script>
 {% endblock %}

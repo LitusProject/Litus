@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Stock;
 
-use Zend\Form\Element\Submit;
-
 /**
  * Export Stock
  *
@@ -27,22 +25,11 @@ use Zend\Form\Element\Submit;
  */
 class Export extends SelectOptions
 {
-    /**
-     * @param string          $action
-     * @param null|string|int $name   Optional name for the element
-     */
-    public function __construct($action = null, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->setAttribute('action', $action);
-
-        $this->remove('select');
-
-        $field = new Submit('export');
-        $field->setValue('Export')
-            ->setAttribute('id', 'export')
-            ->setAttribute('class', 'download');
-        $this->add($field);
+        $this->remove('select')
+            ->addSubmit('Export', 'download', 'export', array('id' => 'export'));
     }
 }

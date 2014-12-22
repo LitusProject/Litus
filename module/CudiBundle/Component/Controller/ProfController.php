@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Component\Controller;
 
+
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
-    CommonBundle\Component\Util\AcademicYear,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -50,14 +50,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         return $result;
     }
 
-    /**
-     * Get the current academic year.
-     *
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
-    protected function getCurrentAcademicYear($organization = true)
+    protected function findCurrentAcademicYear()
     {
-        return parent::getCurrentAcademicYear(true);
+        return $this->getCurrentAcademicYear(true);
     }
 
     /**

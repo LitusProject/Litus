@@ -18,80 +18,16 @@
 
 namespace CalendarBundle\Form\Admin\Event;
 
-use CalendarBundle\Component\Validator\Name as EventNameValidator,
-    CalendarBundle\Entity\Node\Event,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory;
-
 /**
  * Edit an event.
  */
 class Edit extends Add
 {
-    /**
-     * @var Event
-     */
-    protected $_event;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Event $event, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
-        $this->_event = $event;
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'calendar_edit');
-        $this->add($field);
-
-        $this->_populateFromEvent($event);
-    }
-
-    private function _populateFromEvent(Event $event)
-    {
-        $data = array(
-            'start_date' => $event->getStartDate()->format('d/m/Y H:i'),
-        );
-        if ($event->getEndDate()) {
-            $data['end_date'] = $event->getEndDate()->format('d/m/Y H:i');
-        }
-
-        foreach ($this->getLanguages() as $language) {
-            $data['location_' . $language->getAbbrev()] = $event->getLocation($language, false);
-            $data['title_' . $language->getAbbrev()] = $event->getTitle($language, false);
-            $data['content_' . $language->getAbbrev()] = $event->getContent($language, false);
-        }
-        $this->setData($data);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        foreach ($this->getLanguages() as $language) {
-            $inputFilter->remove('title_' . $language->getAbbrev());
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'title_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault(),
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new EventNameValidator($this->_entityManager, $language, $this->_event),
-                        ),
-                    )
-                )
-            );
-        }
-
-        return $inputFilter;
+        $this->remove('submit');
+        $this->addSubmit('Save', 'calendar_edit');
     }
 }

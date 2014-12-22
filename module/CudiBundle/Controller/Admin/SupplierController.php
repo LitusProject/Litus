@@ -18,10 +18,8 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Address,
-    CudiBundle\Entity\Supplier,
-    CudiBundle\Form\Admin\Supplier\Add as AddForm,
-    CudiBundle\Form\Admin\Supplier\Edit as EditForm,
+
+use CudiBundle\Entity\Supplier,
     Zend\View\Model\ViewModel;
 
 /**
@@ -50,31 +48,15 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
 
     public function addAction()
     {
-        $form = new AddForm();
+        $form = $this->getForm('cudi_supplier_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $supplier = new Supplier(
-                    $formData['name'],
-                    $formData['phone_number'],
-                    new Address(
-                        $formData['address_address_street'],
-                        $formData['address_address_number'],
-                        $formData['address_address_mailbox'],
-                        $formData['address_address_postal'],
-                        $formData['address_address_city'],
-                        $formData['address_address_country']
-                    ),
-                    $formData['vat_number'],
-                    $formData['template'],
-                    $formData['contact']
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject()
                 );
-                $this->getEntityManager()->persist($supplier);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -106,28 +88,12 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
-        $form = new EditForm($supplier);
+        $form = $this->getForm('cudi_supplier_edit', $supplier);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $supplier->setName($formData['name'])
-                    ->setPhoneNumber($formData['phone_number'])
-                    ->setVatNumber($formData['vat_number'])
-                    ->setTemplate($formData['template'])
-                    ->setContact($formData['contact'])
-                    ->getAddress()
-                        ->setStreet($formData['address_address_street'])
-                        ->setNumber($formData['address_address_number'])
-                        ->setMailbox($formData['address_address_mailbox'])
-                        ->setPostal($formData['address_address_postal'])
-                        ->setCity($formData['address_address_city'])
-                        ->setCountry($formData['address_address_country']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -149,6 +115,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'form' => $form,
+                'supplier' => $supplier,
             )
         );
     }

@@ -18,12 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Article\Comment;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CudiBundle\Entity\Comment\Comment,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CudiBundle\Entity\Comment\Comment;
 
 /**
  * Add Comment
@@ -32,62 +27,42 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    protected $hydrator = 'CudiBundle\Hydrator\Comment\Comment';
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Textarea('text');
-        $field->setLabel('Comment')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Select('type');
-        $field->setLabel('Type')
-            ->setAttribute('options', Comment::$POSSIBLE_TYPES)
-            ->setAttribute('data-help', 'The comment type defines the visibility of the comment:
-            <ul>
-                <li><b>Internal:</b> These comments will only be visible in the admin</li>
-                <li><b>External:</b> These comments will only be visible in \'Prof App\' and in the admin</li>
-                <li><b>Site:</b> These comments will also be visible on the website</li>
-            </ul>')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'comment_add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'text',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'textarea',
+            'name'     => 'text',
+            'label'    => 'Comment',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'type',
-                    'required' => true,
-                )
-            )
-        );
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'type',
+            'label'      => 'Type',
+            'required'   => true,
+            'attributes' => array(
+                'data-help' => 'The comment type defines the visibility of the comment:
+                <ul>
+                    <li><b>Internal:</b> These comments will only be visible in the admin</li>
+                    <li><b>External:</b> These comments will only be visible in \'Prof App\' and in the admin</li>
+                    <li><b>Site:</b> These comments will also be visible on the website</li>
+                </ul>',
+                'options'   => Comment::$POSSIBLE_TYPES,
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'comment_add');
     }
 }

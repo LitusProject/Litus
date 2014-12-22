@@ -18,6 +18,11 @@
 
 namespace NewsBundle\Entity\Node;
 
+
+
+
+
+
 use CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -55,16 +60,13 @@ class News extends \CommonBundle\Entity\Node
     private $endDate;
 
     /**
-     * @param Person   $person
-     * @param DateTime $endDate
+     * @param Person $person
      */
-    public function __construct(Person $person, DateTime $endDate = null)
+    public function __construct(Person $person)
     {
         parent::__construct($person);
 
-        $this->name = $this->getCreationTime()->format('d_m_Y_H_i_s');
         $this->translations = new ArrayCollection();
-        $this->endDate = $endDate;
     }
 
     /**

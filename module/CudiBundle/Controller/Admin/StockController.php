@@ -18,6 +18,14 @@
 
 namespace CudiBundle\Controller\Admin;
 
+
+
+
+
+
+
+
+
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Component\Document\Generator\Stock as StockGenerator,
@@ -25,12 +33,6 @@ use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder,
     CudiBundle\Entity\Stock\Period,
     CudiBundle\Entity\Stock\Period\Value\Delta,
-    CudiBundle\Form\Admin\Stock\BulkUpdate as BulkUpdateForm,
-    CudiBundle\Form\Admin\Stock\Deliveries\AddDirect as DeliveryForm,
-    CudiBundle\Form\Admin\Stock\Export as ExportForm,
-    CudiBundle\Form\Admin\Stock\Orders\AddDirect as OrderForm,
-    CudiBundle\Form\Admin\Stock\SelectOptions as SelectOptionsForm,
-    CudiBundle\Form\Admin\Stock\Update as StockForm,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -205,9 +207,9 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $deliveryForm = new DeliveryForm($this->getEntityManager());
-        $orderForm = new OrderForm($this->getEntityManager());
-        $stockForm = new StockForm($article);
+        $deliveryForm = $this->getForm('cudi_stock_delivery_add-direct');
+        $orderForm = $this->getForm('cudi_stock_order_add-direct');
+        $stockForm = $this->getForm('cudi_stock_update', array('article' => $article));
 
         $virtual = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Order\Virtual')
@@ -220,7 +222,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             if (isset($formData['updateStock'])) {
                 $stockForm->setData($formData);
                 if ($stockForm->isValid()) {
-                    $formData = $stockForm->getFormData($formData);
+                    $formData = $stockForm->getData();
 
                     if ($formData['number'] != $article->getStockValue()) {
                         $delta = new Delta(
@@ -282,7 +284,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             } elseif (isset($formData['add_order'])) {
                 $orderForm->setData($formData);
                 if ($orderForm->isValid()) {
-                    $formData = $orderForm->getFormData($formData);
+                    $formData = $orderForm->getData();
 
                     $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Stock\Order\Order')
@@ -309,7 +311,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 $deliveryForm->setData($formData);
 
                 if ($deliveryForm->isValid()) {
-                    $formData = $deliveryForm->getFormData($formData);
+                    $formData = $deliveryForm->getData();
 
                     if ($formData['add_with_virtual_order']) {
                         $nb = $formData['number'] - ($period->getNbOrdered($article) - $period->getNbDelivered($article) + $virtual);
@@ -411,7 +413,9 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function exportAction()
     {
-        $form = new ExportForm(
+        $form = $this->getForm('cudi_stock_export');
+        $form->setAttribute(
+            'action',
             $this->url()->fromRoute(
                 'cudi_admin_stock',
                 array(
@@ -429,15 +433,23 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function downloadAction()
     {
-        $form = new ExportForm('');
+        $form = $this->getForm('cudi_stock_export');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+                $formData = $form->getData();
+
                 $file = new TmpFile();
-                $document = new StockGenerator($this->getEntityManager(), $formData['articles'], $formData['order'], isset($formData['in_stock']) && $formData['in)stock'], $this->getAcademicYear(), $file);
+                $document = new StockGenerator(
+                    $this->getEntityManager(),
+                    $formData['articles'],
+                    $formData['order'],
+                    isset($formData['in_stock']) && $formData['in_stock'],
+                    $this->getAcademicYear(),
+                    $file
+                );
                 $document->generate();
 
                 $headers = new Headers();
@@ -463,7 +475,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         }
 
         if ($this->getRequest()->getQuery('select') == null) {
-            $form = new SelectOptionsForm();
+            $form = $this->getForm('cudi_stock_select-options');
             $form->setAttribute('method', 'get');
 
             return new ViewModel(
@@ -499,25 +511,28 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                 $articles[] = $item;
             }
 
-            $form = new BulkUpdateForm($articles);
+            $form = $this->getForm('cudi_stock_bulk-update', array(
+                'articles' => $articles,
+            ));
 
             if ($this->getRequest()->isPost()) {
-                $formData = $this->getRequest()->getPost();
-                $form->setData($formData);
+                $form->setData($this->getRequest()->getPost());
 
                 if ($form->isValid()) {
+                    $formData = $form->getData();
+
                     foreach ($articles as $article) {
-                        if ($article->getStockValue() != $formData['article-' . $article->getId()]) {
+                        if ($article->getStockValue() != $formData['article_' . $article->getId()]) {
                             $delta = new Delta(
                                 $this->getAuthentication()->getPersonObject(),
                                 $article,
                                 $period,
-                                $formData['article-' . $article->getId()] - $article->getStockValue(),
+                                $formData['article_' . $article->getId()] - $article->getStockValue(),
                                 'Stock Update'
                             );
                             $this->getEntityManager()->persist($delta);
 
-                            $article->setStockValue($formData['article-' . $article->getId()]);
+                            $article->setStockValue($formData['article_' . $article->getId()]);
 
                             $nbToMuchAssigned = $period->getNbAssigned($article) - $article->getStockValue();
                             $bookings = $this->getEntityManager()

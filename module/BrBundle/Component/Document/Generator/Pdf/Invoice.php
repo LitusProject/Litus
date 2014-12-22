@@ -18,6 +18,10 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
+
+
+
+
 use BrBundle\Entity\Invoice as InvoiceEntity,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
@@ -132,7 +136,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             if ('' == $this->_invoice->getOrder()->getContract()->getDiscountContext()) {
                 $entries[] = new XmlObject('entry', null,
                 array(
-                    new XmlObject('description', null,"Korting"),
+                    new XmlObject('description', null, "Korting"),
                     new XmlObject('price', null, XmlObject::fromString('- <euro/>' . number_format($discount, 2))),
                     new XmlObject('amount', null, ' '),
                     new XmlObject('vat_type', null, ' '),
@@ -141,7 +145,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             } else {
                 $entries[] = new XmlObject('entry', null,
                     array(
-                        new XmlObject('description', null,$this->_invoice->getOrder()->getContract()->getDiscountContext()),
+                        new XmlObject('description', null, $this->_invoice->getOrder()->getContract()->getDiscountContext()),
                         new XmlObject('price', null, XmlObject::fromString('- <euro/>' . number_format($discount, 2))),
                         new XmlObject('amount', null, ' '),
                         new XmlObject('vat_type', null, ' '),
@@ -272,8 +276,12 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         ));
     }
 
+    /**
+     * @param  string $vat
+     * @return string
+     */
     private function _VATFormat($vat)
     {
-        return substr_replace(substr_replace(substr_replace($vat, " ", 2,0),".",7,0),".",11,0);
+        return substr_replace(substr_replace(substr_replace($vat, " ", 2, 0), ".", 7, 0), ".", 11, 0);
     }
 }

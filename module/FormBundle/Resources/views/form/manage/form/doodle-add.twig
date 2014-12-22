@@ -26,6 +26,7 @@
         {% do form.prepare() %}
         {{ form().openTag(form)|raw }}
             {% import 'site/partials/form.twig' as forms %}
+            {{ formElement(form.get('csrf')) }}
 
             {{ forms.renderCheckbox(form.get('is_guest')) }}
             <fieldset class="{{ form.get('person_form').getAttribute('class') }}" id="{{ form.get('person_form').getAttribute('id') }}">
@@ -89,15 +90,15 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#personSearch').typeaheadRemote(
+            $('#person_form\\[person\\]').typeaheadRemote(
                 {
                     source: '{{ url("common_admin_academic_typeahead")}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#personId').val($(this).data('value').id);
+                    $('[name="person_form[person][id]"]').val($(this).data('value').id);
                 } else {
-                    $('#personId').val('');
+                    $('[name="person_form[person][id]"]').val('');
                 }
             });
 

@@ -18,9 +18,6 @@
 
 namespace BrBundle\Form\Admin\Company\User;
 
-use Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
-
 /**
  * Add User
  *
@@ -29,19 +26,15 @@ use Doctrine\ORM\EntityManager,
  */
 class Add extends \CommonBundle\Form\Admin\Person\Add
 {
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    protected $hydrator = 'BrBundle\Hydrator\User\Person\Corporate';
+
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
         $this->remove('roles');
 
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'user_add');
-        $this->add($field);
+        $this->remove('submit')
+            ->addSubmit('Add', 'user_add');
     }
 }

@@ -18,6 +18,10 @@
 
 namespace FormBundle\Entity\Node;
 
+
+
+
+
 use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -59,7 +63,7 @@ class Entry
     /**
      * @var GuestInfo|null The guest who created this node
      *
-     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\GuestInfo")
+     * @ORM\ManyToOne(targetEntity="FormBundle\Entity\Node\GuestInfo", cascade={"all"})
      * @ORM\JoinColumn(name="guest_info", referencedColumnName="id", nullable=true)
      */
     private $guestInfo;
@@ -82,21 +86,19 @@ class Entry
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Entry", mappedBy="formEntry", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="FormBundle\Entity\Entry", mappedBy="formEntry", cascade={"all"}, orphanRemoval=true)
      */
     private $fieldEntries;
 
     /**
-     * @param Person|null    $person
-     * @param GuestInfo|null $guestInfo
-     * @param Form           $form
-     * @param boolean        $draft
+     * @param Person|null $person
+     * @param Form        $form
+     * @param boolean     $draft
      */
-    public function __construct(Person $person = null, GuestInfo $guestInfo = null, Form $form, $draft = false)
+    public function __construct(Person $person = null, Form $form, $draft = false)
     {
         $this->creationTime = new DateTime();
         $this->creationPerson = $person;
-        $this->guestInfo = $guestInfo;
         $this->form = $form;
         $this->fieldEntries = new ArrayCollection();
         $this->draft = $draft;
@@ -135,6 +137,17 @@ class Entry
     }
 
     /**
+    * @param  GuestInfo|null
+    * @return self
+    */
+    public function setGuestInfo(GuestInfo $guestInfo = null)
+    {
+        $this->guestInfo = $guestInfo;
+
+        return $this;
+    }
+
+    /**
      * @return Person|GuestInfo
      */
     public function getPersonInfo()
@@ -163,12 +176,23 @@ class Entry
     }
 
     /**
-     * @param  FieldEntry $fieldEntry The entry to add to this form.
+     * @param  FieldEntry $fieldEntry The entry to add to this form entry.
      * @return self
      */
     public function addFieldEntry(FieldEntry $fieldEntry)
     {
         $this->fieldEntries->add($fieldEntry);
+
+        return $this;
+    }
+
+    /**
+     * @param  FieldEntry $fieldEntry The entry to remove from this form entry.
+     * @return self
+     */
+    public function removeFieldEntry(FieldEntry $fieldEntry)
+    {
+        $this->fieldEntries->removeElement($fieldEntry);
 
         return $this;
     }

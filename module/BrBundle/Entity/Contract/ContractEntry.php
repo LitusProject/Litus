@@ -18,9 +18,10 @@
 
 namespace BrBundle\Entity\Contract;
 
+
+
 use BrBundle\Entity\Contract,
     BrBundle\Entity\Product\OrderEntry,
-    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,7 +42,7 @@ class ContractEntry
     private $id;
 
     /**
-     * @var \BrBundle\Entity\Contract The contract to which this entry belongs.
+     * @var Contract The contract to which this entry belongs.
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Contract")
      * @ORM\JoinColumn(name="contract", referencedColumnName="id")
@@ -49,7 +50,7 @@ class ContractEntry
     private $contract;
 
     /**
-     * @var \BrBundle\Entity\Product\OrderEntry The order entry of which this is an entry in the contract.
+     * @var OrderEntry The order entry of which this is an entry in the contract.
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Product\OrderEntry")
      * @ORM\JoinColumn(name="order_entry", referencedColumnName="id")
@@ -78,10 +79,10 @@ class ContractEntry
     private $version;
 
     /**
-     * @param \BrBundle\Entity\Contract           $contract   The contract of which this entry is part.
-     * @param \BrBundle\Entity\Product\OrderEntry $orderEntry The order entry corresponding to this contract entry.
-     * @param int                                 $position   The position number of the entry in the contract
-     * @param int                                 $version    The version number of this contract entry
+     * @param Contract   $contract   The contract of which this entry is part.
+     * @param OrderEntry $orderEntry The order entry corresponding to this contract entry.
+     * @param int        $position   The position number of the entry in the contract
+     * @param int        $version    The version number of this contract entry
      */
     public function __construct(Contract $contract, OrderEntry $orderEntry, $position, $version)
     {
@@ -122,7 +123,7 @@ class ContractEntry
     }
 
     /**
-     * @return \BrBundle\Entity\Contract
+     * @return Contract
      */
     public function getContract()
     {
@@ -130,7 +131,7 @@ class ContractEntry
     }
 
     /**
-     * @return \BrBundle\Entity\Product\OrderEntry
+     * @return OrderEntry
      */
     public function getOrderEntry()
     {
@@ -146,8 +147,8 @@ class ContractEntry
     }
 
     /**
-     * @param  string                                  $contractText
-     * @return \BrBundle\Entity\Contract\ContractEntry
+     * @param  string        $contractText
+     * @return ContractEntry
      */
     public function setContractText($contractText)
     {
@@ -168,8 +169,8 @@ class ContractEntry
      * Sets the position to the given value.
      *
      * @throws \InvalidArgumentException
-     * @param $position int
-     * @return \BrBundle\Entity\Contract\Composition
+     * @param  int                       $position
+     * @return self
      */
     public function setPosition($position)
     {
@@ -177,7 +178,7 @@ class ContractEntry
             throw new \InvalidArgumentException("Position must be a positive number");
         }
 
-        $this->position = round($position);
+        $this->position = (int) round($position);
 
         return $this;
     }

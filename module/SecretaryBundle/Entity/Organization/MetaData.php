@@ -18,9 +18,13 @@
 
 namespace SecretaryBundle\Entity\Organization;
 
+
+
+
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * This entity stores the node item.
@@ -101,23 +105,11 @@ class MetaData
     /**
      * @param Academic     $academic
      * @param AcademicYear $academicYear
-     * @param boolean      $becomeMember
-     * @param boolean      $irreeelAtCudi
-     * @param boolean      $bakskeByMail
-     * @param string       $tshirtSize
      */
-    public function __construct(Academic $academic, AcademicYear $academicYear, $becomeMember, $irreeelAtCudi, $bakskeByMail, $tshirtSize)
+    public function __construct(Academic $academic, AcademicYear $academicYear)
     {
-        if (!self::isValidTshirtSize($tshirtSize)) {
-            throw new \InvalidArgumentException('The T-shirt size is not valid');
-        }
-
         $this->academic = $academic;
         $this->academicYear = $academicYear;
-        $this->becomeMember = $becomeMember;
-        $this->irreeelAtCudi = $irreeelAtCudi;
-        $this->bakskeByMail = $bakskeByMail;
-        $this->tshirtSize = $tshirtSize;
     }
 
     /**
@@ -237,6 +229,10 @@ class MetaData
      */
     public function setTshirtSize($tshirtSize)
     {
+        if (!self::isValidTshirtSize($tshirtSize)) {
+            throw new InvalidArgumentException('The T-shirt size is not valid');
+        }
+
         $this->tshirtSize = $tshirtSize;
 
         return $this;

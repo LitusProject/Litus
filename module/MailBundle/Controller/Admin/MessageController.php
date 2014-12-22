@@ -18,8 +18,7 @@
 
 namespace MailBundle\Controller\Admin;
 
-use MailBundle\Form\Admin\Message\Edit as EditForm,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * MessageController
@@ -53,18 +52,13 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
             return new ViewModel();
         }
 
-        $form = new EditForm($message);
+        $form = $this->getForm('mail_message_edit', $message);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $message->setSubject($formData['subject'])
-                    ->setBody($formData['body']);
-
                 $this->getDocumentManager()->flush();
 
                 $this->flashMessenger()->success(

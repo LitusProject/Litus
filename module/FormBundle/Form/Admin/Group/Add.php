@@ -18,17 +18,9 @@
 
 namespace FormBundle\Form\Admin\Group;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Tabs,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabContent,
-    CommonBundle\Component\Form\Admin\Form\SubForm\TabPane,
-    Doctrine\ORM\EntityManager,
-    FormBundle\Entity\Node\Form,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+
+use CommonBundle\Component\Form\FieldsetInterface,
+    CommonBundle\Entity\General\Language;
 
 /**
  * Add Group
@@ -37,79 +29,73 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $hydrator = 'FormBundle\Hydrator\Node\Group';
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'start_form',
+            'label'      => 'Start Form',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->getActiveForms(),
+            ),
+        ));
 
-        $tabs = new Tabs('languages');
-        $this->add($tabs);
-
-        $tabContent = new TabContent('tab_content');
-
-        foreach ($this->getLanguages() as $language) {
-            $tabs->addTab(array($language->getName() => '#tab_' . $language->getAbbrev()));
-
-            $pane = new TabPane('tab_' . $language->getAbbrev());
-
-            $field = new Text('title_' . $language->getAbbrev());
-            $field->setLabel('Title')
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
-            $pane->add($field);
-
-            $field = new Textarea('introduction_' . $language->getAbbrev());
-            $field->setLabel('Introduction')
-                ->setAttribute('class', 'md')
-                ->setAttribute('rows', 20)
-                ->setRequired($language->getAbbrev() == \Locale::getDefault());
-            $pane->add($field);
-
-            $tabContent->add($pane);
-        }
-
-        $this->add($tabContent);
-
-        $field = new Select('start_form');
-        $field->setLabel('Start Form')
-            ->setAttribute('options', $this->getActiveForms());
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'form_add');
-        $this->add($field);
+        $this->addSubmit('Add', 'form_add');
     }
 
-    protected function getLanguages()
+    protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
-        return $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
+        $container->add(array(
+            'type'       => 'text',
+            'name'       => 'title',
+            'label'      => 'Title',
+            'required'   => $isDefault,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $container->add(array(
+            'type'       => 'textarea',
+            'name'       => 'introduction',
+            'label'      => 'Introduction',
+            'required'   => $isDefault,
+            'attributes' => array(
+                'class' => 'md',
+                'rows'  => 20,
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
     }
 
     private function getActiveForms()
     {
-        $forms = $this->_entityManager
+        $forms = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Form')
             ->findAllActive();
 
-        $language = $this->_entityManager
+        $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
 
         $options = array();
         foreach ($forms as $form) {
-            $group = $this->_entityManager
+            $group = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Group\Mapping')
                 ->findOneByForm($form);
 
@@ -119,48 +105,5 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         }
 
         return $options;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        foreach ($this->getLanguages() as $language) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'title_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault(),
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'introduction_' . $language->getAbbrev(),
-                        'required' => $language->getAbbrev() == \Locale::getDefault(),
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-        }
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'start_form',
-                    'required' => true,
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }

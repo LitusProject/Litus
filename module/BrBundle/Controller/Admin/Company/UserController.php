@@ -18,10 +18,7 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-use BrBundle\Entity\User\Person\Corporate as CorporatePerson,
-    BrBundle\Form\Admin\Company\User\Add as AddForm,
-    BrBundle\Form\Admin\Company\User\Edit as EditForm,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * ContactController
@@ -64,29 +61,22 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('br_company_user_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $user = $form->hydrateObject();
+                $user->setCompany($company);
 
-                $user = new CorporatePerson(
-                    $company,
-                    $formData['username'],
-                    array(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName('corporate'),
-                    ),
-                    $formData['first_name'],
-                    $formData['last_name'],
-                    $formData['email'],
-                    $formData['phone_number'],
-                    $formData['sex']
+                $user->activate(
+                    $this->getEntityManager(),
+                    $this->getMailTransport(),
+                    false
                 );
+
                 $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();
 
@@ -121,21 +111,13 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $form = new EditForm($this->getEntityManager(), $user);
+        $form = $this->getForm('br_company_user_edit', $user);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $user->setFirstName($formData['first_name'])
-                    ->setLastName($formData['last_name'])
-                    ->setEmail($formData['email'])
-                    ->setSex($formData['sex'])
-                    ->setPhoneNumber($formData['phone_number']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

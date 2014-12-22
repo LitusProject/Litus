@@ -12,15 +12,15 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#personSearch').typeaheadRemote(
+            $('#person_form\\[person\\]').typeaheadRemote(
                 {
                     source: '{{ url("common_admin_academic_typeahead")}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#personId').val($(this).data('value').id);
+                    $('[name="person_form[person][id]"]').val($(this).data('value').id);
                 } else {
-                    $('#personId').val('');
+                    $('[name="person_form[person][id]"]').val('');
                 }
             });
 
@@ -39,7 +39,7 @@
                 if ($this.data('visible_if_element') !== undefined) {
                     $this.closest('.form-group').hide();
                     form.find('#field-' + $this.data('visible_if_element')).bind('change keyup', function () {
-                        if ($(this).attr('type') == 'text') {
+                        if ($(this).attr('type') == 'text' || $(this).is('textarea')) {
                             if ($(this).val() !== '') {
                                 $this.closest('.form-group').show();
                             } else {

@@ -39,7 +39,14 @@
             </div>
         {% endif %}
         {% do form.prepare() %}
-        {% autoescape false %}{{ form().openTag(form) }}{% endautoescape %}
+        {{ form().openTag(form)|raw }}
+            {{ formElement(form.get('csrf')) }}
+            {% if formEntry.isGuestEntry() %}
+                {% import 'site/partials/form.twig' as forms %}
+                {{ forms.renderOther(form.get('first_name')) }}
+                {{ forms.renderOther(form.get('last_name')) }}
+                {{ forms.renderOther(form.get('email')) }}
+            {% endif %}
             <table class="table table-bordered table-striped" id="doodle">
                 <thead>
                     <tr>
@@ -85,7 +92,7 @@
             <div style="clear: both;text-align: center;">
                 {{ formElement(form.get('submit')) }}
             </div>
-        {% autoescape false %}{{ form().closeTag() }}{% endautoescape %}
+        {{ form().closeTag()|raw }}
     {% else %}
         <div style="text-align: center;">
             <img src="/img/litus.png" alt="Litus" />

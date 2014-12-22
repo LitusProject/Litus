@@ -18,12 +18,19 @@
 
 namespace CommonBundle\Component\Console;
 
-use Symfony\Component\Console\Input\InputInterface as Input,
-    Symfony\Component\Console\Output\OutputInterface as Output,
-    Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-abstract class Command extends \Symfony\Component\Console\Command\Command implements \Zend\ServiceManager\ServiceLocatorAwareInterface
+
+
+
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    Exception,
+    Symfony\Component\Console\Input\InputInterface as Input,
+    Symfony\Component\Console\Output\OutputInterface as Output,
+    Zend\ServiceManager\ServiceLocatorAwareTrait as ZendServiceLocatorAwareTrait;
+
+abstract class Command extends \Symfony\Component\Console\Command\Command implements \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
 {
+    use ZendServiceLocatorAwareTrait;
     use ServiceLocatorAwareTrait;
 
     /**
@@ -37,26 +44,23 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     protected $output;
 
     /**
-     * @var string
-     */
-    private $_logName;
-
-    /**
-     * @var string
-     */
-    private $_logNameTag;
-
-    /**
      * @return int|void
      */
     protected function execute(Input $input, Output $output)
     {
         $this->input = $input;
         $this->output = $output;
-        $this->_logName = $this->getLogName();
-        $this->_logNameTag = $this->getLogNameTag();
 
-        return $this->executeCommand();
+        try {
+            return $this->executeCommand();
+        } catch (Exception $e) {
+            if ('production' == getenv('APPLICATION_ENV')) {
+                $this->getService('lilo')
+                    ->sendException($e);
+            }
+
+            throw $e;
+        }
     }
 
     /**
@@ -81,13 +85,13 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      * @param string  $string the string to write
      * @param boolean $raw    whether to output the string raw
      */
-    protected function write($string, $raw = false)
+    public function write($string, $raw = false)
     {
         if ($raw) {
             $this->output->write($string);
         } else {
             $this->output->write(
-                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->_logNameTag, $this->_logName, $string)
+                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->getLogNameTag(), $this->getLogName(), $string)
             );
         }
     }
@@ -96,13 +100,13 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      * @param string  $string the string to write
      * @param boolean $raw    whether to output the string raw
      */
-    protected function writeln($string, $raw = false)
+    public function writeln($string, $raw = false)
     {
-        if ($raw || false === $this->_logName) {
+        if ($raw || false === $this->getLogName()) {
             $this->output->writeln($string);
         } else {
             $this->output->writeln(
-                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->_logNameTag, $this->_logName, $string)
+                sprintf('[<%1$s>%2$20s</%1$s>] %3$s', $this->getLogNameTag(), $this->getLogName(), $string)
             );
         }
     }
@@ -142,64 +146,6 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * We want an easy method to retrieve the DocumentManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
-    }
-
-    /**
-     * We want an easy method to retrieve the EntityManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-    }
-
-    /**
-     * We want an easy method to retrieve the Cache from
-     * the DI container.
-     *
-     * @return \Zend\Cache\Storage\Adapter\Apc
-     */
-    protected function getCache()
-    {
-        if ($this->getServiceLocator()->has('cache')) {
-            return $this->getServiceLocator()->get('cache');
-        }
-
-        return null;
-    }
-
-    /**
-     * We want an easy method to retrieve the Mail Transport from
-     * the DI container.
-     *
-     * @return \Zend\Mail\Transport\TransportInterface
-     */
-    protected function getMailTransport()
-    {
-        return $this->getServiceLocator()->get('mail_transport');
-    }
-
-    /**
-     * Retrieve the common session storage from the DI container.
-     *
-     * @return \Zend\Session\Container
-     */
-    protected function getSessionStorage()
-    {
-        return $this->getServiceLocator()->get('common_sessionstorage');
-    }
-
-    /**
      * @return \Zend\Console\Console
      */
     protected function getConsole()
@@ -208,10 +154,10 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * @return \Symfony\Component\Console\Helper\DialogHelper
+     * @return \Symfony\Component\Console\Helper\QuestionHelper
      */
-    protected function getDialog()
+    protected function getQuestion()
     {
-        return $this->getHelperSet()->get('dialog');
+        return $this->getHelperSet()->get('question');
     }
 }

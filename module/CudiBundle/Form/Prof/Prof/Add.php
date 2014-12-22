@@ -18,11 +18,7 @@
 
 namespace CudiBundle\Form\Prof\Prof;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
-    Zend\Form\Element\Hidden,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
 
 /**
  * Add Prof
@@ -31,61 +27,27 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Hidden('prof_id');
-        $field->setAttribute('id', 'profId');
-        $this->add($field);
-
-        $field = new Text('prof');
-        $field->setLabel('Docent')
-            ->setAttribute('id', 'profSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'prof_id',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+        $this->add(array(
+            'type'       => 'typeahead',
+            'name'       => 'prof',
+            'label'      => 'Docent',
+            'required'   => true,
+            'attributes' => array(
+                'id' => 'prof',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'validators'  => array(
+                        new PersonTypeaheadValidator($this->getEntityManager()),
                     ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'prof',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        $this->addSubmit('Add');
     }
 }

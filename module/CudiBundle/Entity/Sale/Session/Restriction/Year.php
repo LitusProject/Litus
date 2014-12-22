@@ -18,6 +18,10 @@
 
 namespace CudiBundle\Entity\Sale\Session\Restriction;
 
+
+
+
+
 use CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Session,
     CudiBundle\Entity\Sale\Session\Restriction,
@@ -75,7 +79,7 @@ class Year extends Restriction
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getStartValue()
     {
@@ -83,7 +87,7 @@ class Year extends Restriction
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getEndValue()
     {

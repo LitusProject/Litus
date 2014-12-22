@@ -18,7 +18,12 @@
 
 namespace BrBundle\Entity\Company;
 
+
+
+
+
 use BrBundle\Entity\Company,
+    CommonBundle\Component\Util\String,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
     Markdown_Parser;
@@ -83,7 +88,7 @@ class Job
     private $city;
 
     /**
-     * @var \BrBundle\Entity\Company The company of the job
+     * @var Company The company of the job
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
      * @ORM\JoinColumn(name="company", referencedColumnName="id")
@@ -142,50 +147,49 @@ class Job
     );
 
     /**
-     * @param string                   $name        The job's name
-     * @param string                   $description The job's description
-     * @param string                   $benefits    The job's benefits
-     * @param string                   $profile     The job's profile
-     * @param string                   $contact     The job's required contact information
-     * @param string                   $city        The job's city
-     * @param \BrBundle\Entity\Company $company     The job's company
-     * @param string                   $type        The job's type (entry of $possibleTypes)
-     * @param DateTime                 $startDate   The job's start date
-     * @param DateTime                 $endDate     The job's end date
-     * @param string                   $sector      The job's sector
+     * @param Company $company The job's company
+     * @param string  $type    The job's type (entry of $possibleTypes)
      */
-    public function __construct($name, $description, $benefits, $profile, $contact, $city, Company $company, $type, DateTime $startDate, DateTime $endDate, $sector)
+    public function __construct(Company $company, $type)
     {
-        $this->setName($name);
-        $this->setDescription($description);
-        $this->setBenefits($benefits);
-        $this->setProfile($profile);
-        $this->setContact($contact);
-        $this->setCity($city);
-        $this->setStartDate($startDate);
-        $this->setEndDate($endDate);
-        $this->setSector($sector);
-
         $this->type = $type;
         $this->company = $company;
         $this->dateUpdated = new DateTime();
     }
 
+    /**
+     * @return self
+     */
     public function approve()
     {
         $this->approved = true;
+
+        return $this;
     }
 
+    /**
+     * @return self
+     */
     public function pending()
     {
         $this->approved = false;
+
+        return $this;
     }
 
+    /**
+     * @return self
+     */
     public function removed()
     {
         $this->approved = false;
+
+        return $this;
     }
 
+    /**
+     * @return bool
+     */
     public function canShow()
     {
         if (null === $this->approved) {
@@ -204,8 +208,8 @@ class Job
     }
 
     /**
-     * @param  string                       $name
-     * @return \BrBundle\Entity\Company\job
+     * @param  string $name
+     * @return Job
      */
     public function setName($name)
     {
@@ -227,8 +231,8 @@ class Job
     }
 
     /**
-     * @param  string                       $type
-     * @return \BrBundle\Entity\Company\job
+     * @param  string $type
+     * @return Job
      */
     public function setType($type)
     {
@@ -258,8 +262,8 @@ class Job
     }
 
     /**
-     * @param  string                       $description
-     * @return \BrBundle\Entity\Company\job
+     * @param  string $description
+     * @return Job
      */
     public function setDescription($description)
     {
@@ -277,8 +281,8 @@ class Job
     }
 
     /**
-     * @param  string                       $benefits
-     * @return \BrBundle\Entity\Company\job
+     * @param  string $benefits
+     * @return Job
      */
     public function setBenefits($benefits)
     {
@@ -296,8 +300,8 @@ class Job
     }
 
     /**
-     * @param  string                       $profile
-     * @return \BrBundle\Entity\Company\job
+     * @param  string $profile
+     * @return Job
      */
     public function setProfile($profile)
     {
@@ -315,8 +319,8 @@ class Job
     }
 
     /**
-     * @param  string                       $contact
-     * @return \BrBundle\Entity\Company\job
+     * @param  string $contact
+     * @return Job
      */
     public function setContact($contact)
     {
@@ -334,8 +338,8 @@ class Job
     }
 
     /**
-     * @param  string                       $city
-     * @return \BrBundle\Entity\Company\job
+     * @param  string $city
+     * @return Job
      */
     public function setCity($city)
     {
@@ -360,7 +364,7 @@ class Job
         $parser = new Markdown_Parser();
         $summary = $parser->transform($this->getDescription());
 
-        return \CommonBundle\Component\Util\String::truncate($summary, $length, '...');
+        return String::truncate($summary, $length, '...');
     }
 
     /**
@@ -372,7 +376,7 @@ class Job
     }
 
     /**
-     * @return \BrBundle\Entity\Company
+     * @return Company
      */
     public function getCompany()
     {
@@ -380,7 +384,7 @@ class Job
     }
 
     /**
-     * @return \BrBundle\Entity\Company\job
+     * @return Job
      */
     public function updateDate()
     {
@@ -398,9 +402,8 @@ class Job
     }
 
     /**
-     * @param DateTime $startDate
-     *
-     * @return \BrBundle\Entity\Company\Job
+     * @param  DateTime $startDate
+     * @return Job
      */
     public function setStartDate($startDate)
     {
@@ -418,9 +421,8 @@ class Job
     }
 
     /**
-     * @param DateTime $endDate
-     *
-     * @return \BrBundle\Entity\Company\Job
+     * @param  DateTime $endDate
+     * @return Job
      */
     public function setEndDate($endDate)
     {
@@ -438,8 +440,8 @@ class Job
     }
 
     /**
-     * @param  string                       $sector
-     * @return \BrBundle\Entity\Company\Job
+     * @param  string $sector
+     * @return Job
      */
     public function setSector($sector)
     {

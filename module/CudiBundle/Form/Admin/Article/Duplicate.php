@@ -18,61 +18,47 @@
 
 namespace CudiBundle\Form\Admin\Article;
 
-use CudiBundle\Entity\Article,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
+use LogicException;
 
 /**
  * Duplicate of Article
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Duplicate extends \CudiBundle\Form\Admin\Article\Add
+class Duplicate extends Add
 {
-    /**
-     * @var Article
-     */
-    private $_article;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Article         $article
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Article $article, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        if (null === $this->article) {
+            throw new LogicException('Cannot duplicate a null article');
+        }
 
-        $this->_article = $article;
+        parent::init();
 
-        $this->remove('submit');
+        $this->remove('subject_form');
 
-        $this->remove('subject');
+        $this->get('article')
+            ->get('type')
+            ->setAttribute('disabled', true);
 
-        $this->get('article')->get('type')->setAttribute('disabled', 'disabled');
-
-        if ($article->getType() == 'common') {
+        if ($this->article->getType() == 'common') {
             $this->get('article')
                 ->remove('type');
         }
 
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'article_add');
-        $this->add($field);
+        $this->remove('submit')
+            ->addSubmit('Add', 'article_add');
 
-        $this->populateFromArticle($article);
+        // don't bind to the article, but extract its data
+        $this->setData($this->getHydrator()->extract($this->article));
     }
 
-    public function getInputFilter()
+    public function getInputFilterSpecification()
     {
-        $inputFilter = parent::getInputFilter();
+        $specs = parent::getInputFilterSpecification();
 
-        $inputFilter->remove('type');
+        unset($specs['article']['type']);
 
-        $inputFilter->remove('subject');
-        $inputFilter->remove('subject_id');
-
-        return $inputFilter;
+        return $specs;
     }
 }

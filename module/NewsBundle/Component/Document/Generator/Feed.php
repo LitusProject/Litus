@@ -18,6 +18,13 @@
 
 namespace NewsBundle\Component\Document\Generator;
 
+
+
+
+
+
+
+
 use CommonBundle\Component\Controller\Plugin\Url,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Object as XmlObject,
@@ -88,7 +95,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     }
 
     /**
-     * @return array
+     * @return XmlObject[]
      */
     private function _generateContent()
     {
@@ -106,8 +113,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     }
 
     /**
-     * @param  News      $item
-     * @return XmlObject
+     * @return XmlObject[]
      */
     private function _generateHeader()
     {
@@ -202,7 +208,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                         'news',
                         array(
                             'action' => 'view',
-                            'name' => $item->getName($this->_language),
+                            'name' => $item->getName(),
                         )
                     )
                 ),
@@ -213,7 +219,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                         'news',
                         array(
                             'action' => 'view',
-                            'name' => $item->getName($this->_language),
+                            'name' => $item->getName(),
                         )
                     )
                 ),

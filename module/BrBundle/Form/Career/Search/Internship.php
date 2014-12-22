@@ -18,10 +18,7 @@
 
 namespace BrBundle\Form\Career\Search;
 
-use BrBundle\Entity\Company,
-    CommonBundle\Component\Form\Bootstrap\Element\Select,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use BrBundle\Entity\Company;
 
 /**
  * Search for companies in a certain section
@@ -39,23 +36,30 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
         'mostRecent' => 'Most Recent',
     );
 
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->setAttribute('class', 'form-inline');
-        $this->setAttribute('method', 'get');
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'searchType',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->_createSearchTypeArray(),
+            ),
+        ));
 
-        $field = new Select('searchType');
-        $field->setAttribute('options', $this->_createSearchTypeArray());
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'sector',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->_createSectorArray(),
+            ),
+        ));
 
-        $field = new Select('sector');
-        $field->setAttribute('options', $this->_createSectorArray());
-        $this->add($field);
+        $this->addSubmit('Search');
+        $this->get('submit')->setAttribute('class', 'btn btn-default');
     }
 
     private function _createSearchTypeArray()
@@ -71,31 +75,5 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         return $sectorArray;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'searchType',
-                    'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'sector',
-                    'required' => true,
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }

@@ -89,34 +89,60 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            var templates = {
+                '0': {
+                    value: '',
+                    type: 'member',
+                    organization: '0',
+                    method: 'percentage',
+                    rounding: 'none',
+                    apply_once: false
+                }{% if templates|length > 0 %},{% endif %}
+                {% for template in templates %}
+                '{{ template.getId() }}': {
+                    value: '{{ (template.getValue()/100)|number_format(2) }}',
+                    type: '{{ template.getType()|lower }}',
+                    organization: '{% if null != template.getOrganization() %}{{ template.getOrganization().getId() }}{% else %}0{% endif %}',
+                    method: '{{ template.getMethod() }}',
+                    rounding: '{{ template.getRounding()|lower }}',
+                    apply_once: {% if template.applyOnce() %}true{% else %}false{% endif %}
+                }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            };
+
             $('.item .delete').click(openRemoveModal);
 
-            $('#discount_template_type').change(function () {
+            var $form = $('form.discount');
+
+            $form.find('.type').change(function () {
                 if ($(this).val() == 'member') {
-                    $('#discount_template_organization').closest('.row').show();
+                    $form.find('.organization')
+                        .closest('.row')
+                            .show();
                 } else {
-                    $('#discount_template_organization').closest('.row').hide();
-                    $('#discount_template_organization').val('0');
+                    $form.find('.organization')
+                        .val('0')
+                        .closest('.row')
+                            .hide();
                 }
             }).trigger('change');
 
-            $('#discount_template').change(function () {
-                var template = $(this).find('option:selected').attr('value');
-                if (template == 0) {
-                    $('#discount_template_value').val('').prop('disabled', false);
-                    $('#discount_template_type').val('member').prop('disabled', false);
-                    $('#discount_template_organization').val('0').prop('disabled', false);
-                    $('#discount_template_method').val('percentage').prop('disabled', false);
-                    $('#discount_template_rounding').val('none').prop('disabled', false);
-                    $('#discount_template_apply_once').prop('checked', false).prop('disabled', false)
-                } else {
-                    $('#discount_template_value').val($('#template_' + template + '_value').val()).prop('disabled', true);
-                    $('#discount_template_type').val($('#template_' + template + '_type').val()).prop('disabled', true);
-                    $('#discount_template_organization').val($('#template_' + template + '_organization').val()).prop('disabled', true);
-                    $('#discount_template_method').val($('#template_' + template + '_method').val()).prop('disabled', true);
-                    $('#discount_template_rounding').val($('#template_' + template + '_rounding').val()).prop('disabled', true);
-                    $('#discount_template_apply_once').prop('checked', $('#template_' + template + '_apply_once').val() == 1).prop('disabled', true);
-                }
+            $form.find('.template').change(function () {
+                var template = $(this).find('option:selected').val();
+
+                $form.find('.element')
+                    .prop('disabled', 0 != template);
+
+                template = 'undefined' === typeof templates[template]
+                    ? templates[0]
+                    : templates[template];
+
+                ['value', 'type', 'organization', 'method', 'rounding', 'apply_once'].forEach(function (p) {
+                    $form.find('.' + p)
+                        .val(template[p]);
+                });
+
+                $form.find('.apply-once').prop('checked', 1 == template.apply_once);
             });
         });
 

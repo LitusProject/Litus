@@ -85,10 +85,10 @@
             $('.item .delete').click(openRemoveModal);
 
             $('#restriction_type').change(function () {
-                $('.restriction_value').each(function () {
-                    $(this).closest('.row').hide();
+                $('form .values .row').each(function () {
+                    $(this).hide();
                 });
-                $('#restriction_value_' + $(this).val()).closest('.row').show();
+                $('form .values .value_' + $(this).val()).closest('.row').show();
             }).trigger('change');
         });
 

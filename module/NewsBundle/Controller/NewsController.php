@@ -18,6 +18,9 @@
 
 namespace NewsBundle\Controller;
 
+
+
+
 use CommonBundle\Component\Util\File\TmpFile as TmpFile,
     NewsBundle\Component\Document\Generator\Feed as FeedGenerator,
     Zend\Http\Headers,
@@ -70,7 +73,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         ));
         $this->getResponse()->setHeaders($headers);
 
-        $feedGenerator = new FeedGenerator($feedFile, $this->getEntityManager(), $this->getLanguage(), $this->getRequest(), $this->url());
+        new FeedGenerator($feedFile, $this->getEntityManager(), $this->getLanguage(), $this->getRequest(), $this->url());
 
         return new ViewModel(
             array(

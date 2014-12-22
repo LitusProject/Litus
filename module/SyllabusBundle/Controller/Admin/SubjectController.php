@@ -18,12 +18,14 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
+
+
+
+
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     SyllabusBundle\Entity\StudySubjectMap,
     SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Form\Admin\Subject\Add as AddForm,
-    SyllabusBundle\Form\Admin\Subject\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -74,20 +76,20 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('syllabus_subject_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
-                    ->findOneById($formData['study_id']);
+                    ->findOneById($formData['study']['id']);
 
-                $subject = new Subject($formData['code'], $formData['name'], $formData['semester'], $formData['credits']);
+                $subject = $form->hydrateObject();
+
                 $this->getEntityManager()->persist($subject);
 
                 $map = new StudySubjectMap($study, $subject, $formData['mandatory'], $academicYear);
@@ -134,20 +136,12 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $subject);
+        $form = $this->getForm('syllabus_subject_edit', array('subject' => $subject));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $subject->setCode($formData['code'])
-                    ->setName($formData['name'])
-                    ->setSemester($formData['semester'])
-                    ->setCredits($formData['credits']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

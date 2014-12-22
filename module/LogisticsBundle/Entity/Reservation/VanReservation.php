@@ -18,8 +18,9 @@
 
 namespace LogisticsBundle\Entity\Reservation;
 
+
+
 use CommonBundle\Entity\User\Person,
-    DateTime,
     Doctrine\ORM\Mapping as ORM,
     LogisticsBundle\Entity\Driver;
 
@@ -57,24 +58,6 @@ class VanReservation extends Reservation
      * @ORM\Column(type="text")
      */
     private $load;
-
-    /**
-     * @param DateTime           $startDate
-     * @param DateTime           $endDate
-     * @param string             $reason
-     * @param string             $load
-     * @param ReservableResource $resource
-     * @param string             $additionalInfo
-     * @param Person             $creator
-     */
-    public function __construct(DateTime $startDate, DateTime $endDate, $reason, $load, ReservableResource $resource, $additionalInfo, Person $creator)
-    {
-        parent::__construct($startDate, $endDate, $reason, $resource, $additionalInfo, $creator);
-
-        $this->driver = null;
-        $this->passenger = null;
-        $this->load = $load;
-    }
 
     /**
      * @return Driver

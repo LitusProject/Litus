@@ -18,6 +18,8 @@
 
 namespace SyllabusBundle\Entity\Subject;
 
+
+
 use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
@@ -72,7 +74,7 @@ class Reply
      * @param Comment $comment The comment of the reply
      * @param string  $text    The content of the reply
      */
-    public function __construct(Person $person, Comment $comment, $text)
+    public function __construct(Person $person, Comment $comment, $text = '')
     {
         $this->person = $person;
         $this->text = $text;
@@ -102,6 +104,17 @@ class Reply
     public function getText()
     {
         return $this->text;
+    }
+
+    /**
+     * @param  string $text
+     * @return Reply
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+
+        return $this;
     }
 
     /**

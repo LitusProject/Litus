@@ -18,6 +18,9 @@
 
 namespace SyllabusBundle\Repository;
 
+
+
+
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
@@ -64,7 +67,7 @@ class Subject extends EntityRepository
     {
         $years = array();
 
-        $academicYear = AcademicYearUtil::getUniversityYear($entityManager);
+        $academicYear = AcademicYearUtil::getUniversityYear($this->_em);
 
         $studies = $this->_em->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($person, $academicYear);

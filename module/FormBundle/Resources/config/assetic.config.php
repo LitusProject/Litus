@@ -39,6 +39,8 @@ return array(
             '@bootstrap_js_tab',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@gollum_css',
+            '@gollum_js',
             '@common_jqueryui',
             '@common_jquery_table_sort',
             '@common_jqueryui_datepicker',
@@ -115,6 +117,7 @@ return array(
             '@form_manage_css',
             '@common_jquery_form',
             '@common_remote_typeahead',
+            '@display_form_error_js',
         ),
         'form_manage_group' => array(
             '@common_jquery',

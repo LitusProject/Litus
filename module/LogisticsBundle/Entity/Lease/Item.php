@@ -59,18 +59,6 @@ class Item
     private $barcode;
 
     /**
-     * @param string $name           The name of the item (preferrably unique)
-     * @param int    $barcode        The barcode of the item
-     * @param string $additionalInfo Extra information to show when leasing the item
-     */
-    public function __construct($name, $barcode, $additionalInfo = '')
-    {
-        $this->name = $name;
-        $this->barcode = $barcode;
-        $this->additionalInfo = $additionalInfo;
-    }
-
-    /**
      * @return integer
      */
     public function getId()

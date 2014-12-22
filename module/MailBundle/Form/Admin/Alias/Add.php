@@ -18,14 +18,9 @@
 
 namespace MailBundle\Form\Admin\Alias;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Validator\Academic as AcademicValidator,
-    Doctrine\ORM\EntityManager,
-    MailBundle\Component\Validator\Alias as NameValidator,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+
+use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
+    MailBundle\Component\Validator\Alias as NameValidator;
 
 /**
  * Send Mail
@@ -34,107 +29,43 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'MailBundle\Hydrator\Alias\Academic';
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $field = new Text('alias');
-        $field->setLabel('Alias');
-        $this->add($field);
-
-        $field = new Text('person_name');
-        $field->setLabel('Account')
-            ->setRequired(true)
-            ->setAttribute('id', 'personSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead');
-        $this->add($field);
-
-        $field = new Hidden('person_id');
-        $field->setAttribute('id', 'personId');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'mail_add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'alias',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'alias',
+            'label'      => 'Alias',
+            'required'   => true,
+            'options'    => array(
+                'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new NameValidator(
-                            $this->_entityManager
-                        ),
+                        new NameValidator($this->getEntityManager()),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        if (!isset($this->data['person_id']) || '' == $this->data['person_id']) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name' => 'person_name',
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new AcademicValidator(
-                                $this->_entityManager,
-                                array(
-                                    'byId' => false,
-                                )
-                            ),
-                        ),
-                    )
-                )
-            );
-        } else {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name' => 'person_id',
-                        'required' => true,
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            new AcademicValidator(
-                                $this->_entityManager,
-                                array(
-                                    'byId' => true,
-                                )
-                            ),
-                        ),
-                    )
-                )
-            );
-        }
+        $this->add(array(
+            'type'       => 'typeahead',
+            'name'       => 'person',
+            'label'      => 'Account',
+            'required'   => true,
+            'options'    => array(
+                'input' => array(
+                    'validators' => array(
+                        new PersonTypeaheadValidator($this->getEntityManager()),
+                    ),
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'mail_add');
     }
 }

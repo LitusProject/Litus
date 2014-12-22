@@ -18,19 +18,13 @@
 
 namespace LogisticsBundle\Form\VanReservation;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
-    CommonBundle\Component\Validator\Academic as AcademicValidator,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
+
+
+
+use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
+    CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
     LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
-    LogisticsBundle\Entity\Reservation\VanReservation,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    LogisticsBundle\Entity\Reservation\VanReservation;
 
 /**
  * The form used to add a new Reservation.
@@ -39,107 +33,28 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'LogisticsBundle\Hydrator\Reservation\VanReservation';
 
     /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
+     * @param VanReservation|null
      */
-    public function __construct(EntityManager $entityManager, AcademicYear $currentYear, $name = null)
+    protected $reservation;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $field = new Hidden('passenger_id');
-        $field->setAttribute('id', 'passengerId');
-        $this->add($field);
-
-        $field = new Text('start_date');
-        $field->setLabel('Start Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('class', $field->getAttribute('class') . ' start')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('end_date');
-        $field->setLabel('End Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('class', $field->getAttribute('class') . ' end')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('reason');
-        $field->setLabel('Reason')
-            ->setAttribute('class', $field->getAttribute('class') . ' reason')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('load');
-        $field->setLabel('Load')
-            ->setAttribute('class', $field->getAttribute('class') . ' load');
-        $this->add($field);
-
-        $field = new Textarea('additional_info');
-        $field->setLabel('Additional Information')
-            ->setAttribute('style', 'height:80px;resize:none;')
-            ->setAttribute('class', $field->getAttribute('class') . ' additional');
-        $this->add($field);
-
-        $field = new Select('driver');
-        $field->setLabel('Driver')
-            ->setAttribute('options', $this->_populateDriversArray($currentYear))
-            ->setAttribute('class', $field->getAttribute('class') . ' driver');
-        $this->add($field);
-
-        $field = new Text('passenger');
-        $field->setLabel('Passenger')
-            ->setAttribute('class', $field->getAttribute('class') . ' passenger')
-            ->setAttribute('id', 'passengerSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead');
-        $this->add($field);
-
-        $field = new Submit('add');
-        $field->setValue('Add')
-            ->setAttribute('class', 'reservation_add btn btn-primary');
-        $this->add($field);
-
-        $field = new Submit('edit');
-        $field->setValue('Edit')
-            ->setAttribute('class', 'reservation_edit btn btn-primary');
-        $this->add($field);
-    }
-
-    private function _populateDriversArray(AcademicYear $currentYear)
-    {
-        $drivers = $this->_entityManager
-            ->getRepository('LogisticsBundle\Entity\Driver')
-            ->findAllByYear($currentYear);
-
-        $driversArray = array(
-            -1 => '',
-        );
-        foreach ($drivers as $driver) {
-            $driversArray[$driver->getPerson()->getId()] = $driver->getPerson()->getFullName();
-        }
-
-        return $driversArray;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'start_date',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'start_date',
+            'label'      => 'Start Date',
+            'required'   => true,
+            'attributes' => array(
+                'class'       => 'start',
+                'placeholder' => 'dd/mm/yyyy hh:mm',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -151,15 +66,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'end_date',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'end_date',
+            'label'      => 'End Date',
+            'required'   => true,
+            'attributes' => array(
+                'class'       => 'end',
+                'placeholder' => 'dd/mm/yyyy hh:mm',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -171,92 +92,119 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                         new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                        new ReservationConflictValidator('start_date', 'd/m/Y H:i', VanReservation::VAN_RESOURCE_NAME, $this->_entityManager),
+                        new ReservationConflictValidator(
+                            'start_date',
+                            'd/m/Y H:i',
+                            VanReservation::VAN_RESOURCE_NAME,
+                            $this->getEntityManager(),
+                            null === $this->reservation ? 0 : $this->reservation->getId()
+                        ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'reason',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'reason',
+            'label'      => 'Reason',
+            'required'   => true,
+            'attributes' => array(
+                'class' => 'reason',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'load',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'load',
+            'label'      => 'Load',
+            'attributes' => array(
+                'class' => 'load',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'additional_info',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'additional_info',
+            'label'      => 'Additional Info',
+            'attributes' => array(
+                'class' => 'additional',
+                'style' => 'height: 80px; resize: none;',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        if (isset($this->data['passenger_id'])) {
-            if ($this->data['passenger_id'] == '' && $this->get('passenger')) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name' => 'passenger',
-                            'required' => false,
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                new AcademicValidator(
-                                    $this->_entityManager,
-                                    array(
-                                        'byId' => false,
-                                    )
-                                ),
-                            ),
-                        )
-                    )
-                );
-            } else {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name' => 'passenger_id',
-                            'required' => false,
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                new AcademicValidator(
-                                    $this->_entityManager,
-                                    array(
-                                        'byId' => true,
-                                    )
-                                ),
-                            ),
-                        )
-                    )
-                );
-            }
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'driver',
+            'label'      => 'Driver',
+            'attributes' => array(
+                'class'   => 'driver',
+                'options' => $this->getDriversArray(),
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'typeahead',
+            'name'       => 'passenger',
+            'label'      => 'Passenger',
+            'attributes' => array(
+                'class'   => 'passenger',
+            ),
+            'required'   => false,
+            'options'    => array(
+                'input' => array(
+                    'validators'  => array(
+                        new PersonTypeaheadValidator($this->getEntityManager()),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->addSubmit('Add', 'reservation_add btn btn-primary', 'add')
+            ->addSubmit('Edit', 'reservation_edit btn btn-primary', 'edit');
+    }
+
+    public function setReservation(VanReservation $reservation)
+    {
+        $this->reservation = $reservation;
+
+        return $this;
+    }
+
+    private function getDriversArray()
+    {
+        $drivers = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Driver')
+            ->findAllByYear($this->getCurrentAcademicYear());
+
+        $driversArray = array(
+            -1 => '',
+        );
+        foreach ($drivers as $driver) {
+            $driversArray[$driver->getPerson()->getId()] = $driver->getPerson()->getFullName();
         }
 
-        return $inputFilter;
+        return $driversArray;
     }
 }

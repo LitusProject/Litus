@@ -25,7 +25,10 @@
         <h1>Entries</h1>
 
         {% import 'admin/partials/form.twig' as forms %}
+        <h2>Add Academic</h2>
         {{ forms.renderForm(academicForm) }}
+
+        <h2>Add External</h2>
         {{ forms.renderForm(externalForm) }}
 
         <br style="clear:both">
@@ -123,16 +126,16 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#personSearch').typeaheadRemote(
+            $('#person').typeaheadRemote(
                 {
                     source: '{{ url('common_admin_academic_typeahead', {})}}',
                     items: 20,
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#personId').val($(this).data('value').id);
+                    $('[name="person[id]"]').val($(this).data('value').id);
                 } else {
-                    $('#personId').val('');
+                    $('[name="person[id]"]').val('');
                 }
             });
             $('.item .delete').click(openModal);

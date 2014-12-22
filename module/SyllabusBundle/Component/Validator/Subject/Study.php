@@ -18,7 +18,13 @@
 
 namespace SyllabusBundle\Component\Validator\Subject;
 
-use CommonBundle\Entity\General\AcademicYear,
+
+
+
+
+use CommonBundle\Component\Form\Form,
+    CommonBundle\Component\Validator\FormAwareInterface,
+    CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
     SyllabusBundle\Entity\Subject;
 
@@ -27,7 +33,7 @@ use CommonBundle\Entity\General\AcademicYear,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Study extends \Zend\Validator\AbstractValidator
+class Study extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
 
@@ -45,6 +51,11 @@ class Study extends \Zend\Validator\AbstractValidator
      * @var AcademicYear The academic year
      */
     private $_academicYear;
+
+    /**
+     * @var Form The form to validate
+     */
+    private $form;
 
     /**
      * Error messages
@@ -73,6 +84,14 @@ class Study extends \Zend\Validator\AbstractValidator
     }
 
     /**
+     * @param Form $form
+     */
+    public function setForm(Form $form)
+    {
+        $this->form = $form;
+    }
+
+    /**
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field is valid.
      *
@@ -86,7 +105,7 @@ class Study extends \Zend\Validator\AbstractValidator
 
         $study = $this->_entityManager
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findOneById($context['study_id']);
+            ->findOneById(self::getFormValue($this->form, array('study', 'id')));
 
         $mapping = $this->_entityManager
             ->getRepository('SyllabusBundle\Entity\StudySubjectMap')

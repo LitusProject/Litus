@@ -18,12 +18,9 @@
 
 namespace CudiBundle\Form\Admin\Stock;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CudiBundle\Entity\Sale\Article,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+
+use CudiBundle\Entity\Sale\Article,
+    LogicException;
 
 /**
  * Update Stock
@@ -33,46 +30,29 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class Update extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param Article         $article
-     * @param null|string|int $name    Optional name for the element
+     * @var Article|null
      */
-    public function __construct(Article $article, $name = null)
+    private $article;
+
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $this->article) {
+            throw new LogicException('Cannot update the stock of a null article');
+        }
 
-        $field = new Text('number');
-        $field->setLabel('Number')
-            ->setAttribute('autocomplete', 'off')
-            ->setRequired();
-        $this->add($field);
+        parent::init();
 
-        $field = new Textarea('comment');
-        $field->setLabel('Comment')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('updateStock');
-        $field->setValue('Update')
-            ->setAttribute('class', 'stock_edit');
-        $this->add($field);
-
-        $this->setData(
-            array(
-                'number' => $article->getStockValue(),
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'number',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'number',
+            'label'      => 'Number',
+            'required'   => true,
+            'value'      => $this->article->getStockValue(),
+            'attributes' => array(
+                'autocomplete' => 'off',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -88,22 +68,35 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'comment',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'textarea',
+            'name'     => 'comment',
+            'label'    => 'Comment',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Update', 'stock_edit', 'updateStock');
+    }
+
+    /**
+     * @param  Article $article
+     * @return self
+     */
+    public function setArticle(Article $article)
+    {
+        $this->article = $article;
+
+        return $this;
     }
 }

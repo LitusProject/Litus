@@ -18,8 +18,10 @@
 
 namespace CudiBundle\Controller\Prof;
 
+
+
+
 use CudiBundle\Entity\Article,
-    CudiBundle\Form\Prof\Subject\Enrollment as EnrollmentForm,
     DateInterval,
     SyllabusBundle\Entity\StudentEnrollment,
     Zend\View\Model\ViewModel;
@@ -92,14 +94,15 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
 
         $enrollment = $subject->getEnrollment($academicYear);
-        $enrollmentForm = new EnrollmentForm($enrollment);
+        $enrollmentForm = $this->getForm('cudi_prof_subject_enrollment', array(
+            'enrollment' => $enrollment,
+        ));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $enrollmentForm->setData($formData);
+            $enrollmentForm->setData($this->getRequest()->getPost());
 
             if ($enrollmentForm->isValid()) {
-                $formData = $enrollmentForm->getFormData($formData);
+                $formData = $enrollmentForm->getData();
 
                 if ($enrollment) {
                     $enrollment->setNumber($formData['students']);

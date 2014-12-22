@@ -24,7 +24,7 @@ return array(
     ),
     array(
         'key'         => 'syllabus.update_socket_public',
-        'value'       => '127.0.0.1:8898',
+        'value'       => ':8898',
         'description' => 'The public address for the websocket of the syllabus update',
     ),
     array(

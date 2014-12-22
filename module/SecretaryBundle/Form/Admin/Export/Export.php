@@ -18,10 +18,6 @@
 
 namespace SecretaryBundle\Form\Admin\Export;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
-
 /**
  * Export form
  *
@@ -29,40 +25,36 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  */
 class Export extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'organization',
+            'label'      => 'Organization',
+            'required'   => true,
+            'options'    => array(
+                'options' => $this->getOrganizations(),
+            ),
+        ));
 
-        $field = new Select('organization');
-        $field->setLabel('Organization')
-            ->setAttribute('options', $this->_getOrganizations());
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'academic_year',
+            'label'      => 'Academic Year',
+            'required'   => true,
+            'options'    => array(
+                'options' => $this->getAcademicYears(),
+            ),
+        ));
 
-        $field = new Select('academic_year');
-        $field->setLabel('Academic Year')
-            ->setAttribute('options', $this->_getAcademicYears());
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Download')
-            ->setAttribute('class', 'download');
-        $this->add($field);
+        $this->addSubmit('Download', 'download');
     }
 
-    private function _getOrganizations()
+    private function getOrganizations()
     {
-        $organizations = $this->_entityManager
+        $organizations = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
@@ -74,9 +66,9 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
         return $organizationsArray;
     }
 
-    private function _getAcademicYears()
+    private function getAcademicYears()
     {
-        $academicYears = $this->_entityManager
+        $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 

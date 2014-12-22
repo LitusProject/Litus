@@ -18,10 +18,14 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Session;
 
-use CudiBundle\Entity\Sale\Session\Restriction\Name as NameRestriction,
+
+
+
+
+use CommonBundle\Component\Controller\Exception\RuntimeException,
+    CudiBundle\Entity\Sale\Session\Restriction\Name as NameRestriction,
     CudiBundle\Entity\Sale\Session\Restriction\Study as StudyRestriction,
     CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction,
-    CudiBundle\Form\Admin\Sales\Session\Restriction\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -41,14 +45,15 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             ->getRepository('CudiBundle\Entity\Sale\Session\Restriction')
             ->findBySession($session);
 
-        $form = new AddForm($this->getEntityManager(), $session);
+        $form = $this->getForm('cudi_sale_session_restriction_add', array(
+            'session' => $session,
+        ));
 
         if ($this->getRequest()->isPost() && $session->isOpen()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 if ('name' == $formData['type']) {
                     $restriction = new NameRestriction($session, $formData['start_value_name'], $formData['end_value_name']);
@@ -64,6 +69,8 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 
                         $restriction->addStudy($study);
                     }
+                } else {
+                    throw new RuntimeException("Unsupported restriction type");
                 }
 
                 $this->getEntityManager()->persist($restriction);
@@ -114,6 +121,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         );
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Session|null
+     */
     private function _getSession()
     {
         if (null === $this->getParam('id')) {
@@ -155,6 +165,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         return $session;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Session\Restriction|null
+     */
     private function _getRestriction()
     {
         if (null === $this->getParam('id')) {

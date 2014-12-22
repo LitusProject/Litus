@@ -204,15 +204,15 @@
         $('.popover .end').val(_formatDate(endDate));
         $('.popover .reservation_edit').hide();
 
-        $('.popover #passengerSearch').typeaheadRemote(
+        $('.popover #passenger').typeaheadRemote(
             {
                 source: settings.passengerTypeaheadUrl
             }
         ).change(function(e) {
             if ($(this).data('value')) {
-                $('.popover #passengerId').val($(this).data('value').id);
+                $('.popover [name="passenger[id]"]').val($(this).data('value').id);
             } else {
-                $('.popover #passengerId').val('');
+                $('.popover [name="passenger[id]"]').val('');
             }
         });
 
@@ -242,16 +242,9 @@
                     });
                 } else {
                     settings.addError();
-                    $('.popover form').find('ul.errors').remove();
-                    if (data && data.errors) {
-                        for(var element in data.errors) {
-                            var list = $('<ul>', {'class': 'errors'});
-                            for (var error in data.errors[element])
-                                list.append($('<li>').html(data.errors[element][error]));
-                            var div = $('<div>', {'class': 'help-block'}).append(list);
-                            $('.popover form').find('#' + element).closest('.form-group').addClass('error').find('.controls').append(div);
-                        }
-                    }
+                    $('.popover form div.help-block').remove();
+                    $('.popover form .form-group').removeClass('has-error');
+                    $('.popover form').displayFormErrors(data.errors);
                 }
             },
             error: function(a, b, c) {
@@ -409,19 +402,19 @@
         $('.popover .load').val(event.load);
         $('.popover .additional').html(event.additional);
         $('.popover .driver').val(event.driverId);
-        $('.popover #passengerId').val(event.passengerId);
+        $('.popover [name="passenger[id]"]').val(event.passengerId);
         $('.popover .passenger').val(event.passenger);
         $('.popover .reservation_add').hide();
 
-        $('.popover #passengerSearch').typeaheadRemote(
+        $('.popover #passenger').typeaheadRemote(
             {
                 source: settings.passengerTypeaheadUrl
             }
         ).change(function(e) {
             if ($(this).data('value')) {
-                $('.popover #passengerId').val($(this).data('value').id);
+                $('.popover [name="passenger[id]"]').val($(this).data('value').id);
             } else {
-                $('.popover #passengerId').val('');
+                $('.popover [name="passenger[id]"]').val('');
             }
         });
 
@@ -453,13 +446,9 @@
                     settings.updateError();
                     $('.popover form').find('ul.errors').remove();
                     if (data && data.errors) {
-                        for(element in data.errors) {
-                            var list = $('<ul>', {'class': 'errors'});
-                            for (error in data.errors[element])
-                                list.append($('<li>').html(data.errors[element][error]));
-                            var div = $('<div>', {'class': 'help-block'}).append(list);
-                            $('.popover form').find('#' + element).closest('.form-group').addClass('error').find('.controls').append(div);
-                        }
+                        $('.popover form div.help-block').remove();
+                        $('.popover form .form-group').removeClass('has-error');
+                        $('.popover form').displayFormErrors(data.errors);
                     }
                 }
             },

@@ -62,6 +62,8 @@
                 {% endfor %}
             };
 
+            var $form = $('#register_form');
+
             $('#conditions').parent().append(
                 conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
             );
@@ -73,59 +75,101 @@
             $('#register').click(function (e) {
                 e.preventDefault();
 
-                if (!$('#become_member').is(':checked') && !$('#become_member').is(':disabled') && $('#register_form #organization').val() != 0) {
-                    $('#modalMemberWarning').modal();
-                    $('#modalMemberWarning .confirm').one('click', function () {
-                        $('#register_form').submit();
-                    });
+                if (!$('#become_member').is(':checked') && !$('#become_member').is(':disabled') && $form.find('#organization').val() != 0) {
+                    $('#modalMemberWarning')
+                        .modal()
+                        .find('.confirm')
+                            .one('click', function () {
+                                $form.submit();
+                        });
                 } else {
-                    $('#register_form').submit();
+                    $form.submit();
                 }
             });
 
-            {% if metaData.becomeMember() %}
-                $('#register_form #organization').closest('.form-group').hide();
-                $('#register_form #become_member').closest('.form-group').hide();
-                $('#register_form #become_member').prop('checked', false);
-            {% else %}
-                $('#register_form #organization').closest('.form-group').show();
-                $('#register_form #become_member').prop('checked', true);
-                $('#register_form #become_member').closest('.form-group').show();
-                $('#register_form #become_member').closest('label').html($('#register_form #become_member').closest('label').html().replace('{ price }', '<span class="price">' + 0 + '</span>'));
-                $('#register_form #organization').change(function () {
-                    $('#register_form #become_member').closest('label').find('.price').html(membershipArticles[$('#register_form #organization').val()]);
-                });
-            {% endif %}
+            $form.find('#organization')
+                .closest('.form-group')
+                    .hide();
+            if ($form.find('#organization').val() == 0) {
+                $form.find('#become_member')
+                    .prop('checked', false)
+                    .closest('.form-group')
+                        .hide();
+            } else {
+                $form.find('#become_member')
+                    .prop('checked', true)
+                    .closest('label')
+                    .closest('.form-group')
+                        .show()
+                    .end()
+                    .closest('label')
+                        .html(
+                            $form.find('#become_member')
+                                .closest('label')
+                                .html()
+                                .replace('{ price }', membershipArticles[$form.find('#organization').val()])
+                        );
+            }
 
-            $('#primary_address_address_city').change(cityChange);
-            $('#become_member').change(toggleMember);
+            $('.primary-address .city').change(cityChange);
             toggleMember();
             cityChange();
 
-            if ($('#register_form #organization').val() == 0) {
-
-            } else {
-
-            }
-
             $('#university_email').wrap('<div class=\"input-group\" />');
             $('#university_email').after('<span class=\"input-group-addon\">{{ studentDomain }}</span>');
+
+            $('#first_name, #last_name').blur(nameChange);
         });
 
+        function nameChange() {
+            $('#university_email').val($('#first_name').val().toLowerCase() + "." + $('#last_name').val().toLowerCase().replace(/ /g, ""));
+        }
+
         function cityChange() {
-            var city = $('#primary_address_address_city option:selected').val();
-            $('.primary_address_address_street, #primary_address_address_number, #primary_address_address_mailbox, #primary_address_address_postal_other, #primary_address_address_city_other, #primary_address_address_street_other').closest('.form-group').hide();
-            if (city != 0)
-                $('#primary_address_address_street_' + city + ',#primary_address_address_postal_' + city + ',#primary_address_address_city_' + city + ', #primary_address_address_number, #primary_address_address_mailbox').closest('.form-group').show();
+            var $primaryAddress = $('.primary-address');
+
+            var city = $primaryAddress
+                .find('.city option:selected')
+                .val();
+
+            $primaryAddress
+                .find('.other')
+                    .hide()
+                .end()
+                .find('.street, .number, .mailbox')
+                    .closest('.form-group')
+                        .hide();
+
+            if (city === 'other') {
+                $primaryAddress
+                    .find('.other')
+                        .show()
+                    .end()
+                    .find('.number, .mailbox')
+                        .closest('.form-group')
+                            .show();
+            } else if (city != 0) {
+                $primaryAddress
+                    .find('.street-' + city + ', .number, .mailbox')
+                        .closest('.form-group')
+                            .show();
+            }
         }
 
         function toggleMember() {
-            if ($('#become_member').is(':checked'))
-                $('#organization_info .form-group').show();
+            var $form = $('#register_form');
+
+            if ($form.find('#become_member').is(':checked'))
+                $form.find('#organization_info .form-group').show();
             else
-                $('#organization_info .form-group').hide();
-            $('#become_member, #conditions, #bakske').closest('.form-group').show();
-            $('#register_form #organization').closest('.form-group').hide();
+                $form.find('#organization_info .form-group').hide();
+
+            $form.find('#conditions, #bakske')
+                .closest('.form-group')
+                    .show();
+            $form.find('#organization')
+                .closest('.form-group')
+                    .hide();
         }
     </script>
 {% endblock %}

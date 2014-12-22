@@ -18,14 +18,14 @@
 
 namespace CudiBundle\Controller\Prof;
 
+
+
+
+
 use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Article\External,
     CudiBundle\Entity\Article\Internal,
     CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Prof\Action,
-    CudiBundle\Form\Prof\Article\Add as AddForm,
-    CudiBundle\Form\Prof\Article\AddWithSubject as AddWithSubjectForm,
-    CudiBundle\Form\Prof\Article\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -58,52 +58,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('cudi_prof_article_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                if ($formData['internal']) {
-                    $binding = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Article\Option\Binding')
-                        ->findOneById($formData['binding']);
-
-                    $article = new Internal(
-                        $formData['title'],
-                        $formData['author'],
-                        $formData['publisher'],
-                        $formData['year_published'],
-                        $formData['isbn'] != '' ? $formData['isbn'] : null,
-                        $formData['url'],
-                        $formData['type'],
-                        $formData['downloadable'],
-                        $formData['same_as_previous_year'],
-                        0,
-                        0,
-                        $binding,
-                        true,
-                        $formData['rectoverso'],
-                        null,
-                        $formData['perforated'],
-                        $formData['colored']
-                    );
-                } else {
-                    $article = new External(
-                        $formData['title'],
-                        $formData['author'],
-                        $formData['publisher'],
-                        $formData['year_published'],
-                        $formData['isbn'] != '' ? $formData['isbn'] : null,
-                        $formData['url'],
-                        $formData['type'],
-                        $formData['downloadable'],
-                        $formData['same_as_previous_year']
-                    );
-                }
+                $formData = $form->getData();
+                $article = $form->hydrateObject();
 
                 $article->setIsProf(true);
                 if ($formData['draft']) {
@@ -118,12 +80,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 $subject = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
                     ->findOneBySubjectIdAndProfAndAcademicYear(
-                        $formData['subject_id'],
+                        $formData['subject']['subject']['id'],
                         $this->getAuthentication()->getPersonObject(),
                         $academicYear
                     );
 
-                $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['mandatory']);
+                $mapping = new SubjectMap($article, $subject->getSubject(), $academicYear, $formData['subject']['mandatory']);
                 $mapping->setIsProf(true);
                 $this->getEntityManager()->persist($mapping);
 
@@ -153,7 +115,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             array(
                 'form' => $form,
                 'isPost' => $this->getRequest()->isPost(),
-                'isInternalPost' => isset($formData) && $formData['internal'] ? true : false,
+                'isInternalPost' => isset($form->getData()['internal']) && $form->getData()['internal'] ? true : false,
             )
         );
     }
@@ -168,52 +130,16 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
         }
 
-        $form = new AddWithSubjectForm($this->getEntityManager(), $subject);
+        $form = $this->getForm('cudi_prof_article_add-with-subject', array(
+            'subject' => $subject,
+        ));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                if ($formData['internal']) {
-                    $binding = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Article\Option\Binding')
-                        ->findOneById($formData['binding']);
-
-                    $article = new Internal(
-                        $formData['title'],
-                        $formData['author'],
-                        $formData['publisher'],
-                        $formData['year_published'],
-                        $formData['isbn'] != '' ? $formData['isbn'] : null,
-                        $formData['url'],
-                        $formData['type'],
-                        $formData['downloadable'],
-                        $formData['same_as_previous_year'],
-                        0,
-                        0,
-                        $binding,
-                        true,
-                        $formData['rectoverso'],
-                        null,
-                        $formData['perforated'],
-                        $formData['colored']
-                    );
-                } else {
-                    $article = new External(
-                        $formData['title'],
-                        $formData['author'],
-                        $formData['publisher'],
-                        $formData['year_published'],
-                        $formData['isbn'] != '' ? $formData['isbn'] : null,
-                        $formData['url'],
-                        $formData['type'],
-                        $formData['downloadable'],
-                        $formData['same_as_previous_year']
-                    );
-                }
+                $formData = $form->getData();
+                $article = $form->hydrateObject();
 
                 $article->setIsProf(true);
                 if ($formData['draft']) {
@@ -228,12 +154,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 $mappingProf = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
                     ->findOneBySubjectIdAndProfAndAcademicYear(
-                        $formData['subject_id'],
+                        $subject->getId(),
                         $this->getAuthentication()->getPersonObject(),
                         $academicYear
                     );
 
-                $mapping = new SubjectMap($article, $mappingProf->getSubject(), $academicYear, $formData['mandatory']);
+                $mapping = new SubjectMap(
+                    $article,
+                    $mappingProf->getSubject(),
+                    $academicYear,
+                    isset($formData['subject']['mandatory']) ? $formData['subject']['mandatory'] : false
+                );
                 $mapping->setIsProf(true);
                 $this->getEntityManager()->persist($mapping);
 
@@ -276,115 +207,61 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $article);
+        $duplicate = clone $article;
+
+        $form = $this->getForm('cudi_prof_article_edit', $duplicate);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 if (!$article->isProf()) {
-                    $duplicate = $article->duplicate();
                     $duplicate->setIsProf(true);
                     $edited = false;
 
-                    if ($article->getTitle() != $formData['title']) {
-                        $duplicate->setTitle($formData['title']);
+                    if ($article->getTitle() != $duplicate->getTitle()) {
                         $edited = true;
+                    } elseif ($article->getAuthors() != $duplicate->getAuthors()) {
+                        $edited = true;
+                    } elseif ($article->getPublishers() != $duplicate->getPublishers()) {
+                        $edited = true;
+                    } elseif ($article->getYearPublished() != $formData['year_published']) {
+                        $edited = true;
+                    } elseif ($article->getIsbn() != $duplicate->getIsbn()) {
+                        $edited = true;
+                    } elseif ($article->getUrl() != $duplicate->getUrl()) {
+                        $edited = true;
+                    } elseif ($article->isDownloadable() !== $duplicate->isDownloadable()) {
+                        $edited = true;
+                    } elseif ($article->isSameAsPreviousYear() !== $duplicate->getType()) {
+                        $edited = true;
+                    } elseif ($article->getType() != $duplicate->getType()) {
+                        $edited = true;
+                    } elseif ($article instanceof Internal) {
+                        if ($article->getBinding()->getId() != $duplicate->getBinding()->getId()) {
+                            $edited = true;
+                        } elseif ($article->isRectoVerso() !== $duplicate->isRectoVerso()) {
+                            $edited = true;
+                        } elseif ($article->isPerforated() !== $duplicate->isPerforated()) {
+                            $edited = true;
+                        } elseif ($article->isColored() !== $duplicate->isColored()) {
+                            $edited = true;
+                        }
                     }
 
-                    if ($article->getAuthors() != $formData['author']) {
-                        $duplicate->setAuthors($formData['author']);
-                        $edited = true;
-                    }
-                    if ($article->getPublishers() != $formData['publisher']) {
-                        $duplicate->setPublishers($formData['publisher']);
-                        $edited = true;
-                    }
-                    if ($article->getYearPublished() != $formData['year_published']) {
-                        $duplicate->setYearPublished($formData['year_published']);
-                        $edited = true;
-                    }
-                    if ($article->getISBN() != $formData['isbn']) {
-                        $duplicate->setISBN($formData['isbn'] != '' ? $formData['isbn'] : null);
-                        $edited = true;
-                    }
-                    if ($article->getURL() != $formData['url']) {
-                        $duplicate->setURL($formData['url']);
-                        $edited = true;
-                    }
-                    if ($article->isDownloadable() !== (bool) $formData['downloadable']) {
-                        $duplicate->setIsDownloadable($formData['downloadable']);
-                        $edited = true;
-                    }
-                    if ($article->isSameAsPreviousYear() !== (bool) $formData['same_as_previous_year']) {
-                        $duplicate->setIsSameAsPreviousYear($formData['same_as_previous_year']);
-                        $edited = true;
-                    }
-                    if ($article->getType() != $formData['type']) {
-                        $duplicate->setType($formData['type']);
-                        $edited = true;
-                    }
-
-                    if ($article instanceof Internal && $duplicate instanceof Internal) {
-                        if ($article->getBinding()->getId() != $formData['binding']) {
-                            $duplicate->setBinding($this->getEntityManager()
-                                ->getRepository('CudiBundle\Entity\Article\StockArticles\Binding')
-                                ->findOneById($formData['binding']));
-                            $edited = true;
-                        }
-                        if ($article->isRectoVerso() !== (bool) $formData['rectoverso']) {
-                            $duplicate->setIsRectoVerso($formData['rectoverso']);
-                            $edited = true;
-                        }
-                        if ($article->isPerforated() !== (bool) $formData['perforated']) {
-                            $duplicate->setIsPerforated($formData['perforated']);
-                            $edited = true;
-                        }
-                        if ($article->isColored() !== (bool) $formData['colored']) {
-                            $duplicate->setIsColored($formData['colored']);
-                            $edited = true;
-                        }
-                    }
+                    $duplicate->setIsDraft($formData['draft'] ? true : false);
 
                     if ($edited) {
                         $this->getEntityManager()->persist($duplicate);
                         $action = new Action($this->getAuthentication()->getPersonObject(), 'article', $duplicate->getId(), 'edit', $article->getId());
                         $this->getEntityManager()->persist($action);
                     }
-
-                    if ($formData['draft']) {
-                        $duplicate->setIsDraft(true);
-                    } else {
-                        $duplicate->setIsDraft(false);
-                    }
                 } else {
-                    $article->setAuthors($formData['author'])
-                        ->setPublishers($formData['publisher'])
-                        ->setYearPublished($formData['year_published'])
-                        ->setTitle($formData['title'])
-                        ->setISBN($formData['isbn'])
-                        ->setURL($formData['url'])
-                        ->setIsDownloadable($formData['downloadable'])
-                        ->setType($formData['type']);
+                    $form->hydrateObject($article);
 
-                    if ($article instanceof Internal) {
-                        $article->setBinding(
-                                $this->getEntityManager()
-                                    ->getRepository('CudiBundle\Entity\Article\Option\Binding')
-                                    ->findOneById($formData['binding'])
-                            )
-                            ->setIsRectoVerso($formData['rectoverso'])
-                            ->setIsPerforated($formData['perforated']);
-                    }
-
-                    if ($formData['draft']) {
-                        $article->setIsDraft(true);
-                    } else {
-                        $article->setIsDraft(false);
-                    }
+                    $article->setIsDraft($formData['draft'] ? true : false);
                 }
 
                 $this->getEntityManager()->flush();

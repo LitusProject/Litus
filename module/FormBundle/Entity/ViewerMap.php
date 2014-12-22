@@ -18,6 +18,8 @@
 
 namespace FormBundle\Entity;
 
+
+
 use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Node\Form;
@@ -70,12 +72,12 @@ class ViewerMap
     private $mail;
 
     /**
-     * @param Form    $form
-     * @param Person  $person
-     * @param boolean $edit
-     * @param boolean $mail
-     */
-    public function __construct(Form $form, Person $person, $edit, $mail)
+    * @param Form    $form
+    * @param Person  $person
+    * @param boolean $edit
+    * @param boolean $mail
+    */
+    public function __construct(Form $form, Person $person = null, $edit = null, $mail = null)
     {
         $this->person = $person;
         $this->form = $form;
@@ -108,6 +110,17 @@ class ViewerMap
     }
 
     /**
+    * @param  Person $person
+    * @return self
+    */
+    public function setPerson(Person $person)
+    {
+        $this->person = $person;
+
+        return $this;
+    }
+
+    /**
      * @return boolean
      */
     public function isEdit()
@@ -116,10 +129,32 @@ class ViewerMap
     }
 
     /**
+    * @param  boolean $edit
+    * @return self
+    */
+    public function setEdit($edit)
+    {
+        $this->edit = $edit;
+
+        return $this;
+    }
+
+    /**
      * @return boolean
      */
     public function isMail()
     {
         return $this->mail;
+    }
+
+    /**
+    * @param  boolean $mail
+    * @return self
+    */
+    public function setMail($mail)
+    {
+        $this->mail = $mail;
+
+        return $this;
     }
 }

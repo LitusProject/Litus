@@ -18,9 +18,11 @@
 
 namespace CommonBundle\Entity\User;
 
+
+
+
 use CommonBundle\Entity\User\Barcode\Ean12,
     CommonBundle\Entity\User\Barcode\Qr,
-    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -74,8 +76,7 @@ abstract class Barcode
     /**
      * Constructs a new barcode
      *
-     * @param Person  $person
-     * @param integer $barcode
+     * @param Person $person
      */
     public function __construct(Person $person)
     {

@@ -18,13 +18,17 @@
 
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
+use CommonBundle\Component\Form\ElementTrait;
+
 /**
  * Reset form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Reset extends \Zend\Form\Element\Submit
+class Reset extends \Zend\Form\Element\Submit implements \CommonBundle\Component\Form\ElementInterface
 {
+    use ElementTrait;
+
     /**
      * Seed attributes
      *
@@ -34,15 +38,8 @@ class Reset extends \Zend\Form\Element\Submit
         'type' => 'reset',
     );
 
-    /**
-     * @param  string                             $name    Optional name for the element
-     * @param  array                              $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
-     */
-    public function __construct($name, $options = array())
+    public function init()
     {
-        parent::__construct($name, $options);
-        $this->setAttribute('id', $name);
-        $this->setAttribute('class', 'btn btn-default');
+        $this->addClass('btn btn-default');
     }
 }

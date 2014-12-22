@@ -18,13 +18,9 @@
 
 namespace PublicationBundle\Form\Admin\Publication;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    Doctrine\ORM\EntityManager,
-    PublicationBundle\Component\Validator\Title\Publication as TitleValidator,
-    PublicationBundle\Entity\Publication,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+
+use PublicationBundle\Component\Validator\Title\Publication as TitleValidator,
+    PublicationBundle\Entity\Publication;
 
 /**
  * The form used to add a new Publication
@@ -33,52 +29,47 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'PublicationBundle\Hydrator\Publication';
 
     /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
+     * @var Publication|null
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    protected $publication;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $field = new Text('title');
-        $field->setLabel('Title')
-            ->setRequired(true);
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'publication_add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'title',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'title',
+            'label'    => 'Title',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new TitleValidator($this->_entityManager),
+                        null === $this->publication
+                            ? new TitleValidator($this->getEntityManager())
+                            : new TitleValidator($this->getEntityManager(), $this->publication->getId()),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'publication_add');
+    }
+
+    /**
+     * @param  Publication $publication
+     * @return self
+     */
+    public function setPublication(Publication $publication)
+    {
+        $this->publication = $publication;
+
+        return $this;
     }
 }

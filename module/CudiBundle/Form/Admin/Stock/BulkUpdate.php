@@ -18,11 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Stock;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Bulk Update the Stock
  *
@@ -31,44 +26,24 @@ use CommonBundle\Component\Form\Admin\Element\Text,
 class BulkUpdate extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var array Contains the input fields added for article quantities.
+     * @var array
      */
-    private $_inputs = array();
+    private $articles = array();
 
-    /**
-     * @param array           $articles
-     * @param null|string|int $name     Optional name for the element
-     */
-    public function __construct($articles, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        foreach ($articles as $article) {
-            $field = new Text('article-' . $article->getId());
-            $field->setValue($article->getStockValue())
-                ->setAttribute('style', 'width: 70px');
-            $this->add($field);
-
-            $this->_inputs[] = $field;
-        }
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'edit');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        foreach ($this->_inputs as $input) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => $input->getName(),
-                        'required' => false,
+        foreach ($this->articles as $article) {
+            $this->add(array(
+                'type'       => 'text',
+                'name'       => 'article_' . $article->getId(),
+                'value'      => $article->getStockValue(),
+                'attributes' => array(
+                    'style' => 'width: 70px;',
+                ),
+                'options'    => array(
+                    'input' => array(
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
@@ -77,11 +52,22 @@ class BulkUpdate extends \CommonBundle\Component\Form\Admin\Form
                                 'name' => 'digits',
                             ),
                         ),
-                    )
-                )
-            );
+                    ),
+                ),
+            ));
         }
 
-        return $inputFilter;
+        $this->addSubmit('Save', 'edit');
+    }
+
+    /**
+     * @param  array $articles
+     * @return self
+     */
+    public function setArticles(array $articles)
+    {
+        $this->articles = $articles;
+
+        return $this;
     }
 }

@@ -18,27 +18,24 @@
 
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
+
+use CommonBundle\Component\Form\ElementTrait,
+    Zend\Form\FormInterface;
+
 /**
  * File form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Form\Admin\Element
+class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Form\ElementInterface
 {
-    /**
-     * @var boolean
-     */
-    private $_required = false;
+    use ElementTrait {
+        ElementTrait::getInputSpecification as getTraitInputSpecification;
+        ElementTrait::prepareElement as traitPrepareElement;
+    }
 
-    /**
-     * @param  string                             $name    Optional name for the element
-     * @param  array                              $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
-     */
-    public function __construct($name, $options = array())
+    public function init()
     {
-        parent::__construct($name, $options);
-        $this->setAttribute('id', $name);
         $this->setLabelAttributes(
             array(
                 'class' => 'col-sm-2 control-label',
@@ -46,27 +43,24 @@ class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Fo
         );
     }
 
-    /**
-     * Specifies whether this element is a required field.
-     *
-     * Also sets the HTML5 'required' attribute.
-     *
-     * @param  boolean $flag
-     * @return File
-     */
-    public function setRequired($flag = true)
+    public function getInputSpecification()
     {
-        $this->setAttribute('required', $flag);
-        $this->_required = $flag;
+        $specification = $this->getTraitInputSpecification();
+        $specification['type'] = 'Zend\InputFilter\FileInput';
 
-        return $this;
+        return $specification;
     }
 
     /**
-     * @return boolean
+     * Prepare the form element (mostly used for rendering purposes)
+     *
+     * @param  FormInterface $form
+     * @return mixed
      */
-    public function isRequired()
+    public function prepareElement(FormInterface $form)
     {
-        return $this->_required;
+        $this->traitPrepareElement($form);
+
+        return parent::prepareElement($form);
     }
 }

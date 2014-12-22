@@ -18,6 +18,17 @@
 
 namespace ShiftBundle\Entity;
 
+
+
+
+
+
+
+
+
+
+
+
 use CalendarBundle\Entity\Node\Event,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Location,
@@ -196,41 +207,15 @@ class Shift
     /**
      * @param Person       $creationPerson
      * @param AcademicYear $academicYear
-     * @param DateTime     $startDate
-     * @param DateTime     $endDate
-     * @param Person       $manager
-     * @param integer      $nbResponsibles
-     * @param integer      $nbVolunteers
-     * @param Unit         $unit
-     * @param Location     $location
-     * @param string       $name
-     * @param string       $description
-     * @param array        $editRoles
-     * @param integer      $reward
-     * @param boolean      $handledOnEvent
      */
-    public function __construct(
-        Person $creationPerson, AcademicYear $academicYear, DateTime $startDate, DateTime $endDate, Person $manager, $nbResponsibles, $nbVolunteers, Unit $unit, Location $location, $name, $description, array $editRoles
-    , $reward, $handledOnEvent)
+    public function __construct(Person $creationPerson, AcademicYear $academicYear)
     {
         $this->creationPerson = $creationPerson;
         $this->academicYear = $academicYear;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->manager = $manager;
-        $this->nbResponsibles = $nbResponsibles;
-        $this->nbVolunteers = $nbVolunteers;
-        $this->unit = $unit;
-        $this->location = $location;
-        $this->name = $name;
-        $this->description = $description;
 
         $this->responsibles = new ArrayCollection();
         $this->volunteers = new ArrayCollection();
-        $this->editRoles = new ArrayCollection($editRoles);
-
-        $this->reward = $reward;
-        $this->handledOnEvent = $handledOnEvent;
+        $this->editRoles = new ArrayCollection();
     }
 
     /**

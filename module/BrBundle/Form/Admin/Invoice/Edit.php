@@ -18,16 +18,7 @@
 
 namespace BrBundle\Form\Admin\Invoice;
 
-use BrBundle\Entity\Contract\Section,
-    BrBundle\Entity\Invoice,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter,
-    Zend\Validator\Float as FloatValidator;
+use BrBundle\Entity\Invoice;
 
 /**
  * Edit Invoice
@@ -36,42 +27,60 @@ use BrBundle\Entity\Contract\Section,
  */
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'BrBundle\Hydrator\Invoice';
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Invoice    $invoice       The invoice to edit
-     * @param null|string|int             $name          Optional name for the element
+     * @var Invoice
      */
-    public function __construct(EntityManager $entityManager, Invoice $invoice, $options = null)
+    private $_invoice;
+
+    public function init()
     {
-        parent::__construct($options);
+        parent::init();
 
-        $this->_createFromInvoice($invoice);
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'invoice_edit');
-        $this->add($field);
-    }
-
-    private function _createFromInvoice(Invoice $invoice)
-    {
-        foreach ($invoice->getEntries() as $entry) {
-            $field = new Textarea('entry_' . $entry->getId());
-            $field->setLabel($entry->getOrderEntry()->getProduct()->getName())
-                ->setValue($entry->getInvoiceText())
-                ->setRequired(false);
-            $this->add($field);
+        foreach ($this->_invoice->getEntries() as $entry) {
+            $this->add(array(
+                'type'     => 'textarea',
+                'name'     => 'entry_' . $entry->getId(),
+                'label'    => $entry->getOrderEntry()->getProduct()->getName(),
+                'options'  => array(
+                    'input' => array(
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            ));
         }
 
-        $field = new Textarea('VATContext');
-        $field->setLabel("VAT Context")
-            ->setValue($invoice->getVATContext())
-            ->setRequired(false);
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'textarea',
+            'name'     => 'VATContext',
+            'label'    => 'VAT Context',
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->addSubmit('Save', 'invoice_edit');
+
+        if (null !== $this->_invoice) {
+            $this->bind($this->_invoice);
+        }
+    }
+
+    /**
+     * @param  Invoice $invoice
+     * @return self
+     */
+    public function setInvoice(Invoice $invoice)
+    {
+        $this->_invoice = $invoice;
+
+        return $this;
     }
 }

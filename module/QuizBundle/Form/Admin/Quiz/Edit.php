@@ -18,32 +18,17 @@
 
 namespace QuizBundle\Form\Admin\Quiz;
 
-use Doctrine\ORM\EntityManager,
-    QuizBundle\Entity\Quiz,
-    Zend\Form\Element\Submit;
-
 /**
  * Edits a quiz
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager
-     * @param Quiz            $quiz          The quiz to populate the form with
-     * @param null|string|int $name          Optional name for the form
-     */
-    public function __construct(EntityManager $entityManager, Quiz $quiz, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
-        $this->remove('submit');
-
-        $field = new Submit('submit');
-        $field->setValue('Edit')
-            ->setAttribute('class', 'edit');
-        $this->add($field);
-
-        $this->populateFromQuiz($quiz);
+        $this->remove('submit')
+            ->addSubmit('Edit', 'edit');
     }
 }

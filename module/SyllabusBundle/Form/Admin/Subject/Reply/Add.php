@@ -18,11 +18,6 @@
 
 namespace SyllabusBundle\Form\Admin\Subject\Reply;
 
-use CommonBundle\Component\Form\Admin\Element\Textarea,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add Reply
  *
@@ -30,41 +25,26 @@ use CommonBundle\Component\Form\Admin\Element\Textarea,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    protected $hydrator = 'SyllabusBundle\Hydrator\Subject\Reply';
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Textarea('text');
-        $field->setLabel('Comment')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'comment_add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'text',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'textarea',
+            'name'     => 'text',
+            'label'    => 'Comment',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'comment_add');
     }
 }

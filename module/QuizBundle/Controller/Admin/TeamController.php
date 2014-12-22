@@ -18,9 +18,8 @@
 
 namespace QuizBundle\Controller\Admin;
 
+
 use QuizBundle\Entity\Team,
-    QuizBundle\Form\Admin\Team\Add as AddForm,
-    QuizBundle\Form\Admin\Team\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -64,18 +63,17 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager(), $quiz);
+        $form = $this->getForm('quiz_team_add', array('quiz' => $quiz));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $team = $form->hydrateObject(
+                    new Team($quiz)
+                );
 
-                $team = new Team($quiz, $formData['name'], $formData['number']);
                 $this->getEntityManager()->persist($team);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -116,18 +114,12 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form  = new EditForm($this->getEntityManager(), $team);
+        $form = $this->getForm('quiz_team_edit', array('team' => $team));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $team->setName($formData['name'])
-                    ->setNumber($formData['number']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

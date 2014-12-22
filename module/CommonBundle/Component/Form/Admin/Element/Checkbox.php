@@ -18,21 +18,14 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
+use CommonBundle\Component\Form\ElementTrait;
+
 /**
  * Checkbox form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Checkbox extends \Zend\Form\Element\Checkbox
+class Checkbox extends \Zend\Form\Element\Checkbox implements \CommonBundle\Component\Form\ElementInterface
 {
-    /**
-     * @param  string                             $name    Optional name for the element
-     * @param  array                              $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
-     */
-    public function __construct($name, $options = array())
-    {
-        parent::__construct($name, $options);
-        $this->setAttribute('id', $name);
-    }
+    use ElementTrait;
 }

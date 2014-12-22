@@ -18,9 +18,10 @@
 
 namespace BrBundle\Entity\Invoice;
 
+
+
 use BrBundle\Entity\Invoice,
     BrBundle\Entity\Product\OrderEntry,
-    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,7 +42,7 @@ class InvoiceEntry
     private $id;
 
     /**
-     * @var \BrBundle\Entity\Invoice The invoice to which this entry belongs.
+     * @var Invoice The invoice to which this entry belongs.
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Invoice")
      * @ORM\JoinColumn(name="invoice", referencedColumnName="id")
@@ -56,7 +57,7 @@ class InvoiceEntry
     private $invoiceText;
 
     /**
-     * @var \BrBundle\Entity\Product\OrderEntry The order entry of which this is an entry in the invoice.
+     * @var OrderEntry The order entry of which this is an entry in the invoice.
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Product\OrderEntry")
      * @ORM\JoinColumn(name="order_entry", referencedColumnName="id")
@@ -78,9 +79,10 @@ class InvoiceEntry
     private $version;
 
     /**
-     * @param \BrBundle\Entity\Invoice            $invoice    The invoice of which this entry is part.
-     * @param \BrBundle\Entity\Product\OrderEntry $orderEntry The order entry corresponding to this invoice entry.
-     * @param int                                 $position   The position number of the entry in the invoice
+     * @param Invoice    $invoice    The invoice of which this entry is part.
+     * @param OrderEntry $orderEntry The order entry corresponding to this invoice entry.
+     * @param int        $position   The position number of the entry in the invoice
+     * @param int        $version    The version of the contract this entry belongs too
      */
     public function __construct(Invoice $invoice, OrderEntry $orderEntry, $position, $version)
     {
@@ -112,8 +114,8 @@ class InvoiceEntry
     }
 
     /**
-     * @param  string                                $text
-     * @return \BrBundle\Entity\Invoice\InvoiceEntry
+     * @param  string $text
+     * @return self
      */
     public function setInvoiceText($text)
     {
@@ -123,7 +125,7 @@ class InvoiceEntry
     }
 
     /**
-     * @return text
+     * @return string
      */
     public function getInvoiceText()
     {
@@ -139,7 +141,7 @@ class InvoiceEntry
     }
 
     /**
-     * @return \BrBundle\Entity\Invoice
+     * @return Invoice
      */
     public function getInvoice()
     {
@@ -155,7 +157,7 @@ class InvoiceEntry
     }
 
     /**
-     * @return \BrBundle\Entity\Product\OrderEntry
+     * @return OrderEntry
      */
     public function getOrderEntry()
     {

@@ -18,12 +18,6 @@
 
 namespace BrBundle\Form\Admin\Company;
 
-use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
-    BrBundle\Entity\Company,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory;
-
 /**
  * Edit a company.
  *
@@ -31,91 +25,11 @@ use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
  */
 class Edit extends Add
 {
-    /**
-     * @var \BrBundle\Entity\Company
-     */
-    private $_company;
-
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
-     * @param \BrBundle\Entity\Company    $company
-     * @param null|string|int             $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Company $company, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
-
-        $this->_company = $company;
+        parent::init();
 
         $this->remove('submit');
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'company_edit');
-        $this->add($field);
-
-        $this->_populateFromCompany($company);
-    }
-
-    private function _populateFromCompany(Company $company)
-    {
-        $yearIds = array();
-        foreach ($company->getPage()->getYears() as $year) {
-            $yearIds[] = $year->getId();
-        }
-
-        $cvYearIds = array();
-        foreach ($company->getCvBookYears() as $year) {
-            $cvYearIds[] = 'year-' . $year->getId();
-        }
-
-        foreach ($company->getCvBookArchiveYears() as $year) {
-            $cvYearIds[] = 'archive-' . $year;
-        }
-
-        $formData =  array(
-            'company_name' => $company->getName(),
-            'sector' => $company->getSectorCode(),
-            'vat_number' => $company->getVatNumber(),
-            'address_street' => $company->getAddress()->getStreet(),
-            'address_number' => $company->getAddress()->getNumber(),
-            'address_mailbox' => $company->getAddress()->getMailbox(),
-            'address_postal' => $company->getAddress()->getPostal(),
-            'address_city' => $company->getAddress()->getCity(),
-            'address_country' => $company->getAddress()->getCountryCode(),
-            'phone_number' => $company->getPhoneNumber(),
-            'website' => $company->getWebsite(),
-            'years' => $yearIds,
-            'cvbook' => $cvYearIds,
-        );
-
-        $formData['summary'] = $company->getPage()->getSummary();
-        $formData['description'] = $company->getPage()->getDescription();
-
-        $this->setData($formData);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->remove('company_name');
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'company_name',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new CompanyNameValidator($this->_entityManager, $this->_company),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        $this->addSubmit('Save', 'company_edit');
     }
 }

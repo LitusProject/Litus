@@ -18,12 +18,7 @@
 
 namespace NotificationBundle\Controller\Admin;
 
-use DateTime,
-    NotificationBundle\Entity\Node\Notification,
-    NotificationBundle\Entity\Node\Translation,
-    NotificationBundle\Form\Admin\Notification\Add as AddForm,
-    NotificationBundle\Form\Admin\Notification\Edit as EditForm,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * NotificationController
@@ -53,40 +48,16 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('notification_notification_add');
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
+            if ($form->isValid()) {
+                $notification = $form->hydrateObject();
 
-            if ($form->isValid() && $startDate && $endDate) {
-                $formData = $form->getFormData($formData);
-                $notification = new Notification(
-                    $this->getAuthentication()->getPersonObject(),
-                    $startDate,
-                    $endDate,
-                    $formData['active']
-                );
                 $this->getEntityManager()->persist($notification);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    if ('' != $formData['content_' . $language->getAbbrev()]) {
-                        $notification->addTranslation(
-                            new Translation(
-                                $notification,
-                                $language,
-                                str_replace('#', '', $formData['content_' . $language->getAbbrev()])
-                            )
-                        );
-                    }
-                }
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -118,44 +89,13 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $notification);
+        $form = $this->getForm('notification_notification_edit', $notification);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
-
-            if ($form->isValid() && $startDate && $endDate) {
-                $formData = $form->getFormData($formData);
-
-                $notification->setEndDate($endDate)
-                    ->setStartDate($startDate)
-                    ->setActive($formData['active']);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    $translation = $notification->getTranslation($language, false);
-
-                    if (null !== $translation) {
-                        $translation->setContent($formData['content_' . $language->getAbbrev()]);
-                    } else {
-                        if ('' != $formData['content_' . $language->getAbbrev()]) {
-                            $notification->addTranslation(
-                                new Translation(
-                                    $notification,
-                                    $language,
-                                    str_replace('#', '', $formData['content_' . $language->getAbbrev()])
-                                )
-                            );
-                        }
-                    }
-                }
-
+            if ($form->isValid()) {
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -241,14 +181,5 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         return $notification;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

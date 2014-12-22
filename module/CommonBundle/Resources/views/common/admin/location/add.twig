@@ -21,16 +21,16 @@
             $('#controller_action .form-actions input').after(search);
 
             search.click(function (e) {
-                e.preventDefault();
+                $address = $('.address');
 
                 $.post(
                     '{{ url('common_admin_location', {'action': 'geocoding'}) }}',
                     {
-                        'street': $('#address_street').val(),
-                        'number': $('#address_number').val(),
-                        'postal': $('#address_postal').val(),
-                        'city': $('#address_city').val(),
-                        'country': $('#address_country').val(),
+                        'street': $address.find('.street').val(),
+                        'number': $address.find('.number').val(),
+                        'postal': $address.find('.postal').val(),
+                        'city': $address.find('.city').val(),
+                        'country': $address.find('.country').val(),
                     },
                     function (data) {
                         search.hide();
@@ -55,12 +55,12 @@
                                     $('<td>').html(this.geometry.location.lat + ', ' + this.geometry.location.lng),
                                     $('<td>').html(
                                         $('<a>', {'class': 'location_add', 'href': '#'}).html('Choose').data(this).click(function (e) {
-                                            e.preventDefault();
-
-                                            $('#latitude').val($(this).data().geometry.location.lat);
-                                            $('#longitude').val($(this).data().geometry.location.lng);
+                                            $('.latitude').val($(this).data().geometry.location.lat);
+                                            $('.longitude').val($(this).data().geometry.location.lng);
 
                                             $('#controller_action form').submit();
+
+                                            return false;
                                         })
                                     )
                                 )
@@ -68,7 +68,9 @@
                         });
                     },
                     'json'
-                )
+                );
+
+                return false;
             });
         });
     </script>

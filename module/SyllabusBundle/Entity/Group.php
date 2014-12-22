@@ -18,6 +18,8 @@
 
 namespace SyllabusBundle\Entity;
 
+
+
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -77,19 +79,8 @@ class Group
      */
     protected $_entityManager = null;
 
-    /**
-     * @param string  $name
-     * @param boolean $cvBook
-     * @param string  $extraMembers
-     * @param string  $excludedMembers
-     */
-    public function __construct($name, $cvBook, $extraMembers, $excludedMembers)
+    public function __construct()
     {
-        $this->name = $name;
-        $this->cvBook = $cvBook;
-        $this->extraMembers = $extraMembers;
-        $this->excludedMembers = $excludedMembers;
-
         $this->removed = false;
     }
 

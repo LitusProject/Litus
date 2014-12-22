@@ -19,8 +19,6 @@
 namespace BrBundle\Component\ContractParser;
 
 /**
- *
- *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class EntriesOnlyEntry extends Entry
@@ -30,7 +28,10 @@ class EntriesOnlyEntry extends Entry
         parent::__construct('');
     }
 
-    public function addNodeToList($node)
+    /**
+     * @param Node $node
+     */
+    public function addNodeToList(Node $node)
     {
         if ($node instanceof Text) {
             throw new IllegalFormatException('There is no text allowed without a parent-entry at the place');
@@ -39,6 +40,9 @@ class EntriesOnlyEntry extends Entry
         parent::addNodeToList($node);
     }
 
+    /**
+     * @return Node|null
+     */
     public function getEntries()
     {
         if (count($this->getNodes()) == 0) {

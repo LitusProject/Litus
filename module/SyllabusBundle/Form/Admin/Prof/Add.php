@@ -18,11 +18,7 @@
 
 namespace SyllabusBundle\Form\Admin\Prof;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
 
 /**
  * Add Prof
@@ -31,66 +27,27 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Hidden('prof_id');
-        $field->setAttribute('id', 'profId');
-        $this->add($field);
-
-        $field = new Text('prof');
-        $field->setLabel('Docent')
-            ->setAttribute('size', 70)
-            ->setAttribute('id', 'profSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'docent_add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'prof_id',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
+        $this->add(array(
+            'type'       => 'typeahead',
+            'name'       => 'prof',
+            'label'      => 'Prof',
+            'required'   => true,
+            'attributes' => array(
+                'size'         => 70,
+            ),
+            'options'    => array(
+                'input' => array(
                     'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
+                        new PersonTypeaheadValidator($this->getEntityManager()),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'prof',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        $this->addSubmit('Add', 'docent_add');
     }
 }

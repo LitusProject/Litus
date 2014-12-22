@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Component\Form\Bootstrap;
 
-use Zend\Form\Element\Csrf,
-    Zend\InputFilter\InputFilterAwareInterface;
+use Zend\Form\Element\Csrf;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want
@@ -27,7 +26,7 @@ use Zend\Form\Element\Csrf,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
+abstract class Form extends \CommonBundle\Component\Form\Form
 {
     /**
      * @var boolean Whether or not to show the form-actions div
@@ -45,9 +44,6 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
 
         $this->_displayFormActions = $displayFormActions;
 
-        $this->setAttribute('method', 'post')
-            ->setAttribute('novalidate', true);
-
         if ($horizontal) {
             $this->setAttribute('class', 'form-horizontal');
         }
@@ -58,60 +54,6 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     }
 
     /**
-     * Set data to validate and/or populate elements
-     *
-     * Typically, also passes data on to the composed input filter.
-     *
-     * @param  array|\ArrayAccess|\Traversable    $data
-     * @return Form|FormInterface
-     * @throws Exception\InvalidArgumentException
-     */
-    public function setData($data)
-    {
-        parent::setData($data);
-
-        $this->setInputFilter($this->getInputFilter());
-    }
-
-    /**
-     * Set a hash of element names/messages to use when validation fails
-     *
-     * @param  array|\Traversable                 $messages
-     * @return Form
-     * @throws Exception\InvalidArgumentException
-     */
-    public function setMessages($messages)
-    {
-        parent::setMessages($messages);
-
-        $fieldsets = $this->getFieldsets();
-        foreach ($fieldsets as $fieldset) {
-            $fieldset->setMessages($messages);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Recursively populate values of attached elements and fieldsets
-     *
-     * @param  array|\Traversable                 $data
-     * @return Form
-     * @throws Exception\InvalidArgumentException
-     */
-    public function populateValues($data)
-    {
-        parent::populateValues($data);
-
-        $fieldsets = $this->getFieldsets();
-        foreach ($fieldsets as $fieldset) {
-            $fieldset->populateValues($data);
-        }
-
-        return $this;
-    }
-
-    /**
      * Whether or not to show the form-actions div
      *
      * @return boolean
@@ -119,21 +61,5 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     public function getDisplayFormActions()
     {
         return $this->_displayFormActions;
-    }
-
-    /**
-     * Return the form validated data, combined with post data
-     *
-     * @return object
-     */
-    public function getFormData($formData)
-    {
-        foreach ($this->getData() as $key => $value) {
-            if (null !== $value) {
-                $formData->{$key} = $value;
-            }
-        }
-
-        return $formData;
     }
 }

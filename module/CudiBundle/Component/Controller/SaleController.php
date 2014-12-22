@@ -18,6 +18,7 @@
 
 namespace CudiBundle\Component\Controller;
 
+
 use Exception,
     Zend\Mvc\MvcEvent;
 
@@ -111,5 +112,13 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             'auth_route'     => 'cudi_sale_auth',
             'redirect_route' => 'cudi_sale_sale',
         );
+    }
+
+    /**
+     * @return \CommonBundle\Component\Form\Factory
+     */
+    protected function getFormFactory()
+    {
+        return $this->getServiceLocator()->get('formfactory.bootstrap');
     }
 }

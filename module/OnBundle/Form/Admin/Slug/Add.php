@@ -18,12 +18,9 @@
 
 namespace OnBundle\Form\Admin\Slug;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    Doctrine\ODM\MongoDB\DocumentManager,
-    OnBundle\Component\Validator\Name as NameValidator,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+
+use OnBundle\Component\Validator\Name as NameValidator,
+    OnBundle\Document\Slug as SlugDocument;
 
 /**
  * Add Slug
@@ -32,61 +29,41 @@ use CommonBundle\Component\Form\Admin\Element\Text,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var DocumentManager The DocumentManager instance
-     */
-    protected $_documentManager = null;
+    protected $hydrator = 'OnBundle\Hydrator\Slug';
 
     /**
-     * @param DocumentManager $documentManager The DocumentManager instance
-     * @param null|string|int $name            Optional name for the element
+     * @var SlugDocument|null
      */
-    public function __construct(DocumentManager $documentManager, $name = null)
+    private $slug;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_documentManager = $documentManager;
-
-        $field = new Text('name');
-        $field->setLabel('Name');
-        $this->add($field);
-
-        $field = new Text('url');
-        $field->setLabel('URL')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'slug_add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'name',
+            'label'      => 'Name',
+            'required'   => false,
+            'options' => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new NameValidator($this->_documentManager),
+                        new NameValidator($this->getDocumentManager(), $this->slug),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'url',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'url',
+            'label'      => 'URL',
+            'required'   => true,
+            'options' => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -95,10 +72,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             'name' => 'uri',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'slug_add');
+
+        if (null !== $this->slug) {
+            $this->bind($this->slug);
+        }
+    }
+
+    /**
+     * @param  SlugDocument $slug
+     * @return self
+     */
+    public function setSlug(SlugDocument $slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }

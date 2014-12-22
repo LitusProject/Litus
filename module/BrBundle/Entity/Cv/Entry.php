@@ -18,6 +18,12 @@
 
 namespace BrBundle\Entity\Cv;
 
+
+
+
+
+
+
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
@@ -266,73 +272,13 @@ class Entry
     private $about;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic           The academic
-     * @param \CommonBundle\Entity\General\AcademicYear $year               The current academic year.
-     * @param string                                    $firstName
-     * @param string                                    $lastName
-     * @param DateTime|null                             $birthday
-     * @param string                                    $sex
-     * @param string                                    $phoneNumber
-     * @param string                                    $email
-     * @param Address                                   $address
-     * @param string                                    $priorStudy
-     * @param integer                                   $priorGrade
-     * @param Study                                     $study
-     * @param integer                                   $grade
-     * @param integer                                   $bachelorStart
-     * @param integer                                   $bachelorEnd
-     * @param integer                                   $masterStart
-     * @param integer                                   $masterEnd
-     * @param string                                    $additionalDiplomas
-     * @param string                                    $erasmusPeriod
-     * @param string                                    $erasmusLocation
-     * @param string                                    $languageExtra
-     * @param string                                    $computerSkills
-     * @param string                                    $experiences
-     * @param string                                    $thesisSummary
-     * @param string                                    $futureInterest
-     * @param string                                    $mobilityEurope
-     * @param string                                    $mobilityWorld
-     * @param string                                    $careerExpectations
-     * @param string                                    $hobbies
-     * @param string                                    $about
+     * @param Academic     $academic The academic
+     * @param AcademicYear $year     The current academic year.
      */
-    public function __construct(Academic $academic, AcademicYear $year, $firstName, $lastName, DateTime $birthday = null,
-        $sex, $phoneNumber, $email, Address $address, $priorStudy, $priorGrade, Study $study, $grade, $bachelorStart,
-        $bachelorEnd, $masterStart, $masterEnd, $additionalDiplomas, $erasmusPeriod, $erasmusLocation, $languageExtra,
-        $computerSkills, $experiences, $thesisSummary, $futureInterest, $mobilityEurope, $mobilityWorld,
-        $careerExpectations, $hobbies, $about)
+    public function __construct(Academic $academic, AcademicYear $year)
     {
         $this->academic = $academic;
         $this->year = $year;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->birthday = $birthday;
-        $this->sex = $sex;
-        $this->phoneNumber = $phoneNumber;
-        $this->email = $email;
-        $this->address = $address;
-        $this->priorStudy = $priorStudy;
-        $this->priorGrade = $priorGrade * 100;
-        $this->study = $study;
-        $this->grade = $grade * 100;
-        $this->bachelorStart = $bachelorStart;
-        $this->bachelorEnd = $bachelorEnd;
-        $this->masterStart = $masterStart;
-        $this->masterEnd = $masterEnd;
-        $this->additionalDiplomas = $additionalDiplomas;
-        $this->erasmusPeriod = $erasmusPeriod;
-        $this->erasmusLocation = $erasmusLocation;
-        $this->languageExtra = $languageExtra;
-        $this->computerSkills = $computerSkills;
-        $this->experiences = $experiences;
-        $this->thesisSummary = $thesisSummary;
-        $this->futureInterest = $futureInterest;
-        $this->mobilityEurope = $mobilityEurope;
-        $this->mobilityWorld = $mobilityWorld;
-        $this->careerExpectations = $careerExpectations;
-        $this->hobbies = $hobbies;
-        $this->about = $about;
     }
 
     /**

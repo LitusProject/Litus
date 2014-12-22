@@ -349,24 +349,6 @@ class Address
     private $country;
 
     /**
-     * @param string $street
-     * @param string $number
-     * @param string $mailbox
-     * @param string $postal
-     * @param string $city
-     * @param string $country
-     */
-    public function __construct($street, $number, $mailbox, $postal, $city, $country)
-    {
-        $this->setStreet($street)
-            ->setNumber($number)
-            ->setMailbox($mailbox)
-            ->setPostal($postal)
-            ->setCity($city)
-            ->setCountry($country);
-    }
-
-    /**
      * @return integer
      */
     public function getId()

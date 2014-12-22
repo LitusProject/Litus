@@ -18,15 +18,7 @@
 
 namespace BannerBundle\Form\Admin\Banner;
 
-use BannerBundle\Entity\Node\Banner,
-    CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\File,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CommonBundle\Component\Validator\DateCompare as DateCompareValidator;
 
 /**
  * Add Banner
@@ -37,152 +29,84 @@ use BannerBundle\Entity\Node\Banner,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'BannerBundle\Hydrator\Node\Banner';
+
     const BANNER_WIDTH = 940;
     const BANNER_HEIGHT = 100;
     const BANNER_FILESIZE = '10MB';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init($fileRequired = true)
     {
-        parent::__construct($name);
-
-        $this->_entityManager = $entityManager;
+        parent::init();
 
         $this->setAttribute('id', 'uploadBanner');
-        $this->setAttribute('enctype', 'multipart/form-data');
 
-        $field = new Text('name');
-        $field->setLabel('Name')
-            ->setAttribute('data-help', 'The name of the banner (only shown in the admin).')
-            ->setRequired(true);
-        $this->add($field);
-
-        $field = new Text('start_date');
-        $field->setLabel('Start Date')
-            ->setAttribute('data-help', 'The start date for showing this banner, overrulled by "active".')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('end_date');
-        $field->setLabel('End Date')
-            ->setAttribute('data-help', 'The end date for showing this banner, overrulled by "active".')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Checkbox('active');
-        $field->setLabel('Active')
-            ->setAttribute('data-help', 'Flag whether the banner will be shown on the website.');
-        $this->add($field);
-
-        $field = new File('file');
-        $field->setLabel('Image (' . self::BANNER_WIDTH . ' x ' . self::BANNER_HEIGHT . ')')
-            ->setAttribute('data-help', 'The image for the banner. The maximum file size is ' . self::BANNER_FILESIZE . '. This must be a valid image (jpg, png, ...). The image must have a width of  ' . self::BANNER_WIDTH . 'px and a height of ' . self::BANNER_HEIGHT . 'px.')
-            ->setRequired(true);
-        $this->add($field);
-
-        $field = new Text('url');
-        $field->setLabel('URL')
-            ->setAttribute('data-help', 'The url to open after clicking on the banner');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'banner_add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'start_date',
-                    'required' => true,
-                    'filters'  => array(
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'name',
+            'label'      => 'Name',
+            'required'   => true,
+            'attributes' => array(
+                'data-help' => 'The name of the banner (only shown in the admin).',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'end_date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
+        $this->add(array(
+            'type'       => 'datetime',
+            'name'       => 'start_date',
+            'label'      => 'Start Date',
+            'required'   => true,
+            'attributes' => array(
+                'data-help' => 'The start date for showing this banner, overrulled by "active".',
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'datetime',
+            'name'       => 'end_date',
+            'label'      => 'End Date',
+            'required'   => true,
+            'attributes' => array(
+                'data-help'       => 'The end date for showing this banner, overrulled by "active".',
+            ),
+            'options'    => array(
+                'input' => array(
                     'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
                         new DateCompareValidator('start_date', 'd/m/Y H:i'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'active',
+            'label'      => 'Active',
+            'attributes' => array(
+                'data-help' => 'Flag whether the banner will be shown on the website.',
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'url',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'file',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'file',
+            'name'       => 'file',
+            'label'      => 'Image  (' . self::BANNER_WIDTH . ' x ' . self::BANNER_HEIGHT . ')',
+            'attributes'  => array(
+                'data-help' => 'The image for the banner. The maximum file size is ' . self::BANNER_FILESIZE . '. This must be a valid image (jpg, png, ...). The image must have a width of  ' . self::BANNER_WIDTH . 'px and a height of ' . self::BANNER_HEIGHT . 'px.',
+            ),
+            'required'   => $fileRequired,
+            'options'    => array(
+                'input' => array(
                     'validators'  => array(
                         array(
-                            'name' => 'filefilessize',
+                            'name' => 'filesize',
                             'options' => array(
                                 'max' => self::BANNER_FILESIZE,
                             ),
@@ -200,10 +124,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'url',
+            'label'      => 'URL',
+            'attributes' => array(
+                'data-help' => 'The url to open after clicking on the banner.',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->addSubmit('Add', 'banner_add');
     }
 }

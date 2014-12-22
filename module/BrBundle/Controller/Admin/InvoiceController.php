@@ -18,11 +18,15 @@
 
 namespace BrBundle\Controller\Admin;
 
+
+
+
+
+
+
 use BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
     BrBundle\Entity\Invoice,
-    BrBundle\Entity\Invoice\InvoiceEntry,
     BrBundle\Entity\Invoice\InvoiceHistory,
-    BrBundle\Form\Admin\Invoice\Edit as EditForm,
     CommonBundle\Component\Util\File as FileUtil,
     DateTime,
     Zend\Http\Headers,
@@ -92,32 +96,13 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $invoice);
+        $form = $this->getForm('br_invoice_edit', array('invoice' => $invoice));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $newVersionNb = 0;
-
-                $invoice->setVATContext($formData['VATContext']);
-
-                foreach ($invoice->getEntries() as $entry) {
-                    if ($entry->getVersion() == $invoice->getVersion()) {
-                        $newVersionNb = $entry->getVersion() + 1;
-                        $newInvoiceEntry = new InvoiceEntry($invoice,$entry->getOrderEntry(),$entry->getPosition(),$newVersionNb);
-
-                        $this->getEntityManager()->persist($newInvoiceEntry);
-
-                        $newInvoiceEntry->setInvoiceText($formData['entry_' . $entry->getId()]);
-                    }
-                }
-
-                $invoice->setVersion($newVersionNb);
-
                 $history = new InvoiceHistory($invoice);
                 $this->getEntityManager()->persist($history);
 
@@ -221,6 +206,10 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    /**
+     * @param  boolean      $allowPaid
+     * @return Invoice|null
+     */
     private function _getInvoice($allowPaid = true)
     {
         if (null === $this->getParam('id')) {

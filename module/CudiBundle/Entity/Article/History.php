@@ -18,6 +18,7 @@
 
 namespace CudiBundle\Entity\Article;
 
+
 use CudiBundle\Entity\Article,
     Doctrine\ORM\Mapping as ORM;
 
@@ -58,7 +59,7 @@ class History
      */
     public function __construct(Article $article, Article $precursor = null)
     {
-        $this->precursor = isset($precursor) ? $precursor : $article->duplicate();
+        $this->precursor = isset($precursor) ? $precursor : clone $article;
 
         $this->precursor->setVersionNumber($article->getVersionNumber())
             ->setIsHistory(true);

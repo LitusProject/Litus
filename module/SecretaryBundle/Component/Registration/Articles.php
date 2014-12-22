@@ -18,6 +18,10 @@
 
 namespace SecretaryBundle\Component\Registration;
 
+
+
+
+
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
@@ -49,29 +53,31 @@ class Articles
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($ids[$organization->getId()]);
 
-            $booking = $entityManager
-                ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
-                    $membershipArticle,
-                    $academic,
-                    $academicYear
-                );
+            if (null !== $membershipArticle) {
+                $booking = $entityManager
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
+                    ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
+                        $membershipArticle,
+                        $academic,
+                        $academicYear
+                    );
 
-            if (null === $booking) {
-                $booking = new Booking(
-                    $entityManager,
-                    $academic,
-                    $membershipArticle,
-                    'assigned',
-                    1,
-                    true
-                );
+                if (null === $booking) {
+                    $booking = new Booking(
+                        $entityManager,
+                        $academic,
+                        $membershipArticle,
+                        'assigned',
+                        1,
+                        true
+                    );
 
-                $entityManager->persist($booking);
-            }
+                    $entityManager->persist($booking);
+                }
 
-            if (isset($options['payed']) && $options['payed']) {
-                $booking->setStatus('sold', $entityManager);
+                if (isset($options['payed']) && $options['payed']) {
+                    $booking->setStatus('sold', $entityManager);
+                }
             }
         }
 

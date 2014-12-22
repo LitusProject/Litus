@@ -18,10 +18,12 @@
 
 namespace BrBundle\Entity;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Product,
-    BrBundle\Entity\Product\Order,
-    CommonBundle\Entity\User\Person,
+
+
+
+
+
+use BrBundle\Entity\Product\Order,
     DateInterval,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -46,7 +48,7 @@ class Invoice
     private $id;
 
     /**
-     * @var \BrBundle\Entity\Product\Order The order for which this invoice is meant
+     * @var Order The order for which this invoice is meant
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Product\Order")
      * @ORM\JoinColumn(name="product_order", referencedColumnName="id")
@@ -54,21 +56,21 @@ class Invoice
     private $order;
 
     /**
-     * @var \DateTime The time of creation of this invoice
+     * @var DateTime The time of creation of this invoice
      *
      * @ORM\Column(name="creation_time", type="datetime")
      */
     private $creationTime;
 
     /**
-     * @var \DateTime The time this invoice was paid.
+     * @var DateTime The time this invoice was paid.
      *
      * @ORM\Column(name="paid_time", type="datetime", nullable=true)
      */
     private $paidTime;
 
     /**
-     * @var \BrBundle\Entity\Invoice\InvoiceEntry The entries in this invoice
+     * @var ArrayCollection The entries in this invoice
      *
      * @ORM\OneToMany(
      *      targetEntity="BrBundle\Entity\Invoice\InvoiceEntry",
@@ -81,14 +83,14 @@ class Invoice
     private $invoiceEntries;
 
     /**
-     * @var Integer that resembles the version of this invoice.
+     * @var int that resembles the version of this invoice.
      *
      * @ORM\Column(type="integer")
      */
     private $version;
 
     /**
-     * @var String that provides any possible context for the VAT
+     * @var string that provides any possible context for the VAT
      *
      * @ORM\Column(type="string")
      */
@@ -97,7 +99,7 @@ class Invoice
     /**
      * Creates a new invoice
      *
-     * @param \BrBundle\Entity\Product\Order $order The order to create the invoice for.
+     * @param Order $order The order to create the invoice for.
      */
     public function __construct(Order $order)
     {
@@ -105,6 +107,8 @@ class Invoice
         $this->creationTime = new DateTime();
         $this->setVersion(0);
         $this->setVATContext();
+
+        $this->invoiceEntries = new ArrayCollection();
     }
 
     public function getInvoiceNumber(EntityManager $entityManager)
@@ -129,8 +133,8 @@ class Invoice
     }
 
     /**
-     * @param  int                      $version
-     * @return \BrBundle\Entity\Invoice
+     * @param  int  $version
+     * @return self
      */
     public function setVersion($version)
     {
@@ -167,9 +171,9 @@ class Invoice
     }
 
     /**
-     * @return \BrBundle\Entity\Invoice
+     * @return self
      * @throws InvalidArgumentExeption
-     *                                  Exception gets thrown if the invoice is already payed.
+     *                                 Exception gets thrown if the invoice is already payed.
      */
     public function setPayed()
     {
@@ -183,7 +187,7 @@ class Invoice
     }
 
     /**
-     * @return BrBundle\Entity\Product\Order
+     * @return Order
      */
     public function getOrder()
     {
@@ -191,8 +195,8 @@ class Invoice
     }
 
     /**
-     * @param  \BrBundle\Entity\Product\Order $order
-     * @return \BrBundle\Entity\Invoice
+     * @param  Order $order
+     * @return self
      */
     public function setOrder(Order $order)
     {
@@ -202,7 +206,7 @@ class Invoice
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreationTime()
     {
@@ -220,7 +224,7 @@ class Invoice
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getExpirationTime(EntityManager $entityManager)
     {
@@ -232,7 +236,7 @@ class Invoice
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getPaidTime()
     {
@@ -240,9 +244,10 @@ class Invoice
     }
 
     /**
-     * @return \DateTime
+     * @param  DateTime $paidTime
+     * @return self
      */
-    public function setPaidTime($paidTime)
+    public function setPaidTime(DateTime $paidTime)
     {
         if ($this->isPaid()) {
             throw new \InvalidArgumentException('This invoice has already been paid');

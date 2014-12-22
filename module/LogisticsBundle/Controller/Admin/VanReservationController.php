@@ -18,12 +18,10 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use DateTime,
-    LogisticsBundle\Entity\Driver,
-    LogisticsBundle\Entity\Reservation\ReservableResource,
+
+
+use LogisticsBundle\Entity\Driver,
     LogisticsBundle\Entity\Reservation\VanReservation,
-    LogisticsBundle\Form\Admin\VanReservation\Add as AddForm,
-    LogisticsBundle\Form\Admin\VanReservation\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 class VanReservationController extends \CommonBundle\Component\Controller\ActionController\AdminController
@@ -88,46 +86,15 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager(), $this->getCurrentAcademicYear());
+        $form = $this->getForm('logistics_van-reservation_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
-
-            if ($form->isValid() && $startDate && $endDate) {
-                $formData = $form->getFormData($formData);
-
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
-
-                $passenger = ('' == $formData['passenger_id'])
-                    ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);
-
-                $driver = $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\Driver')
-                    ->findOneById($formData['driver']);
-
-                $van = $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
-                    ->findOneByName(VanReservation::VAN_RESOURCE_NAME);
-
-                $reservation = new VanReservation(
-                    $startDate,
-                    $endDate,
-                    $formData['reason'],
-                    $formData['load'],
-                    $van,
-                    $formData['additional_info'],
-                    $this->getAuthentication()->getPersonObject()
+            if ($form->isValid()) {
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject()
                 );
-
-                $reservation->setDriver($driver);
-                $reservation->setPassenger($passenger);
-
-                $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -159,38 +126,12 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             return new ViewModel();
         }
 
-        $form = new EditForm(
-            $this->getEntityManager(), $this->getCurrentAcademicYear(), $reservation
-        );
+        $form = $this->getForm('logistics_van-reservation_edit', array('reservation' => $reservation));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
-            $startDate = self::_loadDate($formData['start_date']);
-            $endDate = self::_loadDate($formData['end_date']);
-
-            if ($form->isValid() && $startDate && $endDate) {
-                $formData = $form->getFormData($formData);
-
-                $repository = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic');
-
-                $passenger = ('' == $formData['passenger_id'])
-                    ? $repository->findOneByUsername($formData['passenger']) : $repository->findOneById($formData['passenger_id']);
-
-                $driver = $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\Driver')
-                    ->findOneById($formData['driver']);
-
-                $reservation->setStartDate($startDate)
-                    ->setEndDate($endDate)
-                    ->setReason($formData['reason'])
-                    ->setLoad($formData['load'])
-                    ->setAdditionalInfo($formData['additional_info'])
-                    ->setDriver($driver)
-                    ->setPassenger($passenger);
-
+            if ($form->isValid()) {
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -323,14 +264,5 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
         }
 
         return $reservation;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

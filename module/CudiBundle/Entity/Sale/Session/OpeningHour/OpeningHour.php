@@ -18,10 +18,17 @@
 
 namespace CudiBundle\Entity\Sale\Session\OpeningHour;
 
+
+
+
+
+
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     DateTime,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM,
+    Locale;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\OpeningHour\OpeningHour")
@@ -70,21 +77,19 @@ class OpeningHour
     /**
      * @var ArrayCollection The translations of this opening hour
      *
-     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\Session\OpeningHour\Translation", mappedBy="openingHour", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="CudiBundle\Entity\Sale\Session\OpeningHour\Translation", mappedBy="openingHour", cascade={"persist", "remove"})
      */
     private $translations;
 
     /**
-     * @param DateTime $startDate
-     * @param DateTime $endDate
-     * @param Person   $person
+     * @param Person $person
      */
-    public function __construct(DateTime $startDate, DateTime $endDate, Person $person)
+    public function __construct(Person $person)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
         $this->person = $person;
         $this->timestamp = new DateTime();
+
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -153,7 +158,7 @@ class OpeningHour
                 return $translation;
             }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
                 $fallbackTranslation = $translation;
             }
         }
@@ -178,5 +183,29 @@ class OpeningHour
         }
 
         return '';
+    }
+
+    /**
+     * @param  Language    $language
+     * @param  string|null $comment
+     * @return self
+     */
+    public function setComment(Language $language, $comment = null)
+    {
+        $translation = $this->getTranslation($language, false);
+
+        if (null === $comment) {
+            if ($translation !== null) {
+                $this->translations->removeElement($translation);
+            }
+        } else {
+            if (null === $translation) {
+                $this->translations->add(new Translation($this, $language, $comment));
+            } else {
+                $translation->setComment($comment);
+            }
+        }
+
+        return $this;
     }
 }

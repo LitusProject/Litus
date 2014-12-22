@@ -18,6 +18,8 @@
 
 namespace CommonBundle\Entity\User;
 
+
+
 use DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -90,7 +92,6 @@ class Session
     private $shibboleth;
 
     /**
-     * @param integer      $expirationTime
      * @param Person       $person
      * @param string       $userAgent
      * @param string       $ip

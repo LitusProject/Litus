@@ -18,10 +18,11 @@
 
 namespace FormBundle\Entity\Field;
 
+
+
 use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Node\Form;
+    FormBundle\Entity\Field;
 
 /**
  * This entity stores the node item.
@@ -37,20 +38,6 @@ class File extends Field
      * @ORM\Column(name="max_size", type="integer")
      */
     private $maxSize;
-
-    /**
-     * @param Form        $form
-     * @param integer     $order
-     * @param bool        $required
-     * @param Field|null  $visibityDecisionField
-     * @param string|null $visibilityValue
-     * @param int         $maxSize
-     */
-    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, $maxSize)
-    {
-        parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
-        $this->setMaxSize($maxSize);
-    }
 
     /**
      * Returns the maximum size of the file

@@ -18,11 +18,7 @@
 
 namespace BrBundle\Form\Cv;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityManager;
+use BrBundle\Entity\Cv\Entry as CvEntry;
 
 /**
  * Edit Cv
@@ -32,18 +28,31 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
 class Edit extends Add
 {
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param null|string|int             $name          Optional name for the element
+     * @var CvEntry
      */
-    public function __construct(EntityManager $entityManager, Academic $academic, AcademicYear $year, Language $language, $name = null)
+    private $_entry;
+
+    public function init()
     {
-        parent::__construct($entityManager, $academic, $year, $language, $name);
+        parent::init();
 
         $this->remove('submit');
 
-        $field = new Submit('submit');
-        $field->setValue('Save Changes')
-            ->setAttribute('class', 'btn btn-primary');
-        $this->add($field);
+        $this->addSubmit('Save Changes');
+
+        if (null !== $this->_entry) {
+            $this->bind($this->_entry);
+        }
+    }
+
+    /**
+     * @param  CvEntry $entry
+     * @return self
+     */
+    public function setEntry(CvEntry $entry)
+    {
+        $this->_entry = $entry;
+
+        return $this;
     }
 }

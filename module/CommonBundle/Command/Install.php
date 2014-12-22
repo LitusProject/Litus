@@ -18,11 +18,6 @@
 
 namespace CommonBundle\Command;
 
-use CommonBundle\Entity\General\Address\City,
-    CommonBundle\Entity\General\Address\Street,
-    CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\General\Organization;
-
 /**
  * InstallController
  *
@@ -31,93 +26,4 @@ use CommonBundle\Entity\General\Address\City,
  */
 class Install extends \CommonBundle\Component\Console\Command\Install
 {
-    protected function preInstall()
-    {
-        $this->write('Installing languages...');
-        $this->_installLanguages();
-        $this->writeln(' done.', true);
-
-        $this->write('Installing cities and streets...');
-        $this->_installCities();
-        $this->writeln(' done.', true);
-
-        $this->write('Installing organizations...');
-        $this->_installOrganizations();
-        $this->writeln(' done.', true);
-    }
-
-    private function _installLanguages()
-    {
-        $languages = array(
-            'en' => 'English',
-            'nl' => 'Nederlands',
-        );
-
-        foreach ($languages as $abbrev => $name) {
-            $language = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev($abbrev);
-
-            if (null === $language) {
-                $language = new Language($abbrev, $name);
-                $this->getEntityManager()->persist($language);
-            }
-        }
-
-        $this->getEntityManager()->flush();
-    }
-
-    private function _installCities()
-    {
-        $cities = include 'config/streets.php';
-
-        foreach ($cities as $cityData) {
-            $city = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Address\City')
-                ->findOneByPostal($cityData['postal']);
-
-            if (null === $city) {
-                $city = new City($cityData['postal'], $cityData['name']);
-                $this->getEntityManager()->persist($city);
-            }
-
-            foreach ($cityData['streets'] as $streetData) {
-                $street = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Address\Street')
-                    ->findOneByCityAndName($city, $streetData['name']);
-                if (null === $street) {
-                    $this->getEntityManager()->persist(new Street($city, $streetData['register'], $streetData['name']));
-                }
-            }
-        }
-
-        $this->getEntityManager()->flush();
-    }
-
-    private function _installOrganizations()
-    {
-        $currentOrganizations = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Organization')
-            ->findAll();
-        if (sizeof($currentOrganizations) > 0) {
-            return;
-        }
-
-        $organizations = array(
-            'VTK',
-        );
-
-        foreach ($organizations as $name) {
-            $organization = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Organization')
-                ->findOneByName($name);
-
-            if (null === $organization) {
-                $organization = new Organization($name);
-                $this->getEntityManager()->persist($organization);
-            }
-        }
-
-        $this->getEntityManager()->flush();
-    }
 }

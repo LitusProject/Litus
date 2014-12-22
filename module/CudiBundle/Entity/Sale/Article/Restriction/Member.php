@@ -18,6 +18,11 @@
 
 namespace CudiBundle\Entity\Sale\Article\Restriction;
 
+
+
+
+
+
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Article,
@@ -58,7 +63,7 @@ class Member extends Restriction
     }
 
     /**
-     * @return string|null
+     * @return string
      */
     public function getValue()
     {

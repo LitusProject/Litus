@@ -18,19 +18,19 @@
 
 namespace LogisticsBundle\Form\PianoReservation;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CommonBundle\Entity\General\Language,
+
+
+
+
+
+
+use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     DateInterval,
     DateTime,
-    Doctrine\ORM\EntityManager,
     IntlDateFormatter,
     LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
     LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
-    LogisticsBundle\Entity\Reservation\PianoReservation,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    LogisticsBundle\Entity\Reservation\PianoReservation;
 
 /**
  * The form used to add a new Reservation.
@@ -40,60 +40,98 @@ use CommonBundle\Component\Form\Bootstrap\Element\Select,
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @var Language
-     */
-    protected $_language = null;
-
-    /**
-     * @var array
+     * @var array List of all possible slots
      */
     private $_weeks;
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Language        $language
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Language $language, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-        $this->_language = $language;
-
-        $this->_weeks = $this->_getTimeSlots();
+        $this->_weeks = $this->getTimeSlots();
 
         foreach ($this->_weeks as $key => $week) {
-            $field = new Select('start_date_' . $key);
-            $field->setLabel('Start Date')
-                ->setAttribute('options', $week['slotsStart']);
-            $this->add($field);
-
-            $field = new Select('end_date_' . $key);
-            $field->setLabel('End Date')
-                ->setAttribute('options', $week['slotsEnd']);
-            $this->add($field);
-
-            $field = new Submit('submit_' . $key);
-            $field->setValue('Book');
-            $this->add($field);
+            $this->add(array(
+                'type'       => 'fieldset',
+                'name'       => 'week_' . $key,
+                'elements' => array(
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'start_date',
+                        'label'      => 'Start Date',
+                        'attributes' => array(
+                            'options' => $week['slotsStart'],
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'required' => true,
+                                'filters'  => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name' => 'date',
+                                        'options' => array(
+                                            'format' => 'D d/m/Y H:i',
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'end_date',
+                        'label'      => 'End Date',
+                        'attributes' => array(
+                            'options' => $week['slotsEnd'],
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'required' => true,
+                                'filters'  => array(
+                                    array('name' => 'StringTrim'),
+                                ),
+                                'validators' => array(
+                                    array(
+                                        'name' => 'date',
+                                        'options' => array(
+                                            'format' => 'D d/m/Y H:i',
+                                        ),
+                                    ),
+                                    new DateCompareValidator(
+                                        array('week_' . $key, 'start_date'),
+                                        'D d/m/Y H:i'
+                                    ),
+                                    new ReservationConflictValidator(
+                                        array('week_' . $key, 'start_date'),
+                                        'D d/m/Y H:i',
+                                        PianoReservation::PIANO_RESOURCE_NAME,
+                                        $this->getEntityManager()
+                                    ),
+                                    new PianoDurationValidator(
+                                        array('week_' . $key, 'start_date'),
+                                        'D d/m/Y H:i',
+                                        $this->getEntityManager()
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    array(
+                        'type'  => 'submit',
+                        'name'  => 'submit',
+                        'value' => 'Book',
+                    ),
+                ),
+            ));
         }
     }
 
-    public function getWeeks()
-    {
-        return $this->_weeks;
-    }
-
-    private function _getTimeSlots()
+    private function getTimeSlots()
     {
         $formatter = new IntlDateFormatter(
-            $this->_language->getAbbrev(),
+            $this->getLanguage()->getAbbrev(),
             IntlDateFormatter::NONE,
             IntlDateFormatter::NONE,
             date_default_timezone_get(),
@@ -102,12 +140,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         );
 
         $config = unserialize(
-            $this->_entityManager
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('logistics.piano_time_slots')
         );
 
-        $slotDuration = $this->_entityManager
+        $slotDuration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('logistics.piano_time_slot_duration');
 
@@ -115,7 +153,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $maxDate = new DateTime();
         $maxDate->add(
             new DateInterval(
-                $this->_entityManager
+                $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('logistics.piano_reservation_max_in_advance')
             )
@@ -142,13 +180,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
                     while ($startSlot <= $lastSlot) {
                         if ($startSlot != $lastSlot) {
-                            $occupied = $this->_entityManager
+                            $occupied = $this->getEntityManager()
                                 ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
                                 ->isTimeInExistingReservation($startSlot, true);
 
                             $listStart[] = array(
                                 'label' => $formatter->format($startSlot),
-                                'value' => $startSlot->format('D d/m/Y H:i'),
+                                'value' => $startSlot->format('d/m/Y H:i'),
                                 'attributes' => array(
                                     'disabled' => $occupied,
                                 ),
@@ -156,13 +194,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         }
 
                         if ($startSlot != $firstSlot) {
-                            $occupied = $this->_entityManager
+                            $occupied = $this->getEntityManager()
                                 ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
                                 ->isTimeInExistingReservation($startSlot, false);
 
                             $listEnd[] = array(
                                 'label' => $formatter->format($startSlot),
-                                'value' => $startSlot->format('D d/m/Y H:i'),
+                                'value' => $startSlot->format('d/m/Y H:i'),
                                 'attributes' => array(
                                     'disabled' => $occupied,
                                 ),
@@ -196,60 +234,23 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         return $weeks;
     }
 
-    public function getInputFilter()
+    public function getWeeks()
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
+        return $this->_weeks;
+    }
 
-        foreach ($this->_weeks as $key => $week) {
-            if (!isset($this->data['submit_' . $key])) {
+    public function getInputFilterSpecification()
+    {
+        foreach ($this->getFieldsets() as $fieldset) {
+            if (!isset($this->data[$fieldset->getName()]['submit'])) {
                 continue;
             }
 
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'start_date_' . $key,
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'date',
-                                'options' => array(
-                                    'format' => 'D d/m/Y H:i',
-                                ),
-                            ),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'end_date_' . $key,
-                        'required' => true,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'date',
-                                'options' => array(
-                                    'format' => 'D d/m/Y H:i',
-                                ),
-                            ),
-                            new DateCompareValidator('start_date_' . $key, 'D d/m/Y H:i'),
-                            new ReservationConflictValidator('start_date_' . $key, 'D d/m/Y H:i', PianoReservation::PIANO_RESOURCE_NAME, $this->_entityManager),
-                            new PianoDurationValidator('start_date_' . $key, 'D d/m/Y H:i', $this->_entityManager),
-                        ),
-                    )
-                )
+            return array(
+                $fieldset->getName() => $fieldset->getInputSpecification(),
             );
         }
 
-        return $inputFilter;
+        return array();
     }
 }

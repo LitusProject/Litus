@@ -18,8 +18,19 @@
 
 namespace BrBundle\Entity\Product;
 
+
+
+
+
+
+
+
+
+
 use BrBundle\Entity\Collaborator,
     BrBundle\Entity\Company,
+    BrBundle\Entity\Contract,
+    BrBundle\Entity\Invoice,
     BrBundle\Entity\User\Person\Corporate as CorporatePerson,
     CommonBundle\Entity\User\Person,
     DateTime,
@@ -45,7 +56,7 @@ class Order
     private $id;
 
     /**
-     * @var \BrBundle\Entity\User\Person\Corporate The contact used in this order
+     * @var CorporatePerson The contact used in this order
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\User\Person\Corporate")
      * @ORM\JoinColumn(name="contact", referencedColumnName="id")
@@ -53,7 +64,7 @@ class Order
     private $contact;
 
     /**
-     * @var \BrBundle\Entity\Contract The contract accompanying this order
+     * @var Contract The contract accompanying this order
      *
      * @ORM\OneToOne(
      *      targetEntity="BrBundle\Entity\Contract",
@@ -65,7 +76,7 @@ class Order
     private $contract;
 
     /**
-     * @var \BrBundle\Entity\Invoice The invoice accompanying this order
+     * @var Invoice The invoice accompanying this order
      *
      * @ORM\OneToOne(
      *      targetEntity="BrBundle\Entity\Invoice",
@@ -77,7 +88,7 @@ class Order
     private $invoice;
 
     /**
-     * @var \BrBundle\Entity\Product\OrderEntry The entries in this order
+     * @var ArrayCollection The entries in this order
      *
      * @ORM\OneToMany(
      *      targetEntity="BrBundle\Entity\Product\OrderEntry",
@@ -89,14 +100,14 @@ class Order
     private $orderEntries;
 
     /**
-     * @var \DateTime The time of creation of this node
+     * @var DateTime The time of creation of this node
      *
      * @ORM\Column(name="creation_time", type="datetime")
      */
     private $creationTime;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The person who created this node
+     * @var Collaborator The person who created this node
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Collaborator")
      * @ORM\JoinColumn(name="creation_person", referencedColumnName="id")
@@ -118,23 +129,19 @@ class Order
     private $taxFree;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @param \BrBundle\Entity\User\Person\Corporate $contact
-     * @param \BrBundle\Entity\Collaborator          $creationPerson
-     * @param boolean                                $taxFree
+     * @param Collaborator $creationPerson
      */
-    public function __construct(CorporatePerson $contact, Collaborator $creationPerson, $taxFree)
+    public function __construct(Collaborator $creationPerson)
     {
-        $this->setContact($contact);
         $this->creationTime = new DateTime();
         $this->creationPerson = $creationPerson;
         $this->orderEntries = new ArrayCollection();
         $this->old = false;
-        $this->setTaxFree($taxFree);
     }
 
     /**
@@ -154,7 +161,7 @@ class Order
     }
 
     /**
-     * @return \BrBundle\Entity\User\Person\Corporate
+     * @return CorporatePerson
      */
     public function getContact()
     {
@@ -162,7 +169,7 @@ class Order
     }
 
     /**
-     * @ return \BrBundle\Entity\Product\Order
+     * @return self
      */
     public function setContact(CorporatePerson $contact)
     {
@@ -172,7 +179,7 @@ class Order
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreationTime()
     {
@@ -180,7 +187,7 @@ class Order
     }
 
     /**
-     * @return \BrBundle\Entity\Collaborator
+     * @return Collaborator
      */
     public function getCreationPerson()
     {
@@ -195,6 +202,10 @@ class Order
         return $this->orderEntries->toArray();
     }
 
+    /**
+     * @param  OrderEntry $entry
+     * @return self
+     */
     public function setEntry(OrderEntry $entry)
     {
         $this->orderEntries->add($entry);
@@ -203,11 +214,22 @@ class Order
     }
 
     /**
-     * @return \BrBundle\Entity\Contract
+     * @return Contract
      */
     public function getContract()
     {
         return $this->contract;
+    }
+
+    /**
+     * @param  Contract $contract
+     * @return self
+     */
+    public function setContract(Contract $contract)
+    {
+        $this->contract = $contract;
+
+        return $this;
     }
 
     /**
@@ -242,8 +264,8 @@ class Order
     }
 
     /**
-     * @note    This order gets set to old.
-     *          This means the boolean $old is set to true.
+     * @note   This order gets set to old.
+     *              This means the boolean $old is set to true.
      */
     public function setOld()
     {
@@ -259,11 +281,14 @@ class Order
     }
 
     /**
-     * @param boolean $taxfree
+     * @param  boolean $taxFree
+     * @return self
      */
     public function setTaxFree($taxFree)
     {
         $this->taxFree = $taxFree;
+
+        return $this;
     }
 
     /**
@@ -279,7 +304,7 @@ class Order
         } else {
             foreach ($this->orderEntries as $orderEntry) {
                 $orderEntry->getProduct()->setEntityManager($this->_entityManager);
-                $cost = $cost + (($orderEntry->getProduct()->getPrice() * (1 + $orderEntry->getProduct()->getVatPercentage()/100)) * $orderEntry->getQuantity()) ;
+                $cost = $cost + (($orderEntry->getProduct()->getPrice() * (1 + $orderEntry->getProduct()->getVatPercentage()/100)) * $orderEntry->getQuantity());
             }
         }
 
@@ -287,7 +312,8 @@ class Order
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  EntityManager $entityManager
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {

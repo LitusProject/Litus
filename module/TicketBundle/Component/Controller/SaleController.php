@@ -18,6 +18,7 @@
 
 namespace TicketBundle\Component\Controller;
 
+
 use Exception,
     Zend\Mvc\MvcEvent;
 
@@ -77,5 +78,13 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             'auth_route'     => 'ticket_sale_index',
             'redirect_route' => 'ticket_sale_index',
         );
+    }
+
+    /**
+     * @return \CommonBundle\Component\Form\Factory
+     */
+    protected function getFormFactory()
+    {
+        return $this->getServiceLocator()->get('formfactory.bootstrap');
     }
 }

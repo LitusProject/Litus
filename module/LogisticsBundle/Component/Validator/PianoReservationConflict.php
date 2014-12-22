@@ -18,6 +18,7 @@
 
 namespace LogisticsBundle\Component\Validator;
 
+
 use DateTime,
     Doctrine\ORM\EntityManager;
 
@@ -26,7 +27,7 @@ use DateTime,
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class PianoReservationConflict extends \Zend\Validator\AbstractValidator
+class PianoReservationConflict extends \CommonBundle\Component\Validator\AbstractValidator
 {
     /**
      * @const string The error codes
@@ -99,23 +100,15 @@ class PianoReservationConflict extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (($context !== null) && isset($context) && array_key_exists($this->_startDate, $context)) {
-            $startDate = $context[$this->_startDate];
-        } else {
+        if (null === $startDate = $this->getFormValue($context, $this->_startDate)) {
             $this->error(self::NOT_VALID);
 
             return false;
         }
 
-        if ($startDate === null) {
-            $this->error(self::NOT_VALID);
-
-            return false;
-        }
-
-        $repository = $this->_entityManager
-            ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource');
-        $resource = $repository->findOneByName($this->_resource);
+        $resource = $this->_entityManager
+            ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
+            ->findOneByName($this->_resource);
 
         $startDate = DateTime::createFromFormat($this->_format, $startDate);
         $endDate = DateTime::createFromFormat($this->_format, $value);
@@ -124,10 +117,9 @@ class PianoReservationConflict extends \Zend\Validator\AbstractValidator
             return false;
         }
 
-        $repository = $this->_entityManager
-            ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation');
-
-        $conflicting = $repository->findAllConflictingIgnoringId($startDate, $endDate, $resource, $this->_reservationId);
+        $conflicting = $this->_entityManager
+            ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+            ->findAllConflictingIgnoringId($startDate, $endDate, $resource, $this->_reservationId);
 
         if (isset($conflicting[0])) {
             $this->error(self::CONFLICT_EXISTS);

@@ -53,7 +53,7 @@
                 name: 'runQueue',
                 url: options.url,
                 open: function (e) {
-                    options.errorDialog.addClass('hide');
+                    options.errorDialog.removeClass('in');
 
                     $.webSocket('send', {name: 'runQueue', text:
                         JSON.stringify({
@@ -64,13 +64,13 @@
                     });
                 },
                 message: function (e, data) {
-                    options.errorDialog.addClass('hide');
+                    options.errorDialog.removeClass('in');
                     if (data.laps) {
                         options.displayLaps(data.laps);
                     }
                 },
                 error: function (e) {
-                    options.errorDialog.removeClass('hide');
+                    options.errorDialog.addClass('in');
                 }
             }
         );

@@ -21,26 +21,26 @@
             $('#controller_nav .expireAll').click(openExpireAllModal);
             $('#controller_nav .extendAll').click(openExtendAllModal);
 
-            $('#articleSearch').typeaheadRemote(
+            $('#article').typeaheadRemote(
                 {
                     source: '{{ url("cudi_admin_sales_article_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#articleId').val($(this).data('value').id);
+                    $('[name="article[id]"]').val($(this).data('value').id);
                 } else {
-                    $('#articleId').val('');
+                    $('[name="article[id]"]').val('');
                 }
             });
-            $('#personSearch').typeaheadRemote(
+            $('#person').typeaheadRemote(
                 {
                     source: '{{ url("common_admin_academic_typeahead")}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#personId').val($(this).data('value').id);
+                    $('[name="person[id]"]').val($(this).data('value').id);
                 } else {
-                    $('#personId').val('');
+                    $('[name="person[id]"]').val('');
                 }
             });
         });

@@ -18,14 +18,7 @@
 
 namespace FormBundle\Form\SpecifiedForm;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager,
-    FormBundle\Entity\Field\File as FileField,
-    FormBundle\Entity\Node\Entry,
-    FormBundle\Entity\Node\Form,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory;
+use FormBundle\Entity\Field\File as FileFieldEntity;
 
 /**
  * Specifield Form Edit
@@ -34,75 +27,24 @@ use CommonBundle\Entity\General\Language,
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager
-     * @param Language        $language
-     * @param Form            $form
-     * @param Entry           $entry
-     * @param null|Person     $person
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Language $language, Form $form, Entry $entry, Person $person = null, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $language, $form, $person, $name);
+        parent::init();
 
-        $field = new Submit('submit');
-        $field->setValue($form->getUpdateText($language))
-            ->setAttribute('class', 'btn btn-primary');
-        $this->add($field);
-
-        $this->_populateFromEntry($entry);
+        $this->remove('submit');
+        $this->addSubmit($this->_form->getUpdateText($this->_language));
     }
 
-    private function _populateFromEntry(Entry $entry)
+    public function getInputFilterSpecification()
     {
-        $data = array();
-
-        if ($entry->getGuestInfo()) {
-            $data['first_name'] = $entry->getGuestInfo()->getFirstName();
-            $data['last_name'] = $entry->getGuestInfo()->getLastName();
-            $data['email'] = $entry->getGuestInfo()->getEmail();
-        }
-
-        foreach ($entry->getFieldEntries() as $fieldEntry) {
-            $data['field-' . $fieldEntry->getField()->getId()] = $fieldEntry->getValue();
-            if ($fieldEntry->getField() instanceof FileField) {
-                $this->get('field-' . $fieldEntry->getField()->getId())
-                    ->setAttribute('data-file', $fieldEntry->getValue())
-                    ->setAttribute('data-name', $fieldEntry->getReadableValue());
-            }
-        }
-        $this->setData($data);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
+        $specs = parent::getInputFilterSpecification();
 
         foreach ($this->_form->getFields() as $fieldSpecification) {
-            if ($fieldSpecification instanceof FileField) {
-                $inputFilter->remove('field-' . $fieldSpecification->getId());
-
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'field-' . $fieldSpecification->getId(),
-                            'required' => false,
-                            'validators' => array(
-                                array(
-                                    'name' => 'filefilessize',
-                                    'options' => array(
-                                        'max' => $fieldSpecification->getMaxSize() . 'MB',
-                                    ),
-                                ),
-                            ),
-                        )
-                    )
-                );
+            if ($fieldSpecification instanceof FileFieldEntity) {
+                $specs['field-' . $fieldSpecification->getId()]['required'] = false;
             }
         }
 
-        return $inputFilter;
+        return $specs;
     }
 }

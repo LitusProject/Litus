@@ -18,6 +18,9 @@
 
 namespace QuizBundle\Entity;
 
+
+
+
 use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -90,15 +93,13 @@ class Quiz
 
     /**
      * @param Person $person
-     * @param string $name
-     * @param array  $editRoles
      */
-    public function __construct(Person $person, $name, $editRoles)
+    public function __construct(Person $person)
     {
         $this->person = $person;
-        $this->name = $name;
-        $this->editRoles = new ArrayCollection($editRoles);
         $this->timestamp = new DateTime();
+
+        $this->editRoles = new ArrayCollection();
         $this->rounds = new ArrayCollection();
         $this->teams = new ArrayCollection();
     }

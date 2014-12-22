@@ -18,18 +18,11 @@
 
 namespace BrBundle\Form\Admin\Order;
 
-use BrBundle\Component\Validator\ProductName as ProductNameValidator,
-    BrBundle\Entity\Company,
+
+
+use BrBundle\Entity\Company,
     BrBundle\Entity\Product\Order,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Validator\Price as PriceValidator,
-    CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Add a order.
@@ -39,87 +32,177 @@ use BrBundle\Component\Validator\ProductName as ProductNameValidator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'BrBundle\Hydrator\Product\Order';
+
     /**
      * The maximum number allowed to enter in the corporate order form.
      */
     const MAX_ORDER_NUMBER = 10;
 
     /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
+     * @var Order
      */
-    protected $_entityManager = null;
+    protected $_order;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear The current academic year
+     * @var AcademicYear The current academic year
      */
-    protected $_currentYear = null;
+    protected $_currentYear;
 
-    /**
-     * @var array Contains the input fields added for product quantities.
-     */
-    private $_inputs = array();
-
-    /**
-     * @var The contacts field
-     */
-    private $_contacts;
-
-    /**
-     * @param \Doctrine\ORM\EntityManager               $entityManager The EntityManager instance
-     * @param \CommonBundle\Entity\General\AcademicYear $currentYear
-     * @param mixed                                     $opts          The validator's options
-     */
-    public function __construct(EntityManager $entityManager, AcademicYear $currentYear, $opts = null)
+    public function init()
     {
-        parent::__construct($opts);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-        $this->_currentYear = $currentYear;
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'title',
+            'label'    => 'Order Title',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('title');
-        $field->setLabel('Order title')
-            ->setRequired(true)
-            ->setAttribute('class', 'input-very-mini');
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'select',
+            'name'     => 'company',
+            'label'    => 'Company',
+            'required' => true,
+            'attributes' => array(
+                'id'      => 'company',
+                'options' => $this->_getCompanyArray(),
+            ),
+        ));
 
-        $field = new Select('company');
-        $field->setLabel('Company')
-            ->setAttribute('options', $this->_createCompanyArray())
-            ->setRequired(true);
-        $this->add($field);
+        $companies = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company')
+            ->findAll();
 
-        $this->_contacts = new Select('contact');
-        $this->_contacts->setLabel('Contact')
-            ->setRequired(true)
-            ->setAttribute('options', array());
-        $this->add($this->_contacts);
+        foreach ($companies as $company) {
+            $this->add(array(
+                'type'     => 'select',
+                'name'     => 'contact_' . $company->getId(),
+                'label'    => 'Contact',
+                'required' => true,
+                'attributes' => array(
+                    'class'   => 'company_contact',
+                    'id'      => 'company_contact_' . $company->getId(),
+                    'options' => $this->_getContactArray($company),
+                ),
+                'options'  => array(
+                    'input' => array(
+                        'required' => false,
+                    ),
+                ),
+            ));
+        }
 
-        $field = new Text('discount');
-        $field->setLabel('Discount')
-            ->setRequired(true)
-            ->setAttribute('class', 'input-very-mini');
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'discount',
+            'label'    => 'Discount',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'digits'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Textarea('discount_context');
-        $field->setLabel('Discount Context')
-            ->setAttribute('class', 'input-very-mini');
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'textarea',
+            'name'     => 'discount_context',
+            'label'    => 'Discount Context',
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Select('tax');
-        $field->setLabel('Tax Free')
-            ->setAttribute('options', array(false => 'No', true => 'Yes'))
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'checkbox',
+            'name'     => 'tax_free',
+            'label'    => 'Tax Free',
+        ));
 
-        $field = new Submit('submit');
-        $field->setValue('Add Products')
-            ->setAttribute('class', 'product_add');
-        $this->add($field);
+        $products = $this->_getProducts();
+
+        foreach ($products as $product) {
+            if (!$product->isOld()) {
+                $this->add(array(
+                    'type'       => 'text',
+                    'name'       => 'product_' . $product->getId(),
+                    'label'      => $product->getName(),
+                    'attributes' => array(
+                        'placeholder' => 0,
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'digits',
+                                ),
+                                array(
+                                    'name' => 'between',
+                                    'options' => array(
+                                        'min' => 0,
+                                        'max' => self::MAX_ORDER_NUMBER,
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ));
+            }
+        }
+
+        $this->addSubmit('Add Products', 'product_add');
+
+        if (null !== $this->_order) {
+            $this->bind($this->_order);
+        }
     }
 
-    private function _createCompanyArray()
+    /**
+     * @param  Order $order
+     * @return self
+     */
+    public function setOrder(Order $order)
     {
-        $companies = $this->_entityManager
+        $this->_order = $order;
+
+        return $this;
+    }
+
+    /**
+     * @param  AcademicYear $currentYear
+     * @return self
+     */
+    public function setCurrentYear(AcademicYear $currentYear)
+    {
+        $this->_currentYear = $currentYear;
+
+        return $this;
+    }
+
+    private function _getCompanyArray()
+    {
+        $companies = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
             ->findAll();
 
@@ -133,165 +216,33 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $companyArray;
     }
 
-    private function _createProductArray()
-    {
-        $products = $this->_entityManager
-            ->getRepository('BrBundle\Entity\Product')
-            ->findAll();
-
-        $productArray = array(
-            '' => '',
-        );
-        foreach ($products as $product) {
-            $productArray[$product->getId()] = $product->getName();
-        }
-
-        return $productArray;
-    }
-
-    private function _createContactsArray(Company $company)
+    private function _getContactArray(Company $company)
     {
         $contacts = $company->getContacts();
 
-        $contactsArray = array(
+        $contactArray = array(
             '' => '',
         );
         foreach ($contacts as $contact) {
-            $contactsArray[$contact->getId()] = $contact->getFullName();
+            $contactArray[$contact->getId()] = $contact->getFullName();
         }
 
-        return $contactsArray;
+        return $contactArray;
     }
 
-    private function addInputs()
+    private function _getProducts()
     {
-        $products = $this->_entityManager
+        return $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Product')
             ->findByAcademicYear($this->_currentYear);
-
-        foreach ($products as $product) {
-            if (!$product->isOld()) {
-                $field = new Text('product-' . $product->getId());
-                $field->setLabel($product->getName())
-                    ->setAttribute('placeholder', '0');
-                $this->add($field);
-
-                $this->_inputs[] = $field;
-            }
-        }
     }
 
-    public function populateFromOrder(Order $order)
+    public function getInputFilterSpecification()
     {
-        $this->_contacts
-            ->setAttribute('options', $this->_createContactsArray($order->getCompany()));
+        $specs = parent::getInputFilterSpecification();
 
-        $formData = array(
-            'title' => $order->getContract()->getTitle(),
-            'company' => $order->getCompany()->getId(),
-            'contact' => $order->getContact()->getId(),
-            'discount' => $order->getContract()->getDiscount(),
-        );
+        $specs['contact_' . $this->data['company']]['options']['input']['required'] = true;
 
-        $products = $this->_entityManager
-            ->getRepository('BrBundle\Entity\Product')
-            ->findByAcademicYear($this->_currentYear);
-
-        foreach ($products as $product) {
-            $orderEntry = $this->_entityManager->getRepository('BrBundle\Entity\Product\OrderEntry')
-                ->findOneByOrderAndProduct($order, $product);
-
-            $formData['product-' . $product->getId()] = null === $orderEntry ? 0 : $orderEntry->getQuantity();
-        }
-
-        $this->setData($formData);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        foreach ($this->_inputs as $input) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => $input->getName(),
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'digits',
-                            ),
-                            array(
-                                'name' => 'between',
-                                'options' => array(
-                                    'min' => 0,
-                                    'max' => self::MAX_ORDER_NUMBER,
-                                ),
-                            ),
-                        ),
-                    )
-                )
-            );
-        }
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'title',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'company',
-                    'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'contact',
-                    'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'discount',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'digits'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'tax',
-                    'required' => true,
-                )
-            )
-        );
-
-        return $inputFilter;
+        return $specs;
     }
 }

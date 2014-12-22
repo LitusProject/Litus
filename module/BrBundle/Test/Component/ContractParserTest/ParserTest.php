@@ -18,12 +18,18 @@
 
 namespace BrBundle\Test\Component\ContractParserTest;
 
+
+
 use BrBundle\Component\ContractParser\IllegalFormatException,
     BrBundle\Component\ContractParser\Parser,
     PHPUnit_Framework_TestCase;
 
 class ParserTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @param string $text
+     * @param string $xml
+     */
     protected function parserTester($text, $xml)
     {
         $parser = new Parser();

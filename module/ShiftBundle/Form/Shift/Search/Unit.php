@@ -18,11 +18,6 @@
 
 namespace ShiftBundle\Form\Shift\Search;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Select,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Search Unit
  *
@@ -30,31 +25,32 @@ use CommonBundle\Component\Form\Bootstrap\Element\Select,
  */
 class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function __construct($name = null)
     {
         parent::__construct($name, false, false);
-
-        $this->_entityManager = $entityManager;
-
-        $this->setAttribute('class', 'form-inline');
-
-        $field = new Select('unit');
-        $field->setAttribute('options', $this->_createUnitsArray());
-        $this->add($field);
     }
 
-    private function _createUnitsArray()
+    public function init()
     {
-        $units = $this->_entityManager
+        parent::init();
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'unit',
+            'attributes' => array(
+                'options' => $this->createUnitsArray(),
+            ),
+            'options'    => array(
+                'input' => array(
+                    'required' => true,
+                ),
+            ),
+        ));
+    }
+
+    private function createUnitsArray()
+    {
+        $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActiveAndDisplayed();
 
@@ -66,22 +62,5 @@ class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         return $unitsArray;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'unit',
-                    'required' => true,
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }

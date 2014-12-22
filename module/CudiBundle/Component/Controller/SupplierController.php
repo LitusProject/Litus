@@ -18,8 +18,12 @@
 
 namespace CudiBundle\Component\Controller;
 
+
+
+
 use CommonBundle\Component\Controller\Exception\HasNoAccessException,
     CommonBundle\Form\Auth\Login as LoginForm,
+    CudiBundle\Entity\User\Person\Supplier,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -87,8 +91,9 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
      */
     protected function getSupplier()
     {
-        if ($this->getAuthentication()->isAuthenticated()) {
-            return $this->getAuthentication()->getPersonObject()->getSupplier();
+        $person = $this->getAuthentication()->getPersonObject();
+        if ($this->getAuthentication()->isAuthenticated() && $person instanceof Supplier) {
+            return $person->getSupplier();
         }
     }
 }

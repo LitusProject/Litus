@@ -56,9 +56,7 @@
                     </div>
                     <div id="about" class="panel-collapse collapse in">
                         <div class="panel-body">
-                            {% autoescape false %}
-                                {{ markdown(vacancy.getDescription()) }}
-                            {% endautoescape %}
+                            {{ markdown(vacancy.getDescription())|raw }}
                         </div>
                     </div>
                 </div>
@@ -70,9 +68,7 @@
                     </div>
                     <div id="benefits" class="panel-collapse collapse">
                         <div class="panel-body">
-                            {% autoescape false %}
-                                {{ markdown(vacancy.getBenefits()) }}
-                            {% endautoescape %}
+                            {{ markdown(vacancy.getBenefits())|raw }}
                         </div>
                     </div>
                 </div>
@@ -84,9 +80,7 @@
                     </div>
                     <div id="profile" class="panel-collapse collapse">
                         <div class="panel-body">
-                            {% autoescape false %}
-                                {{ markdown(vacancy.getProfile()) }}
-                            {% endautoescape %}
+                            {{ markdown(vacancy.getProfile())|raw }}
                         </div>
                     </div>
                 </div>
@@ -98,9 +92,7 @@
                     </div>
                     <div id="contact" class="panel-collapse collapse">
                         <div class="panel-body">
-                            {% autoescape false %}
-                                {{ markdown(vacancy.getContact()) }}
-                            {% endautoescape %}
+                            {{ markdown(vacancy.getContact())|raw }}
                         </div>
                     </div>
                 </div>

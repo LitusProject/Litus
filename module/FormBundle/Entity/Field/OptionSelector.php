@@ -18,9 +18,15 @@
 
 namespace FormBundle\Entity\Field;
 
+
+
+
+
 use CommonBundle\Entity\General\Language,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field;
+    FormBundle\Entity\Field,
+    FormBundle\Entity\Node\Form;
 
 /**
  * An abstract class that stores a number of options.
@@ -31,11 +37,21 @@ use CommonBundle\Entity\General\Language,
 abstract class OptionSelector extends Field
 {
     /**
-     * @var array The translations of this field
+     * @var ArrayCollection The translations of this field
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\Translation\Option", mappedBy="field", cascade={"remove"})
      */
     private $optionTranslations;
+
+    /**
+    * @param Form $form
+    */
+    public function __construct(Form $form)
+    {
+        parent::__construct($form);
+
+        $this->optionTranslations = new ArrayCollection();
+    }
 
     /**
      * @param  Language|null $language

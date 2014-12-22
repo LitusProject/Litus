@@ -18,6 +18,9 @@
 
 namespace FormBundle\Entity;
 
+
+
+
 use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
@@ -105,20 +108,12 @@ abstract class Field
     );
 
     /**
-     * @param Form        $form
-     * @param integer     $order
-     * @param boolean     $required
-     * @param Field|null  $visibityDecisionField
-     * @param string|null $visibilityValue
+     * @param Form $form
      */
-    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null)
+    public function __construct(Form $form)
     {
         $this->form = $form;
-        $this->order = $order;
-        $this->required = $required;
         $this->translations = new ArrayCollection();
-        $this->visibityDecisionField = $visibityDecisionField;
-        $this->visibilityValue = $visibilityValue;
     }
 
     /**

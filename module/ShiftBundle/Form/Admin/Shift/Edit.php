@@ -18,11 +18,9 @@
 
 namespace ShiftBundle\Form\Admin\Shift;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityManager,
-    Shiftbundle\Entity\Shift,
-    Zend\Form\Element\Submit;
+
+use LogicException,
+    Shiftbundle\Entity\Shift;
 
 /**
  * Edit Shift
@@ -32,70 +30,46 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
 class Edit extends Add
 {
     /**
-     * @param Shift           $shift The shift we're going to modify
-     * @param null|string|int $name  Optional name for the element
+     * @var Shift|null The shift to edit.
      */
-    public function __construct(EntityManager $entityManager, Shift $shift, $name = null)
+    private $shift;
+
+    public function init()
     {
-        parent::__construct($entityManager, $name);
-
-        if ($shift->countResponsibles() != 0 || $shift->countVolunteers() != 0) {
-            $field = new Hidden('start_date');
-            $this->add($field);
-
-            $field = new Hidden('end_date');
-            $this->add($field);
+        if (null === $this->shift) {
+            throw new LogicException('Cannot edit a null shift');
         }
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'shift_edit');
-        $this->add($field);
+        parent::init();
 
-        $this->_populateFromShift($shift);
-    }
+        if (!$this->shift->canEditDates()) {
+            $this->remove('start_date')
+                ->add(array(
+                    'type' => 'hidden',
+                    'name' => 'start_date',
+                ));
 
-    private function _populateFromShift(Shift $shift)
-    {
-        $academic = $shift->getManager();
+            $this->remove('end_date')
+                ->add(array(
+                    'type' => 'hidden',
+                    'name' => 'end_date',
+                ));
+        }
 
-        $data = array(
-            'manager_id' => $shift->getManager()->getId(),
-            'start_date' => $shift->getStartDate()->format('d/m/Y H:i'),
-            'end_date' => $shift->getEndDate()->format('d/m/Y H:i'),
-            'edit_roles' => $this->_createRolesPopulationArray($shift->getEditRoles()),
-            'manager' => $academic->getFullName() . ($academic instanceof Academic ? ' - ' . $academic->getUniversityIdentification() : ''),
-            'nb_responsibles' => $shift->getNbResponsibles(),
-            'nb_volunteers' => $shift->getNbVolunteers(),
-            'unit' => $shift->getUnit()->getId(),
-            'reward' => $shift->getReward(),
-            'handled_on_event' => $shift->getHandledOnEvent(),
-            'event' => null === $shift->getEvent() ? '' : $shift->getEvent()->getId(),
-            'location' => $shift->getLocation()->getId(),
-            'name' => $shift->getName(),
-            'description' => $shift->getDescription(),
-        );
+        $this->remove('submit')
+            ->addSubmit('Save', 'shift_edit');
 
-        $this->setData($data);
+        $this->bind($this->shift);
     }
 
     /**
-     * Returns an array that is in the right format to populate the roles field.
-     *
-     * @param  array $roles The shifts's edit roles
-     * @return array
+     * @param  Shift $shift
+     * @return self
      */
-    private function _createRolesPopulationArray(array $roles)
+    public function setShift(Shift $shift)
     {
-        $rolesArray = array();
-        foreach ($roles as $role) {
-            if ($role->getSystem()) {
-                continue;
-            }
+        $this->shift = $shift;
 
-            $rolesArray[] = $role->getName();
-        }
-
-        return $rolesArray;
+        return $this;
     }
 }

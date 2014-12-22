@@ -18,7 +18,8 @@
 
 namespace CudiBundle\Form\Prof\Article;
 
-use Doctrine\ORM\EntityManager,
+
+use LogicException,
     SyllabusBundle\Entity\Subject;
 
 /**
@@ -29,24 +30,45 @@ use Doctrine\ORM\EntityManager,
 class AddWithSubject extends Add
 {
     /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
+     * @var Subject|null
      */
-    public function __construct(EntityManager $entityManager, Subject $subject, $name = null)
-    {
-        parent::__construct($entityManager, $name);
+    private $subject;
 
-        $this->get('subject_form')->get('subject_id')->setAttribute('value', $subject->getId());
-        $this->get('subject_form')->get('subject')->setAttribute('value', $subject->getCode() . ' - ' . $subject->getName())
+    public function init()
+    {
+        if (null === $this->subject) {
+            throw new LogicException('Cannot add an article to a null subject');
+        }
+
+        parent::init();
+
+        $this->get('subject')
+            ->get('subject')
+            ->get('id')
+            ->setAttribute('value', $this->subject->getId());
+
+        $this->get('subject')
+            ->get('subject')
+            ->get('value')
+            ->setAttribute('value', $this->subject->getCode() . ' - ' . $this->subject->getName())
             ->setAttribute('disabled', 'disabled');
     }
 
-    public function getInputFilter()
+    public function setSubject(Subject $subject)
     {
-        $inputFilter = parent::getInputFilter();
+        $this->subject = $subject;
 
-        $inputFilter->remove('subject');
+        return $this;
+    }
 
-        return $inputFilter;
+    public function getInputFilterSpecification()
+    {
+        $specs = parent::getInputFilterSpecification();
+
+        if (isset($specs['subject'])) {
+            unset($specs['subject']);
+        }
+
+        return $specs;
     }
 }

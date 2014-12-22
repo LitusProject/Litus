@@ -18,6 +18,10 @@
 
 namespace CalendarBundle\Entity\Node;
 
+
+
+
+
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     DateTime,
@@ -68,17 +72,11 @@ class Event extends \CommonBundle\Entity\Node
     private $name;
 
     /**
-     * @param Person        $person
-     * @param DateTime      $startDate
-     * @param DateTime|null $endDate
+     * @param Person $person
      */
-    public function __construct(Person $person, DateTime $startDate, DateTime $endDate = null)
+    public function __construct(Person $person)
     {
         parent::__construct($person);
-
-        $this->name = $startDate->format('d_m_Y_H_i');
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
 
         $this->translations = new ArrayCollection();
     }
@@ -248,6 +246,7 @@ class Event extends \CommonBundle\Entity\Node
     public function addTranslation(Translation $translation)
     {
         $this->translations->add($translation);
+        $this->updateName();
 
         return $this;
     }

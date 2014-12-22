@@ -18,8 +18,11 @@
 
 namespace MailBundle\Controller\Admin;
 
-use MailBundle\Form\Admin\Bakske\Mail as SendForm,
-    Zend\Mail\Message,
+
+
+
+
+use Zend\Mail\Message,
     Zend\Mime\Message as MimeMessage,
     Zend\Mime\Mime,
     Zend\Mime\Part,
@@ -34,14 +37,14 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
 {
     public function sendAction()
     {
-        $form = new SendForm($this->getEntityManager(), $this->getCurrentAcademicYear());
+        $form = $this->getForm('mail_bakske_mail', array('academicYear' => $this->getCurrentAcademicYear()));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $editionId = $formData['edition'];
 

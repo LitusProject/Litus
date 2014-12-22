@@ -18,6 +18,16 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
+
+
+
+
+
+
+
+
+
+
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Barcode\Ean12,
     CommonBundle\Entity\User\Barcode\Qr,
@@ -27,9 +37,6 @@ use CommonBundle\Component\Util\AcademicYear,
     SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
-    SecretaryBundle\Form\Admin\Registration\Add as AddForm,
-    SecretaryBundle\Form\Admin\Registration\Barcode as BarcodeForm,
-    SecretaryBundle\Form\Admin\Registration\Edit as EditForm,
     Zend\Validator\Barcode\Ean12 as Ean12Validator,
     Zend\View\Model\ViewModel;
 
@@ -89,17 +96,13 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        $form = new BarcodeForm(
-            $this->getEntityManager(), $registration->getAcademic()
-        );
+        $form = $this->getForm('secretary_registration_barcode', array('person' => $registration->getAcademic()));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
                 if (null !== $registration->getAcademic()->getBarcode()) {
                     if ($registration->getAcademic()->getBarcode()->getBarcode() != $formData['barcode']) {
                         $this->getEntityManager()->remove($registration->getAcademic()->getBarcode());
@@ -163,18 +166,18 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('secretary_registration_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $academic = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findOneById($formData['person_id']);
+                    ->findOneById($formData['person']['id']);
 
                 $registration = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Registration')
@@ -202,13 +205,13 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 }
 
                 $metaData = new MetaData(
-                    $academic,
-                    $academicYear,
-                    true,
-                    $formData['irreeel'],
-                    $formData['bakske'],
-                    $formData['tshirt_size']
+                    $registration->getAcademic(),
+                    $registration->getAcademicYear()
                 );
+                $metaData->setBecomeMember(false)
+                    ->setReceiveIrReeelAtCudi($formData['irreeel'])
+                    ->setBakskeByMail($formData['bakske'])
+                    ->setTshirtSize($formData['tshirt_size']);
                 $this->getEntityManager()->persist($metaData);
 
                 $organizationMap = $this->getEntityManager()
@@ -286,7 +289,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($registration->getAcademic(), $registration->getAcademicYear());
 
-        $form = new EditForm($this->getEntityManager(), $registration, $metaData);
+        $form = $this->getForm('secretary_registration_edit', array('registration' => $registration, 'metaData' => $metaData));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -326,12 +329,12 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 if (null === $metaData) {
                     $metaData = new MetaData(
                         $registration->getAcademic(),
-                        $registration->getAcademicYear(),
-                        false,
-                        $formData['irreeel'],
-                        $formData['bakske'],
-                        $formData['tshirt_size']
+                        $registration->getAcademicYear()
                     );
+                    $metaData->setBecomeMember(false)
+                        ->setReceiveIrReeelAtCudi($formData['irreeel'])
+                        ->setBakskeByMail($formData['bakske'])
+                        ->setTshirtSize($formData['tshirt_size']);
                     $this->getEntityManager()->persist($metaData);
                 } else {
                     $metaData->setReceiveIrReeelAtCudi($formData['irreeel'])
@@ -608,10 +611,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 }
 
                 return new Ean12($person, $barcode);
-                break;
             case 'qr':
                 return new Qr($person, $barcode);
-                break;
             default:
                 return null;
         }

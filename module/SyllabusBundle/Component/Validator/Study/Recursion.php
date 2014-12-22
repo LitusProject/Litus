@@ -18,7 +18,12 @@
 
 namespace SyllabusBundle\Component\Validator\Study;
 
-use Doctrine\ORM\EntityManager,
+
+
+
+use CommonBundle\Component\Form\Form,
+    CommonBundle\Component\Validator\FormAwareInterface,
+    Doctrine\ORM\EntityManager,
     SyllabusBundle\Entity\Study;
 
 /**
@@ -26,7 +31,7 @@ use Doctrine\ORM\EntityManager,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Recursion extends \Zend\Validator\AbstractValidator
+class Recursion extends \Zend\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
 
@@ -39,6 +44,11 @@ class Recursion extends \Zend\Validator\AbstractValidator
      * @var Study The study exluded from this check
      */
     private $_study;
+
+    /**
+    * @var Form The form to validate
+    */
+    private $_form;
 
     /**
      * Error messages
@@ -78,7 +88,7 @@ class Recursion extends \Zend\Validator\AbstractValidator
 
         $parent = $this->_entityManager
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findOneByKulId($context['parent_id']);
+            ->findOneByKulId($this->_form->get('parent')->get('id')->getValue());
 
         if (null === $parent) {
             return true;
@@ -99,5 +109,13 @@ class Recursion extends \Zend\Validator\AbstractValidator
         }
 
         return true;
+    }
+
+    /**
+     * @param Form $form
+     */
+    public function setForm(Form $form)
+    {
+        $this->_form = $form;
     }
 }

@@ -18,10 +18,12 @@
 
 namespace TicketBundle\Controller;
 
+
+
+
 use TicketBundle\Component\Ticket\Ticket as TicketBook,
     TicketBundle\Entity\Event,
     TicketBundle\Entity\Ticket,
-    TicketBundle\Form\Ticket\Book as BookForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -41,14 +43,13 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findAllByEventAndPerson($event, $this->getAuthentication()->getPersonObject());
 
-        $form = new BookForm($this->getEntityManager(), $event, $this->getAuthentication()->getPersonObject());
+        $form = $this->getForm('ticket_ticket_book', array('event' => $event, 'person' => $this->getAuthentication()->getPersonObject()));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $numbers = array(
                     'member' => isset($formData['number_member']) ? $formData['number_member'] : 0,

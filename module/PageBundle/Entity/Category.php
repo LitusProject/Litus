@@ -18,6 +18,10 @@
 
 namespace PageBundle\Entity;
 
+
+
+
+
 use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
@@ -90,7 +94,7 @@ class Category
      * @param  Page $parent
      * @return self
      */
-    public function setParent(Page $parent)
+    public function setParent(Page $parent = null)
     {
         $this->parent = $parent;
 
