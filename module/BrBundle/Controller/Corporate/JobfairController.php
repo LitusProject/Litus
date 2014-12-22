@@ -21,7 +21,7 @@ namespace BrBundle\Controller\Corporate;
 use Zend\View\Model\ViewModel;
 
 /**
- * IndexController
+ * JobfairController
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  */
