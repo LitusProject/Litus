@@ -23,19 +23,14 @@ namespace CommonBundle\Component\Validator;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class FieldLength extends \Zend\Validator\AbstractValidator
+class FieldLength extends AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var int The maximum length
-     */
-    private $_maxLength;
-
-    /**
-     * @var int The number of characters counted for a newline
-     */
-    private $_newlineLength;
+    protected $options = array(
+        'max_length' => 0,
+        'new_line_length' => 0,
+    );
 
     /**
      * @var array The error messages
@@ -45,16 +40,20 @@ class FieldLength extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param int   $maxLength     The maximum length of the value
-     * @param int   $newlineLength A newline is interpreted as this number of characters.
-     * @param mixed $opts          The validator's options
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
      */
-    public function __construct($maxLength, $newlineLength, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options     = func_get_args();
+            $temp['max_length'] = array_shift($options);
+            $temp['new_line_length'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_maxLength = $maxLength;
-        $this->_newlineLength = $newlineLength;
+        parent::__construct($options);
     }
 
     /**
@@ -68,9 +67,9 @@ class FieldLength extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $value = preg_replace('/\r\n|\r|\n/s', str_repeat(' ', $this->_newlineLength), $value);
+        $value = preg_replace('/\r\n|\r|\n/s', str_repeat(' ', $this->options['new_line_length']), $value);
 
-        if (strlen($value) <= $this->_maxLength) {
+        if (strlen($value) <= $this->options['max_length']) {
             return true;
         }
 

@@ -27,11 +27,19 @@ namespace CommonBundle\Component\Validator;
 class Decimal extends \Zend\Validator\Regex
 {
     /**
-     * @param integer $maxAfterDecimal
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
      */
-    public function __construct($maxAfterDecimal)
+    public function __construct($options = array())
     {
-        parent::__construct('/^[0-9]+.?[0-9]{0,' . $maxAfterDecimal . '}$/');
+        if (!is_array($options)) {
+            $options     = func_get_args();
+            $temp['max_after_decimal'] = array_shift($options);
+            $options = $temp;
+        }
+
+        parent::__construct('/^[0-9]+.?[0-9]{0,' . $options['max_after_decimal'] . '}$/');
 
         parent::setMessage(
             'Invalid decimal number'

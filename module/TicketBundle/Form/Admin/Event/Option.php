@@ -19,7 +19,6 @@
 namespace TicketBundle\Form\Admin\Event;
 
 use CommonBundle\Component\Form\Fieldset,
-    CommonBundle\Component\Validator\Price as PriceValidator,
     Zend\InputFilter\InputFilterProviderInterface;
 
 /**
@@ -78,7 +77,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PriceValidator(),
+                        array('name' => 'price'),
                     ),
                 ),
             ),
@@ -98,7 +97,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PriceValidator(),
+                        array('name' => 'price'),
                     ),
                 ),
             ),

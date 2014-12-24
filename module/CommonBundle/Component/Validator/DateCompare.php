@@ -37,40 +37,36 @@ class DateCompare extends AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The date must be after %end_date%',
+        self::NOT_VALID => 'The date must be after %first_date%',
     );
 
     /**
      * @var array The message variables
      */
     protected $messageVariables = array(
-        'end_date'  => '_endDate',
+        'first_date'  => array('options' => 'first_date'),
     );
 
-    /**
-     * Original end date against which to validate
-     * @var string
-     */
-    protected $_endDate;
-
-    /**
-     * @var string
-     */
-    private $_format;
+    protected $options = array(
+        'first_date' => '',
+        'format'     => '',
+    );
 
     /**
      * Sets validator options
      *
-     * @param  string $format
-     * @param  string $endDate
-     * @return void
+     * @param int|array|\Traversable $options
      */
-    public function __construct($endDate = null, $format)
+    public function __construct($options = array())
     {
-        parent::__construct(is_array($endDate) ? $endDate : null);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['first_date'] = array_shift($options);
+            $temp['format'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_endDate = $endDate;
-        $this->_format = $format;
+        parent::__construct($options);
     }
 
     /**
@@ -88,15 +84,15 @@ class DateCompare extends AbstractValidator
             return true;
         }
 
-        if ('now' == $this->_endDate) {
+        if ('now' == $this->options['first_date']) {
             $endDate = 'now';
-        } elseif (null === $endDate = self::getFormValue($context, $this->_endDate)) {
+        } elseif (null === $endDate = self::getFormValue($context, $this->options['first_date'])) {
             $this->error(self::NOT_VALID);
 
             return false;
         }
 
-        if (DateTime::createFromFormat($this->_format, $value) <= DateTime::createFromFormat($this->_format, $endDate)) {
+        if (DateTime::createFromFormat($this->options['format'], $value) <= DateTime::createFromFormat($this->options['format'], $endDate)) {
             $this->error(self::NOT_VALID);
 
             return false;

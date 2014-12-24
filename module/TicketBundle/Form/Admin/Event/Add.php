@@ -18,9 +18,7 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CommonBundle\Component\Validator\Price as PriceValidator,
-    TicketBundle\Component\Validator\Activity as ActivityValidator,
+use TicketBundle\Component\Validator\Activity as ActivityValidator,
     TicketBundle\Component\Validator\Date as DateValidator,
     Ticketbundle\Entity\Event;
 
@@ -97,7 +95,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'format' => 'd/m/Y H:i',
                             ),
                         ),
-                        new DateCompareValidator('now', 'd/m/Y H:i'),
+                        array(
+                            'name' => 'date_compare',
+                            'options' => array(
+                                'first_date' => 'now',
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
                         new DateValidator($this->getEntityManager(), 'd/m/Y H:i'),
                     ),
                 ),
@@ -202,7 +206,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new PriceValidator(),
+                                array('name' => 'price'),
                             ),
                         ),
                     ),
@@ -221,7 +225,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new PriceValidator(),
+                                array('name' => 'price'),
                             ),
                         ),
                     ),

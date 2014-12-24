@@ -18,22 +18,15 @@
 
 namespace CommonBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Matches the given username against the database to check whether it is
  * unique or not.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Role extends \Zend\Validator\AbstractValidator
+class Role extends AbstractValidator
 {
     const NOT_VALID = 'notValid';
-
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
 
     /**
      * @var array The error messages
@@ -41,17 +34,6 @@ class Role extends \Zend\Validator\AbstractValidator
     protected $messageTemplates = array(
         self::NOT_VALID => 'The role already exists',
     );
-
-    /**
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param mixed         $opts          The validator's options
-     */
-    public function __construct(EntityManager $entityManager, $opts = null)
-    {
-        parent::__construct($opts);
-
-        $this->_entityManager = $entityManager;
-    }
 
     /**
      * Returns true if no matching record is found in the database.
@@ -64,7 +46,7 @@ class Role extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $role = $this->_entityManager
+        $role = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Acl\Role')
             ->findOneByName($value);
 

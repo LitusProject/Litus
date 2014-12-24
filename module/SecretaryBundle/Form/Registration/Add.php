@@ -18,8 +18,7 @@
 
 namespace SecretaryBundle\Form\Registration;
 
-use CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
-    CommonBundle\Entity\User\Person\Academic,
+use CommonBundle\Entity\User\Person\Academic,
     SecretaryBundle\Component\Validator\NoAt as NoAtValidator,
     SecretaryBundle\Entity\Organization\MetaData;
 
@@ -158,7 +157,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new PhoneNumberValidator(),
+                                array('name' => 'phone_number_regex'),
                             ),
                         ),
                     ),

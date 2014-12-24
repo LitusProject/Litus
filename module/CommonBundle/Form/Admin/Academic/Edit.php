@@ -18,8 +18,7 @@
 
 namespace CommonBundle\Form\Admin\Academic;
 
-use CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
-    CommonBundle\Entity\User\Person\Academic,
+use CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     LogicException,
@@ -130,7 +129,12 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                                         'useChecksum' => false,
                                     ),
                                 ),
-                                new BarcodeValidator($this->getEntityManager(), $this->person),
+                                array(
+                                    'name' => 'person_barcode',
+                                    'options' => array(
+                                        'person' => $this->person,
+                                    ),
+                                ),
                             ),
                         ),
                     ),

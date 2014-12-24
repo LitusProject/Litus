@@ -18,8 +18,7 @@
 
 namespace QuizBundle\Form\Admin\Team;
 
-use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
-    LogicException,
+use LogicException,
     QuizBundle\Component\Validator\Team\Unique as UniqueTeamValidator,
     QuizBundle\Entity\Quiz,
     QuizBundle\Entity\Team;
@@ -76,7 +75,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int'),
-                        new PositiveNumberValidator(),
+                        array('name' => 'positive_number'),
                         new UniqueTeamValidator($this->getEntityManager(), $this->quiz, $this->team),
                     ),
                 ),

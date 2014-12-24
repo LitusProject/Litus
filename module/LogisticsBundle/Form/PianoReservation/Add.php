@@ -18,8 +18,7 @@
 
 namespace LogisticsBundle\Form\PianoReservation;
 
-use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    DateInterval,
+use DateInterval,
     DateTime,
     IntlDateFormatter,
     LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
@@ -66,7 +65,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                     array(
                                         'name' => 'date',
                                         'options' => array(
-                                            'format' => 'D d/m/Y H:i',
+                                            'format' => 'd/m/Y H:i',
                                         ),
                                     ),
                                 ),
@@ -90,22 +89,25 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                     array(
                                         'name' => 'date',
                                         'options' => array(
-                                            'format' => 'D d/m/Y H:i',
+                                            'format' => 'd/m/Y H:i',
                                         ),
                                     ),
-                                    new DateCompareValidator(
-                                        array('week_' . $key, 'start_date'),
-                                        'D d/m/Y H:i'
+                                    array(
+                                        'name' => 'date_compare',
+                                        'options' => array(
+                                            'first_date' => 'start_date',
+                                            'format' => 'd/m/Y H:i',
+                                        ),
                                     ),
                                     new ReservationConflictValidator(
-                                        array('week_' . $key, 'start_date'),
-                                        'D d/m/Y H:i',
+                                        'start_date',
+                                        'd/m/Y H:i',
                                         PianoReservation::PIANO_RESOURCE_NAME,
                                         $this->getEntityManager()
                                     ),
                                     new PianoDurationValidator(
-                                        array('week_' . $key, 'start_date'),
-                                        'D d/m/Y H:i',
+                                        'start_date',
+                                        'd/m/Y H:i',
                                         $this->getEntityManager()
                                     ),
                                 ),
@@ -235,16 +237,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function getInputFilterSpecification()
     {
+        $specs = parent::getInputFilterSpecification();
         foreach ($this->getFieldsets() as $fieldset) {
             if (!isset($this->data[$fieldset->getName()]['submit'])) {
-                continue;
+                unset($specs[$fieldset->getName()]);
             }
-
-            return array(
-                $fieldset->getName() => $fieldset->getInputSpecification(),
-            );
         }
 
-        return array();
+        return $specs;
     }
 }

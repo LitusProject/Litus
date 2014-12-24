@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Form\Prof\Article;
 
-use CommonBundle\Component\Validator\Uri as UriValidator,
-    CommonBundle\Component\Validator\Year as YearValidator,
-    CudiBundle\Entity\Article,
+use CudiBundle\Entity\Article,
     SyllabusBundle\Component\Validator\Typeahead\Subject as SubjectTypeaheadValidator;
 
 /**
@@ -96,10 +94,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array(
-                                    'name' => 'int',
-                                ),
-                                new YearValidator(),
+                                array('name' => 'int'),
+                                array('name' => 'year'),
                             ),
                         ),
                     ),
@@ -134,7 +130,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new UriValidator(),
+                                array('name' => 'uri'),
                             ),
                         ),
                     ),

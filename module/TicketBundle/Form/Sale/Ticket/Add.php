@@ -18,8 +18,7 @@
 
 namespace TicketBundle\Form\Sale\Ticket;
 
-use CommonBundle\Component\Validator\TypeAhead\Person as PersonTypeaheadValidator,
-    LogicException,
+use LogicException,
     TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
     TicketBundle\Entity\Event;
 
@@ -80,7 +79,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'options'    => array(
                         'input' => array(
                             'validators' => array(
-                                new PersonTypeaheadValidator($this->getEntityManager()),
+                                array('name' => 'typeahead_person'),
                             ),
                         ),
                     ),

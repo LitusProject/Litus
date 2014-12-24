@@ -18,8 +18,6 @@
 
 namespace SecretaryBundle\Form\Admin\Promotion;
 
-use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
-
 /**
  * Add Promotion form
  *
@@ -56,7 +54,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'options'    => array(
                         'input' => array(
                             'validators' => array(
-                                new PersonTypeaheadValidator($this->getEntityManager()),
+                                array('name' => 'typeahead_person'),
                             ),
                         ),
                     ),

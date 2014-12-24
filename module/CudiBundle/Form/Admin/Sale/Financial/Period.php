@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Sale\Financial;
 
-use CommonBundle\Component\Validator\DateCompare as DateCompareValidator;
-
 /**
  * Search financial for period
  *
@@ -46,7 +44,13 @@ class Period extends \CommonBundle\Component\Form\Admin\Form
             'options'  => array(
                 'input' => array(
                     'validators' => array(
-                        new DateCompareValidator('start_date', 'd/m/Y'),
+                        array(
+                            'name' => 'date_compare',
+                            'options' => array(
+                                'first_date' => 'start_date',
+                                'format' => 'd/m/Y',
+                            ),
+                        ),
                     ),
                 ),
             ),

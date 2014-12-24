@@ -33,6 +33,7 @@
         {% do form.prepare() %}
         {% autoescape false %}
             {{ form().openTag(form) }}
+            {{ formElement(form.get('csrf')) }}
                 <div class="tab-content">
                     {% for key, week in form.getWeeks() %}
                         <div class="tab-pane fade" id="week-{{ key }}">

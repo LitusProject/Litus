@@ -18,8 +18,7 @@
 
 namespace MailBundle\Form\Admin\MailingList\Entry\Person;
 
-use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
-    MailBundle\Component\Validator\Entry\Academic as AcademicEntryValidator,
+use MailBundle\Component\Validator\Entry\Academic as AcademicEntryValidator,
     MailBundle\Entity\MailingList;
 
 /**
@@ -49,7 +48,7 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'validators' => array(
                         new AcademicEntryValidator($this->getEntityManager(), $this->getList()),
-                        new PersonTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_person'),
                     ),
                 ),
             ),

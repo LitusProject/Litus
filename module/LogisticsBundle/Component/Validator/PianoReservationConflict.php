@@ -33,11 +33,13 @@ class PianoReservationConflict extends \CommonBundle\Component\Validator\Abstrac
      */
     const CONFLICT_EXISTS = 'conflictExists';
     const INVALID_FORMAT  = 'invalidFormat';
+    const NO_START_DATE   = 'noStartDate';
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
+        self::NO_START_DATE   => 'There was no start date found',
         self::CONFLICT_EXISTS => 'A conflicting reservation already exists',
         self::INVALID_FORMAT  => 'One of the dates is not in the correct format',
     );
@@ -100,7 +102,7 @@ class PianoReservationConflict extends \CommonBundle\Component\Validator\Abstrac
         $this->setValue($value);
 
         if (null === $startDate = $this->getFormValue($context, $this->_startDate)) {
-            $this->error(self::NOT_VALID);
+            $this->error(self::NO_START_DATE);
 
             return false;
         }
@@ -113,6 +115,8 @@ class PianoReservationConflict extends \CommonBundle\Component\Validator\Abstrac
         $endDate = DateTime::createFromFormat($this->_format, $value);
 
         if (!$startDate || !$endDate) {
+            $this->error(self::INVALID_FORMAT);
+
             return false;
         }
 

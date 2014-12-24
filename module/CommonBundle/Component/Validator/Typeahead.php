@@ -18,21 +18,13 @@
 
 namespace CommonBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager;
-
-abstract class Typeahead extends \Zend\Validator\AbstractValidator
+abstract class Typeahead extends AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @var string The entity to check
-     */
-    protected $_entity;
+    protected $options = array(
+        'entity' => '',
+    );
 
     /**
      * @var mixed The found entity
@@ -49,18 +41,19 @@ abstract class Typeahead extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * Create a new typeahead validator
+     * Sets validator options
      *
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param string        $entity        The entity name
-     * @param mixed         $opts          The validator's options
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, $entity, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options     = func_get_args();
+            $temp['entity'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_entity = $entity;
+        parent::__construct($options);
     }
 
     /**
@@ -79,8 +72,8 @@ abstract class Typeahead extends \Zend\Validator\AbstractValidator
             return false;
         }
 
-        $this->entityObject = $this->_entityManager
-            ->getRepository($this->_entity)
+        $this->entityObject = $this->getEntityManager()
+            ->getRepository($this->options['entity'])
             ->findOneById($context['id']);
 
         if (null === $this->entityObject) {

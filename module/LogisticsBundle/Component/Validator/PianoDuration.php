@@ -31,13 +31,17 @@ class PianoDuration extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * @const string The error codes
      */
-    const TO_LONG = 'toLong';
+    const TO_LONG        = 'toLong';
+    const NO_START_DATE  = 'noStartDate';
+    const INVALID_FORMAT = 'invalidFormat';
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::TO_LONG => 'The reservation is to long',
+        self::NO_START_DATE  => 'There was no start date found',
+        self::TO_LONG        => 'The reservation is to long',
+        self::INVALID_FORMAT => 'One of the dates is not in the correct format',
     );
 
     /**
@@ -84,7 +88,7 @@ class PianoDuration extends \CommonBundle\Component\Validator\AbstractValidator
         $this->setValue($value);
 
         if (null === $startDate = $this->getFormValue($context, $this->_startDate)) {
-            $this->error(self::NOT_VALID);
+            $this->error(self::NO_START_DATE);
 
             return false;
         }
@@ -93,6 +97,8 @@ class PianoDuration extends \CommonBundle\Component\Validator\AbstractValidator
         $endDate = DateTime::createFromFormat($this->_format, $value);
 
         if (!$startDate || !$endDate) {
+            $this->error(self::INVALID_FORMAT);
+
             return false;
         }
 
