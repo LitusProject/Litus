@@ -208,5 +208,22 @@ return Config::create(
                 'stripcarriagereturn' => 'CommonBundle\Component\Filter\StripCarriageReturn',
             ),
         ),
+        'validators' => array(
+            'invokables' => array(
+                'person_barcode'     => 'CommonBundle\Component\Validator\Person\Barcode',
+                'typeahead_person'   => 'CommonBundle\Component\Validator\Typeahead\Person',
+                'date_compare'       => 'CommonBundle\Component\Validator\DateCompare',
+                'decimal'            => 'CommonBundle\Component\Validator\Decimal',
+                'field_length'       => 'CommonBundle\Component\Validator\FieldLength',
+                'field_line_length'  => 'CommonBundle\Component\Validator\FieldLineLength',
+                'not_zero'           => 'CommonBundle\Component\Validator\NotZero',
+                'phone_number_regex' => 'CommonBundle\Component\Validator\PhoneNumber',
+                'positive_number'    => 'CommonBundle\Component\Validator\PositiveNumber',
+                'price'              => 'CommonBundle\Component\Validator\Price',
+                'role'               => 'CommonBundle\Component\Validator\Role',
+                'username'           => 'CommonBundle\Component\Validator\Username',
+                'year'               => 'CommonBundle\Component\Validator\Year',
+            ),
+        ),
     )
 );
