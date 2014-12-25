@@ -26,7 +26,7 @@ use CommonBundle\Component\Form\Form,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class HasBought extends \Zend\Validator\AbstractValidator implements FormAwareInterface
+class HasBought extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
 

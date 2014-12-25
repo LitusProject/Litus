@@ -21,7 +21,8 @@ namespace CommonBundle\Component\Validator;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
     Zend\Form\ElementInterface,
-    Zend\ServiceManager\ServiceLocatorAwareTrait as ZendServiceLocatorAwareTrait;
+    Zend\ServiceManager\ServiceLocatorAwareTrait as ZendServiceLocatorAwareTrait,
+    Zend\Validator\ValidatorPluginManager;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
@@ -85,6 +86,10 @@ abstract class AbstractValidator extends \Zend\Validator\AbstractValidator imple
      */
     public function getServiceLocator()
     {
-        return $this->serviceLocator->getServiceLocator();
+        if ($this->serviceLocator instanceof ValidatorPluginManager) {
+            return $this->serviceLocator->getServiceLocator();
+        }
+
+        return $this->serviceLocator;
     }
 }

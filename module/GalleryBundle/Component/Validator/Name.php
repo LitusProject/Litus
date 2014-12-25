@@ -58,9 +58,9 @@ class Name extends \CommonBundle\Component\Validator\AbstractValidator implement
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options = func_get_args();
-            $temp['album'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['album'] = array_shift($args);
         }
 
         parent::__construct($options);

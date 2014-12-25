@@ -48,9 +48,9 @@ class Code extends \CommonBundle\Component\Validator\AbstractValidator
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options = func_get_args();
-            $temp['exclude'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['exclude'] = array_shift($args);
         }
 
         parent::__construct($options);
@@ -68,7 +68,7 @@ class Code extends \CommonBundle\Component\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $subject = $this->getEntityManage()
+        $subject = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject')
             ->findOneByCode($value);
 

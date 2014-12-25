@@ -18,8 +18,6 @@
 
 namespace LogisticsBundle\Component\Validator\Typeahead;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Checks if a barcode belongs to a lease item, and it is not yet leased
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
@@ -55,9 +53,9 @@ class Lease extends \CommonBundle\Component\Validator\Typeahead
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options     = func_get_args();
-            $temp['must_be_leased'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['must_be_leased'] = array_shift($args);
         }
 
         $options['entity'] = 'LogisticsBundle\Entity\Lease\Item';

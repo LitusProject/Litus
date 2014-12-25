@@ -178,7 +178,6 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     {
         foreach ($filter->getInputs() as $key => $input) {
             if ($input instanceof InputInterface) {
-                var_dump($key);
                 foreach ($input->getValidatorChain()->getValidators() as $validator) {
                     if ($validator['instance'] instanceof FormAwareInterface) {
                         $validator['instance']->setForm($this);
@@ -198,7 +197,9 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
             $this->filter = $this->getInputFilterFactory()
                 ->createInputFilter($specification);
 
-            $this->injectSelfInValidators($this->filter);
+            if ($this->filter instanceof InputFilterInterface) {
+                $this->injectSelfInValidators($this->filter);
+            }
         }
 
         return $this->filter;

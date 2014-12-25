@@ -49,10 +49,10 @@ class StringField extends \CommonBundle\Component\Validator\AbstractValidator
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options = func_get_args();
-            $temp['multiline'] = array_shift($options);
-            $temp['lines'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['multiline'] = array_shift($args);
+            $options['lines'] = array_shift($args);
         }
 
         parent::__construct($options);

@@ -32,7 +32,7 @@ class Article extends \CommonBundle\Component\Validator\Typeahead
     /**
      * Create a new typeahead validator
      */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct()
     {
         parent::__construct('CudiBundle\Entity\Article');
     }

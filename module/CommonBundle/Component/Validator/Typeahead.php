@@ -48,9 +48,9 @@ abstract class Typeahead extends AbstractValidator
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options     = func_get_args();
-            $temp['entity'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['entity'] = array_shift($args);
         }
 
         parent::__construct($options);

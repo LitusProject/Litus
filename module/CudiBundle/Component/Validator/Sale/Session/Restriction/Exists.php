@@ -23,7 +23,7 @@ namespace CudiBundle\Component\Validator\Sale\Session\Restriction;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Exists extends \Zend\Validator\AbstractValidator
+class Exists extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -48,9 +48,9 @@ class Exists extends \Zend\Validator\AbstractValidator
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options = func_get_args();
-            $temp['session'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['session'] = array_shift($args);
         }
 
         parent::__construct($options);

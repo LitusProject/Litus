@@ -49,9 +49,9 @@ class MaxTimeSlot extends \CommonBundle\Component\Validator\AbstractValidator
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options = func_get_args();
-            $temp['form'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['form'] = array_shift($args);
         }
 
         parent::__construct($options);
@@ -72,11 +72,11 @@ class MaxTimeSlot extends \CommonBundle\Component\Validator\AbstractValidator
 
         $num = 0;
 
-        foreach ($this->_form->getFields() as $field) {
+        foreach ($this->options['form']->getFields() as $field) {
             $num += isset($context['field-' . $field->getId()]) && $context['field-' . $field->getId()];
         }
 
-        if ($num > 1 && !$this->_form->isMultiple()) {
+        if ($num > 1 && !$this->options['form']->isMultiple()) {
             $this->error(self::TO_MANY);
             $valid = false;
         }

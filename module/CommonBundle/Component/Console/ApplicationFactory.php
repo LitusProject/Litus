@@ -19,7 +19,6 @@
 namespace CommonBundle\Component\Console;
 
 use Symfony\Component\Console\Application,
-    Symfony\Component\Console\Helper\HelperSet,
     Zend\ServiceManager\ServiceLocatorInterface;
 
 class ApplicationFactory extends \DoctrineModule\Service\CliFactory

@@ -48,9 +48,9 @@ class Unique extends \CommonBundle\Component\Validator\AbstractValidator
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options = func_get_args();
-            $temp['sale_article'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['sale_article'] = array_shift($args);
         }
 
         parent::__construct($options);

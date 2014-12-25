@@ -48,9 +48,9 @@ class PositiveNumber extends AbstractValidator
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options     = func_get_args();
-            $temp['strict'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['strict'] = array_shift($args);
         }
 
         parent::__construct($options);

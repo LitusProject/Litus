@@ -65,7 +65,7 @@ class Alias extends \CommonBundle\Component\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $alias = $this->_entityManager
+        $alias = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\Alias')
             ->findOneByName($value);
 

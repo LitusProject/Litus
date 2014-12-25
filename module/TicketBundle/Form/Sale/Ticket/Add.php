@@ -165,7 +165,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             array(
                                 'name' => 'ticket_number_tickets',
                                 'options' => array(
-                                    'event' => $this->_event,
+                                    'event' => $this->event,
                                 ),
                             ),
                         ),
@@ -190,7 +190,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name' => 'ticket_number_tickets',
                                     'options' => array(
-                                        'event' => $this->_event,
+                                        'event' => $this->event,
                                     ),
                                 ),
                             ),
@@ -216,7 +216,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name' => 'ticket_number_tickets',
                                     'options' => array(
-                                        'event' => $this->_event,
+                                        'event' => $this->event,
                                     ),
                                 ),
                             ),
@@ -241,7 +241,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                     array(
                                         'name' => 'ticket_number_tickets',
                                         'options' => array(
-                                            'event' => $this->_event,
+                                            'event' => $this->event,
                                         ),
                                     ),
                                 ),

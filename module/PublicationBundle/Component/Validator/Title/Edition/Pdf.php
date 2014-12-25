@@ -48,11 +48,11 @@ class Pdf extends \CommonBundle\Component\Validator\AbstractValidator
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options = func_get_args();
-            $temp['publication'] = array_shift($options);
-            $temp['academic_year'] = array_shift($options);
-            $temp['exclude'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['publication'] = array_shift($args);
+            $options['academic_year'] = array_shift($args);
+            $options['exclude'] = array_shift($args);
         }
 
         parent::__construct($options);

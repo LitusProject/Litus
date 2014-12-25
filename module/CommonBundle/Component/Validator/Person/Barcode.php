@@ -25,11 +25,6 @@ class Barcode extends \CommonBundle\Component\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     /**
-     * @var Person
-     */
-    private $_person = null;
-
-    /**
      * Error messages
      *
      * @var array

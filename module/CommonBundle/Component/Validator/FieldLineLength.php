@@ -47,10 +47,10 @@ class FieldLineLength extends AbstractValidator
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options     = func_get_args();
-            $temp['chars_per_line'] = array_shift($options);
-            $temp['lines'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['chars_per_line'] = array_shift($args);
+            $options['lines'] = array_shift($args);
         }
 
         parent::__construct($options);

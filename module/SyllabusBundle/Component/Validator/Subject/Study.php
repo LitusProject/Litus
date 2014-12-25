@@ -57,10 +57,10 @@ class Study extends \CommonBundle\Component\Validator\AbstractValidator implemen
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options = func_get_args();
-            $temp['subject'] = array_shift($options);
-            $temp['academic_year'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['subject'] = array_shift($args);
+            $options['academic_year'] = array_shift($args);
         }
 
         parent::__construct($options);

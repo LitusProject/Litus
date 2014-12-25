@@ -23,7 +23,7 @@ namespace CudiBundle\Component\Validator\Sale\Session\Restriction;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Values extends \Zend\Validator\AbstractValidator
+class Values extends \CommonBundle\Component\Validator\AbstractValidator
 {
     /**
      * @var string The error codes
@@ -62,9 +62,9 @@ class Values extends \Zend\Validator\AbstractValidator
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options = func_get_args();
-            $temp['start_value'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['start_value'] = array_shift($args);
         }
 
         parent::__construct($options);

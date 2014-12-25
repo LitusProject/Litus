@@ -46,9 +46,9 @@ class NamedList extends \CommonBundle\Component\Validator\AbstractValidator
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options = func_get_args();
-            $temp['list'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['list'] = array_shift($args);
         }
 
         parent::__construct($options);
@@ -65,7 +65,7 @@ class NamedList extends \CommonBundle\Component\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $list = $this->_entityManager
+        $list = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\MailingList\Named')
             ->findOneByName($value);
 

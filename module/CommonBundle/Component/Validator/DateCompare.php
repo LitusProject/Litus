@@ -60,10 +60,10 @@ class DateCompare extends AbstractValidator
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options = func_get_args();
-            $temp['first_date'] = array_shift($options);
-            $temp['format'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['first_date'] = array_shift($args);
+            $options['format'] = array_shift($args);
         }
 
         parent::__construct($options);

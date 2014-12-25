@@ -24,17 +24,20 @@ namespace BrBundle\Component\ContractParser;
 interface NodeVisitor
 {
     /**
-     * @param Entry $entry
+     * @param  Entry $entry
+     * @return void
      */
     public function visitEntry(Entry $entry);
 
     /**
-     * @param Entries $entries
+     * @param  Entries $entries
+     * @return void
      */
     public function visitEntries(Entries $entries);
 
     /**
-     * @param Text $text
+     * @param  Text $text
+     * @return void
      */
     public function visitText(Text $text);
 }
