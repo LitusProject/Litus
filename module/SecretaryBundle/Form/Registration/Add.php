@@ -19,7 +19,6 @@
 namespace SecretaryBundle\Form\Registration;
 
 use CommonBundle\Entity\User\Person\Academic,
-    SecretaryBundle\Component\Validator\NoAt as NoAtValidator,
     SecretaryBundle\Entity\Organization\MetaData;
 
 /**
@@ -195,7 +194,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                         array('name' => 'StringTrim'),
                                     ),
                                     'validators' => array(
-                                        new NoAtValidator(),
+                                        array('name' => 'secretary_no_at'),
                                     ),
                                 ),
                             ),

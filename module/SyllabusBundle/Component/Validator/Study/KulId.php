@@ -18,27 +18,18 @@
 
 namespace SyllabusBundle\Component\Validator\Study;
 
-use Doctrine\ORM\EntityManager,
-    SyllabusBundle\Entity\Study;
-
 /**
  * Matches the given study code against the database to check whether it exists or not.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class KulId extends \Zend\Validator\AbstractValidator
+class KulId extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var Study|null The study exluded from this check
-     */
-    private $_exclude;
+    protected $options = array(
+        'exclude' => null,
+    );
 
     /**
      * Error messages
@@ -50,18 +41,19 @@ class KulId extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * Create a new Article Barcode validator.
+     * Sets validator options
      *
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param Study|null    $exclude
-     * @param mixed         $opts          The validator's options
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, Study $exclude = null, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['exclude'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_exclude = $exclude;
+        parent::__construct($options);
     }
 
     /**
@@ -76,11 +68,11 @@ class KulId extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $study = $this->_entityManager
+        $study = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findOneByKulId($value);
 
-        if (null === $study || ($this->_exclude !== null && $study->getId() == $this->_exclude->getId())) {
+        if (null === $study || ($this->options['exclude'] !== null && $study->getId() == $this->options['exclude']->getId())) {
             return true;
         }
 

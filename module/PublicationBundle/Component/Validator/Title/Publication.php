@@ -18,26 +18,18 @@
 
 namespace PublicationBundle\Component\Validator\Title;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Checks whether a publication title already exists.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Publication extends \Zend\Validator\AbstractValidator
+class Publication extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const TITLE_EXISTS = 'titleExists';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @var integer The id to ignore.
-     */
-    private $_id;
+    protected $options = array(
+        'exclude' => null,
+    );
 
     /**
      * @var array The error messages
@@ -47,16 +39,19 @@ class Publication extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param integer       $id            The id that should be ignored when checking for duplicate titles
-     * @param mixed         $opts          The validator's options.
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, $id = null, $opts = array())
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['exclude'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_id = $id;
+        parent::__construct($options);
     }
 
     /**
@@ -68,12 +63,12 @@ class Publication extends \Zend\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-        $publication = $this->_entityManager
+        $publication = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\Publication')
             ->findOneByTitle($value);
 
         if (null !== $publication) {
-            if (null === $this->_id || $publication->getId() !== $this->_id) {
+            if (null === $this->options['exclude'] || $publication->getId() !== $this->options['exclude']) {
                 $this->error(self::TITLE_EXISTS);
 
                 return false;

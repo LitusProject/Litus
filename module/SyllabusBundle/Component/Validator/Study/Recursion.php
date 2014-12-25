@@ -19,28 +19,20 @@
 namespace SyllabusBundle\Component\Validator\Study;
 
 use CommonBundle\Component\Form\Form,
-    CommonBundle\Component\Validator\FormAwareInterface,
-    Doctrine\ORM\EntityManager,
-    SyllabusBundle\Entity\Study;
+    CommonBundle\Component\Validator\FormAwareInterface;
 
 /**
  * Matches the given parent against recursion
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Recursion extends \Zend\Validator\AbstractValidator implements FormAwareInterface
+class Recursion extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var Study The study exluded from this check
-     */
-    private $_study;
+    protected $options = array(
+        'study' => null,
+    );
 
     /**
     * @var Form The form to validate
@@ -57,18 +49,19 @@ class Recursion extends \Zend\Validator\AbstractValidator implements FormAwareIn
     );
 
     /**
-     * Create a new Article Barcode validator.
+     * Sets validator options
      *
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param Study         $study
-     * @param mixed         $opts          The validator's options
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, Study $study, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['study'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_study = $study;
+        parent::__construct($options);
     }
 
     /**
@@ -83,7 +76,7 @@ class Recursion extends \Zend\Validator\AbstractValidator implements FormAwareIn
     {
         $this->setValue($value);
 
-        $parent = $this->_entityManager
+        $parent = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findOneByKulId($this->_form->get('parent')->get('id')->getValue());
 
@@ -91,13 +84,13 @@ class Recursion extends \Zend\Validator\AbstractValidator implements FormAwareIn
             return true;
         }
 
-        if ($parent->getId() == $this->_study->getId()) {
+        if ($parent->getId() == $this->options['study']->getId()) {
             $this->error(self::NOT_VALID);
 
             return false;
         }
 
-        foreach ($this->_study->getAllChildren() as $child) {
+        foreach ($this->options['study']->getAllChildren() as $child) {
             if ($child->getId() == $parent->getId()) {
                 $this->error(self::NOT_VALID);
 

@@ -18,8 +18,7 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use SecretaryBundle\Component\Validator\CancelRegistration as CancelRegistrationValidator,
-    SecretaryBundle\Entity\Organization\MetaData,
+use SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration;
 
 /**
@@ -53,7 +52,7 @@ class Edit extends Add
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new CancelRegistrationValidator(),
+                        array('name' => 'secretary_cancel_registration'),
                     ),
                 ),
             ),

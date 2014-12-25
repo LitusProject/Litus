@@ -21,8 +21,6 @@ namespace LogisticsBundle\Form\PianoReservation;
 use DateInterval,
     DateTime,
     IntlDateFormatter,
-    LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
-    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation;
 
 /**
@@ -99,16 +97,20 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                             'format' => 'd/m/Y H:i',
                                         ),
                                     ),
-                                    new ReservationConflictValidator(
-                                        'start_date',
-                                        'd/m/Y H:i',
-                                        PianoReservation::PIANO_RESOURCE_NAME,
-                                        $this->getEntityManager()
+                                    array(
+                                        'name' => 'logistics_piano_reservation_conflict',
+                                        'options' => array(
+                                            'start_date' => 'start_date',
+                                            'format' => 'd/m/Y H:i',
+                                            'resource' => PianoReservation::PIANO_RESOURCE_NAME,
+                                        ),
                                     ),
-                                    new PianoDurationValidator(
-                                        'start_date',
-                                        'd/m/Y H:i',
-                                        $this->getEntityManager()
+                                    array(
+                                        'name' => 'logistics_piano_duration',
+                                        'options' => array(
+                                            'start_date' => 'start_date',
+                                            'format' => 'd/m/Y H:i',
+                                        ),
                                     ),
                                 ),
                             ),

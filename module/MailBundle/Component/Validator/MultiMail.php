@@ -25,7 +25,7 @@ use Zend\Validator\EmailAddress as EmailAddressValidator;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class MultiMail extends \Zend\Validator\AbstractValidator
+class MultiMail extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 

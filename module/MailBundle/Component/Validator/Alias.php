@@ -18,26 +18,18 @@
 
 namespace MailBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Checks whether an alias is unique or not.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Alias extends \Zend\Validator\AbstractValidator
+class Alias extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var string|null The alias exluded from this check
-     */
-    private $_alias;
+    protected $options = array(
+        'alias' => null,
+    );
 
     /**
      * @var array The error messages
@@ -47,16 +39,19 @@ class Alias extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param string|null   $alias         The alias exluded from this check
-     * @param mixed         $opts          The validator's options
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, $alias = null, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['alias'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_alias = $alias;
+        parent::__construct($options);
     }
 
     /**
@@ -74,7 +69,7 @@ class Alias extends \Zend\Validator\AbstractValidator
             ->getRepository('MailBundle\Entity\Alias')
             ->findOneByName($value);
 
-        if (null === $alias || ($this->_alias && $alias == $this->_alias)) {
+        if (null === $alias || ($this->options['alias'] && $alias == $this->options['alias'])) {
             return true;
         }
 

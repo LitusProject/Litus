@@ -66,6 +66,8 @@ abstract class Typeahead extends AbstractValidator
      */
     public function isValid($value, $context = null)
     {
+        $this->setValue($value);
+
         if (null == $context['id']) {
             $this->error(self::NOT_VALID);
 

@@ -19,8 +19,7 @@
 namespace CommonBundle\Form\Admin\Academic;
 
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    SecretaryBundle\Component\Validator\NoAt as NoAtValidator;
+    CommonBundle\Entity\User\Status\University as UniversityStatus;
 
 /**
  * Add Academic
@@ -159,7 +158,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new NoAtValidator(),
+                                array('name' => 'secretary_no_at'),
                             ),
                         ),
                     ),

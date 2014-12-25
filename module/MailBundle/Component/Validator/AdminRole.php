@@ -18,27 +18,18 @@
 
 namespace MailBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager,
-    MailBundle\Entity\MailingList as MailingListEntity;
-
 /**
  * Checks whether a mailing admin role is unique or not.
  *
 * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class AdminRole extends \Zend\Validator\AbstractValidator
+class AdminRole extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var \MailBundle\Entity\MailingList The list for this check
-     */
-    private $_list;
+    protected $options = array(
+        'list' => null,
+    );
 
     /**
      * @var array The error messages
@@ -48,16 +39,19 @@ class AdminRole extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param EntityManager                  $entityManager The EntityManager instance
-     * @param \MailBundle\Entity\MailingList $list          The list exluded from this check
-     * @param mixed                          $opts          The validator's options
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, MailingListEntity $list, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['list'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_list = $list;
+        parent::__construct($options);
     }
 
     /**
@@ -71,11 +65,11 @@ class AdminRole extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $adminRole = $this->_entityManager
+        $adminRole = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\MailingList\AdminRoleMap')
             ->findOneBy(
                 array(
-                    'list' => $this->_list,
+                    'list' => $this->options['list'],
                     'role' => $context['role'],
                 )
             );

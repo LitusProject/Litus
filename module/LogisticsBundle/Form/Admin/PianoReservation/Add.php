@@ -20,8 +20,6 @@ namespace LogisticsBundle\Form\Admin\PianoReservation;
 
 use DateInterval,
     DateTime,
-    LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
-    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation;
 
 /**
@@ -108,17 +106,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'format' => 'd/m/Y H:i',
                             ),
                         ),
-                        new ReservationConflictValidator(
-                            'start_date',
-                            'd/m/Y H:i',
-                            PianoReservation::PIANO_RESOURCE_NAME,
-                            $this->getEntityManager(),
-                            null !== $this->reservation ? $this->reservation->getId() : null
+                        array(
+                            'name' => 'logistics_piano_reservation_conflict',
+                            'options' => array(
+                                'start_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                                'resource' => PianoReservation::PIANO_RESOURCE_NAME,
+                                'reservation_id' => null !== $this->reservation ? $this->reservation->getId() : null,
+                            ),
                         ),
-                        new PianoDurationValidator(
-                            'start_date',
-                            'd/m/Y H:i',
-                            $this->getEntityManager()
+                        array(
+                            'name' => 'logistics_piano_duration',
+                            'options' => array(
+                                'start_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                            ),
                         ),
                     ),
                 ),

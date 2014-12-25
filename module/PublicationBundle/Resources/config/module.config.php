@@ -25,5 +25,14 @@ return Config::create(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
         'translation_files' => array('site'),
+    ),
+    array(
+        'validators' => array(
+            'invokables' => array(
+                'publication_title_edition_html' => 'PublicationBundle\Component\Validator\Title\Edition\Html',
+                'publication_title_edition_pdf'  => 'PublicationBundle\Component\Validator\Title\Edition\Pdf',
+                'publication_title'              => 'PublicationBundle\Component\Validator\Title\Publication',
+            ),
+        ),
     )
 );

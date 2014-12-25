@@ -18,27 +18,18 @@
 
 namespace MailBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager,
-    MailBundle\Entity\MailingList\Named as MailingListEntity;
-
 /**
  * Checks whether a mailing list name is unique or not.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class NamedList extends \Zend\Validator\AbstractValidator
+class NamedList extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var \MailBundle\Entity\MailingList\Named The list exluded from this check
-     */
-    private $_list;
+    protected $options = array(
+        'list' => null,
+    );
 
     /**
      * @var array The error messages
@@ -48,16 +39,19 @@ class NamedList extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param EntityManager                        $entityManager The EntityManager instance
-     * @param \MailBundle\Entity\MailingList\Named $list          The list exluded from this check
-     * @param mixed                                $opts          The validator's options
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, MailingListEntity $list = null, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['list'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_list = $list;
+        parent::__construct($options);
     }
 
     /**
@@ -75,7 +69,7 @@ class NamedList extends \Zend\Validator\AbstractValidator
             ->getRepository('MailBundle\Entity\MailingList\Named')
             ->findOneByName($value);
 
-        if (null === $list || ($this->_list && $list == $this->_list)) {
+        if (null === $list || ($this->options['list'] && $list == $this->options['list'])) {
             return true;
         }
 

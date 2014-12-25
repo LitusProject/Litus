@@ -18,8 +18,7 @@
 
 namespace PublicationBundle\Form\Admin\Publication;
 
-use PublicationBundle\Component\Validator\Title\Publication as TitleValidator,
-    PublicationBundle\Entity\Publication;
+use PublicationBundle\Entity\Publication;
 
 /**
  * The form used to add a new Publication
@@ -50,9 +49,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        null === $this->publication
-                            ? new TitleValidator($this->getEntityManager())
-                            : new TitleValidator($this->getEntityManager(), $this->publication->getId()),
+                        array(
+                            'name' => 'publication_title',
+                            'options' => array(
+                                'exclude' => (null !== $this->publication) ? $this->publication->getId() : null,
+                            ),
+                        ),
                     ),
                 ),
             ),

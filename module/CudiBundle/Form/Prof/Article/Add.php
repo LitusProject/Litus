@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Form\Prof\Article;
 
-use CudiBundle\Entity\Article,
-    SyllabusBundle\Component\Validator\Typeahead\Subject as SubjectTypeaheadValidator;
+use CudiBundle\Entity\Article;
 
 /**
  * Add Article
@@ -219,7 +218,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'options'    => array(
                         'input' => array(
                             'validators'  => array(
-                                new SubjectTypeaheadValidator($this->getEntityManager()),
+                                array('name' => 'syllabus_typeahead_subject'),
                             ),
                         ),
                     ),

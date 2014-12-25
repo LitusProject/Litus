@@ -18,33 +18,19 @@
 
 namespace QuizBundle\Component\Validator\Round;
 
-use Doctrine\ORM\EntityManager,
-    QuizBundle\Entity\Quiz,
-    QuizBundle\Entity\Round;
-
 /**
  * Validates the uniqueness of a round number in a quiz
  *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Unique extends \Zend\Validator\AbstractValidator
+class Unique extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var Quiz The quiz where the round belongs to
-     */
-    private $_quiz = null;
-
-    /**
-     * @var Round The round excluded
-     */
-    private $_round = null;
+    protected $options = array(
+        'quiz' => null,
+        'round' => null,
+    );
 
     /**
      * Error messages
@@ -56,19 +42,20 @@ class Unique extends \Zend\Validator\AbstractValidator
     );
 
     /**
+     * Sets validator options
      *
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param Quiz          $quiz          The quiz where the round belongs to
-     * @param Round         $round         The round excluded
-     * @param mixed         $opts          The validator's options
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, Quiz $quiz, Round $round = null, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['quiz'] = array_shift($options);
+            $temp['round'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_quiz = $quiz;
-        $this->_round = $round;
+        parent::__construct($options);
     }
 
     public function isValid($value)
@@ -81,16 +68,16 @@ class Unique extends \Zend\Validator\AbstractValidator
             return false;
         }
 
-        $rounds = $this->_entityManager
+        $rounds = $this->getEntityManager()
             ->getRepository('QuizBundle\Entity\Round')
             ->findBy(
                 array(
-                    'quiz' => $this->_quiz->getId(),
+                    'quiz' => $this->options['quiz']->getId(),
                     'order' => $value,
                 )
             );
 
-        if (count($rounds) == 0 || $rounds[0] == $this->_round) {
+        if (count($rounds) == 0 || $rounds[0] == $this->options['round']) {
             return true;
         }
 

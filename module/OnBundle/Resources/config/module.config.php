@@ -26,5 +26,12 @@ return Config::create(
         'directory'         => __DIR__,
         'has_entities'      => false,
         'has_documents'     => true,
+    ),
+    array(
+        'validators' => array(
+            'invokables' => array(
+                'on_slug_name'   => 'OnBundle\Component\Validator\Name',
+            ),
+        ),
     )
 );

@@ -18,38 +18,20 @@
 
 namespace PublicationBundle\Component\Validator\Title\Edition;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
-    PublicationBundle\Entity\Publication;
-
 /**
  * Checks whether a publication title already exists.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Pdf extends \Zend\Validator\AbstractValidator
+class Pdf extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const TITLE_EXISTS = 'titleExists';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @var integer The ID to ignore
-     */
-    private $_id;
-
-    /**
-     * @var Publication The publication
-     */
-    private $_publication;
-
-    /**
-     * @var AcademicYear The year
-     */
-    private $_academicYear;
+    protected $options = array(
+        'publication' => null,
+        'academic_year' => null,
+        'exclude' => null,
+    );
 
     /**
      * @var array The error messages
@@ -59,20 +41,21 @@ class Pdf extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param Publication   $publication
-     * @param AcademicYear  $academicYear
-     * @param integer|null  $id            The ID that should be ignored when checking for duplicate titles
-     * @param mixed         $opts          The validator's options.
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, Publication $publication, AcademicYear $academicYear, $id = null, $opts = array())
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['publication'] = array_shift($options);
+            $temp['academic_year'] = array_shift($options);
+            $temp['exclude'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_id = $id;
-        $this->_publication = $publication;
-        $this->_academicYear = $academicYear;
+        parent::__construct($options);
     }
 
     /**
@@ -84,12 +67,12 @@ class Pdf extends \Zend\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-        $edition = $this->_entityManager
+        $edition = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\Edition\Pdf')
-            ->findOneByPublicationTitleAndAcademicYear($this->_publication, $value, $this->_academicYear);
+            ->findOneByPublicationTitleAndAcademicYear($this->options['publication'], $value, $this->options['academic_year']);
 
         if (null !== $edition) {
-            if (null === $this->_id || $edition->getId() !== $this->_id) {
+            if (null === $this->options['exclude'] || $edition->getId() !== $this->options['exclude']) {
                 $this->error(self::TITLE_EXISTS);
 
                 return false;

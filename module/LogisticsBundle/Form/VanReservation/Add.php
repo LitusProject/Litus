@@ -18,8 +18,7 @@
 
 namespace LogisticsBundle\Form\VanReservation;
 
-use LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
-    LogisticsBundle\Entity\Reservation\VanReservation;
+use LogisticsBundle\Entity\Reservation\VanReservation;
 
 /**
  * The form used to add a new Reservation.
@@ -93,12 +92,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'format' => 'd/m/Y H:i',
                             ),
                         ),
-                        new ReservationConflictValidator(
-                            'start_date',
-                            'd/m/Y H:i',
-                            VanReservation::VAN_RESOURCE_NAME,
-                            $this->getEntityManager(),
-                            null === $this->reservation ? 0 : $this->reservation->getId()
+                        array(
+                            'name' => 'logistics_reservation_conflict',
+                            'options' => array(
+                                'start_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                                'resource' => PianoReservation::VAN_RESOURCE_NAME,
+                                'reservation_id' => null === $this->reservation ? 0 : $this->reservation->getId(),
+                            ),
                         ),
                     ),
                 ),

@@ -25,5 +25,13 @@ return Config::create(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
         'has_layouts'       => true,
+    ),
+    array(
+        'validators' => array(
+            'invokables' => array(
+                'quiz_round_unique' => 'QuizBundle\Component\Validator\Round\Unique',
+                'quiz_team_unique'  => 'QuizBundle\Component\Validator\Team\Unique',
+            ),
+        ),
     )
 );

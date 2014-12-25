@@ -25,5 +25,12 @@ return Config::create(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
         'translation_files' => array('site'),
+    ),
+    array(
+        'validators' => array(
+            'invokables' => array(
+                'page_title'   => 'PageBundle\Component\Validator\Title',
+            ),
+        ),
     )
 );

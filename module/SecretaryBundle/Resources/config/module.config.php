@@ -25,5 +25,13 @@ return Config::create(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
         'translation_files' => array('site'),
+    ),
+    array(
+        'validators' => array(
+            'invokables' => array(
+                'secretary_cancel_registration' => 'SecretaryBundle\Component\Validator\CancelRegistration',
+                'secretary_no_at'               => 'SecretaryBundle\Component\Validator\NoAt',
+            ),
+        ),
     )
 );

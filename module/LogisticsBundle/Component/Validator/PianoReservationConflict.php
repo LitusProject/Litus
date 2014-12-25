@@ -18,8 +18,7 @@
 
 namespace LogisticsBundle\Component\Validator;
 
-use DateTime,
-    Doctrine\ORM\EntityManager;
+use DateTime;
 
 /**
  * Checks whether no reservation exists yet for the given resource.
@@ -44,50 +43,30 @@ class PianoReservationConflict extends \CommonBundle\Component\Validator\Abstrac
         self::INVALID_FORMAT  => 'One of the dates is not in the correct format',
     );
 
-    /**
-     * @var string The start date of the interval
-     */
-    private $_startDate;
-
-    /**
-     * @var string
-     */
-    private $_format;
-
-    /**
-     * @var string
-     */
-    private $_resource;
-
-    /**
-     * @var int The id of the reservation to ignore when searching for conflicts; -1 indicates none
-     */
-    private $_reservationId;
-
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $options = array(
+        'start_date' => '',
+        'format' => false,
+        'resource' => null,
+        'reservation_id' => -1,
+    );
 
     /**
      * Sets validator options
      *
-     * @param  string        $format
-     * @param  string        $startDate
-     * @param  string        $resource
-     * @param  EntityManager $entityManager
-     * @param  integer       $reservationId
-     * @return void
+     * @param int|array|\Traversable $options
      */
-    public function __construct($startDate, $format, $resource, EntityManager $entityManager, $reservationId = -1)
+    public function __construct($options = array())
     {
-        parent::__construct(null);
+        if (!is_array($options)) {
+            $options     = func_get_args();
+            $temp['start_date'] = array_shift($options);
+            $temp['format'] = array_shift($options);
+            $temp['resource'] = array_shift($options);
+            $temp['reservation_id'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_startDate = $startDate;
-        $this->_format = $format;
-        $this->_resource = $resource;
-        $this->_entityManager = $entityManager;
-        $this->_reservationId = $reservationId;
+        parent::__construct($options);
     }
 
     /**
@@ -101,18 +80,18 @@ class PianoReservationConflict extends \CommonBundle\Component\Validator\Abstrac
     {
         $this->setValue($value);
 
-        if (null === $startDate = $this->getFormValue($context, $this->_startDate)) {
+        if (null === $startDate = $this->getFormValue($context, $this->options['start_date'])) {
             $this->error(self::NO_START_DATE);
 
             return false;
         }
 
-        $resource = $this->_entityManager
+        $resource = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
-            ->findOneByName($this->_resource);
+            ->findOneByName($this->options['resource']);
 
-        $startDate = DateTime::createFromFormat($this->_format, $startDate);
-        $endDate = DateTime::createFromFormat($this->_format, $value);
+        $startDate = DateTime::createFromFormat($this->options['format'], $startDate);
+        $endDate = DateTime::createFromFormat($this->options['format'], $value);
 
         if (!$startDate || !$endDate) {
             $this->error(self::INVALID_FORMAT);
@@ -120,9 +99,9 @@ class PianoReservationConflict extends \CommonBundle\Component\Validator\Abstrac
             return false;
         }
 
-        $conflicting = $this->_entityManager
+        $conflicting = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
-            ->findAllConflictingIgnoringId($startDate, $endDate, $resource, $this->_reservationId);
+            ->findAllConflictingIgnoringId($startDate, $endDate, $resource, $this->options['reservation_id']);
 
         if (isset($conflicting[0])) {
             $this->error(self::CONFLICT_EXISTS);

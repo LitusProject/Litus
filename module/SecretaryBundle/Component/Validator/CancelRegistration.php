@@ -18,7 +18,10 @@
 
 namespace SecretaryBundle\Component\Validator;
 
-class CancelRegistration extends \Zend\Validator\AbstractValidator
+/**
+ * Can the registeration be cancelled
+ */
+class CancelRegistration extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
