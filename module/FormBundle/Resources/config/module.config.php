@@ -26,5 +26,15 @@ return Config::create(
         'directory'         => __DIR__,
         'translation_files' => array('manage', 'view'),
         'has_layouts'       => true,
+    ),
+    array(
+        'validators' => array(
+            'invokables' => array(
+                'form_max_timeslots'  => 'FormBundle\Component\Validator\MaxTimeSlot',
+                'form_field_required' => 'FormBundle\Component\Validator\Required',
+                'form_string_field'   => 'FormBundle\Component\Validator\StringField',
+                'form_timeslot'       => 'FormBundle\Component\Validator\Timeslot',
+            ),
+        ),
     )
 );

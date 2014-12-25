@@ -18,52 +18,52 @@
 
 namespace FormBundle\Component\Validator;
 
-use FormBundle\Entity\Node\Form\Doodle as Doodle;
-
 /**
-* Matches the timeslot for occupation of user
-*
-* @author Kristof Mariën <kristof.marien@litus.cc>
-*/
-class MaxTimeSlot extends \Zend\Validator\AbstractValidator
+ * Matches the timeslot for occupation of user
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
+class MaxTimeSlot extends \CommonBundle\Component\Validator\AbstractValidator
 {
     /**
-    * @var string The error codes
-    */
+     * @var string The error codes
+     */
     const TO_MANY = 'to_many';
 
+    protected $options = array(
+        'form' => null,
+    );
+
     /**
-    * @var array The error messages
-    */
+     * @var array The error messages
+     */
     protected $messageTemplates = array(
         self::TO_MANY         => 'Too many time slots were selected',
     );
 
     /**
-    * @var Doodle
-    */
-    private $_form;
-
-    /**
-    * Sets validator options
-    *
-    * @param Doodle     $form
-    * @param array|null $opts
-    */
-    public function __construct(Doodle $form, $opts = null)
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
+     */
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['form'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_form = $form;
+        parent::__construct($options);
     }
 
     /**
-    * Returns true if and only if the end date is after the start date
-    *
-    * @param  mixed   $value
-    * @param  array   $context
-    * @return boolean
-    */
+     * Returns true if and only if the end date is after the start date
+     *
+     * @param  mixed   $value
+     * @param  array   $context
+     * @return boolean
+     */
     public function isValid($value, $context = null)
     {
         $this->setValue($value);

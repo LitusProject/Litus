@@ -21,8 +21,6 @@ namespace FormBundle\Form\SpecifiedForm;
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     FormBundle\Component\Exception\UnsupportedTypeException,
-    FormBundle\Component\Validator\MaxTimeSlot as MaxTimeSlotValidator,
-    FormBundle\Component\Validator\TimeSlot as TimeSlotValidator,
     FormBundle\Entity\Field\TimeSlot as TimeSlotFieldEntity,
     FormBundle\Entity\Node\Entry as EntryEntity,
     FormBundle\Entity\Node\Form\Doodle as DoodleEntity,
@@ -149,11 +147,22 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                     );
                 } else {
                     $validators = array(
-                        new TimeSlotValidator($fieldSpecification, $this->getEntityManager(), $this->_person),
+                        array(
+                            'name' => 'form_timeslot',
+                            'options' => array(
+                                'timeslot' => $fieldSpecification,
+                                'person' => $this->_person,
+                            ),
+                        ),
                     );
                 }
 
-                $validators[] = new MaxTimeSlotValidator($this->_form);
+                $validators[] = array(
+                    'name' => 'form_max_timeslots',
+                    'options' => array(
+                        'form' => $this->_form,
+                    ),
+                );
 
                 $field = array(
                     'type'       => 'checkbox',

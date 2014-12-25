@@ -18,16 +18,12 @@
 
 namespace FormBundle\Component\Validator;
 
-use CommonBundle\Entity\User\Person as PersonEntity,
-    Doctrine\ORM\EntityManager,
-    FormBundle\Entity\Field\TimeSlot as TimeSlotField;
-
 /**
  * Matches the timeslot for occupation of user
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class TimeSlot extends \Zend\Validator\AbstractValidator
+class TimeSlot extends \CommonBundle\Component\Validator\AbstractValidator
 {
     /**
      * @var string The error codes
@@ -43,36 +39,26 @@ class TimeSlot extends \Zend\Validator\AbstractValidator
         self::ALREADY_SELECTED => 'You have already a subscription at this time',
     );
 
-    /**
-     * @var TimeSlotField
-     */
-    private $_timeSlot;
-
-    /**
-     * @var EntityManager
-     */
-    private $_entityManager;
-
-    /**
-     * @var \CommonBundle\Entity\User\Person
-     */
-    private $_person;
+    protected $options = array(
+        'timeslot' => null,
+        'person' => null,
+    );
 
     /**
      * Sets validator options
      *
-     * @param  TimeSlotField                    $timeSlot
-     * @param  EntityManager                    $entityManager
-     * @param  \CommonBundle\Entity\User\Person $person
-     * @return void
+     * @param int|array|\Traversable $options
      */
-    public function __construct(TimeSlotField $timeSlot, EntityManager $entityManager, PersonEntity $person = null, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['timeslot'] = array_shift($options);
+            $temp['person'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_timeSlot = $timeSlot;
-        $this->_entityManager = $entityManager;
-        $this->_person = $person;
+        parent::__construct($options);
     }
 
     /**
@@ -88,24 +74,24 @@ class TimeSlot extends \Zend\Validator\AbstractValidator
 
         $valid = true;
 
-        if (isset($value) && $value && null !== $this->_person) {
-            $occupation = $this->_entityManager
+        if (isset($value) && $value && null !== $this->options['person']) {
+            $occupation = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Field\TimeSlot')
-                ->findOneOccupationByPersonAndTime($this->_person, $this->_timeSlot->getStartDate(), $this->_timeSlot->getEndDate());
+                ->findOneOccupationByPersonAndTime($this->options['person'], $this->options['timeslot']->getStartDate(), $this->options['timeslot']->getEndDate());
 
             // No overlap with selections of other people
-            if (null !== $occupation && $occupation->getFormEntry()->getCreationPerson()->getId() != $this->_person->getId()) {
+            if (null !== $occupation && $occupation->getFormEntry()->getCreationPerson()->getId() != $this->options['person']->getId()) {
                 $this->error(self::OCCUPIED);
                 $valid = false;
             }
 
-            $conflictingSlots = $this->_entityManager
+            $conflictingSlots = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Field\TimeSlot')
-                ->findAllConflictingByFormAndTime($this->_timeSlot->getForm(), $this->_timeSlot->getStartDate(), $this->_timeSlot->getEndDate());
+                ->findAllConflictingByFormAndTime($this->options['timeslot']->getForm(), $this->options['timeslot']->getStartDate(), $this->options['timeslot']->getEndDate());
 
             // No overlap with other selections in this form
             foreach ($conflictingSlots as $conflictingSlot) {
-                if ($conflictingSlot->getId() == $this->_timeSlot->getId()) {
+                if ($conflictingSlot->getId() == $this->options['timeslot']->getId()) {
                     continue;
                 }
 

@@ -20,7 +20,6 @@ namespace FormBundle\Form\Admin\Field;
 
 use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language,
-    FormBundle\Component\Validator\Required as RequiredValidator,
     FormBundle\Entity\Field,
     FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity,
     FormBundle\Entity\Field\Dropdown as DropdownFieldEntity,
@@ -102,7 +101,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new RequiredValidator(),
+                        array('name' => 'form_field_required'),
                     ),
                 ),
             ),

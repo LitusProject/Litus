@@ -20,10 +20,8 @@ namespace GalleryBundle\Component\Validator;
 
 use CommonBundle\Component\Form\Form,
     CommonBundle\Component\Util\Url,
-    CommonBundle\Component\Validator\AbstractValidator,
     CommonBundle\Component\Validator\FormAwareInterface,
     DateTime,
-    Doctrine\ORM\EntityManager,
     GalleryBundle\Entity\Album\Album;
 
 /**
@@ -32,19 +30,13 @@ use CommonBundle\Component\Form\Form,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Name extends AbstractValidator implements FormAwareInterface
+class Name extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $entityManager = null;
-
-    /**
-     * @var Album The album exluded from this check
-     */
-    private $album;
+    protected $options = array(
+        'album' => null,
+    );
 
     /**
      * @var Form The form to validate
@@ -59,16 +51,19 @@ class Name extends AbstractValidator implements FormAwareInterface
     );
 
     /**
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param Album|null    $album         The album exluded from this check
-     * @param mixed         $opts          The validator's options
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, Album $album = null, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['album'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->entityManager = $entityManager;
-        $this->album = $album;
+        parent::__construct($options);
     }
 
     /**
@@ -95,11 +90,11 @@ class Name extends AbstractValidator implements FormAwareInterface
         if ($date) {
             $title = $date->format('Ymd') . '_' . Url::createSlug($value);
 
-            $album = $this->entityManager
+            $album = $this->getEntityManager()
                 ->getRepository('GalleryBundle\Entity\Album\Album')
                 ->findOneByName($title);
 
-            if (null === $album || ($this->album && $album == $this->album)) {
+            if (null === $album || ($this->options['album'] && $album == $this->options['album'])) {
                 return true;
             }
 
