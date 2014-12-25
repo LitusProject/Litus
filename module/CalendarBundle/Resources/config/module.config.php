@@ -25,5 +25,12 @@ return Config::create(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
         'translation_files' => array('common'),
+    ),
+    array(
+        'validators' => array(
+            'invokables' => array(
+                'calendar_event_name'   => 'CalendarBundle\Component\Validator\Name',
+            ),
+        ),
     )
 );

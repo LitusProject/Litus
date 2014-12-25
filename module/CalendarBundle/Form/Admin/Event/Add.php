@@ -18,8 +18,7 @@
 
 namespace CalendarBundle\Form\Admin\Event;
 
-use CalendarBundle\Component\Validator\Name as EventNameValidator,
-    CalendarBundle\Entity\Node\Event as EventEntity,
+use CalendarBundle\Entity\Node\Event as EventEntity,
     CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language;
 
@@ -104,7 +103,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new EventNameValidator($this->getEntityManager(), $language, $this->getEvent()),
+                        array(
+                            'name' => 'calendar_event_name',
+                            'options' => array(
+                                'event' => $this->getEvent(),
+                            ),
+                        ),
                     ),
                 ),
             ),

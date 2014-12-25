@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Component\Validator\Typeahead;
 
-use Doctrine\ORM\EntityManager;
-
 class Article extends \CommonBundle\Component\Validator\Typeahead
 {
     /**
@@ -33,12 +31,9 @@ class Article extends \CommonBundle\Component\Validator\Typeahead
 
     /**
      * Create a new typeahead validator
-     *
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param mixed         $opts          The validator's options
      */
     public function __construct(EntityManager $entityManager, $opts = null)
     {
-        parent::__construct($entityManager, 'CudiBundle\Entity\Article', $opts);
+        parent::__construct('CudiBundle\Entity\Article');
     }
 }

@@ -18,9 +18,6 @@
 
 namespace CudiBundle\Component\Validator\Sale\Session\Restriction;
 
-use CudiBundle\Entity\Sale\Session,
-    Doctrine\ORM\EntityManager;
-
 /**
  * Check Restriction already exists.
  *
@@ -30,15 +27,9 @@ class Exists extends \Zend\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var Session
-     */
-    private $_session = null;
+    protected $options = array(
+        'session' => null,
+    );
 
     /**
      * Error messages
@@ -50,18 +41,19 @@ class Exists extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * Create a new Article Barcode validator.
+     * Sets validator options
      *
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param Session       $session
-     * @param mixed         $opts          The validator's options
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, Session $session, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['session'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_session = $session;
+        parent::__construct($options);
     }
 
     /**
@@ -78,17 +70,17 @@ class Exists extends \Zend\Validator\AbstractValidator
 
         $restriction = null;
         if ('name' == $value) {
-            $restriction = $this->_entityManager
+            $restriction = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session\Restriction\Name')
-                ->findOneBySession($this->_session);
+                ->findOneBySession($this->options['session']);
         } elseif ('year' == $value) {
-            $restriction = $this->_entityManager
+            $restriction = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session\Restriction\Year')
-                ->findOneBySession($this->_session);
+                ->findOneBySession($this->options['session']);
         } elseif ('study' == $value) {
-            $restriction = $this->_entityManager
+            $restriction = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session\Restriction\Study')
-                ->findOneBySession($this->_session);
+                ->findOneBySession($this->options['session']);
         }
 
         if (null == $restriction) {

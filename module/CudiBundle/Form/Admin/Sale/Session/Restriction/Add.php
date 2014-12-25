@@ -19,8 +19,6 @@
 namespace CudiBundle\Form\Admin\Sale\Session\Restriction;
 
 use CommonBundle\Component\Util\AcademicYear,
-    CudiBundle\Component\Validator\Sale\Session\Restriction\Exists as ExistsValidator,
-    CudiBundle\Component\Validator\Sale\Session\Restriction\Values as ValuesValidator,
     CudiBundle\Entity\Sale\Session,
     CudiBundle\Entity\Sale\Session\Restriction,
     CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction;
@@ -70,7 +68,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new ExistsValidator($this->getEntityManager(), $this->session),
+                        array(
+                            'name' => 'sale_session_restriction_exists',
+                            'options' => array(
+                                'session' => $this->session,
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -107,7 +110,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new ValuesValidator('start_value_name'),
+                        array(
+                            'name' => 'sale_session_restriction_values',
+                            'options' => array(
+                                'start_value' => 'start_value_name',
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -121,13 +129,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'class'   => 'restriction_value restriction_value_year',
                 'options' => YearRestriction::$POSSIBLE_YEARS,
-            ),
-            'options'    => array(
-                'input' => array(
-                    'validators' => array(
-                        new ValuesValidator('start_value_year'),
-                    ),
-                ),
             ),
         ));
 
@@ -146,7 +147,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new ValuesValidator('start_value_year'),
+                        array(
+                            'name' => 'sale_session_restriction_values',
+                            'options' => array(
+                                'start_value' => 'start_value_year',
+                            ),
+                        ),
                     ),
                 ),
             ),

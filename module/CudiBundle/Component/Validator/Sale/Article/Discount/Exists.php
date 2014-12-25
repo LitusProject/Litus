@@ -18,27 +18,18 @@
 
 namespace CudiBundle\Component\Validator\Sale\Article\Discount;
 
-use CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\EntityManager;
-
 /**
  * Matches the given discount against the database to check whether it already exists or not.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Exists extends \Zend\Validator\AbstractValidator
+class Exists extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var Article
-     */
-    private $_article;
-
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $options = array(
+        'article' => null,
+    );
 
     /**
      * Error messages
@@ -50,18 +41,19 @@ class Exists extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * Create a new Discount validator.
+     * Sets validator options
      *
-     * @param Article       $article
-     * @param EntityManager $entityManager
-     * @param mixed         $opts          The validator's options
+     * @param int|array|\Traversable $options
      */
-    public function __construct(Article $article, EntityManager $entityManager, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['article'] = array_shift($options);
+            $options = $temp;
+        }
 
-        $this->_article = $article;
-        $this->_entityManager = $entityManager;
+        parent::__construct($options);
     }
 
     /**
@@ -77,16 +69,16 @@ class Exists extends \Zend\Validator\AbstractValidator
         $this->setValue($value);
 
         if ($context['organization'] != '0') {
-            $organization = $this->_entityManager
+            $organization = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Organization')
                 ->findOneById($context['organization']);
         } else {
             $organization = null;
         }
 
-        $discount = $this->_entityManager
+        $discount = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Discount')
-            ->findOneByArticleAndTypeAndOrganization($this->_article, $value, $organization);
+            ->findOneByArticleAndTypeAndOrganization($this->options['article'], $value, $organization);
 
         if (null === $discount) {
             return true;
