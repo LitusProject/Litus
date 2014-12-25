@@ -18,28 +18,15 @@
 
 namespace BrBundle\Component\Validator;
 
-use BrBundle\Entity\Product,
-    Doctrine\ORM\EntityManager;
-
 /**
  * Matches the given product name against the database to check whether it is
  * unique or not.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class ProductName extends \Zend\Validator\AbstractValidator
+class ProductName extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
-
-    /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var \BrBundle\Entity\Product The product exluded from this check
-     */
-    private $_product;
 
     /**
      * @var array The error messages
@@ -48,16 +35,24 @@ class ProductName extends \Zend\Validator\AbstractValidator
         self::NOT_VALID => 'The product name already exists',
     );
 
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed                       $opts          The validator's options
-     */
-    public function __construct(EntityManager $entityManager, Product $product = null, $opts = null)
-    {
-        parent::__construct($opts);
+    protected $options = array(
+        'product' => null,
+    );
 
-        $this->_entityManager = $entityManager;
-        $this->_product = $product;
+    /**
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
+     */
+    public function __construct($options = array())
+    {
+        if (!is_array($options)) {
+            $options = func_get_args();
+            $temp['product'] = array_shift($options);
+            $options = $temp;
+        }
+
+        parent::__construct($options);
     }
 
     /**
@@ -71,11 +66,11 @@ class ProductName extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $product = $this->_entityManager
+        $product = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Product')
             ->findOneByName($value);
 
-        if (null === $product || ($this->_product && ($product == $this->_product))) {
+        if (null === $product || ($this->options['product'] && ($product == $this->options['product']))) {
             return true;
         }
 

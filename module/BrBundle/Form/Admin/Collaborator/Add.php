@@ -18,8 +18,6 @@
 
 namespace BrBundle\Form\Admin\Collaborator;
 
-use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
-
 /**
  * Add a collaborator.
  *
@@ -45,7 +43,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new PersonTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_person'),
                     ),
                 ),
             ),

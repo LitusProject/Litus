@@ -18,10 +18,7 @@
 
 namespace BrBundle\Form\Admin\Product;
 
-use BrBundle\Component\Validator\Contract\Bullet as BulletValidator,
-    BrBundle\Component\Validator\ProductName as ProductNameValidator,
-    BrBundle\Entity\Product,
-    CommonBundle\Component\Validator\Price as PriceValidator;
+use BrBundle\Entity\Product;
 
 /**
  * Add a product.
@@ -53,7 +50,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new ProductNameValidator($this->getEntityManager(), $this->product),
+                        array(
+                            'name' => 'product_name',
+                            'options' => array(
+                                'product' => $this->product,
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -85,7 +87,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PriceValidator(),
+                        array('name' => 'price'),
                     ),
                 ),
             ),
@@ -125,7 +127,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new BulletValidator(),
+                        array('name' => 'contract_bullet'),
                     ),
                 ),
             ),

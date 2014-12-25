@@ -26,7 +26,7 @@ use BrBundle\Component\ContractParser\IllegalFormatException,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Bullet extends \Zend\Validator\AbstractValidator
+class Bullet extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
