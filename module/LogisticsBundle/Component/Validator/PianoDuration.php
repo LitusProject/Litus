@@ -56,10 +56,10 @@ class PianoDuration extends \CommonBundle\Component\Validator\AbstractValidator
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options     = func_get_args();
-            $temp['start_date'] = array_shift($options);
-            $temp['format'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['start_date'] = array_shift($args);
+            $options['format'] = array_shift($args);
         }
 
         parent::__construct($options);

@@ -61,10 +61,10 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
     public function __construct($options = array())
     {
         if (!is_array($options)) {
-            $options = func_get_args();
-            $temp['event'] = array_shift($options);
-            $temp['person'] = array_shift($options);
-            $options = $temp;
+            $args = func_get_args();
+            $options = array();
+            $options['event'] = array_shift($args);
+            $options['person'] = array_shift($args);
         }
 
         parent::__construct($options);
