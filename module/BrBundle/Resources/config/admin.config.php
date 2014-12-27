@@ -59,6 +59,12 @@ return array(
                     'help'  => 'Here you can manage all requests that are made by the companies.',
                 ),
             ),
+            'controllers' => array(
+                'br_admin_company_event',
+                'br_admin_company_job',
+                'br_admin_company_user',
+                'br_admin_company_logo',
+            ),
         ),
     ),
 );
