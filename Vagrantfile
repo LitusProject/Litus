@@ -36,7 +36,7 @@ Vagrant.configure(2) do |config|
         # Use rsync instead of VirtualBox/VMWare shared folders,
         type: "rsync",
         # and exclude some more folders when syncing (i.e. .git)
-        rsync_exclude: ".git/"
+        rsync_exclude: %(.vagrant .git vendor)
 
     # configure and install dependencies
     config.vm.provision "shell", privileged: true, inline: <<-SHELL.strip_heredoc
@@ -116,8 +116,6 @@ Vagrant.configure(2) do |config|
             exit 0
         fi
 
-        set -e
-
         # create mongo user
         echo -e "use litus\nif (db.system.users.find({user:'litus'}).count() === 0) db.addUser('litus', 'huQeyU8te3aXusaz');" | mongo
 
@@ -147,17 +145,42 @@ Vagrant.configure(2) do |config|
         touch /.litus_installation/3
     SHELL
 
+    config.vm.provision "shell", privileged: true, inline: <<-SHELL.strip_heredoc
+        # fail on error
+        set -e
+
+        # run only once
+        if [ -f /.litus_installation/4 ]; then
+            exit 0
+        fi
+
+        mkdir -p /usr/local/libexec
+        cd /usr/local/libexec
+
+        php -r "readfile('https://getcomposer.org/installer');" | php
+
+        cd /usr/local/bin
+        cat /vagrant/vagrant/composer > composer
+        chmod +x composer
+
+        touch /.litus_installation/4
+    SHELL
+
     # update litus
     config.vm.provision "shell", privileged: true, inline: <<-SHELL.strip_heredoc
         # fail on error
         set -e
 
-        cd /vagrant/config
+        cd /vagrant
+
+        composer install
+
+        cd ./config
 
         ln -sf database.config.php.dist database.config.php
         ln -sf lilo.config.php.dist lilo.config.php
 
-        cd autoload
+        cd ./autoload
 
         ln -sf nodeprefix.local.php.dist nodeprefix.local.php
 
