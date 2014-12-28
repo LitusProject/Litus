@@ -51,7 +51,7 @@ class News extends EntityRepository
                     $query->expr()->isNull('n.endDate')
                 )
             )
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new DateTime())
             ->orderBy('n.creationTime', 'DESC')
             ->getQuery();
 
@@ -72,7 +72,7 @@ class News extends EntityRepository
                     )
                 )
             )
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new DateTime())
             ->setParameter('maxAge', $maxAge)
             ->orderBy('n.creationTime', 'DESC')
             ->getQuery();
@@ -94,7 +94,7 @@ class News extends EntityRepository
                     )
                 )
             )
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new DateTime())
             ->setParameter('maxAge', $maxAge)
             ->orderBy('n.creationTime', 'DESC')
             ->setMaxResults($nbResults)

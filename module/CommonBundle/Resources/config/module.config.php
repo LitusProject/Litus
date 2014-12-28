@@ -37,7 +37,7 @@ return Config::create(
                     );
                 },
                 'authentication_doctrinecredentialadapter' => function ($serviceManager) {
-                    return new \CommonBundle\Component\Authentication\Adapter\Doctrine\Credential(
+                    return new Component\Authentication\Adapter\Doctrine\Credential(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
                         'CommonBundle\Entity\User\Person',
                         'username'
@@ -55,7 +55,7 @@ return Config::create(
                     );
                 },
                 'authentication_doctrineaction' => function ($serviceManager) {
-                    return new \CommonBundle\Component\Authentication\Action\Doctrine(
+                    return new Component\Authentication\Action\Doctrine(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
                         $serviceManager->get('mail_transport')
                     );

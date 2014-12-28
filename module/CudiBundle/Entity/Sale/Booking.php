@@ -132,7 +132,7 @@ class Booking
     public function __construct(EntityManager $entityManager, Person $person, Article $article, $status, $number = 1, $force = false)
     {
         if (!$article->isBookable() && !$force) {
-            throw new \InvalidArgumentException('The Stock Article cannot be booked.');
+            throw new InvalidArgumentException('The Stock Article cannot be booked.');
         }
 
         $this->person = $person;

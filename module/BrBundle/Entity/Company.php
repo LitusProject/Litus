@@ -23,7 +23,8 @@ use BrBundle\Entity\Company\Page,
     CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Address,
     Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * This is the entity for a company.
@@ -64,7 +65,7 @@ class Company
     private $vatNumber;
 
     /**
-     * @var \CommonBundle\Entity\General\Address The address of the company
+     * @var Address The address of the company
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="address", referencedColumnName="id")
@@ -125,14 +126,14 @@ class Company
     private $cvBookArchiveYears;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The company's contacts
+     * @var ArrayCollection The company's contacts
      *
      * @ORM\OneToMany(targetEntity="BrBundle\Entity\User\Person\Corporate", mappedBy="company")
      */
     private $contacts;
 
     /**
-     * @var \BrBundle\Entity\Company\Page The company's page
+     * @var Page The company's page
      *
      * @ORM\OneToOne(targetEntity="BrBundle\Entity\Company\Page", mappedBy="company")
      */
@@ -211,8 +212,8 @@ class Company
     }
 
     /**
-     * @param  string                   $name
-     * @return \BrBundle\Entity\Company
+     * @param  string $name
+     * @return self
      */
     public function setName($name)
     {
@@ -231,8 +232,8 @@ class Company
     }
 
     /**
-     * @param  string                   $vatNumber
-     * @return \BrBundle\Entity\Company
+     * @param  string $vatNumber
+     * @return self
      */
     public function setVatNumber($vatNumber)
     {
@@ -242,7 +243,7 @@ class Company
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Address
+     * @return Address
      */
     public function getAddress()
     {
@@ -250,8 +251,8 @@ class Company
     }
 
     /**
-     * @param  \CommonBundle\Entity\General\Address $address
-     * @return \BrBundle\Entity\Company
+     * @param  Address $address
+     * @return self
      */
     public function setAddress(Address $address)
     {
@@ -269,8 +270,8 @@ class Company
     }
 
     /**
-     * @param  string                   $phoneNumber
-     * @return \BrBundle\Entity\Company
+     * @param  string $phoneNumber
+     * @return self
      */
     public function setPhoneNumber($phoneNumber)
     {
@@ -288,8 +289,8 @@ class Company
     }
 
     /**
-     * @param  string                   $website
-     * @return \BrBundle\Entity\Company
+     * @param  string $website
+     * @return self
      */
     public function setWebsite($website)
     {
@@ -322,13 +323,13 @@ class Company
     }
 
     /**
-     * @param  string                   $sector
-     * @return \BrBundle\Entity\Company
+     * @param  string $sector
+     * @return self
      */
     public function setSector($sector)
     {
         if (!self::isValidSector($sector)) {
-            throw new \InvalidArgumentException('The sector is not valid');
+            throw new InvalidArgumentException('The sector is not valid');
         }
 
         $this->sector = $sector;
@@ -355,8 +356,8 @@ class Company
     }
 
     /**
-     * @param  string                   $logo
-     * @return \BrBundle\Entity\Company
+     * @param  string $logo
+     * @return self
      */
     public function setLogo($logo)
     {
@@ -376,7 +377,7 @@ class Company
     /**
      * Deactivates the given company.
      *
-     * @return \BrBundle\Entity\Company
+     * @return self
      */
     public function deactivate()
     {
@@ -412,7 +413,7 @@ class Company
     /**
      * @param array $years
      *
-     * @return \BrBundle\Entity\Company
+     * @return self
      */
     public function setCvBookYears(array $years)
     {
@@ -439,7 +440,7 @@ class Company
 
     /**
      *
-     * @return \BrBundle\Entity\Company
+     * @return self
      */
     public function setCvBookArchiveYears(array $archiveYears)
     {

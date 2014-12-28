@@ -20,6 +20,7 @@ namespace WikiBundle\Controller;
 
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Authentication\Authentication,
+    Exception,
     Zend\View\Model\ViewModel;
 
 /**
@@ -65,7 +66,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 
                 if ($this->getAuthentication()->isAuthenticated()) {
                     if (!$this->getAuthentication()->isExternallyAuthenticated()) {
-                        throw new \Exception('Impossible state: logged in but not externally visible');
+                        throw new Exception('Impossible state: logged in but not externally visible');
                     }
 
                     $this->flashMessenger()->success(

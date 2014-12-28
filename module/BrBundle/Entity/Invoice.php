@@ -24,7 +24,8 @@ use BrBundle\Entity\Product,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * This is the entity for a invoice.
@@ -168,13 +169,12 @@ class Invoice
 
     /**
      * @return self
-     * @throws InvalidArgumentExeption
-     *                                 Exception gets thrown if the invoice is already payed.
+     * @throws InvalidArgumentException Exception gets thrown if the invoice is already payed.
      */
     public function setPayed()
     {
         if ($this->isPayed()) {
-            throw new \InvalidArgumentException('This invoice has already been paid');
+            throw new InvalidArgumentException('This invoice has already been paid');
         }
 
         $this->paidTime = new DateTime();
@@ -246,7 +246,7 @@ class Invoice
     public function setPaidTime(DateTime $paidTime)
     {
         if ($this->isPaid()) {
-            throw new \InvalidArgumentException('This invoice has already been paid');
+            throw new InvalidArgumentException('This invoice has already been paid');
         }
 
         $this->paidTime = $paidTime;

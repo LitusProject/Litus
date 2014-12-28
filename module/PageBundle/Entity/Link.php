@@ -21,6 +21,7 @@ namespace PageBundle\Entity;
 use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
+    Locale,
     PageBundle\Entity\Category,
     PageBundle\Entity\Node\Page;
 
@@ -127,7 +128,7 @@ class Link
                 return $translation;
             }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
                 $fallbackTranslation = $translation;
             }
         }

@@ -20,7 +20,8 @@ namespace CalendarBundle\Component\Validator;
 
 use CommonBundle\Component\Form\Form,
     CommonBundle\Component\Util\Url,
-    CommonBundle\Component\Validator\FormAwareInterface;
+    CommonBundle\Component\Validator\FormAwareInterface,
+    DateTime;
 
 /**
  * Matches the given event title against the database to check whether it is
@@ -75,7 +76,7 @@ class Name extends \CommonBundle\Component\Validator\AbstractValidator implement
     {
         $this->setValue($value);
 
-        $date = \DateTime::createFromFormat('d#m#Y H#i', $this->_form->get('start_date')->getValue());
+        $date = DateTime::createFromFormat('d#m#Y H#i', $this->_form->get('start_date')->getValue());
 
         if ($date) {
             $title = $date->format('Ymd') . '_' . Url::createSlug($value);
