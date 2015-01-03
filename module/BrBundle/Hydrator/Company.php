@@ -18,6 +18,7 @@
 
 namespace BrBundle\Hydrator;
 
+
 use BrBundle\Entity\Company as CompanyEntity,
     BrBundle\Entity\Company\Page as PageEntity;
 
@@ -102,7 +103,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         foreach ($object->getCvBookArchiveYears() as $year) {
-            $data['cvbook'][] = 'archive-' . $year->getId();
+            $data['cvbook'][] = 'archive-' . $year;
         }
 
         $data['address'] = $this->getHydrator('CommonBundle\Hydrator\General\Address')
