@@ -24,7 +24,7 @@ return Config::create(
     array(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
-        'translation_files' => array('corporate', 'career', 'cv'),
+        'translation_files' => array('corporate', 'career', 'cv', 'validator'),
         'has_layouts'       => true,
     ),
     array(

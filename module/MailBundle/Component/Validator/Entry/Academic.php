@@ -19,7 +19,7 @@
 namespace MailBundle\Component\Validator\Entry;
 
 /**
- * Checks whether a mailing admin map is unique or not.
+ * Checks whether an academic is already subscribed
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -35,7 +35,7 @@ class Academic extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This member already has been subscribed to this list!',
+        self::NOT_VALID => 'This member already has been subscribed to this list',
     );
 
     /**

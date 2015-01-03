@@ -37,7 +37,7 @@ class Exists extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The restriction already exist!',
+        self::NOT_VALID => 'The restriction already exists',
     );
 
     /**

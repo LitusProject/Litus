@@ -24,7 +24,7 @@ return Config::create(
     array(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
-        'translation_files' => array('ticket'),
+        'translation_files' => array('ticket', 'validator'),
         'has_layouts'       => true,
     ),
     array(

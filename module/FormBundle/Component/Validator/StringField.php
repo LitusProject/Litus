@@ -37,8 +37,8 @@ class StringField extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::ML_BOTH => 'Multiline fields must specify either both a line limit and a character limit or none.',
-        self::NON_ML_LINES => 'Non multiline fields should not specify a maximum number of lines.',
+        self::ML_BOTH => 'Multiline fields must specify either both a line limit and a character limit or none',
+        self::NON_ML_LINES => 'Non multiline fields should not specify a maximum number of lines',
     );
 
     /**

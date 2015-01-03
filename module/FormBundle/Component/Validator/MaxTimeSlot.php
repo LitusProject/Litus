@@ -38,7 +38,7 @@ class MaxTimeSlot extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::TO_MANY         => 'Too many time slots were selected',
+        self::TO_MANY => 'Too many time slots were selected',
     );
 
     /**

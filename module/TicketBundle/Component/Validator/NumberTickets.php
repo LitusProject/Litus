@@ -49,7 +49,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
      */
     protected $messageTemplates = array(
         self::NOT_VALID => 'The number of tickets is not valid',
-        self::EXCEEDS_MAX_PERSON => 'The number of tickets exceeds the maximum',
+        self::EXCEEDS_MAX_PERSON => 'The number of tickets exceeds the maximum per person',
         self::EXCEEDS_MAX => 'The number of tickets exceeds the maximum',
     );
 

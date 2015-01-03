@@ -24,7 +24,7 @@ return Config::create(
     array(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
-        'translation_files' => array('logistics'),
+        'translation_files' => array('logistics', 'validator'),
         'has_layouts'       => true,
         'has_documents'     => true,
     ),

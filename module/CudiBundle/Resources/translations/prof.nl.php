@@ -150,8 +150,6 @@ return array(
     'File' => 'Bestand',
     'Docent' => 'Docent',
     'Update' => 'Update',
-    'The uri is not valid' => 'De uri is niet geldig',
-    'The given year is not valid' => 'Het opgegeven jaar is niet geldig',
     'Draft' => 'Concept',
     'Save As Draft' => 'Bewaar Als Concept',
 

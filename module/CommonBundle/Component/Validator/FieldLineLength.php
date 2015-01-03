@@ -36,7 +36,7 @@ class FieldLineLength extends AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This field exceeds the maximum character count.',
+        self::NOT_VALID => 'This field exceeds the maximum character count',
     );
 
     /**

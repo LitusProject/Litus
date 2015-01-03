@@ -31,7 +31,7 @@ class CancelRegistration extends \CommonBundle\Component\Validator\AbstractValid
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The registration needs to be uncancelled before it can be payed!',
+        self::NOT_VALID => 'The registration needs to be uncancelled before it can be payed',
     );
 
     /**
