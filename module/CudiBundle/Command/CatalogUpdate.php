@@ -21,7 +21,8 @@ namespace CudiBundle\Command;
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
     DateInterval,
-    DateTime;
+    DateTime,
+    Zend\Mail\Message as Mail;
 
 /**
  * Updates catalog
@@ -254,7 +255,7 @@ EOT
             }
 
             if ($updates != '') {
-                $mail = new \Zend\Mail\Message();
+                $mail = new Mail();
                 $mail->setBody(str_replace('{{ updates }}', $updates, $message))
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($subscription->getPerson()->getEmail(), $subscription->getPerson()->getFullName())

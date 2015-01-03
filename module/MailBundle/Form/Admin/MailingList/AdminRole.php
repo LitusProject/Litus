@@ -18,7 +18,8 @@
 
 namespace MailBundle\Form\Admin\MailingList;
 
-use MailBundle\Entity\MailingList;
+use MailBundle\Entity\MailingList,
+    RuntimeException;
 
 /**
  * Add Admin Role
@@ -89,7 +90,7 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
         }
 
         if (empty($rolesArray)) {
-            throw new \RuntimeException('There needs to be at least one role before you can map a role');
+            throw new RuntimeException('There needs to be at least one role before you can map a role');
         }
 
         return $rolesArray;

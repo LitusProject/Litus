@@ -24,6 +24,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person,
     CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    InvalidArgumentException,
     SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
@@ -597,7 +598,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             case 'ean12':
                 $validator = new Ean12Validator();
                 if (!$validator->hasValidChecksum($barcode)) {
-                    throw new \InvalidArgumentException('The given barcode was not a valid EAN-12 code');
+                    throw new InvalidArgumentException('The given barcode was not a valid EAN-12 code');
                 }
 
                 return new Ean12($person, $barcode);

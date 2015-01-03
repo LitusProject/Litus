@@ -65,23 +65,23 @@ class Authorization
     private $key;
 
     /**
-     * @var \DateTime The expiration time of the code
+     * @var DateTime The expiration time of the code
      *
      * @ODM\Field(name="expiration_time", type="date")
      */
     private $expirationTime;
 
     /**
-     * @var \DateTime The exchange time of the code
+     * @var DateTime The exchange time of the code
      *
      * @ODM\Field(name="exchange_time", type="date")
      */
     private $exchangeTime;
 
     /**
-     * @param \CommonBundle\Entity\User\Person $person
-     * @param \ApiBundle\Entity\Key            $key
-     * @param int                              $expirationTime
+     * @param Person $person
+     * @param Key    $key
+     * @param int    $expirationTime
      */
     public function __construct(Person $person, Key $key, $expirationTime = self::DEFAULT_EXPIRATION_TIME)
     {
@@ -111,8 +111,8 @@ class Authorization
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager      $entityManager
-     * @return \CommonBundle\Entity\User\Person
+     * @param  EntityManager $entityManager
+     * @return Person
      */
     public function getPerson(EntityManager $entityManager)
     {
@@ -121,8 +121,8 @@ class Authorization
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager $entityManager
-     * @return \ApiBundle\Entity\Key
+     * @param  EntityManager $entityManager
+     * @return Key
      */
     public function getKey(EntityManager $entityManager)
     {
@@ -131,7 +131,7 @@ class Authorization
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getExpirationTime()
     {
@@ -139,7 +139,7 @@ class Authorization
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getExchangeTime()
     {
@@ -147,7 +147,7 @@ class Authorization
     }
 
     /**
-     * @return \ApiBundle\Document\Code\Authorization
+     * @return self
      */
     public function exchange()
     {
