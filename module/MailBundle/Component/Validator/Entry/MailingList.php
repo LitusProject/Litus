@@ -35,7 +35,7 @@ class MailingList extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This list already has been subscribed to this list!',
+        self::NOT_VALID => 'This list already has been subscribed to this list',
     );
 
     /**

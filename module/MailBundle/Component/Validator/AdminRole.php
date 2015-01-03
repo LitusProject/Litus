@@ -35,7 +35,7 @@ class AdminRole extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This role already has admin rights on this list!',
+        self::NOT_VALID => 'This role already has admin rights on this list',
     );
 
     /**

@@ -24,7 +24,7 @@ return Config::create(
     array(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
-        'translation_files' => array('common'),
+        'translation_files' => array('common', 'validator'),
     ),
     array(
         'validators' => array(

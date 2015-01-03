@@ -55,7 +55,6 @@ return array(
     "Active (Writing)" => "Actief (Schrijven)",
     "Passive (Listening)" => "Passief (Luisteren)",
     "Passive (Reading)" => "Passief (Lezen)",
-    "This field exceeds the maximum character count." => "Dit veld overschreidt het maximale aantal karakters.",
     "Your entry has been recorded in the CV Book." => "Je CV werd opgeslagen in het CV Boek.",
     "You can only fill in the CV Book once." => "Je kan het CV Boek slechts één keer invullen.",
 

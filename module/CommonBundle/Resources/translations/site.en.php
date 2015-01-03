@@ -102,15 +102,12 @@ return array(
     'Cudi is currently closed.' => 'Cudi is currently closed.',
     'Reserve textbooks and other study material.' => 'Reserve textbooks and other study material.',
 
-    'The value may not be zero' => 'The value may not be zero',
-
     'Praesidium' => 'Praesidium',
     'Groupcoordinator' => 'Groupcoordinator',
 
     'Enroll' => 'Enroll',
     'Unsubscribe' => 'Unsubscribe',
 
-    'This person does not exits' => 'This person does not exits',
     'The selected file is too large.' => 'The selected file is too large.',
     'An error occurred while uploading your profile image.' => 'An error occurred while uploading your profile image.',
 

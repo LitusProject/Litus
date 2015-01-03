@@ -39,7 +39,7 @@ class PianoDuration extends \CommonBundle\Component\Validator\AbstractValidator
      */
     protected $messageTemplates = array(
         self::NO_START_DATE  => 'There was no start date found',
-        self::TO_LONG        => 'The reservation is to long',
+        self::TO_LONG        => 'The reservation is too long',
         self::INVALID_FORMAT => 'One of the dates is not in the correct format',
     );
 
