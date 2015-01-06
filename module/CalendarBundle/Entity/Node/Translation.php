@@ -18,7 +18,11 @@
 
 namespace CalendarBundle\Entity\Node;
 
-use CommonBundle\Entity\General\Language,
+
+
+
+use CommonBundle\Component\Util\String as StringUtil,
+    CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM,
     Markdown_Parser;
 
@@ -184,6 +188,6 @@ class Translation
         $parser = new Markdown_Parser();
         $summary = $parser->transform($this->content);
 
-        return \CommonBundle\Component\Util\String::truncateNoHtml($summary, $length, '...');
+        return StringUtil::truncateNoHtml($summary, $length, '...');
     }
 }

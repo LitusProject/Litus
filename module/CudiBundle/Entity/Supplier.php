@@ -22,11 +22,13 @@ namespace CudiBundle\Entity;
 
 
 
+
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\Organization,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Supplier")
@@ -211,7 +213,7 @@ class Supplier
     public function setTemplate($template)
     {
         if (!self::isValidTemplate($template)) {
-            throw new \InvalidArgumentException('The template is not valid.');
+            throw new InvalidArgumentException('The template is not valid.');
         }
 
         $this->template = $template;

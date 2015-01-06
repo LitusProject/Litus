@@ -22,10 +22,12 @@ namespace BrBundle\Entity\Company;
 
 
 
+
 use BrBundle\Entity\Company,
     CommonBundle\Component\Util\String,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException,
     Markdown_Parser;
 
 /**
@@ -214,7 +216,7 @@ class Job
     public function setName($name)
     {
         if (null === $name || !is_string($name)) {
-            throw new \InvalidArgumentException('Invalid name');
+            throw new InvalidArgumentException('Invalid name');
         }
 
         $this->name = $name;
@@ -237,7 +239,7 @@ class Job
     public function setType($type)
     {
         if (null === $type || !is_string($type)) {
-            throw new \InvalidArgumentException('Invalid type');
+            throw new InvalidArgumentException('Invalid type');
         }
 
         $this->type = $type;
@@ -446,7 +448,7 @@ class Job
     public function setSector($sector)
     {
         if (!Company::isValidSector($sector)) {
-            throw new \InvalidArgumentException('The sector is not valid.');
+            throw new InvalidArgumentException('The sector is not valid.');
         }
 
         $this->sector = $sector;

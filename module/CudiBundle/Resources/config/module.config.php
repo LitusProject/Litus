@@ -24,7 +24,21 @@ return Config::create(
     array(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
-        'translation_files' => array('site', 'supplier', 'prof'),
+        'translation_files' => array('site', 'supplier', 'prof', 'validator'),
         'has_layouts'       => true,
+    ),
+    array(
+        'validators' => array(
+            'invokables' => array(
+                'sale_article_barcode_unique'     => 'CudiBundle\Component\Validator\Sale\Article\Barcode\Unique',
+                'sale_article_discount_exits'     => 'CudiBundle\Component\Validator\Sale\Article\Discount\Exists',
+                'sale_article_restriction_exists' => 'CudiBundle\Component\Validator\Sale\Article\Restriction\Exists',
+                'sale_session_restriction_exists' => 'CudiBundle\Component\Validator\Sale\Session\Restriction\Exists',
+                'sale_session_restriction_values' => 'CudiBundle\Component\Validator\Sale\Session\Restriction\Values',
+                'sale_has_bought'                 => 'CudiBundle\Component\Validator\Sale\HasBought',
+                'typeahead_sale_article'          => 'CudiBundle\Component\Validator\Typeahead\Sale\Article',
+                'typeahead_article'               => 'CudiBundle\Component\Validator\Typeahead\Article',
+            ),
+        ),
     )
 );

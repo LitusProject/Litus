@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Sale\Article\Sale;
 
-use CommonBundle\Component\Validator\Price as PriceValidator;
-
 /**
  * Add Sale
  *
@@ -86,7 +84,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PriceValidator(),
+                        array('name' => 'price'),
                     ),
                 ),
             ),

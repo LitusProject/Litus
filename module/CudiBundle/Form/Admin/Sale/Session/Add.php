@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Sale\Session;
 
-
-use CommonBundle\Component\Validator\Price as PriceValidator,
-    CommonBundle\Entity\General\Bank\CashRegister;
+use CommonBundle\Entity\General\Bank\CashRegister;
 
 /**
  * Add Sale Session content
@@ -96,7 +94,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            new PriceValidator(),
+                            array('name' => 'price'),
                         ),
                     ),
                 ),

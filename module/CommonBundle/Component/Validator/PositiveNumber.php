@@ -23,15 +23,14 @@ namespace CommonBundle\Component\Validator;
  *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class PositiveNumber extends \Zend\Validator\AbstractValidator
+class PositiveNumber extends AbstractValidator
 {
     const NOT_POSITIVE = 'notPositive';
     const NOT_STRICT_POSITIVE = 'notStrictPositive';
 
-    /**
-     * @var bool Strictly positive checking enabled or not.
-     */
-    private $_strict = null;
+    protected $options = array(
+        'strict' => true,
+    );
 
     /**
      * @var array The error messages
@@ -42,13 +41,19 @@ class PositiveNumber extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param bool  $strict Enable striclty positive checking (i.e. zero is not allowed)
-     * @param mixed $opts   The validator's options
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
      */
-    public function __construct($strict = true, $opts = null)
+    public function __construct($options = array())
     {
-        $this->_strict = $strict;
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['strict'] = array_shift($args);
+        }
+
+        parent::__construct($options);
     }
 
     /**
@@ -67,10 +72,10 @@ class PositiveNumber extends \Zend\Validator\AbstractValidator
             return true;
         }
 
-        if ($this->_strict && $intVal == 0) {
-            $this->error (self::NOT_STRICT_POSITIVE);
+        if ($this->options['strict'] && $intVal == 0) {
+            $this->error(self::NOT_STRICT_POSITIVE);
         } else {
-            $this->error (self::NOT_POSITIVE);
+            $this->error(self::NOT_POSITIVE);
         }
 
         return false;

@@ -22,11 +22,13 @@ namespace FormBundle\Entity\Field;
 
 
 
+
 use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
-    FormBundle\Entity\Node\Form;
+    FormBundle\Entity\Node\Form,
+    Locale;
 
 /**
  * An abstract class that stores a number of options.
@@ -97,7 +99,7 @@ abstract class OptionSelector extends Field
                 return $translation;
             }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
                 $fallbackTranslation = $translation;
             }
         }

@@ -19,11 +19,7 @@
 namespace TicketBundle\Form\Sale\Ticket;
 
 
-
-
-use CommonBundle\Component\Validator\TypeAhead\Person as PersonTypeaheadValidator,
-    LogicException,
-    TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
+use LogicException,
     TicketBundle\Entity\Event;
 
 /**
@@ -83,7 +79,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'options'    => array(
                         'input' => array(
                             'validators' => array(
-                                new PersonTypeaheadValidator($this->getEntityManager()),
+                                array('name' => 'typeahead_person'),
                             ),
                         ),
                     ),
@@ -167,7 +163,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'options'    => array(
                     'input' => array(
                         'validators' => array(
-                            new NumberTicketsValidator($this->getEntityManager(), $this->event),
+                            array(
+                                'name' => 'ticket_number_tickets',
+                                'options' => array(
+                                    'event' => $this->event,
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -187,7 +188,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'options'    => array(
                         'input' => array(
                             'validators' => array(
-                                new NumberTicketsValidator($this->getEntityManager(), $this->event),
+                                array(
+                                    'name' => 'ticket_number_tickets',
+                                    'options' => array(
+                                        'event' => $this->event,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -208,7 +214,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'options'    => array(
                         'input' => array(
                             'validators' => array(
-                                new NumberTicketsValidator($this->getEntityManager(), $this->event),
+                                array(
+                                    'name' => 'ticket_number_tickets',
+                                    'options' => array(
+                                        'event' => $this->event,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -228,7 +239,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'options'    => array(
                             'input' => array(
                                 'validators' => array(
-                                    new NumberTicketsValidator($this->getEntityManager(), $this->event),
+                                    array(
+                                        'name' => 'ticket_number_tickets',
+                                        'options' => array(
+                                            'event' => $this->event,
+                                        ),
+                                    ),
                                 ),
                             ),
                         ),

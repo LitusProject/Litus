@@ -19,24 +19,17 @@
 namespace CudiBundle\Component\Validator\Sale;
 
 
-
 use CommonBundle\Component\Form\Form,
-    CommonBundle\Component\Validator\FormAwareInterface,
-    Doctrine\ORM\EntityManager;
+    CommonBundle\Component\Validator\FormAwareInterface;
 
 /**
  * Check if user has bought an aritcle
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class HasBought extends \Zend\Validator\AbstractValidator implements FormAwareInterface
+class HasBought extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
-
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
 
     /**
      * @var Form
@@ -53,19 +46,6 @@ class HasBought extends \Zend\Validator\AbstractValidator implements FormAwareIn
     );
 
     /**
-     * Create a new HasBought validator.
-     *
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param mixed         $opts          The validator's options
-     */
-    public function __construct(EntityManager $entityManager, $opts = null)
-    {
-        parent::__construct($opts);
-
-        $this->_entityManager = $entityManager;
-    }
-
-    /**
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field is valid.
      *
@@ -77,15 +57,15 @@ class HasBought extends \Zend\Validator\AbstractValidator implements FormAwareIn
     {
         $this->setValue($value);
 
-        $person = $this->_entityManager
+        $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->_form->get('person')->get('id')->getValue());
 
-        $article = $this->_entityManager
+        $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneById($context['id']);
 
-        $booking = $this->_entityManager
+        $booking = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findOneSoldByArticleAndPerson($article, $person, false);
 

@@ -18,8 +18,6 @@
 
 namespace LogisticsBundle\Form\Admin\Driver;
 
-use LogisticsBundle\Component\Validator\Typeahead\Driver as DriverTypeaheadValidator;
-
 /**
  * The form used to add a new Driver
  *
@@ -50,7 +48,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new DriverTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'logistics_typeahead_driver'),
                     ),
                 ),
             ),

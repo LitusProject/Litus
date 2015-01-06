@@ -18,33 +18,19 @@
 
 namespace QuizBundle\Component\Validator\Team;
 
-use Doctrine\ORM\EntityManager,
-    QuizBundle\Entity\Quiz,
-    QuizBundle\Entity\Team;
-
 /**
  * Validates the uniqueness of a team number in a quiz
  *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Unique extends \Zend\Validator\AbstractValidator
+class Unique extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var Quiz The quiz where the team belongs to
-     */
-    private $_quiz = null;
-
-    /**
-     * @var Team The team excluded
-     */
-    private $_team = null;
+    protected $options = array(
+        'quiz' => null,
+        'team' => null,
+    );
 
     /**
      * Error messages
@@ -56,19 +42,20 @@ class Unique extends \Zend\Validator\AbstractValidator
     );
 
     /**
+     * Sets validator options
      *
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param Quiz          $quiz          The quiz where the team belongs to
-     * @param Team          $team          The team excluded
-     * @param mixed         $opts          The validator's options
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, Quiz $quiz, Team $team = null, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['quiz'] = array_shift($args);
+            $options['team'] = array_shift($args);
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_quiz = $quiz;
-        $this->_team = $team;
+        parent::__construct($options);
     }
 
     public function isValid($value)
@@ -81,15 +68,16 @@ class Unique extends \Zend\Validator\AbstractValidator
             return false;
         }
 
-        $teams = $this->_entityManager->getRepository('QuizBundle\Entity\Team')
+        $teams = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\Team')
             ->findBy(
                 array(
-                    'quiz' => $this->_quiz->getId(),
+                    'quiz' => $this->options['quiz']->getId(),
                     'number' => $value,
                 )
             );
 
-        if (count($teams) == 0 || $teams[0] == $this->_team) {
+        if (count($teams) == 0 || $teams[0] == $this->options['team']) {
             return true;
         }
 

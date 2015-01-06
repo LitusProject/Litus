@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Sale\Booking;
 
-use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
-
 /**
  * Booking by person
  *
@@ -43,7 +41,7 @@ class Person extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators'  => array(
-                        new PersonTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_person'),
                     ),
                 ),
             ),

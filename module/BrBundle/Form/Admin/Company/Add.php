@@ -18,11 +18,7 @@
 
 namespace BrBundle\Form\Admin\Company;
 
-
-
-use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
-    BrBundle\Entity\Company,
-    CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator;
+use BrBundle\Entity\Company;
 
 /**
  * Add a company.
@@ -53,7 +49,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new CompanyNameValidator($this->getEntityManager(), $this->company),
+                        array(
+                            'name' => 'company_name',
+                            'options' => array(
+                                'company' => $this->company,
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -97,7 +98,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PhoneNumberValidator(),
+                        array('name' => 'phone_number_regex'),
                     ),
                 ),
             ),

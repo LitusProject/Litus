@@ -20,10 +20,8 @@ namespace GalleryBundle\Form\Admin\Album;
 
 
 
-
 use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language,
-    GalleryBundle\Component\Validator\Name as NameValidator,
     GalleryBundle\Entity\Album\Album;
 
 /**
@@ -51,7 +49,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new NameValidator($this->getEntityManager(), $this->album),
+                        array(
+                            'name' => 'gallery_album_name',
+                            'options' => array(
+                                'album' => $this->album,
+                            ),
+                        ),
                     ),
                 ),
             ),

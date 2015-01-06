@@ -23,12 +23,14 @@ namespace BrBundle\Entity;
 
 
 
+
 use CalendarBundle\Entity\Node\Event,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * A product is something that can be sold to companies.
@@ -185,7 +187,7 @@ class Product
     public function setName($name)
     {
         if (null === $name || !is_string($name)) {
-            throw new \InvalidArgumentException('Invalid name');
+            throw new InvalidArgumentException('Invalid name');
         }
 
         $this->name = $name;
@@ -208,7 +210,7 @@ class Product
     public function setAuthor(Person $author)
     {
         if (null === $author) {
-            throw new \InvalidArgumentException('Invalid author');
+            throw new InvalidArgumentException('Invalid author');
         }
 
         $this->author = $author;
@@ -231,7 +233,7 @@ class Product
     public function setContractText($contractText)
     {
         if (null === $contractText || !is_string($contractText)) {
-            throw new \InvalidArgumentException('Invalid contract text');
+            throw new InvalidArgumentException('Invalid contract text');
         }
 
         $this->contractText = $contractText;
@@ -289,7 +291,7 @@ class Product
     public function setPrice($price)
     {
         if (null === $price || !preg_match('/^[0-9]+.?[0-9]{0,2}$/', $price)) {
-            throw new \InvalidArgumentException('Invalid price');
+            throw new InvalidArgumentException('Invalid price');
         }
 
         $this->price = (int) ($price * 100);
@@ -320,7 +322,7 @@ class Product
     public function setDescription($description)
     {
         if (null === $description || !is_string($description) || '' == $description) {
-            throw new \InvalidArgumentException('Invalid description');
+            throw new InvalidArgumentException('Invalid description');
         }
 
         $this->description = $description;
@@ -343,7 +345,7 @@ class Product
     public function setInvoiceDescription($description)
     {
         if (null === $description || !is_string($description)) {
-            throw new \InvalidArgumentException('Invalid description');
+            throw new InvalidArgumentException('Invalid description');
         }
 
         $this->invoiceDescription = $description;

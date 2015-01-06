@@ -24,12 +24,16 @@ namespace CommonBundle\Component\Form;
 
 
 
+
+
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     CommonBundle\Component\Validator\FormAwareInterface,
     RuntimeException,
     Zend\Form\FieldsetInterface,
     Zend\Form\FormInterface,
     Zend\InputFilter\InputFilterAwareInterface,
+    Zend\InputFilter\InputFilterInterface,
+    Zend\InputFilter\InputInterface,
     Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
@@ -177,30 +181,18 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         return $this->getHydrator()->hydrate($this->getData(), $object);
     }
 
-    private function injectSelfInValidators(array $specification)
+    private function injectSelfInValidators(InputFilterInterface $filter)
     {
-        if (!array_key_exists('type', $specification)
-                || !is_string($specification['type'])
-                || $specification['type'] !== 'inputfilter') {
-            // not an InputFilter specification, probably an Input specification
-
-            if (array_key_exists('validators', $specification) && is_array($specification['validators'])) {
-                foreach ($specification['validators'] as $validator) {
-                    if ($validator instanceof FormAwareInterface) {
-                        $validator->setForm($this);
+        foreach ($filter->getInputs() as $key => $input) {
+            if ($input instanceof InputInterface) {
+                foreach ($input->getValidatorChain()->getValidators() as $validator) {
+                    if ($validator['instance'] instanceof FormAwareInterface) {
+                        $validator['instance']->setForm($this);
                     }
                 }
+            } else {
+                $this->injectSelfInValidators($input);
             }
-
-            return;
-        }
-
-        foreach ($specification as $child) {
-            if (!is_array($child)) {
-                continue;
-            }
-
-            $this->injectSelfInValidators($child);
         }
     }
 
@@ -209,10 +201,12 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
         if (!isset($this->filter)) {
             $specification = $this->getInputFilterSpecification();
 
-            $this->injectSelfInValidators($specification);
-
             $this->filter = $this->getInputFilterFactory()
                 ->createInputFilter($specification);
+
+            if ($this->filter instanceof InputFilterInterface) {
+                $this->injectSelfInValidators($this->filter);
+            }
         }
 
         return $this->filter;

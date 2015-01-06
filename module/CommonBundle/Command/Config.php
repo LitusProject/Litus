@@ -18,7 +18,9 @@
 
 namespace CommonBundle\Command;
 
-use Symfony\Component\Console\Input\InputArgument;
+
+use RuntimeException,
+    Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Performs garbage collection on the sessions.
@@ -64,7 +66,7 @@ EOT
         } elseif ('test' == $action) {
             return (null === $config) ? 1 : 0;
         } else {
-            throw new \RuntimeException('Invalid action: ' . $action);
+            throw new RuntimeException('Invalid action: ' . $action);
         }
     }
 

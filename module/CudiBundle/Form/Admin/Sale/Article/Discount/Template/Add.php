@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Sale\Article\Discount\Template;
 
-
-use CommonBundle\Component\Validator\Price as PriceValidator,
-    CudiBundle\Entity\Sale\Article\Discount\Discount;
+use CudiBundle\Entity\Sale\Article\Discount\Discount;
 
 /**
  * Add Template
@@ -67,7 +65,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PriceValidator(),
+                        array('name' => 'price'),
                     ),
                 ),
             ),

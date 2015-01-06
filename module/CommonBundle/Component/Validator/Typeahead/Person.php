@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Component\Validator\Typeahead;
 
-use Doctrine\ORM\EntityManager;
-
 class Person extends \CommonBundle\Component\Validator\Typeahead
 {
     /**
@@ -33,12 +31,9 @@ class Person extends \CommonBundle\Component\Validator\Typeahead
 
     /**
      * Create a new typeahead validator
-     *
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param mixed         $opts          The validator's options
      */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    public function __construct()
     {
-        parent::__construct($entityManager, 'CommonBundle\Entity\User\Person', $opts);
+        parent::__construct('CommonBundle\Entity\User\Person');
     }
 }

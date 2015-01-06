@@ -18,8 +18,11 @@
 
 namespace CommonBundle\Entity\User\Barcode;
 
+
+
 use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * This entity stores an EAN12 barcode.
@@ -51,7 +54,7 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
         }
 
         if (strlen($barcode) != 12) {
-            throw new \InvalidArgumentException('Invalid EAN12 barcode given: ' . $barcode);
+            throw new InvalidArgumentException('Invalid EAN12 barcode given: ' . $barcode);
         }
 
         $this->barcode = $barcode;

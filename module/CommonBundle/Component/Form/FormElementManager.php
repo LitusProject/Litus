@@ -94,10 +94,10 @@ class FormElementManager extends \Zend\Form\FormElementManager
             $element->setFormFactory(new Factory($this));
             $factory = $element->getFormFactory();
 
-            if ($this->serviceLocator instanceof ServiceLocatorInterface
-                && $this->serviceLocator->has('InputFilterManager')
+            if ($this->mainServiceLocator instanceof ServiceLocatorInterface
+                && $this->mainServiceLocator->has('InputFilterManager')
             ) {
-                $inputFilters = $this->serviceLocator->get('InputFilterManager');
+                $inputFilters = $this->mainServiceLocator->get('InputFilterManager');
                 $factory->getInputFilterFactory()->setInputFilterManager($inputFilters);
             }
         }

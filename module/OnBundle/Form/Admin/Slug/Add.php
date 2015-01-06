@@ -18,9 +18,7 @@
 
 namespace OnBundle\Form\Admin\Slug;
 
-
-use OnBundle\Component\Validator\Name as NameValidator,
-    OnBundle\Document\Slug as SlugDocument;
+use OnBundle\Document\Slug as SlugDocument;
 
 /**
  * Add Slug
@@ -51,7 +49,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new NameValidator($this->getDocumentManager(), $this->slug),
+                        array(
+                            'name' => 'on_slug_name',
+                            'options' => array(
+                                'slug' => $this->slug,
+                            ),
+                        ),
                     ),
                 ),
             ),

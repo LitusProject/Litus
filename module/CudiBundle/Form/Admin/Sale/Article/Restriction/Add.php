@@ -20,9 +20,7 @@ namespace CudiBundle\Form\Admin\Sale\Article\Restriction;
 
 
 
-
 use CommonBundle\Component\Util\AcademicYear,
-    CudiBundle\Component\Validator\Sale\Article\Restriction\Exists as RestrictionValidator,
     CudiBundle\Entity\Sale\Article,
     LogicException;
 
@@ -70,7 +68,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new RestrictionValidator($this->article, $this->getEntityManager()),
+                        array(
+                            'name' => 'sale_article_restriction_exists',
+                            'options' => array(
+                                'article' => $this->article,
+                            ),
+                        ),
                     ),
                 ),
             ),

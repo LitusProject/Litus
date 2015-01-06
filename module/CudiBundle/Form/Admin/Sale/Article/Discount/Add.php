@@ -20,11 +20,7 @@ namespace CudiBundle\Form\Admin\Sale\Article\Discount;
 
 
 
-
-
-use CommonBundle\Component\Validator\Price as PriceValidator,
-    CudiBundle\Component\Validator\Sale\Article\Discount\Exists as DiscountValidator,
-    CudiBundle\Entity\Sale\Article,
+use CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\Article\Discount\Discount,
     LogicException;
 
@@ -75,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PriceValidator(),
+                        array('name' => 'price'),
                     ),
                 ),
             ),
@@ -110,7 +106,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new DiscountValidator($this->article, $this->getEntityManager()),
+                        array(
+                            'name' => 'sale_article_discount_exits',
+                            'options' => array(
+                                'article' => $this->article,
+                            ),
+                        ),
                     ),
                 ),
             ),

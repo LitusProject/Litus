@@ -20,11 +20,7 @@ namespace SyllabusBundle\Form\Admin\Subject\Study;
 
 
 
-
-
 use CommonBundle\Entity\General\AcademicYear,
-    SyllabusBundle\Component\Validator\Subject\Study as StudyValidator,
-    SyllabusBundle\Component\Validator\Typeahead\Study as StudyTypeaheadValidator,
     SyllabusBundle\Entity\StudySubjectMap,
     SyllabusBundle\Entity\Subject;
 
@@ -74,8 +70,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new StudyValidator($this->getEntityManager(), $this->subject, $this->academicYear),
-                        new StudyTypeaheadValidator($this->getEntityManager()),
+                        array(
+                            'name' => 'syllabus_subject_study',
+                            'options' => array(
+                                'subject' => $this->subject,
+                                'academic_year' => $this->academicYear,
+                            ),
+                        ),
+                        array('name' => 'syllabus_typeahead_study'),
                     ),
                 ),
             ),

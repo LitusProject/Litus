@@ -18,11 +18,7 @@
 
 namespace MailBundle\Form\Admin\MailingList;
 
-
-
-use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
-    MailBundle\Component\Validator\AdminMap as AdminMapValidator,
-    MailBundle\Entity\MailingList;
+use MailBundle\Entity\MailingList;
 
 /**
  * Add Admin
@@ -50,8 +46,13 @@ class Admin extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new PersonTypeaheadValidator($this->getEntityManager()),
-                        new AdminMapValidator($this->getEntityManager(), $this->getList()),
+                        array('name' => 'typeahead_person'),
+                        array(
+                            'name' => 'mail_admin_map',
+                            'options' => array(
+                                'list' => $this->getList(),
+                            ),
+                        ),
                     ),
                 ),
             ),

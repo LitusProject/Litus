@@ -18,6 +18,12 @@
 
 namespace CudiBundle\Entity\Sale\Article\Discount;
 
+
+
+
+
+
+
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person,
@@ -196,15 +202,15 @@ class Discount
     public function setDiscount($value, $method, $type, $rounding, $applyOnce, Organization $organization = null)
     {
         if (!self::isValidDiscountType($type)) {
-            throw new \InvalidArgumentException('The discount type is not valid.');
+            throw new InvalidArgumentException('The discount type is not valid.');
         }
 
         if (!self::isValidDiscountMethod($method)) {
-            throw new \InvalidArgumentException('The discount method is not valid.');
+            throw new InvalidArgumentException('The discount method is not valid.');
         }
 
         if (!self::isValidRoundingType($rounding)) {
-            throw new \InvalidArgumentException('The rounding type is not valid.');
+            throw new InvalidArgumentException('The rounding type is not valid.');
         }
 
         $this->template = null;

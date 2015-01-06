@@ -18,8 +18,6 @@
 
 namespace SportBundle\Form\Admin\Group;
 
-use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
-
 /**
  * Edit a group of friends.
  *
@@ -39,7 +37,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             'options'  => array(
                 'input' => array(
                     'validators' => array(
-                        new PersonTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_person'),
                     ),
                 ),
             ),

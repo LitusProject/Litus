@@ -22,11 +22,15 @@ namespace CalendarBundle\Entity\Node;
 
 
 
-use CommonBundle\Entity\General\Language,
+
+
+use CommonBundle\Component\Util\Url as UrlUtil,
+    CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    Locale;
 
 /**
  * This entity stores the node item.
@@ -37,7 +41,7 @@ use CommonBundle\Entity\General\Language,
 class Event extends \CommonBundle\Entity\Node
 {
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection The translations of this event
+     * @var ArrayCollection The translations of this event
      *
      * @ORM\OneToMany(targetEntity="CalendarBundle\Entity\Node\Translation", mappedBy="event", cascade={"persist", "remove"})
      */
@@ -153,7 +157,7 @@ class Event extends \CommonBundle\Entity\Node
                 return $translation;
             }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
                 $fallbackTranslation = $translation;
             }
         }
@@ -258,7 +262,7 @@ class Event extends \CommonBundle\Entity\Node
     public function updateName()
     {
         $translation = $this->getTranslation();
-        $this->name = $this->getStartDate()->format('d_m_Y_H_i_s') . '_' . \CommonBundle\Component\Util\Url::createSlug($translation->getTitle());
+        $this->name = $this->getStartDate()->format('d_m_Y_H_i_s') . '_' . UrlUtil::createSlug($translation->getTitle());
 
         return $this;
     }

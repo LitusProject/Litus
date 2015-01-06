@@ -19,9 +19,7 @@
 namespace MailBundle\Form\Admin\MailingList\Entry;
 
 
-
 use CommonBundle\Entity\User\Person,
-    MailBundle\Component\Validator\Entry\MailingList as MailingListEntryValidator,
     MailBundle\Entity\MailingList as MailingListEntity;
 
 /**
@@ -56,7 +54,12 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
                 'options' => $this->_createEntriesArray(),
                 'input' => array(
                     'validators' => array(
-                        new MailingListEntryValidator($this->getEntityManager(), $this->getList()),
+                        array(
+                            'name' => 'mail_entry_mailinglist',
+                            'options' => array(
+                                'list' => $this->getList(),
+                            ),
+                        ),
                     ),
                 ),
             ),

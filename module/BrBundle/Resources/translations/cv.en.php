@@ -56,7 +56,6 @@ return array(
     "Active (Writing)" => "Active (Writing)",
     "Passive (Listening)" => "Passive (Listening)",
     "Passive (Reading)" => "Passive (Reading)",
-    "This field exceeds the maximum character count." => "This field exceeds the maximum character count.",
     "Your entry has been recorded in the CV Book." => "Your entry has been recorded in the CV Book.",
     "You can only fill in the CV Book once." => "You can only fill in the CV Book once.",
 

@@ -18,9 +18,7 @@
 
 namespace LogisticsBundle\Component\Validator;
 
-
-use DateTime,
-    Doctrine\ORM\EntityManager;
+use DateTime;
 
 /**
  * Checks whether no reservation exists yet for the given resource.
@@ -34,59 +32,41 @@ class ReservationConflict extends \CommonBundle\Component\Validator\AbstractVali
      */
     const CONFLICT_EXISTS = 'conflictExists';
     const INVALID_FORMAT  = 'invalidFormat';
+    const NO_START_DATE   = 'noStartDate';
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
+        self::NO_START_DATE   => 'There was no start date found',
         self::CONFLICT_EXISTS => 'A conflicting reservation already exists for this resource',
         self::INVALID_FORMAT  => 'One of the dates is not in the correct format',
     );
 
-    /**
-     * @var string The start date of the interval
-     */
-    private $_startDate;
-
-    /**
-     * @var string
-     */
-    private $_format;
-
-    /**
-     * @var string
-     */
-    private $_resource;
-
-    /**
-     * @var int The id of the reservation to ignore when searching for conflicts; -1 indicates none
-     */
-    private $_reservationId;
-
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $options = array(
+        'start_date' => '',
+        'format' => false,
+        'resource' => null,
+        'reservation_id' => -1,
+    );
 
     /**
      * Sets validator options
      *
-     * @param  string        $format
-     * @param  string        $startDate
-     * @param  string        $resource
-     * @param  EntityManager $entityManager
-     * @param  integer       $reservationId
-     * @return void
+     * @param int|array|\Traversable $options
      */
-    public function __construct($startDate, $format, $resource, EntityManager $entityManager, $reservationId = -1)
+    public function __construct($options = array())
     {
-        parent::__construct(null);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['start_date'] = array_shift($args);
+            $options['format'] = array_shift($args);
+            $options['resource'] = array_shift($args);
+            $options['reservation_id'] = array_shift($args);
+        }
 
-        $this->_startDate = $startDate;
-        $this->_format = $format;
-        $this->_resource = $resource;
-        $this->_entityManager = $entityManager;
-        $this->_reservationId = $reservationId;
+        parent::__construct($options);
     }
 
     /**
@@ -100,27 +80,29 @@ class ReservationConflict extends \CommonBundle\Component\Validator\AbstractVali
     {
         $this->setValue($value);
 
-        if (null === $startDate = self::getFormValue($context, $this->_startDate)) {
-            $this->error(self::NOT_VALID);
+        if (null === $startDate = self::getFormValue($context, $this->options['start_date'])) {
+            $this->error(self::NO_START_DATE);
 
             return false;
         }
 
-        $repository = $this->_entityManager
+        $repository = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource');
-        $resource = $repository->findOneByName($this->_resource);
+        $resource = $repository->findOneByName($this->options['resource']);
 
-        $startDate = DateTime::createFromFormat($this->_format, $startDate);
-        $endDate = DateTime::createFromFormat($this->_format, $value);
+        $startDate = DateTime::createFromFormat($this->options['format'], $startDate);
+        $endDate = DateTime::createFromFormat($this->options['format'], $value);
 
         if (!$startDate || !$endDate) {
+            $this->error(self::INVALID_FORMAT);
+
             return false;
         }
 
-        $repository = $this->_entityManager
+        $repository = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Reservation\Reservation');
 
-        $conflicting = $repository->findAllConflictingIgnoringId($startDate, $endDate, $resource, $this->_reservationId);
+        $conflicting = $repository->findAllConflictingIgnoringId($startDate, $endDate, $resource, $this->options['reservation_id']);
 
         if (isset($conflicting[0])) {
             $this->error(self::CONFLICT_EXISTS);

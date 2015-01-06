@@ -18,28 +18,19 @@
 
 namespace CudiBundle\Component\Validator\Sale\Article\Restriction;
 
-
-use CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\EntityManager;
-
+use CudiBundle\Entity\Sale\Article;
 /**
  * Matches the given restriction against the database to check whether it already exists or not.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Exists extends \Zend\Validator\AbstractValidator
+class Exists extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var Article
-     */
-    private $_article;
-
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $options = array(
+        'article' => null,
+    );
 
     /**
      * Error messages
@@ -47,22 +38,23 @@ class Exists extends \Zend\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The restriction already exist!',
+        self::NOT_VALID => 'The restriction already exists',
     );
 
     /**
-     * Create a new Restriction validator.
+     * Sets validator options
      *
-     * @param Article       $article
-     * @param EntityManager $entityManager
-     * @param mixed         $opts          The validator's options
+     * @param int|array|\Traversable $options
      */
-    public function __construct(Article $article, EntityManager $entityManager, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['article'] = array_shift($args);
+        }
 
-        $this->_article = $article;
-        $this->_entityManager = $entityManager;
+        parent::__construct($options);
     }
 
     /**
@@ -79,17 +71,17 @@ class Exists extends \Zend\Validator\AbstractValidator
 
         $restriction = null;
         if ('amount' == $value) {
-            $restriction = $this->_entityManager
+            $restriction = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article\Restriction\Amount')
-                ->findOneByArticle($this->_article);
+                ->findOneByArticle($this->options['article']);
         } elseif ('member' == $value) {
-            $restriction = $this->_entityManager
+            $restriction = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article\Restriction\Member')
-                ->findOneByArticle($this->_article);
+                ->findOneByArticle($this->options['article']);
         } elseif ('study' == $value) {
-            $restriction = $this->_entityManager
+            $restriction = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article\Restriction\Study')
-                ->findOneByArticle($this->_article);
+                ->findOneByArticle($this->options['article']);
         }
 
         if (null === $restriction) {

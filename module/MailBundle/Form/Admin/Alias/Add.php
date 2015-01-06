@@ -18,10 +18,6 @@
 
 namespace MailBundle\Form\Admin\Alias;
 
-
-use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
-    MailBundle\Component\Validator\Alias as NameValidator;
-
 /**
  * Send Mail
  *
@@ -46,7 +42,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new NameValidator($this->getEntityManager()),
+                        array('name' => 'mail_alias'),
                     ),
                 ),
             ),
@@ -60,7 +56,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new PersonTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_person'),
                     ),
                 ),
             ),

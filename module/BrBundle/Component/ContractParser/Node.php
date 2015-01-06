@@ -26,5 +26,5 @@ interface Node
     /**
      * @param NodeVisitor $nodeVisitor
      */
-    public function visitNode($nodeVisitor);
+    public function visitNode(NodeVisitor $nodeVisitor);
 }

@@ -18,9 +18,7 @@
 
 namespace CommonBundle\Form\Admin\Role;
 
-
-use CommonBundle\Component\Validator\Role as RoleValidator,
-    CommonBundle\Entity\Acl\Role;
+use CommonBundle\Entity\Acl\Role;
 
 /**
  * Add Role
@@ -51,7 +49,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new RoleValidator($this->getEntityManager()),
+                        array('name' => 'role'),
                     ),
                 ),
             ),

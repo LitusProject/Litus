@@ -92,7 +92,6 @@ return array(
     'L - Female' => 'L - Female',
     'XL - Female' => 'XL - Female',
 
-    'This field should not contain an @' => 'This field should not contain an @',
     'Other Subjects' => 'Other Subjects',
     'You have not yet added any other subjects.' => 'You have not yet added any other subjects.',
     'Add Other Subjects' => 'Add Other Subjects',

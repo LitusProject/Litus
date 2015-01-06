@@ -25,7 +25,7 @@ use Zend\Validator\EmailAddress as EmailAddressValidator;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class MultiMail extends \Zend\Validator\AbstractValidator
+class MultiMail extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -33,7 +33,7 @@ class MultiMail extends \Zend\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The email addresses should be valid and separated by commas or whitespaces.',
+        self::NOT_VALID => 'The email addresses should be valid and separated by commas or whitespaces',
     );
 
     /**

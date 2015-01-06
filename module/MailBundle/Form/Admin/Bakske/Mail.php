@@ -18,7 +18,9 @@
 
 namespace MailBundle\Form\Admin\Bakske;
 
-use CommonBundle\Entity\General\AcademicYear;
+
+use CommonBundle\Entity\General\AcademicYear,
+    RuntimeException;
 
 /**
  * Send Mail
@@ -87,7 +89,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ->findAllByPublicationAndAcademicYear($publication, $this->getAcademicYear());
 
         if (empty($editions)) {
-            throw new \RuntimeException('There needs to be at least one edition before you can mail it');
+            throw new RuntimeException('There needs to be at least one edition before you can mail it');
         }
 
         $editionsArray = array();

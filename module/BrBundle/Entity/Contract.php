@@ -22,11 +22,13 @@ namespace BrBundle\Entity;
 
 
 
+
 use BrBundle\Entity\Contract\ContractEntry,
     BrBundle\Entity\Product\Order,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * This is the entity for a contract.
@@ -255,14 +257,14 @@ class Contract
     }
 
     /**
-     * @throws \InvalidArgumentException
-     * @param  Collaborator              $author
+     * @throws InvalidArgumentException
+     * @param  Collaborator             $author
      * @return self
      */
     public function setAuthor(Collaborator $author)
     {
         if (null === $author) {
-            throw new \InvalidArgumentException('Author cannot be null');
+            throw new InvalidArgumentException('Author cannot be null');
         }
 
         $this->author = $author;
@@ -279,14 +281,14 @@ class Contract
     }
 
     /**
-     * @throws \InvalidArgumentException
-     * @param  Company                   $company
+     * @throws InvalidArgumentException
+     * @param  Company                  $company
      * @return self
      */
     public function setCompany(Company $company)
     {
         if (null === $company) {
-            throw new \InvalidArgumentException('Company cannot be null');
+            throw new InvalidArgumentException('Company cannot be null');
         }
 
         $this->company = $company;
@@ -301,7 +303,7 @@ class Contract
     public function setDiscount($discount)
     {
         if ($discount < 0) {
-            throw new \InvalidArgumentException('Invalid discount');
+            throw new InvalidArgumentException('Invalid discount');
         }
 
         $this->discount = $discount;
@@ -326,14 +328,14 @@ class Contract
     }
 
     /**
-     * @throws \InvalidArgumentException
-     * @param  string                    $title The title of the contract
+     * @throws InvalidArgumentException
+     * @param  string                   $title The title of the contract
      * @return self
      */
     public function setTitle($title)
     {
         if (null === $title || !is_string($title)) {
-            throw new \InvalidArgumentException('Invalid title');
+            throw new InvalidArgumentException('Invalid title');
         }
 
         $this->title = $title;
@@ -388,14 +390,14 @@ class Contract
     }
 
     /**
-     * @throws \InvalidArgumentException
-     * @param  int                       $invoiceNb
+     * @throws InvalidArgumentException
+     * @param  int                      $invoiceNb
      * @return self
      */
     public function setInvoiceNb($invoiceNb = -1)
     {
         if (null === $invoiceNb || !is_numeric($invoiceNb)) {
-            throw new \InvalidArgumentException('Invalid invoice number: ' . $invoiceNb);
+            throw new InvalidArgumentException('Invalid invoice number: ' . $invoiceNb);
         }
 
         $this->invoiceNb = $invoiceNb;
@@ -422,7 +424,7 @@ class Contract
     public function setContractNb($contractNb)
     {
         if (null === $contractNb || !is_numeric($contractNb)) {
-            throw new \InvalidArgumentException('Invalid contract number: ' . $contractNb);
+            throw new InvalidArgumentException('Invalid contract number: ' . $contractNb);
         }
 
         $this->contractNb = $contractNb;

@@ -18,9 +18,15 @@
 
 namespace ApiBundle\Controller;
 
+
+
+
+
+
 use CommonBundle\Component\Util\File\TmpFile,
     MailBundle\Component\Archive\Generator\MailingList\Tar,
     MailBundle\Component\Archive\Generator\MailingList\Zip,
+    RuntimeException,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -57,7 +63,7 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findAll();
 
         if (0 == count($lists)) {
-            throw new \RuntimeException('There needs to be at least one list before an archive can be created');
+            throw new RuntimeException('There needs to be at least one list before an archive can be created');
         }
 
         $archive = new TmpFile();

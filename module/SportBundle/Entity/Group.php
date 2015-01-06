@@ -22,9 +22,9 @@ namespace SportBundle\Entity;
 
 
 use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    \Doctrine\Common\Collections\ArrayCollection;
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents a group of friends.

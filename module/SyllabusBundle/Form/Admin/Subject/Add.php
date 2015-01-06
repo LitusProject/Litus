@@ -18,11 +18,7 @@
 
 namespace SyllabusBundle\Form\Admin\Subject;
 
-
-
-use SyllabusBundle\Component\Validator\Subject\Code as CodeValidator,
-    SyllabusBundle\Component\Validator\Typeahead\Study as StudyTypeaheadValidator,
-    SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject;
 
 /**
  * Add Subject
@@ -53,7 +49,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new CodeValidator($this->getEntityManager(), $this->subject),
+                        array(
+                            'name' => 'syllabus_subject_code',
+                            'options' => array(
+                                'exclude' => $this->subject,
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -115,7 +116,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new StudyTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'syllabus_typeahead_study'),
                     ),
                 ),
             ),

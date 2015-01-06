@@ -18,8 +18,6 @@
 
 namespace SecretaryBundle\Form\Registration\Subject;
 
-use SyllabusBundle\Component\Validator\Typeahead\Subject as SubjectTypeaheadValidator;
-
 /**
  * Add Subject
  *
@@ -39,7 +37,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'options'    => array(
                 'input' => array(
                     'validators'  => array(
-                        new SubjectTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'syllabus_typeahead_subject'),
                     ),
                 ),
             ),

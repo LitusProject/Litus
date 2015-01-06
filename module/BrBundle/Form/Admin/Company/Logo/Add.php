@@ -19,9 +19,7 @@
 namespace BrBundle\Form\Admin\Company\Logo;
 
 
-
-use BrBundle\Component\Validator\Logo\Type as TypeValidator,
-    BrBundle\Entity\Company,
+use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Logo;
 
 /**
@@ -104,7 +102,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new TypeValidator($this->getEntityManager(), $this->_company),
+                        array(
+                            'name' => 'company_logo_type',
+                            'options' => array(
+                                'company' => $this->_company,
+                            ),
+                        ),
                     ),
                 ),
             ),

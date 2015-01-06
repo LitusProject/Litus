@@ -28,6 +28,7 @@ namespace SyllabusBundle\Component\XMLParser;
 
 
 
+
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
@@ -38,7 +39,8 @@ use CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\Subject as SubjectEntity,
     SyllabusBundle\Entity\SubjectProfMap,
     Zend\Http\Client as HttpClient,
-    Zend\Mail\Transport\TransportInterface;
+    Zend\Mail\Transport\TransportInterface,
+    finfo;
 
 /**
  * Study
@@ -322,8 +324,8 @@ class Study
     }
 
     /**
-     * @param \SyllabusBundle\Entity\Subject $subject
-     * @param array                          $profs
+     * @param SubjectEntity $subject
+     * @param array         $profs
      */
     private function _createProf(SubjectEntity $subject, $profs)
     {
@@ -466,7 +468,7 @@ class Study
         $headers = get_headers($url);
         if ($headers[0] != 'HTTP/1.1 404 Not Found' && $headers[0] != 'HTTP/1.1 302 Moved Temporarily') {
             file_put_contents('/tmp/' . $identification, file_get_contents($url));
-            $finfo = new \finfo();
+            $finfo = new finfo();
             $fileinfo = $finfo->file('/tmp/' . $identification, FILEINFO_MIME);
             $mimetype = substr($fileinfo, 0, strpos($fileinfo, ';'));
 

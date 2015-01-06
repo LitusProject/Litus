@@ -18,10 +18,6 @@
 
 namespace MailBundle\Form\Admin\MailingList;
 
-
-use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
-    MailBundle\Component\Validator\NamedList as NameValidator;
-
 /**
  * Add MailingList
  *
@@ -46,7 +42,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new NameValidator($this->getEntityManager()),
+                        array('name' => 'mail_named_list'),
                     ),
                 ),
             ),
@@ -63,7 +59,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PersonTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_person'),
                     ),
                 ),
             ),

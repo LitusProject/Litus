@@ -18,11 +18,17 @@
 
 namespace FormBundle\Entity\Node;
 
+
+
+
+
+
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    Locale;
 
 /**
  * This entity stores the form group item
@@ -246,7 +252,7 @@ class Group extends \CommonBundle\Entity\Node
                 return $translation;
             }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
                 $fallbackTranslation = $translation;
             }
         }

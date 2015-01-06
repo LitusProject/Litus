@@ -20,9 +20,11 @@ namespace BrBundle\Entity\Invoice;
 
 
 
+
 use BrBundle\Entity\Invoice,
     BrBundle\Entity\Product\OrderEntry,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * An entry of an invoice.
@@ -107,7 +109,7 @@ class InvoiceEntry
     private function _setVersion($versionNmbr)
     {
         if ($versionNmbr < 0) {
-            throw new \InvalidArgumentException("version number must be larger or equal to zero");
+            throw new InvalidArgumentException("version number must be larger or equal to zero");
         }
 
         $this->version = $versionNmbr;

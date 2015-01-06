@@ -18,9 +18,16 @@
 
 namespace CommonBundle\Controller\Admin;
 
+
+
+
+
+
 use CommonBundle\Component\Piwik\Analytics,
     DateInterval,
     DateTime,
+    Doctrine\Common\Version as DoctrineVersion,
+    Zend\Version\Version as ZendVersion,
     Zend\View\Model\ViewModel;
 
 /**
@@ -98,8 +105,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'registrationsGraph' => $registrationsGraph,
                 'versions' => array(
                     'php' => phpversion(),
-                    'zf' => \Zend\Version\Version::VERSION,
-                    'doctrine' => \Doctrine\Common\Version::VERSION,
+                    'zf' => ZendVersion::VERSION,
+                    'doctrine' => DoctrineVersion::VERSION,
                 ),
             )
         );

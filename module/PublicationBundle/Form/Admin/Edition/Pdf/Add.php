@@ -18,9 +18,7 @@
 
 namespace PublicationBundle\Form\Admin\Edition\Pdf;
 
-
-use PublicationBundle\Component\Validator\Title\Edition\Pdf as TitleValidator,
-    PublicationBundle\Entity\Publication;
+use PublicationBundle\Entity\Publication;
 
 /**
  * The form used to add a new Publication
@@ -51,7 +49,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new TitleValidator($this->getEntityManager(), $this->publication, $this->getCurrentAcademicYear(true)),
+                        array(
+                            'name' => 'publication_title_edition_html',
+                            'options' => array(
+                                'publication' => $this->publication,
+                                'academic_year' => $this->getCurrentAcademicYear(true),
+                            ),
+                        ),
                     ),
                 ),
             ),

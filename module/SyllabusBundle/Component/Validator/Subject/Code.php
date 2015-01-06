@@ -18,27 +18,18 @@
 
 namespace SyllabusBundle\Component\Validator\Subject;
 
-use Doctrine\ORM\EntityManager,
-    SyllabusBundle\Entity\Subject;
-
 /**
  * Matches the given subject code against the database to check whether it exists or not.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Code extends \Zend\Validator\AbstractValidator
+class Code extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var Subject|null The subject exluded from this check
-     */
-    private $_exclude;
+    protected $options = array(
+        'exclude' => null,
+    );
 
     /**
      * Error messages
@@ -50,18 +41,19 @@ class Code extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * Create a new Article Barcode validator.
+     * Sets validator options
      *
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param Subject|null  $exclude
-     * @param mixed         $opts          The validator's options
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, Subject $exclude = null, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['exclude'] = array_shift($args);
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_exclude = $exclude;
+        parent::__construct($options);
     }
 
     /**
@@ -76,11 +68,11 @@ class Code extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $subject = $this->_entityManager
+        $subject = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject')
             ->findOneByCode($value);
 
-        if (null === $subject || ($this->_exclude !== null && $subject->getId() == $this->_exclude->getId())) {
+        if (null === $subject || ($this->options['exclude'] !== null && $subject->getId() == $this->options['exclude']->getId())) {
             return true;
         }
 

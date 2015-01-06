@@ -18,9 +18,7 @@
 
 namespace MailBundle\Form\Admin\MailingList\Entry\Person;
 
-
-use MailBundle\Component\Validator\Entry\External as ExternalEntryValidator,
-    MailBundle\Entity\MailingList;
+use MailBundle\Entity\MailingList;
 
 /**
  * Add External
@@ -80,7 +78,12 @@ class External extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'emailaddress'),
-                        new ExternalEntryValidator($this->getEntityManager(), $this->getList()),
+                        array(
+                            'name' => 'mail_entry_external',
+                            'options' => array(
+                                'list' => $this->getList(),
+                            ),
+                        ),
                     ),
                 ),
             ),

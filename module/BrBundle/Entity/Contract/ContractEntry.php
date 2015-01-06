@@ -20,9 +20,11 @@ namespace BrBundle\Entity\Contract;
 
 
 
+
 use BrBundle\Entity\Contract,
     BrBundle\Entity\Product\OrderEntry,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * An entry of a contract.
@@ -108,7 +110,7 @@ class ContractEntry
     private function _setVersion($versionNmbr)
     {
         if ($versionNmbr < 0) {
-            throw new \InvalidArgumentException("version number must be larger or equal to zero");
+            throw new InvalidArgumentException("version number must be larger or equal to zero");
         }
 
         $this->version = $versionNmbr;
@@ -168,14 +170,14 @@ class ContractEntry
     /**
      * Sets the position to the given value.
      *
-     * @throws \InvalidArgumentException
-     * @param  int                       $position
+     * @throws InvalidArgumentException
+     * @param  int                      $position
      * @return self
      */
     public function setPosition($position)
     {
         if ($position < 0) {
-            throw new \InvalidArgumentException("Position must be a positive number");
+            throw new InvalidArgumentException("Position must be a positive number");
         }
 
         $this->position = (int) round($position);

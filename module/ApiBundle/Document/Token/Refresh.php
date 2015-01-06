@@ -18,6 +18,11 @@
 
 namespace ApiBundle\Document\Token;
 
+
+
+
+
+
 use ApiBundle\Document\Code\Authorization as AuthorizationCode,
     ApiBundle\Entity\Key,
     CommonBundle\Entity\User\Person,
@@ -45,17 +50,17 @@ class Refresh extends \ApiBundle\Document\Token
     private $key;
 
     /**
-     * @var \DateTime The exchange time of the code
+     * @var DateTime The exchange time of the code
      *
      * @ODM\Field(name="exchange_time", type="date")
      */
     private $exchangeTime;
 
     /**
-     * @param \CommonBundle\Entity\User\Person       $person
-     * @param \ApiBundle\Document\Code\Authorization $authorizationCode
-     * @param \ApiBundle\Entity\Key                  $key
-     * @param int                                    $expirationTime
+     * @param Person            $person
+     * @param AuthorizationCode $authorizationCode
+     * @param Key               $key
+     * @param int               $expirationTime
      */
     public function __construct(Person $person, AuthorizationCode $authorizationCode, Key $key, $expirationTime = self::DEFAULT_EXPIRATION_TIME)
     {
@@ -65,8 +70,8 @@ class Refresh extends \ApiBundle\Document\Token
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager $entityManager
-     * @return \ApiBundle\Entity\Key
+     * @param  EntityManager $entityManager
+     * @return Key
      */
     public function getKey(EntityManager $entityManager)
     {
@@ -75,7 +80,7 @@ class Refresh extends \ApiBundle\Document\Token
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getExchangeTime()
     {
@@ -83,11 +88,11 @@ class Refresh extends \ApiBundle\Document\Token
     }
 
     /**
-     * @return \ApiBundle\Document\Token\Refresh
+     * @return self
      */
     public function exchange()
     {
-        $this->exchangeTime = new \DateTime();
+        $this->exchangeTime = new DateTime();
 
         return $this;
     }

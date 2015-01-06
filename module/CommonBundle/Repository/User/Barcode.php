@@ -20,9 +20,11 @@ namespace CommonBundle\Repository\User;
 
 
 
+
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization;
+    CommonBundle\Entity\General\Organization,
+    RuntimeException;
 
 /**
  * Barcode
@@ -65,7 +67,7 @@ class Barcode extends EntityRepository
             ->getOneOrNullResult();
 
         if (null !== $ean12Result && null !== $qrResult) {
-            throw new \RuntimeException('Found both an EAN-12 and QR code for this barcode');
+            throw new RuntimeException('Found both an EAN-12 and QR code for this barcode');
         }
 
         return null !== $ean12Result ? $ean12Result : $qrResult;

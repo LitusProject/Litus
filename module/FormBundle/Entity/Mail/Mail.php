@@ -19,7 +19,9 @@
 namespace FormBundle\Entity\Mail;
 
 
+
 use CommonBundle\Entity\General\Language,
+    Doctrine\Common\Collection\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -54,11 +56,16 @@ class Mail
     private $bcc;
 
     /**
-     * @var \Doctrine\Common\Collection\ArrayCollection
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Mail\Translation", mappedBy="mail", cascade={"remove"})
      */
     private $translations;
+
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
+    }
 
     /**
      * @var int

@@ -19,8 +19,10 @@
 namespace BrBundle\Entity\Company;
 
 
+
 use BrBundle\Entity\Company,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * This is the entity for an event.
@@ -61,7 +63,7 @@ class Logo
     private $path;
 
     /**
-     * @var \BrBundle\Entity\Company The company of the logo
+     * @var Company The company of the logo
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
      * @ORM\JoinColumn(name="company", referencedColumnName="id")
@@ -130,7 +132,7 @@ class Logo
     public function setType($type)
     {
         if (!self::isValidLogoType($type)) {
-            throw new \InvalidArgumentException('The logo type is not valid.');
+            throw new InvalidArgumentException('The logo type is not valid.');
         }
 
         $this->type = $type;
@@ -189,7 +191,7 @@ class Logo
     }
 
     /**
-     * @return \BrBundle\Entity\Company
+     * @return Company
      */
     public function getCompany()
     {

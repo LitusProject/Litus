@@ -18,9 +18,11 @@
 
 namespace BrBundle\Repository\Company;
 
+
+
 use BrBundle\Entity\Company as CompanyEntity,
     CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    \DateTime;
+    DateTime;
 
 /**
  * Event

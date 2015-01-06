@@ -19,11 +19,7 @@
 namespace CudiBundle\Form\Admin\Sale\Article;
 
 
-
-
-use CommonBundle\Component\Validator\Price as PriceValidator,
-    CudiBundle\Component\Validator\Sale\Article\Barcode\Unique as UniqueBarcodeValidator,
-    CudiBundle\Entity\Sale\Article,
+use CudiBundle\Entity\Sale\Article,
     DateInterval;
 
 /**
@@ -58,7 +54,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PriceValidator(),
+                        array('name' => 'price'),
                     ),
                 ),
             ),
@@ -78,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PriceValidator(),
+                        array('name' => 'price'),
                     ),
                 ),
             ),
@@ -102,7 +98,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             'useChecksum' => false,
                         ),
                     ),
-                    new UniqueBarcodeValidator($this->getEntityManager(), $this->article),
+                    array(
+                        'name' => 'sale_article_barcode_unique',
+                        'options' => array(
+                            'sale_article' => $this->article,
+                        ),
+                    ),
                 ),
             );
         }

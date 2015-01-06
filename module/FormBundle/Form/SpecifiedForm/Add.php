@@ -27,9 +27,7 @@ namespace FormBundle\Form\SpecifiedForm;
 
 
 
-
-use CommonBundle\Component\Validator\FieldLineLength as LengthValidator,
-    CommonBundle\Entity\General\Language,
+use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity,
@@ -170,9 +168,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     $specification['attributes']['data-linecount'] = $fieldSpecification->getLines();
 
                     $specification['options']['input']['validators'] = array(
-                        new LengthValidator(
-                            $fieldSpecification->getLineLength(),
-                            $fieldSpecification->getLines()
+                        array(
+                            'name' => 'field_line_length',
+                            'options' => array(
+                                'chars_per_line' => $fieldSpecification->getLineLength(),
+                                'lines' => $fieldSpecification->getLines(),
+                            ),
                         ),
                     );
                 }

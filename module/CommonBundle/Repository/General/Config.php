@@ -18,7 +18,9 @@
 
 namespace CommonBundle\Repository\General;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    RuntimeException;
 
 /**
  * Config
@@ -56,7 +58,7 @@ class Config extends EntityRepository
             $key = $config->getKey();
             $value = $config->getValue();
 
-            $key = str_replace($prefix . '.','', $key);
+            $key = str_replace($prefix . '.', '', $key);
 
             $result[$key] = $value;
         }
@@ -72,7 +74,7 @@ class Config extends EntityRepository
         $config = $this->find($key);
 
         if ($config === null) {
-            throw new \RuntimeException('Configuration entry ' . $key . ' not found');
+            throw new RuntimeException('Configuration entry ' . $key . ' not found');
         }
 
         return $config->getValue();
