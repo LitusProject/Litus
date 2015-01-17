@@ -97,7 +97,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'options' => array(
                                 'start_date' => 'start_date',
                                 'format' => 'd/m/Y H:i',
-                                'resource' => PianoReservation::VAN_RESOURCE_NAME,
+                                'resource' => VanReservation::VAN_RESOURCE_NAME,
                                 'reservation_id' => null === $this->reservation ? 0 : $this->reservation->getId(),
                             ),
                         ),
