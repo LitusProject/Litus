@@ -18,7 +18,6 @@
 
 namespace BrBundle\Hydrator;
 
-
 use BrBundle\Entity\Company as CompanyEntity,
     BrBundle\Entity\Company\Page as PageEntity;
 
