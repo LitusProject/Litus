@@ -18,8 +18,6 @@
 
 namespace FormBundle\Form\Manage\SpecifiedForm;
 
-use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
-
 /**
  * Specifield Form Doodle
  *
@@ -58,7 +56,7 @@ class Doodle extends \FormBundle\Form\SpecifiedForm\Doodle
                     'options'    => array(
                         'input' => array(
                             'validators' => array(
-                                new PersonTypeaheadValidator($this->getEntityManager()),
+                                array('name' => 'typeahead_person'),
                             ),
                         ),
                     ),

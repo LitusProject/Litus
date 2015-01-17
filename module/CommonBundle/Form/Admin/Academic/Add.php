@@ -18,10 +18,8 @@
 
 namespace CommonBundle\Form\Admin\Academic;
 
-use CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    SecretaryBundle\Component\Validator\NoAt as NoAtValidator;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Status\University as UniversityStatus;
 
 /**
  * Add Academic
@@ -92,7 +90,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                                         'useChecksum' => false,
                                     ),
                                 ),
-                                new BarcodeValidator($this->getEntityManager()),
+                                array('name' => 'person_barcode'),
                             ),
                         ),
                     ),
@@ -160,7 +158,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new NoAtValidator(),
+                                array('name' => 'secretary_no_at'),
                             ),
                         ),
                     ),

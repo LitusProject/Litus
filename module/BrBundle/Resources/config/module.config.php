@@ -24,7 +24,17 @@ return Config::create(
     array(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
-        'translation_files' => array('corporate', 'career', 'cv'),
+        'translation_files' => array('corporate', 'career', 'cv', 'validator'),
         'has_layouts'       => true,
+    ),
+    array(
+        'validators' => array(
+            'invokables' => array(
+                'contract_bullet'   => 'BrBundle\Component\Validator\Contract\Bullet',
+                'company_logo_type' => 'BrBundle\Component\Validator\Logo\Type',
+                'company_name'      => 'BrBundle\Component\Validator\CompanyName',
+                'product_name'      => 'BrBundle\Component\Validator\ProductName',
+            ),
+        ),
     )
 );

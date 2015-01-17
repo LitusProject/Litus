@@ -23,38 +23,37 @@ namespace CommonBundle\Component\Validator;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class FieldLineLength extends \Zend\Validator\AbstractValidator
+class FieldLineLength extends AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var int The maximum length per line
-     */
-    private $_charsPerLine;
-
-    /**
-     * @var int The maximum number of lines
-     */
-    private $_lines;
+    protected $options = array(
+        'chars_per_line' => 0,
+        'lines' => 0,
+    );
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This field exceeds the maximum character count.',
+        self::NOT_VALID => 'This field exceeds the maximum character count',
     );
 
     /**
-     * @param int   $charsPerLine The maximum number of characters per line
-     * @param int   $lines        The maximum number of lines
-     * @param mixed $opts         The validator's options
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
      */
-    public function __construct($charsPerLine, $lines, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['chars_per_line'] = array_shift($args);
+            $options['lines'] = array_shift($args);
+        }
 
-        $this->_charsPerLine = $charsPerLine;
-        $this->_lines = $lines;
+        parent::__construct($options);
     }
 
     /**
@@ -73,12 +72,12 @@ class FieldLineLength extends \Zend\Validator\AbstractValidator
         $len = 0;
         for ($i = count($lines) - 2; $i >= 0; $i--) {
             $line = $lines[$i];
-            $len = $len + ceil(strlen($line) === 0 ? 1 : strlen($line) / $this->_charsPerLine) * $this->_charsPerLine;
+            $len = $len + ceil(strlen($line) === 0 ? 1 : strlen($line) / $this->options['chars_per_line']) * $this->options['chars_per_line'];
         }
 
         $len = $len + strlen($lines[count($lines) - 1]);
 
-        if ($this->_lines * $this->_charsPerLine - $len >= 0) {
+        if ($this->options['lines'] * $this->options['chars_per_line'] - $len >= 0) {
             return true;
         }
 

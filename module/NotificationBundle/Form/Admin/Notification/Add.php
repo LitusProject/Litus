@@ -19,7 +19,6 @@
 namespace NotificationBundle\Form\Admin\Notification;
 
 use CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
     CommonBundle\Entity\General\Language;
 
 /**
@@ -52,7 +51,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                        array(
+                            'name' => 'date_compare',
+                            'options' => array(
+                                'first_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
                     ),
                 ),
             ),

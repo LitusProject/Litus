@@ -19,7 +19,6 @@
 namespace TicketBundle\Form\Admin\Event;
 
 use LogicException,
-    TicketBundle\Component\Validator\Activity as ActivityValidator,
     TicketBundle\Entity\Event;
 
 /**
@@ -64,7 +63,12 @@ class Edit extends Add
         foreach ($specs as $key => $spec) {
             if (isset($spec['name']) && $spec['name'] == 'event') {
                 $specs[$key]['validators'] = array(
-                    new ActivityValidator($this->getEntityManager(), $this->event),
+                    array(
+                        'name' => 'ticket_activtiy',
+                        'options' => array(
+                            'exclude' => $this->event,
+                        ),
+                    ),
                 );
                 break;
             }

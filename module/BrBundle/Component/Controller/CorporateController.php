@@ -45,22 +45,21 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
             throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
         }
 
-        $loginForm = new LoginForm(
-            $this->url()->fromRoute(
-                'br_corporate_auth',
-                array(
-                    'action' => 'login',
-                )
-            )
-        );
-
         $result->cvArchiveYears = unserialize(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.cv_archive_years')
         );
 
-        $result->loginForm = $loginForm;
+        $result->loginForm = $this->getForm('common_auth_login')
+            ->setAttribute('class', '')
+            ->setAttribute('action', $this->url()->fromRoute(
+                'br_corporate_auth',
+                array(
+                    'action' => 'login',
+                )
+            ));
+        ;
         $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_url');

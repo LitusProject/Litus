@@ -24,7 +24,8 @@ use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
     FormBundle\Entity\Node\Form,
-    IntlDateFormatter;
+    IntlDateFormatter,
+    Locale;
 
 /**
  * This entity stores the node item.
@@ -111,7 +112,7 @@ class TimeSlot extends Field
      */
     public function getLabel(Language $language = null, $allowFallback = true)
     {
-        $locale = isset($language) ? $language->getAbbrev() : \Locale::getDefault();
+        $locale = isset($language) ? $language->getAbbrev() : Locale::getDefault();
 
         $formatterDate = new IntlDateFormatter(
             $locale,
@@ -185,7 +186,7 @@ class TimeSlot extends Field
                 return $translation;
             }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
                 $fallbackTranslation = $translation;
             }
         }

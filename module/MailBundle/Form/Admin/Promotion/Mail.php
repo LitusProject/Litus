@@ -18,8 +18,6 @@
 
 namespace MailBundle\Form\Admin\Promotion;
 
-use MailBundle\Component\Validator\MultiMail as MultiMailValidator;
-
 /**
  * Send Mail
  *
@@ -97,7 +95,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new MultiMailValidator(),
+                        array('name' => 'mail_multi_mail'),
                     ),
                 ),
             ),

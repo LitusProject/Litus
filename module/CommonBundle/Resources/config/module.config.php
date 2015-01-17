@@ -24,7 +24,7 @@ return Config::create(
     array(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
-        'translation_files' => array('site', 'countries'),
+        'translation_files' => array('site', 'countries', 'validator'),
         'has_layouts'       => true,
     ),
     array(
@@ -37,7 +37,7 @@ return Config::create(
                     );
                 },
                 'authentication_doctrinecredentialadapter' => function ($serviceManager) {
-                    return new \CommonBundle\Component\Authentication\Adapter\Doctrine\Credential(
+                    return new Component\Authentication\Adapter\Doctrine\Credential(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
                         'CommonBundle\Entity\User\Person',
                         'username'
@@ -55,7 +55,7 @@ return Config::create(
                     );
                 },
                 'authentication_doctrineaction' => function ($serviceManager) {
-                    return new \CommonBundle\Component\Authentication\Action\Doctrine(
+                    return new Component\Authentication\Action\Doctrine(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
                         $serviceManager->get('mail_transport')
                     );
@@ -208,6 +208,23 @@ return Config::create(
         'filters' => array(
             'invokables' => array(
                 'stripcarriagereturn' => 'CommonBundle\Component\Filter\StripCarriageReturn',
+            ),
+        ),
+        'validators' => array(
+            'invokables' => array(
+                'person_barcode'     => 'CommonBundle\Component\Validator\Person\Barcode',
+                'typeahead_person'   => 'CommonBundle\Component\Validator\Typeahead\Person',
+                'date_compare'       => 'CommonBundle\Component\Validator\DateCompare',
+                'decimal'            => 'CommonBundle\Component\Validator\Decimal',
+                'field_length'       => 'CommonBundle\Component\Validator\FieldLength',
+                'field_line_length'  => 'CommonBundle\Component\Validator\FieldLineLength',
+                'not_zero'           => 'CommonBundle\Component\Validator\NotZero',
+                'phone_number_regex' => 'CommonBundle\Component\Validator\PhoneNumber',
+                'positive_number'    => 'CommonBundle\Component\Validator\PositiveNumber',
+                'price'              => 'CommonBundle\Component\Validator\Price',
+                'role'               => 'CommonBundle\Component\Validator\Role',
+                'username'           => 'CommonBundle\Component\Validator\Username',
+                'year'               => 'CommonBundle\Component\Validator\Year',
             ),
         ),
     )

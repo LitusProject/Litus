@@ -18,9 +18,6 @@
 
 namespace LogisticsBundle\Form\Lease;
 
-use CommonBundle\Component\Validator\Price as PriceValidator,
-    LogisticsBundle\Component\Validator\Typeahead\Lease as LeaseTypeaheadValidator;
-
 /**
  * The form used to add a new Lease.
  *
@@ -39,7 +36,7 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
             'options' => array(
                 'input' => array(
                     'validators' => array(
-                        new LeaseTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'logistics_typeahead_lease'),
                     ),
                 ),
             ),
@@ -91,7 +88,7 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PriceValidator(),
+                        array('name' => 'price'),
                     ),
                 ),
             ),

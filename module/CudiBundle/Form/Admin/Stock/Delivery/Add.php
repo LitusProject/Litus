@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Stock\Delivery;
 
-use CudiBundle\Component\Validator\Typeahead\Sale\Article as SaleArticleTypeaheadValidator;
-
 /**
  * Add Delivery
  *
@@ -59,7 +57,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators'  => array(
-                        new SaleArticleTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_sale_article'),
                     ),
                 ),
             ),

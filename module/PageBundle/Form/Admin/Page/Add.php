@@ -20,7 +20,6 @@ namespace PageBundle\Form\Admin\Page;
 
 use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language,
-    PageBundle\Component\Validator\Title as TitleValidator,
     PageBundle\Entity\Category,
     PageBundle\Entity\Node\Page as PageEntity,
     RuntimeException;
@@ -107,7 +106,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new TitleValidator($this->getEntityManager(), $this->getPage() ? $this->getPage()->getName() : ''),
+                        array(
+                            'name' => 'page_title',
+                            'options' => array(
+                                'exclude' => $this->getPage() ? $this->getPage()->getName() : '',
+                            ),
+                        ),
                     ),
                 ),
             ),

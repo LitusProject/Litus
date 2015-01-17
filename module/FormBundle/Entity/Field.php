@@ -21,7 +21,8 @@ namespace FormBundle\Entity;
 use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Node\Form;
+    FormBundle\Entity\Node\Form,
+    Locale;
 
 /**
  * This entity stores the node item.
@@ -239,7 +240,7 @@ abstract class Field
                 return $translation;
             }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
                 $fallbackTranslation = $translation;
             }
         }

@@ -18,8 +18,7 @@
 
 namespace LogisticsBundle\Component\Validator;
 
-use DateTime,
-    Doctrine\ORM\EntityManager;
+use DateTime;
 
 /**
  * Checks whether the duration is not to long.
@@ -31,45 +30,39 @@ class PianoDuration extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * @const string The error codes
      */
-    const TO_LONG = 'toLong';
+    const TO_LONG        = 'toLong';
+    const NO_START_DATE  = 'noStartDate';
+    const INVALID_FORMAT = 'invalidFormat';
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::TO_LONG => 'The reservation is to long',
+        self::NO_START_DATE  => 'There was no start date found',
+        self::TO_LONG        => 'The reservation is too long',
+        self::INVALID_FORMAT => 'One of the dates is not in the correct format',
     );
 
-    /**
-     * @var string The start date of the interval
-     */
-    private $_startDate;
-
-    /**
-     * @var string
-     */
-    private $_format;
-
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $options = array(
+        'start_date' => '',
+        'format' => false,
+    );
 
     /**
      * Sets validator options
      *
-     * @param  string        $format
-     * @param  string        $startDate
-     * @param  EntityManager $entityManager
-     * @return void
+     * @param int|array|\Traversable $options
      */
-    public function __construct($startDate, $format, $entityManager)
+    public function __construct($options = array())
     {
-        parent::__construct();
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['start_date'] = array_shift($args);
+            $options['format'] = array_shift($args);
+        }
 
-        $this->_startDate = $startDate;
-        $this->_format = $format;
-        $this->_entityManager = $entityManager;
+        parent::__construct($options);
     }
 
     /**
@@ -83,20 +76,22 @@ class PianoDuration extends \CommonBundle\Component\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (null === $startDate = $this->getFormValue($context, $this->_startDate)) {
-            $this->error(self::NOT_VALID);
+        if (null === $startDate = $this->getFormValue($context, $this->options['start_date'])) {
+            $this->error(self::NO_START_DATE);
 
             return false;
         }
 
-        $startDate = DateTime::createFromFormat($this->_format, $startDate);
-        $endDate = DateTime::createFromFormat($this->_format, $value);
+        $startDate = DateTime::createFromFormat($this->options['format'], $startDate);
+        $endDate = DateTime::createFromFormat($this->options['format'], $value);
 
         if (!$startDate || !$endDate) {
+            $this->error(self::INVALID_FORMAT);
+
             return false;
         }
 
-        $maxDuration = $this->_entityManager
+        $maxDuration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('logistics.piano_time_slot_max_duration');
 

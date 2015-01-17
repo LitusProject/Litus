@@ -23,7 +23,7 @@ namespace CudiBundle\Component\Validator\Sale\Session\Restriction;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Values extends \Zend\Validator\AbstractValidator
+class Values extends \CommonBundle\Component\Validator\AbstractValidator
 {
     /**
      * @var string The error codes
@@ -41,7 +41,11 @@ class Values extends \Zend\Validator\AbstractValidator
      * @var array The message variables
      */
     protected $messageVariables = array(
-        'start_value'  => '_startValue',
+        'start_value'  => array('options' => '_startValue'),
+    );
+
+    protected $options = array(
+        'start_value' => null,
     );
 
     /**
@@ -51,22 +55,19 @@ class Values extends \Zend\Validator\AbstractValidator
     protected $_startValue;
 
     /**
-     * Original start value against which to validate
-     * @var string
-     */
-    protected $_startValueName;
-
-    /**
      * Sets validator options
      *
-     * @param  string $startValue
-     * @return void
+     * @param int|array|\Traversable $options
      */
-    public function __construct($startValue = null)
+    public function __construct($options = array())
     {
-        parent::__construct(is_array($startValue) ? $startValue : null);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['start_value'] = array_shift($args);
+        }
 
-        $this->_startValueName = $startValue;
+        parent::__construct($options);
     }
 
     /**
@@ -84,8 +85,8 @@ class Values extends \Zend\Validator\AbstractValidator
             return true;
         }
 
-        if (($context !== null) && isset($context) && array_key_exists($this->_startValueName, $context)) {
-            $startValue = $context[$this->_startValueName];
+        if (($context !== null) && isset($context) && array_key_exists($this->options['start_value'], $context)) {
+            $startValue = $context[$this->options['start_value']];
             $this->_startValue = $startValue;
         } else {
             $this->error(self::NOT_VALID);

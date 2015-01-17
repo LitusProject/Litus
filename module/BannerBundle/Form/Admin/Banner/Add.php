@@ -18,8 +18,6 @@
 
 namespace BannerBundle\Form\Admin\Banner;
 
-use CommonBundle\Component\Validator\DateCompare as DateCompareValidator;
-
 /**
  * Add Banner
  *
@@ -79,7 +77,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                        array(
+                            'name' => 'date_compare',
+                            'options' => array(
+                                'first_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
                     ),
                 ),
             ),

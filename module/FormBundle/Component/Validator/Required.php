@@ -23,7 +23,7 @@ namespace FormBundle\Component\Validator;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Required extends \Zend\Validator\AbstractValidator
+class Required extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const MAY_NOT_BE_REQUIRED = 'mayNotBeRequired';
 

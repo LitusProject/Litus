@@ -18,7 +18,10 @@
 
 namespace SecretaryBundle\Component\Validator;
 
-class NoAt extends \Zend\Validator\AbstractValidator
+/**
+ * Validate the university email (no @ sign)
+ */
+class NoAt extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 

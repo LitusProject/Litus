@@ -18,9 +18,7 @@
 
 namespace QuizBundle\Form\Admin\Round;
 
-use CommonBundle\Component\Validator\PositiveNumber as PositiveNumberValidator,
-    LogicException,
-    QuizBundle\Component\Validator\Round\Unique as UniqueRoundValidator,
+use LogicException,
     QuizBundle\Entity\Quiz,
     QuizBundle\Entity\Round;
 
@@ -77,7 +75,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int'),
-                        new PositiveNumberValidator(),
+                        array('name' => 'positive_number'),
                     ),
                 ),
             ),
@@ -95,8 +93,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int'),
-                        new PositiveNumberValidator(),
-                        new UniqueRoundValidator($this->getEntityManager(), $this->quiz, $this->round),
+                        array('name' => 'positive_number'),
+                        array(
+                            'name' => 'quiz_round_unique',
+                            'options' => array(
+                                'quiz' => $this->quiz,
+                                'round' => $this->round,
+                            ),
+                        ),
                     ),
                 ),
             ),

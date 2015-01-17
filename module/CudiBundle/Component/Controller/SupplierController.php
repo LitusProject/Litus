@@ -19,7 +19,6 @@
 namespace CudiBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\Exception\HasNoAccessException,
-    CommonBundle\Form\Auth\Login as LoginForm,
     CudiBundle\Entity\User\Person\Supplier,
     Zend\Mvc\MvcEvent;
 
@@ -46,14 +45,14 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
         $result = parent::onDispatch($e);
 
         $result->supplier = $this->getSupplier();
-        $result->loginForm = new LoginForm(
-            $this->url()->fromRoute(
+        $result->loginForm = $this->getForm('common_auth_login')
+            ->setAttribute('class', '')
+            ->setAttribute('action', $this->url()->fromRoute(
                 'cudi_supplier_auth',
                 array(
                     'action' => 'login',
                 )
-            )
-        );
+            ));
 
         $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

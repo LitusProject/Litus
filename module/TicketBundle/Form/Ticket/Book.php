@@ -21,7 +21,6 @@ namespace TicketBundle\Form\Ticket;
 use CommonBundle\Entity\User\Person,
     LogicException,
     RuntimeException,
-    TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
     TicketBundle\Entity\Event;
 
 /**
@@ -66,7 +65,13 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                     'input' => array(
                         'required' => true,
                         'validators' => array(
-                            new NumberTicketsValidator($this->getEntityManager(), $this->_event, $this->_person),
+                            array(
+                                'name' => 'ticket_number_tickets',
+                                'options' => array(
+                                    'event' => $this->_event,
+                                    'person' => $this->_person,
+                                ),
+                            ),
                         ),
                     ),
                 ),
@@ -84,7 +89,13 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                         'input' => array(
                             'required' => true,
                             'validators' => array(
-                                new NumberTicketsValidator($this->getEntityManager(), $this->_event, $this->_person),
+                                array(
+                                    'name' => 'ticket_number_tickets',
+                                    'options' => array(
+                                        'event' => $this->_event,
+                                        'person' => $this->_person,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -103,7 +114,13 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                         'input' => array(
                             'required' => true,
                             'validators' => array(
-                                new NumberTicketsValidator($this->getEntityManager(), $this->_event, $this->_person),
+                                array(
+                                    'name' => 'ticket_number_tickets',
+                                    'options' => array(
+                                        'event' => $this->_event,
+                                        'person' => $this->_person,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -121,7 +138,13 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                             'input' => array(
                                 'required' => true,
                                 'validators' => array(
-                                    new NumberTicketsValidator($this->getEntityManager(), $this->_event, $this->_person),
+                                    array(
+                                        'name' => 'ticket_number_tickets',
+                                        'options' => array(
+                                            'event' => $this->_event,
+                                            'person' => $this->_person,
+                                        ),
+                                    ),
                                 ),
                             ),
                         ),

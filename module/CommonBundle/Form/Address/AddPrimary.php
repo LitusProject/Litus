@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Form\Address;
 
-use CommonBundle\Component\Validator\NotZero as NotZeroValidator;
-
 /**
  * Add Address
  *
@@ -152,7 +150,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                                 'allowWhiteSpace' => true,
                             ),
                         ),
-                        new NotZeroValidator(),
+                        array('name' => 'not_zero'),
                     ),
                 ),
             ),

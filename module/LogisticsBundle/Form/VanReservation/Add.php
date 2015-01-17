@@ -18,10 +18,7 @@
 
 namespace LogisticsBundle\Form\VanReservation;
 
-use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
-    LogisticsBundle\Component\Validator\ReservationConflict as ReservationConflictValidator,
-    LogisticsBundle\Entity\Reservation\VanReservation;
+use LogisticsBundle\Entity\Reservation\VanReservation;
 
 /**
  * The form used to add a new Reservation.
@@ -88,13 +85,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'format' => 'd/m/Y H:i',
                             ),
                         ),
-                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                        new ReservationConflictValidator(
-                            'start_date',
-                            'd/m/Y H:i',
-                            VanReservation::VAN_RESOURCE_NAME,
-                            $this->getEntityManager(),
-                            null === $this->reservation ? 0 : $this->reservation->getId()
+                        array(
+                            'name' => 'date_compare',
+                            'options' => array(
+                                'first_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
+                        array(
+                            'name' => 'logistics_reservation_conflict',
+                            'options' => array(
+                                'start_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                                'resource' => PianoReservation::VAN_RESOURCE_NAME,
+                                'reservation_id' => null === $this->reservation ? 0 : $this->reservation->getId(),
+                            ),
                         ),
                     ),
                 ),
@@ -172,7 +177,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'options'    => array(
                 'input' => array(
                     'validators'  => array(
-                        new PersonTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_person'),
                     ),
                 ),
             ),
