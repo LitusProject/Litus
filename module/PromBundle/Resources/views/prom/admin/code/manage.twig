@@ -1,0 +1,62 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+
+	{% include 'prom/admin/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	{% TODO :: Alignment wrong, menu is not decently aligned towards the menubar.%}
+
+	<div id="controller_action">
+        <table>
+            <tr>
+                <th>Code</th>
+                <th>Used</th>
+                <th width="50px">Action</th>
+            </tr>
+
+            {% for code in paginator %}
+                <tr>
+                    <td>{{ code.getCode() }}</td>
+                    <td>{{ code.isUsed() }}</td>
+                    <td>Foo bar</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <aside>
+        {% if hasAccess('prom_admin_code', 'add') %}
+            <div class="sidebox">
+                <div class="title">New code(s)</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add additional validation codes for the buses!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('prom_admin_code', {'action': 'add'}) }}">&rarr; Add Codes</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+
+    <aside>
+        {% if hasAccess('prom_admin_code', 'disable') %}
+            <div class="sidebox">
+                <div class="title">Disable all code(s)</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to disable all current codes!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('prom_admin_code', {'action': 'add'}) }}">&rarr; Add Codes</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}

@@ -29,12 +29,47 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        return new ViewModel();
+        return new ViewModel(array());
     }
 
     public function addAction()
     {
-        return new ViewModel();
+        $form = $this->getForm('prom_reservationCode_add');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+
+                //TODO
+                print_r($formData['nb_codes']);
+                exit();
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The codes were successfully generated!'
+                );
+
+                $this->redirect()->toRoute(
+                    'promo_admin_code',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function deleteAction()

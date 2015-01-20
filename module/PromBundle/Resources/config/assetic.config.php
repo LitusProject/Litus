@@ -26,5 +26,21 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'prom_admin_bus' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@common_remote_typeahead',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'prom_admin_code' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@common_remote_typeahead',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
     ),
 );
