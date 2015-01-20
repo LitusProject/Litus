@@ -21,16 +21,24 @@ namespace PromBundle\Controller\Admin;
 use Zend\View\Model\ViewModel;
 
 /**
- * PromController
+ * BusController
  *
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
  */
-class PromController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class BusController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
-        return new ViewModel(
-            array()
-        );
+        return new ViewModel();
+    }
+
+    public function addAction()
+    {
+        return new ViewModel();
+    }
+
+    public function deleteAction()
+    {
+        return new ViewModel();
     }
 }
