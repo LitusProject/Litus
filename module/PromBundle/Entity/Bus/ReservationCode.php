@@ -24,8 +24,6 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="PromBundle\Repository\Bus\ReservationCode")
  * @ORM\Table(name="prom.bus_code")
- *
- * @UniqueEntity("code")
  */
 class ReservationCode
 {
