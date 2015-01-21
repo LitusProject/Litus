@@ -16,14 +16,23 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PromBundle;
+namespace PromBundle\Controller\Registration;
 
-use CommonBundle\Component\Module\Config;
+use Zend\View\Model\ViewModel;
 
-return Config::create(
-    array(
-        'namespace'         => __NAMESPACE__,
-        'directory'         => __DIR__,
-        'translation_files' => array('prom'),
-    )
-);
+/**
+ * IndexController
+ *
+ * @author Mathijs Cuppens
+ */
+
+class IndexController
+{
+	public function registrationAction()
+    {
+    	echo "It works";
+    	return new ViewModel(
+    		array()
+    	);
+    }
+}
