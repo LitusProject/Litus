@@ -54,5 +54,16 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'prom_registration_index' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_alert',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@display_form_error_js',
+            '@ticket_css',
+            '@common_remote_typeahead',
+        ),
     ),
 );
