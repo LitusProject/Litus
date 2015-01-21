@@ -4,5 +4,33 @@
 
 	{% include 'prom/admin/partials/navigation.twig' %}
 
-    It works!!
+    <div id="controller_action">
+            <table>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                    <th>Bus Time</th>
+                    <th>Actions</th>
+                </tr>
+                {% for passenger in paginator %}
+	                <tr>
+	                    <td>{{ passenger.getFirstName() }}</td>
+	                    <td>{{ passenger.getLastName() }}</td>
+	                    <td>{{ passenger.getEmail() }}</td>
+	                    <td>{{ passenger.getBus().getDepartureTime().format('d/m/Y H:i') }}</td>
+	                    <td class="actions">
+	                        {% if hasAccess('prom_admin_passenger', 'edit') %}
+	                            <a href="{{ url('prom_admin_passenger', {"action": "edit", "id": code.getId()}) }}" class="edit">Edit</a>
+	                        {% endif %}
+	                        {% if hasAccess('prom_admin_passenger', 'delete') %}
+	                            <a href="{{ url('prom_admin_passenger', {"action": "delete", "id": code.getId()}) }}" class="delete">Delete</a>
+                        {% endif %}
+                    </td>
+	                </tr>
+	            {% endfor %}
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
 {% endblock %}

@@ -28,4 +28,17 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Passenger extends EntityRepository
 {
+    public function findPassengerByCodeQuery($code)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('PromBundle\Entity\Bus\Passenger', 'p')
+            ->where(
+                    $query->expr()->eq('p.code', ':code')
+            )
+            ->setParameter('code', $code)
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

@@ -98,6 +98,14 @@ class Passenger
     }
 
     /**
+     * @return PromBundle\Entity\Bus
+     */
+    public function getBus()
+    {
+        return $this->bus;
+    }
+
+    /**
      * @return string firstName
      */
     public function getFirstName()

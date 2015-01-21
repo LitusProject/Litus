@@ -29,7 +29,19 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
 {
     public function manageAction()
     {
-        return new ViewModel();
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('PromBundle\Entity\Bus\Passenger')
+                ->findAll(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
     }
 
     public function addAction()

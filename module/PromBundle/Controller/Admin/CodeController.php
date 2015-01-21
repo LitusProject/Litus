@@ -56,7 +56,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                for ($i = 1; $i < $formData['nb_codes']; $i++) {
+                for ($i = 0; $i < $formData['nb_codes']; $i++) {
                     $newCode = new ReservationCode();
                     $this->getEntityManager()->persist($newCode);
                 }
@@ -93,6 +93,64 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        return new ViewModel();
+        if (!($code = $this->_getCode())) {
+            return new ViewModel();
+        }
+
+        if ($code->isUsed()) {
+            $passenger = $this->getEntityManager()
+                ->getRepository('PromBundle\Entity\Bus\Passenger')
+                ->findPassengerByCode($code);
+        } else {
+            $passenger = null;
+        }
+
+        return new ViewModel(
+            array(
+                'passenger' => $passenger[0],
+                'code' => $code,
+            )
+        );
+    }
+
+    private function _getCode()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the code!'
+            );
+
+            $this->redirect()->toRoute(
+                'prom_admin_code',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        $code = $this->getEntityManager()
+            ->getRepository('PromBundle\Entity\Bus\ReservationCode')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $code) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No code with the given ID was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'prom_admin_bus',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $code;
     }
 }
