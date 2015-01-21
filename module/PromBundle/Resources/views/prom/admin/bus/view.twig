@@ -23,14 +23,8 @@
                     <td>{{ passenger.getEmail() }}</td>
                     <td>{{ passenger.getCode().getCode() }}</td>
                     <td class="actions">
-                        {% if hasAccess('prom_admin_bus', 'view') %}
-                            <a href="{{ url('prom_admin_bus', {"action": "view", "id": code.getId()}) }}" class="view">View</a>
-                        {% endif %}
-                        {% if hasAccess('prom_admin_bus', 'edit') %}
-                            <a href="{{ url('prom_admin_bus', {"action": "edit", "id": code.getId()}) }}" class="edit">Edit</a>
-                        {% endif %}
                         {% if hasAccess('prom_admin_bus', 'delete') %}
-                            <a href="{{ url('prom_admin_bus', {"action": "expire", "id": code.getId()}) }}" class="delete">Expire</a>
+                            <a href="{{ url('prom_admin_passenger', {"action": "removeBus", "id": passenger.getId()}) }}" class="delete">Remove From Bus</a>
                         {% endif %}
                     </td>
                 </tr>

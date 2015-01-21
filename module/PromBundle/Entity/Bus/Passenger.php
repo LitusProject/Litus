@@ -106,6 +106,14 @@ class Passenger
     }
 
     /**
+     * @param PromBundle\Entity\Bus
+     */
+    public function setBus(Bus $bus = null)
+    {
+        return $this->bus = $bus;
+    }
+
+    /**
      * @return string firstName
      */
     public function getFirstName()

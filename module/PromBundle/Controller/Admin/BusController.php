@@ -99,6 +99,26 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
 
     public function deleteAction()
     {
+        if (!($bus = $this->_getBus())) {
+            return new ViewModel();
+        }
+
+        foreach ($bus->getReservedSeatsArray() as $passenger) {
+            $passenger->setBus(null);
+        }
+
+        //TODO mail every passenger that the bus has been removed.
+
+        $this->getEntityManager()->remove($bus);
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'prom_admin_bus',
+            array(
+                'action' => 'manage',
+            )
+        );
+
         return new ViewModel();
     }
 

@@ -16,7 +16,7 @@
             </tr>
 
             {% for bus in paginator %}
-                <tr>
+                <tr class="item item-{{ bus.getId() }}">
                     <td>{{ bus.getDepartureTime().format('d/m/Y H:i') }}</td>
                     <td>{{ bus.getTotalSeats() }}</td>
                     <td>{{ bus.getReservedSeats() }}</td>
@@ -24,11 +24,8 @@
                         {% if hasAccess('prom_admin_bus', 'view') %}
                             <a href="{{ url('prom_admin_bus', {"action": "view", "id": bus.getId()}) }}" class="view">View</a>
                         {% endif %}
-                        {% if hasAccess('prom_admin_bus', 'edit') %}
-                            <a href="{{ url('prom_admin_bus', {"action": "edit", "id": bus.getId()}) }}" class="edit">Edit</a>
-                        {% endif %}
                         {% if hasAccess('prom_admin_bus', 'delete') %}
-                            <a href="{{ url('prom_admin_bus', {"action": "expire", "id": bus.getId()}) }}" class="delete">Expire</a>
+                            <a href="{{ url('prom_admin_bus', {"action": "delete", "id": bus.getId()}) }}" class="delete">Delete</a>
                         {% endif %}
                     </td>
                 </tr>

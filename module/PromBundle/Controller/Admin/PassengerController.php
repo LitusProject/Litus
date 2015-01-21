@@ -49,8 +49,92 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
         return new ViewModel();
     }
 
-    public function deleteAction()
+    public function editAction()
     {
         return new ViewModel();
+    }
+
+    public function deleteAction()
+    {
+        if (!($passenger = $this->_getPassenger())) {
+            return new ViewModel();
+        }
+
+        //TODO mail every passenger that the bus has been removed.
+
+        $this->getEntityManager()->remove($passenger);
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'prom_admin_passenger',
+            array(
+                'action' => 'manage',
+            )
+        );
+
+        return new ViewModel();
+    }
+
+    public function removeBusAction()
+    {
+        if (!($passenger = $this->_getPassenger())) {
+            return new ViewModel();
+        }
+
+        $passenger->setBus(null);
+
+        //TODO mail passenger that he has been removed from the bus.
+
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'prom_admin_bus',
+            array(
+                'action' => 'manage',
+            )
+        );
+
+        return new ViewModel();
+    }
+
+    private function _getPassenger()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the passenger!'
+            );
+
+            $this->redirect()->toRoute(
+                'prom_admin_passenger',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        $passenger = $this->getEntityManager()
+            ->getRepository('PromBundle\Entity\Bus\Passenger')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $passenger) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No passenger with the given ID was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'prom_admin_passenger',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $passenger;
     }
 }
