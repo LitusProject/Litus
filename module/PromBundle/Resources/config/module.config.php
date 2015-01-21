@@ -25,5 +25,6 @@ return Config::create(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
         'translation_files' => array('prom'),
+        'has_layouts'		=> true,
     )
 );
