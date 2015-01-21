@@ -18,7 +18,8 @@
 
 namespace PromBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use PromBundle\Entity\Bus\ReservationCode,
+    Zend\View\Model\ViewModel;
 
 /**
  * CodeController
@@ -29,7 +30,19 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        return new ViewModel(array());
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('PromBundle\Entity\Bus\ReservationCode')
+                ->findAll(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
     }
 
     public function addAction()
@@ -43,9 +56,10 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                //TODO
-                print_r($formData['nb_codes']);
-                exit();
+                for ($i = 1; $i < $formData['nb_codes']; $i++) {
+                    $newCode = new ReservationCode();
+                    $this->getEntityManager()->persist($newCode);
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -55,7 +69,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 $this->redirect()->toRoute(
-                    'promo_admin_code',
+                    'prom_admin_code',
                     array(
                         'action' => 'manage',
                     )
@@ -72,7 +86,12 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    public function deleteAction()
+    public function expireAction()
+    {
+        return new ViewModel();
+    }
+
+    public function viewAction()
     {
         return new ViewModel();
     }

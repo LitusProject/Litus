@@ -18,7 +18,11 @@
 
 namespace PromBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use DateTime,
+    PromBundle\Entity\Bus,
+    PromBundle\Entity\Bus\Passenger,
+    PromBundle\Entity\Bus\ReservationCode,
+    Zend\View\Model\ViewModel;
 
 /**
  * BusController
@@ -29,16 +33,137 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function manageAction()
     {
-        return new ViewModel();
+        $paginator = $this->paginator()->createFromArray(
+            $this->getEntityManager()
+                ->getRepository('PromBundle\Entity\Bus')
+                ->findAll(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
     }
 
     public function addAction()
     {
-        return new ViewModel();
+        $form = $this->getForm('prom_bus_add');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+
+                $departureTime = self::_loadDate($formData['departure_time']);
+
+                $newBus = new Bus($departureTime, $formData['nb_passengers']);
+
+                //TESTCODE
+                $code = new ReservationCode();
+                $this->getEntityManager()->persist($code);
+                $pass = new Passenger($newBus,"foo","bar","bat",$code);
+                $this->getEntityManager()->persist($pass);
+                $newBus->addPassenger($pass);
+                //___
+                $this->getEntityManager()->persist($newBus);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The bus was successfully added!'
+                );
+
+                $this->redirect()->toRoute(
+                    'prom_admin_bus',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function deleteAction()
     {
         return new ViewModel();
+    }
+
+    public function viewAction()
+    {
+        if (!($bus = $this->_getBus())) {
+            return new ViewModel();
+        }
+
+        $passengers = $bus->getReservedSeatsArray();
+
+        return new ViewModel(
+            array(
+                'passengers' => $passengers,
+            )
+        );
+    }
+
+    /**
+     * @param  string        $date
+     * @return DateTime|null
+     */
+    private static function _loadDate($date)
+    {
+        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
+    }
+
+    private function _getBus()
+    {
+        if (null === $this->getParam('id')) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No ID was given to identify the bus!'
+            );
+
+            $this->redirect()->toRoute(
+                'prom_admin_bus',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        $bus = $this->getEntityManager()
+            ->getRepository('PromBundle\Entity\Bus')
+            ->findOneById($this->getParam('id'));
+
+        if (null === $bus) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No bus with the given ID was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'prom_admin_bus',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $bus;
     }
 }

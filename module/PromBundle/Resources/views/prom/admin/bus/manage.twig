@@ -1,0 +1,56 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+
+	{% include 'prom/admin/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+	<div id="controller_action">
+        <table>
+            <tr>
+                <th width="300px">Departure Time</th>
+                <th width="50px">Total Seats</th>
+                <th width="50px">Reserved Seats</th>
+                <th width="20px">Actions</th>
+            </tr>
+
+            {% for bus in paginator %}
+                <tr>
+                    <td>{{ bus.getDepartureTime().format('d/m/Y H:i') }}</td>
+                    <td>{{ bus.getTotalSeats() }}</td>
+                    <td>{{ bus.getReservedSeats() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('prom_admin_bus', 'view') %}
+                            <a href="{{ url('prom_admin_bus', {"action": "view", "id": bus.getId()}) }}" class="view">View</a>
+                        {% endif %}
+                        {% if hasAccess('prom_admin_bus', 'edit') %}
+                            <a href="{{ url('prom_admin_bus', {"action": "edit", "id": bus.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('prom_admin_bus', 'delete') %}
+                            <a href="{{ url('prom_admin_bus', {"action": "expire", "id": bus.getId()}) }}" class="delete">Expire</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <aside>
+        {% if hasAccess('prom_admin_bus', 'add') %}
+            <div class="sidebox">
+                <div class="title">New code(s)</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add additional buses!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('prom_admin_bus', {'action': 'add'}) }}">&rarr; Add Buses</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}

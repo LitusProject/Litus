@@ -33,21 +33,6 @@ return array(
                 ),
             ),
         ),
-        'prom_admin_code' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/prom/code[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'prom_admin_code',
-                    'action'     => 'manage',
-                ),
-            ),
-        ),
         'prom_admin_bus' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -63,11 +48,43 @@ return array(
                 ),
             ),
         ),
+        'prom_admin_code' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/prom/code[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[0-9]*',
+                    'page'    => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'prom_admin_code',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        'prom_admin_passenger' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/prom/passenger[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'      => '[0-9]*',
+                    'page'    => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'prom_admin_passenger',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
-        'prom_admin_prom'   => 'PromBundle\Controller\Admin\PromController',
-        'prom_admin_code'   => 'PromBundle\Controller\Admin\CodeController',
-        'prom_admin_bus'   => 'PromBundle\Controller\Admin\BusController',
+        'prom_admin_prom'       => 'PromBundle\Controller\Admin\PromController',
+
+        'prom_admin_bus'        => 'PromBundle\Controller\Admin\BusController',
+        'prom_admin_code'       => 'PromBundle\Controller\Admin\CodeController',
+        'prom_admin_passenger'  => 'PromBundle\Controller\Admin\PassengerController',
     ),
 );

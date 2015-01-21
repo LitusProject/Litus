@@ -46,7 +46,7 @@ class ReservationCode
     /**
      * @var boolean If the code is used or not.
      *
-     * @ORM\Column(name="old", type="boolean")
+     * @ORM\Column(name="used", type="boolean")
      */
     private $used;
 
@@ -87,7 +87,7 @@ class ReservationCode
     }
 
     /**
-     * @return integer
+     * @return string
      */
     public function getCode()
     {

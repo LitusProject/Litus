@@ -6,21 +6,34 @@
 
 	{% include 'admin/partials/flashMessenger.twig' %}
 
-	{% TODO :: Alignment wrong, menu is not decently aligned towards the menubar.%}
-
 	<div id="controller_action">
         <table>
             <tr>
-                <th>Code</th>
-                <th>Used</th>
+                <th width="300px">Code</th>
+                <th width="10px">Used</th>
                 <th width="50px">Action</th>
             </tr>
 
             {% for code in paginator %}
                 <tr>
                     <td>{{ code.getCode() }}</td>
-                    <td>{{ code.isUsed() }}</td>
-                    <td>Foo bar</td>
+                    {% if code.isUsed() %}
+                            <td style="text-align: center;">
+                                <input type="checkbox" disabled id="{{ code.getId() }}" checked="checked"/>
+                            </td>
+                    {% else %}
+                            <td style="text-align: center;">
+                                <input type="checkbox" disabled id="{{ code.getId() }}"/>
+                            </td>
+                    {% endif %}
+                    <td class="actions">
+                        {% if hasAccess('prom_admin_code', 'view') %}
+                            <a href="{{ url('prom_admin_code', {"action": "view", "id": code.getId()}) }}" class="view">View</a>
+                        {% endif %}
+                        {% if hasAccess('prom_admin_code', 'expire') %}
+                            <a href="{{ url('prom_admin_code', {"action": "expire", "id": code.getId()}) }}" class="delete">Expire</a>
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         </table>
@@ -53,7 +66,7 @@
                         <i>Please hit the link below to disable all current codes!</i>
                     </p>
                     <p>
-                        <a href="{{ url('prom_admin_code', {'action': 'add'}) }}">&rarr; Add Codes</a>
+                        <a href="{{ url('prom_admin_code', {'action': 'add'}) }}">&rarr; Disable All Codes</a>
                     </p>
                 </div>
             </div>

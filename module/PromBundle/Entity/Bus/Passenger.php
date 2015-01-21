@@ -17,7 +17,8 @@
  */
 namespace PromBundle\Entity\Bus;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM,
+    PromBundle\Entity\Bus;
 
 /**
  * This is the entity for a passenger for the bus
@@ -35,6 +36,14 @@ class Passenger
      * @ORM\Column(type="bigint")
      */
     private $id;
+
+    /**
+     * @var Subject The subject of the enrollment
+     *
+     * @ORM\ManyToOne(targetEntity="PromBundle\Entity\Bus", inversedBy="seats")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $bus;
 
     /**
      * @var string The first name of this guest
@@ -71,8 +80,9 @@ class Passenger
      * @param string $email
      * @param string $code
      */
-    public function __construct($firstName, $lastName, $email, $code)
+    public function __construct(Bus $bus, $firstName, $lastName, $email, $code)
     {
+        $this->bus = $bus;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;

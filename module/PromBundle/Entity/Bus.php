@@ -17,7 +17,10 @@
  */
 namespace PromBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use DateTime,
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM,
+    PromBundle\Entity\Bus\Passenger;
 
 /**
  * This is the entity for a bus
@@ -58,14 +61,15 @@ class Bus
     private $seats;
 
     /**
-     * Creates a new publication with the given title
+     * Creates a new Bus with the given attributes
      *
-     * @param string $title The title of this publication
+     * @param DateTime $time The departure time
+     * @param $totalSeats The total available seats on the bus
      */
-    public function __construct($title)
+    public function __construct(DateTime $time, $totalSeats)
     {
-        $this->title = $title;
-        $this->deleted = false;
+        $this->departureTime = $time;
+        $this->totalSeats = $totalSeats;
         $this->seats = new ArrayCollection();
     }
 
@@ -109,5 +113,43 @@ class Bus
     public function setTotalSeats($nb)
     {
         $this->totalSeats = $nb;
+    }
+
+    /**
+     * @param  Passenger $passenger
+     * @return self
+     */
+    public function addPassenger(Passenger $passenger)
+    {
+        $this->seats->add($passenger);
+
+        return $this;
+    }
+
+    /**
+     * @param  Passenger $passenger
+     * @return self
+     */
+    public function removePassenger(Passenger $passenger)
+    {
+        $this->seats->remove($passenger);
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReservedSeats()
+    {
+        return $this->seats->count();
+    }
+
+    /**
+     * @return array
+     */
+    public function getReservedSeatsArray()
+    {
+        return $this->seats->toArray();
     }
 }
