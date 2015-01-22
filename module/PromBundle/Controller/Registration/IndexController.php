@@ -26,11 +26,10 @@ use Zend\View\Model\ViewModel;
  * @author Mathijs Cuppens
  */
 
-class IndexController
+class IndexController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
 	public function registrationAction()
     {
-    	echo "It works";
     	return new ViewModel(
     		array()
     	);

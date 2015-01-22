@@ -66,4 +66,16 @@ return array(
             '@common_remote_typeahead',
         ),
     ),
+
+    'collections' => array(
+        'registration_css' => array(
+            'assets' => array(
+                'registration/less/base.less',
+            ),
+            'filters' => array('less'),
+            'options' => array(
+                'output' => 'registration_css.css',
+            ),
+        ),
+    ),
 );

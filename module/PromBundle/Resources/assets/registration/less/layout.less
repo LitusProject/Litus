@@ -1,0 +1,72 @@
+/**
+ * Layout
+ *
+ * Copyright 2011 Litus
+ *
+ * Author: Mathijs Cuppens
+ */
+
+body {
+    padding-top: 50px;
+}
+
+.navbar {
+    .brand {
+        padding: 3px 20px 5px;
+
+        img {
+            margin-top: 7px;
+        }
+    }
+}
+
+header {
+    padding: 10px 15px 20px;
+    #gradient > .vertical(@cPromDark, @cPromLight);
+    margin-bottom: 20px;
+
+    h1 {
+        color: #fff;
+    }
+}
+
+footer {
+    padding-top: 40px;
+    padding-bottom: 30px;
+    margin-top: 50px;
+    color: #777;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
+}
+
+.alert {
+    margin-bottom: 3px;
+
+    .title {
+        font-weight: bold;
+    }
+
+    &.fade {
+        height: 0;
+        margin-bottom: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        overflow: hidden;
+        border-width: 0px;
+
+        &.in {
+            height: auto;
+            margin-bottom: @line-height-computed;
+            padding: @alert-padding;
+            border-width: 1px;
+        }
+    }
+}
+
+#content_controller {
+    table {
+        td.actions {
+            padding: 3px 8px;
+        }
+    }
+}
