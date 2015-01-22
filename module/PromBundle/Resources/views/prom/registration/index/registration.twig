@@ -1,12 +1,37 @@
 {% extends 'registration/base.twig' %}
 
 {% block content %}
+
+    <div class="page-header">
+        <p><b>You can use this little application to reserve a seat on a bus. You can also manage your reservation if you want to make changes.</b></p>
+    </div>
+    <div class="flashmessage alert alert-danger fade" id="wrong_code">
+        <a class="close">&times;</a>
+        {{ translate('The code you entered does not exist.') }}
+    </div>
     <div class="row">
     	<div class="col-md-6">
     		<h2>New Registration</h2>
+    		{% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(createForm) }}
     	</div>
     	<div class="col-md-6">
     		<h2>Manage Registration</h2>
+    		{{ forms.renderForm(manageForm) }}
     	</div>
     </div>
+    <h1>{{ action }}</h1>
+{% endblock %}
+
+
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ('wrong_code' == '{{ status }}') {
+                $('#wrong_code').addClass('in');
+                setTimeout(function () {$('.flashmessage').removeClass('in')}, 3000);
+            }
+        });
+    </script>
 {% endblock %}
