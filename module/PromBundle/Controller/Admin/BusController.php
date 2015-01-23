@@ -22,6 +22,7 @@ use DateTime,
     PromBundle\Entity\Bus,
     PromBundle\Entity\Bus\Passenger,
     PromBundle\Entity\Bus\ReservationCode,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -63,13 +64,6 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
 
                 $newBus = new Bus($departureTime, $formData['nb_passengers']);
 
-                //TESTCODE
-                $code = new ReservationCode();
-                $this->getEntityManager()->persist($code);
-                $pass = new Passenger($newBus,"foo","bar","bat",$code);
-                $this->getEntityManager()->persist($pass);
-                $newBus->addPassenger($pass);
-                //___
                 $this->getEntityManager()->persist($newBus);
 
                 $this->getEntityManager()->flush();
@@ -103,11 +97,27 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel();
         }
 
+        $mail = new Message();
+
         foreach ($bus->getReservedSeatsArray() as $passenger) {
             $passenger->setBus(null);
+            $mail->addBcc($passenger->getEmail());
         }
 
-        //TODO mail every passenger that the bus has been removed.
+        $mailData = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('prom.remove_mail')
+        );
+
+        $mail->setBody(str_replace('{{ busTime }}', $bus->getDepartureTime()->format('d/m/Y h:i'), $mailData['body']))
+            ->setFrom($mailData['from'])
+            ->addBcc($mailData['from'])
+            ->setSubject($mailData['subject']);
+
+        if ('development' != getenv('APPLICATION_ENV')) {
+            $this->getMailTransport()->send($mail);
+        }
 
         $this->getEntityManager()->remove($bus);
         $this->getEntityManager()->flush();

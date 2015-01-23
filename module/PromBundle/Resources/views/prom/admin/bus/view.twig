@@ -7,13 +7,13 @@
 	{% include 'admin/partials/flashMessenger.twig' %}
 
 	<div id="controller_action">
-        <table class="manage">
+        <table class="full_width manage">
             <tr>
                 <th>Firstname</th>
                 <th>Lastname</th>
                 <th>Email</th>
                 <th width="70px">Code</th>
-                <th width="50px">Actions</th>
+                <th width="70px">Actions</th>
             </tr>
 
             {% for passenger in passengers %}
@@ -24,7 +24,7 @@
                     <td>{{ passenger.getCode().getCode() }}</td>
                     <td class="actions">
                         {% if hasAccess('prom_admin_bus', 'delete') %}
-                            <a href="{{ url('prom_admin_passenger', {"action": "removeBus", "id": passenger.getId()}) }}" class="delete">Remove From Bus</a>
+                            <a href="{{ url('prom_admin_passenger', {"action": "removeBus", "id": passenger.getId()}) }}" class="delete">Remove</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -33,20 +33,4 @@
 
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
-
-    <aside>
-        {% if hasAccess('prom_admin_bus', 'add') %}
-            <div class="sidebox">
-                <div class="title">New code(s)</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to add additional buses!</i>
-                    </p>
-                    <p>
-                        <a href="{{ url('prom_admin_bus', {'action': 'add'}) }}">&rarr; Add Buses</a>
-                    </p>
-                </div>
-            </div>
-        {% endif %}
-    </aside>
 {% endblock %}

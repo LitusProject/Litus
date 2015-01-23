@@ -2,11 +2,14 @@
 
 {% block content %}
 
-	{% include 'prom/admin/partials/navigation.twig' %}
+    {% include 'prom/admin/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
+    <div id="controller_action">
+
+        <h1>Current available codes</h1>
+
         <table class="manage">
             <tr>
                 <th width="300px">Code</th>
@@ -37,8 +40,6 @@
                 </tr>
             {% endfor %}
         </table>
-
-        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     <aside>
@@ -55,9 +56,7 @@
                 </div>
             </div>
         {% endif %}
-    </aside>
 
-    <aside>
         {% if hasAccess('prom_admin_code', 'disable') %}
             <div class="sidebox">
                 <div class="title">Disable all code(s)</div>
