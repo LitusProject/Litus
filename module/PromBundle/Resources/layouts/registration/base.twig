@@ -19,11 +19,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a href="{{ organizationUrl }}" class="brand"><img src="/_ticket/img/logo.png" /></a>
+                    <a href="{{ organizationUrl }}" class="brand"><img src="/_prom/img/logo.png" /></a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        nav
+                        <li class="active">
+                            <a href="{{ url("prom_registration_index") }}">Registration</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -31,9 +33,16 @@
 
         <header>
             <div class="container">
-                <h1>Prom Registration</h1>
+                <h1>VTK Gala Night</h1>
             </div>
         </header>
+
+        <div class="container">
+            <div id="content_controller">
+
+                {% block content %} {% endblock %}
+            </div>
+        </div>
 
         <footer>
             Litus Prom Ticket Registration | Code by <a href="http://litus.cc">Litus</a>

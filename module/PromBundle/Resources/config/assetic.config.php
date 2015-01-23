@@ -62,7 +62,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@display_form_error_js',
-            '@ticket_css',
+            '@registration_css',
             '@common_remote_typeahead',
         ),
     ),

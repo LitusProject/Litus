@@ -26,12 +26,94 @@ use Zend\View\Model\ViewModel;
  * @author Mathijs Cuppens
  */
 
-class IndexController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class IndexController extends \PromBundle\Component\Controller\RegistrationController
 {
 	public function registrationAction()
+    {
+    	$createForm = $this->getForm('prom_registration_create');
+    	$manageForm = $this->getForm('prom_registration_manage');
+
+    	if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+
+            if (isset($formData['create']))
+            {
+	            $createForm->setData($formData);
+
+	            if ($createForm->isValid()) {
+	                $createFormData = $createForm->getData();
+
+	                $codeExist = $this->getEntityManager()
+	            		->getRepository('PromBundle\Entity\Bus\ReservationCode')
+	            		->codeExist($createFormData['create']['ticket_code']);
+
+	                if ($codeExist)
+	                {
+		        		$this->redirect()->toRoute(
+		                    'prom_registration_index',
+		                    array(
+		                        'action' => 'create',
+		                    )
+		                );
+	        		} else {
+	        			return new ViewModel(
+				    		array(
+				    			'createForm' => $createForm,
+				    			'manageForm' => $manageForm,
+				    			'status'	 => 'wrong_code',
+				    		)
+				    	);
+	        		}
+	        	}
+	        }
+	        elseif (isset($formData['manage']))
+	        {
+	        	$manageForm->setData($formData);
+
+	        	if ($createForm->isValid()) {
+	                $createFormData = $createForm->getData();
+
+	                $correctEmail = true;
+
+	                if ($codeExist && $correctEmail)
+	                {
+		        		$this->redirect()->toRoute(
+		                    'prom_registration_index',
+		                    array(
+		                        'action' => 'manage',
+		                    )
+		                );
+	        		} else {
+	        			return new ViewModel(
+				    		array(
+				    			'createForm' => $createForm,
+				    			'manageForm' => $manageForm,
+				    			'status'	 => 'ERROR',
+				    		)
+				    	);
+	        		}
+	        	}
+	        }
+        }
+
+    	return new ViewModel(
+    		array(
+    			'createForm' => $createForm,
+    			'manageForm' => $manageForm,
+    			'status'	 => 'SUCCESS!',
+    		)
+    	);
+    }
+
+    public function createAction()
     {
     	return new ViewModel(
     		array()
     	);
+    }
+
+    public function manageAction()
+    {
+
     }
 }
