@@ -33,15 +33,28 @@ abstract class WebSocket extends \CommonBundle\Component\Console\Command
                 )
             )
             ->addOption('run', 'r', null, 'Run the WebSocket')
+            ->addOption('is-enabled', null, null, 'Checks whether the WebSocket is enabled')
             ->setDescription('Runs the ' . $name . ' websocket.')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command runs the $name websocket.
+
+Call
+    php public/index.php <info>%command.name%</info> <comment>--run</comment>
+to run the socket.
+
+Call
+    php public/index.php <info>%command.name%</info> <comment>--is-enabled</comment>
+to check whether the socket is enabled (return value 0) or disabled (return value 1).
 EOT
         );
     }
 
     protected function executeCommand()
     {
+        if ($this->getOption('is-enabled')) {
+            return $this->isSocketEnabled() ? 0 : 1;
+        }
+
         if (!$this->getOption('run')) {
             $this->writeln('Please add -r or --run to run the socket');
 
@@ -60,6 +73,11 @@ EOT
     {
         return ucfirst($this->getCommandName()) . 'Socket';
     }
+
+    /**
+     * @return bool whether the socket is enabled
+     */
+    abstract protected function isSocketEnabled();
 
     /**
      * @return string the name of this websocket, used in the commands.

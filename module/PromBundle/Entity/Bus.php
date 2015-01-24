@@ -20,6 +20,7 @@ namespace PromBundle\Entity;
 use DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
+    Exception,
     PromBundle\Entity\Bus\Passenger;
 
 /**
@@ -68,6 +69,11 @@ class Bus
     private $direction;
 
     /**
+     * @var int The maximum amount of passengers available on buses
+     */
+    private $maxPassengerNb = 100;
+
+    /**
      * Creates a new Bus with the given attributes
      *
      * @param DateTime $time The departure time
@@ -76,7 +82,11 @@ class Bus
     public function __construct(DateTime $time, $totalSeats, $direction)
     {
         $this->departureTime = $time;
-        $this->totalSeats = $totalSeats;
+
+        if ($this->isValidPassengerAmount($totalSeats)) {
+            $this->totalSeats = $totalSeats;
+        }
+
         $this->seats = new ArrayCollection();
         $this->direction = $direction;
     }
@@ -167,5 +177,19 @@ class Bus
     public function getReservedSeatsArray()
     {
         return $this->seats->toArray();
+    }
+
+    /**
+     * @param  int     $passengerAmount
+     * @return boolean
+     */
+    private function isValidPassengerAmount($passengerAmount)
+    {
+        if ($passengerAmount <= $this->maxPassengerNb) {
+            return true;
+        }
+        throw new Exception("The passenger amount is exceeding " . $this->maxPassengerNb);
+
+        return false;
     }
 }

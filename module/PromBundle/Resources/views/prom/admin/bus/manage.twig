@@ -2,12 +2,15 @@
 
 {% block content %}
 
-	{% include 'prom/admin/partials/navigation.twig' %}
+    {% include 'prom/admin/partials/navigation.twig' %}
 
-	{% include 'admin/partials/flashMessenger.twig' %}
+    {% include 'admin/partials/flashMessenger.twig' %}
 
-	<div id="controller_action">
-        <table>
+    <div id="controller_action">
+
+        <h1>Current available buses</h1>
+
+        <table class="manage">
             <tr>
                 <th width="200px">Departure Time</th>
                 <th width="50px">Go or Return</th>
@@ -24,7 +27,7 @@
                     <td>{{ bus.getReservedSeats() }}</td>
                     <td class="actions">
                         {% if hasAccess('prom_admin_bus', 'view') %}
-                            <a href="{{ url('prom_admin_bus', {"action": "view", "id": bus.getId()}) }}" class="view">View</a>
+                            <a href="{{ url('prom_admin_bus', {"action": "view", "id": bus.getId()}) }}" class="view">View Passengers</a>
                         {% endif %}
                         {% if hasAccess('prom_admin_bus', 'delete') %}
                             <a href="{{ url('prom_admin_bus', {"action": "delete", "id": bus.getId()}) }}" class="delete">Delete</a>
@@ -33,8 +36,6 @@
                 </tr>
             {% endfor %}
         </table>
-
-        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     <aside>

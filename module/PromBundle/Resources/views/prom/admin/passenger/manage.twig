@@ -5,13 +5,13 @@
 	{% include 'prom/admin/partials/navigation.twig' %}
 
     <div id="controller_action">
-            <table>
+            <table class="full_width manage">
                 <tr>
                     <th>Firstname</th>
                     <th>Lastname</th>
                     <th>Email</th>
                     <th>Bus Time</th>
-                    <th>Actions</th>
+                    <th width='70px'>Actions</th>
                 </tr>
                 {% for passenger in paginator %}
 	                <tr>

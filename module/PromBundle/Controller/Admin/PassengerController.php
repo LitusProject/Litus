@@ -18,7 +18,8 @@
 
 namespace PromBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use Zend\Mail\Message,
+    Zend\View\Model\ViewModel;
 
 /**
  * PassengerController
@@ -44,23 +45,11 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
         );
     }
 
-    public function addAction()
-    {
-        return new ViewModel();
-    }
-
-    public function editAction()
-    {
-        return new ViewModel();
-    }
-
     public function deleteAction()
     {
         if (!($passenger = $this->_getPassenger())) {
             return new ViewModel();
         }
-
-        //TODO mail every passenger that the bus has been removed.
 
         $this->getEntityManager()->remove($passenger);
         $this->getEntityManager()->flush();
@@ -83,7 +72,22 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
 
         $passenger->setBus(null);
 
-        //TODO mail passenger that he has been removed from the bus.
+        $mailData = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('prom.remove_mail')
+        );
+
+        $mail = new Message();
+        $mail->setBody(str_replace('{{ busTime }}', $bus->getDepartureTime()->format('d/m/Y h:i'), $mailData['body']))
+            ->setFrom($mailData['from'])
+            ->addTo($passenger->getEmail())
+            ->addBcc($mailData['from'])
+            ->setSubject($mailData['subject']);
+
+        if ('development' != getenv('APPLICATION_ENV')) {
+            $this->getMailTransport()->send($mail);
+        }
 
         $this->getEntityManager()->flush();
 
