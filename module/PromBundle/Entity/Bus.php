@@ -61,16 +61,32 @@ class Bus
     private $seats;
 
     /**
+     * @var string|null first or second ('first' or 'second')
+     *
+     * @ORM\Column(type="string", length=6, nullable=true)
+     */
+    private $direction;
+
+    /**
      * Creates a new Bus with the given attributes
      *
      * @param DateTime $time The departure time
      * @param $totalSeats The total available seats on the bus
      */
-    public function __construct(DateTime $time, $totalSeats)
+    public function __construct(DateTime $time, $totalSeats, $direction)
     {
         $this->departureTime = $time;
         $this->totalSeats = $totalSeats;
         $this->seats = new ArrayCollection();
+        $this->direction = $direction;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDirection()
+    {
+        return $this->direction;
     }
 
     /**

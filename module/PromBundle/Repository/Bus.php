@@ -28,4 +28,36 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Bus extends EntityRepository
 {
+	public function getGoBusses()
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultArray = $query->select('b')
+            ->from('PromBundle\Entity\Bus', 'b')
+            ->where(
+                $query->expr()->eq('b.direction', 'Go')
+                )
+            ->getQuery()
+            ->getResult();
+
+        echo "Busses:";
+        print_r($resultArray);
+        echo "End";
+
+        $a = $b;
+		return $resultArray;
+	}
+
+	public function getReturnBusses()
+	{
+		$query = $this->_em->createQueryBuilder();
+		$resultArray = $query->select('b')
+            ->from('PromBundle\Entity\Bus', 'b')
+            ->where(
+                $query->expr()->eq('b.direction', 'Return')
+                )
+            ->getQuery()
+            ->getResult();
+
+		return $resultArray;
+	}
 }

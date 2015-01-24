@@ -61,7 +61,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
 
                 $departureTime = self::_loadDate($formData['departure_time']);
 
-                $newBus = new Bus($departureTime, $formData['nb_passengers']);
+                $newBus = new Bus($departureTime, $formData['nb_passengers'], $formData['direction']);
 
                 //TESTCODE
                 $code = new ReservationCode();

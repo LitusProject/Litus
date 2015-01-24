@@ -68,6 +68,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'direction',
+            'label'      => 'Go or Return',
+            'required'   => true,
+            'attributes' => array(
+                'id'      => 'direction',
+                'options' => array(
+                    'Go' => 'Go',
+                    'Return'=> 'Return',
+                ),
+            ),
+        ));
+
         //TODO add image for 'bus_add'
         $this->addSubmit('Add', 'bus_add');
     }

@@ -107,8 +107,12 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 
     public function createAction()
     {
+    	$addForm = $this->getForm('prom_registration_add');
+
     	return new ViewModel(
-    		array()
+    		array(
+    			'addForm' => $addForm,
+    		)
     	);
     }
 
