@@ -34,16 +34,12 @@ class Bus extends EntityRepository
 		$resultArray = $query->select('b')
             ->from('PromBundle\Entity\Bus', 'b')
             ->where(
-                $query->expr()->eq('b.direction', 'Go')
+                $query->expr()->eq('b.direction', ':direction')
                 )
+            ->setParameter('direction', 'Go')
             ->getQuery()
             ->getResult();
 
-        echo "Busses:";
-        print_r($resultArray);
-        echo "End";
-
-        $a = $b;
 		return $resultArray;
 	}
 
@@ -53,8 +49,9 @@ class Bus extends EntityRepository
 		$resultArray = $query->select('b')
             ->from('PromBundle\Entity\Bus', 'b')
             ->where(
-                $query->expr()->eq('b.direction', 'Return')
+                $query->expr()->eq('b.direction', ':direction')
                 )
+            ->setParameter('direction', 'Return')
             ->getQuery()
             ->getResult();
 

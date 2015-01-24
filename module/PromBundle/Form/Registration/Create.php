@@ -34,24 +34,6 @@ class Create extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'     => 'create',
             'label'    => '',
             'elements' => array(
-            	array(
-		        	'type'     => 'text',
-		            'name'     => 'email',
-		            'label'    => 'Email',
-		            'required' => true,
-		            'options'  => array(
-		                'input' => array(
-		                    'filters'  => array(
-		                        array('name' => 'StringTrim'),
-		                    ),
-		                	'validators' => array(
-		                    	array(
-		                    		'name' => 'EmailAddress',
-		                 		),
-		            		),
-		        		),
-		        	),
-		        ),
 
         		array(
 		            'type'       => 'text',

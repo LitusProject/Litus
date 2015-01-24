@@ -5,17 +5,21 @@
     <div class="page-header">
         <p><b>You can use this little application to reserve a seat on a bus. You can also manage your reservation if you want to make changes.</b></p>
     </div>
-    <div class="flashmessage alert alert-danger fade" id="wrong_code">
+    <div class="flashmessage alert alert-danger fade" id="fail_code">
         <a class="close">&times;</a>
-        {{ translate('The code you entered does not exist.') }}
+        {{ translate('The code you entered does not exist, or is already used.') }}
     </div>
-    <div class="flashmessage alert alert-success fade" id="succes_registratione">
+    <div class="flashmessage alert alert-danger fade" id="fail_combination">
         <a class="close">&times;</a>
-        {{ translate('The code you entered does not exist.') }}
+        {{ translate('The combination of email and code you entered does not exist.') }}
     </div>
-    <div class="flashmessage alert alert-success fade" id="succes_manage">
+    <div class="flashmessage alert alert-success fade" id="success_registration">
         <a class="close">&times;</a>
-        {{ translate('The code you entered does not exist.') }}
+        {{ translate('You have successfully registered your busses.') }}
+    </div>
+    <div class="flashmessage alert alert-success fade" id="success_manage">
+        <a class="close">&times;</a>
+        {{ translate('You have successfully saved your busses.') }}
     </div>
     <div class="row">
     	<div class="col-md-6">
@@ -36,16 +40,20 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            if ('wrong_code' == '{{ status }}') {
-                $('#wrong_code').addClass('in');
+            if ('fail_code' == '{{ status }}') {
+                $('#fail_code').addClass('in');
                 setTimeout(function () {$('.flashmessage').removeClass('in')}, 3000);
             }
-            if ('succes_registration' == '{{ status }}') {
-                $('#succes_registration').addClass('in');
+            if ('fail_combination' == '{{ status }}') {
+                $('#fail_combination').addClass('in');
                 setTimeout(function () {$('.flashmessage').removeClass('in')}, 3000);
             }
-            if ('succes_manage' == '{{ status }}') {
-                $('#succes_manage').addClass('in');
+            if ('success_registration' == '{{ status }}') {
+                $('#success_registration').addClass('in');
+                setTimeout(function () {$('.flashmessage').removeClass('in')}, 3000);
+            }
+            if ('success_manage' == '{{ status }}') {
+                $('#success_manage').addClass('in');
                 setTimeout(function () {$('.flashmessage').removeClass('in')}, 3000);
             }
         });

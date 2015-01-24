@@ -42,4 +42,19 @@ class ReservationCode extends EntityRepository
 
         return (empty($resultCode) ? false : true);
 	}
+
+    public function getRegistrationCodeByCode($code)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultCode = $query->select('c')
+            ->from('PromBundle\Entity\Bus\ReservationCode', 'c')
+            ->where(
+                $query->expr()->eq('c.code', ':code')
+                )
+            ->setParameter('code', $code)
+            ->getQuery()
+            ->getResult();
+
+        return $resultCode[0];
+    }
 }

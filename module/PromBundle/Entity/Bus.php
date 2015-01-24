@@ -57,12 +57,19 @@ class Bus
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="PromBundle\Entity\Bus\Passenger", mappedBy="bus")
+     * @ORM\OneToMany(targetEntity="PromBundle\Entity\Bus\Passenger", mappedBy="firstBus")
      */
-    private $seats;
+    private $firstBusSeats;
 
     /**
-     * @var string|null first or second ('first' or 'second')
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="PromBundle\Entity\Bus\Passenger", mappedBy="secondBus")
+     */
+    private $secondBusSeats;
+
+    /**
+     * @var string|null first or second ('Go' or 'Return')
      *
      * @ORM\Column(type="string", length=6, nullable=true)
      */
@@ -147,7 +154,12 @@ class Bus
      */
     public function addPassenger(Passenger $passenger)
     {
-        $this->seats->add($passenger);
+        if ($this->getDirection() == 'Go')
+        {
+            $this->firstBusSeats->add($passenger);
+        } else {
+            $this->secondBusSeats->add($passenger);
+        }
 
         return $this;
     }
@@ -158,7 +170,12 @@ class Bus
      */
     public function removePassenger(Passenger $passenger)
     {
-        $this->seats->remove($passenger);
+        if ($this->getDirection() == 'Go')
+        {
+            $this->firstBusSeats->remove($passenger);
+        } else {
+            $this->secondBusSeats->remove($passenger);
+        }
 
         return $this;
     }
@@ -168,7 +185,7 @@ class Bus
      */
     public function getReservedSeats()
     {
-        return $this->seats->count();
+        return $this->firstBusSeats->count() + $this->secondBusSeats->count();
     }
 
     /**
@@ -176,7 +193,7 @@ class Bus
      */
     public function getReservedSeatsArray()
     {
-        return $this->seats->toArray();
+        return $this->firstBusSeats->toArray() + $this->secondBusSeats->toArray();
     }
 
     /**

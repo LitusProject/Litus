@@ -81,10 +81,10 @@ return array(
         'prom_registration_index' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/prom/registration[/:action[/:id]][/]',
+                'route' => '/prom/registration[/:action[/:code]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
+                    'code'      => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'prom_registration_index',

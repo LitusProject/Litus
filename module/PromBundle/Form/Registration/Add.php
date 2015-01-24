@@ -25,16 +25,17 @@ namespace PromBundle\Form\Registration;
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
+
+	/**
+     * @var array
+     */
+    protected $startInfo = array();
+
 	public function init()
     {
         parent::init();
 
         $this->add(array(
-        	'type'     => 'fieldset',
-            'name'     => 'add',
-            'label'    => '',
-            'elements' => array(
-            	array(
 		            'type'       => 'text',
 		            'name'       => 'first_name',
 		            'label'      => 'First Name',
@@ -46,9 +47,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 		                    ),
 		                ),
 		            ),
-		        ),
+		        ));
 
-            	array(
+        $this->add(array(
 		            'type'       => 'text',
 		            'name'       => 'last_name',
 		            'label'      => 'Last Name',
@@ -60,9 +61,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 		                    ),
 		                ),
 		            ),
-		        ),
+		        ));
 
-            	array(
+        $this->add(array(
 		        	'type'     => 'text',
 		            'name'     => 'email',
 		            'label'    => 'Email',
@@ -79,23 +80,18 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 		            		),
 		        		),
 		        	),
-		        ),
+		        ));
 
-        		array(
+        $this->add(array(
 		            'type'       => 'text',
 		            'name'       => 'ticket_code',
 		            'label'      => 'Ticket Code',
-		            'required'   => true,
-		            'options'    => array(
-		                'input' => array(
-		                    'filters' => array(
-		                        array('name' => 'StringTrim'),
-		                    ),
-		                ),
-		            ),
-		        ),
+		            'attributes' => array(
+                        'disabled' => true,
+                    ),
+		        ));
 
-		        array(
+        $this->add(array(
 		            'type'       => 'select',
 		            'name'       => 'first_bus',
 		            'label'      => 'Go Bus',
@@ -104,9 +100,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'id'      => 'first_bus',
                         'options' => $this->getFirstBusses(),
                     ),
-                ),
+                ));
 
-                array(
+        $this->add(array(
 		            'type'       => 'select',
 		            'name'       => 'second_bus',
 		            'label'      => 'Return Bus',
@@ -115,11 +111,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'id'      => 'second_bus',
                         'options' => $this->getSecondBusses(),
                     ),
-                ),
-		    ),
-        ));
+                ));
 
-        $this->addSubmit('Add', 'btn btn-default');
+        $this->addSubmit('Reserve Seats', 'btn btn-default');
     }
 
     private function getFirstBusses()
@@ -128,15 +122,32 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->getRepository('PromBundle\Entity\Bus')
             ->getGoBusses();
 
-    	$array = array('0' => '');
+        $array = array('0' => 'None Selected');
+        foreach ($busses as $bus) {
+        	$seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
+        	if ($seatsLeft > 0)
+        	{
+            	$array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') .' | '. $seatsLeft .' seats left';
+            }
+        }
 
     	return $array;
     }
 
 	private function getSecondBusses()
     {
+		$busses = $this->getEntityManager()
+            ->getRepository('PromBundle\Entity\Bus')
+            ->getReturnBusses();
 
-    	$array = array('0' => '');
+        $array = array('0' => 'None Selected');
+        foreach ($busses as $bus) {
+        	$seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
+        	if ($seatsLeft > 0)
+        	{
+            	$array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') .' | '. $seatsLeft .' seats left';
+            }
+        }
 
     	return $array;
     }

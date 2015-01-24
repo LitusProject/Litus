@@ -18,7 +18,8 @@
 namespace PromBundle\Entity\Bus;
 
 use Doctrine\ORM\Mapping as ORM,
-    PromBundle\Entity\Bus;
+    PromBundle\Entity\Bus,
+    PromBundle\Entity\Bus\ReservationCode;
 
 /**
  * This is the entity for a passenger for the bus
@@ -40,10 +41,18 @@ class Passenger
     /**
      * @var Subject The subject of the enrollment
      *
-     * @ORM\ManyToOne(targetEntity="PromBundle\Entity\Bus", inversedBy="seats")
+     * @ORM\ManyToOne(targetEntity="PromBundle\Entity\Bus", inversedBy="firstBusSeats")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
-    private $bus;
+    private $firstBus;
+
+    /**
+     * @var Subject The subject of the enrollment
+     *
+     * @ORM\ManyToOne(targetEntity="PromBundle\Entity\Bus", inversedBy="secondBusSeats")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $secondBus;
 
     /**
      * @var string The first name of this guest
@@ -79,14 +88,17 @@ class Passenger
      * @param string $lastName
      * @param string $email
      * @param string $code
+     * @param Bus    $firstBus
+     * @param Bus    $secondBus
      */
-    public function __construct(Bus $bus, $firstName, $lastName, $email, $code)
+    public function __construct($firstName, $lastName, $email,ReservationCode $code, Bus $firstBus, Bus $secondBus)
     {
-        $this->bus = $bus;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
         $this->code = $code;
+        $this->firstBus = $firstBus;
+        $this->secondBus = $secondBus;
     }
 
     /**
@@ -100,17 +112,33 @@ class Passenger
     /**
      * @return PromBundle\Entity\Bus
      */
-    public function getBus()
+    public function getFirstBus()
     {
-        return $this->bus;
+        return $this->firstBus;
     }
 
     /**
      * @param PromBundle\Entity\Bus
      */
-    public function setBus(Bus $bus = null)
+    public function setFirstBus(Bus $bus = null)
     {
-        return $this->bus = $bus;
+        return $this->firstBus = $bus;
+    }
+
+    /**
+     * @return PromBundle\Entity\Bus
+     */
+    public function getSecondBus()
+    {
+        return $this->secondBus;
+    }
+
+    /**
+     * @param PromBundle\Entity\Bus
+     */
+    public function setSecondBus(Bus $bus = null)
+    {
+        return $this->secondBus = $bus;
     }
 
     /**

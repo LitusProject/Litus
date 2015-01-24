@@ -41,4 +41,18 @@ class Passenger extends EntityRepository
 
         return $resultSet;
     }
+
+    public function findPassengerByEmailQuery($email)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('PromBundle\Entity\Bus\Passenger', 'p')
+            ->where(
+                    $query->expr()->eq('p.email', ':email')
+            )
+            ->setParameter('code', $email)
+            ->getQuery();
+
+        return $resultSet;
+    }
 }
