@@ -17,6 +17,6 @@
  */
 
 return array(
-    'invoicebundle' => array(
+    'prombundle' => array(
     ),
 );

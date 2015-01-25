@@ -25,77 +25,76 @@ namespace PromBundle\Form\Registration;
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-
-	/**
+    /**
      * @var array
      */
     protected $startInfo = array();
 
-	public function init()
+    public function init()
     {
         parent::init();
 
         $this->add(array(
-		            'type'       => 'text',
-		            'name'       => 'first_name',
-		            'label'      => 'First Name',
-		            'required'   => true,
-		            'options'    => array(
-		                'input' => array(
-		                    'filters' => array(
-		                        array('name' => 'StringTrim'),
-		                    ),
-		                ),
-		            ),
-		        ));
+                    'type'       => 'text',
+                    'name'       => 'first_name',
+                    'label'      => 'First  Name',
+                    'required'   => true,
+                    'options'    => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ));
 
         $this->add(array(
-		            'type'       => 'text',
-		            'name'       => 'last_name',
-		            'label'      => 'Last Name',
-		            'required'   => true,
-		            'options'    => array(
-		                'input' => array(
-		                    'filters' => array(
-		                        array('name' => 'StringTrim'),
-		                    ),
-		                ),
-		            ),
-		        ));
+                    'type'       => 'text',
+                    'name'       => 'last_name',
+                    'label'      => 'Last  Name',
+                    'required'   => true,
+                    'options'    => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ));
 
         $this->add(array(
-		        	'type'     => 'text',
-		            'name'     => 'email',
-		            'label'    => 'Email',
-		            'required' => true,
-		            'options'  => array(
-		                'input' => array(
-		                    'filters'  => array(
-		                        array('name' => 'StringTrim'),
-		                    ),
-		                	'validators' => array(
-		                    	array(
-		                    		'name' => 'EmailAddress',
-		                 		),
-		            		),
-		        		),
-		        	),
-		        ));
+                    'type'     => 'text',
+                    'name'     => 'email',
+                    'label'    => 'Email',
+                    'required' => true,
+                    'options'  => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'EmailAddress',
+                                 ),
+                            ),
+                        ),
+                    ),
+                ));
 
         $this->add(array(
-		            'type'       => 'text',
-		            'name'       => 'ticket_code',
-		            'label'      => 'Ticket Code',
-		            'attributes' => array(
+                    'type'       => 'text',
+                    'name'       => 'ticket_code',
+                    'label'      => 'Ticket Code',
+                    'attributes' => array(
                         'disabled' => true,
                     ),
-		        ));
+                ));
 
         $this->add(array(
-		            'type'       => 'select',
-		            'name'       => 'first_bus',
-		            'label'      => 'Go Bus',
-		            'required'   => true,
+                    'type'       => 'select',
+                    'name'       => 'first_bus',
+                    'label'      => 'Departure Bus',
+                    'required'   => true,
                     'attributes' => array(
                         'id'      => 'first_bus',
                         'options' => $this->getFirstBusses(),
@@ -103,10 +102,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ));
 
         $this->add(array(
-		            'type'       => 'select',
-		            'name'       => 'second_bus',
-		            'label'      => 'Return Bus',
-		            'required'   => true,
+                    'type'       => 'select',
+                    'name'       => 'second_bus',
+                    'label'      => 'Return Bus',
+                    'required'   => true,
                     'attributes' => array(
                         'id'      => 'second_bus',
                         'options' => $this->getSecondBusses(),
@@ -118,37 +117,35 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     private function getFirstBusses()
     {
-    	$busses = $this->getEntityManager()
+        $busses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
             ->getGoBusses();
 
         $array = array('0' => 'None Selected');
         foreach ($busses as $bus) {
-        	$seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
-        	if ($seatsLeft > 0)
-        	{
-            	$array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') .' | '. $seatsLeft .' seats left';
+            $seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
+            if ($seatsLeft > 0) {
+                $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') . ' | ' . $seatsLeft . ' seats left';
             }
         }
 
-    	return $array;
+        return $array;
     }
 
-	private function getSecondBusses()
+    private function getSecondBusses()
     {
-		$busses = $this->getEntityManager()
+        $busses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
             ->getReturnBusses();
 
         $array = array('0' => 'None Selected');
         foreach ($busses as $bus) {
-        	$seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
-        	if ($seatsLeft > 0)
-        	{
-            	$array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') .' | '. $seatsLeft .' seats left';
+            $seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
+            if ($seatsLeft > 0) {
+                $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') . ' | ' . $seatsLeft . ' seats left';
             }
         }
 
-    	return $array;
+        return $array;
     }
 }

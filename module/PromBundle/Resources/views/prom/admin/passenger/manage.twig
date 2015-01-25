@@ -10,15 +10,17 @@
                     <th>Firstname</th>
                     <th>Lastname</th>
                     <th>Email</th>
-                    <th>Bus Time</th>
-                    <th width='70px'>Actions</th>
+                    <th>Departure bus</th>
+                    <th>Return bus</th>
+                    <th width='80px'>Actions</th>
                 </tr>
                 {% for passenger in paginator %}
 	                <tr>
 	                    <td>{{ passenger.getFirstName() }}</td>
 	                    <td>{{ passenger.getLastName() }}</td>
 	                    <td>{{ passenger.getEmail() }}</td>
-	                    <td>{{ passenger.getBus().getDepartureTime().format('d/m/Y H:i') }}</td>
+	                    <td>{{ passenger.getFirstBus().getDepartureTime().format('d/m/Y H:i') }}</td>
+                        <td>{{ passenger.getSecondBus().getDepartureTime().format('d/m/Y H:i') }}</td>
 	                    <td class="actions">
 	                        {% if hasAccess('prom_admin_passenger', 'view') %}
 	                            <a href="{{ url('prom_admin_bus', {"action": "view", "id": passenger.getBus().getId()}) }}" class="view">View Bus</a>
