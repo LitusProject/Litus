@@ -31,21 +31,28 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
     {
         $createForm = $this->getForm('prom_registration_create');
         $manageForm = $this->getForm('prom_registration_manage');
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+
             if (isset($formData['create'])) {
                 $createForm->setData($formData);
+
                 if ($createForm->isValid()) {
                     $createFormData = $createForm->getData();
+
                     $codeExist = $this->getEntityManager()
                         ->getRepository('PromBundle\Entity\Bus\ReservationCode')
                         ->codeExist($createFormData['create']['ticket_code']);
+
                     $code = $this->getEntityManager()
                             ->getRepository('PromBundle\Entity\Bus\ReservationCode')
                             ->getRegistrationCodeByCode($createFormData['create']['ticket_code']);
+
                     $passenger = $this->getEntityManager()
                         ->getRepository('PromBundle\Entity\Bus\Passenger')
                         ->findPassengerByCodeQuery($code)->getResult();
+
                     if ($codeExist && !$code->isUsed() && !isset($passenger[0])) {
                         setcookie('VTK_bus_code', $createFormData['create']['ticket_code'], time() + 3600, '/');
 
@@ -53,7 +60,6 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                             'prom_registration_index',
                             array(
                                 'action' => 'create',
-                                'code' => $createFormData['create']['ticket_code'],
                             )
                         );
                     } else {
