@@ -82,7 +82,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function addAction()
     {
-        $form = $this->getForm('mail_mailinglist_add');
+        $form = $this->getForm('mail_mailingList_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -127,9 +127,9 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             return new ViewModel();
         }
 
-        $academicForm = $this->getForm('mail_mailinglist_entry_person_academic', array('list' => $list));
-        $externalForm = $this->getForm('mail_mailinglist_entry_person_external', array('list' => $list));
-        $mailingListForm = $this->getForm('mail_mailinglist_entry_mailinglist', array('person' => $this->getAuthentication()->getPersonObject(), 'list' => $list));
+        $academicForm = $this->getForm('mail_mailingList_entry_person_academic', array('list' => $list));
+        $externalForm = $this->getForm('mail_mailingList_entry_person_external', array('list' => $list));
+        $mailingListForm = $this->getForm('mail_mailingList_entry_mailingList', array('person' => $this->getAuthentication()->getPersonObject(), 'list' => $list));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -198,8 +198,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             return new ViewModel();
         }
 
-        $adminForm = $this->getForm('mail_mailinglist_admin', array('list' => $list));
-        $adminRoleForm = $this->getForm('mail_mailinglist_adminrole', array('list' => $list));
+        $adminForm = $this->getForm('mail_mailingList_admin', array('list' => $list));
+        $adminRoleForm = $this->getForm('mail_mailingList_adminrole', array('list' => $list));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
