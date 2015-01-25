@@ -100,6 +100,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 
 		                if ($correctEmail)
 		                {
+		                	//TODO session security
 		                	//$this->getRequest()->getSession()->set('code', $passenger->getCode()->getCode());
 
 			        		$this->redirect()->toRoute(
@@ -154,14 +155,24 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 	            $addForm->setData($formData);
 
 	            if ($addForm->isValid()) {
+	            	//TODO 'no bus' reservation
 
-		            $firstBus = $this->getEntityManager()
-		        		->getRepository('PromBundle\Entity\Bus')
-		        		->findOneById($formData['first_bus']);
+	            	$firstBus = null;
+		        	$secondBus = null;
 
-		        	$secondBus = $this->getEntityManager()
-		        		->getRepository('PromBundle\Entity\Bus')
-		        		->findOneById($formData['second_bus']);
+		        	if ($formData['first_bus'] != 0)
+		        	{
+			            $firstBus = $this->getEntityManager()
+			        		->getRepository('PromBundle\Entity\Bus')
+			        		->findOneById($formData['first_bus']);
+		        	}
+
+		        	if ($formData['second_bus'] != 0)
+		        	{
+			        	$secondBus = $this->getEntityManager()
+			        		->getRepository('PromBundle\Entity\Bus')
+			        		->findOneById($formData['second_bus']);
+		        	}
 
 		        	$passenger = $this->getEntityManager()
 		        		->getRepository('PromBundle\Entity\Bus\Passenger')
@@ -173,24 +184,12 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 
 		        	if (!isset($passenger))
 		        	{
-
-			            if (isset($firstBus) && isset($secondBus))
-			            {
-			            	$newPassenger = new Passenger($formData['first_name'], $formData['last_name'], $formData['email'], $code,$firstBus,$secondBus);
-			            }
-
-			            elseif (isset($firstBus))
-			            {
-			            	$newPassenger = new Passenger($formData['first_name'], $formData['last_name'], $formData['email'],  $code, $firstBus, null);
-			        	}
-
-			        	elseif (isset($secondBus))
-			            {
-			            	$newPassenger = new Passenger($formData['first_name'], $formData['last_name'], $formData['email'],  $code, null, $secondBus);
-			        	}
+			            $newPassenger = new Passenger($formData['first_name'], $formData['last_name'], $formData['email'], $code,$firstBus,$secondBus);
 
 			        	$this->getEntityManager()->persist($newPassenger);
 		                $this->getEntityManager()->flush();
+
+		                //TODO mail send
 
 		                $this->redirect()->toRoute(
 			                    'prom_registration_index',
@@ -252,16 +251,38 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 
 	            if ($editForm->isValid()) {
 
-		            $firstBus = $this->getEntityManager()
-		        		->getRepository('PromBundle\Entity\Bus')
-		        		->findOneById($formData['first_bus']);
+		            $firstBus = null;
+		        	$secondBus = null;
 
-		        	$secondBus = $this->getEntityManager()
-		        		->getRepository('PromBundle\Entity\Bus')
-		        		->findOneById($formData['second_bus']);
-
-		        	if ((($firstBus->getTotalSeats() - $firstBus->getReservedSeats()) > 0) && (($secondBus->getTotalSeats() - $secondBus->getReservedSeats()) > 0))
+		        	if ($formData['first_bus'] != 0)
 		        	{
+			            $firstBus = $this->getEntityManager()
+			        		->getRepository('PromBundle\Entity\Bus')
+			        		->findOneById($formData['first_bus']);
+			        	if (($firstBus->getTotalSeats() - $firstBus->getReservedSeats()) <= 0)
+			        	{
+			        		return new ViewModel( array(
+    							'editForm' => $editForm,
+    							'status'   => 'no_seat_left',
+    							)
+    						);
+			        	}
+		        	}
+
+		        	if ($formData['second_bus'] != 0)
+		        	{
+			        	$secondBus = $this->getEntityManager()
+			        		->getRepository('PromBundle\Entity\Bus')
+			        		->findOneById($formData['second_bus']);
+			        	if (($secondBus->getTotalSeats() - $secondBus->getReservedSeats()) <= 0)
+			        	{
+			        		return new ViewModel( array(
+    							'editForm' => $editForm,
+    							'status'   => 'no_seat_left',
+    							)
+    						);
+			        	}
+		        	}
 			        	$code = $this->getEntityManager()
 			        		->getRepository('PromBundle\Entity\Bus\ReservationCode')
 			        		->getRegistrationCodeByCode($this->getParam('code'));
@@ -282,13 +303,6 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 			                        'status' => 'success_manage',
 			                    )
 			                );
-		        	} else {
-		        		return new ViewModel( array(
-    						'editForm' => $editForm,
-    						'status'   => 'no_seat_left',
-    						)
-    					);
-		        	}
 		        }
 		    }
 		}
