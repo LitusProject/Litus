@@ -24,7 +24,7 @@
         $(document).ready(function () {
             if ('no_seats_left' == '{{ status }}') {
                 $('#no_seats_left').addClass('in');
-                setTimeout(function () {$('.flashmessage').removeClass('in')}, 3000);
+                setTimeout(function () {$('.flashmessage').removeClass('in')}, 10000);
             }
         });
     </script>

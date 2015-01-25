@@ -28,7 +28,7 @@ return array(
 
 Uw reservatie voor de bus op {{ busTime }} is succesvol opgeslagen.
 
-Indien u graag uw busreservatie aanpast kan dit gedaan worden op volgende link : vtk.be/buses/reservation .
+Indien u graag uw busreservatie aanpast kan dit gedaan worden op volgende link : vtk.be/prom/registration/ .
 
 Alvast tot dan!
 
@@ -36,7 +36,7 @@ Alvast tot dan!
 
 Your bus reservation on {{ busTime }} has succesfully been registered.
 
-If you want to edit your registration, you can always follow the next link : vtk.be/buses/reservation .
+If you want to edit your registration, you can always follow the next link : vtk.be/prom/registration/ .
 
 See you then!
 
@@ -58,7 +58,7 @@ See you then!
 
 Uw reservatie voor de bus op {{ busTime }} is verwijderd.
 
-Indien u graag een nieuwe busreservatie maakt, kan dit gedaan worden op volgende link : vtk.be/buses/reservation .
+Indien u graag een nieuwe busreservatie maakt, kan dit gedaan worden op volgende link : vtk.be/prom/registration/ .
 
 Bij problemen kan u altijd een mail sturen naar it@vtk.be .
 
@@ -68,7 +68,7 @@ Alvast tot dan!
 
 Your bus reservation on {{ busTime }} has been removed.
 
-If you want to create a new registration, you can always follow the next link : vtk.be/buses/reservation .
+If you want to create a new registration, you can always follow the next link : vtk.be/prom/registration/ .
 
 In case of problems, feel free to mail it@vtk.be .
 

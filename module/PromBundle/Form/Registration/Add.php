@@ -25,10 +25,6 @@ namespace PromBundle\Form\Registration;
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @var array
-     */
-    protected $startInfo = array();
 
     public function init()
     {
