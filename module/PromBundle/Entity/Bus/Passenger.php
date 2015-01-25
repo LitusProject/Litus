@@ -91,7 +91,7 @@ class Passenger
      * @param Bus    $firstBus
      * @param Bus    $secondBus
      */
-    public function __construct($firstName, $lastName, $email,ReservationCode $code, Bus $firstBus, Bus $secondBus)
+    public function __construct($firstName, $lastName, $email,ReservationCode $code, $firstBus, $secondBus)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
