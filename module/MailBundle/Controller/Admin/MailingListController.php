@@ -199,7 +199,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         }
 
         $adminForm = $this->getForm('mail_mailingList_admin', array('list' => $list));
-        $adminRoleForm = $this->getForm('mail_mailingList_adminrole', array('list' => $list));
+        $adminRoleForm = $this->getForm('mail_mailingList_adminRole', array('list' => $list));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
