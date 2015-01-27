@@ -96,11 +96,14 @@ class String extends \CommonBundle\Component\Form\Fieldset
             );
         }
 
+        $multilineValue = $this->get('multiline')->getValue();
+        $lineValue = $this->get('lines')->getValue();
+
         $specs['charsperline']['validators'][] = array(
             'name' => 'form_string_field',
             'options' => array(
-                'multiline' => !empty($this->get('multiline')->getValue()) ? $this->get('multiline')->getValue() : false,
-                'lines' => !empty($this->get('lines')->getValue()) ? $this->get('lines')->getValue() : null,
+                'multiline' => !empty($multilineValue) ? $this->get('multiline')->getValue() : false,
+                'lines' => !empty($lineValue) ? $this->get('lines')->getValue() : null,
             ),
         );
 
