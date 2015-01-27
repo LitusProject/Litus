@@ -18,6 +18,7 @@
 namespace PromBundle\Controller\Registration;
 
 use PromBundle\Entity\Bus\Passenger,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 /**
  * IndexController
