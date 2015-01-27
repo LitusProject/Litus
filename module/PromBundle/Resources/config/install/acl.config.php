@@ -27,5 +27,11 @@ return array(
         'prom_admin_passenger' => array(
             'delete','manage','removeBus','view',
         ),
+        'prom_admin_passenger' => array(
+            'delete','manage','removeBus','view',
+        ),
+        'prom_registration_index' => array(
+            'register','create','manage',
+        ),
     ),
 );
