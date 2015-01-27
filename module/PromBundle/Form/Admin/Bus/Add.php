@@ -77,12 +77,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'id'      => 'direction',
                 'options' => array(
                     'Go' => 'Go',
-                    'Return'=> 'Return',
+                    'Return' => 'Return',
                 ),
             ),
         ));
 
-        //TODO add image for 'bus_add'
         $this->addSubmit('Add', 'bus_add');
     }
 }

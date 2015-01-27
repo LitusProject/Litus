@@ -12,9 +12,9 @@
 
         <table class="manage">
             <tr>
-                <th width="300px">Code</th>
-                <th width="10px">Used</th>
-                <th width="50px">Action</th>
+                <th>Code</th>
+                <th width="40px">Used</th>
+                <th width="70px">Action</th>
             </tr>
 
             {% for code in paginator %}
@@ -57,15 +57,15 @@
             </div>
         {% endif %}
 
-        {% if hasAccess('prom_admin_code', 'disable') %}
+        {% if hasAccess('prom_admin_code', 'export') %}
             <div class="sidebox">
-                <div class="title">Disable all code(s)</div>
+                <div class="title">Export all codes</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to disable all current codes!</i>
+                        <i>Please hit the link below to export all codes to a csv file!</i>
                     </p>
                     <p>
-                        <a href="{{ url('prom_admin_code', {'action': 'add'}) }}">&rarr; Disable All Codes</a>
+                        <a href="{{ url('prom_admin_code', {'action': 'export'}) }}">&rarr; Export All Codes</a>
                     </p>
                 </div>
             </div>

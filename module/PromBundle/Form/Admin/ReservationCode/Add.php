@@ -48,7 +48,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        //TODO add image for 'code_add'
         $this->addSubmit('Add', 'code_add');
     }
 }

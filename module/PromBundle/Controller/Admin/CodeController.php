@@ -18,7 +18,10 @@
 
 namespace PromBundle\Controller\Admin;
 
-use PromBundle\Entity\Bus\ReservationCode,
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    PromBundle\Entity\Bus\ReservationCode,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -88,7 +91,54 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function expireAction()
     {
+        if (!($code = $this->_getCode())) {
+            return new ViewModel();
+        }
+
+        $this->getEntityManager()->remove($code);
+        $this->getEntityManager()->flush();
+
+        $this->redirect()->toRoute(
+            'prom_admin_code',
+            array(
+                'action' => 'manage',
+            )
+        );
+
         return new ViewModel();
+    }
+
+    public function exportAction()
+    {
+        $entries = $this->getEntityManager()
+            ->getRepository('PromBundle\Entity\Bus\ReservationCode')
+            ->findAll();
+
+        $file = new CsvFile();
+        $heading = array('Code');
+
+        $results = array();
+        foreach ($entries as $entry) {
+            $results[] = array(
+                $entry->getCode(),
+            );
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="codes.csv"',
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
     }
 
     public function viewAction()
