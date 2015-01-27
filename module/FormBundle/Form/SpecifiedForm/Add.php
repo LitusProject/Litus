@@ -154,7 +154,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
                 if ($fieldSpecification->hasLengthSpecification()) {
                     $specification['attributes']['class'] = 'count';
-                    $specification['attributes']['maxlength'] = $fieldSpecification->getLineLength();
+                    $specification['attributes']['maxlength'] = $fieldSpecification->getLineLength() * $fieldSpecification->getLines();
                     $specification['attributes']['data-linelen'] = $fieldSpecification->getLineLength();
                     $specification['attributes']['data-linecount'] = $fieldSpecification->getLines();
 
