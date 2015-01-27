@@ -58,5 +58,4 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             'redirect_route' => 'prom_registration_index',
         );
     }
-
 }

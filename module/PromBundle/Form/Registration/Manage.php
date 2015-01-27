@@ -25,7 +25,7 @@ namespace PromBundle\Form\Registration;
  */
 class Manage extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-	public function init()
+    public function init()
     {
         parent::init();
 
@@ -35,7 +35,7 @@ class Manage extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'    => '',
             'elements' => array(
                 array(
-                	'type'     => 'text',
+                    'type'     => 'text',
                     'name'     => 'email',
                     'label'    => 'Email',
                     'required' => true,
@@ -44,13 +44,13 @@ class Manage extends \CommonBundle\Component\Form\Bootstrap\Form
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
                             ),
-                        	'validators' => array(
-                            	array(
-                            		'name' => 'EmailAddress',
-                         		),
-                    		),
-                		),
-                	),
+                            'validators' => array(
+                                array(
+                                    'name' => 'EmailAddress',
+                                 ),
+                            ),
+                        ),
+                    ),
                 ),
                 array(
                     'type'       => 'text',

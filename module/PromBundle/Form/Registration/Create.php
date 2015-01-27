@@ -25,30 +25,29 @@ namespace PromBundle\Form\Registration;
  */
 class Create extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-	public function init()
+    public function init()
     {
         parent::init();
 
         $this->add(array(
-        	'type'     => 'fieldset',
+            'type'     => 'fieldset',
             'name'     => 'create',
             'label'    => '',
             'elements' => array(
-
-        		array(
-		            'type'       => 'text',
-		            'name'       => 'ticket_code',
-		            'label'      => 'Ticket Code',
-		            'required'   => true,
-		            'options'    => array(
-		                'input' => array(
-		                    'filters' => array(
-		                        array('name' => 'StringTrim'),
-		                    ),
-		                ),
-		            ),
-		        ),
-		    ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'ticket_code',
+                    'label'      => 'Ticket Code',
+                    'required'   => true,
+                    'options'    => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         ));
 
         $this->addSubmit('Proceed', 'btn btn-default');

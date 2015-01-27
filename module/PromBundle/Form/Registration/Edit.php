@@ -25,96 +25,96 @@ namespace PromBundle\Form\Registration;
  */
 class Edit extends Add
 {
-	public function init()
+    public function init()
     {
-		$this->add(array(
-		            'type'       => 'text',
-		            'name'       => 'first_name',
-		            'label'      => 'First Name',
-		            'attributes' => array(
-                        'disabled' => true,
-                    ),
-		        ));
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'first_name',
+            'label'      => 'First Name',
+            'attributes' => array(
+                'disabled' => true,
+            ),
+        ));
 
         $this->add(array(
-		            'type'       => 'text',
-		            'name'       => 'last_name',
-		            'label'      => 'Last Name',
-		            'attributes' => array(
-                        'disabled' => true,
-                    ),
-		        ));
+            'type'       => 'text',
+            'name'       => 'last_name',
+            'label'      => 'Last Name',
+            'attributes' => array(
+                'disabled' => true,
+            ),
+        ));
 
         $this->add(array(
-		        	'type'     => 'text',
-		            'name'     => 'email',
-		            'label'    => 'Email',
-		            'attributes' => array(
-                        'disabled' => true,
-                    ),
-		        ));
+            'type'     => 'text',
+            'name'     => 'email',
+            'label'    => 'Email',
+            'attributes' => array(
+                'disabled' => true,
+            ),
+        ));
 
         $this->add(array(
-		            'type'       => 'text',
-		            'name'       => 'ticket_code',
-		            'label'      => 'Ticket Code',
-		            'attributes' => array(
-                        'disabled' => true,
-                    ),
-		        ));
+            'type'       => 'text',
+            'name'       => 'ticket_code',
+            'label'      => 'Ticket Code',
+            'attributes' => array(
+                'disabled' => true,
+            ),
+        ));
 
         $this->add(array(
-		            'type'       => 'select',
-		            'name'       => 'first_bus',
-		            'label'      => 'Go Bus',
-		            'required'   => true,
-                    'attributes' => array(
-                        'id'      => 'first_bus',
-                        'options' => $this->getFirstBusses(),
-                    ),
-                ));
+            'type'       => 'select',
+            'name'       => 'first_bus',
+            'label'      => 'Go Bus',
+            'required'   => true,
+            'attributes' => array(
+                'id'      => 'first_bus',
+                'options' => $this->getFirstBusses(),
+            ),
+        ));
 
         $this->add(array(
-		            'type'       => 'select',
-		            'name'       => 'second_bus',
-		            'label'      => 'Return Bus',
-		            'required'   => true,
-                    'attributes' => array(
-                        'id'      => 'second_bus',
-                        'options' => $this->getSecondBusses(),
-                    ),
-                ));
+            'type'       => 'select',
+            'name'       => 'second_bus',
+            'label'      => 'Return Bus',
+            'required'   => true,
+            'attributes' => array(
+                'id'      => 'second_bus',
+                'options' => $this->getSecondBusses(),
+            ),
+        ));
 
         $this->addSubmit('Save Reservation', 'btn btn-default');
     }
 
     private function getFirstBusses()
     {
-    	$busses = $this->getEntityManager()
+        $busses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
             ->getGoBusses();
 
         $array = array('0' => 'None Selected');
         foreach ($busses as $bus) {
-        	$seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
-            $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') .' | '. $seatsLeft .' seats left';
+            $seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
+            $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') . ' | ' . $seatsLeft . ' seats left';
         }
 
-    	return $array;
+        return $array;
     }
 
-	private function getSecondBusses()
+    private function getSecondBusses()
     {
-		$busses = $this->getEntityManager()
+        $busses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
             ->getReturnBusses();
 
         $array = array('0' => 'None Selected');
         foreach ($busses as $bus) {
-        	$seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
-            $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') .' | '. $seatsLeft .' seats left';
+            $seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
+            $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') . ' | ' . $seatsLeft . ' seats left';
         }
 
-    	return $array;
+        return $array;
     }
 }

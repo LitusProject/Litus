@@ -25,88 +25,87 @@ namespace PromBundle\Form\Registration;
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-
     public function init()
     {
         parent::init();
 
         $this->add(array(
-                    'type'       => 'text',
-                    'name'       => 'first_name',
-                    'label'      => 'First  Name',
-                    'required'   => true,
-                    'options'    => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        ),
+            'type'       => 'text',
+            'name'       => 'first_name',
+            'label'      => 'First  Name',
+            'required'   => true,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
                     ),
-                ));
+                ),
+            ),
+        ));
 
         $this->add(array(
-                    'type'       => 'text',
-                    'name'       => 'last_name',
-                    'label'      => 'Last  Name',
-                    'required'   => true,
-                    'options'    => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        ),
+            'type'       => 'text',
+            'name'       => 'last_name',
+            'label'      => 'Last  Name',
+            'required'   => true,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
                     ),
-                ));
+                ),
+            ),
+        ));
 
         $this->add(array(
-                    'type'     => 'text',
-                    'name'     => 'email',
-                    'label'    => 'Email',
-                    'required' => true,
-                    'options'  => array(
-                        'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'EmailAddress',
-                                 ),
-                            ),
-                        ),
+            'type'     => 'text',
+            'name'     => 'email',
+            'label'    => 'Email',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
                     ),
-                ));
+                    'validators' => array(
+                        array(
+                            'name' => 'EmailAddress',
+                         ),
+                    ),
+                ),
+            ),
+        ));
 
         $this->add(array(
-                    'type'       => 'text',
-                    'name'       => 'ticket_code',
-                    'label'      => 'Ticket Code',
-                    'attributes' => array(
-                        'disabled' => true,
-                    ),
-                ));
+            'type'       => 'text',
+            'name'       => 'ticket_code',
+            'label'      => 'Ticket Code',
+            'attributes' => array(
+                'disabled' => true,
+            ),
+        ));
 
         $this->add(array(
-                    'type'       => 'select',
-                    'name'       => 'first_bus',
-                    'label'      => 'Departure Bus',
-                    'required'   => true,
-                    'attributes' => array(
-                        'id'      => 'first_bus',
-                        'options' => $this->getFirstBusses(),
-                    ),
-                ));
+            'type'       => 'select',
+            'name'       => 'first_bus',
+            'label'      => 'Departure Bus',
+            'required'   => true,
+            'attributes' => array(
+                'id'      => 'first_bus',
+                'options' => $this->getFirstBusses(),
+            ),
+        ));
 
         $this->add(array(
-                    'type'       => 'select',
-                    'name'       => 'second_bus',
-                    'label'      => 'Return Bus',
-                    'required'   => true,
-                    'attributes' => array(
-                        'id'      => 'second_bus',
-                        'options' => $this->getSecondBusses(),
-                    ),
-                ));
+            'type'       => 'select',
+            'name'       => 'second_bus',
+            'label'      => 'Return Bus',
+            'required'   => true,
+            'attributes' => array(
+                'id'      => 'second_bus',
+                'options' => $this->getSecondBusses(),
+            ),
+        ));
 
         $this->addSubmit('Reserve Seats', 'btn btn-default');
     }

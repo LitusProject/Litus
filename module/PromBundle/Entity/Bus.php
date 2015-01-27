@@ -85,6 +85,7 @@ class Bus
      *
      * @param DateTime $time The departure time
      * @param $totalSeats The total available seats on the bus
+     * @param $direction The direction in which the bus is going
      */
     public function __construct(DateTime $time, $totalSeats, $direction)
     {
@@ -154,8 +155,7 @@ class Bus
      */
     public function addPassenger(Passenger $passenger)
     {
-        if ($this->getDirection() == 'Go')
-        {
+        if ($this->getDirection() == 'Go') {
             $this->firstBusSeats->add($passenger);
         } else {
             $this->secondBusSeats->add($passenger);
@@ -170,8 +170,7 @@ class Bus
      */
     public function removePassenger(Passenger $passenger)
     {
-        if ($this->getDirection() == 'Go')
-        {
+        if ($this->getDirection() == 'Go') {
             $this->firstBusSeats->remove($passenger);
         } else {
             $this->secondBusSeats->remove($passenger);

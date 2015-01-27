@@ -138,7 +138,6 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
             if (isset($formData)) {
                 $addForm->setData($formData);
                 if ($addForm->isValid()) {
-
                     $firstBus = null;
                     $secondBus = null;
                     if ($formData['first_bus'] != 0) {
@@ -164,8 +163,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                         $code->setUsed();
                         $this->getEntityManager()->flush();
 
-                        if (isset($firstBus))
-                        {
+                        if (isset($firstBus)) {
                             $mail = new Message();
 
                             $mail->addBcc($newPassenger->getEmail());
@@ -186,8 +184,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                             }
                         }
 
-                        if (isset($secondBus))
-                        {
+                        if (isset($secondBus)) {
                             $mail = new Message();
 
                             $mail->addBcc($newPassenger->getEmail());
