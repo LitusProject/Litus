@@ -9,7 +9,7 @@
             {% if hasAccess('prom_admin_passenger', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url("prom_admin_passenger", {"action": "manage"}) }}">Passengers</a></li>
             {% endif %}
-            {% if hasAccess('prom_admin_codes', 'manage') %}
+            {% if hasAccess('prom_admin_code', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url("prom_admin_code", {"action": "manage"}) }}">Codes</a></li>
             {% endif %}
         </ul>
