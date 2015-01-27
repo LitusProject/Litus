@@ -18,5 +18,14 @@
 
 return array(
     'prombundle' => array(
+        'prom_admin_bus' => array(
+            'add','view','delete',
+        ),
+        'prom_admin_code' => array(
+            'add','expire','export','view',
+        ),
+        'prom_admin_passenger' => array(
+            'delete','removeBus','view',
+        ),
     ),
 );
