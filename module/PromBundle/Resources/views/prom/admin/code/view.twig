@@ -1,0 +1,65 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+
+	{% include 'prom/admin/partials/navigation.twig' %}
+
+	{% include 'admin/partials/flashMessenger.twig' %}
+
+    {% if passenger == null %}
+        <h2>The following code has not been used by anyone.</h2>
+        <div id="controller_action">
+            <table class="manage">
+                <tr>
+                    <th>Code</th>
+                    <th width="50px">Used</th>
+                </tr>
+                <tr>
+                    <td>{{ code.getCode() }}</td>
+                    {% if code.isUsed() %}
+                            <td style="text-align: center;">
+                                <input type="checkbox" disabled id="{{ code.getId() }}" checked="checked"/>
+                            </td>
+                    {% else %}
+                            <td style="text-align: center;">
+                                <input type="checkbox" disabled id="{{ code.getId() }}"/>
+                            </td>
+                    {% endif %}
+                </tr>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    {% else %}
+        <h2>The following code has been used by someone.</h2>
+        <div id="controller_action">
+            <table>
+                <tr>
+                    <th>Code</th>
+                    <th width="30px">Used</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                </tr>
+                <tr>
+                    <td>{{ code.getCode() }}</td>
+                    {% if code.isUsed() %}
+                            <td style="text-align: center;">
+                                <input type="checkbox" disabled id="{{ code.getId() }}" checked="checked"/>
+                            </td>
+                    {% else %}
+                            <td style="text-align: center;">
+                                <input type="checkbox" disabled id="{{ code.getId() }}"/>
+                            </td>
+                    {% endif %}
+                    <td>{{ passenger.getFirstName() }}</td>
+                    <td>{{ passenger.getLastName() }}</td>
+                    <td>{{ passenger.getEmail() }}</td>
+                </tr>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    {% endif %}
+
+{% endblock %}

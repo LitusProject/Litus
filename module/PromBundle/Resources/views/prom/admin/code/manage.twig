@@ -1,0 +1,74 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+
+    {% include 'prom/admin/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+
+        <h1>Current available codes</h1>
+
+        <table class="manage">
+            <tr>
+                <th>Code</th>
+                <th width="40px">Used</th>
+                <th width="70px">Action</th>
+            </tr>
+
+            {% for code in paginator %}
+                <tr>
+                    <td>{{ code.getCode() }}</td>
+                    {% if code.isUsed() %}
+                            <td style="text-align: center;">
+                                <input type="checkbox" disabled id="{{ code.getId() }}" checked="checked"/>
+                            </td>
+                    {% else %}
+                            <td style="text-align: center;">
+                                <input type="checkbox" disabled id="{{ code.getId() }}"/>
+                            </td>
+                    {% endif %}
+                    <td class="actions">
+                        {% if hasAccess('prom_admin_code', 'view') %}
+                            <a href="{{ url('prom_admin_code', {"action": "view", "id": code.getId()}) }}" class="view">View</a>
+                        {% endif %}
+                        {% if hasAccess('prom_admin_code', 'expire') %}
+                            <a href="{{ url('prom_admin_code', {"action": "expire", "id": code.getId()}) }}" class="delete">Expire</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <aside>
+        {% if hasAccess('prom_admin_code', 'add') %}
+            <div class="sidebox">
+                <div class="title">New code(s)</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add additional validation codes for the buses!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('prom_admin_code', {'action': 'add'}) }}">&rarr; Add Codes</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('prom_admin_code', 'export') %}
+            <div class="sidebox">
+                <div class="title">Export all codes</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to export all codes to a csv file!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('prom_admin_code', {'action': 'export'}) }}">&rarr; Export All Codes</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}

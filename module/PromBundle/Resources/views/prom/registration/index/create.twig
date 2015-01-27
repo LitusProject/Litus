@@ -1,0 +1,31 @@
+{% extends 'registration/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <p><b>Choose your the bus you want to take and submit your reservation.</b></p>
+    </div>
+    <div class="flashmessage alert alert-danger fade" id="invalid_email">
+        <a class="close">&times;</a>
+        {{ translate('The email you entered is already used.') }}
+    </div>
+    <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-10">
+    		<h2>New Registration</h2>
+    		{% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(addForm) }}
+    	</div>
+    	<div class="col-md-3"></div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ('invalid_email' == '{{ status }}') {
+                $('#invalid_email').addClass('in');
+                setTimeout(function () {$('.flashmessage').removeClass('in')}, 3000);
+            }
+        });
+    </script>
+{% endblock %}
