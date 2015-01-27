@@ -19,13 +19,13 @@
 return array(
     'prombundle' => array(
         'prom_admin_bus' => array(
-            'add','view','delete',
+            'add','manage','view','delete',
         ),
         'prom_admin_code' => array(
-            'add','expire','export','view',
+            'add','expire','export','manage','view',
         ),
         'prom_admin_passenger' => array(
-            'delete','removeBus','view',
+            'delete','manage','removeBus','view',
         ),
     ),
 );
