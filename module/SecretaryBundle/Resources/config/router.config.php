@@ -52,6 +52,22 @@ return array(
                 ),
             ),
         ),
+        'secretary_admin_photos' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/secretary/photos[/:action][/]',
+                'constraints' => array(
+                    'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'           => '[0-9]*',
+                    'organization' => '[0-9]*',
+                    'academicyear' => '[0-9]{4}-[0-9]{4}',
+                ),
+                'defaults' => array(
+                    'controller' => 'secretary_admin_photos',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'secretary_admin_promotion' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -92,7 +108,7 @@ return array(
         'secretary_admin_registration'   => 'SecretaryBundle\Controller\Admin\RegistrationController',
         'secretary_admin_export'         => 'SecretaryBundle\Controller\Admin\ExportController',
         'secretary_admin_promotion'      => 'SecretaryBundle\Controller\Admin\PromotionController',
-
+        'secretary_admin_photos'         => 'SecretaryBundle\Controller\Admin\PhotosController',
         'secretary_registration'         => 'SecretaryBundle\Controller\RegistrationController',
     ),
 );
