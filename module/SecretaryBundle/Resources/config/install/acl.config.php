@@ -27,6 +27,9 @@ return array(
         'secretary_admin_export' => array(
             'download', 'export',
         ),
+        'secretary_admin_photos' => array(
+            'download', 'photos'
+        ),
         'secretary_admin_promotion' => array(
             'add', 'delete', 'manage', 'search', 'update',
         ),
