@@ -92,7 +92,7 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
 
                     if ($promotion->getAcademic()->getPhotoPath()) {
 
-                        $extension = '.png';
+                        $extension = $this->_getExtension($filePath . $promotion->getAcademic()->getPhotoPath());
 
                         $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
                         $zip->addFile(
@@ -134,5 +134,34 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
                 'action' => 'photos',
             )
         );
+    }
+
+    /**
+     * returns the extension of the given file. Based on the constant int output of exif_imagetype
+     */
+    private function _getExtension($fileName)
+    {
+        $fileType = exif_imagetype ($fileName);
+        $result = '';
+
+        switch ($fileType) {
+            case 1:
+                $result = '.gif';
+                break;
+            case 2:
+                $result = '.jpeg';
+                break;
+            case 3:
+                $result = '.png';
+                break;
+            case 5:
+                $result = '.psd';
+                break;
+            case 6:
+                $result = '.bmp';
+                break;
+        }
+
+        return $result;
     }
 }
