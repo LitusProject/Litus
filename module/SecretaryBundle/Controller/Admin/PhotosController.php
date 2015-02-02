@@ -40,7 +40,10 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
-                'secretary_admin_photos', array('action' => 'download')
+                'secretary_admin_photos',
+                array(
+                    'action' => 'download',
+                )
             )
         );
 
@@ -77,7 +80,7 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
             $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
             $zip->close();
 
-            $filePath = 'public'.$this->getEntityManager()
+            $filePath = 'public' . $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('common.profile_path') . '/';
 
@@ -103,6 +106,7 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
                 'Content-Type'        => mime_content_type($archive->getFileName()),
                 'Content-Length'      => filesize($archive->getFileName()),
             ));
+
             $this->getResponse()->setHeaders($headers);
 
             return new ViewModel(
