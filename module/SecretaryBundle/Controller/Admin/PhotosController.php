@@ -36,7 +36,7 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function photosAction()
     {
-        $form = new PhotosForm($this->getEntityManager());
+        $form = $this->getForm('secretary_photos_photos');
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
@@ -56,64 +56,83 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
 
     public function downloadAction()
     {
-        $form = new PhotosForm($this->getEntityManager());
+
+    $form = $this->getForm('secretary_photos_photos');
 
         if ($this->getRequest()->isPost()) {
 
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $academicYear = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\AcademicYear')
-                ->findOneById($formData['academic_year']);
+            if ($form->isValid()) {
+                $formData = $form->getData();
 
-            $promotions = $this->getEntityManager()
-                ->getRepository('SecretaryBundle\Entity\Promotion')
-                ->findAllByAcademicYear($academicYear);
+                $academicYear = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                    ->findOneById($formData['academic_year']);
 
-            $archive = new TmpFile();
+                $promotions = $this->getEntityManager()
+                    ->getRepository('SecretaryBundle\Entity\Promotion')
+                    ->findAllByAcademicYear($academicYear);
 
-            $zip = new ZipArchive();
-            $now = new DateTime();
+                $archive = new TmpFile();
 
-            $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
-            $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
-            $zip->close();
+                $zip = new ZipArchive();
+                $now = new DateTime();
 
-            $filePath = 'public' . $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.profile_path') . '/';
+                $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+                $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
+                $zip->close();
 
-            foreach ($promotions as $promotion) {
+                $filePath = 'public' . $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path') . '/';
 
-                if ($promotion->getAcademic()->getPhotoPath()) {
+                foreach ($promotions as $promotion) {
 
-                    $extension = '.png';
+                    if ($promotion->getAcademic()->getPhotoPath()) {
 
-                    $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
-                    $zip->addFile(
-                        $filePath . $promotion->getAcademic()->getPhotoPath(),
-                        $promotion->getAcademic()->getFirstName() . '_' . $promotion->getAcademic()->getLastName() . $extension
-                    );
-                    $zip->close();
+                        $extension = '.png';
+
+                        $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+                        $zip->addFile(
+                            $filePath . $promotion->getAcademic()->getPhotoPath(),
+                            $promotion->getAcademic()->getFirstName() . '_' . $promotion->getAcademic()->getLastName() . $extension
+                        );
+                        $zip->close();
+                    }
+
                 }
 
+                $headers = new Headers();
+                $headers->addHeaders(array(
+                    'Content-Disposition' => 'inline; filename="promotions_' . $academicYear->getCode() . '.zip"',
+                    'Content-Type'        => mime_content_type($archive->getFileName()),
+                    'Content-Length'      => filesize($archive->getFileName()),
+                ));
+
+                $this->getResponse()->setHeaders($headers);
+
+                return new ViewModel(
+                    array(
+                        'data' => $archive->getContent(),
+                    )
+                );
             }
 
-            $headers = new Headers();
-            $headers->addHeaders(array(
-                'Content-Disposition' => 'inline; filename="promotions_' . $academicYear->getCode() . '.zip"',
-                'Content-Type'        => mime_content_type($archive->getFileName()),
-                'Content-Length'      => filesize($archive->getFileName()),
-            ));
-
-            $this->getResponse()->setHeaders($headers);
-
-            return new ViewModel(
-                array(
-                    'data' => $archive->getContent(),
+            $this->redirect()->toRoute(
+                'secretary_admin_photos',
+                 array(
+                    'action' => 'photos',
                 )
             );
         }
+
+        $this->redirect()->toRoute(
+            'secretary_admin_photos',
+             array(
+                'action' => 'photos',
+            )
+        );
     }
 }

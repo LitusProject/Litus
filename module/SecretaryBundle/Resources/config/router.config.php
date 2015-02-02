@@ -58,9 +58,6 @@ return array(
                 'route' => '/admin/secretary/photos[/:action][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'           => '[0-9]*',
-                    'organization' => '[0-9]*',
-                    'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
                 'defaults' => array(
                     'controller' => 'secretary_admin_photos',
