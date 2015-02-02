@@ -31,7 +31,7 @@ return array(
             'delete','manage','removeBus','view',
         ),
         'prom_registration_index' => array(
-            'register','create','manage',
+            'registration','create','manage',
         ),
     ),
 );
