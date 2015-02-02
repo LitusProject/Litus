@@ -83,14 +83,14 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
 
             foreach ($promotions as $promotion) {
 
-                if ($promotion->getAcademic()->getPhotoPath()){
+                if ($promotion->getAcademic()->getPhotoPath()) {
 
                     $extension = '.png';
 
                     $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
                     $zip->addFile(
                         $filePath . $promotion->getAcademic()->getPhotoPath(),
-                        $promotion->getAcademic()->getFirstName(). '_' .$promotion->getAcademic()->getLastName().$extension
+                        $promotion->getAcademic()->getFirstName() . '_' . $promotion->getAcademic()->getLastName() . $extension
                     );
                     $zip->close();
                 }

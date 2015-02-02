@@ -62,8 +62,9 @@ class Photos extends \CommonBundle\Component\Form\Admin\Form
             ->findAll();
 
         $academicYearsArray = array();
-        foreach ($academicYears as $academicYear)
+        foreach ($academicYears as $academicYear) {
             $academicYearsArray[$academicYear->getId()] = $academicYear->getCode();
+        }
 
         return $academicYearsArray;
     }

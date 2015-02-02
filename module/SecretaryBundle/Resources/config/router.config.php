@@ -64,7 +64,7 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'secretary_admin_photos',
-                    'action'     => 'manage',
+                    'action'     => 'photos',
                 ),
             ),
         ),
