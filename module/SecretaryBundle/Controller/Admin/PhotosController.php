@@ -36,11 +36,14 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function photosAction()
     {
-        $form = new PhotosForm($this->getEntityManager());
+        $form = $this->getForm('secretary_photos_photos');
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
-                'secretary_admin_photos', array('action' => 'download')
+                'secretary_admin_photos',
+                array(
+                    'action' => 'download',
+                )
             )
         );
 
@@ -53,63 +56,112 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
 
     public function downloadAction()
     {
-        $form = new PhotosForm($this->getEntityManager());
+
+    $form = $this->getForm('secretary_photos_photos');
 
         if ($this->getRequest()->isPost()) {
 
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $academicYear = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\AcademicYear')
-                ->findOneById($formData['academic_year']);
+            if ($form->isValid()) {
+                $formData = $form->getData();
 
-            $promotions = $this->getEntityManager()
-                ->getRepository('SecretaryBundle\Entity\Promotion')
-                ->findAllByAcademicYear($academicYear);
+                $academicYear = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                    ->findOneById($formData['academic_year']);
 
-            $archive = new TmpFile();
+                $promotions = $this->getEntityManager()
+                    ->getRepository('SecretaryBundle\Entity\Promotion')
+                    ->findAllByAcademicYear($academicYear);
 
-            $zip = new ZipArchive();
-            $now = new DateTime();
+                $archive = new TmpFile();
 
-            $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
-            $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
-            $zip->close();
+                $zip = new ZipArchive();
+                $now = new DateTime();
 
-            $filePath = 'public'.$this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.profile_path') . '/';
+                $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+                $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
+                $zip->close();
 
-            foreach ($promotions as $promotion) {
+                $filePath = 'public' . $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path') . '/';
 
-                if ($promotion->getAcademic()->getPhotoPath()){
+                foreach ($promotions as $promotion) {
 
-                    $extension = '.png';
+                    if ($promotion->getAcademic()->getPhotoPath()) {
 
-                    $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
-                    $zip->addFile(
-                        $filePath . $promotion->getAcademic()->getPhotoPath(),
-                        $promotion->getAcademic()->getFirstName(). '_' .$promotion->getAcademic()->getLastName().$extension
-                    );
-                    $zip->close();
+                        $extension = $this->_getExtension($filePath . $promotion->getAcademic()->getPhotoPath());
+
+                        $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
+                        $zip->addFile(
+                            $filePath . $promotion->getAcademic()->getPhotoPath(),
+                            $promotion->getAcademic()->getFirstName() . '_' . $promotion->getAcademic()->getLastName() . $extension
+                        );
+                        $zip->close();
+                    }
+
                 }
 
+                $headers = new Headers();
+                $headers->addHeaders(array(
+                    'Content-Disposition' => 'inline; filename="promotions_' . $academicYear->getCode() . '.zip"',
+                    'Content-Type'        => mime_content_type($archive->getFileName()),
+                    'Content-Length'      => filesize($archive->getFileName()),
+                ));
+
+                $this->getResponse()->setHeaders($headers);
+
+                return new ViewModel(
+                    array(
+                        'data' => $archive->getContent(),
+                    )
+                );
             }
 
-            $headers = new Headers();
-            $headers->addHeaders(array(
-                'Content-Disposition' => 'inline; filename="promotions_' . $academicYear->getCode() . '.zip"',
-                'Content-Type'        => mime_content_type($archive->getFileName()),
-                'Content-Length'      => filesize($archive->getFileName()),
-            ));
-            $this->getResponse()->setHeaders($headers);
-
-            return new ViewModel(
-                array(
-                    'data' => $archive->getContent(),
+            $this->redirect()->toRoute(
+                'secretary_admin_photos',
+                 array(
+                    'action' => 'photos',
                 )
             );
         }
+
+        $this->redirect()->toRoute(
+            'secretary_admin_photos',
+             array(
+                'action' => 'photos',
+            )
+        );
+    }
+
+    /**
+     * returns the extension of the given file. Based on the constant int output of exif_imagetype
+     */
+    private function _getExtension($fileName)
+    {
+        $fileType = exif_imagetype ($fileName);
+        $result = '';
+
+        switch ($fileType) {
+            case 1:
+                $result = '.gif';
+                break;
+            case 2:
+                $result = '.jpeg';
+                break;
+            case 3:
+                $result = '.png';
+                break;
+            case 5:
+                $result = '.psd';
+                break;
+            case 6:
+                $result = '.bmp';
+                break;
+        }
+
+        return $result;
     }
 }

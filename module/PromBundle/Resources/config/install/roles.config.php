@@ -17,12 +17,14 @@
  */
 
 return array(
-    'student' => array(
+    'guest' => array(
         'system' => true,
         'parents' => array(
-            'guest',
         ),
         'actions' => array(
+            'prom_registration_index' => array(
+                'registration','create','manage',
+            ),
         ),
     ),
 );
