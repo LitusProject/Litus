@@ -21,11 +21,11 @@ namespace SecretaryBundle\Controller\Admin;
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\General\AcademicYear,
     DateTime,
+    SecretaryBundle\Component\Document\Generator\PhotosZip as PhotosZipGenerator,
     SecretaryBundle\Entity\Promotion,
     SecretaryBundle\Form\Admin\Photos\Photos as PhotosForm,
     Zend\Http\Headers,
-    Zend\View\Model\ViewModel,
-    ZipArchive;
+    Zend\View\Model\ViewModel;
 
 /**
  * PhotosController
@@ -77,32 +77,8 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
 
                 $archive = new TmpFile();
 
-                $zip = new ZipArchive();
-                $now = new DateTime();
-
-                $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
-                $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
-                $zip->close();
-
-                $filePath = 'public' . $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.profile_path') . '/';
-
-                foreach ($promotions as $promotion) {
-
-                    if ($promotion->getAcademic()->getPhotoPath()) {
-
-                        $extension = $this->_getExtension($filePath . $promotion->getAcademic()->getPhotoPath());
-
-                        $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
-                        $zip->addFile(
-                            $filePath . $promotion->getAcademic()->getPhotoPath(),
-                            $promotion->getAcademic()->getFirstName() . '_' . $promotion->getAcademic()->getLastName() . $extension
-                        );
-                        $zip->close();
-                    }
-
-                }
+                $zip = new PhotosZipGenerator($this->getEntityManager(), $promotions);
+                $zip->generateArchive($archive);
 
                 $headers = new Headers();
                 $headers->addHeaders(array(
@@ -134,34 +110,5 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
                 'action' => 'photos',
             )
         );
-    }
-
-    /**
-     * returns the extension of the given file. Based on the constant int output of exif_imagetype
-     */
-    private function _getExtension($fileName)
-    {
-        $fileType = exif_imagetype ($fileName);
-        $result = '';
-
-        switch ($fileType) {
-            case 1:
-                $result = '.gif';
-                break;
-            case 2:
-                $result = '.jpeg';
-                break;
-            case 3:
-                $result = '.png';
-                break;
-            case 5:
-                $result = '.psd';
-                break;
-            case 6:
-                $result = '.bmp';
-                break;
-        }
-
-        return $result;
     }
 }
