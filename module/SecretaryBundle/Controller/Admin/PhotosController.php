@@ -56,11 +56,9 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
 
     public function downloadAction()
     {
-
-    $form = $this->getForm('secretary_photos_photos');
+        $form = $this->getForm('secretary_photos_photos');
 
         if ($this->getRequest()->isPost()) {
-
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 

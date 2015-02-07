@@ -42,7 +42,7 @@ class PhotosZip
 
     /**
      * @param EntityManager $entityManager The entityManager
-     * @param array        $promotions    The array containing the promotions
+     * @param array         $promotions    The array containing the promotions
      */
     public function __construct(EntityManager $entityManager, array $promotions)
     {
@@ -69,9 +69,7 @@ class PhotosZip
             ->getConfigValue('common.profile_path') . '/';
 
         foreach ($this->_promotions as $promotion) {
-
             if ($promotion->getAcademic()->getPhotoPath()) {
-
                 $extension = $this->_getExtension($filePath . $promotion->getAcademic()->getPhotoPath());
 
                 $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
