@@ -81,6 +81,9 @@ return array(
         'cudi_admin_sales_session_openinghour' => array(
             'add', 'edit', 'delete', 'manage', 'old',
         ),
+        'cudi_admin_special_action' => array(
+            'manage','irreeel',
+        ),
         'cudi_admin_stock' => array(
             'bulkUpdate', 'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered', 'view',
         ),
