@@ -147,9 +147,9 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 }
                 $i = 0;
                 foreach ($people as $person) {
-                    if (null !== $person->getEmailAddress()) {
+                    if (null !== $person->getPersonalEmail()) {
                         $i++;
-                        $mail->addBcc($person->getEmailAddress(), $person->getFullName());
+                        $mail->addBcc($person->getPersonalEmail(), $person->getFullName());
                     }
 
                     if ($i == 500) {
