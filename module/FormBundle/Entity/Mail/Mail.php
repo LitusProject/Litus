@@ -19,7 +19,7 @@
 namespace FormBundle\Entity\Mail;
 
 use CommonBundle\Entity\General\Language,
-    Doctrine\Common\Collection\ArrayCollection,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**
