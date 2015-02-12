@@ -5,7 +5,7 @@ set -e
 
 cd $(dirname "$0")/../..;
 
-composer install --dev
+composer install
 
 cp config/lilo.config.php.dist     config/lilo.config.php
 cp config/database.config.php.dist config/database.config.php
