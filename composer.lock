@@ -1700,12 +1700,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "8210cb267be79b74b2792a8f52283e3fee49e967"
+                "reference": "825869155400bdca2a6f1c161d76a19381c957fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/8210cb267be79b74b2792a8f52283e3fee49e967",
-                "reference": "8210cb267be79b74b2792a8f52283e3fee49e967",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/825869155400bdca2a6f1c161d76a19381c957fa",
+                "reference": "825869155400bdca2a6f1c161d76a19381c957fa",
                 "shasum": ""
             },
             "require": {
