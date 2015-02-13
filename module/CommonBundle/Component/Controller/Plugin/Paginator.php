@@ -22,6 +22,7 @@ use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAd
     Doctrine\ORM\Query,
     Doctrine\ORM\QueryBuilder,
     Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator,
+    Zend\Http\Request as HttpRequest,
     Zend\Mvc\Controller\AbstractController,
     Zend\Mvc\Exception,
     Zend\Paginator\Adapter\ArrayAdapter,
@@ -223,7 +224,11 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
             }
         }
 
-        $query = $controller->getEvent()->getRequest()->getQuery();
+        if ($controller->getRequest() instanceof HttpRequest) {
+            $query = $controller->getRequest()->getQuery();
+        } else {
+            $query = array();
+        }
 
         return array(
             'fullWidth' => $fullWidth,

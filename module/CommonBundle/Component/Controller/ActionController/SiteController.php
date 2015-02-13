@@ -73,7 +73,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getConfigValue('br.public_logo_path');
 
         if ($this->getRequest() instanceof HttpRequest) {
-            $result->showCookieBanner = !$this->getRequest()->getCookie()->offsetExists('cookie_permission');
+            $result->showCookieBanner = !isset($this->getRequest()->getCookie()->cookie_permission);
         } else {
             $result->showCookieBanner = true;
         }
