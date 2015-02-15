@@ -887,12 +887,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/mongodb-odm.git",
-                "reference": "1343375a4edf3e2157138e442441654e25fabbec"
+                "reference": "b799755b4bd72c0b66d5e08574b2dc4d0e26c62b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/mongodb-odm/zipball/1343375a4edf3e2157138e442441654e25fabbec",
-                "reference": "1343375a4edf3e2157138e442441654e25fabbec",
+                "url": "https://api.github.com/repos/doctrine/mongodb-odm/zipball/b799755b4bd72c0b66d5e08574b2dc4d0e26c62b",
+                "reference": "b799755b4bd72c0b66d5e08574b2dc4d0e26c62b",
                 "shasum": ""
             },
             "require": {
@@ -953,7 +953,7 @@
                 "odm",
                 "persistence"
             ],
-            "time": "2015-01-23 10:29:57"
+            "time": "2015-02-13 22:02:56"
         },
         {
             "name": "doctrine/orm",
@@ -1313,12 +1313,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "5f5b148e498c065af6aee5274a7da75fbae6d449"
+                "reference": "3b783bd0b55da22e5a138670668b894b74d29676"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/5f5b148e498c065af6aee5274a7da75fbae6d449",
-                "reference": "5f5b148e498c065af6aee5274a7da75fbae6d449",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/3b783bd0b55da22e5a138670668b894b74d29676",
+                "reference": "3b783bd0b55da22e5a138670668b894b74d29676",
                 "shasum": ""
             },
             "replace": {
@@ -1356,7 +1356,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-02-12 00:25:51"
+            "time": "2015-02-14 12:32:16"
         },
         {
             "name": "widmogrod/zf2-assetic-module",
@@ -1423,12 +1423,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/ZendDeveloperTools.git",
-                "reference": "5c994da843e71802b4b6ce18a89f192362a222dd"
+                "reference": "ca3b38c4dbd27db4c203c096cc4c2b916a2ee415"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/ZendDeveloperTools/zipball/5c994da843e71802b4b6ce18a89f192362a222dd",
-                "reference": "5c994da843e71802b4b6ce18a89f192362a222dd",
+                "url": "https://api.github.com/repos/zendframework/ZendDeveloperTools/zipball/ca3b38c4dbd27db4c203c096cc4c2b916a2ee415",
+                "reference": "ca3b38c4dbd27db4c203c096cc4c2b916a2ee415",
                 "shasum": ""
             },
             "require": {
@@ -1478,7 +1478,7 @@
                 "module",
                 "zf2"
             ],
-            "time": "2015-02-11 09:14:56"
+            "time": "2015-02-14 22:27:18"
         },
         {
             "name": "zendframework/zendframework",
@@ -1750,7 +1750,7 @@
                 }
             ],
             "description": "A script to automatically fix Symfony Coding Standard",
-            "time": "2015-02-10 23:49:23"
+            "time": "2015-02-14 02:31:24"
         },
         {
             "name": "litus/php-cs",
