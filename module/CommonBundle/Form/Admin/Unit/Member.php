@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Form\Admin\Unit;
 
-use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
-
 /**
  * The form used to add a member to a unit.
  *
@@ -40,7 +38,7 @@ class Member extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new PersonTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_person'),
                     ),
                 ),
             ),

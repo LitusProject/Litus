@@ -18,10 +18,7 @@
 
 namespace SyllabusBundle\Form\Admin\Study;
 
-use SyllabusBundle\Component\Validator\Study\KulId as KulIdValidator,
-    SyllabusBundle\Component\Validator\Study\Recursion as RecursionValidator,
-    SyllabusBundle\Component\Validator\Typeahead\Study as StudyTypeaheadValidator,
-    SyllabusBundle\Entity\Study;
+use SyllabusBundle\Entity\Study;
 
 /**
  * Add Study
@@ -53,7 +50,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'int'),
-                        new KulIdValidator($this->getEntityManager(), $this->study),
+                        array(
+                            'name' => 'syllabus_study_kul_id',
+                            'options' => array(
+                                'study' => $this->study,
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -102,11 +104,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $validators = array(
-            new StudyTypeaheadValidator($this->getEntityManager()),
+            array('name' => 'syllabus_typeahead_study'),
         );
 
         if (null !== $this->study) {
-            $validators[] = new RecursionValidator($this->getEntityManager(), $this->study);
+            $validators[] = array(
+                'name' => 'syllabus_study_recursion',
+                'options' => array(
+                    'study' => $this->study,
+                ),
+            );
         }
 
         $this->add(array(

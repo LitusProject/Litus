@@ -102,15 +102,12 @@ return array(
     'Cudi is currently closed.' => 'Cudi is momenteel gesloten.',
     'Reserve textbooks and other study material.' => 'Reserveer tekstboeken en ander studiemateriaal.',
 
-    'The value may not be zero' => 'De waarde mag niet nul zijn',
-
     'Praesidium' => 'Praesidium',
     'Groupcoordinator' => 'Groepscoördinator',
 
     'Enroll' => 'Schrijf In',
     'Unsubscribe' => 'Schrijf Uit',
 
-    'This person does not exits' => 'Deze persoon bestaat niet',
     'The selected file is too large.' => 'Het geselecteerde bestand is te groot.',
     'An error occurred while uploading your profile image.' => 'Er is een fout opgetreden tijdens het uploaden van je profiel foto.',
 

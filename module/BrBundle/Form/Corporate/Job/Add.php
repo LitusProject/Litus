@@ -18,8 +18,7 @@
 
 namespace BrBundle\Form\Corporate\Job;
 
-use BrBundle\Entity\Company,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator;
+use BrBundle\Entity\Company;
 
 /**
  * Add Job
@@ -72,7 +71,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'options'  => array(
                 'input' => array(
                     'validators' => array(
-                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                        array(
+                            'name' => 'date_compare',
+                            'options' => array(
+                                'first_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
                     ),
                 ),
             ),

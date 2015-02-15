@@ -102,7 +102,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         foreach ($object->getCvBookArchiveYears() as $year) {
-            $data['cvbook'][] = 'archive-' . $year->getId();
+            $data['cvbook'][] = 'archive-' . $year;
         }
 
         $data['address'] = $this->getHydrator('CommonBundle\Hydrator\General\Address')

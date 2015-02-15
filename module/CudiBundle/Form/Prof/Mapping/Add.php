@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Form\Prof\Mapping;
 
-use CudiBundle\Component\Validator\Typeahead\Article as ArticleTypeaheadValidator;
-
 /**
  * Add Mapping
  *
@@ -42,7 +40,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'options'    => array(
                 'input' => array(
                     'validators'  => array(
-                        new ArticleTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_article'),
                     ),
                 ),
             ),

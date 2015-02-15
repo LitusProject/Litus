@@ -564,8 +564,8 @@ class Article
         $this->stockValue = 0;
         $this->id = null;
 
-        $barcodes = $this->barcodes;
         $this->barcodes = new ArrayCollection();
+        $barcodes = $this->barcodes;
 
         foreach ($barcodes as $barcode) {
             $this->addBarcode(new Barcode($this, $barcode->getBarcode()));

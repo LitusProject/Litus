@@ -18,8 +18,7 @@
 
 namespace MailBundle\Form\Admin\Study;
 
-use CommonBundle\Entity\General\AcademicYear,
-    MailBundle\Component\Validator\MultiMail as MultiMailValidator;
+use CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Send Mail
@@ -117,7 +116,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new MultiMailValidator(),
+                        array('name' => 'mail_multi_mail'),
                     ),
                 ),
             ),

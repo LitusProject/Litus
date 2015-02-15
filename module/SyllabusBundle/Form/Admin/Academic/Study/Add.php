@@ -18,8 +18,6 @@
 
 namespace SyllabusBundle\Form\Admin\Academic\Study;
 
-use SyllabusBundle\Component\Validator\Typeahead\Study as StudyTypeaheadValidator;
-
 /**
  * Add Study
  *
@@ -42,7 +40,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new StudyTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'syllabus_typeahead_study'),
                     ),
                 ),
             ),

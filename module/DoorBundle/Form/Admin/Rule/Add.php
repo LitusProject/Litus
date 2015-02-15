@@ -18,8 +18,6 @@
 
 namespace DoorBundle\Form\Admin\Rule;
 
-use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator;
-
 /**
  * Add Key
  *
@@ -41,7 +39,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new PersonTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_person'),
                     ),
                 ),
             ),

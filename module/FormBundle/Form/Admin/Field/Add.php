@@ -20,7 +20,6 @@ namespace FormBundle\Form\Admin\Field;
 
 use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language,
-    FormBundle\Component\Validator\Required as RequiredValidator,
     FormBundle\Entity\Field,
     FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity,
     FormBundle\Entity\Field\Dropdown as DropdownFieldEntity,
@@ -102,7 +101,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new RequiredValidator(),
+                        array('name' => 'form_field_required'),
                     ),
                 ),
             ),
@@ -180,7 +179,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         if (null !== $this->_field) {
             if ($this->_repeat) {
                 $field = clone $this->_field;
-                if ($field instanceof TimeslotFieldEntity) {
+                if ($field instanceof TimeSlotFieldEntity) {
                     $interval = $field->getStartDate()->diff($field->getEndDate());
                     $startDate = $field->getStartDate();
                     $endDate = $field->getEndDate();
@@ -342,7 +341,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             return 'checkbox';
         } elseif ($this->_field instanceof FileFieldEntity) {
             return 'file';
-        } elseif ($this->_field instanceof TimeslotFieldEntity) {
+        } elseif ($this->_field instanceof TimeSlotFieldEntity) {
             return 'timeslot';
         }
     }

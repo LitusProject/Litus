@@ -18,8 +18,7 @@
 
 namespace FormBundle\Form\Admin\Group;
 
-use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    FormBundle\Entity\Node\Group;
+use FormBundle\Entity\Node\Group;
 
 /**
  * Edit Group
@@ -49,7 +48,13 @@ class Edit extends Add
             'options'  => array(
                 'input' => array(
                     'validators' => array(
-                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
+                        array(
+                            'name' => 'date_compare',
+                            'options' => array(
+                                'first_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
                     ),
                 ),
             ),

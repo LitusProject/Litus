@@ -18,8 +18,7 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use CommonBundle\Component\Validator\Person\Barcode as BarcodeValidator,
-    CommonBundle\Entity\User\Barcode as BarcodeEntity,
+use CommonBundle\Entity\User\Barcode as BarcodeEntity,
     CommonBundle\Entity\User\Person,
     LogicException;
 
@@ -70,7 +69,12 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new BarcodeValidator($this->getEntityManager(), $this->getPerson()),
+                        array(
+                            'name' => 'person_barcode',
+                            'options' => array(
+                                'person' => $this->getPerson(),
+                            ),
+                        ),
                     ),
                 ),
             ),

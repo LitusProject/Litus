@@ -3,6 +3,9 @@
 
     <nav id="controller_nav">
         <ul>
+            {% if hasAccess('secretary_admin_photos', 'photos') %}
+                <li><a {% if 'photos' == getParam('action') %} class="active" {% endif %} href="{{ url('secretary_admin_photos', {"action": "photos"}) }}">Photos</a></li>
+            {% endif %}
             {% if hasAccess('secretary_admin_promotion', 'update') %}
                 <li><a href="#updatePromotion" data-toggle="modal">Update</a></li>
             {% endif %}

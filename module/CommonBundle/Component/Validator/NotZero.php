@@ -23,7 +23,7 @@ namespace CommonBundle\Component\Validator;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class NotZero extends \Zend\Validator\AbstractValidator
+class NotZero extends AbstractValidator
 {
     const NOT_VALID = 'notValid';
 

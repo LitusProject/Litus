@@ -36,12 +36,10 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
         $form = $this->getForm('mail_promotion_mail');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(
-                array_merge(
-                    $this->getRequest()->getPost()->toArray(),
-                    $this->getRequest()->getFiles()->toArray()
-                )
-            );
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -101,17 +99,25 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('secretary.mail_name');
 
-                $body = $formData['message'];
+                $from = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.mail');
 
-                $part = new Part($body);
-                $part->type = Mime::TYPE_TEXT;
-                $part->charset = 'utf-8';
+                if ('' == $formData['selected_message']['stored_message']) {
+                    $body = $formData['compose_message']['message'];
 
-                $message = new MimeMessage();
-                $message->addPart($part);
+                    $part = new Part($body);
 
-                if (!empty($formData['file'])) {
-                    foreach ($formData['file'] as $file) {
+                    $part->type = Mime::TYPE_TEXT;
+                    if ($formData['html']) {
+                        $part->type = Mime::TYPE_HTML;
+                    }
+
+                    $part->charset = 'utf-8';
+                    $message = new MimeMessage();
+                    $message->addPart($part);
+
+                    foreach ($formData['compose_message']['file'] as $file) {
                         if (!$file['size']) {
                             continue;
                         }
@@ -123,19 +129,51 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                         $part->filename = $file['name'];
                         $part->encoding = Mime::ENCODING_BASE64;
 
+                        unlink($file['tmp_name']);
+
                         $message->addPart($part);
                     }
+
+                    $mail = new Message();
+                    $mail->setBody($message)
+                        ->setFrom($from, $mailName)
+                        ->addTo($from, $mailName)
+                        ->setSubject($formData['compose_message']['subject']);
+                } else {
+                    $storedMessage = $this->getDocumentManager()
+                        ->getRepository('MailBundle\Document\Message')
+                        ->findOneById($formData['selected_message']['stored_message']);
+
+                    $body = $storedMessage->getBody();
+
+                    $part = new Part($body);
+
+                    $part->type = Mime::TYPE_TEXT;
+                    if ($storedMessage->getType() == 'html') {
+                        $part->type = Mime::TYPE_HTML;
+                    }
+
+                    $part->charset = 'utf-8';
+                    $message = new MimeMessage();
+                    $message->addPart($part);
+
+                    foreach ($storedMessage->getAttachments() as $attachment) {
+                        $part = new Part($attachment->getData());
+                        $part->type = $attachment->getContentType();
+                        $part->id = $attachment->getFilename();
+                        $part->disposition = 'attachment';
+                        $part->filename = $attachment->getFilename();
+                        $part->encoding = Mime::ENCODING_BASE64;
+
+                        $message->addPart($part);
+                    }
+
+                    $mail = new Message();
+                    $mail->setBody($message)
+                        ->setFrom($from, $mailName)
+                        ->addTo($from, $mailName)
+                        ->setSubject($storedMessage->getSubject());
                 }
-
-                $from = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('secretary.mail');
-
-                $mail = new Message();
-                $mail->setBody($message)
-                    ->setFrom($from, $mailName)
-                    ->addTo($from, $mailName)
-                    ->setSubject($formData['subject']);
 
                 $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
                 foreach ($bccs as $bcc) {
@@ -143,9 +181,9 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 }
                 $i = 0;
                 foreach ($people as $person) {
-                    if (null !== $person->getEmailAddress()) {
+                    if (null !== $person->getPersonalEmail()) {
                         $i++;
-                        $mail->addBcc($person->getEmailAddress(), $person->getFullName());
+                        $mail->addBcc($person->getPersonalEmail(), $person->getFullName());
                     }
 
                     if ($i == 500) {

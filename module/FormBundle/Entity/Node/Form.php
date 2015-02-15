@@ -26,7 +26,8 @@ use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
     FormBundle\Entity\Mail\Mail,
-    FormBundle\Entity\Node\Entry;
+    FormBundle\Entity\Node\Entry,
+    Locale;
 
 /**
  * This entity stores the form
@@ -414,7 +415,7 @@ abstract class Form extends \CommonBundle\Entity\Node
                 return $translation;
             }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
                 $fallbackTranslation = $translation;
             }
         }

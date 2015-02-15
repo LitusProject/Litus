@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Supplier;
 
-use CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
-    CudiBundle\Entity\Supplier;
+use CudiBundle\Entity\Supplier;
 
 /**
  * Add Supplier
@@ -61,7 +60,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PhoneNumberValidator(),
+                        array('name' => 'phone_number_regex'),
                     ),
                 ),
             ),

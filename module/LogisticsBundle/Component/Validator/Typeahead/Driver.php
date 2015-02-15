@@ -52,7 +52,7 @@ class Driver extends \CommonBundle\Component\Validator\Typeahead\Person
 
         $person = $this->getEntityObject();
 
-        $driver = $this->_entityManager
+        $driver = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Driver')
             ->findOneById($person->getId());
 

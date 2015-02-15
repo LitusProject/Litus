@@ -88,9 +88,6 @@ return array(
     'End Date' => 'Eind Datum',
     'The reservation was succesfully created!' => 'De reservatie is succesvol aangemaakt!',
     'Book' => 'Reserveer',
-    'The reservation is to long' => 'De reservatie duurt te lang',
-    'A conflicting reservation already exists' => 'Een conflicterende reservatie bestaat reeds',
-    'One of the dates is not in the correct format' => 'Eén van de data is niet in het correcte formaat',
 
     '<p>For the culture lovers who didn\'t know it, VTK has its own piano! You can find it in room 01.52 (next to the proclamation hall) of the castle. Students can make weekly use of it for free and on the following time slots:<p>
 

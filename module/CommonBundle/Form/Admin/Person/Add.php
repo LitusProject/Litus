@@ -18,9 +18,6 @@
 
 namespace CommonBundle\Form\Admin\Person;
 
-use CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
-    CommonBundle\Component\Validator\Username as UsernameValidator;
-
 /**
  * Add Person
  *
@@ -46,10 +43,8 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'alnum',
-                        ),
-                        new UsernameValidator($this->getEntityManager()),
+                        array('name' => 'alnum'),
+                        array('name' => 'username'),
                     ),
                 ),
             ),
@@ -121,7 +116,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PhoneNumberValidator(),
+                        array('name' => 'phone_number_regex'),
                     ),
                 ),
             ),

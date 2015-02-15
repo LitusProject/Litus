@@ -28,6 +28,7 @@ use CalendarBundle\Entity\Node\Event,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException,
     ShiftBundle\Entity\Shift\Responsible,
     ShiftBundle\Entity\Shift\Volunteer;
 
@@ -323,7 +324,7 @@ class Shift
     public function addResponsible(EntityManager $entityManager, Responsible $responsible)
     {
         if (!$this->canHaveAsResponsible($entityManager, $responsible->getPerson())) {
-            throw new \InvalidArgumentException('The given responsible cannot be added to this shift');
+            throw new InvalidArgumentException('The given responsible cannot be added to this shift');
         }
 
         $this->responsibles->add($responsible);
@@ -419,7 +420,7 @@ class Shift
     public function addVolunteer(EntityManager $entityManager, Volunteer $volunteer)
     {
         if (!$this->canHaveAsVolunteer($entityManager, $volunteer->getPerson())) {
-            throw new \InvalidArgumentException('The given volunteer cannot be added to this shift');
+            throw new InvalidArgumentException('The given volunteer cannot be added to this shift');
         }
 
         $this->volunteers->add($volunteer);

@@ -193,7 +193,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $form = $this->getForm(
-            'form_field_add',
+            'form_field_edit',
             array(
                 'form' => $field->getForm(),
                 'field' => $field,

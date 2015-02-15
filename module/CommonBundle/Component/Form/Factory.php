@@ -18,7 +18,7 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\InputFilter\Factory as inputFilterFactory,
+use CommonBundle\Component\InputFilter\Factory as InputFilterFactory,
     Zend\Form\ElementInterface as OriginalElementInterface,
     Zend\Form\FieldsetInterface as OriginalFieldsetInterface;
 

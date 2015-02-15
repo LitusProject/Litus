@@ -18,12 +18,8 @@
 
 namespace LogisticsBundle\Form\Admin\PianoReservation;
 
-use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
-    DateInterval,
+use DateInterval,
     DateTime,
-    LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
-    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
     LogisticsBundle\Entity\Reservation\PianoReservation;
 
 /**
@@ -52,7 +48,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new PersonTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_person'),
                     ),
                 ),
             ),
@@ -103,18 +99,28 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'format' => 'd/m/Y H:i',
                             ),
                         ),
-                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                        new ReservationConflictValidator(
-                            'start_date',
-                            'd/m/Y H:i',
-                            PianoReservation::PIANO_RESOURCE_NAME,
-                            $this->getEntityManager(),
-                            null !== $this->reservation ? $this->reservation->getId() : null
+                        array(
+                            'name' => 'date_compare',
+                            'options' => array(
+                                'first_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                            ),
                         ),
-                        new PianoDurationValidator(
-                            'start_date',
-                            'd/m/Y H:i',
-                            $this->getEntityManager()
+                        array(
+                            'name' => 'logistics_piano_reservation_conflict',
+                            'options' => array(
+                                'start_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                                'resource' => PianoReservation::PIANO_RESOURCE_NAME,
+                                'reservation_id' => null !== $this->reservation ? $this->reservation->getId() : null,
+                            ),
+                        ),
+                        array(
+                            'name' => 'logistics_piano_duration',
+                            'options' => array(
+                                'start_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                            ),
                         ),
                     ),
                 ),

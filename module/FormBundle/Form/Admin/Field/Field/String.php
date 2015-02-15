@@ -18,8 +18,6 @@
 
 namespace FormBundle\Form\Admin\Field\Field;
 
-use FormBundle\Component\Validator\StringField as StringFieldValidator;
-
 /**
 * Add String Field
 *
@@ -98,9 +96,15 @@ class String extends \CommonBundle\Component\Form\Fieldset
             );
         }
 
-        $specs['charsperline']['validators'][] = new StringFieldValidator(
-            !empty($this->get('multiline')->getValue()) ? $this->get('multiline')->getValue() : null,
-            !empty($this->get('lines')->getValue()) ? $this->get('lines')->getValue() : null
+        $multilineValue = $this->get('multiline')->getValue();
+        $lineValue = $this->get('lines')->getValue();
+
+        $specs['charsperline']['validators'][] = array(
+            'name' => 'form_string_field',
+            'options' => array(
+                'multiline' => !empty($multilineValue) ? $this->get('multiline')->getValue() : false,
+                'lines' => !empty($lineValue) ? $this->get('lines')->getValue() : null,
+            ),
         );
 
         return $specs;

@@ -11,11 +11,9 @@
         "zendframework/zend-developer-tools": "dev-master",
 
         "doctrine/doctrine-orm-module": "@dev",
-        "doctrine/doctrine-mongo-odm-module": "dev-master",
+        "doctrine/doctrine-mongo-odm-module": "@dev",
 
         "EvanDotPro/EdpMarkdown": "@dev",
-        "symfony/console": "2.6",
-        "symfony/process": "2.3.4",
         "widmogrod/zf2-assetic-module": "@dev",
         "zf-commons/zfc-twig": "@dev",
 

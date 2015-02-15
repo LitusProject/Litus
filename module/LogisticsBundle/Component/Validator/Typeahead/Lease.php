@@ -18,8 +18,6 @@
 
 namespace LogisticsBundle\Component\Validator\Typeahead;
 
-use Doctrine\ORM\EntityManager;
-
 /**
  * Checks if a barcode belongs to a lease item, and it is not yet leased
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
@@ -42,24 +40,27 @@ class Lease extends \CommonBundle\Component\Validator\Typeahead
         self::ITEM_RETURNED => 'This item is already returned',
     );
 
-    /**
-     * True if the item has to be leased for the validator to be valid.
-     * @var boolean
-     */
-    private $_mustBeLeased;
+    protected $options = array(
+        'entity' => '',
+        'must_be_leased' => false,
+    );
 
     /**
-     * Sets validator options
-     *
-     * @param EntityManager $entityManager
-     * @param boolean       $mustBeLeased  If true, the item must be leased to pass the validation. Else it shouldn't.
-     * @param mixed         $opts          The validator's options
-     */
-    public function __construct(EntityManager $entityManager, $mustBeLeased = false, $opts = null)
+    * Sets validator options
+    *
+    * @param int|array|\Traversable $options
+    */
+    public function __construct($options = array())
     {
-        parent::__construct($entityManager, 'LogisticsBundle\Entity\Lease\Item', $opts);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['must_be_leased'] = array_shift($args);
+        }
 
-        $this->_mustBeLeased = !!$mustBeLeased;
+        $options['entity'] = 'LogisticsBundle\Entity\Lease\Item';
+
+        parent::__construct($options);
     }
 
     /**
@@ -70,25 +71,17 @@ class Lease extends \CommonBundle\Component\Validator\Typeahead
      */
     public function isValid($value, $context = null)
     {
-        $this->setValue($value);
-
-        $item = $this->_entityManager
-            ->getRepository('LogisticsBundle\Entity\Lease\Item')
-            ->findOneById($context['id']);
-
-        if (!$item) {
-            $this->error(self::NOT_VALID);
-
+        if (!parent::isValid($value, $context)) {
             return false;
         }
 
-        $unreturned = $this->_entityManager
+        $unreturned = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Lease\Lease')
-            ->findUnreturnedByItem($item);
+            ->findUnreturnedByItem($this->entityObject);
 
         switch (count($unreturned)) {
             case 0:
-                if ($this->_mustBeLeased) {
+                if ($this->options['must_be_leased']) {
                     $this->error(self::ITEM_RETURNED);
 
                     return false;
@@ -96,7 +89,7 @@ class Lease extends \CommonBundle\Component\Validator\Typeahead
 
                 return true;
             default:
-                if (!$this->_mustBeLeased) {
+                if (!$this->options['must_be_leased']) {
                     $this->error(self::ITEM_LEASED);
 
                     return false;

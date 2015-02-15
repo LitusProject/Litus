@@ -18,9 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Sale\Booking;
 
-use CommonBundle\Component\Validator\Typeahead\Person as PersonTypeaheadValidator,
-    CudiBundle\Component\Validator\Typeahead\Sale\Article as SaleArticleTypeaheadValidator;
-
 /**
  * Add Booking
  *
@@ -46,7 +43,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators'  => array(
-                        new PersonTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_person'),
                     ),
                 ),
             ),
@@ -64,7 +61,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators'  => array(
-                        new SaleArticleTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'typeahead_sale_article'),
                     ),
                 ),
             ),

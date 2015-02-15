@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Article\Mapping;
 
-use SyllabusBundle\Component\Validator\Typeahead\Subject as SubjectTypeaheadValidator;
-
 /**
  * Add Mapping
  *
@@ -43,7 +41,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'    => array(
                 'input' => array(
                     'validators' => array(
-                        new SubjectTypeaheadValidator($this->getEntityManager()),
+                        array('name' => 'syllabus_typeahead_subject'),
                     ),
                 ),
             ),

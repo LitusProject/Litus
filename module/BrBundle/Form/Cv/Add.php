@@ -18,9 +18,7 @@
 
 namespace BrBundle\Form\Cv;
 
-use CommonBundle\Component\Validator\Decimal as DecimalValidator,
-    CommonBundle\Component\Validator\FieldLength as LengthValidator,
-    CommonBundle\Entity\General\AcademicYear,
+use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic;
 
 /**
@@ -68,7 +66,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(100, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 100,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -84,7 +88,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new DecimalValidator(2),
+                                array(
+                                    'name' => 'decimal',
+                                    'options' => array(
+                                        'max_after_decimal' => '2',
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -109,7 +118,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new DecimalValidator(2),
+                                array(
+                                    'name' => 'decimal',
+                                    'options' => array(
+                                        'max_after_decimal' => '2',
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -170,7 +184,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(150, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 150,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -197,7 +217,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(50, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 50,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -216,7 +242,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(50, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 50,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -253,7 +285,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(130, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 130,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -283,7 +321,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(425, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 425,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -305,7 +349,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(425, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 425,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -335,7 +385,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(300, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 300,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -363,7 +419,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(50, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 50,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -383,7 +445,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(50, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 50,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -403,7 +471,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(50, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 50,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -425,7 +499,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(200, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 200,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -455,7 +535,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(200, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 200,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -477,7 +563,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                new LengthValidator(200, 75),
+                                array(
+                                    'name' => 'field_length',
+                                    'options' => array(
+                                        'max_length' => 200,
+                                        'new_line_length' => 75,
+                                    ),
+                                ),
                             ),
                         ),
                     ),

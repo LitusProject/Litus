@@ -55,7 +55,7 @@ class Text extends EntryItem
     /**
      * @param NodeVisitor $nodeVisitor
      */
-    public function visitNode($nodeVisitor)
+    public function visitNode(NodeVisitor $nodeVisitor)
     {
         $nodeVisitor->visitText($this);
     }

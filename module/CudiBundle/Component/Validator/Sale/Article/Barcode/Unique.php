@@ -18,27 +18,18 @@
 
 namespace CudiBundle\Component\Validator\Sale\Article\Barcode;
 
-use CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\EntityManager;
-
 /**
  * Matches the given article barcode against the database to check whether it is unique or not.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Unique extends \Zend\Validator\AbstractValidator
+class Unique extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var Article The sale article to be ignored
-     */
-    private $_saleArticle = array();
+    protected $options = array(
+        'sale_article' => null,
+    );
 
     /**
      * Error messages
@@ -50,18 +41,19 @@ class Unique extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * Create a new Unique Article Barcode validator.
+     * Sets validator options
      *
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param Article       $saleArticle   The sale article to be ignored
-     * @param mixed         $opts          The validator's options
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, Article $saleArticle = null, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['sale_article'] = array_shift($args);
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_saleArticle = $saleArticle;
+        parent::__construct($options);
     }
 
     /**
@@ -82,11 +74,11 @@ class Unique extends \Zend\Validator\AbstractValidator
             return false;
         }
 
-        $barcode = $this->_entityManager
+        $barcode = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article\Barcode')
             ->findOneByBarcode($value);
 
-        if (null === $barcode || $barcode->getArticle() == $this->_saleArticle) {
+        if (null === $barcode || $barcode->getArticle() == $this->options['sale_article']) {
             return true;
         }
 

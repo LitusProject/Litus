@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Sale\Article\Barcode;
 
-use CudiBundle\Component\Validator\Sale\Article\Barcode\Unique as UniqueBarcodeValidator;
-
 /**
  * Add Article
  *
@@ -52,7 +50,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'useChecksum' => false,
                             ),
                         ),
-                        new UniqueBarcodeValidator($this->getEntityManager()),
+                        array('name' => 'sale_article_barcode_unique'),
                     ),
                 ),
             ),

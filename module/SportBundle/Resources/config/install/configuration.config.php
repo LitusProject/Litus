@@ -43,6 +43,11 @@ return array(
         'description' => 'The key used for the websocket of the queue',
     ),
     array(
+        'key'         => 'sport.queue_socket_enabled',
+        'value'       => '0',
+        'description' => 'Whether the sport run queue socket is enabled',
+    ),
+    array(
         'key'         => 'sport.points_criteria',
         'value'       => serialize(
             array(

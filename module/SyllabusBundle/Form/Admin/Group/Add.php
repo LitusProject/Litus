@@ -18,9 +18,7 @@
 
 namespace SyllabusBundle\Form\Admin\Group;
 
-use MailBundle\Component\Validator\MultiMail as MultiMailValidator,
-    SyllabusBundle\Component\Validator\Group\Name as NameValidator,
-    SyllabusBundle\Entity\Group;
+use SyllabusBundle\Entity\Group;
 
 /**
  * Add Group
@@ -54,7 +52,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new NameValidator($this->getEntityManager(), $this->group),
+                        array(
+                            'name' => 'syllabus_group_name',
+                            'options' => array(
+                                'exclude' => $this->group,
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -76,7 +79,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new MultiMailValidator(),
+                        array('name' => 'mail_multi_mail'),
                     ),
                 ),
             ),
@@ -92,7 +95,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new MultiMailValidator(),
+                        array('name' => 'mail_multi_mail'),
                     ),
                 ),
             ),

@@ -18,8 +18,8 @@
 
 namespace MailBundle\Form\Admin\MailingList;
 
-use MailBundle\Component\Validator\AdminRole as AdminRoleValidator,
-    MailBundle\Entity\MailingList;
+use MailBundle\Entity\MailingList,
+    RuntimeException;
 
 /**
  * Add Admin Role
@@ -49,7 +49,12 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
                 'options' => $this->_createRolesArray(),
                 'input' => array(
                     'validators' => array(
-                        new AdminRoleValidator($this->getEntityManager(), $this->getList()),
+                        array(
+                            'name' => 'mail_admin_role',
+                            'options' => array(
+                                'list' => $this->getList(),
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -85,7 +90,7 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
         }
 
         if (empty($rolesArray)) {
-            throw new \RuntimeException('There needs to be at least one role before you can map a role');
+            throw new RuntimeException('There needs to be at least one role before you can map a role');
         }
 
         return $rolesArray;

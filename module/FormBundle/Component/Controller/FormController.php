@@ -20,7 +20,6 @@ namespace FormBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
     CommonBundle\Component\Controller\Exception\HasNoAccessException,
-    CommonBundle\Form\Auth\Login as LoginForm,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -41,7 +40,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     {
         $result = parent::onDispatch($e);
 
-        $result->loginForm = new LoginForm($this->url()->fromRoute('form_manage_auth', array('action' => 'login')));
+        $result->loginForm = $this->getForm('common_auth_login')
+            ->setAttribute('class', '')
+            ->setAttribute('action', $this->url()->fromRoute(
+                'form_manage_auth',
+                array(
+                    'action' => 'login',
+                )
+            ));
         $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_url');
