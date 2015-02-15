@@ -25,9 +25,6 @@ use CommonBundle\Component\Form\ElementTrait,
  * File form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
- *
- * @method array getTraitInputSpecification()
- * @method mixed traitPrepareElement(FormInterface $form)
  */
 class File extends \Zend\Form\Element\File implements \CommonBundle\Component\Form\ElementInterface
 {

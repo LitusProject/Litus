@@ -22,7 +22,6 @@ use CommonBundle\Component\PassKit\Pass\Membership,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\User\Credential,
     CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Form\Account\FileServer\ChangePassword as ChangePasswordForm,
     CommonBundle\Form\Account\FileServer\CreateAccount as CreateAccountForm,
@@ -112,9 +111,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function editAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-
-        if (!($academic instanceof Academic)) {
+        if (null === $this->getAuthentication()->getPersonObject()) {
             $this->flashMessenger()->error(
                 'Error',
                 'Please login first!'
@@ -130,6 +127,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $enableRegistration = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_registration');
+
+        $academic = $this->getAuthentication()->getPersonObject();
 
         $studentDomain = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -335,8 +334,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function studiesAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
+        if (null === $this->getAuthentication()->getPersonObject()) {
             $this->flashMessenger()->error(
                 'Error',
                 'Please login first!'
@@ -350,15 +348,14 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         }
 
         return $this->_studiesAction(
-            $academic,
+            $this->getAuthentication()->getPersonObject(),
             $this->getCurrentAcademicYear()
         );
     }
 
     public function saveStudiesAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
+        if (null === $this->getAuthentication()->getPersonObject()) {
             $this->flashMessenger()->error(
                 'Error',
                 'Please login first!'
@@ -374,7 +371,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $this->initAjax();
 
         return $this->_saveStudiesAction(
-            $academic,
+            $this->getAuthentication()->getPersonObject(),
             $this->getCurrentAcademicYear(),
             $this->getRequest()->getPost()->toArray()
         );
@@ -382,8 +379,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function subjectsAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
+        if (null === $this->getAuthentication()->getPersonObject()) {
             $this->flashMessenger()->error(
                 'Error',
                 'Please login first!'
@@ -397,7 +393,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         }
 
         return $this->_subjectAction(
-            $academic,
+            $this->getAuthentication()->getPersonObject(),
             $this->getCurrentAcademicYear(),
             $this->getForm('secretary_registration_subject_add')
         );
@@ -405,8 +401,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function saveSubjectsAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
+        if (null === $this->getAuthentication()->getPersonObject()) {
             $this->flashMessenger()->error(
                 'Error',
                 'Please login first!'
@@ -422,7 +417,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $this->initAjax();
 
         return $this->_saveSubjectAction(
-            $academic,
+            $this->getAuthentication()->getPersonObject(),
             $this->getCurrentAcademicYear(),
             $this->getRequest()->getPost()->toArray()
         );
@@ -692,24 +687,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function passbookAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
-            return new ViewModel();
-        }
-
         $pass = new TmpFile();
         $membership = new Membership(
             $this->getEntityManager(),
-            $academic,
+            $this->getAuthentication()->getPersonObject(),
             $this->getCurrentAcademicYear(),
             $pass,
             'data/images/pass_kit'

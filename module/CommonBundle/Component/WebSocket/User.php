@@ -71,7 +71,7 @@ class User
         $requestHeaders = array();
 
         foreach (explode("\r\n", $data) as $line) {
-            list($k, $v) = explode(':', $line, 2);
+            @list($k, $v) = @explode(':', $line, 2);
             $requestHeaders[$k] = ltrim($v);
         }
 

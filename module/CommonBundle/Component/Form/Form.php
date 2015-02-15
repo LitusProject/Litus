@@ -21,7 +21,7 @@ namespace CommonBundle\Component\Form;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     CommonBundle\Component\Validator\FormAwareInterface,
     RuntimeException,
-    Zend\Form\FieldsetInterface as ZendFieldsetInterface,
+    Zend\Form\FieldsetInterface,
     Zend\Form\FormInterface,
     Zend\InputFilter\InputFilterAwareInterface,
     Zend\InputFilter\InputFilterInterface,
@@ -35,7 +35,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface, ServiceLocatorAwareInterface, ZendFieldsetInterface
+abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface, ServiceLocatorAwareInterface, FieldsetInterface
 {
     use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
     use \Zend\ServiceManager\ServiceLocatorAwareTrait;

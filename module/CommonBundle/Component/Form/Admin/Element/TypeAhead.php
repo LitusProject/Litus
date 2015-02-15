@@ -18,14 +18,12 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use CommonBundle\Component\Form\Fieldset;
-
 /**
  * Typeahead form element
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class TypeAhead extends Fieldset
+class TypeAhead extends \CommonBundle\Component\Form\Fieldset
 {
     public function init()
     {
@@ -98,18 +96,13 @@ class TypeAhead extends Fieldset
     {
         parent::setRequired($flag);
 
-        $field = $this->get('value');
-        if (!($field instanceof Fieldset)) {
-            return $this;
-        }
-
-        $labelAttributes = $field->getLabelAttributes() ?: array();
+        $labelAttributes = $this->get('value')->getLabelAttributes() ?: array();
         if (isset($labelAttributes['class'])) {
             $labelAttributes['class'] .= ' ' . ($flag ? 'required' : 'optional');
         } else {
             $labelAttributes['class'] = ($flag ? 'required' : 'optional');
         }
-        $field->setLabelAttributes($labelAttributes);
+        $this->get('value')->setLabelAttributes($labelAttributes);
 
         return $this;
     }

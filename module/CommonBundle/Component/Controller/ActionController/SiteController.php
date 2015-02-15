@@ -19,7 +19,6 @@
 namespace CommonBundle\Component\Controller\ActionController;
 
 use PageBundle\Entity\Node\Page,
-    Zend\Http\Request as HttpRequest,
     Zend\Mvc\MvcEvent;
 
 /**
@@ -72,11 +71,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
 
-        if ($this->getRequest() instanceof HttpRequest) {
-            $result->showCookieBanner = !isset($this->getRequest()->getCookie()->cookie_permission);
-        } else {
-            $result->showCookieBanner = true;
-        }
+        $result->showCookieBanner = !isset($_COOKIE['cookie_permission']);
 
         $e->setResult($result);
 

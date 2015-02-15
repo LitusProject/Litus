@@ -101,6 +101,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
     }
     public function testTwoLevels3()
     {
+        $parser = new Parser();
         $t =   "*    *  One Point One\n" .
                "        AndSomeMore TExt";
 
