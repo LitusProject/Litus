@@ -18,7 +18,6 @@
 
 namespace CommonBundle\Component\Form;
 
-
 use Zend\Form\FormInterface,
     Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
@@ -27,6 +26,9 @@ use Zend\Form\FormInterface,
  * them to.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ *
+ * @method \CommonBundle\Component\Form\FieldsetTrait setRequired(boolean $flag = true)
+ * @method \CommonBundle\Component\Form\ElementTrait setElementRequired(boolean $flag = true)
  */
 class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
 {

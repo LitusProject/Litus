@@ -18,8 +18,6 @@
 
 namespace BrBundle\Test\Component\ContractParserTest;
 
-
-
 use BrBundle\Component\ContractParser\IllegalFormatException,
     BrBundle\Component\ContractParser\Parser,
     PHPUnit_Framework_TestCase;
@@ -103,7 +101,6 @@ class ParserTest extends PHPUnit_Framework_TestCase
     }
     public function testTwoLevels3()
     {
-        $parser = new Parser();
         $t =   "*    *  One Point One\n" .
                "        AndSomeMore TExt";
 
