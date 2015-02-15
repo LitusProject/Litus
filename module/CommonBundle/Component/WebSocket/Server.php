@@ -193,7 +193,11 @@ abstract class Server
             unset($this->_authenticated[(int) $socket]);
         }
 
-        @socket_close($socket);
+        try {
+            socket_close($socket);
+        } catch (Exception $e) {
+            // Do nothing
+        }
 
         foreach ($this->_sockets as $key => $value) {
             if ($value == $socket) {

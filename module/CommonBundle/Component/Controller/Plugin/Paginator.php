@@ -22,6 +22,8 @@ use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAd
     Doctrine\ORM\Query,
     Doctrine\ORM\QueryBuilder,
     Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator,
+    Zend\Http\Request as HttpRequest,
+    Zend\Mvc\Controller\AbstractController,
     Zend\Mvc\Exception,
     Zend\Paginator\Adapter\ArrayAdapter,
     Zend\Paginator\Paginator as ZendPaginator,
@@ -206,7 +208,12 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
      */
     public function createControl($fullWidth = false)
     {
-        $params = $this->getController()->getEvent()->getRouteMatch()->getParams();
+        $controller = $this->getController();
+        if (!($controller instanceof AbstractController)) {
+            return;
+        }
+
+        $params = $controller->getEvent()->getRouteMatch()->getParams();
         foreach ($params as $key => $param) {
             if ('' === $param) {
                 unset($params[$key]);
@@ -217,11 +224,15 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
             }
         }
 
-        $query = $this->getController()->getEvent()->getRequest()->getQuery();
+        if ($controller->getRequest() instanceof HttpRequest) {
+            $query = $controller->getRequest()->getQuery();
+        } else {
+            $query = array();
+        }
 
         return array(
             'fullWidth' => $fullWidth,
-            'matchedRouteName' => $this->getController()->getEvent()->getRouteMatch()->getMatchedRouteName(),
+            'matchedRouteName' => $controller->getEvent()->getRouteMatch()->getMatchedRouteName(),
             'matchedRouteParams' => $params,
             'query' => sizeof($query) > 0 ? '?' . $query->toString() : '',
             'pages' => $this->_paginator->getPages(),
