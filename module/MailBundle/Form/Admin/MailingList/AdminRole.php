@@ -18,7 +18,7 @@
 
 namespace MailBundle\Form\Admin\MailingList;
 
-use MailBundle\Entity\MailingList;
+use MailBundle\Entity\MailingList,
     RuntimeException;
 
 /**
