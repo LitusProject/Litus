@@ -49,6 +49,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'required'   => true,
                 'value'      => 0,
                 'attributes' => array(
+                    'id'           => 'unit_' . $unit->getId(),
                     'autocomplete' => 'off',
                     'class'        => 'moneyunit',
                     'data-value'   => $unit->getUnit(),
@@ -85,6 +86,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'required'   => true,
                 'value'      => 0,
                 'attributes' => array(
+                    'id'           => 'device_' . $device->getId(),
                     'autocomplete' => 'off',
                     'class'        => 'device',
                 ),
