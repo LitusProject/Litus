@@ -56,7 +56,6 @@ def allowAccess(identification, academic):
 def getRules():
     global rules
 
-
     data = {
         'key': API_KEY
     }
