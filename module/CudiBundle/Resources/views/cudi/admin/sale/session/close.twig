@@ -10,6 +10,7 @@
         <p>Manager: <b>{{ session.getManager().getFullName() }}</b></p>
         <p>Date openend: <b>{{ session.getOpenDate().format('Y-m-d H:i:s') }}</b></p>
         {% set theoreticalRevenue = session.getTheoreticalRevenue() %}
+        {% set actualRevenue = session.getActualRevenue() %}
         <p>Theoretical Revenue: <b>&euro; {{ (theoreticalRevenue/100)|number_format(2) }}</b></p>
         <p>Actual Revenue: <b>&euro; <span id="actualRevenue">0.00</span></b></p>
         <p>Delta: <b>&euro; <span id="deltaRevenue">{{ (-theoreticalRevenue/100)|number_format(2) }}</span></b></p>
