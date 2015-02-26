@@ -18,7 +18,6 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-
 use CommonBundle\Component\Form\ElementTrait,
     Zend\Form\FormInterface;
 

@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Component\Form;
 
-
-
 use Traversable,
     Zend\Form\FormInterface,
     Zend\Stdlib\ArrayUtils;

@@ -18,8 +18,6 @@
 
 namespace BrBundle\Test\Component\ContractParserTest;
 
-
-
 use BrBundle\Component\ContractParser\IllegalFormatException,
     BrBundle\Component\ContractParser\Parser,
     PHPUnit_Framework_TestCase;

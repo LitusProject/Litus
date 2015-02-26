@@ -18,21 +18,6 @@
 
 namespace CommonBundle\Controller;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 use CommonBundle\Component\PassKit\Pass\Membership,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\User\Credential,

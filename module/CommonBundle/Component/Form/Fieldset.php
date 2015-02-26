@@ -18,7 +18,6 @@
 
 namespace CommonBundle\Component\Form;
 
-
 use Zend\Form\FormInterface,
     Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 

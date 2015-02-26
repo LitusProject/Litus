@@ -18,14 +18,6 @@
 
 namespace CommonBundle\Component\Form;
 
-
-
-
-
-
-
-
-
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     CommonBundle\Component\Validator\FormAwareInterface,
     RuntimeException,
