@@ -38,6 +38,8 @@ class Edit extends Add
         $this->remove('submit');
         $this->remove('submit_repeat');
 
-        $this->addSubmit('Save', 'field_edit');
+        $this->addSubmit('Save', 'form_edit');
+
+        $this->bind($this->_field);
     }
 }
