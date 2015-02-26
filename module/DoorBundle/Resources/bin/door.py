@@ -1,9 +1,10 @@
-#!/usr/bin/python
+#! /usr/bin/python
 
 #
 # Door
+#
 # @author Pieter Maene <pieter.maene@litus.cc>
-# @author Kristof Mariën <kristof.marien@litus.cc>
+# @author Kristof Marien <kristof.marien@litus.cc>
 #
 
 import datetime
@@ -54,7 +55,6 @@ def allowAccess(identification, academic):
 
 def getRules():
     global rules
-
 
     data = {
         'key': API_KEY

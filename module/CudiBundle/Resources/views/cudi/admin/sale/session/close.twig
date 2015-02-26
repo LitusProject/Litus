@@ -22,7 +22,7 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if theoreticalRevenue - actualRevenue < 0 %}+{% endif %}{{ ((actualRevenue - theoreticalRevenue)/100)|number_format(2) }}
+            {% set startCash = session.getOpenRegister().getTotalAmount() %}
             $('#controller_action form input').keyup(function () {
                 var value = 0;
                 $('#controller_action form input.moneyunit').each(function () {
@@ -31,8 +31,8 @@
                 $('#controller_action form input.device').each(function () {
                     value += $(this).val() * 100;
                 });
-                $('#actualRevenue').html((value/100).toFixed(2));
-                $('#deltaRevenue').html(((value - {{ session.getTheoreticalRevenue() }})/100).toFixed(2));
+                $('#actualRevenue').html(((value - {{ startCash }})/100).toFixed(2));
+                $('#deltaRevenue').html(((value - {% if theoreticalRevenue == 0%}0{% else %}{{ theoreticalRevenue }}{% endif %})/100).toFixed(2));
             })
         });
     </script>
