@@ -69,6 +69,12 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(array(
             'type'       => 'checkbox',
+            'name'       => 'test',
+            'label'      => 'Test Mail',
+        ));
+
+        $this->add(array(
+            'type'       => 'checkbox',
             'name'       => 'html',
             'label'      => 'HTML Mail',
         ));
