@@ -40,12 +40,10 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
         $form = $this->getForm('mail_promotion_mail');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData(
-                array_merge(
-                    $this->getRequest()->getPost()->toArray(),
-                    $this->getRequest()->getFiles()->toArray()
-                )
-            );
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -53,6 +51,8 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 $people = array();
                 $enrollments = array();
                 $groupIds = isset($formData['groups']) ? $formData['groups'] : null;
+
+                $addresses = array();
 
                 foreach ($formData['to'] as $to) {
                     $academicYear = $this->getEntityManager()
@@ -87,6 +87,12 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                                 }
                             }
                         }
+
+                        foreach ($enrollments as $enrollment) {
+                            if (null !== $enrollment->getAcademic()->getPersonalEmail()) {
+                                array_push($addresses, $enrollment->getAcademic()->getPersonalEmail());
+                            }
+                        }
                     } else {
                         $people = array_merge(
                             $people,
@@ -94,28 +100,38 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                                 ->getRepository('SecretaryBundle\Entity\Promotion')
                                 ->findAllByAcademicYear($academicYear)
                         );
-                    }
-                }
 
-                foreach ($enrollments as $enrollment) {
-                    array_push($people, $enrollment->getAcademic());
+                        foreach ($people as $person) {
+                            if (null !== $person->getEmailAddress()) {
+                                array_push($addresses, $person->getEmailAddress());
+                            }
+                        }
+                    }
                 }
 
                 $mailName = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('secretary.mail_name');
 
-                $body = $formData['message'];
+                $from = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.mail');
 
-                $part = new Part($body);
-                $part->type = Mime::TYPE_TEXT;
-                $part->charset = 'utf-8';
+                if ('' == $formData['selected_message']['stored_message']) {
+                    $body = $formData['compose_message']['message'];
 
-                $message = new MimeMessage();
-                $message->addPart($part);
+                    $part = new Part($body);
 
-                if (!empty($formData['file'])) {
-                    foreach ($formData['file'] as $file) {
+                    $part->type = Mime::TYPE_TEXT;
+                    if ($formData['html']) {
+                        $part->type = Mime::TYPE_HTML;
+                    }
+
+                    $part->charset = 'utf-8';
+                    $message = new MimeMessage();
+                    $message->addPart($part);
+
+                    foreach ($formData['compose_message']['file'] as $file) {
                         if (!$file['size']) {
                             continue;
                         }
@@ -127,38 +143,78 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                         $part->filename = $file['name'];
                         $part->encoding = Mime::ENCODING_BASE64;
 
+                        unlink($file['tmp_name']);
+
                         $message->addPart($part);
                     }
+
+                    $mail = new Message();
+                    $mail->setBody($message)
+                        ->setFrom($from, $mailName)
+                        ->addTo($from, $mailName)
+                        ->setSubject($formData['compose_message']['subject']);
+                } else {
+                    $storedMessage = $this->getDocumentManager()
+                        ->getRepository('MailBundle\Document\Message')
+                        ->findOneById($formData['selected_message']['stored_message']);
+
+                    $body = $storedMessage->getBody();
+
+                    $part = new Part($body);
+
+                    $part->type = Mime::TYPE_TEXT;
+                    if ($storedMessage->getType() == 'html') {
+                        $part->type = Mime::TYPE_HTML;
+                    }
+
+                    $part->charset = 'utf-8';
+                    $message = new MimeMessage();
+                    $message->addPart($part);
+
+                    foreach ($storedMessage->getAttachments() as $attachment) {
+                        $part = new Part($attachment->getData());
+                        $part->type = $attachment->getContentType();
+                        $part->id = $attachment->getFilename();
+                        $part->disposition = 'attachment';
+                        $part->filename = $attachment->getFilename();
+                        $part->encoding = Mime::ENCODING_BASE64;
+
+                        $message->addPart($part);
+                    }
+
+                    $mail = new Message();
+                    $mail->setBody($message)
+                        ->setFrom($from, $mailName)
+                        ->addTo($from, $mailName)
+                        ->setSubject($storedMessage->getSubject());
                 }
-
-                $from = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('secretary.mail');
-
-                $mail = new Message();
-                $mail->setBody($message)
-                    ->setFrom($from, $mailName)
-                    ->addTo($from, $mailName)
-                    ->setSubject($formData['subject']);
 
                 $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
                 foreach ($bccs as $bcc) {
                     $mail->addBcc($bcc);
                 }
                 $i = 0;
-                foreach ($people as $person) {
-                    if (null !== $person->getEmailAddress()) {
-                        $i++;
-                        $mail->addBcc($person->getEmailAddress(), $person->getFullName());
+                if ($formData['test']) {
+                    $body = '<br/>This email would have been sent to:<br/>';
+                    foreach ($addresses as $address) {
+                        $body = $body . $address . '<br/>';
                     }
+                    $part = new Part($body);
+                    $part->type = Mime::TYPE_HTML;
+                    $message->addPart($part);
+                } else {
+                    foreach ($addresses as $address) {
+                        $i++;
+                        $mail->addBcc($address);
 
-                    if ($i == 500) {
-                        $i = 0;
-                        if ('development' != getenv('APPLICATION_ENV')) {
-                            $this->getMailTransport()->send($mail);
+                        if ($i == 500) {
+                            $i = 0;
+                            if ('development' != getenv('APPLICATION_ENV')) {
+                                $this->getMailTransport()->send($mail);
+                            }
+
+                            $mail->setBcc(array());
                         }
-
-                        $mail->setBcc(array());
                     }
                 }
 

@@ -126,13 +126,24 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
         foreach ($this->getLanguages() as $language) {
             $languageData = $data['tab_content']['tab_' . $language->getAbbrev()];
             if ('' != $languageData['label']) {
-                $translation = new TranslationEntity(
-                    $object,
-                    $language,
-                    $languageData['label']
-                );
+                $translation = $object->getTranslation($language, false);
 
-                $this->getEntityManager()->persist($translation);
+                if (null === $translation) {
+                    $translation = new TranslationEntity(
+                        $object,
+                        $language,
+                        $languageData['label']
+                    );
+                    $this->getEntityManager()->persist($translation);
+                } else {
+                    $translation->setLabel($languageData['label']);
+                }
+            } else {
+                $translation = $object->getTranslation($language, false);
+
+                if ($translation !== null) {
+                    $this->getEntityManager()->remove($translation);
+                }
             }
         }
 
@@ -156,10 +167,16 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
 
         if ($object instanceof StringFieldEntity) {
             $data['type'] = 'string';
+
+            $lines = 0;
+            if ($object->isMultiLine()) {
+                $lines = $object->getLines();
+            }
+
             $data['string_form'] = array(
                 'charsperline' => $object->getLineLength(),
-                'lines' => $object->getLines(),
                 'multiline' => $object->isMultiLine(),
+                'lines' => $lines,
             );
         } elseif ($object instanceof DropdownFieldEntity) {
             $data['type'] = 'dropdown';

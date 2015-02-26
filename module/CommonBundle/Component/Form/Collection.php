@@ -71,7 +71,7 @@ class Collection extends \Zend\Form\Element\Collection implements FieldsetInterf
     public function extract()
     {
         if ($this->object instanceof Traversable) {
-            $this->object = ArrayUtils::iteratorToArray($this->object, false);
+            $this->object = (object) ArrayUtils::iteratorToArray($this->object, false);
         }
 
         if (!is_array($this->object)) {

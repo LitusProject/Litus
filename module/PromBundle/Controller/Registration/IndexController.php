@@ -166,7 +166,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                         if (isset($firstBus)) {
                             $mail = new Message();
 
-                            $mail->addBcc($newPassenger->getEmail());
+                            $mail->addTo($newPassenger->getEmail());
 
                             $mailData = unserialize(
                                 $this->getEntityManager()
@@ -187,7 +187,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                         if (isset($secondBus)) {
                             $mail = new Message();
 
-                            $mail->addBcc($newPassenger->getEmail());
+                            $mail->addTo($newPassenger->getEmail());
 
                             $mailData = unserialize(
                                 $this->getEntityManager()

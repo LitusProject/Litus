@@ -25,6 +25,8 @@ namespace MailBundle\Form\Admin\Promotion;
  */
 class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
+    const FILESIZE = '50MB';
+
     public function init()
     {
         parent::init();
@@ -66,20 +68,15 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         }
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'subject',
-            'label'      => 'Subject',
-            'required'   => true,
-            'attributes' => array(
-                'style' => 'width: 400px;',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
+            'type'       => 'checkbox',
+            'name'       => 'test',
+            'label'      => 'Test Mail',
+        ));
+
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'html',
+            'label'      => 'HTML Mail',
         ));
 
         $this->add(array(
@@ -101,37 +98,82 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $this->add(array(
-            'type'       => 'textarea',
-            'name'       => 'message',
-            'label'      => 'Message',
-            'required'   => true,
-            'attributes' => array(
-                'style' => 'width: 500px; height: 200px;',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $storedMessages = $this->_getStoredMessages();
+        if (1 <= count($storedMessages)) {
+            $this->add(array(
+                'type'     => 'fieldset',
+                'name'     => 'selected_message',
+                'label'    => 'Select Message',
+                'elements' => array(
+                    array(
+                        'type'       => 'select',
+                        'name'       => 'stored_message',
+                        'label'      => 'Stored Message',
+                        'attributes' => array(
+                            'style' => 'max-width: 100%;',
+                        ),
+                        'options'    => array(
+                            'options' => $storedMessages,
+                        ),
                     ),
                 ),
-            ),
-        ));
+            ));
+        }
 
         $this->add(array(
-            'type'       => 'file',
-            'name'       => 'file',
-            'label'      => 'Attachments',
-            'attributes' => array(
-                'multiple' => true,
-            ),
-            'options'    => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name' => 'filefilessize',
-                            'options' => array(
-                                'max' => '50MB',
+            'type'     => 'fieldset',
+            'name'     => 'compose_message',
+            'label'    => 'Compose Message',
+            'elements' => array(
+                array(
+                    'type'       => 'text',
+                    'name'       => 'subject',
+                    'label'      => 'Subject',
+                    'required'   => true,
+                    'attributes' => array(
+                        'style' => 'width: 400px;',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'textarea',
+                    'name'       => 'message',
+                    'label'      => 'Message',
+                    'required'   => true,
+                    'attributes' => array(
+                        'style' => 'width: 500px; height: 200px;',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'file',
+                    'name'       => 'file',
+                    'label'      => 'Attachments',
+                    'attributes' => array(
+                        'multiple' => true,
+                        'data-help' => 'The maximum file size is ' . self::FILESIZE . '.',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'validators' => array(
+                                array(
+                                    'name' => 'filesize',
+                                    'options' => array(
+                                        'max' => self::FILESIZE,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -139,7 +181,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $this->addSubmit('Send', 'mail');
+        $this->addSubmit('Send', 'mail', 'Send');
     }
 
     private function _createPromotionsArray()
@@ -154,5 +196,33 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         }
 
         return $promotionsArray;
+    }
+
+    private function _getStoredMessages()
+    {
+        $storedMessages = $this->getDocumentManager()
+            ->getRepository('MailBundle\Document\Message')
+            ->findAll();
+
+        $storedMessagesTitles = array(
+            '' => '',
+        );
+        foreach ($storedMessages as $storedMessage) {
+            $storedMessagesTitles[$storedMessage->getId()] = '(' . $storedMessage->getCreationTime()->format('d/m/Y') . ') ' . $storedMessage->getSubject();
+        }
+
+        return $storedMessagesTitles;
+    }
+
+    public function getInputFilterSpecification()
+    {
+        $specs = parent::getInputFilterSpecification();
+
+        if ($this->has('select_message') && $this->get('select_message')->get('stored_message')->getValue() != '') {
+            $specs['compose_message']['subject']['required'] = false;
+            $specs['compose_message']['message']['required'] = false;
+        }
+
+        return $specs;
     }
 }
