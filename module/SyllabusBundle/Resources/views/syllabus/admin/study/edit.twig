@@ -15,7 +15,7 @@
         <p>Language: <b>{{ study.getLanguage() }}</b></p>
         <br />
 
-        {% if hasAccess('syllabus_admin_study', 'add') %}
+        {% if hasAccess('syllabus_admin_study', 'edit') %}
             {% import 'admin/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
             <br style="clear:both" />
