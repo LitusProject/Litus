@@ -72,15 +72,15 @@
                 saveChanges();
             });
 
-            $('#subjectSearch').typeaheadRemote(
+            $('#subject').typeaheadRemote(
                 {
-                    source: '{{ url("subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+                    source: '{{ url('subject_typeahead', {'academicyear': currentAcademicYear.getCode() })}}'
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#subjectId').val($(this).data('value').id);
+                    $('[name="subject[id]"]').val($(this).data('value').id);
                 } else {
-                    $('#subjectId').val('');
+                    $('[name="subject[id]"]').val('');
                 }
             });
         });
