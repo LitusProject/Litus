@@ -138,7 +138,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         $form = $this->getForm('syllabus_study_edit', array('study' => $study));
 
-        if ($this->getRequest()->isPost() && $this->hasAccess()->toResourceAction('syllabus_admin_study', 'add')) {
+        if ($this->getRequest()->isPost() && $this->hasAccess()->toResourceAction('syllabus_admin_study', 'edit')) {
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
