@@ -115,27 +115,18 @@
                 <fo:table-column column-width="30mm"/>
 
                 <fo:table-body>
-                    <xsl:apply-templates select="study"/>
+                    <fo:table-cell>
+                        <fo:block><xsl:value-of select="title"/></fo:block>
+                    </fo:table-cell>
+                    <fo:table-cell>
+                        <fo:block><xsl:value-of select="@start"/> - <xsl:value-of select="@end"/></fo:block>
+                    </fo:table-cell>
+                    <fo:table-cell>
+                        <fo:block><xsl:value-of select="@percentage"/>%</fo:block>
+                    </fo:table-cell>
                 </fo:table-body>
-
             </fo:table>
-
         </fo:block>
-    </xsl:template>
-
-    <!-- A single row in the study table -->
-    <xsl:template match="study">
-        <fo:table-row>
-            <fo:table-cell>
-                <fo:block><xsl:value-of select="title"/></fo:block>
-            </fo:table-cell>
-            <fo:table-cell>
-                <fo:block><xsl:value-of select="@start"/> - <xsl:value-of select="@end"/></fo:block>
-            </fo:table-cell>
-            <fo:table-cell>
-                <fo:block><xsl:value-of select="@percentage"/>%</fo:block>
-            </fo:table-cell>
-        </fo:table-row>
     </xsl:template>
 
     <!-- The languages table -->
@@ -164,27 +155,18 @@
                 </fo:table-header>
 
                 <fo:table-body>
-                    <xsl:apply-templates select="language"/>
+                    <fo:table-cell>
+                        <fo:block><xsl:value-of select="@name"/></fo:block>
+                    </fo:table-cell>
+                    <fo:table-cell>
+                        <fo:block><xsl:value-of select="@oral"/></fo:block>
+                    </fo:table-cell>
+                    <fo:table-cell>
+                        <fo:block><xsl:value-of select="@written"/></fo:block>
+                    </fo:table-cell>
                 </fo:table-body>
-
             </fo:table>
-
         </fo:block>
-    </xsl:template>
-
-    <!-- A single row in the language table -->
-    <xsl:template match="language">
-        <fo:table-row>
-            <fo:table-cell>
-                <fo:block><xsl:value-of select="@name"/></fo:block>
-            </fo:table-cell>
-            <fo:table-cell>
-                <fo:block><xsl:value-of select="@oral"/></fo:block>
-            </fo:table-cell>
-            <fo:table-cell>
-                <fo:block><xsl:value-of select="@written"/></fo:block>
-            </fo:table-cell>
-        </fo:table-row>
     </xsl:template>
 
     <!-- The erasmus section -->
