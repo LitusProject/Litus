@@ -167,39 +167,17 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             array(
                 new Object(
                     'sec-special-studies',
-                    null,
                     array(
-                        new Object(
-                            'study',
-                            array(
-                                'start'         => (string) $cv->getMasterStart(),
-                                'end'           => (string) $cv->getMasterEnd(),
-                                'percentage'    => (string) ($cv->getGrade() / 100),
-                            ),
-                            array(
-                                new Object(
-                                    'title',
-                                    null,
-                                    $cv->getStudy()->getFullTitle()
-                                ),
-                            )
-                        ),
-                        new Object(
-                            'study',
-                            array(
-                                'start'         => (string) $cv->getBachelorStart(),
-                                'end'           => (string) $cv->getBachelorEnd(),
-                                'percentage'    => (string) ($cv->getPriorGrade() / 100),
-                            ),
-                            array(
-                                new Object(
-                                    'title',
-                                    null,
-                                    $cv->getPriorStudy()
-                                ),
-                            )
-                        ),
-                    )
+                        'start_master'          => (string) $cv->getMasterStart(),
+                        'end_master'            => (string) $cv->getMasterEnd(),
+                        'percentage_master'     => (string) ($cv->getGrade() / 100),
+                        'title_master'          => $cv->getStudy()->getFullTitle(),
+                        'start_bach'            => (string) $cv->getBachelorStart(),
+                        'end_bach'              => (string) $cv->getBachelorEnd(),
+                        'percentage_bach'       => (string) ($cv->getPriorGrade() / 100),
+                        'title_bach'            => $cv->getPriorStudy(),
+                    ),
+                    null
                 ),
             )
         );
@@ -234,6 +212,18 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             );
         }
 
+        $index = 1;
+        $languages = array();
+        foreach ($cv->getLanguages() as $language) {
+            $tmp = array(
+                'name' . $index      => $language->getName(),
+                'oral' . $index      => $this->_translator->translate($language->getOralSkill()),
+                'written' . $index   => $this->_translator->translate($language->getWrittenSkill()),
+            );
+            $languages = array_merge($languages,$tmp);
+            $index++;
+        }
+
         $result[] = new Object(
             'section',
             array(
@@ -242,11 +232,14 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             array(
                 new Object(
                     'sec-special-languages',
-                    array(
+                    array_merge(
+                        array(
                         'oral' => $this->_translator->translate('Oral Skills'),
                         'written' => $this->_translator->translate('Written Skills'),
+                        ),
+                        $languages
                     ),
-                    $this->_getLanguageArray($cv)
+                    null
                 ),
                 new Object(
                     'subsection',
