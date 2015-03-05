@@ -182,7 +182,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                                     ->getConfigValue('prom.confirmation_mail')
                             );
 
-                            $mail->setBody(str_replace('{{ busTime }}', $firstBus->getDepartureTime()->format('d/m/Y h:i'),$mailData['body']))
+                            $mail->setBody(str_replace('{{ busTime }}', $firstBus->getDepartureTime()->format('d/m/Y H:i'),$mailData['body']))
                                 ->setFrom($mailData['from'])
                                 ->addBcc($mailData['from'])
                                 ->setSubject($mailData['subject']);
@@ -203,7 +203,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                                     ->getConfigValue('prom.confirmation_mail')
                             );
 
-                            $mail->setBody(str_replace('{{ busTime }}', $secondBus->getDepartureTime()->format('d/m/Y h:i'),$mailData['body']))
+                            $mail->setBody(str_replace('{{ busTime }}', $secondBus->getDepartureTime()->format('d/m/Y H:i'),$mailData['body']))
                                 ->setFrom($mailData['from'])
                                 ->addBcc($mailData['from'])
                                 ->setSubject($mailData['subject']);

@@ -37,6 +37,7 @@ class Bus extends EntityRepository
                 $query->expr()->eq('b.direction', ':direction')
             )
             ->setParameter('direction', 'Go')
+            ->orderBy('b.departureTime', 'ASC')
             ->getQuery()
             ->getResult();
 
@@ -52,6 +53,7 @@ class Bus extends EntityRepository
                 $query->expr()->eq('b.direction', ':direction')
             )
             ->setParameter('direction', 'Return')
+            ->orderBy('b.departureTime', 'ASC')
             ->getQuery()
             ->getResult();
 
