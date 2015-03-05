@@ -181,8 +181,6 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                                     ->getRepository('CommonBundle\Entity\General\Config')
                                     ->getConfigValue('prom.confirmation_mail')
                             );
-                            print_r($firstBus->getDepartureTime()->format('d/m/Y H:i'));
-                            exit();
 
                             $mail->setBody(str_replace('{{ busTime }}', $firstBus->getDepartureTime()->format('d/m/Y H:i'),$mailData['body']))
                                 ->setFrom($mailData['from'])
