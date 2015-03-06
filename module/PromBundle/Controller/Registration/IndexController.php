@@ -33,6 +33,10 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
         $createForm = $this->getForm('prom_registration_create');
         $manageForm = $this->getForm('prom_registration_manage');
 
+        $enable = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('prom.enable_reservations');
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
@@ -133,10 +137,6 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                 }
             }
         }
-
-        $enable = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('prom.enable_reservations');
 
         return new ViewModel(
             array(
