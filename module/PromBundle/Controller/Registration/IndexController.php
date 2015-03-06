@@ -46,6 +46,17 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                         ->getRepository('PromBundle\Entity\Bus\ReservationCode')
                         ->codeExist($createFormData['create']['ticket_code']);
 
+                    if (! $codeExist) {
+                        return new ViewModel(
+                            array(
+                                'enable'     => $enable,
+                                'createForm' => $createForm,
+                                'manageForm' => $manageForm,
+                                'status'     => 'fail_code',
+                            )
+                        );
+                    }
+
                     $code = $this->getEntityManager()
                             ->getRepository('PromBundle\Entity\Bus\ReservationCode')
                             ->getRegistrationCodeByCode($createFormData['create']['ticket_code']);
@@ -66,6 +77,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                     } else {
                         return new ViewModel(
                             array(
+                                'enable'     => $enable,
                                 'createForm' => $createForm,
                                 'manageForm' => $manageForm,
                                 'status'     => 'fail_code',
@@ -101,6 +113,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                         } else {
                             return new ViewModel(
                                 array(
+                                    'enable'     => $enable,
                                     'createForm' => $createForm,
                                     'manageForm' => $manageForm,
                                     'status'     => 'fail_combination',
@@ -110,6 +123,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                     } else {
                         return new ViewModel(
                             array(
+                                'enable'     => $enable,
                                 'createForm' => $createForm,
                                 'manageForm' => $manageForm,
                                 'status'     => 'fail_code',
