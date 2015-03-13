@@ -37,14 +37,14 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('PromBundle\Entity\Bus')
-                ->findAll(),
+                ->findAllBuses(),
             $this->getParam('page')
         );
 
         return new ViewModel(
             array(
                 'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(),
             )
         );
     }

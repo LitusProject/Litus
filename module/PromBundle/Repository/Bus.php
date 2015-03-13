@@ -59,4 +59,16 @@ class Bus extends EntityRepository
 
         return $resultArray;
     }
+
+    public function findAllBuses()
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultArray = $query->select('b')
+            ->from('PromBundle\Entity\Bus', 'b')
+            ->orderBy('b.departureTime', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $resultArray;
+    }
 }
