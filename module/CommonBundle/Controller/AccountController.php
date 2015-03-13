@@ -158,35 +158,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $membershipArticles = array();
         foreach ($ids as $organization => $id) {
-            echo $id;
             $membershipArticles[$organization] = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($id);
-        }
-
-        $tshirts = unserialize(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.tshirt_article')
-        );
-
-        $oldTshirtBooking = null;
-        $oldTshirtSize = null;
-        if (null !== $metaData) {
-            if ($enableRegistration) {
-                if (null !== $metaData->getTshirtSize()) {
-                    $oldTshirtBooking = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Booking')
-                        ->findOneAssignedByArticleAndPersonInAcademicYear(
-                            $this->getEntityManager()
-                                ->getRepository('CudiBundle\Entity\Sale\Article')
-                                ->findOneById($tshirts[$metaData->getTshirtSize()]),
-                            $academic,
-                            $this->getCurrentAcademicYear()
-                        );
-                }
-            }
-            $oldTshirtSize = $metaData->getTshirtSize();
         }
 
         if ($this->getRequest()->isPost()) {

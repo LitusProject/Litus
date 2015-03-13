@@ -23,9 +23,7 @@ use CommonBundle\Entity\User\Status\University as UniversityStatus,
 
 class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array(
-        'tshirt_size',
-    );
+    private static $std_keys = array();
 
     protected function doExtract($object = null)
     {
