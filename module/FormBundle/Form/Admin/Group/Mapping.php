@@ -18,65 +18,43 @@
 
 namespace FormBundle\Form\Admin\Group;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add Mapping
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Mapping extends \CommonBundle\Component\Form\Admin\Form\Tabbable
+class Mapping extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'form',
+            'label'      => 'Form',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->getActiveForms(),
+            ),
+        ));
 
-        $field = new Select('form');
-        $field->setLabel('Form')
-            ->setAttribute('options', $this->getActiveForms());
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'form_add');
-        $this->add($field);
-    }
-
-    protected function getLanguages()
-    {
-        return $this->_entityManager
-            ->getRepository('CommonBundle\Entity\General\Language')
-            ->findAll();
+        $this->addSubmit('Add', 'form_add');
     }
 
     private function getActiveForms()
     {
-        $forms = $this->_entityManager
+        $forms = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Form')
             ->findAllActive();
 
-        $language = $this->_entityManager
+        $language = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
 
         $options = array();
         foreach ($forms as $form) {
-            $group = $this->_entityManager
+            $group = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Group\Mapping')
                 ->findOneByForm($form);
 
@@ -86,22 +64,5 @@ class Mapping extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         }
 
         return $options;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'form',
-                    'required' => true,
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }

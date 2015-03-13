@@ -18,9 +18,9 @@
 
 namespace BrBundle\Component\ContractParser;
 
+use Exception;
+
 /**
- *
- *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class EntriesOnlyEntry extends Entry
@@ -30,7 +30,10 @@ class EntriesOnlyEntry extends Entry
         parent::__construct('');
     }
 
-    public function addNodeToList($node)
+    /**
+     * @param Node $node
+     */
+    public function addNodeToList(Node $node)
     {
         if ($node instanceof Text) {
             throw new IllegalFormatException('There is no text allowed without a parent-entry at the place');
@@ -39,6 +42,9 @@ class EntriesOnlyEntry extends Entry
         parent::addNodeToList($node);
     }
 
+    /**
+     * @return Node|null
+     */
     public function getEntries()
     {
         if (count($this->getNodes()) == 0) {
@@ -48,7 +54,7 @@ class EntriesOnlyEntry extends Entry
         if (count($this->getNodes()) == 1) {
             return $this->getNodes()[0];
         } else {
-            throw new \Exception("There should be only one or zero entries.");
+            throw new Exception("There should be only one or zero entries.");
         }
     }
 }

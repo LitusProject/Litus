@@ -18,27 +18,18 @@
 
 namespace OnBundle\Component\Validator;
 
-use Doctrine\ODM\MongoDB\DocumentManager,
-    OnBundle\Document\Slug;
-
 /**
  * Checks whether a slug name already exists.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Name extends \Zend\Validator\AbstractValidator
+class Name extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const TITLE_EXISTS = 'nameExists';
 
-    /**
-     * @var DocumentManager The DocumentManager instance
-     */
-    protected $_documentManager = null;
-
-    /**
-     * @var Slug The slug to ignore
-     */
-    private $_slug;
+    protected $options = array(
+        'slug' => null,
+    );
 
     /**
      * @var array The error messages
@@ -48,16 +39,19 @@ class Name extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param DocumentManager $documentManager The DocumentManager instance
-     * @param Slug|null       $slug            The slug that should be ignored when checking for duplicate names
-     * @param mixed           $opts            The validator's options.
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
      */
-    public function __construct(DocumentManager $documentManager, Slug $slug = null, $opts = array())
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['slug'] = array_shift($args);
+        }
 
-        $this->_documentManager = $documentManager;
-        $this->_slug = $slug;
+        parent::__construct($options);
     }
 
     /**
@@ -69,11 +63,11 @@ class Name extends \Zend\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-        $slug = $this->_documentManager
+        $slug = $this->getDocumentManager()
             ->getRepository('OnBundle\Document\Slug')
             ->findOneByName($value);
 
-        if (null === $slug || ($this->_slug && $slug == $this->_slug)) {
+        if (null === $slug || ($this->options['slug'] && $slug == $this->options['slug'])) {
             return true;
         }
 

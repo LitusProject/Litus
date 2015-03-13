@@ -20,10 +20,12 @@ namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language,
     DateTime,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
     FormBundle\Entity\Node\Form,
-    IntlDateFormatter;
+    IntlDateFormatter,
+    Locale;
 
 /**
  * This entity stores the node item.
@@ -48,27 +50,20 @@ class TimeSlot extends Field
     private $endDate;
 
     /**
-     * @var array The translations of this field
+     * @var ArrayCollection The translations of this field
      *
      * @ORM\OneToMany(targetEntity="FormBundle\Entity\Field\Translation\TimeSlot", mappedBy="timeslot", cascade={"remove"})
      */
     private $timeslotTranslations;
 
     /**
-     * @param Form        $form
-     * @param integer     $order
-     * @param bool        $required
-     * @param Field|null  $visibityDecisionField
-     * @param string|null $visibilityValue
-     * @param DateTime    $startDate
-     * @param DateTime    $endDate
-     */
-    public function __construct(Form $form, $order, $required, Field $visibityDecisionField = null, $visibilityValue = null, DateTime $startDate, DateTime $endDate)
+    * @param Form $form
+    */
+    public function __construct(Form $form)
     {
-        parent::__construct($form, $order, $required, $visibityDecisionField, $visibilityValue);
+        parent::__construct($form);
 
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
+        $this->timeslotTranslations = new ArrayCollection();
     }
 
     /**
@@ -83,7 +78,7 @@ class TimeSlot extends Field
      * @param  DateTime $startDate
      * @return self
      */
-    public function setStartDate($startDate)
+    public function setStartDate(DateTime $startDate)
     {
         $this->startDate = $startDate;
 
@@ -102,7 +97,7 @@ class TimeSlot extends Field
      * @param  DateTime $endDate
      * @return self
      */
-    public function setEndDate($endDate)
+    public function setEndDate(DateTime $endDate)
     {
         $this->endDate = $endDate;
 
@@ -117,7 +112,7 @@ class TimeSlot extends Field
      */
     public function getLabel(Language $language = null, $allowFallback = true)
     {
-        $locale = isset($language) ? $language->getAbbrev() : \Locale::getDefault();
+        $locale = isset($language) ? $language->getAbbrev() : Locale::getDefault();
 
         $formatterDate = new IntlDateFormatter(
             $locale,
@@ -191,7 +186,7 @@ class TimeSlot extends Field
                 return $translation;
             }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
                 $fallbackTranslation = $translation;
             }
         }

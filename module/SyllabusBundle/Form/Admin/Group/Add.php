@@ -18,16 +18,7 @@
 
 namespace SyllabusBundle\Form\Admin\Group;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    Doctrine\ORM\EntityManager,
-    MailBundle\Component\Validator\MultiMail as MultiMailValidator,
-    SyllabusBundle\Component\Validator\Group\Name as NameValidator,
-    SyllabusBundle\Entity\Group,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use SyllabusBundle\Entity\Group;
 
 /**
  * Add Group
@@ -36,110 +27,91 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'SyllabusBundle\Hydrator\Group';
 
     /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
+     * @var Group|null
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    protected $group = null;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'name',
+            'label'      => 'Name',
+            'required'   => true,
+            'attributes' => array(
+                'size' => 70,
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'syllabus_group_name',
+                            'options' => array(
+                                'exclude' => $this->group,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('name');
-        $field->setLabel('Name')
-            ->setAttribute('size', 70)
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'cv_book',
+            'label' => 'Show in CV Book',
+        ));
 
-        $field = new Checkbox('cvbook');
-        $field->setLabel('Show in CV Book');
-        $this->add($field);
+        $this->add(array(
+            'type'    => 'textarea',
+            'name'    => 'extra_members',
+            'label'   => 'Extra Members',
+            'options' => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'mail_multi_mail'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Textarea('extra_members');
-        $field->setLabel('Extra Members');
-        $this->add($field);
+        $this->add(array(
+            'type'    => 'textarea',
+            'name'    => 'excluded_members',
+            'label'   => 'Excluded Members',
+            'options' => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'mail_multi_mail'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Textarea('excluded_members');
-        $field->setLabel('Excluded Members');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
+        $this->addSubmit('Add', 'add');
     }
 
-    protected function populateFromGroup(Group $group)
+    /**
+     * @param  Group $group
+     * @return self
+     */
+    public function setGroup(Group $group)
     {
-        $extraMembers = unserialize($group->getExtraMembers());
-        $excludedMembers = unserialize($group->getExcludedMembers());
+        $this->group = $group;
 
-        $this->setData(
-            array(
-                'name' => $group->getName(),
-                'cvbook' => $group->getCvBook(),
-                'extra_members' => $extraMembers ? implode(',', $extraMembers) : '',
-                'excluded_members' => $excludedMembers ? implode(',', $excludedMembers) : '',
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new NameValidator($this->_entityManager),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'extra_members',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new MultiMailValidator(),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'excluded_members',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new MultiMailValidator(),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        return $this;
     }
 }

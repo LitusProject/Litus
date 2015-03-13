@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Entity\User;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * This entity stores a user's credentials.
@@ -71,14 +72,14 @@ class Credential
     /**
      * Constructs a new credential
      *
-     * @param  string                    $algorithm  The algorithm that should be used to create the hash
-     * @param  string                    $credential The credential that will be hashed and stored
-     * @throws \InvalidArgumentException
+     * @param  string                   $algorithm  The algorithm that should be used to create the hash
+     * @param  string                   $credential The credential that will be hashed and stored
+     * @throws InvalidArgumentException
      */
     public function __construct($credential, $algorithm = self::DEFAULT_ALGORITHM, $iterations = self::DEFAULT_NB_ITERATIONS)
     {
         if (!in_array($algorithm, hash_algos())) {
-            throw new \InvalidArgumentException('Invalid hash algorithm given: ' . $algorithm);
+            throw new InvalidArgumentException('Invalid hash algorithm given: ' . $algorithm);
         }
 
         $this->algorithm = $algorithm;

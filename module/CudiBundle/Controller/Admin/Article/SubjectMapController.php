@@ -22,7 +22,6 @@ use CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Log\Article\SubjectMap\Added as AddedLog,
     CudiBundle\Entity\Log\Article\SubjectMap\Removed as RemovedLog,
-    CudiBundle\Form\Admin\Article\Mapping\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -42,18 +41,17 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('cudi_article_mapping_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $subject = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Subject')
-                    ->findOneById($formData['subject_id']);
+                    ->findOneById($formData['subject']['id']);
 
                 $mapping = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article\SubjectMap')

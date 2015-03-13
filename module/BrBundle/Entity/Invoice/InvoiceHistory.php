@@ -19,8 +19,7 @@
 namespace BrBundle\Entity\Invoice;
 
 use BrBundle\Entity\Invoice,
-    BrBundle\Entity\Product\OrderEntry,
-    Doctrine\ORM\EntityManager,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,7 +38,7 @@ class InvoiceHistory
     private $id;
 
     /**
-     * @var BrBundle\Entity\Invoice The newest version of the two
+     * @var Invoice The newest version of the two
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Invoice")
      * @ORM\JoinColumn(name="invoice", referencedColumnName="id")
@@ -47,7 +46,7 @@ class InvoiceHistory
     private $invoice;
 
     /**
-     * @var BrBundle\Entity\Invoice\InvoiceEntry The oldest version of the two
+     * @var ArrayCollection The oldest version of the two
      *
      * @ORM\OneToMany(targetEntity="BrBundle\Entity\Invoice\InvoiceEntry", mappedBy="invoice", cascade={"persist"})
      * @ORM\JoinColumn(name="precursor", referencedColumnName="id")
@@ -62,35 +61,42 @@ class InvoiceHistory
     private $version;
 
     /**
-     * @param \BrBundle\Entity\Invoice $invoice
+     * @param Invoice $invoice
      */
     public function __construct(Invoice $invoice)
     {
-        $this->_setInvoice($invoice);
-        $this->_setEntries($invoice);
+        $this->invoice = $invoice;
+        $this->entries = new ArrayCollection($invoice->getEntries());
         $this->version = $invoice->getVersion();
     }
 
+    /**
+    * @return int
+    */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Invoice
+     */
     public function getInvoice()
     {
         return $this->invoice;
     }
 
-    private function _setInvoice(Invoice $invoice)
-    {
-        $this->invoice = $invoice;
-    }
-
+    /**
+     * @return ArrayCollection
+     */
     public function getEntries()
     {
         return $this->entries;
     }
 
-    private function _setEntries(Invoice $invoice)
-    {
-        $this->entries = $invoice->getEntries();
-    }
-
+    /**
+     * @return int
+     */
     public function getVersion()
     {
         return $this->version;

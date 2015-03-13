@@ -18,9 +18,7 @@
 
 namespace CudiBundle\Controller\Prof\Subject;
 
-use CudiBundle\Form\Prof\Comment\Add as AddCommentForm,
-    CudiBundle\Form\Prof\Comment\Reply as AddReplyForm,
-    SyllabusBundle\Entity\Subject\Comment,
+use SyllabusBundle\Entity\Subject\Comment,
     SyllabusBundle\Entity\Subject\Reply,
     Zend\View\Model\ViewModel;
 
@@ -41,8 +39,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
             ->findBySubject($subject);
 
-        $commentForm = new AddCommentForm();
-        $replyForm = new AddReplyForm();
+        $commentForm = $this->getForm('cudi_prof_comment_add');
+        $replyForm = $this->getForm('cudi_prof_comment_reply');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -51,7 +49,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                 $replyForm->setData($formData);
 
                 if ($replyForm->isValid()) {
-                    $formData = $replyForm->getFormData($formData);
+                    $formData = $replyForm->getData();
 
                     $comment = $this->getEntityManager()
                         ->getRepository('SyllabusBundle\Entity\Subject\Comment')
@@ -88,7 +86,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                 $commentForm->setData($formData);
 
                 if ($commentForm->isValid()) {
-                    $formData = $commentForm->getFormData($formData);
+                    $formData = $commentForm->getData();
 
                     $comment = new Comment(
                         $this->getAuthentication()->getPersonObject(),

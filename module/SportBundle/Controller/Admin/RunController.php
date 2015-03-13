@@ -23,8 +23,6 @@ use CommonBundle\Component\Util\AcademicYear,
     DateInterval,
     DateTime,
     SportBundle\Entity\Runner,
-    SportBundle\Form\Admin\Group\Edit as EditGroupForm,
-    SportBundle\Form\Admin\Runner\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -102,24 +100,18 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel();
         }
 
-        $form = new EditGroupForm($this->getEntityManager());
+        $form = $this->getForm('sport_group_edit');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
-                if (!isset($formData['person_id']) || $formData['person_id'] == '') {
-                    $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneByUsername($formData['person_name']);
-                } else {
-                    $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneById($formData['person_id']);
-                }
+                $academic = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                    ->findOneById($formData['person']['id']);
 
                 $repositoryCheck = $this->getEntityManager()
                     ->getRepository('SportBundle\Entity\Runner')
@@ -139,8 +131,6 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                     );
 
                     $this->getEntityManager()->persist($newRunner);
-
-                    $groupMembers[] = $newRunner;
                 } else {
                     $repositoryCheck->setGroup($group);
                 }
@@ -166,7 +156,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         return new ViewModel(
             array(
                 'form' => $form,
-                'members' => $group->getMembers(),
+                'group' => $group,
             )
         );
     }
@@ -262,17 +252,12 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel();
         }
 
-        $form = new EditForm();
+        $form = $this->getForm('sport_runner_edit', $runner);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $runner->setRunnerIdentification($formData['runner_identification']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

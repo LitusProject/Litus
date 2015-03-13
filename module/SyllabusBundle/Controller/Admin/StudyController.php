@@ -22,8 +22,6 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     SyllabusBundle\Entity\AcademicYearMap,
     SyllabusBundle\Entity\Study,
-    SyllabusBundle\Form\Admin\Study\Add as AddForm,
-    SyllabusBundle\Form\Admin\Study\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -74,20 +72,14 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('syllabus_study_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $study = $form->hydrateObject();
 
-                $parent = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\Study')
-                    ->findOneById($formData['parent_id']);
-
-                $study = new Study($formData['title'], $formData['kul_id'], $formData['phase'], $formData['language'], $parent);
                 $this->getEntityManager()->persist($study);
 
                 $map = new AcademicYearMap($study, $academicYear);
@@ -111,8 +103,13 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
         return new ViewModel(
             array(
+                'academicYears' => $academicYears,
                 'form' => $form,
                 'currentAcademicYear' => $academicYear,
             )
@@ -139,25 +136,12 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                 ->findAllByStudyAndAcademicYear($study, $academicYear);
         }
 
-        $form = new EditForm($this->getEntityManager(), $study);
+        $form = $this->getForm('syllabus_study_edit', array('study' => $study));
 
-        if ($this->getRequest()->isPost() && $this->hasAccess()->toResourceAction('syllabus_admin_study', 'add')) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+        if ($this->getRequest()->isPost() && $this->hasAccess()->toResourceAction('syllabus_admin_study', 'edit')) {
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $parent = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\Study')
-                    ->findOneById($formData['parent_id']);
-
-                $study->setKulId($formData['kul_id'])
-                    ->setTitle($formData['title'])
-                    ->setPhase($formData['phase'])
-                    ->setLanguage($formData['language'])
-                    ->setParent($parent);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

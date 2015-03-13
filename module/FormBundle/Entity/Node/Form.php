@@ -26,7 +26,8 @@ use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
     FormBundle\Entity\Mail\Mail,
-    FormBundle\Entity\Node\Entry;
+    FormBundle\Entity\Node\Entry,
+    Locale;
 
 /**
  * This entity stores the form
@@ -127,30 +128,14 @@ abstract class Form extends \CommonBundle\Entity\Node
     protected $_entityManager;
 
     /**
-     * @param Person   $person
-     * @param DateTime $startDate
-     * @param DateTime $endDate
-     * @param boolean  $active
-     * @param int      $max
-     * @param boolean  $multiple
-     * @param boolean  $nonMember
-     * @param boolean  $editableByUser
-     * @param boolean  $sendGuestLoginMail
+     * @param Person $person
      */
-    public function __construct(Person $person, DateTime $startDate, DateTime $endDate, $active, $max, $multiple, $nonMember, $editableByUser, $sendGuestLoginMail)
+    public function __construct(Person $person)
     {
         parent::__construct($person);
 
-        $this->max = $max;
-        $this->multiple = $multiple;
-        $this->nonMember = $nonMember;
-        $this->editableByUser = $editableByUser;
-        $this->sendGuestLoginMail = $sendGuestLoginMail;
         $this->fields = new ArrayCollection();
         $this->translations = new ArrayCollection();
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->active = $active;
     }
 
     /**
@@ -214,8 +199,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param boolean $nonMember
-     *
+     * @param  boolean $nonMember
      * @return self
      */
     public function setNonMember($nonMember)
@@ -234,8 +218,8 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  boolean                      $sendGuestLoginMail
-     * @return \FormBundle\Entity\Node\Form
+     * @param  boolean $sendGuestLoginMail
+     * @return self
      */
     public function setSendGuestLoginMail($sendGuestLoginMail)
     {
@@ -247,14 +231,14 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @return boolean
      */
-    public function sendGuestLoginMail()
+    public function isSendGuestLoginMail()
     {
         return $this->sendGuestLoginMail;
     }
 
     /**
-     * @param  Field                        $field The field to add to this form.
-     * @return \FormBundle\Entity\Node\Form
+     * @param  Field $field The field to add to this form.
+     * @return self
      */
     public function addField(Field $field)
     {
@@ -431,7 +415,7 @@ abstract class Form extends \CommonBundle\Entity\Node
                 return $translation;
             }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
                 $fallbackTranslation = $translation;
             }
         }
@@ -538,7 +522,7 @@ abstract class Form extends \CommonBundle\Entity\Node
 
         $body = str_replace('%entry_summary%', $this->_getSummary($entry, $language), $body);
 
-        if ($this->sendGuestLoginMail() && $entry->isGuestEntry()) {
+        if ($this->isSendGuestLoginMail() && $entry->isGuestEntry()) {
             $body = str_replace('#guest_login_text#', '', $body);
             $body = str_replace('%guest_login%', $url, $body);
         } else {

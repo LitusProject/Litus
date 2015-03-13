@@ -18,28 +18,15 @@
 
 namespace BrBundle\Component\Validator\Logo;
 
-use BrBundle\Entity\Company,
-    Doctrine\ORM\EntityManager;
-
 /**
  * Matches the given company against the database to check whether the logo type
  * already exists or not.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Type extends \Zend\Validator\AbstractValidator
+class Type extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
-
-    /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var \BrBundle\Entity\Company The company exluded from this check
-     */
-    private $_company;
 
     /**
      * @var array The error messages
@@ -48,17 +35,24 @@ class Type extends \Zend\Validator\AbstractValidator
         self::NOT_VALID => 'The logo type already exists for this company',
     );
 
-    /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Company The company exluded from this check
-     * @param mixed                       $opts          The validator's options
-     */
-    public function __construct(EntityManager $entityManager, Company $company = null, $opts = null)
-    {
-        parent::__construct($opts);
+    protected $options = array(
+        'company' => null,
+    );
 
-        $this->_entityManager = $entityManager;
-        $this->_company = $company;
+    /**
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
+     */
+    public function __construct($options = array())
+    {
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['company'] = array_shift($args);
+        }
+
+        parent::__construct($options);
     }
 
     /**
@@ -72,9 +66,9 @@ class Type extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $logo = $this->_entityManager
+        $logo = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Logo')
-            ->findOneByTypeAndCompany($value, $this->_company);
+            ->findOneByTypeAndCompany($value, $this->options['company']);
 
         if (null === $logo) {
             return true;

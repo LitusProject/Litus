@@ -90,7 +90,6 @@ class Session
     private $shibboleth;
 
     /**
-     * @param integer      $expirationTime
      * @param Person       $person
      * @param string       $userAgent
      * @param string       $ip

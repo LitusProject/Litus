@@ -34,13 +34,18 @@ return array(
     ),
     array(
         'key'         => 'sport.queue_socket_public',
-        'value'       => '127.0.0.1:8897',
+        'value'       => ':8897',
         'description' => 'The public address for the websocket of the queue',
     ),
     array(
         'key'         => 'sport.queue_socket_key',
         'value'       => md5(uniqid(rand(), true)),
         'description' => 'The key used for the websocket of the queue',
+    ),
+    array(
+        'key'         => 'sport.queue_socket_enabled',
+        'value'       => '0',
+        'description' => 'Whether the sport run queue socket is enabled',
     ),
     array(
         'key'         => 'sport.points_criteria',

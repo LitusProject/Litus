@@ -18,13 +18,17 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
+use CommonBundle\Component\Form\ElementTrait;
+
 /**
  * Tabs
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Tabs extends \Zend\Form\Element
+class Tabs extends \Zend\Form\Element implements \CommonBundle\Component\Form\ElementInterface
 {
+    use ElementTrait;
+
     /**
      * Seed attributes
      *
@@ -35,17 +39,6 @@ class Tabs extends \Zend\Form\Element
         'tabs' => array(),
         'class' => '',
     );
-
-    /**
-     * @param  string                             $name    Optional name for the element
-     * @param  array                              $options Optional options for the element
-     * @throws Exception\InvalidArgumentException
-     */
-    public function __construct($name = null, $options = array())
-    {
-        parent::__construct($name, $options);
-        $this->setAttribute('id', $name);
-    }
 
     /**
      * @param array $tabs

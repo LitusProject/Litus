@@ -92,21 +92,15 @@ class Page extends \CommonBundle\Entity\Node
     private $translations;
 
     /**
-     * @param Person   $person
-     * @param string   $name
-     * @param Category $category
-     * @param array    $editRoles
+     * @param Person $person
      */
-    public function __construct(Person $person, $name, Category $category, array $editRoles)
+    public function __construct(Person $person)
     {
         parent::__construct($person);
 
         $this->startTime = new DateTime();
 
-        $this->category = $category;
-        $this->name = Url::createSlug($name);
-
-        $this->editRoles = new ArrayCollection($editRoles);
+        $this->editRoles = new ArrayCollection();
         $this->translations = new ArrayCollection();
     }
 
@@ -192,6 +186,17 @@ class Page extends \CommonBundle\Entity\Node
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * @param  string $name
+     * @return Page
+     */
+    public function setName($name)
+    {
+        $this->name = Url::createSlug($name);
+
+        return $this;
     }
 
     /**

@@ -19,7 +19,8 @@
 namespace BrBundle\Entity\Company;
 
 use BrBundle\Entity\Company,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * This is the entity for an event.
@@ -60,7 +61,7 @@ class Logo
     private $path;
 
     /**
-     * @var \BrBundle\Entity\Company The company of the logo
+     * @var Company The company of the logo
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
      * @ORM\JoinColumn(name="company", referencedColumnName="id")
@@ -90,31 +91,11 @@ class Logo
     );
 
     /**
-     * @param \BrBundle\Entity\Company $company The event's company
-     * @param string                   $type    The type to the logo
-     * @param string                   $path    The path to the logo
-     * @param string                   $url     The url to the website
-     * @param integer                  $width   The width of the logo
-     * @param integer                  $height  The height of the logo
+     * @param Company $company The event's company
      */
-    public function __construct(Company $company, $type, $path, $url, $width, $height)
+    public function __construct(Company $company)
     {
         $this->company = $company;
-        $this->path = $path;
-        $this->width = $width;
-        $this->height = $height;
-
-        if (strpos($url, 'http://') !== 0) {
-            $url = 'http://' . $url;
-        }
-
-        $this->url = $url;
-
-        if (!self::isValidLogoType($type)) {
-            throw new \InvalidArgumentException('The logo type is not valid.');
-        }
-
-        $this->type = $type;
     }
 
     /**
@@ -143,6 +124,21 @@ class Logo
     }
 
     /**
+     * @param  string $type
+     * @return self
+     */
+    public function setType($type)
+    {
+        if (!self::isValidLogoType($type)) {
+            throw new InvalidArgumentException('The logo type is not valid.');
+        }
+
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getTypeCode()
@@ -159,6 +155,21 @@ class Logo
     }
 
     /**
+     * @param  string $url
+     * @return self
+     */
+    public function setUrl($url)
+    {
+        if (strpos($url, 'http://') !== 0) {
+            $url = 'http://' . $url;
+        }
+
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getPath()
@@ -167,7 +178,18 @@ class Logo
     }
 
     /**
-     * @return \BrBundle\Entity\Company
+     * @param  string $path
+     * @return self
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * @return Company
      */
     public function getCompany()
     {
@@ -183,10 +205,32 @@ class Logo
     }
 
     /**
+     * @param  int  $width
+     * @return self
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+
+        return $this;
+    }
+
+    /**
      * @return integer
      */
     public function getHeight()
     {
         return $this->height;
+    }
+
+    /**
+     * @param  int  $height
+     * @return self
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
+
+        return $this;
     }
 }

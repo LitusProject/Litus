@@ -18,10 +18,10 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CudiBundle\Entity\Sale\Article\Restriction\Amount as AmountRestriction,
+use CommonBundle\Component\Controller\Exception\RuntimeException,
+    CudiBundle\Entity\Sale\Article\Restriction\Amount as AmountRestriction,
     CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction,
     CudiBundle\Entity\Sale\Article\Restriction\Study as StudyRestriction,
-    CudiBundle\Form\Admin\Sales\Article\Restrictions\Add as AddForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -37,29 +37,30 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             return new ViewModel();
         }
 
-        $form = new AddForm($article, $this->getEntityManager());
+        $form = $this->getForm('cudi_sale_article_restriction_add', array('article' => $article));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 if ('amount' == $formData['type']) {
-                    $restriction = new AmountRestriction($article, $formData['value_amount']);
+                    $restriction = new AmountRestriction($article, $formData['value']['amount']);
                 } elseif ('member' == $formData['type']) {
-                    $restriction = new MemberRestriction($article, isset($formData['value_member']) && $formData['value_member']);
+                    $restriction = new MemberRestriction($article, isset($formData['value']['member']) && $formData['value']['member']);
                 } elseif ('study' == $formData['type']) {
                     $restriction = new StudyRestriction($article);
 
-                    foreach ($formData['value_study'] as $id) {
+                    foreach ($formData['value']['study'] as $id) {
                         $study = $this->getEntityManager()
                             ->getRepository('SyllabusBundle\Entity\Study')
                             ->findOneById($id);
 
                         $restriction->addStudy($study);
                     }
+                } else {
+                    throw new RuntimeException("Unsupported restriction type");
                 }
 
                 $this->getEntityManager()->persist($restriction);
@@ -118,6 +119,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         );
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Article|null
+     */
     private function _getSaleArticle()
     {
         if (null === $this->getParam('id')) {
@@ -159,6 +163,9 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         return $article;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Article\Restriction|null
+     */
     private function _getRestriction()
     {
         if (null === $this->getParam('id')) {

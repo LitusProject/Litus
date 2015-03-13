@@ -52,13 +52,7 @@
                     } else if (data.errors) {
                         $('.flashmessage').addClass('hide');
                         $('.banner_upload_error').removeClass('hide');
-                        $('#uploadBanner').find('ul.errors').remove();
-                        for(element in data.errors) {
-                            var list = $('<ul>', {class: 'errors'})
-                            for (error in data.errors[element])
-                                list.append($('<li>').html(data.errors[element][error]));
-                            $('#uploadBanner').find('#' + element).parent().parent().after(list);
-                        }
+                        $('#uploadBanner').displayFormErrors(data.errors);
                     } else if (data.info) {
                         window.location.href = '{{ url('banner_admin_banner', {"action": "manage"}) }}';
                     }

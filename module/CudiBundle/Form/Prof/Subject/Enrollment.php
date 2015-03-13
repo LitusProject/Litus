@@ -18,11 +18,7 @@
 
 namespace CudiBundle\Form\Prof\Subject;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
-    SyllabusBundle\Entity\StudentEnrollment,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use SyllabusBundle\Entity\StudentEnrollment;
 
 /**
  * Update student enrollment
@@ -32,42 +28,25 @@ use CommonBundle\Component\Form\Bootstrap\Element\Submit,
 class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @param StudentEnrollment $enrollment
-     * @param null|string|int   $name       Optional name for the element
+     * @var StudentEnrollment|null
      */
-    public function __construct(StudentEnrollment $enrollment = null, $name = null)
+    private $_enrollment;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Text('students');
-        $field->setLabel('Students')
-            ->setAttribute('autocomplete', 'off')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Update');
-        $this->add($field);
-
-        if (isset($enrollment)) {
-            $this->setData(
-                array(
-                    'students' => $enrollment->getNumber(),
-                )
-            );
-        }
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'students',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'students',
+            'label'      => 'Students',
+            'required'   => true,
+            'value'      => null !== $this->_enrollment ? $this->_enrollment->getNumber() : '',
+            'attributes' => array(
+                'autocomplete' => 'off',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -76,10 +55,21 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Update');
+    }
+
+    /**
+     * @param  StudentEnrollment|null $enrollment
+     * @return self
+     */
+    public function setEnrollment(StudentEnrollment $enrollment = null)
+    {
+        $this->_enrollment = $enrollment;
+
+        return $this;
     }
 }

@@ -19,15 +19,15 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#profSearch').typeaheadRemote(
+            $('#prof').typeaheadRemote(
                 {
                     source: '{{ url("cudi_prof_typeahead")}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#profId').val($(this).data('value').id);
+                    $('[name="prof[id]"]').val($(this).data('value').id);
                 } else {
-                    $('#profId').val('');
+                    $('[name="prof[id]"]').val('');
                 }
             });
         });

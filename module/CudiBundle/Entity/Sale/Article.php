@@ -158,34 +158,17 @@ class Article
     private $_entityManager;
 
     /**
-     * @param MainArticle $mainArticle   The main article of this sale article
-     * @param integer     $barcode       The barcode of the article
-     * @param integer     $purchasePrice The purchase price of the articl
-     * @param integer     $sellPrice     The sell price of the article
-     * @param boolean     $bookable      Flag whether the article is bookable
-     * @param boolean     $unbookable    Flag whether the article is unbookable
-     * @param boolean     $sellable      Flag whether the article is sellable
-     * @param Supplier    $supplier      The supplier of the article
-     * @param boolean     $canExpire     Flag whether the aritcle can expire
+     * @param MainArticle $mainArticle The main article of this sale article
      */
-    public function __construct(MainArticle $mainArticle, $barcode, $purchasePrice, $sellPrice, $bookable, $unbookable, $sellable, Supplier $supplier, $canExpire)
+    public function __construct(MainArticle $mainArticle)
     {
         $this->discounts = new ArrayCollection();
         $this->barcodes = new ArrayCollection();
 
-        $this->setMainArticle($mainArticle)
-            ->setBarcode($barcode)
-            ->setPurchasePrice($purchasePrice)
-            ->setSellPrice($sellPrice)
-            ->setIsBookable($bookable)
-            ->setIsUnbookable($unbookable)
-            ->setIsSellable($sellable)
-            ->setSupplier($supplier)
-            ->setCanExpire($canExpire)
-            ->setVersionNumber(1)
-            ->setIsHistory(false);
+        $this->setMainArticle($mainArticle);
         $this->timestamp = new DateTime();
         $this->stockValue = 0;
+        $this->isHistory = false;
     }
 
     /**
@@ -246,6 +229,18 @@ class Article
                 return $barcode->getBarcode();
             }
         }
+    }
+
+    /**
+     * Removes all barcodes
+     *
+     * @return self
+     */
+    public function clearBarcode()
+    {
+        $this->barcodes->clear();
+
+        return $this;
     }
 
     /**
@@ -563,27 +558,18 @@ class Article
         return true;
     }
 
-    /**
-     * @return self
-     */
-    public function duplicate()
+    public function __clone()
     {
-        $article = new Article(
-            $this->getMainArticle(),
-            $this->getBarcode(),
-            $this->getPurchasePrice()/100,
-            $this->getSellPrice()/100,
-            $this->isBookable(),
-            $this->isUnbookable(),
-            $this->isSellable(),
-            $this->getSupplier(),
-            $this->canExpire()
-        );
-        foreach ($this->barcodes as $barcode) {
-            $article->addBarcode(new Barcode($article, $barcode->getBarcode()));
-        }
+        $this->timestamp = new DateTime();
+        $this->stockValue = 0;
+        $this->id = null;
 
-        return $article;
+        $this->barcodes = new ArrayCollection();
+        $barcodes = $this->barcodes;
+
+        foreach ($barcodes as $barcode) {
+            $this->addBarcode(new Barcode($this, $barcode->getBarcode()));
+        }
     }
 
     /**

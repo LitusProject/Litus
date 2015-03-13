@@ -18,13 +18,6 @@
 
 namespace CudiBundle\Form\Prof\Mapping;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
-    Zend\Form\Element\Hidden,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add Mapping
  *
@@ -32,68 +25,33 @@ use CommonBundle\Component\Form\Bootstrap\Element\Checkbox,
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Hidden('article_id');
-        $field->setAttribute('id', 'articleId');
-        $this->add($field);
-
-        $field = new Text('article');
-        $field->setLabel('Article')
-            ->setAttribute('id', 'articleSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Checkbox('mandatory');
-        $field->setLabel('Mandatory');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'article_id',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
+        $this->add(array(
+            'type'       => 'typeahead',
+            'name'       => 'article',
+            'label'      => 'Article',
+            'required'   => true,
+            'attributes' => array(
+                'id' => 'article',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'validators'  => array(
+                        array('name' => 'typeahead_article'),
                     ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'article',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'mandatory',
+            'label' => 'Mandatory',
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add');
     }
 }

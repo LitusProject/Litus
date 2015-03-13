@@ -18,18 +18,7 @@
 
 namespace BrBundle\Form\Admin\Company;
 
-use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
-    BrBundle\Entity\Company,
-    CommonBundle\Component\Form\Admin\Element\Collection,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Validator\PhoneNumber as PhoneNumberValidator,
-    CommonBundle\Form\Admin\Address\Add as AddressForm,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use BrBundle\Entity\Company;
 
 /**
  * Add a company.
@@ -38,102 +27,191 @@ use BrBundle\Component\Validator\CompanyName as CompanyNameValidator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'BrBundle\Hydrator\Company';
 
     /**
-     * @var \CommonBundle\Form\Admin\Address\Add
+     * @var Company|null
      */
-    private $_addressForm;
+    protected $company;
 
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'name',
+            'label'    => 'Copmany Name',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'company_name',
+                            'options' => array(
+                                'company' => $this->company,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $years = $this->_getYears();
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'sector',
+            'label'      => 'Sector',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->_getSectors(),
+            ),
+        ));
 
-        $field = new Text('company_name');
-        $field->setLabel('Company Name')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'vat_number',
+            'label'    => 'VAT Number',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Select('sector');
-        $field->setLabel('Sector')
-            ->setRequired()
-            ->setAttribute('options', $this->_getSectors());
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'phone_number',
+            'label'      => 'Phone Number',
+            'required'   => true,
+            'attributes' => array(
+                'placeholder' => '+CCAAANNNNNN',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'phone_number_regex'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('vat_number');
-        $field->setLabel('VAT Number')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'website',
+            'label'      => 'Website',
+            'required'   => true,
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'uri',
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $this->_addressForm = new AddressForm('', 'address');
-        $this->_addressForm->setLabel('Address');
-        $this->add($this->_addressForm);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'cvbook',
+            'label'      => 'CV Book',
+            'required'   => true,
+            'attributes' => array(
+                'multiple'  => true,
+                'options'   => $this->_getCVBookYears(),
+                'data-help' => 'The selected years will be visible in the corporate app of this company. The archived ones are downloadable in pdf format.',
+            ),
+        ));
 
-        $field = new Text('phone_number');
-        $field->setLabel('Phone Number')
-            ->setAttribute('placeholder', '+CCAAANNNNNN');
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'common_address_add',
+            'name'     => 'address',
+            'label'    => 'Address',
+            'required' => true,
+        ));
 
-        $field = new Text('website');
-        $field->setLabel('Website')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'page',
+            'label'      => 'Page',
+            'attributes' => array(
+                'id' => 'page_form',
+            ),
+            'elements' => array(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'years',
+                    'label'      => 'Page Visible During',
+                    'attributes' => array(
+                        'multiple' => true,
+                        'options'  => $this->_getYears(),
+                    ),
+                ),
+                array(
+                    'type'       => 'textarea',
+                    'name'       => 'summary',
+                    'label'      => 'Summary',
+                    'attributes' => array(
+                        'id' => 'summary',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'textarea',
+                    'name'       => 'description',
+                    'label'      => 'Description',
+                    'attributes' => array(
+                        'id' => 'description',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $cvYears = $this->_getArchiveYears();
-        foreach ($years as $key => $year) {
-            $shortCode = substr($year, 2, 2) . substr($year, 7, 2);
-            if (isset($cvYears['archive-' . $shortCode])) {
-                continue;
-            }
-            $cvYears['year-' . $key] = $year;
+        $this->addSubmit('Add', 'company_add');
+
+        if (null !== $this->company) {
+            $this->bind($this->company);
         }
-        asort($cvYears);
+    }
 
-        $field = new Select('cvbook');
-        $field->setLabel('CV Book')
-            ->setAttribute('multiple', true)
-            ->setAttribute('data-help', 'The selected years will be visible in the corporate app of this company. The archived ones are downloadable in pdf format.')
-            ->setAttribute('options', $cvYears);
-        $this->add($field);
+    private function _getSectors()
+    {
+        $sectorArray = array();
+        foreach (Company::$possibleSectors as $key => $sector) {
+            $sectorArray[$key] = $sector;
+        }
 
-        $page = new Collection('page_collection');
-        $page->setLabel('Page')
-            ->setAttribute('id', 'page_form');
-        $this->add($page);
-
-        $field = new Select('years');
-        $field->setLabel('Page Visible During')
-            ->setAttribute('multiple', true)
-            ->setAttribute('options', $years);
-        $page->add($field);
-
-        $field = new Textarea('summary');
-        $field->setLabel('Summary');
-        $page->add($field);
-
-        $field = new Textarea('description');
-        $field->setLabel('Description');
-        $page->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'company_add');
-        $this->add($field);
+        return $sectorArray;
     }
 
     private function _getYears()
     {
-        $years = $this->_entityManager
+        $years = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
@@ -148,7 +226,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function _getArchiveYears()
     {
         $years = unserialize(
-            $this->_entityManager
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.cv_archive_years')
         );
@@ -161,124 +239,30 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $options;
     }
 
-    private function _getSectors()
+    private function _getCVBookYears()
     {
-        $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
+        $cvYears = $this->_getArchiveYears();
+        $years = $this->_getYears();
+        foreach ($years as $key => $year) {
+            $shortCode = substr($year, 2, 2) . substr($year, 7, 2);
+            if (isset($cvYears['archive-' . $shortCode])) {
+                continue;
+            }
+            $cvYears['year-' . $key] = $year;
         }
+        asort($cvYears);
 
-        return $sectorArray;
+        return $cvYears;
     }
 
-    public function getInputFilter()
+    /**
+     * @param  Company $company
+     * @return self
+     */
+    public function setCompany(Company $company)
     {
-        $inputFilter = new InputFilter();
+        $this->company = $company;
 
-        $inputs = $this->_addressForm->getInputs();
-        foreach ($inputs as $input) {
-            $inputFilter->add($input);
-        }
-
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'company_name',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new CompanyNameValidator($this->_entityManager),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'website',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'uri',
-                        ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'phone_number',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new PhoneNumberValidator(),
-                    ),
-                )
-            )
-        );
-
-        if (isset($this->data['page']) && $this->data['page']) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'description',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'summary',
-                        'required' => false,
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    )
-                )
-            );
-        }
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'sector',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'vat_number',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        return $this;
     }
 }

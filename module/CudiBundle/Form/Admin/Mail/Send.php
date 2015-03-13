@@ -18,12 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Mail;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Send Mail
  *
@@ -32,46 +26,25 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
 class Send extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param string          $email
-     * @param string          $personName
-     * @param null|string|int $name       Optional name for the element
+     * @var string
      */
-    public function __construct($email = '', $personName = '', $name = null)
+    private $name = '';
+
+    /**
+     * @var string
+     */
+    private $email = '';
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->remove('csrf');
-
-        $field = new Hidden('email');
-        $field->setValue($email);
-        $this->add($field);
-
-        $field = new Hidden('name');
-        $field->setValue($personName);
-        $this->add($field);
-
-        $field = new Text('subject');
-        $field->setLabel('Subject')
-            ->setAttribute('style', 'width: 350px')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Textarea('message');
-        $field->setLabel('Message')
-            ->setAttribute('style', 'width: 400px')
-            ->setRequired();
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'email',
+        $this->add(array(
+            'type'    => 'hidden',
+            'name'    => 'email',
+            'value'   => $this->email,
+            'options' => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -81,46 +54,78 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
                             'name' => 'emailaddress',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
+        $this->add(array(
+            'type'    => 'hidden',
+            'name'    => 'name',
+            'value'   => $this->name,
+            'options' => array(
+                'input' => array(
                     'required' => true,
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'subject',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'subject',
+            'label'      => 'Subject',
+            'required'   => true,
+            'attributes' => array(
+                'style' => 'width: 350px;',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'message',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'message',
+            'label'      => 'Message',
+            'required'   => true,
+            'attributes' => array(
+                'style' => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
+    }
 
-        return $inputFilter;
+    /**
+     * @param  string $name
+     * @return self
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @param  string $email
+     * @return self
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }

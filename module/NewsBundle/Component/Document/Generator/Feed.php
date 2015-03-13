@@ -88,7 +88,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     }
 
     /**
-     * @return array
+     * @return XmlObject[]
      */
     private function _generateContent()
     {
@@ -106,8 +106,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     }
 
     /**
-     * @param  News      $item
-     * @return XmlObject
+     * @return XmlObject[]
      */
     private function _generateHeader()
     {
@@ -202,7 +201,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                         'news',
                         array(
                             'action' => 'view',
-                            'name' => $item->getName($this->_language),
+                            'name' => $item->getName(),
                         )
                     )
                 ),
@@ -213,7 +212,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                         'news',
                         array(
                             'action' => 'view',
-                            'name' => $item->getName($this->_language),
+                            'name' => $item->getName(),
                         )
                     )
                 ),

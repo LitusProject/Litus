@@ -66,6 +66,7 @@ return array(
             '@common_jquery_form',
             '@fullcalendar_css',
             '@logistics_js',
+            '@display_form_error_js',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_alert',

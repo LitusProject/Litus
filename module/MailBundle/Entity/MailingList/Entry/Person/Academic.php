@@ -19,8 +19,7 @@
 namespace MailBundle\Entity\MailingList\Entry\Person;
 
 use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
-    Doctrine\ORM\Mapping as ORM,
-    MailBundle\Entity\MailingList;
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for the list entry of an academic.
@@ -39,23 +38,22 @@ class Academic extends \MailBundle\Entity\MailingList\Entry\Person
     private $academic;
 
     /**
-     * Creates a new list entry for the given list with the given academic?
-     *
-     * @param MailingList    $list     The list for this entry
-     * @param AcademicEntity $academic The academic to add
-     */
-    public function __construct(MailingList $list, AcademicEntity $academic)
-    {
-        parent::__construct($list);
-        $this->academic = $academic;
-    }
-
-    /**
      * @return AcademicEntity
      */
     public function getAcademic()
     {
         return $this->academic;
+    }
+
+    /**
+     * @param  \CommonBundle\Entity\User\Person\Academic $academic
+     * @return self
+     */
+    public function setAcademic(AcademicEntity $academic)
+    {
+        $this->academic = $academic;
+
+        return $this;
     }
 
     /**

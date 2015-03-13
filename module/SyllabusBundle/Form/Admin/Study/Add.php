@@ -18,14 +18,7 @@
 
 namespace SyllabusBundle\Form\Admin\Study;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\Validator\Study\KulId as KulIdValidator,
-    SyllabusBundle\Entity\Study,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use SyllabusBundle\Entity\Study;
 
 /**
  * Add Study
@@ -34,159 +27,121 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'SyllabusBundle\Hydrator\Study';
 
     /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
+     * @var Study|null
      */
-    public function __construct(EntityManager $entityManager, $name = null)
+    protected $study = null;
+
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $field = new Text('kul_id');
-        $field->setLabel('KU Leuven Id')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('title');
-        $field->setLabel('Title')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('phase');
-        $field->setLabel('Phase')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('language');
-        $field->setLabel('Language')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Hidden('parent_id');
-        $field->setAttribute('id', 'parentId');
-        $this->add($field);
-
-        $field = new Text('parent');
-        $field->setLabel('Parent')
-            ->setAttribute('style', 'width: 400px;')
-            ->setAttribute('id', 'studySearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
-    }
-
-    public function populateFromStudy(Study $study)
-    {
-        $this->setData(
-            array(
-                'kul_id' => $study->getKulId(),
-                'title' => $study->getTitle(),
-                'phase' => $study->getPhase(),
-                'language' => $study->getLanguage(),
-                'parent_id' => $study->getParent() ? $study->getParent()->getId() : '',
-                'parent' => $study->getParent() ? $study->getParent()->getFullTitle() : '',
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'kul_id',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'kul_id',
+            'label'    => 'KU Leuven Id',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new KulIdValidator($this->_entityManager),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'title',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'phase',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'language',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'parent_id',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
+                        array('name' => 'int'),
                         array(
-                            'name' => 'int',
+                            'name' => 'syllabus_study_kul_id',
+                            'options' => array(
+                                'study' => $this->study,
+                            ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'parent',
-                    'required' => false,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'title',
+            'label'    => 'Title',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'phase',
+            'label'    => 'Phase',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'language',
+            'label'    => 'Language',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $validators = array(
+            array('name' => 'syllabus_typeahead_study'),
         );
 
-        return $inputFilter;
+        if (null !== $this->study) {
+            $validators[] = array(
+                'name' => 'syllabus_study_recursion',
+                'options' => array(
+                    'study' => $this->study,
+                ),
+            );
+        }
+
+        $this->add(array(
+            'type'       => 'typeahead',
+            'name'       => 'parent',
+            'label'      => 'Parent',
+            'required'   => true,
+            'attributes' => array(
+                'style'        => 'width: 400px',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'validators' => $validators,
+                ),
+            ),
+        ));
+
+        $this->addSubmit('Add', 'add');
+    }
+
+    /**
+     * @param  Study $study
+     * @return self
+     */
+    public function setStudy(Study $study)
+    {
+        $this->study = $study;
+
+        return $this;
     }
 }

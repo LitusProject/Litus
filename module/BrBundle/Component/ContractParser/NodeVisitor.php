@@ -19,13 +19,25 @@
 namespace BrBundle\Component\ContractParser;
 
 /**
- *
- *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 interface NodeVisitor
 {
-    public function visitEntry($entry);
-    public function visitEntries($entries);
-    public function visitText($text);
+    /**
+     * @param  Entry $entry
+     * @return void
+     */
+    public function visitEntry(Entry $entry);
+
+    /**
+     * @param  Entries $entries
+     * @return void
+     */
+    public function visitEntries(Entries $entries);
+
+    /**
+     * @param  Text $text
+     * @return void
+     */
+    public function visitText(Text $text);
 }

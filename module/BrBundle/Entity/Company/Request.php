@@ -18,7 +18,7 @@
 
 namespace BrBundle\Entity\Company;
 
-use BrBundle\Entity\Company\Job,
+use BrBundle\Entity\User\Person\Corporate,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 
@@ -46,7 +46,7 @@ abstract class Request
     private $id;
 
      /**
-     * @var \BrBundle\Entity\User\Person\Corporate The contact used in this order
+     * @var Corporate The contact used in this order
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\User\Person\Corporate")
      * @ORM\JoinColumn(name="contact", referencedColumnName="id")
@@ -54,7 +54,7 @@ abstract class Request
     private $contact;
 
     /**
-     * @var \DateTime The time of creation of this node
+     * @var DateTime The time of creation of this node
      *
      * @ORM\Column(name="creation_time", type="datetime")
      */
@@ -67,7 +67,10 @@ abstract class Request
      */
     private $handled;
 
-    public function __construct($contact)
+    /**
+     * @param Corporate $contact
+     */
+    public function __construct(Corporate $contact)
     {
         $this->creationTime = new DateTime();
         $this->contact = $contact;

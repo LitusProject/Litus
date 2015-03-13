@@ -1,1 +1,16 @@
-{% extends 'br/admin/collaborator/add.twig' %}
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/collaborator/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% include 'admin/partials/flashMessenger.twig' %}
+
+        <p>Person: <b>{{ collaborator.getPerson().getFullName() }}</b></p>
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+{% endblock %}

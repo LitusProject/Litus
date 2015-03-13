@@ -18,12 +18,8 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    Doctrine\ORM\EntityManager,
-    SecretaryBundle\Component\Validator\CancelRegistration as CancelRegistrationValidator,
-    SecretaryBundle\Entity\Organization\MetaData,
-    SecretaryBundle\Entity\Registration,
-    Zend\InputFilter\Factory as InputFactory;
+use SecretaryBundle\Entity\Organization\MetaData,
+    SecretaryBundle\Entity\Registration;
 
 /**
  * Edit Registration Data form
@@ -33,62 +29,79 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
 class Edit extends Add
 {
     /**
-     * @var Registration The registration data
+     * @var Registration
      */
-    protected $_registration = null;
+    private $registration;
 
     /**
-     * @var MetaData The meta data
+     * @var MetaData
      */
-    protected $_metaData = null;
+    private $metaData;
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Registration    $registration  The registration data
-     * @param MetaData        $metaData      The meta data
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Registration $registration, MetaData $metaData = null, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
-        $this->_registration = $registration;
-        $this->_metaData = $metaData;
-
-        $this->remove('person_id');
         $this->remove('person');
 
-        $field = new Checkbox('cancel');
-        $field->setLabel('Cancelled')
-            ->setValue($registration->isCancelled());
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'cancel',
+            'label'      => 'Cancelled',
+            'value'      => $this->getRegistration()->isCancelled(),
+            'options'    => array(
+                'input' => array(
+                    'validators' => array(
+                        array('name' => 'secretary_cancel_registration'),
+                    ),
+                ),
+            ),
+        ));
 
-        $this->get('payed')->setValue($registration->hasPayed());
+        $this->get('payed')
+            ->setValue($this->getRegistration()->hasPayed());
 
-        $organization = $registration->getAcademic()->getOrganization($registration->getAcademicYear());
+        $metaData = $this->getMetaData();
+
+        $organization = $this->getRegistration()->getAcademic()->getOrganization($this->getRegistration()->getAcademicYear());
         $this->get('organization')->setValue($organization ? $organization->getId() : 0);
     }
 
-    public function getInputFilter()
+    /**
+     * @param Registration
+     * @return self
+     */
+    public function setRegistration(Registration $registration)
     {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
+        $this->registration = $registration;
 
-        $inputFilter->remove('person_id');
-        $inputFilter->remove('person');
+        return $this;
+    }
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'cancel',
-                    'required' => false,
-                    'validators' => array(
-                        new CancelRegistrationValidator(),
-                    ),
-                )
-            )
-        );
+    /**
+     * @return Registration
+     */
+    public function getRegistration()
+    {
+        return $this->registration;
+    }
 
-        return $inputFilter;
+    /**
+     * @param MetaData
+     * @return self
+     */
+    public function setMetaData(MetaData $metaData)
+    {
+        $this->metaData = $metaData;
+
+        return $this;
+    }
+
+    /**
+     * @return MetaData
+     */
+    public function getMetaData()
+    {
+        return $this->metaData;
     }
 }

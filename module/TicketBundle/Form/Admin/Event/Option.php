@@ -18,11 +18,7 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Validator\Price as PriceValidator,
-    Ticketbundle\Entity\Event,
-    Zend\Form\Fieldset,
+use CommonBundle\Component\Form\Fieldset,
     Zend\InputFilter\InputFilterProviderInterface;
 
 /**
@@ -32,76 +28,92 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
  */
 class Option extends Fieldset implements InputFilterProviderInterface
 {
-    public function __construct()
+    public function init()
     {
-        parent::__construct('option');
+        parent::init();
 
         $this->setLabel('Option');
 
-        $field = new Hidden('option_id');
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'hidden',
+            'name'     => 'option_id',
+            'required' => false,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'int',
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('option');
-        $field->setLabel('Name')
-            ->setRequired(true);
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'option',
+            'label'      => 'Name',
+            'required'   => true,
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('price_members');
-        $field->setLabel('Price Members')
-            ->setRequired(true);
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'price_members',
+            'label'    => 'Price Members',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'price'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('price_non_members');
-        $field->setLabel('Price Non Members')
-            ->setRequired(true)
-            ->setAttribute('class', $field->getAttribute('class') . ' price_non_members');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'price_non_members',
+            'label'      => 'Price Non Members',
+            'required'   => true,
+            'attributes' => array(
+                'class' => 'price_non_members',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'price'),
+                    ),
+                ),
+            ),
+        ));
     }
 
     public function getInputFilterSpecification()
     {
-        $required = $this->get('option')->getValue() && strlen($this->get('option')->getValue()) > 0 ? true : false;
+        $specs = parent::getInputFilterSpecification();
 
-        return array(
-            array(
-                'name'     => 'option_id',
-                'required' => false,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'int',
-                    ),
-                ),
-            ),
-            array(
-                'name'     => 'option',
-                'required' => $required,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-            ),
-            array(
-                'name'     => 'price_members',
-                'required' => $required,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    new PriceValidator(),
-                ),
-            ),
-            array(
-                'name'     => 'price_non_members',
-                'required' => isset($_POST['only_members']) && $_POST['only_members'] ? false : $required,
-                'filters'  => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    new PriceValidator(),
-                ),
-            ),
-        );
+        $required = $this->get('option')->getValue() && strlen($this->get('option')->getValue()) > 0;
+
+        $specs['option']['required'] = $required;
+        $specs['price_members']['required'] = $required;
+        $specs['price_non_members']['required'] = isset($_POST['only_members']) && $_POST['only_members'] ? false : $required;
+
+        return $specs;
     }
 }

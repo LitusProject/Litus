@@ -20,22 +20,15 @@ namespace CommonBundle\Controller;
 
 use CommonBundle\Component\PassKit\Pass\Membership,
     CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Credential,
     CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    CommonBundle\Form\Account\Activate as ActivateForm,
-    CommonBundle\Form\Account\Edit as EditForm,
-    CommonBundle\Form\Account\Profile as ProfileForm,
+    CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CudiBundle\Entity\Sale\Booking,
-    DateTime,
     Imagick,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
-    SecretaryBundle\Form\Registration\Subject\Add as SubjectForm,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
-    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -87,7 +80,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $subjectIds[] = $enrollment->getSubject()->getId();
         }
 
-        $profileForm = new ProfileForm();
+        $profileForm = $this->getForm('common_account_profile');
         $profileForm->setAttribute(
             'action',
             $this->url()->fromRoute(
@@ -114,7 +107,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function editAction()
     {
-        if (null === $this->getAuthentication()->getPersonObject()) {
+        $academic = $this->getAuthentication()->getPersonObject();
+
+        if (!($academic instanceof Academic)) {
             $this->flashMessenger()->error(
                 'Error',
                 'Please login first!'
@@ -131,8 +126,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_registration');
 
-        $academic = $this->getAuthentication()->getPersonObject();
-
         $studentDomain = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('student_email_domain');
@@ -141,21 +134,21 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
             ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-        $termsAndConditions = $this->_getTermsAndConditions();
-
         $enableOtherOrganization = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_other_organization');
 
-        $form = new EditForm(
-            $academic,
-            $this->getCurrentAcademicYear(),
-            $metaData,
-            $this->getCache(),
-            $this->getEntityManager(),
-            $this->getParam('identification'),
-            $enableOtherOrganization
-        );
+        $termsAndConditions = $this->_getTermsAndConditions();
+
+        if (null !== $metaData) {
+            $form = $this->getForm('common_account_edit', array(
+                'meta_data' => $metaData,
+            ));
+        } else {
+            $form = $this->getForm('common_account_edit', array(
+                'academic' => $academic,
+            ));
+        }
 
         $ids = unserialize(
             $this->getEntityManager()
@@ -165,105 +158,94 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $membershipArticles = array();
         foreach ($ids as $organization => $id) {
+            echo $id;
             $membershipArticles[$organization] = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($id);
         }
 
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+        $tshirts = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.tshirt_article')
+        );
 
-            $formData['university_identification'] = $this->getParam('identification');
-            if ($metaData && $metaData->becomeMember()) {
-                $formData['become_member'] = true;
-            } else {
-                $formData['become_member'] = isset($formData['become_member']) ? $formData['become_member'] : false;
+        $oldTshirtBooking = null;
+        $oldTshirtSize = null;
+        if (null !== $metaData) {
+            if ($enableRegistration) {
+                if (null !== $metaData->getTshirtSize()) {
+                    $oldTshirtBooking = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Booking')
+                        ->findOneAssignedByArticleAndPersonInAcademicYear(
+                            $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sale\Article')
+                                ->findOneById($tshirts[$metaData->getTshirtSize()]),
+                            $academic,
+                            $this->getCurrentAcademicYear()
+                        );
+                }
             }
+            $oldTshirtSize = $metaData->getTshirtSize();
+        }
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost()->toArray();
+            $formData['academic']['university_identification'] = $academic->getUniversityIdentification();
+
+            if ($metaData && $metaData->becomeMember()) {
+                $formData['organization_info']['become_member'] = true;
+            } else {
+                $formData['organization_info']['become_member'] = isset($formData['organization_info']['become_member'])
+                    ? $formData['organization_info']['become_member']
+                    : false;
+            }
+
+            $organizationData = $formData['organization_info'];
+
+            if (isset($organizationData['organization'])) {
+                if (0 == $organizationData['organization'] && $enableOtherOrganization) {
+                    $selectedOrganization = null;
+                } else {
+                    $selectedOrganization = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findOneById($organizationData['organization']);
+                }
+            } else {
+                $selectedOrganization = current(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization')
+                        ->findAll()
+                );
+            }
+
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
+                $organizationData = $formData['organization_info'];
 
-                $universityEmail = $this->_parseUniversityEmail($formData['university_email']);
+                if (null === $metaData) {
+                    $metaData = $form->hydrateObject();
 
-                $academic->setFirstName($formData['first_name'])
-                    ->setLastName($formData['last_name'])
-                    ->setEmail($formData['primary_email'] ? $formData['personal_email'] : $universityEmail)
-                    ->setPhoneNumber($formData['phone_number'])
-                    ->setSex($formData['sex'])
-                    ->setBirthday(self::_loadDate($formData['birthday']))
-                    ->setPersonalEmail($formData['personal_email'])
-                    ->setUniversityEmail($universityEmail);
-
-                $primaryAddress = $this->_getPrimaryAddress($formData);
-
-                if (null !== $academic->getPrimaryAddress()) {
-                    $academic->getPrimaryAddress()
-                        ->setStreet($primaryAddress->getStreet())
-                        ->setNumber($primaryAddress->getNumber())
-                        ->setMailbox($primaryAddress->getMailbox())
-                        ->setPostal($primaryAddress->getPostal())
-                        ->setCity($primaryAddress->getCity())
-                        ->setCountry($primaryAddress->getCountry());
-                } else {
-                    $academic->setPrimaryAddress($primaryAddress);
+                    $this->getEntityManager()->persist($metaData);
                 }
 
-                if (null !== $academic->getSecondaryAddress()) {
-                    $academic->getSecondaryAddress()
-                        ->setStreet($formData['secondary_address_address_street'])
-                        ->setNumber($formData['secondary_address_address_number'])
-                        ->setMailbox($formData['secondary_address_address_mailbox'])
-                        ->setPostal($formData['secondary_address_address_postal'])
-                        ->setCity($formData['secondary_address_address_city'])
-                        ->setCountry($formData['secondary_address_address_country']);
-                } else {
-                    $academic->setSecondaryAddress(
-                        new Address(
-                            $formData['secondary_address_address_street'],
-                            $formData['secondary_address_address_number'],
-                            $formData['primary_address_address_mailbox'],
-                            $formData['secondary_address_address_postal'],
-                            $formData['secondary_address_address_city'],
-                            $formData['secondary_address_address_country']
+                if ($academic->canHaveOrganizationStatus($this->getCurrentAcademicYear())) {
+                    $academic->addOrganizationStatus(
+                        new OrganizationStatus(
+                            $academic,
+                            'non_member',
+                            $this->getCurrentAcademicYear()
                         )
                     );
                 }
 
-                if ($academic->canHaveUniversityStatus($this->getCurrentAcademicYear())) {
-                    $status = new UniversityStatus(
-                        $academic,
-                        'student',
-                        $this->getCurrentAcademicYear()
-                    );
-                    $academic->addUniversityStatus($status);
-                }
-
-                if (isset($formData['organization'])) {
-                    if (0 == $formData['organization'] && $enableOtherOrganization) {
-                        $organization = null;
-                    } else {
-                        $organization = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Organization')
-                            ->findOneById($formData['organization']);
-
-                        $this->_setOrganization(
-                            $academic,
-                            $this->getCurrentAcademicYear(),
-                            $organization
-                        );
-                    }
-                } else {
-                    $organization = current(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Organization')
-                            ->findAll()
-                    );
-
+                if (null !== $selectedOrganization) {
                     $this->_setOrganization(
                         $academic,
                         $this->getCurrentAcademicYear(),
-                        $organization
+                        $selectedOrganization
                     );
                 }
 
@@ -294,10 +276,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         );
                     }
 
-                    $this->getEntityManager()->persist($metaData);
-                }
-
-                if ($enableRegistration) {
                     $membershipArticles = array();
                     $ids = unserialize(
                         $this->getEntityManager()
@@ -311,8 +289,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                             ->findOneById($articleId);
                     }
 
-                    if ($metaData->becomeMember() && null !== $organization) {
-                        $this->_bookRegistrationArticles($academic, $organization, $this->getCurrentAcademicYear());
+                    if ($metaData->becomeMember() && null !== $selectedOrganization) {
+                        $this->_bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
@@ -374,7 +352,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function studiesAction()
     {
-        if (null === $this->getAuthentication()->getPersonObject()) {
+        $academic = $this->getAuthentication()->getPersonObject();
+        if (!($academic instanceof Academic)) {
             $this->flashMessenger()->error(
                 'Error',
                 'Please login first!'
@@ -388,14 +367,15 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         }
 
         return $this->_studiesAction(
-            $this->getAuthentication()->getPersonObject(),
+            $academic,
             $this->getCurrentAcademicYear()
         );
     }
 
     public function saveStudiesAction()
     {
-        if (null === $this->getAuthentication()->getPersonObject()) {
+        $academic = $this->getAuthentication()->getPersonObject();
+        if (!($academic instanceof Academic)) {
             $this->flashMessenger()->error(
                 'Error',
                 'Please login first!'
@@ -411,15 +391,16 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $this->initAjax();
 
         return $this->_saveStudiesAction(
-            $this->getAuthentication()->getPersonObject(),
+            $academic,
             $this->getCurrentAcademicYear(),
-            $this->getRequest()->getPost()
+            $this->getRequest()->getPost()->toArray()
         );
     }
 
     public function subjectsAction()
     {
-        if (null === $this->getAuthentication()->getPersonObject()) {
+        $academic = $this->getAuthentication()->getPersonObject();
+        if (!($academic instanceof Academic)) {
             $this->flashMessenger()->error(
                 'Error',
                 'Please login first!'
@@ -433,15 +414,16 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         }
 
         return $this->_subjectAction(
-            $this->getAuthentication()->getPersonObject(),
+            $academic,
             $this->getCurrentAcademicYear(),
-            new SubjectForm()
+            $this->getForm('secretary_registration_subject_add')
         );
     }
 
     public function saveSubjectsAction()
     {
-        if (null === $this->getAuthentication()->getPersonObject()) {
+        $academic = $this->getAuthentication()->getPersonObject();
+        if (!($academic instanceof Academic)) {
             $this->flashMessenger()->error(
                 'Error',
                 'Please login first!'
@@ -457,9 +439,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $this->initAjax();
 
         return $this->_saveSubjectAction(
-            $this->getAuthentication()->getPersonObject(),
+            $academic,
             $this->getCurrentAcademicYear(),
-            $this->getRequest()->getPost()
+            $this->getRequest()->getPost()->toArray()
         );
     }
 
@@ -469,14 +451,14 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
 
-        $form = new ActivateForm();
+        $form = $this->getForm('common_account_activate');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $user->setCode(null)
                     ->setCredential(
@@ -509,10 +491,24 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function passbookAction()
     {
+        $academic = $this->getAuthentication()->getPersonObject();
+        if (!($academic instanceof Academic)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
+            );
+
+            $this->redirect()->toRoute(
+                'common_index'
+            );
+
+            return new ViewModel();
+        }
+
         $pass = new TmpFile();
         $membership = new Membership(
             $this->getEntityManager(),
-            $this->getAuthentication()->getPersonObject(),
+            $academic,
             $this->getCurrentAcademicYear(),
             $pass,
             'data/images/pass_kit'
@@ -536,17 +532,13 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function uploadProfileImageAction()
     {
-        $form = new ProfileForm();
-
-        $upload = new FileUpload();
-        $inputFilter = $form->getInputFilter()->get('profile');
-        if ($inputFilter instanceof InputInterface) {
-            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
-        }
+        $form = $this->getForm('common_account_profile');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
             $academic = $this->getAuthentication()->getPersonObject();
             $filePath = 'public' . $this->getEntityManager()
@@ -554,11 +546,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->getConfigValue('common.profile_path');
 
             if ($form->isValid()) {
-                if ($upload->isValid()) {
-                    $upload->receive();
+                $formData = $form->getData();
 
-                    $image = new Imagick($upload->getFileName('profile'));
-                    unlink($upload->getFileName('profile'));
+                if ($formData['profile']) {
+                    $image = new Imagick($formData['profile']['tmp_name']);
                 } else {
                     $image = new Imagick($filePath . '/' . $academic->getPhotoPath());
                 }
@@ -599,31 +590,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     )
                 );
             } else {
-                $errors = $form->getMessages();
-                $formErrors = array();
-
-                foreach ($form->getElements() as $key => $element) {
-                    if (!isset($errors[$element->getName()])) {
-                        continue;
-                    }
-
-                    $formErrors[$element->getAttribute('id')] = array();
-
-                    foreach ($errors[$element->getName()] as $error) {
-                        $formErrors[$element->getAttribute('id')][] = $error;
-                    }
-                }
-
-                if (sizeof($upload->getMessages()) > 0) {
-                    $formErrors['profile'] = $upload->getMessages();
-                }
-
                 return new ViewModel(
                     array(
                         'result' => array(
                             'status' => 'error',
                             'form' => array(
-                                'errors' => $formErrors,
+                                'errors' => $form->getMessages(),
                             ),
                         ),
                     )
@@ -684,14 +656,5 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $this->getParam('return')
             );
         }
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date . ' 00:00') ?: null;
     }
 }

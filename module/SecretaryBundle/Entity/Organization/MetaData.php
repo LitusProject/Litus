@@ -20,7 +20,8 @@ namespace SecretaryBundle\Entity\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * This entity stores the node item.
@@ -63,15 +64,13 @@ class MetaData
     private $becomeMember;
 
     /**
-     * @param \CommonBundle\Entity\User\Person\Academic $academic
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear
-     * @param boolean                                   $becomeMember
+     * @param Academic     $academic
+     * @param AcademicYear $academicYear
      */
-    public function __construct(Academic $academic, AcademicYear $academicYear, $becomeMember)
+    public function __construct(Academic $academic, AcademicYear $academicYear)
     {
         $this->academic = $academic;
         $this->academicYear = $academicYear;
-        $this->becomeMember = $becomeMember;
     }
 
     /**

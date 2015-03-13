@@ -34,7 +34,7 @@ use CommonBundle\Component\Util\AcademicYear,
 class Study extends Restriction
 {
     /**
-     * @var string|null The value of the restriction
+     * @var ArrayCollection The value of the restriction
      *
      * @ORM\ManyToMany(targetEntity="SyllabusBundle\Entity\Study")
      * @ORM\JoinTable(name="cudi.sales_session_restrictions_study_map",
@@ -63,7 +63,7 @@ class Study extends Restriction
     }
 
     /**
-     * @return \Doctrine\Common\Collection\ArrayCollection
+     * @return ArrayCollection
      */
     public function getStudies()
     {
@@ -71,7 +71,7 @@ class Study extends Restriction
     }
 
     /**
-     * @param  SyllabusBundle\Entity\Study $study
+     * @param  StudyEntity $study
      * @return self
      */
     public function addStudy(StudyEntity $study)

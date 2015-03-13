@@ -19,14 +19,8 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Page,
-    BrBundle\Form\Admin\Company\Add as AddForm,
-    BrBundle\Form\Admin\Company\Edit as EditForm,
-    BrBundle\Form\Admin\Company\Logo as LogoForm,
-    CommonBundle\Entity\General\Address,
     Imagick,
     Zend\File\Transfer\Adapter\Http as FileUpload,
-    Zend\InputFilter\InputInterface,
     Zend\Validator\File\IsImage as IsImageValidator,
     Zend\View\Model\ViewModel;
 
@@ -68,69 +62,15 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('br_company_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $company = new Company(
-                    $formData['company_name'],
-                    $formData['vat_number'],
-                    new Address(
-                        $formData['address_street'],
-                        $formData['address_number'],
-                        $formData['address_mailbox'],
-                        $formData['address_postal'],
-                        $formData['address_city'],
-                        $formData['address_country']
-                    ),
-                    $formData['phone_number'],
-                    $formData['website'],
-                    $formData['sector']
-                );
-
+                $company = $form->hydrateObject();
                 $this->getEntityManager()->persist($company);
-
-                $years = array();
-                $archiveYears = array();
-                if (count($formData['cvbook']) > 0) {
-                    $repository = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach ($formData['cvbook'] as $yearId) {
-                        if (strpos($yearId, 'archive-') === 0) {
-                            $archiveYears[] = substr($yearId, strlen('archive-'));
-                        } else {
-                            $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
-                        }
-                    }
-                }
-
-                $company->setCvBookYears($years);
-                $company->setCvBookArchiveYears($archiveYears);
-
-                $years = array();
-                if (count($formData['years']) > 0) {
-                    $yearIds = $formData['years'];
-                    $repository = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\AcademicYear');
-                    foreach ($yearIds as $yearId) {
-                        $years[] = $repository->findOneById($yearId);
-                    }
-                }
-
-                $page = new Page(
-                    $company,
-                    $formData['summary'],
-                    $formData['description']
-                );
-
-                $page->setYears($years);
-
-                $this->getEntityManager()->persist($page);
 
                 $this->getEntityManager()->flush();
 
@@ -163,62 +103,13 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $company);
+        $form = $this->getForm('br_company_edit', array('company' => $company));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $company->setName($formData['company_name'])
-                    ->setVatNumber($formData['vat_number'])
-                    ->setPhoneNumber($formData['phone_number'])
-                    ->setWebsite($formData['website'])
-                    ->setSector($formData['sector'])
-                    ->getAddress()
-                        ->setStreet($formData['address_street'])
-                        ->setNumber($formData['address_number'])
-                        ->setMailbox($formData['address_mailbox'])
-                        ->setPostal($formData['address_postal'])
-                        ->setCity($formData['address_city'])
-                        ->setCountry($formData['address_country']);
-
-                $years = array();
-                $archiveYears = array();
-                if (count($formData['cvbook']) > 0) {
-                    $repository = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\AcademicYear');
-
-                    foreach ($formData['cvbook'] as $yearId) {
-                        if (strpos($yearId, 'archive-') === 0) {
-                            $archiveYears[] = substr($yearId, strlen('archive-'));
-                        } else {
-                            $years[] = $repository->findOneById(substr($yearId, strlen('year-')));
-                        }
-                    }
-                }
-
-                $company->setCvBookYears($years);
-                $company->setCvBookArchiveYears($archiveYears);
-
-                $years = array();
-                if (count($formData['years']) > 0) {
-                    $yearIds = $formData['years'];
-                    $repository = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\AcademicYear');
-
-                    foreach ($yearIds as $yearId) {
-                        $years[] = $repository->findOneById($yearId);
-                    }
-                }
-
-                $company->getPage()
-                    ->setSummary($formData['summary'])
-                    ->setDescription($formData['description'])
-                    ->setYears($years);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -312,27 +203,21 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $form = new LogoForm();
+        $form = $this->getForm('br_company_logo');
 
-        $filePath = 'public/' . $this->getEntityManager()
+        $filePath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
-            $upload = new FileUpload();
-            $inputFilter = $form->getInputFilter()->get('logo');
-            if ($inputFilter instanceof InputInterface) {
-                $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
-            }
-
-            if ($form->isValid() && $upload->isValid()) {
-                $upload->receive();
-
-                $image = new Imagick($upload->getFileName('logo'));
-                unlink($upload->getFileName('logo'));
+            if ($form->isValid()) {
+                $formData = $form->getData();
+                $image = new Imagick($formData['logo']['tmp_name']);
                 $image->thumbnailImage(320, 320, true);
 
                 if ($company->getLogo() != '' || $company->getLogo() !== null) {
@@ -342,7 +227,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                         $fileName = '/' . sha1(uniqid());
                     } while (file_exists($filePath . $fileName));
                 }
-                $image->writeImage($filePath . $fileName);
+                $image->writeImage('public/' . $filePath . $fileName);
                 $company->setLogo($fileName);
 
                 $this->getEntityManager()->flush();
@@ -361,14 +246,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 );
 
                 return new ViewModel();
-            } else {
-                $errors = $form->getMessages();
-
-                if (sizeof($upload->getMessages()) > 0) {
-                    $errors['logo'] = $upload->getMessages();
-                }
-
-                $form->setMessages($errors);
             }
         }
 
@@ -399,31 +276,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $item->id = $company->getId();
             $item->name = $company->getName();
             $item->vatNumber = $company->getVatNumber();
-            $result[] = $item;
-        }
-
-        return new ViewModel(
-            array(
-                'result' => $result,
-            )
-        );
-    }
-
-    public function contactsAction()
-    {
-        $this->initAjax();
-
-        if (!($company = $this->_getCompany())) {
-            return new ViewModel();
-        }
-
-        $contacts = $company->getContacts();
-
-        $result = array();
-        foreach ($contacts as $contact) {
-            $item = (object) array();
-            $item->id = $contact->getId();
-            $item->value = $contact->getFullName();
             $result[] = $item;
         }
 

@@ -18,8 +18,7 @@
 
 namespace BannerBundle\Entity\Node;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
+use DateTime,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -71,27 +70,6 @@ class Banner extends \CommonBundle\Entity\Node
      * @ORM\Column(type="text")
      */
     private $url;
-
-    /**
-     * @param Person   $person
-     * @param string   $name
-     * @param string   $image
-     * @param DateTime $startDate
-     * @param DateTime $endDate
-     * @param boolean  $active
-     * @param string   $url
-     */
-    public function __construct(Person $person, $name, $image, DateTime $startDate, DateTime $endDate, $active, $url)
-    {
-        parent::__construct($person);
-
-        $this->name = $name;
-        $this->image = $image;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->active = $active;
-        $this->url = $url;
-    }
 
     /**
      * @param string $name

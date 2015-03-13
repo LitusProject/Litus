@@ -19,8 +19,6 @@
 namespace QuizBundle\Controller\Admin;
 
 use QuizBundle\Entity\Quiz,
-    QuizBundle\Form\Admin\Quiz\Add as AddForm,
-    QuizBundle\Form\Admin\Quiz\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -58,25 +56,13 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('quiz_quiz_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $editRoles = array();
-                if (isset($formData['edit_roles'])) {
-                    foreach ($formData['edit_roles'] as $editRole) {
-                        $editRoles[] = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName($editRole);
-                    }
-                }
-
-                $quiz = new Quiz($this->getAuthentication()->getPersonObject(), $formData['name'], $editRoles);
+                $quiz = $form->hydrateObject();
                 $this->getEntityManager()->persist($quiz);
 
                 $this->getEntityManager()->flush();
@@ -111,17 +97,12 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form  = new EditForm($this->getEntityManager(), $quiz);
+        $form  = $this->getForm('quiz_quiz_edit', $quiz);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $quiz->setName($formData['name']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -141,6 +122,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'form' => $form,
+                'quiz' => $quiz,
             )
         );
     }

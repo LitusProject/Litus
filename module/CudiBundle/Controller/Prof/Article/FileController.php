@@ -21,10 +21,7 @@ namespace CudiBundle\Controller\Prof\Article;
 use CudiBundle\Entity\Article,
     CudiBundle\Entity\File\File,
     CudiBundle\Entity\Prof\Action,
-    CudiBundle\Form\Prof\File\Add as AddForm,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
-    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -55,7 +52,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             }
         }
 
-        $form = new AddForm();
+        $form = $this->getForm('cudi_prof_file_add');
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
@@ -114,31 +111,26 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
         }
 
-        $form = new AddForm();
-        $formData = $this->getRequest()->getPost();
-        $form->setData($formData);
+        $form = $this->getForm('cudi_prof_file_add');
+        $form->setData(array_merge(
+            $this->getRequest()->getPost()->toArray(),
+            $this->getRequest()->getFiles()->toArray()
+        ));
 
-        $upload = new FileUpload();
-        $inputFilter = $form->getInputFilter()->get('file');
-        if ($inputFilter instanceof InputInterface) {
-            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
-        }
-
-        if ($form->isValid() && $upload->isValid()) {
-            $formData = $form->getFormData($formData);
+        if ($form->isValid()) {
+            $formData = $form->getData();
 
             $filePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.file_path');
 
-            $originalName = $upload->getFileName('file', false);
+            $originalName = $formData['file']['name'];
 
             do {
                 $fileName = '/' . sha1(uniqid());
             } while (file_exists($filePath . $fileName));
 
-            $upload->addFilter('Rename', $filePath . $fileName);
-            $upload->receive();
+            rename($formData['file']['tmp_name'], $filePath . $fileName);
 
             $file = new File(
                 $this->getEntityManager(),
@@ -176,30 +168,11 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
                 )
             );
         } else {
-            $errors = $form->getMessages();
-            $formErrors = array();
-
-            foreach ($form->getElements() as $key => $element) {
-                if (!isset($errors[$element->getName()])) {
-                    continue;
-                }
-
-                $formErrors[$element->getAttribute('id')] = array();
-
-                foreach ($errors[$element->getName()] as $error) {
-                    $formErrors[$element->getAttribute('id')][] = $error;
-                }
-            }
-
-            if (sizeof($upload->getMessages()) > 0) {
-                $formErrors['file'] = $upload->getMessages();
-            }
-
             return new ViewModel(
                 array(
                     'status' => 'error',
                     'form' => array(
-                        'errors' => $formErrors,
+                        'errors' => $form->getMessages(),
                     ),
                 )
             );

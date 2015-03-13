@@ -18,12 +18,7 @@
 
 namespace TicketBundle\Controller\Sale;
 
-use CommonBundle\Entity\User\Person,
-    TicketBundle\Component\Ticket\Ticket as TicketBook,
-    TicketBundle\Entity\Event,
-    TicketBundle\Entity\GuestInfo,
-    TicketBundle\Form\Sale\Ticket\Add as AddForm,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -38,44 +33,14 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneById($this->getParam('id'));
 
-        $form = new AddForm($this->getEntityManager(), $event);
+        $form = $this->getForm('ticket_sale_ticket_add', array('event' => $event));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                if ($formData['is_guest']) {
-                    $person = null;
-                    $guestInfo = new GuestInfo($formData['guest_first_name'], $formData['guest_last_name'], $formData['guest_email']);
-                    $this->getEntityManager()->persist($guestInfo);
-                } else {
-                    $person = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneById($formData['person_id']);
-                    $guestInfo = null;
-                }
-
-                $numbers = array(
-                    'member' => isset($formData['number_member']) ? $formData['number_member'] : 0,
-                    'non_member' => isset($formData['number_non_member']) ? $formData['number_non_member'] : 0,
-                );
-
-                foreach ($event->getOptions() as $option) {
-                    $numbers['option_' . $option->getId() . '_number_member'] = $formData['option_' . $option->getId() . '_number_member'];
-                    $numbers['option_' . $option->getId() . '_number_non_member'] = $formData['option_' . $option->getId() . '_number_non_member'];
-                }
-
-                TicketBook::book(
-                    $event,
-                    $person,
-                    $guestInfo,
-                    $numbers,
-                    $formData['payed'],
-                    $this->getEntityManager()
-                );
+                $form->hydrateObject($event);
+                $formData = $form->getData();
 
                 $this->getEntityManager()->flush();
 
@@ -109,11 +74,10 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneById($this->getParam('id'));
 
-        $form = new AddForm($this->getEntityManager(), $event);
+        $form = $this->getForm('ticket_sale_ticket_add', array('event' => $event));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
                 return new ViewModel(
@@ -123,40 +87,11 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                     )
                 );
             } else {
-                $errors = $form->getMessages();
-                $formErrors = array();
-
-                foreach ($form->getElements() as $element) {
-                    if (!isset($errors[$element->getName()])) {
-                        continue;
-                    }
-
-                    $formErrors[$element->getAttribute('id')] = array();
-
-                    foreach ($errors[$element->getName()] as $error) {
-                        $formErrors[$element->getAttribute('id')][] = $error;
-                    }
-                }
-
-                foreach ($form->getFieldSets() as $fieldset) {
-                    foreach ($fieldset->getElements() as $subElement) {
-                        if (!isset($errors[$fieldset->getName()][$subElement->getName()])) {
-                            continue;
-                        }
-
-                        $formErrors[$subElement->getAttribute('id')] = array();
-
-                        foreach ($errors[$fieldset->getName()][$subElement->getName()] as $error) {
-                            $formErrors[$subElement->getAttribute('id')][] = $error;
-                        }
-                    }
-                }
-
                 return new ViewModel(
                     array(
                         'status' => 'error',
                         'form' => array(
-                            'errors' => $formErrors,
+                            'errors' => $form->getMessages(),
                         ),
                     )
                 );

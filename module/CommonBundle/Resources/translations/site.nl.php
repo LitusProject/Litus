@@ -59,6 +59,7 @@ return array(
     'Activate' => 'Activeren',
     'Password' => 'Wachtwoord',
     'Verify Password' => 'Bevestig Wachtwoord',
+    'Your account was succesfully activated!' => 'Uw account was succesvol geactiveerd!',
     'Overview' => 'Overzicht',
     'Edit' => 'Bewerk',
     'Studies' => 'Studierichtingen',
@@ -101,13 +102,14 @@ return array(
     'Cudi is currently closed.' => 'Cudi is momenteel gesloten.',
     'Reserve textbooks and other study material.' => 'Reserveer tekstboeken en ander studiemateriaal.',
 
-    'The value may not be zero' => 'De waarde mag niet nul zijn',
-
     'Praesidium' => 'Praesidium',
     'Groupcoordinator' => 'Groepscoördinator',
 
     'Enroll' => 'Schrijf In',
     'Unsubscribe' => 'Schrijf Uit',
+
+    'The selected file is too large.' => 'Het geselecteerde bestand is te groot.',
+    'An error occurred while uploading your profile image.' => 'Er is een fout opgetreden tijdens het uploaden van je profiel foto.',
 
     'VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.' => 'VTK gebruikt cookies om het gebruiksgemak van deze website te verhogen. Door deze website te gebruiken of op "Ga Verder" te klikken geeft u de toestemming om cookies te gebruiken. Indien u meer informatie wilt over cookies en hoe ze gebruikt worden, kan u <a href="%url%">ons privacybeleid</a> hier lezen.',
     'Privacy Policy' => 'Privacybeleid',

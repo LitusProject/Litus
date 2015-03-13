@@ -23,10 +23,6 @@ use CudiBundle\Component\Mail\Booking as BookingMail,
     CudiBundle\Entity\Sale\QueueItem,
     CudiBundle\Entity\Sale\ReturnItem,
     CudiBundle\Entity\Stock\Period,
-    CudiBundle\Form\Admin\Mail\Send as MailForm,
-    CudiBundle\Form\Admin\Sales\Booking\Add as AddForm,
-    CudiBundle\Form\Admin\Sales\Booking\Article as ArticleForm,
-    CudiBundle\Form\Admin\Sales\Booking\Person as PersonForm,
     DateInterval,
     DateTime,
     Zend\View\Model\ViewModel;
@@ -130,27 +126,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $academicYear = $this->getAcademicYear();
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('cudi_sale_booking_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $booking = new Booking(
-                    $this->getEntityManager(),
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneById($formData['person_id']),
-                    $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Article')
-                        ->findOneById($formData['article_id']),
-                    'booked',
-                    $formData['amount'],
-                    true
-                );
+                $booking = $form->hydrateObject();
 
                 $this->getEntityManager()->persist($booking);
 
@@ -243,7 +225,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $this->getParam('page')
         );
 
-        $mailForm = new MailForm($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName());
+        $mailForm = $this->getForm('cudi_mail_send', array(
+            'email' => $booking->getPerson()->getEmail(),
+            'name'  => $booking->getPerson()->getFullName(),
+        ));
         $mailForm->setAttribute('action', $this->url()->fromRoute('cudi_admin_mail'));
 
         return new ViewModel(
@@ -637,7 +622,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function personAction()
     {
-        $form = new PersonForm();
+        $form = $this->getForm('cudi_sale_booking_person');
 
         if ($person = $this->_getPerson()) {
             $paginator = $this->paginator()->createFromQuery(
@@ -670,7 +655,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new ArticleForm();
+        $form = $this->getForm('cudi_sale_booking_article');
 
         if ($article = $this->_getArticle()) {
             $paginator = $this->paginator()->createFromQuery(

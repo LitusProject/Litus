@@ -1,0 +1,41 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+
+    {% include 'prom/admin/partials/navigation.twig' %}
+
+    <div id="controller_action">
+            <table class="full_width manage">
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                    <th>Departure bus</th>
+                    <th>Return bus</th>
+                    <th width='80px'>Actions</th>
+                </tr>
+                {% for passenger in paginator %}
+                    <tr>
+                        <td>{{ passenger.getFirstName() }}</td>
+                        <td>{{ passenger.getLastName() }}</td>
+                        <td>{{ passenger.getEmail() }}</td>
+                        <td>{{ passenger.getFirstBus().getDepartureTime().format('d/m/Y H:i') }}</td>
+                        <td>{{ passenger.getSecondBus().getDepartureTime().format('d/m/Y H:i') }}</td>
+                        <td class="actions">
+                            {% if hasAccess('prom_admin_passenger', 'view') %}
+                                <a href="{{ url('prom_admin_bus', {"action": "view", "id": passenger.getBus().getId()}) }}" class="view">View Bus</a>
+                            {% endif %}
+                            {% if hasAccess('prom_admin_bus', 'delete') %}
+                                <a href="{{ url('prom_admin_passenger', {"action": "removeBus", "id": passenger.getId()}) }}" class="delete">Remove From Bus</a>
+                            {% endif %}
+                            {% if hasAccess('prom_admin_passenger', 'delete') %}
+                                <a href="{{ url('prom_admin_passenger', {"action": "delete", "id": passenger.getId()}) }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+{% endblock %}

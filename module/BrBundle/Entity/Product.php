@@ -18,11 +18,13 @@
 
 namespace BrBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
+use CalendarBundle\Entity\Node\Event,
+    CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    InvalidArgumentException;
 
 /**
  * A product is something that can be sold to companies.
@@ -63,7 +65,7 @@ class Product
     private $contractText;
 
     /**
-     * @var \CommonBundle\Entity\User\Person The author of this product
+     * @var Person The author of this product
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="author", referencedColumnName="id")
@@ -71,7 +73,7 @@ class Product
     private $author;
 
     /**
-     * @var \CommonBundle\Entity\General\AcademicYear
+     * @var AcademicYear
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
@@ -79,7 +81,7 @@ class Product
     private $academicYear;
 
     /**
-     * @var \CalendarBundle\Entity\Node\Event The shift's event
+     * @var Event The shift's event
      *
      * @ORM\ManyToOne(targetEntity="CalendarBundle\Entity\Node\Event")
      * @ORM\JoinColumn(name="event", referencedColumnName="id")
@@ -87,7 +89,7 @@ class Product
     private $event;
 
     /**
-     * @var \DateTime The date of delivery
+     * @var DateTime The date of delivery
      *
      * @ORM\Column(name="delivery_date", type="datetime", nullable=true)
      */
@@ -123,38 +125,23 @@ class Product
     private $invoiceDescription;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $_entityManager;
 
     /**
-     * @param string                                    $name         The name of this section
-     * @param string                                    $description  The description on the invoice of this section
-     * @param string                                    $content      The content of this section
-     * @param \CommonBundle\Entity\User\Person          $author       The author of this section
-     * @param int                                       $price
-     * @param string                                    $vatType      see setVatType($vatType)
-     * @param \CommonBundle\Entity\General\AcademicYear $academicYear The current academicYear
-     * @param DateTime                                  $deliveryDate The deliveryDate
+     * @param Person       $author       The author of this section
+     * @param AcademicYear $academicYear The current academicYear
      */
-    public function __construct(EntityManager $entityManager, $name, $description, $invoiceDescription, $contractText, Person $author, $price, $vatType, AcademicYear $academicYear, $deliveryDate)
+    public function __construct(Person $author, AcademicYear $academicYear)
     {
-        $this->_entityManager = $entityManager;
-
-        $this->setName($name);
-        $this->setDescription($description);
-        $this->setInvoiceDescription($invoiceDescription);
-        $this->setContractText($contractText);
         $this->setAuthor($author);
-        $this->setPrice($price);
-        $this->setVatType($vatType);
-        $this->setDeliveryDate($deliveryDate);
         $this->academicYear = $academicYear;
         $this->old = false;
     }
 
     /**
-     * @return \BrBundle\Entity\Product
+     * @return self
      */
     public function setOld()
     {
@@ -188,13 +175,13 @@ class Product
     }
 
     /**
-     * @param  string                            $name The name of this section
-     * @return \BrBundle\Entity\Contract\Section
+     * @param  string $name The name of this section
+     * @return self
      */
     public function setName($name)
     {
         if (null === $name || !is_string($name)) {
-            throw new \InvalidArgumentException('Invalid name');
+            throw new InvalidArgumentException('Invalid name');
         }
 
         $this->name = $name;
@@ -203,7 +190,7 @@ class Product
     }
 
     /**
-     * @return \Litus\Entity\Users\Person
+     * @return Person
      */
     public function getAuthor()
     {
@@ -211,13 +198,13 @@ class Product
     }
 
     /**
-     * @param  \Litus\Entity\Users\Person $author The author of this section
-     * @return \BrBundle\Entity\Product
+     * @param  Person $author The author of this section
+     * @return self
      */
     public function setAuthor(Person $author)
     {
         if (null === $author) {
-            throw new \InvalidArgumentException('Invalid author');
+            throw new InvalidArgumentException('Invalid author');
         }
 
         $this->author = $author;
@@ -234,13 +221,13 @@ class Product
     }
 
     /**
-     * @param  string                   $content The content of this section
-     * @return \BrBundle\Entity\Product
+     * @param  string $contractText The content of this section
+     * @return self
      */
     public function setContractText($contractText)
     {
         if (null === $contractText || !is_string($contractText)) {
-            throw new \InvalidArgumentException('Invalid contract text');
+            throw new InvalidArgumentException('Invalid contract text');
         }
 
         $this->contractText = $contractText;
@@ -249,7 +236,7 @@ class Product
     }
 
     /**
-     * @return string
+     * @return AcademicYear
      */
     public function getAcademicYear()
     {
@@ -257,19 +244,11 @@ class Product
     }
 
     /**
-     * @param  string                    $vatType The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
-     * @throws \InvalidArgumentException
-     * @return \BrBundle\Entity\Product
+     * @param  string $vatType The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are 'A','B', ...; a value is valid if the configuration entry 'br.invoice.vat.<value>' exists
+     * @return self
      */
     public function setVatType($vatType)
     {
-        $types = $this->_entityManager->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.vat_types');
-        $types = unserialize($types);
-        if (!isset($types[$vatType])) {
-            throw new \InvalidArgumentException('Invalid VAT type: ' . $vatType);
-        }
-
         $this->vatType = $vatType;
 
         return $this;
@@ -290,24 +269,26 @@ class Product
      */
     public function getVatPercentage()
     {
-        $types =  $this->_entityManager->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.vat_types');
-        $types = unserialize($types);
+        $types = unserialize(
+            $this->_entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.vat_types')
+        );
 
         return $types[$this->getVatType()];
     }
 
     /**
-     * @param  float                    $price
-     * @return \BrBundle\Entity\Product
+     * @param  float $price
+     * @return self
      */
     public function setPrice($price)
     {
         if (null === $price || !preg_match('/^[0-9]+.?[0-9]{0,2}$/', $price)) {
-            throw new \InvalidArgumentException('Invalid price');
+            throw new InvalidArgumentException('Invalid price');
         }
 
-        $this->price = $price * 100;
+        $this->price = (int) ($price * 100);
 
         return $this;
     }
@@ -329,13 +310,13 @@ class Product
     }
 
     /**
-     * @param  string|null              $description
-     * @return \BrBundle\Entity\Product
+     * @param  string $description
+     * @return self
      */
     public function setDescription($description)
     {
         if (null === $description || !is_string($description) || '' == $description) {
-            throw new \InvalidArgumentException('Invalid description');
+            throw new InvalidArgumentException('Invalid description');
         }
 
         $this->description = $description;
@@ -352,13 +333,13 @@ class Product
     }
 
     /**
-     * @param  string|null              $description
-     * @return \BrBundle\Entity\Product
+     * @param  string $description
+     * @return self
      */
     public function setInvoiceDescription($description)
     {
         if (null === $description || !is_string($description)) {
-            throw new \InvalidArgumentException('Invalid description');
+            throw new InvalidArgumentException('Invalid description');
         }
 
         $this->invoiceDescription = $description;
@@ -367,7 +348,7 @@ class Product
     }
 
     /**
-     * @return \CommonBundle\Entity\General\Organization\Unit
+     * @return Event
      */
     public function getEvent()
     {
@@ -375,10 +356,10 @@ class Product
     }
 
     /**
-     * @param  \CalendarBundle\Entity\Node\Event $event
-     * @return \ShiftBundle\Entity\Shift
+     * @param  Event $event
+     * @return self
      */
-    public function setEvent($event)
+    public function setEvent(Event $event)
     {
         $this->event = $event;
 
@@ -394,8 +375,8 @@ class Product
     }
 
     /**
-     * @param  DateTime|null            $deliveryDate
-     * @return \BrBundle\Entity\Product
+     * @param  DateTime $deliveryDate
+     * @return self
      */
     public function setDeliveryDate($deliveryDate)
     {
@@ -405,7 +386,8 @@ class Product
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param  EntityManager $entityManager
+     * @return self
      */
     public function setEntityManager(EntityManager $entityManager)
     {

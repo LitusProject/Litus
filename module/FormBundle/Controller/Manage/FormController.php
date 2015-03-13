@@ -23,13 +23,8 @@ use CommonBundle\Component\Util\File\TmpFile,
     FormBundle\Component\Document\Generator\Doodle as DoodleGenerator,
     FormBundle\Component\Document\Generator\Form as FormGenerator,
     FormBundle\Component\Document\Generator\Zip as ZipGenerator,
-    FormBundle\Component\Form\Doodle as DoodleHelper,
-    FormBundle\Component\Form\Form as FormHelper,
-    FormBundle\Form\Manage\Mail\Send as MailForm,
-    FormBundle\Form\Manage\SpecifiedForm\Add as SpecifiedFormAdd,
-    FormBundle\Form\Manage\SpecifiedForm\Doodle as DoodleAddForm,
-    FormBundle\Form\SpecifiedForm\Doodle as DoodleForm,
-    FormBundle\Form\SpecifiedForm\Edit as SpecifiedForm,
+    FormBundle\Entity\Node\Entry as FormEntry,
+    FormBundle\Entity\Node\GuestInfo,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -101,8 +96,17 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findAllByForm($form);
 
-        $mailForm = new MailForm();
-        $mailForm->setAttribute('action', $this->url()->fromRoute('form_manage_mail', array('action' => 'send', 'id' => $form->getId())));
+        $mailForm = $this->getForm('form_manage_mail_send');
+        $mailForm->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'form_manage_mail',
+                array(
+                    'action' => 'send',
+                    'id' => $form->getId(),
+                )
+            )
+        );
 
         return new ViewModel(
             array(
@@ -158,32 +162,41 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        $form = new SpecifiedFormAdd($this->getEntityManager(), $this->getLanguage(), $formSpecification);
+        $form = $this->getForm(
+            'form_manage_specified-form_add',
+            array(
+                'form' => $formSpecification,
+                'language' => $this->getLanguage(),
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $person = null;
-                if ($formData['person_id']) {
+                if (isset($formData['person_form'])) {
                     $person = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person')
-                        ->findOneById($formData['person_id']);
+                        ->findOneById($formData['person_form']['person']['id']);
                 }
 
-                $result = FormHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $form, $this->getEntityManager(), null, null, $this->getRequest());
-
-                if (!$result) {
-                    return new ViewModel(
-                        array(
-                            'formSpecification' => $formSpecification,
-                            'form'          => $form,
-                        )
+                $formEntry = new FormEntry($person, $formSpecification);
+                if (null === $person) {
+                    $formEntry->setGuestInfo(
+                        new GuestInfo($this->getEntityManager(), $this->getRequest())
                     );
                 }
+
+                $formEntry = $form->hydrateObject($formEntry);
+
+                $this->getEntityManager()->persist($formEntry);
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -193,8 +206,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 $this->redirect()->toRoute(
                     'form_manage',
                     array(
-                        'action'   => 'view',
-                        'id'       => $formSpecification->getId(),
+                        'action' => 'view',
+                        'id'     => $formSpecification->getId(),
                     )
                 );
             }
@@ -253,26 +266,26 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        $form = new SpecifiedForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry, $formEntry->getCreationPerson());
-        $form->populateFromEntry($formEntry);
+        $form = $this->getForm(
+            'form_specified-form_edit',
+            array(
+                'form' => $formSpecification,
+                'person' => $formEntry->getCreationPerson(),
+                'language' => $this->getLanguage(),
+                'entry' => $formEntry,
+                'guest_info' => $formEntry->getGuestInfo(),
+                'is_draft' => false,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $result = FormHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formEntry->getForm(), $formData, $this->getLanguage(), $form, $this->getEntityManager(), null, null, $this->getRequest());
-
-                if (!$result) {
-                    return new ViewModel(
-                        array(
-                            'specification' => $formEntry->getForm(),
-                            'form'          => $form,
-                        )
-                    );
-                }
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Succes',
@@ -318,23 +331,39 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        $form = new DoodleAddForm($this->getEntityManager(), $this->getLanguage(), $formSpecification);
+        $form = $this->getForm(
+            'form_manage_specified-form_doodle',
+            array(
+                'form' => $formSpecification,
+                'language' => $this->getLanguage(),
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $person = null;
-                if ($formData['person_id']) {
+                if (isset($formData['person_form'])) {
                     $person = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person')
-                        ->findOneById($formData['person_id']);
+                        ->findOneById($formData['person_form']['person']['id']);
                 }
 
-                DoodleHelper::save(null, $person, null, $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), null, null, $this->getRequest());
+                $formEntry = new FormEntry($person, $formSpecification);
+                if (null === $person) {
+                    $formEntry->setGuestInfo(
+                        new GuestInfo($this->getEntityManager(), $this->getRequest())
+                    );
+                }
+
+                $formEntry = $form->hydrateObject($formEntry);
+
+                $this->getEntityManager()->persist($formEntry);
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -406,15 +435,23 @@ class FormController extends \FormBundle\Component\Controller\FormController
         }
 
         $notValid = false;
-        $form = new DoodleForm($this->getEntityManager(), $this->getLanguage(), $formSpecification, $formEntry->getCreationPerson(), $formEntry, true);
-
+        $form = $this->getForm(
+            'form_specified-form_doodle',
+            array(
+                'form' => $formSpecification,
+                'person' => $formEntry->getCreationPerson(),
+                'guestInfo' => $formEntry->getGuestInfo(),
+                'language' => $this->getLanguage(),
+                'entry' => $formEntry,
+                'forceEdit' => true,
+            )
+        );
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-                DoodleHelper::save($formEntry, $formEntry->getCreationPerson(), $formEntry->getGuestInfo(), $formSpecification, $formData, $this->getLanguage(), $this->getEntityManager(), null, null, $this->getRequest());
+                $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -523,7 +560,6 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
         $file = new CsvFile();
 
-        $language = $this->getLanguage();
         $heading = array('ID', 'Submitter', 'Submitted');
         if ($viewerMap->isMail()) {
             $heading[] = 'Email';
@@ -587,7 +623,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->findAllByField($field);
 
         $tmpFile = new TmpFile();
-        $zipGenerator = new ZipGenerator($tmpFile, $this->getEntityManager(), $this->getLanguage(), $entries);
+        new ZipGenerator($tmpFile, $this->getEntityManager(), $this->getLanguage(), $entries);
 
         $headers = new Headers();
         $headers->addHeaders(array(

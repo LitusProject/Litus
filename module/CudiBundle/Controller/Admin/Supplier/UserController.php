@@ -18,10 +18,7 @@
 
 namespace CudiBundle\Controller\Admin\Supplier;
 
-use CudiBundle\Entity\User\Person\Supplier as SupplierPerson,
-    CudiBundle\Form\Admin\Supplier\User\Add as AddForm,
-    CudiBundle\Form\Admin\Supplier\User\Edit as EditForm,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * UserController
@@ -63,29 +60,14 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('cudi_supplier_user_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $newUser = new SupplierPerson(
-                    $formData['username'],
-                    array(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\Acl\Role')
-                            ->findOneByName('supplier'),
-                    ),
-                    $formData['first_name'],
-                    $formData['last_name'],
-                    $formData['email'],
-                    $formData['phone_number'],
-                    $formData['sex'],
-                    $supplier
-                );
+                $newUser = $form->hydrateObject();
+                $newUser->setSupplier($supplier);
 
                 $newUser->activate(
                     $this->getEntityManager(),
@@ -128,21 +110,12 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $user);
+        $form = $this->getForm('cudi_supplier_user_edit', $user);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $user->setFirstName($formData['first_name'])
-                    ->setLastName($formData['last_name'])
-                    ->setEmail($formData['email'])
-                    ->setSex($formData['sex'])
-                    ->setPhoneNumber($formData['phone_number']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

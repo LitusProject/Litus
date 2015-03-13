@@ -18,10 +18,6 @@
 
 namespace FormBundle\Form\Admin\Field;
 
-use Doctrine\ORM\EntityManager,
-    FormBundle\Entity\Field,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit Field
  *
@@ -30,33 +26,20 @@ use Doctrine\ORM\EntityManager,
  */
 class Edit extends Add
 {
-    /**
-     * @param Field           $fieldSpecification The field
-     * @param EntityManager   $entityManager      The EntityManager instance
-     * @param null|string|int $name               Optional name for the element
-     */
-    public function __construct(Field $fieldSpecification, EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($fieldSpecification->getForm(), $entityManager, null, $name);
+        parent::init();
 
-        $this->_field = $fieldSpecification;
+        $this->get('type')->setAttribute('disabled', 'disabled')
+            ->setRequired(false);
 
-        $this->get('type')->setAttribute('disabled', 'disabled');
-        $this->get('visibility')->get('visible_if')->setAttribute('options', $this->getVisibilityOptions());
+        $this->get('visibility')->get('value')->setAttribute('data-current_value', $this->_field->getVisibilityValue());
 
         $this->remove('submit');
         $this->remove('submit_repeat');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'field_edit');
-        $this->add($field);
+        $this->addSubmit('Save', 'form_edit');
 
-        $this->populateFromField($fieldSpecification);
-    }
-
-    protected function _isTimeSlot()
-    {
-        return $this->_field->getType() == 'timeslot';
+        $this->bind($this->_field);
     }
 }

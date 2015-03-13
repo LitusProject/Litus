@@ -18,17 +18,9 @@
 
 namespace SyllabusBundle\Form\Admin\Subject\Study;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\Validator\Subject\Study as StudyValidator,
+use CommonBundle\Entity\General\AcademicYear,
     SyllabusBundle\Entity\StudySubjectMap,
-    SyllabusBundle\Entity\Subject,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+    SyllabusBundle\Entity\Subject;
 
 /**
  * Add Study to Subject
@@ -37,104 +29,100 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'SyllabusBundle\Hydrator\StudySubjectMap';
+
     /**
-     * @var EntityManager The EntityManager instance
+     * @var StudySubjectMap|null
      */
-    protected $_entityManager;
+    protected $mapping = null;
 
     /**
      * @var Subject
      */
-    protected $_subject;
+    private $subject;
 
     /**
      * @var AcademicYear
      */
-    protected $_academicYear;
+    private $academicYear;
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Subject         $subject
-     * @param AcademicYear    $academicYear
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Subject $subject, AcademicYear $academicYear, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $this->subject) {
+            throw new LogicException('No subject was given to add a study to');
+        }
+        if (null === $this->academicYear) {
+            throw new LogicException('No academic year was given');
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_subject = $subject;
-        $this->_academicYear = $academicYear;
+        parent::init();
 
-        $field = new Hidden('study_id');
-        $field->setAttribute('id', 'studyId');
-        $this->add($field);
-
-        $field = new Text('study');
-        $field->setLabel('Study')
-            ->setAttribute('style', 'width: 400px;')
-            ->setAttribute('id', 'studySearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Checkbox('mandatory');
-        $field->setLabel('Mandatory');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
-    }
-
-    public function populateFromMapping(StudySubjectMap $mapping)
-    {
-        $this->setData(
-            array(
-                'mandatory' => $mapping->isMandatory(),
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'study_id',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
+        $this->add(array(
+            'type'       => 'typeahead',
+            'name'       => 'study',
+            'label'      => 'Study',
+            'required'   => true,
+            'attributes' => array(
+                'style'        => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'int',
+                            'name' => 'syllabus_subject_study',
+                            'options' => array(
+                                'subject' => $this->subject,
+                                'academic_year' => $this->academicYear,
+                            ),
                         ),
+                        array('name' => 'syllabus_typeahead_study'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'study',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new StudyValidator($this->_entityManager, $this->_subject, $this->_academicYear),
-                    ),
-                )
-            )
-        );
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'mandatory',
+            'label' => 'Mandatory',
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'add');
+    }
+
+    /**
+     * @param  Subject $subject
+     * @return self
+     */
+    public function setSubject(Subject $subject)
+    {
+        $this->subject = $subject;
+
+        return $this;
+    }
+
+    /**
+     * @param  StudySubjectMap $map
+     * @return self
+     */
+    public function setMapping(StudySubjectMap $map)
+    {
+        $this->mapping = $map;
+
+        $this->setSubject($map->getSubject())
+            ->setAcademicYear($map->getAcademicYear());
+
+        return $this;
+    }
+
+    /**
+     * @param  AcademicYear $academicYear
+     * @return self
+     */
+    public function setAcademicYear(AcademicYear $academicYear)
+    {
+        $this->academicYear = $academicYear;
+
+        return $this;
     }
 }

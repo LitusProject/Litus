@@ -18,31 +18,18 @@
 
 namespace CudiBundle\Form\Admin\Supplier;
 
-use CudiBundle\Entity\Supplier,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit Supplier
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends \CudiBundle\Form\Admin\Supplier\Add
+class Edit extends Add
 {
-    /**
-     * @param Supplier        $supplier
-     * @param null|string|int $name     Optional name for the element
-     */
-    public function __construct(Supplier $supplier, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->remove('submit');
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'supplier_edit');
-        $this->add($field);
-
-        $this->populateFromSupplier($supplier);
+        $this->remove('submit')
+            ->addSubmit('Save', 'supplier_edit');
     }
 }

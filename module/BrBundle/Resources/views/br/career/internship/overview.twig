@@ -6,13 +6,14 @@
         <div class="col-md-4">
             {% do internshipSearchForm.prepare() %}
             {{ form().openTag(internshipSearchForm)|raw }}
+                {{ formElement(internshipSearchForm.get('csrf')) }}
                 <div class="well">
                     <h4>{{ translate('Arrange By') }}</h4>
                     <div class="form-group">
                         <div class="input-group">
-                            {{ translate(formElement(internshipSearchForm.get('searchType')))|raw }}
+                            {{ formElement(internshipSearchForm.get('searchType')) }}
                             <div class="input-group-btn">
-                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                {{ formElement(internshipSearchForm.get('submit')) }}
                             </div>
                         </div>
                     </div>
@@ -22,9 +23,9 @@
                     <h4>{{ translate('Sector') }}</h4>
                     <div class="form-group">
                         <div class="input-group">
-                            {{ formElement(internshipSearchForm.get('sector'))|raw }}
+                            {{ formElement(internshipSearchForm.get('sector')) }}
                             <div class="input-group-btn">
-                                <button class="btn btn-default" type="submit">{{ translate('Search') }}</button>
+                                {{ formElement(internshipSearchForm.get('submit')) }}
                             </div>
                         </div>
                     </div>

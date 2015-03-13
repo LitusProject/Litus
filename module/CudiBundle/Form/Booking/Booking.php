@@ -18,12 +18,6 @@
 
 namespace CudiBundle\Form\Booking;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Book textbooks
  *
@@ -37,54 +31,27 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
     const MAX_BOOKING_NUMBER = 5;
 
     /**
-     * @var EntityManager The EntityManager instance
+     * @var array[]
      */
-    protected $_entityManager = null;
+    private $articles = array();
 
-    /**
-     * @var array Contains the input fields added for article quantities.
-     */
-    private $_inputs = array();
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Submit('submit');
-        $field->setValue('Book')
-            ->setAttribute('class', 'btn btn-primary pull-right');
-        $this->add($field);
-    }
-
-    public function addInputsForArticles($articles)
-    {
-        foreach ($articles as $article) {
+        foreach ($this->articles as $article) {
             $saleArticle = $article['article'];
 
-            $field = new Hidden('article-' . $saleArticle->getId());
-            $field->setAttribute('class', 'input-very-mini')
-                ->setAttribute('placeholder', '0');
-            $this->add($field);
-
-            $this->_inputs[] = $field;
-        }
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        foreach ($this->_inputs as $input) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => $input->getName(),
-                        'required' => false,
+            $this->add(array(
+                'type'       => 'hidden',
+                'name'       => 'article-' . $saleArticle->getId(),
+                'attributes' => array(
+                    'class'       => 'input-very-mini',
+                    'id'          => 'article-' . $saleArticle->getId(),
+                    'placeholder' => '0',
+                ),
+                'options'    => array(
+                    'input' => array(
                         'filters'  => array(
                             array('name' => 'StringTrim'),
                         ),
@@ -100,11 +67,22 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
                                 ),
                             ),
                         ),
-                    )
-                )
-            );
+                    ),
+                ),
+            ));
         }
 
-        return $inputFilter;
+        $this->addSubmit('Book', 'btn btn-primary pull-right');
+    }
+
+    /**
+     * @param  array $articles
+     * @return self
+     */
+    public function setArticles(array $articles)
+    {
+        $this->articles = $articles;
+
+        return $this;
     }
 }

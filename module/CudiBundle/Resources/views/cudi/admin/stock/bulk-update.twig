@@ -25,7 +25,7 @@
                             <td>{{ article.getBarcode() }}</td>
                             <td>{{ article.getMainArticle().getTitle() }}</td>
                             <td>{{ article.getSupplier().getName() }}</td>
-                            <td>{{ formElement(form.get('article-' ~ article.getId())) }}</td>
+                            <td>{{ formElement(form.get('article_' ~ article.getId())) }}</td>
                         </tr>
                     {% endfor %}
                 </table>

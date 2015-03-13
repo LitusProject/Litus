@@ -28,7 +28,7 @@ return array(
             'add', 'delete', 'deleteStudy', 'edit', 'export', 'manage', 'studies',
         ),
         'syllabus_admin_study' => array(
-            'edit', 'manage', 'search', 'searchSubject', 'typeahead',
+            'add', 'edit', 'manage', 'search', 'searchSubject', 'typeahead',
         ),
         'syllabus_admin_subject' => array(
             'add', 'edit', 'manage', 'search', 'typeahead',

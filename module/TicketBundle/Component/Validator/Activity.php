@@ -18,27 +18,18 @@
 
 namespace TicketBundle\Component\Validator;
 
-use Doctrine\ORM\EntityManager,
-    TicketBundle\Entity\Event;
-
 /**
  * Check the activity has already a ticket system
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Activity extends \Zend\Validator\AbstractValidator
+class Activity extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager
-     */
-    private $_entityManager;
-
-    /**
-     * @var Event|null
-     */
-    private $_event;
+    protected $options = array(
+        'exclude' => null,
+    );
 
     /**
      * Error messages
@@ -50,18 +41,19 @@ class Activity extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * Create a new Article Barcode validator.
+     * Sets validator options
      *
-     * @param EntityManager $entityManager
-     * @param Event|null    $event         The event
-     * @param mixed         $opts          The validator's options
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, Event $event = null, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['exclude'] = array_shift($args);
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_event = $event;
+        parent::__construct($options);
     }
 
     /**
@@ -75,19 +67,15 @@ class Activity extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $activity = $this->_entityManager
+        $activity = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneById($value);
 
-        $event = $this->_entityManager
+        $event = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneByActivity($activity);
 
-        if (null === $event) {
-            return true;
-        }
-
-        if ($event->getId() == $this->_event->getId()) {
+        if (null === $event || (null !== $this->options['exclude'] && $event->getId() == $this->options['exclude']->getId())) {
             return true;
         }
 

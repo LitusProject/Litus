@@ -18,12 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Stock;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Radio,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Stock Select options
  *
@@ -31,60 +25,45 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class SelectOptions extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Radio('articles');
-        $field->setLabel('Articles')
-            ->setAttribute('options', array('all' => 'All', 'internal' => 'Internal', 'external' => 'External'))
-            ->setRequired()
-            ->setValue('all');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'radio',
+            'name'       => 'articles',
+            'label'      => 'Articles',
+            'required'   => true,
+            'value'      => 'all',
+            'attributes' => array(
+                'options' => array(
+                    'all'      => 'All',
+                    'internal' => 'Internal',
+                    'external' => 'External',
+                ),
+            ),
+        ));
 
-        $field = new Radio('order');
-        $field->setLabel('Order')
-            ->setAttribute('options', array('barcode' => 'Barcode', 'title' => 'Title'))
-            ->setRequired()
-            ->setValue('barcode');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'radio',
+            'name'       => 'order',
+            'label'      => 'Order',
+            'required'   => true,
+            'value'      => 'barcode',
+            'attributes' => array(
+                'options' => array(
+                    'barcode' => 'Barcode',
+                    'title'   => 'Title',
+                ),
+            ),
+        ));
 
-        $field = new Checkbox('in_stock');
-        $field->setLabel('Only In Stock');
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'in_stock',
+            'label' => 'Only In Stock',
+        ));
 
-        $field = new Submit('select');
-        $field->setValue('Select')
-            ->setAttribute('class', 'view');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'articles',
-                    'required' => true,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'order',
-                    'required' => true,
-                )
-            )
-        );
-
-        return $inputFilter;
+        $this->addSubmit('Select', 'view', 'select');
     }
 }

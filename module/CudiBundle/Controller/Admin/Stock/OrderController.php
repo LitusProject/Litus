@@ -22,9 +22,6 @@ use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator,
     CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator,
     CudiBundle\Entity\Stock\Period,
-    CudiBundle\Form\Admin\Stock\Orders\Add as AddForm,
-    CudiBundle\Form\Admin\Stock\Orders\Comment as CommentForm,
-    CudiBundle\Form\Admin\Stock\Orders\Edit as EditForm,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -171,7 +168,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CudiBundle\Entity\Supplier')
             ->findAll();
 
-        $form = new CommentForm($order);
+        $form = $this->getForm('cudi_stock_order_comment', array(
+            'order' => $order,
+        ));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -214,20 +213,21 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYear()->getCode(true);
 
-        $form = new AddForm($this->getEntityManager(), $prefix);
+        $form = $this->getForm('cudi_stock_order_add', array(
+            'barcode_prefix' => $prefix,
+        ));
 
         $academicYear = $this->getAcademicYear();
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($formData['article_id']);
+                    ->findOneById($formData['article']['id']);
 
                 $item = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Order')
@@ -271,14 +271,15 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = new EditForm($item);
+        $form = $this->getForm('cudi_stock_order_edit', array(
+            'item' => $item,
+        ));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $item->setNumber($formData['number']);
 

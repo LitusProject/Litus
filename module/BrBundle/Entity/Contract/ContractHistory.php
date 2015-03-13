@@ -19,8 +19,7 @@
 namespace BrBundle\Entity\Contract;
 
 use BrBundle\Entity\Contract,
-    BrBundle\Entity\Product\OrderEntry,
-    Doctrine\ORM\EntityManager,
+    Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,7 +38,7 @@ class ContractHistory
     private $id;
 
     /**
-     * @var BrBundle\Entity\Contract The newest version of the two
+     * @var Contract The newest version of the two
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Contract")
      * @ORM\JoinColumn(name="contract", referencedColumnName="id")
@@ -47,7 +46,7 @@ class ContractHistory
     private $contract;
 
     /**
-     * @var BrBundle\Entity\Contract\ContractEntry The oldest version of the two
+     * @var ArrayCollection The oldest version of the two
      *
      * @ORM\OneToMany(targetEntity="BrBundle\Entity\Contract\ContractEntry", mappedBy="contract", cascade={"persist"})
      * @ORM\JoinColumn(name="precursor", referencedColumnName="id")
@@ -62,12 +61,12 @@ class ContractHistory
     private $version;
 
     /**
-     * @param \BrBundle\Entity\Contract $contract
+     * @param Contract $contract
      */
     public function __construct(Contract $contract)
     {
-        $this->_setContract($contract);
-        $this->_setEntries($contract);
+        $this->contract = $contract;
+        $this->entries = new ArrayCollection($contract->getEntries());
         $this->version = $contract->getVersion();
     }
 
@@ -79,26 +78,25 @@ class ContractHistory
         return $this->id;
     }
 
+    /**
+     * @return Contract
+     */
     public function getContract()
     {
         return $this->contract;
     }
 
-    private function _setContract(Contract $contract)
-    {
-        $this->contract = $contract;
-    }
-
+    /**
+     * @return ArrayCollection
+     */
     public function getEntries()
     {
         return $this->entries;
     }
 
-    private function _setEntries(Contract $contract)
-    {
-        $this->entries = $contract->getEntries();
-    }
-
+    /**
+     * @return int
+     */
     public function getVersion()
     {
         return $this->version;

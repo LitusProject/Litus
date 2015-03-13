@@ -21,11 +21,7 @@ namespace CudiBundle\Controller\Admin\Article;
 use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Front as FrontGenerator,
     CudiBundle\Entity\File\File,
-    CudiBundle\Form\Admin\Article\File\Add as AddForm,
-    CudiBundle\Form\Admin\Article\File\Edit as EditForm,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
-    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -52,7 +48,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
-        $form = new AddForm();
+        $form = $this->getForm('cudi_article_file_add');
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
@@ -83,36 +79,31 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = new AddForm();
-        $formData = $this->getRequest()->getPost();
-        $form->setData($formData);
+        $form = $this->getForm('cudi_article_file_add');
+        $form->setData(
+            array_merge(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            )
+        );
 
-        $upload = new FileUpload();
-        $inputFilter = $form->getInputFilter()->get('file');
-        if ($inputFilter instanceof InputInterface) {
-            $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
-        }
-
-        if ($form->isValid() && $upload->isValid()) {
-            $formData = $form->getFormData($formData);
+        if ($form->isValid()) {
+            $formData = $form->getData();
 
             $filePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.file_path');
 
-            $originalName = $upload->getFileName('file', false);
-
             do {
                 $fileName = '/' . sha1(uniqid());
             } while (file_exists($filePath . $fileName));
 
-            $upload->addFilter('Rename', $filePath . $fileName);
-            $upload->receive();
+            rename($formData['file']['tmp_name'], $filePath . $fileName);
 
             $file = new File(
                 $this->getEntityManager(),
                 $fileName,
-                $originalName,
+                $formData['file']['name'],
                 $formData['description'],
                 $article,
                 $formData['printable']
@@ -139,30 +130,11 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                 )
             );
         } else {
-            $errors = $form->getMessages();
-            $formErrors = array();
-
-            foreach ($form->getElements() as $key => $element) {
-                if (!isset($errors[$element->getName()])) {
-                    continue;
-                }
-
-                $formErrors[$element->getAttribute('id')] = array();
-
-                foreach ($errors[$element->getName()] as $error) {
-                    $formErrors[$element->getAttribute('id')][] = $error;
-                }
-            }
-
-            if (sizeof($upload->getMessages()) > 0) {
-                $formErrors['file'] = $upload->getMessages();
-            }
-
             return new ViewModel(
                 array(
                     'status' => 'error',
                     'form' => array(
-                        'errors' => $formErrors,
+                        'errors' => $form->getMessages(),
                     ),
                 )
             );
@@ -175,18 +147,12 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form = new EditForm($mapping);
+        $form = $this->getForm('cudi_article_file_edit', $mapping);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $mapping->setPrintable($formData['printable'])
-                    ->getFile()->setDescription($formData['description']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

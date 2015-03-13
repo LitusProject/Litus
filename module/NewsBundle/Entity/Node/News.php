@@ -23,7 +23,8 @@ use CommonBundle\Component\Util\Url,
     CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    Locale;
 
 /**
  * This entity stores the node item.
@@ -55,16 +56,13 @@ class News extends \CommonBundle\Entity\Node
     private $endDate;
 
     /**
-     * @param Person   $person
-     * @param DateTime $endDate
+     * @param Person $person
      */
-    public function __construct(Person $person, DateTime $endDate = null)
+    public function __construct(Person $person)
     {
         parent::__construct($person);
 
-        $this->name = $this->getCreationTime()->format('d_m_Y_H_i_s');
         $this->translations = new ArrayCollection();
-        $this->endDate = $endDate;
     }
 
     /**
@@ -109,7 +107,7 @@ class News extends \CommonBundle\Entity\Node
                 return $translation;
             }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
                 $fallbackTranslation = $translation;
             }
         }

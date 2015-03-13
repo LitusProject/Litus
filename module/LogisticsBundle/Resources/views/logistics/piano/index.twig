@@ -33,13 +33,14 @@
         {% do form.prepare() %}
         {% autoescape false %}
             {{ form().openTag(form) }}
+            {{ formElement(form.get('csrf')) }}
                 <div class="tab-content">
                     {% for key, week in form.getWeeks() %}
                         <div class="tab-pane fade" id="week-{{ key }}">
-                            {{ _self.renderSelect(form.get('start_date_' ~ key)) }}
-                            {{ _self.renderSelect(form.get('end_date_' ~ key)) }}
+                            {{ _self.renderSelect(form.get('week_' ~ key).get('start_date')) }}
+                            {{ _self.renderSelect(form.get('week_' ~ key).get('end_date')) }}
                             <div style="text-align: center;">
-                                {{ formElement(form.get('submit_' ~ key)) }}
+                                {{ formElement(form.get('week_' ~ key).get('submit')) }}
                             </div>
                         </div>
                     {% endfor %}

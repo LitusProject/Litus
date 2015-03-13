@@ -20,6 +20,7 @@ namespace CommonBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile,
     Doctrine\ORM\EntityManager,
+    InvalidArgumentException,
     RuntimeException;
 
 /**
@@ -59,11 +60,11 @@ abstract class Pdf
     public function __construct(EntityManager $entityManager, $xslPath, $pdfPath)
     {
         if (($xslPath === null) || !is_string($xslPath)) {
-            throw new \InvalidArgumentException('Invalid XSL');
+            throw new InvalidArgumentException('Invalid XSL');
         }
 
         if (($pdfPath === null) || !is_string($pdfPath)) {
-            throw new \InvalidArgumentException('Invalid PDF');
+            throw new InvalidArgumentException('Invalid PDF');
         }
 
         $this->_entityManager = $entityManager;

@@ -18,14 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Article\File;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\File,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CudiBundle\Entity\File\Mapping as FileMapping,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add File
  *
@@ -33,83 +25,65 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    protected $hydrator = 'CudiBundle\Hydrator\File\Mapping';
+
     const FILESIZE = '256MB';
 
-    public function __construct($options = null)
+    public function init()
     {
-        parent::__construct($options);
+        parent::init();
 
         $this->setAttribute('id', 'uploadFile');
-        $this->setAttribute('enctype', 'multipart/form-data');
 
-        $field = new Text('description');
-        $field->setLabel('Description')
-            ->setAttribute('size', 70)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new File('file');
-        $field->setLabel('File')
-            ->setAttribute('size', 70)
-            ->setAttribute('data-help', 'The file can be of any type and has a filesize limit of ' . self::FILESIZE . '.')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Checkbox('printable');
-        $field->setLabel('Printable')
-            ->setAttribute('data-help', 'Enabling this option will cause the file to be exported by exporting an order. This way these files will be also send to the supplier.');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'file_add');
-        $this->add($field);
-    }
-
-    public function populateFromFile(FileMapping $mapping)
-    {
-        $this->setData(
-            array(
-                'description' => $mapping->getFile()->getDescription(),
-                'printable' => $mapping->isPrintable(),
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'description',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'description',
+            'label'      => 'Description',
+            'required'   => true,
+            'attributes' => array(
+                'size' => 70,
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'file',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'file',
+            'name'       => 'file',
+            'label'      => 'File',
+            'required'   => true,
+            'attributes' => array(
+                'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILESIZE . '.',
+                'size'      => 70,
+            ),
+            'options'    => array(
+                'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'filefilessize',
+                            'name' => 'filesize',
                             'options' => array(
                                 'max' => self::FILESIZE,
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'printable',
+            'label'      => 'Printable',
+            'attributes' => array(
+                'data-help' => 'Enabling this option will cause the file to be exported by exporting an order. This way these files will be also send to the supplier.',
+            ),
+        ));
+
+        $this->addSubmit('Add', 'file_add');
     }
 }

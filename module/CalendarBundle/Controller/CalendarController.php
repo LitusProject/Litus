@@ -205,7 +205,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $this->getResponse()->setHeaders($headers);
 
         $icsFile = new TmpFile();
-        $icsGenerator = new IcsGenerator($icsFile, $this->getEntityManager(), $this->getLanguage(), $this->getRequest(), $this->url());
+        new IcsGenerator($icsFile, $this->getEntityManager(), $this->getLanguage(), $this->getRequest(), $this->url());
 
         return new ViewModel(
             array(

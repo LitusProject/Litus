@@ -19,30 +19,43 @@
 namespace BrBundle\Component\ContractParser;
 
 /**
- *
- *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class Text extends EntryItem
 {
+    /**
+     * @var string
+     */
     private $text;
 
+    /**
+     * @param string $text
+     */
     public function __construct($text)
     {
         $this->text = $text;
     }
 
+    /**
+     * @param string $text
+     */
     public function append($text)
     {
         $this->text .= $text;
     }
 
+    /**
+     * @return string
+     */
     public function getText()
     {
         return $this->text;
     }
 
-    public function visitNode($nodeVisitor)
+    /**
+     * @param NodeVisitor $nodeVisitor
+     */
+    public function visitNode(NodeVisitor $nodeVisitor)
     {
         $nodeVisitor->visitText($this);
     }

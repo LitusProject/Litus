@@ -21,8 +21,7 @@ namespace CudiBundle\Entity\Article;
 use CudiBundle\Entity\Article\Option\Binding,
     CudiBundle\Entity\Article\Option\Color,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article\Internal")
@@ -102,41 +101,12 @@ class Internal extends \CudiBundle\Entity\Article
      */
     private $frontPage;
 
-    /**
-     * @throws InvalidArgumentException
-     *
-     * @param string      $title              The title of the article
-     * @param string      $authors            The authors of the article
-     * @param string      $publishers         The publishers of the article
-     * @param integer     $yearPublished      The year the article was published
-     * @param integer     $isbn               The isbn of the article
-     * @param string|null $url                The url of the article
-     * @param string      $type               The article type
-     * @param boolean     $downloadable       The flag whether the article is downloadable
-     * @param boolean     $sameAsPreviousYear The flag whether the article is the same as previous year
-     * @param integer     $nbBlackAndWhite    The number of blach and white pages of the article
-     * @param integer     $nbColored          The number of colored pages of the article
-     * @param Binding     $binding            The binding of the article
-     * @param boolean     $official           Whether the article is an official one or not
-     * @param boolean     $rectoverso         Whether the article is recto-verso or not
-     * @param Color|null  $frontPageColor     The front page color of the article
-     * @param boolean     $isPerforated       Whether the article is perforated or not
-     * @param boolean     $isPerforated       Whether the article pages are colored or not
-     */
-    public function __construct(
-        $title, $authors, $publishers, $yearPublished, $isbn, $url = null, $type, $downloadable, $sameAsPreviousYear, $nbBlackAndWhite, $nbColored, Binding $binding, $official, $rectoverso, Color $frontPageColor = null, $isPerforated, $colored,$hardcovered = false
-    ) {
-        parent::__construct($title, $authors, $publishers, $yearPublished, $isbn, $url, $type, $downloadable, $sameAsPreviousYear);
+    public function __construct()
+    {
+        parent::__construct();
 
-        $this->setNbBlackAndWhite($nbBlackAndWhite)
-            ->setNbColored($nbColored)
-            ->setBinding($binding)
-            ->setIsOfficial($official)
-            ->setIsRectoVerso($rectoverso)
-            ->setFrontColor($frontPageColor)
-            ->setIsPerforated($isPerforated)
-            ->setIsColored($colored)
-            ->setIsHardCovered($hardcovered);
+        $this->nbBlackAndWhite = 0;
+        $this->nbColored = 0;
     }
 
     /**
@@ -345,33 +315,6 @@ class Internal extends \CudiBundle\Entity\Article
         $this->frontPage = $frontPage;
 
         return $this;
-    }
-
-    /**
-     * @return self
-     */
-    public function duplicate()
-    {
-        return new Internal(
-            $this->getTitle(),
-            $this->getAuthors(),
-            $this->getPublishers(),
-            $this->getYearPublished(),
-            $this->getISBN(),
-            $this->getURL(),
-            $this->getType(),
-            $this->isDownloadable(),
-            $this->isSameAsPreviousYear(),
-            $this->getNbBlackAndWhite(),
-            $this->getNbColored(),
-            $this->getBinding(),
-            $this->isOfficial(),
-            $this->isRectoVerso(),
-            $this->getFrontColor(),
-            $this->isPerforated(),
-            $this->isColored(),
-            $this->isHardCovered()
-        );
     }
 
     /**

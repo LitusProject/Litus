@@ -49,8 +49,8 @@
                     if (data && 'success' == data.status) {
                         var fieldSet = $this.closest('fieldset');
 
-                        fieldSet.find('[id^=first_name]').val(data.firstName).addClass('uneditable-input').attr('disabled', 'disabled');
-                        fieldSet.find('[id^=last_name]').val(data.lastName).addClass('uneditable-input').attr('disabled', 'disabled');
+                        fieldSet.find('[name*=first_name]').val(data.firstName).addClass('uneditable-input');
+                        fieldSet.find('[name*=last_name]').val(data.lastName).addClass('uneditable-input');
                     }
                 }, 'json');
             }

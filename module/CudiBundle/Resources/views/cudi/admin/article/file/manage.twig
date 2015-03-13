@@ -169,13 +169,7 @@
                     } else if (data.errors) {
                         $('.flashmessage').addClass('hide');
                         $('.file_upload_error').removeClass('hide');
-                        $('#uploadFile').find('ul.errors').remove();
-                        for(element in data.errors) {
-                            var list = $('<ul>', {class: 'errors'})
-                            for (error in data.errors[element])
-                                list.append($('<li>').html(data.errors[element][error]));
-                            $('#uploadFile').find('#' + element).parent().parent().after(list);
-                        }
+                        $('#uploadFile').displayFormErrors(data.errors);
                     } else if (data.info) {
                         $('.flashmessage').addClass('hide');
                         $('.file_upload_success').removeClass('hide');

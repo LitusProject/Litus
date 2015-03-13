@@ -18,33 +18,27 @@
 
 namespace SyllabusBundle\Component\Validator\Subject;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
-    SyllabusBundle\Entity\Subject;
+use CommonBundle\Component\Form\Form,
+    CommonBundle\Component\Validator\FormAwareInterface;
 
 /**
  * Matches the given subject against the database to check duplicate mappings.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Study extends \Zend\Validator\AbstractValidator
+class Study extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $options = array(
+        'subject' => null,
+        'academic_year' => null,
+    );
 
     /**
-     * @var Subject The subject
+     * @var Form The form to validate
      */
-    private $_subject;
-
-    /**
-     * @var AcademicYear The academic year
-     */
-    private $_academicYear;
+    private $form;
 
     /**
      * Error messages
@@ -56,20 +50,28 @@ class Study extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * Create a new Article Barcode validator.
+     * Sets validator options
      *
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param Subject       $subject
-     * @param AcademicYear  $academicYear
-     * @param mixed         $opts          The validator's options
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, Subject $subject = null, AcademicYear $academicYear, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['subject'] = array_shift($args);
+            $options['academic_year'] = array_shift($args);
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_subject = $subject;
-        $this->_academicYear = $academicYear;
+        parent::__construct($options);
+    }
+
+    /**
+     * @param Form $form
+     */
+    public function setForm(Form $form)
+    {
+        $this->form = $form;
     }
 
     /**
@@ -84,13 +86,13 @@ class Study extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $study = $this->_entityManager
+        $study = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findOneById($context['study_id']);
+            ->findOneById(self::getFormValue($this->form, array('study', 'id')));
 
-        $mapping = $this->_entityManager
+        $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-            ->findOneByStudySubjectAndAcademicYear($study, $this->_subject, $this->_academicYear);
+            ->findOneByStudySubjectAndAcademicYear($study, $this->options['subject'], $this->options['academic_year']);
 
         if (null === $mapping) {
             return true;

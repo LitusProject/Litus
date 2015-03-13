@@ -18,8 +18,7 @@
 
 namespace CudiBundle\Controller\Supplier;
 
-use CommonBundle\Form\Auth\Login as LoginForm,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * AuthController
@@ -30,14 +29,14 @@ class AuthController extends \CudiBundle\Component\Controller\SupplierController
 {
     public function loginAction()
     {
-        $form = new LoginForm();
+        $form = $this->getForm('common_auth_login');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $this->getAuthentication()->authenticate(
                     $formData['username'], $formData['password'], $formData['remember_me']

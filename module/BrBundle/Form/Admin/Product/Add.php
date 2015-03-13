@@ -18,16 +18,7 @@
 
 namespace BrBundle\Form\Admin\Product;
 
-use BrBundle\Component\Validator\ProductName as ProductNameValidator,
-    BrBundle\Entity\Product,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Validator\Price as PriceValidator,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use BrBundle\Entity\Product;
 
 /**
  * Add a product.
@@ -37,78 +28,171 @@ use BrBundle\Component\Validator\ProductName as ProductNameValidator,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
+    protected $hydrator = 'BrBundle\Hydrator\Product';
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param mixed                       $opts          The validator's options
+     * @var Product
      */
-    public function __construct(EntityManager $entityManager, $opts = null)
+    protected $product;
+
+    public function init()
     {
-        parent::__construct($opts);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'name',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'product_name',
+                            'options' => array(
+                                'product' => $this->product,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('name');
-        $field->setLabel('Name')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'textarea',
+            'name'     => 'description',
+            'label'    => 'Description',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Textarea('description');
-        $field->setLabel('Description')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'price',
+            'label'    => 'Price',
+            'required' => true,
+            'value'    => 0,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'price'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('price');
-        $field->setLabel('Price')
-            ->setRequired()
-            ->setValue('0');
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'select',
+            'name'     => 'vat_type',
+            'label'    => 'VAT Type',
+            'required' => true,
+            'attributes' => array(
+                'options' => $this->_getVatTypes(),
+            ),
+        ));
 
-        $field = new Select('vat_type');
-        $field->setLabel('VAT Type')
-            ->setRequired()
-            ->setAttribute('options', $this->_getVatTypes($entityManager));
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'invoice_description',
+            'label'    => 'Invoice Text',
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('invoice_description');
-        $field->setLabel('Invoice Text')
-            ->setRequired(false);
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'textarea',
+            'name'     => 'contract_text',
+            'label'    => 'Contract Text',
+            'value'    => $this->_getContractText(),
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'contract_bullet'),
+                    ),
+                ),
+            ),
+        ));
 
-        $contractText =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.product_contract_text');
+        $this->add(array(
+            'type'     => 'select',
+            'name'     => 'event',
+            'label'    => 'Event',
+            'attributes' => array(
+                'id'      => 'event',
+                'options' => $this->_createEventsArray(),
+            ),
+        ));
 
-        $field = new Textarea('contract_text');
-        $field->setLabel('Contract Text')
-            ->setRequired(false)
-            ->setValue($contractText);
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'date',
+            'name'       => 'delivery_date',
+            'label'      => 'Delivery Date',
+            'required'   => true,
+            'attributes' => array(
+                'id' => 'delivery_date',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Select('event');
-        $field->setLabel('Event')
-            ->setValueOptions($this->_createEventsArray());
-        $this->add($field);
+        $this->addSubmit('Add', 'product_add');
 
-        $field = new Text('delivery_date');
-        $field->setLabel('Delivery Date')
-            ->setRequired(true)
-            ->setAttribute('placeholder', 'dd/mm/yyyy')
-            ->setAttribute('data-datepicker', true);
-        $this->add($field);
+        if (null !== $this->product) {
+            $this->bind($this->product);
+        }
+    }
 
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'product_add');
-        $this->add($field);
+    public function setProduct(Product $product)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    private function _getVatTypes()
+    {
+        $types = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.vat_types')
+        );
+
+        $typesArray = array();
+        foreach ($types as $type => $value) {
+            $typesArray[$type] = $value . '%';
+        }
+
+        return $typesArray;
     }
 
     private function _createEventsArray()
     {
-        $events = $this->_entityManager
+        $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive();
 
@@ -131,140 +215,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $eventsArray;
     }
 
-    public function populateFromProduct(Product $product)
+    private function _getContractText()
     {
-        $formData = array(
-            'name'  => $product->getName(),
-            'description' => $product->getDescription(),
-            'price' => number_format($product->getPrice()/100, 2),
-            'vat_type' => $product->getVatType(),
-            'invoice_description' => $product->getInvoiceDescription(),
-            'contract_text' => $product->getContractText(),
-            'event' => null === $product->getEvent() ? '' : $product->getEvent()->getId(),
-            'delivery_date' => null === $product->getDeliveryDate() ? '' : $product->getDeliveryDate()->format('d/m/Y'),
-        );
-
-        $this->setData($formData);
-    }
-
-    /**
-     * Retrieve the different VAT types applicable.
-     *
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     */
-    private function _getVatTypes(EntityManager $entityManager)
-    {
-        $types =  $entityManager->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.vat_types');
-        $types = unserialize($types);
-        $typesArray = array();
-        foreach ($types as $type => $value) {
-            $typesArray[$type] = $value . '%';
-        }
-
-        return $typesArray;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new ProductNameValidator($this->_entityManager),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'price',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new PriceValidator(),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'vat_type',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'invoice_description',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'contract_text',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'event',
-                    'required' => false,
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'delivery_date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y',
-                            ),
-                        ),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.product_contract_text');
     }
 }

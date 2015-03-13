@@ -17,77 +17,39 @@
  */
 namespace LogisticsBundle\Form\Admin\Lease;
 
-use CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    Doctrine\ORM\EntityManager,
-    LogisticsBundle\Entity\Lease\Item,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add a new lease
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $hydrator = 'LogisticsBundle\Hydrator\Lease\Item';
 
-    /**
-     * @param EntityManager   $entityManager
-     * @param null|string|int $name          Optional name for the form
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $field = new Text('name');
-        $field->setLabel('Name')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('barcode');
-        $field->setLabel('Barcode')
-                ->setRequired();
-        $this->add($field);
-
-        $field = new Textarea('additional_info');
-        $field->setLabel('Additional Info');
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'lease_add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'name',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'name',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'barcode',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'barcode',
+            'label'    => 'Barcode',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -100,38 +62,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             ),
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'additional_info',
-                    'required' => false,
+        $this->add(array(
+            'type'    => 'textarea',
+            'name'    => 'additional_info',
+            'label'   => 'Additional Info',
+            'options' => array(
+                'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
-    }
-
-    /**
-     * Populates the form with values from the entity
-     *
-     * @param \LogisticsBundle\Entity\Lease\Item $lease
-     */
-    public function populateFromLease(Item $lease)
-    {
-        $data = array(
-            'name'            => $lease->getName(),
-            'barcode'         => $lease->getBarcode(),
-            'additional_info' => $lease->getAdditionalInfo(),
-        );
-
-        $this->setData($data);
+        $this->addSubmit('Add', 'lease_add');
     }
 }

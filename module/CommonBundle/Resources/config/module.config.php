@@ -24,44 +24,42 @@ return Config::create(
     array(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
-        'translation_files' => array('site', 'countries'),
+        'translation_files' => array('site', 'countries', 'validator'),
         'has_layouts'       => true,
     ),
     array(
         'service_manager' => array(
             'factories' => array(
                 'authentication' => function ($serviceManager) {
-                    return new \CommonBundle\Component\Authentication\Authentication(
+                    return new Component\Authentication\Authentication(
                         $serviceManager->get('authentication_credentialadapter'),
                         $serviceManager->get('authentication_service')
                     );
                 },
-
                 'authentication_doctrinecredentialadapter' => function ($serviceManager) {
-                    return new \CommonBundle\Component\Authentication\Adapter\Doctrine\Credential(
+                    return new Component\Authentication\Adapter\Doctrine\Credential(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
                         'CommonBundle\Entity\User\Person',
                         'username'
                     );
                 },
                 'authentication_doctrineservice' => function ($serviceManager) {
-                    return new \CommonBundle\Component\Authentication\Service\Doctrine(
+                    return new Component\Authentication\Service\Doctrine(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
                         'CommonBundle\Entity\User\Session',
                         2678400,
                         $serviceManager->get('authentication_sessionstorage'),
-                        getenv('ORGANIZATION') . '_Litus_Auth',
+                        'Litus_Auth',
                         'Session',
                         $serviceManager->get('authentication_action')
                     );
                 },
                 'authentication_doctrineaction' => function ($serviceManager) {
-                    return new \CommonBundle\Component\Authentication\Action\Doctrine(
+                    return new Component\Authentication\Action\Doctrine(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
                         $serviceManager->get('mail_transport')
                     );
                 },
-
                 'authentication_sessionstorage' => function () {
                     return new \Zend\Authentication\Storage\Session(getenv('ORGANIZATION') . '_Litus_Auth');
                 },
@@ -74,10 +72,15 @@ return Config::create(
 
                 'doctrine.cli' => 'CommonBundle\Component\Console\ApplicationFactory',
                 'litus.console_router' => 'CommonBundle\Component\Mvc\Router\Console\RouteStackFactory',
+
+                'formfactory.bootstrap' => new Component\Form\FactoryFactory(false),
+                'formfactory.admin'     => new Component\Form\FactoryFactory(true),
             ),
             'invokables' => array(
-                'mail_transport' => 'Zend\Mail\Transport\Sendmail',
+                'mail_transport'     => 'Zend\Mail\Transport\Sendmail',
                 'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
+
+                'litus.hydratormanager'    => 'CommonBundle\Component\Hydrator\HydratorPluginManager',
             ),
             'aliases' => array(
                 'litus.console_application' => 'doctrine.cli',
@@ -148,6 +151,78 @@ return Config::create(
         'authentication_sessionstorage' => array(
             'namespace' => getenv('ORGANIZATION') . '_Litus_Auth',
             'member'    => 'storage',
+        ),
+        'litus' => array(
+            'forms' => array(
+                'bootstrap' => array(
+                    'invokables' => array(
+                        'button'     => 'CommonBundle\Component\Form\Bootstrap\Element\Button',
+                        'checkbox'   => 'CommonBundle\Component\Form\Bootstrap\Element\Checkbox',
+                        'collection' => 'CommonBundle\Component\Form\Collection',
+                        'date'       => 'CommonBundle\Component\Form\Bootstrap\Element\Date',
+                        'datetime'   => 'CommonBundle\Component\Form\Bootstrap\Element\DateTime',
+                        'file'       => 'CommonBundle\Component\Form\Bootstrap\Element\File',
+                        'hidden'     => 'CommonBundle\Component\Form\Bootstrap\Element\Hidden',
+                        'password'   => 'CommonBundle\Component\Form\Bootstrap\Element\Password',
+                        'radio'      => 'CommonBundle\Component\Form\Bootstrap\Element\Radio',
+                        'reset'      => 'CommonBundle\Component\Form\Bootstrap\Element\Reset',
+                        'select'     => 'CommonBundle\Component\Form\Bootstrap\Element\Select',
+                        'submit'     => 'CommonBundle\Component\Form\Bootstrap\Element\Submit',
+                        'text'       => 'CommonBundle\Component\Form\Bootstrap\Element\Text',
+                        'textarea'   => 'CommonBundle\Component\Form\Bootstrap\Element\Textarea',
+                        'typeahead'  => 'CommonBundle\Component\Form\Bootstrap\Element\TypeAhead',
+
+                        'fieldset'   => 'CommonBundle\Component\Form\Fieldset',
+                    ),
+                ),
+                'admin'     => array(
+                    'invokables' => array(
+                        'checkbox'   => 'CommonBundle\Component\Form\Admin\Element\Checkbox',
+                        'collection' => 'CommonBundle\Component\Form\Collection',
+                        'csrf'       => 'CommonBundle\Component\Form\Admin\Element\Csrf',
+                        'date'       => 'CommonBundle\Component\Form\Admin\Element\Date',
+                        'datetime'   => 'CommonBundle\Component\Form\Admin\Element\DateTime',
+                        'file'       => 'CommonBundle\Component\Form\Admin\Element\File',
+                        'hidden'     => 'CommonBundle\Component\Form\Admin\Element\Hidden',
+                        'password'   => 'CommonBundle\Component\Form\Admin\Element\Password',
+                        'radio'      => 'CommonBundle\Component\Form\Admin\Element\Radio',
+                        'select'     => 'CommonBundle\Component\Form\Admin\Element\Select',
+                        'tabs'       => 'CommonBundle\Component\Form\Admin\Element\Tabs',
+                        'text'       => 'CommonBundle\Component\Form\Admin\Element\Text',
+                        'textarea'   => 'CommonBundle\Component\Form\Admin\Element\Textarea',
+                        'time'       => 'CommonBundle\Component\Form\Admin\Element\Time',
+                        'typeahead'  => 'CommonBundle\Component\Form\Admin\Element\TypeAhead',
+
+                        'tabpane'    => 'CommonBundle\Component\Form\Admin\Fieldset\Tabbable',
+                        'tabcontent' => 'CommonBundle\Component\Form\Admin\Fieldset\TabContent',
+                        'tabpane'    => 'CommonBundle\Component\Form\Admin\Fieldset\TabPane',
+
+                        'fieldset'   => 'CommonBundle\Component\Form\Fieldset',
+                    ),
+                ),
+            ),
+        ),
+        'filters' => array(
+            'invokables' => array(
+                'stripcarriagereturn' => 'CommonBundle\Component\Filter\StripCarriageReturn',
+            ),
+        ),
+        'validators' => array(
+            'invokables' => array(
+                'person_barcode'     => 'CommonBundle\Component\Validator\Person\Barcode',
+                'typeahead_person'   => 'CommonBundle\Component\Validator\Typeahead\Person',
+                'date_compare'       => 'CommonBundle\Component\Validator\DateCompare',
+                'decimal'            => 'CommonBundle\Component\Validator\Decimal',
+                'field_length'       => 'CommonBundle\Component\Validator\FieldLength',
+                'field_line_length'  => 'CommonBundle\Component\Validator\FieldLineLength',
+                'not_zero'           => 'CommonBundle\Component\Validator\NotZero',
+                'phone_number_regex' => 'CommonBundle\Component\Validator\PhoneNumber',
+                'positive_number'    => 'CommonBundle\Component\Validator\PositiveNumber',
+                'price'              => 'CommonBundle\Component\Validator\Price',
+                'role'               => 'CommonBundle\Component\Validator\Role',
+                'username'           => 'CommonBundle\Component\Validator\Username',
+                'year'               => 'CommonBundle\Component\Validator\Year',
+            ),
         ),
     )
 );

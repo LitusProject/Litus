@@ -18,8 +18,10 @@
 
 namespace GalleryBundle\Component\Validator;
 
-use CommonBundle\Component\Util\Url,
-    Doctrine\ORM\EntityManager,
+use CommonBundle\Component\Form\Form,
+    CommonBundle\Component\Util\Url,
+    CommonBundle\Component\Validator\FormAwareInterface,
+    DateTime,
     GalleryBundle\Entity\Album\Album;
 
 /**
@@ -28,19 +30,18 @@ use CommonBundle\Component\Util\Url,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Name extends \Zend\Validator\AbstractValidator
+class Name extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
 
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $options = array(
+        'album' => null,
+    );
 
     /**
-     * @var Album The album exluded from this check
+     * @var Form The form to validate
      */
-    private $_album;
+    private $form;
 
     /**
      * @var array The error messages
@@ -50,16 +51,27 @@ class Name extends \Zend\Validator\AbstractValidator
     );
 
     /**
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param Album|null    $album         The album exluded from this check
-     * @param mixed         $opts          The validator's options
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, Album $album = null, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['album'] = array_shift($args);
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_album = $album;
+        parent::__construct($options);
+    }
+
+    /**
+     * @param Form $form
+     */
+    public function setForm(Form $form)
+    {
+        $this->form = $form;
     }
 
     /**
@@ -73,16 +85,16 @@ class Name extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $date = \DateTime::createFromFormat('d#m#Y', $context['date']);
+        $date = DateTime::createFromFormat('d#m#Y', self::getFormValue($this->form, 'date'));
 
         if ($date) {
             $title = $date->format('Ymd') . '_' . Url::createSlug($value);
 
-            $album = $this->_entityManager
+            $album = $this->getEntityManager()
                 ->getRepository('GalleryBundle\Entity\Album\Album')
                 ->findOneByName($title);
 
-            if (null === $album || ($this->_album && $album == $this->_album)) {
+            if (null === $album || ($this->options['album'] && $album == $this->options['album'])) {
                 return true;
             }
 

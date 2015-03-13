@@ -18,16 +18,7 @@
 
 namespace ShiftBundle\Form\Admin\Shift;
 
-use CommonBundle\Component\Form\Admin\Element\Checkbox,
-    CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use RuntimeException;
 
 /**
  * Add Shift
@@ -36,122 +27,233 @@ use CommonBundle\Component\Form\Admin\Element\Checkbox,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $hydrator = 'ShiftBundle\Hydrator\Shift';
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'     => 'datetime',
+            'name'     => 'start_date',
+            'label'    => 'Start Date',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'validators' => array(
+                        array(
+                            'name' => 'date_compare',
+                            'options' => array(
+                                'first_date' => 'now',
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Hidden('manager_id');
-        $field->setAttribute('id', 'managerId');
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'datetime',
+            'name'     => 'end_date',
+            'label'    => 'End Date',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'validators' => array(
+                        array(
+                            'name' => 'date_compare',
+                            'options' => array(
+                                'first_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('start_date');
-        $field->setLabel('Start Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true)
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'duplicate_hours',
+            'label'      => 'Duplicate by Hours',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->createDuplicatesArray(),
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'int'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('end_date');
-        $field->setLabel('End Date')
-            ->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
-            ->setAttribute('data-datepicker', true)
-            ->setAttribute('data-timepicker', true)
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'duplicate_days',
+            'label'      => 'Duplicate by days',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->createDuplicatesArray(),
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'int'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Select('duplicate_hours');
-        $field->setLabel('Duplicate by Hours')
-            ->setRequired()
-            ->setAttribute('options', $this->_createDuplicatesArray());
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'edit_roles',
+            'label'      => 'Edit Roles',
+            'attributes' => array(
+                'multiple' => true,
+                'options'  => $this->createEditRolesArray(),
+            ),
+        ));
 
-        $field = new Select('duplicate_days');
-        $field->setLabel('Duplicate by Days')
-            ->setRequired()
-            ->setAttribute('options', $this->_createDuplicatesArray());
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'typeahead',
+            'name'       => 'manager',
+            'label'      => 'Manager',
+            'required'   => true,
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'typeahead_person'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Select('edit_roles');
-        $field->setLabel('Edit Roles')
-            ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->_createEditRolesArray());
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'nb_responsibles',
+            'label'    => 'Number of Responsibles',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'int'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('manager');
-        $field->setLabel('Manager')
-            ->setAttribute('id', 'managerSearch')
-            ->setAttribute('autocomplete', 'off')
-            ->setAttribute('data-provide', 'typeahead')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'nb_volunteers',
+            'label'    => 'Number of Volunteers',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'int'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('nb_responsibles');
-        $field->setLabel('Number of Responsibles')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'unit',
+            'label'      => 'Unit',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->createUnitsArray(),
+            ),
+        ));
 
-        $field = new Text('nb_volunteers');
-        $field->setLabel('Number of Volunteers')
-            ->setRequired();
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'reward',
+            'label'      => 'Reward coins',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->createRewardArray(),
+            ),
+        ));
 
-        $field = new Select('unit');
-        $field->setLabel('Unit')
-            ->setRequired()
-            ->setAttribute('options', $this->_createUnitsArray());
-        $this->add($field);
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'handled_on_event',
+            'label' => 'Payed at event',
+        ));
 
-        $field = new Select('reward');
-        $field->setLabel('Reward coins')
-            ->setRequired()
-            ->setAttribute('options', $this->_createRewardArray());
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'event',
+            'label'      => 'Event',
+            'attributes' => array(
+                'options' => $this->createEventsArray(),
+            ),
+        ));
 
-        $field = new Checkbox('handled_on_event');
-        $field->setLabel('Payed at event');
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'location',
+            'label'      => 'Location',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->createLocationsArray(),
+            ),
+        ));
 
-        $field = new Select('event');
-        $field->setLabel('Event')
-            ->setAttribute('options', $this->_createEventsArray());
-        $this->add($field);
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'name',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Select('location');
-        $field->setLabel('Location')
-            ->setRequired()
-            ->setAttribute('options', $this->_createLocationsArray());
-        $this->add($field);
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'description',
+            'label'      => 'Description',
+            'required'   => true,
+            'attributes' => array(
+                'rows' => 5,
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
 
-        $field = new Text('name');
-        $field->setLabel('Name')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Textarea('description');
-        $field->setLabel('Description')
-            ->setAttribute('rows', 5)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'shift_add');
-        $this->add($field);
+        $this->addSubmit('Add', 'shift_add');
     }
 
-    private function _createDuplicatesArray()
+    private function createDuplicatesArray()
     {
         $duplications = array();
         for ($i = 1 ; $i <= 20 ; $i++) {
@@ -161,14 +263,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $duplications;
     }
 
-    private function _createUnitsArray()
+    private function createUnitsArray()
     {
-        $units = $this->_entityManager
+        $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActive();
 
         if (empty($units)) {
-            throw new \RuntimeException('There needs to be at least one unit before you can add a shift');
+            throw new RuntimeException('There needs to be at least one unit before you can add a shift');
         }
 
         $unitsArray = array();
@@ -179,9 +281,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $unitsArray;
     }
 
-    private function _createEventsArray()
+    private function createEventsArray()
     {
-        $events = $this->_entityManager
+        $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive();
 
@@ -195,14 +297,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $eventsArray;
     }
 
-    private function _createLocationsArray()
+    private function createLocationsArray()
     {
-        $locations = $this->_entityManager
+        $locations = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Location')
             ->findAllActive();
 
         if (empty($locations)) {
-            throw new \RuntimeException('There needs to be at least one location before you can add a shift');
+            throw new RuntimeException('There needs to be at least one location before you can add a shift');
         }
 
         $locationsArray = array();
@@ -213,181 +315,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $locationsArray;
     }
 
-    public function getInputFilter()
+    private function createEditRolesArray()
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'manager_id',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'start_date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
-                        new DateCompareValidator('now', 'd/m/Y H:i'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'end_date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
-                        new DateCompareValidator('start_date', 'd/m/Y H:i'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'duplicate_hours',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'duplicate_days',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'manager',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'nb_responsibles',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'nb_volunteers',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'name',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'description',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'edit_roles',
-                    'required' => false,
-                )
-            )
-        );
-
-        return $inputFilter;
-    }
-
-    private function _createEditRolesArray()
-    {
-        $roles = $this->_entityManager
+        $roles = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Acl\Role')
             ->findBy(array(), array('name' => 'ASC'));
 
@@ -399,16 +329,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         if (empty($rolesArray)) {
-            throw new \RuntimeException('There needs to be at least one role before you can add a page');
+            throw new RuntimeException('There needs to be at least one role before you can add a page');
         }
 
         return $rolesArray;
     }
 
-    private function _createRewardArray()
+    private function createRewardArray()
     {
         return unserialize(
-            $this->_entityManager
+            $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shift.reward_numbers')
         );

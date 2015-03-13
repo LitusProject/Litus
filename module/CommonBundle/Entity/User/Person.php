@@ -23,8 +23,6 @@ use CommonBundle\Component\Acl\RoleAware,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Code,
-    CommonBundle\Entity\User\Credential,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
@@ -138,12 +136,12 @@ abstract class Person implements RoleAware
     private $canLogin;
 
     /**
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Status\Organization", mappedBy="person", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Status\Organization", mappedBy="person", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $organizationStatuses;
 
     /**
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Barcode", mappedBy="person")
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Barcode", mappedBy="person", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\OrderBy({"creationTime" = "ASC"})
      */
     private $barcodes;
@@ -171,28 +169,13 @@ abstract class Person implements RoleAware
      */
     private $language;
 
-    /**
-     * @param string $username    The user's username
-     * @param array  $roles       The user's roles
-     * @param string $firstName   The user's first name
-     * @param string $lastName    The user's last name
-     * @param string $email       The user's e-mail address
-     * @param string $phoneNumber The user's phone number
-     * @param string $sex         string The users sex ('m' or 'f')
-     */
-    public function __construct($username, array $roles, $firstName, $lastName, $email = null, $phoneNumber = null, $sex = null)
+    public function __construct()
     {
-        $this->setUsername($username);
-        $this->setFirstName($firstName);
-        $this->setLastName($lastName);
-        $this->setEmail($email);
-        $this->setPhoneNumber($phoneNumber);
-        $this->setSex($sex);
-
         $this->canLogin = true;
 
-        $this->roles = new ArrayCollection($roles);
+        $this->roles = new ArrayCollection();
         $this->organizationStatuses = new ArrayCollection();
+        $this->barcodes = new ArrayCollection();
     }
 
     /**
@@ -302,6 +285,13 @@ abstract class Person implements RoleAware
         return $this->_flattenRolesInheritance(
             $this->getRoles()
         );
+    }
+
+    public function getSystemRoles()
+    {
+        return array_filter($this->getFlattenedRoles(), function (Role $role) {
+            return $role->getSystem();
+        });
     }
 
     /**
@@ -432,7 +422,7 @@ abstract class Person implements RoleAware
     public function setSex($sex)
     {
         if (($sex !== 'm') && ($sex !== 'f') && ($sex !== null)) {
-            throw new \InvalidArgumentException('Invalid sex');
+            throw new InvalidArgumentException('Invalid sex');
         }
 
         $this->sex = $sex;
@@ -472,6 +462,23 @@ abstract class Person implements RoleAware
     public function getBarcode()
     {
         return isset($this->barcodes[0]) ? $this->barcodes[0] : null;
+    }
+
+    /**
+     * @param  Barcode $code
+     * @return self
+     */
+    public function addBarcode(Barcode $code)
+    {
+        foreach ($this->barcodes as $barcode) {
+            if ($code->getBarcode() === $barcode->getBarcode()) {
+                return $this;
+            }
+        }
+
+        $this->barcodes->add($code);
+
+        return $this;
     }
 
     /**

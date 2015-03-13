@@ -20,7 +20,6 @@ namespace BrBundle\Entity\Product;
 
 use BrBundle\Entity\Product,
     BrBundle\Entity\Product\Order,
-    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,7 +40,7 @@ class OrderEntry
     private $id;
 
     /**
-     * @var \BrBundle\Entity\Product\Order The order to which this entry belongs.
+     * @var Order The order to which this entry belongs.
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Product\Order")
      * @ORM\JoinColumn(name="productorder", referencedColumnName="id")
@@ -49,7 +48,7 @@ class OrderEntry
     private $order;
 
     /**
-     * @var \BrBundle\Entity\Product The product of which this is an entry in the order.
+     * @var Product The product of which this is an entry in the order.
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Product")
      * @ORM\JoinColumn(name="product", referencedColumnName="id")
@@ -64,9 +63,9 @@ class OrderEntry
     private $quantity;
 
     /**
-     * @param \BrBundle\Entity\Product\Order $order    The order of which this entry is part.
-     * @param \BrBundle\Entity\Product       $product  The product belonging to this entry.
-     * @param int                            $quantity The quantity of this product that was ordered
+     * @param Order   $order    The order of which this entry is part.
+     * @param Product $product  The product belonging to this entry.
+     * @param int     $quantity The quantity of this product that was ordered
      */
     public function __construct(Order $order, Product $product, $quantity)
     {
@@ -84,7 +83,7 @@ class OrderEntry
     }
 
     /**
-     * @return \BrBundle\Entity\Product\Order
+     * @return Order
      */
     public function getOrder()
     {
@@ -92,19 +91,11 @@ class OrderEntry
     }
 
     /**
-     * @return \BrBundle\Entity\Product
+     * @return Product
      */
     public function getProduct()
     {
         return $this->product;
-    }
-
-    /**
-     * @return \BrBundle\Entity\Contract\ContractEntry
-     */
-    public function getContractEntry()
-    {
-        return $this->contractEntry;
     }
 
     /**
@@ -116,8 +107,8 @@ class OrderEntry
     }
 
     /**
-     * @param  int                                 $quantity
-     * @return \BrBundle\Entity\Product\OrderEntry
+     * @param  int  $quantity
+     * @return self
      */
     public function setQuantity($quantity)
     {

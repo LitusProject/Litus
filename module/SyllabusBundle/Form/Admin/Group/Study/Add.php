@@ -18,12 +18,6 @@
 
 namespace SyllabusBundle\Form\Admin\Group\Study;
 
-use CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Select,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add Study
  *
@@ -32,37 +26,57 @@ use CommonBundle\Component\Form\Admin\Element\Hidden,
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @param null|string|int $name Optional name for the element
+     * @var array All possible studies
      */
-    public function __construct($studies, $name = null)
-    {
-        parent::__construct($name);
+    private $_studies;
 
+    public function init()
+    {
+        parent::init();
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'studies',
+            'label'      => 'Studies',
+            'required'   => true,
+            'attributes' => array(
+                'multiple' => true,
+                'style'    => 'max-width: 100%;',
+                'options'  => $this->_getStudyNames(),
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->addSubmit('Add', 'add');
+    }
+
+    /**
+     * @return array
+     */
+    private function _getStudyNames()
+    {
         $studyNames = array();
-        foreach ($studies as $study) {
+        foreach ($this->_studies as $study) {
             $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
         }
 
-        if (0 != count($studyNames)) {
-            $field = new Select('studies');
-            $field->setLabel('Studies')
-                ->setAttribute('multiple', true)
-                ->setAttribute('style', 'max-width: 100%;')
-                ->setAttribute('options', $studyNames);
-            $this->add($field);
-        }
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
+        return $studyNames;
     }
 
-    public function getInputFilter()
+    /**
+     * @param  array All possible studies
+     * @return self
+     */
+    public function setStudies(array $studies)
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
+        $this->_studies = $studies;
 
-        return $inputFilter;
+        return $this;
     }
 }

@@ -18,35 +18,29 @@
 
 namespace TicketBundle\Component\Validator;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager,
-    TicketBundle\Entity\Event;
+use CommonBundle\Component\Form\Form,
+    CommonBundle\Component\Validator\FormAwareInterface;
 
 /**
  * Check whether number of member + number of non member does not exceed max
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class NumberTickets extends \Zend\Validator\AbstractValidator
+class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
     const EXCEEDS_MAX_PERSON = 'exceedsMaxPerson';
     const EXCEEDS_MAX = 'exceedsMax';
 
-    /**
-     * @var EntityManager
-     */
-    private $_entityManager;
+    protected $options = array(
+        'event' => null,
+        'person' => null,
+    );
 
     /**
-     * @var Event
+     * @var Form
      */
-    private $_event;
-
-    /**
-     * @var Person
-     */
-    private $_person;
+    private $_form;
 
     /**
      * Error messages
@@ -55,25 +49,25 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
      */
     protected $messageTemplates = array(
         self::NOT_VALID => 'The number of tickets is not valid',
-        self::EXCEEDS_MAX_PERSON => 'The number of tickets exceeds the maximum',
+        self::EXCEEDS_MAX_PERSON => 'The number of tickets exceeds the maximum per person',
         self::EXCEEDS_MAX => 'The number of tickets exceeds the maximum',
     );
 
     /**
-     * Create a new Article Barcode validator.
+     * Sets validator options
      *
-     * @param EntityManager $entityManager
-     * @param Event         $event         The event
-     * @param Person|null   $person
-     * @param mixed         $opts          The validator's options
+     * @param int|array|\Traversable $options
      */
-    public function __construct(EntityManager $entityManager, Event $event, Person $person = null, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['event'] = array_shift($args);
+            $options['person'] = array_shift($args);
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_event = $event;
-        $this->_person = $person;
+        parent::__construct($options);
     }
 
     /**
@@ -87,54 +81,67 @@ class NumberTickets extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
+        $optionsForm = $this->_form->has('options_form') ? $this->_form->get('options_form') : $this->_form;
+
         $number = 0;
-        if (count($this->_event->getOptions()) == 0) {
-            $number += $context['number_member'];
-            if (!$this->_event->isOnlyMembers()) {
-                $number += $context['number_non_member'];
+        if (count($this->options['event']->getOptions()) == 0) {
+            $number += $optionsForm->get('number_member')->getValue();
+            if (!$this->options['event']->isOnlyMembers()) {
+                $number += $optionsForm->get('number_non_member')->getValue();
             }
         } else {
-            $options = $this->_event->getOptions();
+            $options = $this->options['event']->getOptions();
             foreach ($options as $option) {
-                $number += $context['option_' . $option->getId() . '_number_member'];
-                if (!$this->_event->isOnlyMembers()) {
-                    $number += $context['option_' . $option->getId() . '_number_non_member'];
+                $number += $optionsForm->get('option_' . $option->getId() . '_number_member')->getValue();
+                if (!$this->options['event']->isOnlyMembers()) {
+                    $number += $optionsForm->get('option_' . $option->getId() . '_number_non_member')->getValue();
                 }
             }
         }
 
-        if ($this->_person == null && isset($context['person_id']) && is_numeric($context['person_id'])) {
-            $person = $this->_entityManager
+        if ($this->options['person'] == null && is_numeric($this->_form->get('person_form')->get('person')->getValue())) {
+            $person = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person')
-                ->findOneById($context['person_id']);
+                ->findOneById($this->_form->get('person_form')->get('person')->getValue());
         } else {
-            $person = $this->_person;
+            $person = $this->options['person'];
         }
 
-        if (null == $person && !isset($context['is_guest'])) {
+        if (null == $person && !$this->_form->get('is_guest')->getValue()) {
             $this->error(self::NOT_VALID);
 
             return false;
         }
 
         if (null !== $person) {
-            $tickets = $this->_entityManager
+            $tickets = $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Ticket')
-                ->findAllByEventAndPerson($this->_event, $person);
+                ->findAllByEventAndPerson($this->options['event'], $person);
 
-            if ($number + sizeof($tickets) > $this->_event->getLimitPerPerson() && $this->_event->getLimitPerPerson() != 0) {
+            if ($number + sizeof($tickets) > $this->options['event']->getLimitPerPerson() && $this->options['event']->getLimitPerPerson() != 0) {
                 $this->error(self::EXCEEDS_MAX_PERSON);
 
                 return false;
             }
         }
 
-        if ($number > $this->_event->getNumberFree() && $this->_event->getNumberOfTickets() != 0) {
+        if ($number > $this->options['event']->getNumberFree() && $this->options['event']->getNumberOfTickets() != 0) {
             $this->error(self::EXCEEDS_MAX);
 
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * @param  Form $form
+     * @return self
+     */
+    public function setForm(Form $form)
+    {
+        $this->_form = $form;
+
+        return $this;
     }
 }

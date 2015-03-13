@@ -18,14 +18,10 @@
 
 namespace TicketBundle\Form\Ticket;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager,
-    TicketBundle\Component\Validator\NumberTickets as NumberTicketsValidator,
-    TicketBundle\Entity\Event,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CommonBundle\Entity\User\Person,
+    LogicException,
+    RuntimeException,
+    TicketBundle\Entity\Event;
 
 /**
  * Book Tickets
@@ -35,70 +31,132 @@ use CommonBundle\Component\Form\Bootstrap\Element\Select,
 class Book extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var EntityManager
-     */
-    private $_entityManager;
-
-    /**
      * @var Event
      */
     private $_event;
 
     /**
-     * @var Person
-     */
+    * @var Person
+    */
     private $_person;
 
-    /**
-     * @param EntityManager   $entityManager
-     * @param Event           $event
-     * @param Person          $person
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Event $event, Person $person, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        if (null === $this->_event) {
+            throw new LogicException('Cannot book ticket for null form.');
+        }
+        if (null === $this->_person) {
+            throw new RuntimeException('You have to be logged in to book tickets.');
+        }
 
-        $this->_entityManager = $entityManager;
-        $this->_event = $event;
-        $this->_person = $person;
+        parent::init();
 
         $this->setAttribute('id', 'ticket_sale_form');
 
-        if (count($event->getOptions()) == 0) {
-            $field = new Select('number_member');
-            $field->setLabel('Number Member')
-                ->setAttribute('options', $this->_getNumberOptions());
-            $this->add($field);
+        if (empty($this->_event->getOptions())) {
+            $this->add(array(
+                'type'       => 'select',
+                'name'       => 'number_member',
+                'label'      => 'Number Member',
+                'attributes' => array(
+                    'options' => $this->getNumberOptions(),
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'required' => true,
+                        'validators' => array(
+                            array(
+                                'name' => 'ticket_number_tickets',
+                                'options' => array(
+                                    'event' => $this->_event,
+                                    'person' => $this->_person,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ));
 
-            if (!$event->isOnlyMembers()) {
-                $field = new Select('number_non_member');
-                $field->setLabel('Number Non Member')
-                    ->setAttribute('options', $this->_getNumberOptions());
-                $this->add($field);
+            if (!$this->_event->isOnlyMembers()) {
+                $this->add(array(
+                    'type'       => 'select',
+                    'name'       => 'number_non_member',
+                    'label'      => 'Number Non Member',
+                    'attributes' => array(
+                        'options' => $this->getNumberOptions(),
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'required' => true,
+                            'validators' => array(
+                                array(
+                                    'name' => 'ticket_number_tickets',
+                                    'options' => array(
+                                        'event' => $this->_event,
+                                        'person' => $this->_person,
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ));
             }
         } else {
-            foreach ($event->getOptions() as $option) {
-                $field = new Select('option_' . $option->getId() . '_number_member');
-                $field->setLabel(ucfirst($option->getName()) . ' (Member)')
-                    ->setAttribute('options', $this->_getNumberOptions());
-                $this->add($field);
+            foreach ($this->_event->getOptions() as $option) {
+                $this->add(array(
+                    'type'       => 'select',
+                    'name'       => 'option_' . $option->getId() . '_number_member',
+                    'label'      => ucfirst($option->getName()) . ' (Member)',
+                    'attributes' => array(
+                        'options' => $this->getNumberOptions(),
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'required' => true,
+                            'validators' => array(
+                                array(
+                                    'name' => 'ticket_number_tickets',
+                                    'options' => array(
+                                        'event' => $this->_event,
+                                        'person' => $this->_person,
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ));
 
-                if (!$event->isOnlyMembers()) {
-                    $field = new Select('option_' . $option->getId() . '_number_non_member');
-                    $field->setLabel(ucfirst($option->getName()) . ' (Non Member)')
-                        ->setAttribute('options', $this->_getNumberOptions());
-                    $this->add($field);
+                if (!$this->_event->isOnlyMembers()) {
+                    $this->add(array(
+                        'type'       => 'select',
+                        'name'       => 'option_' . $option->getId() . '_number_non_member',
+                        'label'      => ucfirst($option->getName()) . ' (Non Member)',
+                        'attributes' => array(
+                            'options' => $this->getNumberOptions(),
+                        ),
+                        'options'    => array(
+                            'input' => array(
+                                'required' => true,
+                                'validators' => array(
+                                    array(
+                                        'name' => 'ticket_number_tickets',
+                                        'options' => array(
+                                            'event' => $this->_event,
+                                            'person' => $this->_person,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ));
                 }
             }
         }
 
-        $field = new Submit('book_tickets');
-        $field->setValue('Book');
-        $this->add($field);
+        $this->addSubmit('Book', 'book_tickets');
     }
 
-    private function _getNumberOptions()
+    private function getNumberOptions()
     {
         $numbers = array();
         $max = $this->_event->getLimitPerPerson() == 0 ? 10 : $this->_event->getLimitPerPerson();
@@ -110,67 +168,25 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
         return $numbers;
     }
 
-    public function getInputFilter()
+    /**
+     * @param  Event $event
+     * @return self
+     */
+    public function setEvent(Event $event)
     {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
+        $this->_event = $event;
 
-        if (count($this->_event->getOptions()) == 0) {
-            $inputFilter->add(
-                $factory->createInput(
-                    array(
-                        'name'     => 'number_member',
-                        'required' => true,
-                        'validators' => array(
-                            new NumberTicketsValidator($this->_entityManager, $this->_event, $this->_person),
-                        ),
-                    )
-                )
-            );
+        return $this;
+    }
 
-            if (!$this->_event->isOnlyMembers()) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'number_non_member',
-                            'required' => true,
-                            'validators' => array(
-                                new NumberTicketsValidator($this->_entityManager, $this->_event, $this->_person),
-                            ),
-                        )
-                    )
-                );
-            }
-        } else {
-            foreach ($this->_event->getOptions() as $option) {
-                $inputFilter->add(
-                    $factory->createInput(
-                        array(
-                            'name'     => 'option_' . $option->getId() . '_number_member',
-                            'required' => true,
-                            'validators' => array(
-                                new NumberTicketsValidator($this->_entityManager, $this->_event, $this->_person),
-                            ),
-                        )
-                    )
-                );
+    /**
+    * @param  Person $person
+    * @return self
+    */
+    public function setPerson(Person $person)
+    {
+        $this->_person = $person;
 
-                if (!$this->_event->isOnlyMembers()) {
-                    $inputFilter->add(
-                        $factory->createInput(
-                            array(
-                                'name'     => 'option_' . $option->getId() . '_number_non_member',
-                                'required' => true,
-                                'validators' => array(
-                                    new NumberTicketsValidator($this->_entityManager, $this->_event, $this->_person),
-                                ),
-                            )
-                        )
-                    );
-                }
-            }
-        }
-
-        return $inputFilter;
+        return $this;
     }
 }

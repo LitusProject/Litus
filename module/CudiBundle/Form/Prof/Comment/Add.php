@@ -18,10 +18,6 @@
 
 namespace CudiBundle\Form\Prof\Comment;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Textarea,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add Comment
  *
@@ -29,37 +25,26 @@ use CommonBundle\Component\Form\Bootstrap\Element\Textarea,
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @param null|string|int $name Optional name for the element
-     */
-    public function __construct($name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $field = new Textarea('text');
-        $field->setLabel('Comment')
-            ->setAttribute('rows', 5)
-            ->setRequired();
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'text',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'text',
+            'label'      => 'Comment',
+            'required'   => true,
+            'attributes' => array(
+                'rows' => 5,
+                'id'   => 'text',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
-
-        return $inputFilter;
+                ),
+            ),
+        ));
     }
 }

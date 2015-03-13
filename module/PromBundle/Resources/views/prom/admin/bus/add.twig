@@ -1,0 +1,24 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+
+    {% include 'prom/admin/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <h1>Add available bus</h1>
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#event').change(function() {
+                $('#departure_time').val($('#event').children(':selected').attr('data-date'));
+            });
+        });
+    </script>
+{% endblock %}

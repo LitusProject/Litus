@@ -21,6 +21,7 @@ namespace PageBundle\Entity;
 use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
+    Locale,
     PageBundle\Entity\Category,
     PageBundle\Entity\Node\Page;
 
@@ -64,13 +65,8 @@ class Link
      */
     private $translations;
 
-    /**
-     * @param Category $category
-     */
-    public function __construct(Category $category)
+    public function __construct()
     {
-        $this->category = $category;
-
         $this->translations = new ArrayCollection();
     }
 
@@ -94,7 +90,7 @@ class Link
      * @param  Page $parent
      * @return self
      */
-    public function setParent(Page $parent)
+    public function setParent(Page $parent = null)
     {
         $this->parent = $parent;
 
@@ -132,7 +128,7 @@ class Link
                 return $translation;
             }
 
-            if ($translation->getLanguage()->getAbbrev() == \Locale::getDefault()) {
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
                 $fallbackTranslation = $translation;
             }
         }

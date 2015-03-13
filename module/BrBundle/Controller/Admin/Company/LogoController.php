@@ -18,11 +18,9 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-use BrBundle\Entity\Company\Logo,
-    BrBundle\Form\Admin\Company\Logo\Add as AddForm,
+use BrBundle\Entity\Company,
+    BrBundle\Entity\Company\Logo,
     Imagick,
-    Zend\File\Transfer\Adapter\Http as FileTransfer,
-    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -60,73 +58,77 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    private function receive($file, Logo $logo)
+    {
+        $filePath = 'public/' . $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.public_logo_path') . '/';
+
+        $image = new Imagick($file['tmp_name']);
+        $image->setImageFormat('png');
+        $image->scaleImage(1000, 100, true);
+
+        $original = clone $image;
+
+        $image->setImageColorspace(Imagick::COLORSPACE_GRAY);
+
+        $color = 0;
+        $iterator = $image->getPixelIterator();
+        $nbPixels = 0;
+        foreach ($iterator as $pixels) {
+            foreach ($pixels as $pixel) {
+                if ($pixel->getColor()['a'] == 1) {
+                    continue;
+                }
+
+                $pixel_color = $pixel->getColor(true);
+                $nbPixels++;
+                $color += ($pixel_color['r'] + $pixel_color['g'] + $pixel_color['b'])/3;
+            }
+        }
+        if ($nbPixels != 0 && $color/$nbPixels < 0.5) {
+            $original->evaluateImage(Imagick::EVALUATE_ADD, 800/($color/$nbPixels));
+        }
+
+        $all = new Imagick();
+        $all->addImage($image);
+        $all->addImage($original);
+        $all->resetIterator();
+        $combined = $all->appendImages(true);
+        $combined->setImageFormat('png');
+
+        do {
+            $fileName = sha1(uniqid());
+        } while (file_exists($filePath . $fileName));
+        $combined->writeImage($filePath . $fileName);
+
+        $logo->setPath($fileName)
+            ->setWidth($image->getImageWidth())
+            ->setHeight($image->getImageHeight());
+    }
+
     public function addAction()
     {
         if (!($company = $this->_getCompany())) {
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager(), $company);
+        $form = $this->getForm('br_company_logo_add', array('company' => $company));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
-            $upload = new FileTransfer();
-            $inputFilter = $form->getInputFilter()->get('logo');
-            if ($inputFilter instanceof InputInterface) {
-                $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
-            }
+            if ($form->isValid()) {
+                $formData = $form->getData();
 
-            if ($form->isValid() && $upload->isValid()) {
-                $formData = $form->getFormData($formData);
+                $logo = $form->hydrateObject(
+                    new Logo($company)
+                );
+                $this->receive($formData['logo'], $logo);
 
-                $filePath = 'public/' . $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('br.public_logo_path') . '/';
-
-                $upload->receive();
-
-                $image = new Imagick($upload->getFileName('logo'));
-                unlink($upload->getFileName('logo'));
-                $image->setImageFormat('png');
-                $image->scaleImage(1000, 100, true);
-
-                $original = clone $image;
-
-                $image->setImageColorspace(Imagick::COLORSPACE_GRAY);
-
-                $color = 0;
-                $iterator = $image->getPixelIterator();
-                $nbPixels = 0;
-                foreach ($iterator as $pixels) {
-                    foreach ($pixels as $pixel) {
-                        if ($pixel->getColor()['a'] == 1) {
-                            continue;
-                        }
-
-                        $pixel_color = $pixel->getColor(true);
-                        $nbPixels++;
-                        $color += ($pixel_color['r'] + $pixel_color['g'] + $pixel_color['b'])/3;
-                    }
-                }
-                if ($nbPixels != 0 && $color/$nbPixels < 0.5) {
-                    $original->evaluateImage(Imagick::EVALUATE_ADD, 800/($color/$nbPixels));
-                }
-
-                $all = new Imagick();
-                $all->addImage($image);
-                $all->addImage($original);
-                $all->resetIterator();
-                $combined = $all->appendImages(true);
-                $combined->setImageFormat('png');
-
-                do {
-                    $fileName = sha1(uniqid());
-                } while (file_exists($filePath . $fileName));
-                $combined->writeImage($filePath . $fileName);
-
-                $logo = new Logo($company, $formData['type'], $fileName, $formData['url'], $image->getImageWidth(), $image->getImageHeight());
                 $this->getEntityManager()->persist($logo);
 
                 $this->getEntityManager()->flush();
@@ -145,14 +147,6 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 return new ViewModel();
-            } else {
-                $errors = $form->getMessages();
-
-                if (sizeof($upload->getMessages()) > 0) {
-                    $errors['logo'] = $upload->getMessages();
-                }
-
-                $form->setMessages($errors);
             }
         }
 
@@ -190,6 +184,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @return Company
+     */
     private function _getCompany()
     {
         if (null === $this->getParam('id')) {
@@ -231,6 +228,9 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
         return $company;
     }
 
+    /**
+     * @return Logo
+     */
     private function _getLogo()
     {
         if (null === $this->getParam('id')) {

@@ -19,8 +19,6 @@
 namespace CudiBundle\Controller\Admin\Sale\Article\Discount;
 
 use CudiBundle\Entity\Sale\Article\Discount\Template,
-    CudiBundle\Form\Admin\Sales\Article\Discounts\Template\Add as AddForm,
-    CudiBundle\Form\Admin\Sales\Article\Discounts\Template\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -50,34 +48,15 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('cudi_sale_article_discount_template_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                if ($formData['organization'] != '0') {
-                    $organization = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findOneById($formData['organization']);
-                } else {
-                    $organization = null;
-                }
-
-                $template = new Template(
-                    $formData['name'],
-                    $formData['value'],
-                    $formData['method'],
-                    $formData['type'],
-                    $formData['rounding'],
-                    $formData['apply_once'],
-                    $organization
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject()
                 );
-
-                $this->getEntityManager()->persist($template);
 
                 $this->getEntityManager()->flush();
 
@@ -133,31 +112,12 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $template);
+        $form = $this->getForm('cudi_sale_article_discount_template_edit', $template);
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                if ($formData['organization'] != '0') {
-                    $organization = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Organization')
-                        ->findOneById($formData['organization']);
-                } else {
-                    $organization = null;
-                }
-
-                $template->setName($formData['name'])
-                    ->setValue($formData['value'])
-                    ->setMethod($formData['method'])
-                    ->setType($formData['type'])
-                    ->setRounding($formData['rounding'])
-                    ->setApplyOnce($formData['apply_once'])
-                    ->setOrganization($organization);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

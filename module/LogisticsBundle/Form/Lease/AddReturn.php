@@ -18,16 +18,6 @@
 
 namespace LogisticsBundle\Form\Lease;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Hidden,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
-    CommonBundle\Component\Form\Bootstrap\Element\Textarea,
-    CommonBundle\Component\Validator\Price as PriceValidator,
-    Doctrine\ORM\EntityManager,
-    LogisticsBundle\Component\Validator\LeaseValidator,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * The form used to register a returned item.
  *
@@ -35,139 +25,102 @@ use CommonBundle\Component\Form\Bootstrap\Element\Hidden,
  */
 class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    protected $_entityManager = null;
-
-    /**
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param string        $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $field = new Text('item');
-        $field->setLabel('Item')
-            ->setAttribute('class', $field->getAttribute('class') . ' js-item-search')
-            ->setAttribute('autocomplete', false);
-        $this->add($field);
-
-        $field = new Hidden('barcode');
-        $field->setAttribute('class', 'js-item-barcode');
-        $this->add($field);
-
-        $field = new Text('returned_amount');
-        $field->setLabel('Amount')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('returned_by');
-        $field->setLabel('Returned By')
-            ->setAttribute('autocomplete', false)
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('returned_pawn');
-        $field->setLabel('Returned Pawn')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Textarea('comment');
-        $field->setLabel('Comment')
-            ->setAttribute('rows', 3);
-        $this->add($field);
-
-        $field = new Submit('return');
-        $field->setValue('Return')
-            ->setAttribute('class', 'btn btn-primary');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'barcode',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
+        $this->add(array(
+            'type'       => 'typeahead',
+            'name'       => 'returnItem',
+            'label'      => 'Item',
+            'options' => array(
+                'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'barcode',
+                            'name' => 'logistics_typeahead_lease',
                             'options' => array(
-                                'adapter'     => 'Ean12',
-                                'useChecksum' => false,
+                                'must_be_leased' => true,
                             ),
                         ),
-                        new LeaseValidator($this->_entityManager, true),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'returned_amount',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'returned_amount',
+            'label'      => 'Amount',
+            'required'   => true,
+            'attributes' => array(
+                'id' => 'returned_amount',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array('name' => 'Digits'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'returned_by',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'returned_by',
+            'label'      => 'Returned By',
+            'required'   => true,
+            'attributes' => array(
+                'id'           => 'returned_by',
+                'autocomplete' => false,
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'returned_pawn',
-                    'required' => true,
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'returned_pawn',
+            'label'      => 'Returned Pawn',
+            'required'   => true,
+            'attributes' => array(
+                'id' => 'returned_pawn',
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        new PriceValidator(),
+                        array('name' => 'price'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'comment',
-                    'required' => false,
+        $this->add(array(
+            'type'       => 'textarea',
+            'name'       => 'comment',
+            'label'      => 'Comment',
+            'attributes' => array(
+                'rows' => 3,
+            ),
+            'options'    => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Return', 'btn btn-primary', 'return');
     }
 }

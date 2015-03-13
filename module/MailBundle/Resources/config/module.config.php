@@ -24,6 +24,21 @@ return Config::create(
     array(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
+        'translation_files' => array('validator'),
         'has_documents'     => true,
+    ),
+    array(
+        'validators' => array(
+            'invokables' => array(
+                'mail_entry_academic'    => 'MailBundle\Component\Validator\Entry\Academic',
+                'mail_entry_external'    => 'MailBundle\Component\Validator\Entry\External',
+                'mail_entry_mailinglist' => 'MailBundle\Component\Validator\Entry\MailingList',
+                'mail_admin_map'         => 'MailBundle\Component\Validator\AdminMap',
+                'mail_admin_role'        => 'MailBundle\Component\Validator\AdminRole',
+                'mail_alias'             => 'MailBundle\Component\Validator\Alias',
+                'mail_multi_mail'        => 'MailBundle\Component\Validator\MultiMail',
+                'mail_named_list'        => 'MailBundle\Component\Validator\NamedList',
+            ),
+        ),
     )
 );

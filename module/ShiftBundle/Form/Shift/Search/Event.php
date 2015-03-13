@@ -18,11 +18,8 @@
 
 namespace ShiftBundle\Form\Shift\Search;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Entity\General\Language,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use CommonBundle\Entity\General\Language,
+    LogicException;
 
 /**
  * Search Event
@@ -32,31 +29,51 @@ use CommonBundle\Component\Form\Bootstrap\Element\Select,
 class Event extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     /**
-     * @var EntityManager The EntityManager instance
+     * @var Language|null
      */
-    private $_entityManager = null;
+    private $language;
 
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Language        $language      The language
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Language $language, $name = null)
+    public function __construct($name = null)
     {
         parent::__construct($name, false, false);
-
-        $this->_entityManager = $entityManager;
-
-        $this->setAttribute('class', 'form-inline');
-
-        $field = new Select('event');
-        $field->setAttribute('options', $this->_createEventsArray($language));
-        $this->add($field);
     }
 
-    private function _createEventsArray(Language $language)
+    public function init()
     {
-        $events = $this->_entityManager
+        if (null === $this->language) {
+            throw new LogicException('Language needs to be set.');
+        }
+
+        parent::init();
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'event',
+            'attributes' => array(
+                'options' => $this->createEventsArray(),
+            ),
+            'options'    => array(
+                'input' => array(
+                    'required' => true,
+                ),
+            ),
+        ));
+    }
+
+    /**
+     * @param  Language $language
+     * @return self
+     */
+    public function setLanguage(Language $language)
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    private function createEventsArray()
+    {
+        $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive();
 
@@ -64,26 +81,9 @@ class Event extends \CommonBundle\Component\Form\Bootstrap\Form
             '' => '',
         );
         foreach ($events as $event) {
-            $eventsArray[$event->getId()] = $event->getTitle($language);
+            $eventsArray[$event->getId()] = $event->getTitle($this->language);
         }
 
         return $eventsArray;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'event',
-                    'required' => true,
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }

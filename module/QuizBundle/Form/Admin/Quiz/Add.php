@@ -18,13 +18,7 @@
 
 namespace QuizBundle\Form\Admin\Quiz;
 
-use CommonBundle\Component\Form\Admin\Element\Select,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    Doctrine\ORM\EntityManager,
-    QuizBundle\Entity\Quiz,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use RuntimeException;
 
 /**
  * Add a new quiz
@@ -32,85 +26,43 @@ use CommonBundle\Component\Form\Admin\Element\Select,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
+    protected $hydrator = 'QuizBundle\Hydrator\Quiz';
 
-    /**
-     * @param EntityManager   $entityManager
-     * @param null|string|int $name          Optional name for the form
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
-
-        $field = new Text('name');
-        $field->setLabel('Name')
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Select('edit_roles');
-        $field->setLabel('Edit Roles')
-            ->setRequired()
-            ->setAttribute('multiple', true)
-            ->setAttribute('options', $this->_createEditRolesArray());
-        $this->add($field);
-
-        $field = new Submit('submit');
-        $field->setValue('Add')
-            ->setAttribute('class', 'add');
-        $this->add($field);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'name',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'name',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'edit_roles',
-                    'required' => true,
-                )
-            )
-        );
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'edit_roles',
+            'label'      => 'Edit Roles',
+            'required'   => true,
+            'attributes' => array(
+                'multiple' => true,
+                'options'  => $this->createEditRolesArray(),
+            ),
+        ));
 
-        return $inputFilter;
+        $this->addSubmit('Add', 'add');
     }
 
-    /**
-     * Populates the form with values from the entity
-     *
-     * @param Quiz $quiz
-     */
-    public function populateFromQuiz(Quiz $quiz)
+    private function createEditRolesArray()
     {
-        $data = array(
-            'name' => $quiz->getName(),
-        );
-
-        $this->setData($data);
-    }
-
-    private function _createEditRolesArray()
-    {
-        $roles = $this->_entityManager
+        $roles = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Acl\Role')
             ->findBy(array(), array('name' => 'ASC'));
 
@@ -122,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         if (empty($rolesArray)) {
-            throw new \RuntimeException('There needs to be at least one role before you can add a quiz');
+            throw new RuntimeException('There needs to be at least one role before you can add a quiz');
         }
 
         return $rolesArray;

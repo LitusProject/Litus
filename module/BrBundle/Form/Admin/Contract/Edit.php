@@ -18,14 +18,7 @@
 
 namespace BrBundle\Form\Admin\Contract;
 
-use BrBundle\Entity\Contract,
-    CommonBundle\Component\Form\Admin\Element\Hidden,
-    CommonBundle\Component\Form\Admin\Element\Text,
-    CommonBundle\Component\Form\Admin\Element\Textarea,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
+use BrBundle\Entity\Contract;
 
 /**
  * The form used to edit an existing contract
@@ -36,63 +29,38 @@ use BrBundle\Entity\Contract,
 
 class Edit extends \CommonBundle\Component\Form\Admin\Form
 {
-    public function __construct(EntityManager $entityManager, Contract $contract, $options = null)
+    protected $hydrator = 'BrBundle\Hydrator\Contract';
+
+    /**
+     * @var Contract
+     */
+    private $_contract;
+
+    public function init()
     {
-        parent::__construct($options);
+        parent::init();
 
-        $this->_createFromContract($contract);
-
-        $field = new Submit('Save');
-        $field->setValue('Save')
-            ->setAttribute('class', 'contract_edit');
-        $this->add($field);
-    }
-
-    private function _createFromContract(Contract $contract)
-    {
-        $field = new Text('title');
-        $field->setLabel('Title')
-            ->setValue($contract->getTitle())
-            ->setRequired();
-        $this->add($field);
-
-        $field = new Text('invoice_nb');
-        $field->setLabel('Invoice number')
-            ->setRequired()
-            ->setValue($contract->getInvoiceNb());
-        $this->add($field);
-
-        foreach ($contract->getEntries() as $entry) {
-            $field = new Textarea('entry_' . $entry->getId());
-            $field->setLabel($entry->getOrderEntry()->getProduct()->getName())
-                ->setValue($entry->getContractText())
-                ->setRequired(false);
-            $this->add($field);
-        }
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'title',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'title',
+            'label'    => 'Title',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'invoice_nb',
-                    'required' => true,
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'invoice_nb',
+            'label'    => 'Invoice Number',
+            'required' => true,
+            'options'  => array(
+                'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
@@ -101,10 +69,40 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
                             'name' => 'int',
                         ),
                     ),
-                )
-            )
-        );
+                ),
+            ),
+        ));
 
-        return $inputFilter;
+        foreach ($this->_contract->getEntries() as $entry) {
+            $this->add(array(
+                'type'     => 'textarea',
+                'name'     => 'entry_' . $entry->getId(),
+                'label'    => $entry->getOrderEntry()->getProduct()->getName(),
+                'options'  => array(
+                    'input' => array(
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            ));
+        }
+
+        $this->addSubmit('Save', 'contract_edit');
+
+        if (null !== $this->_contract) {
+            $this->bind($this->_contract);
+        }
+    }
+
+    /**
+     * @param  Contract $contract
+     * @return self
+     */
+    public function setContract(Contract $contract)
+    {
+        $this->_contract = $contract;
+
+        return $this;
     }
 }

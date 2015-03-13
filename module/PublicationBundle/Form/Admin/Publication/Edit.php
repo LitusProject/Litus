@@ -18,76 +18,26 @@
 
 namespace PublicationBundle\Form\Admin\Publication;
 
-use Doctrine\ORM\EntityManager,
-    PublicationBundle\Component\Validator\Title\Publication as TitleValidator,
-    PublicationBundle\Entity\Publication,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory;
+use LogicException;
 
 /**
  * This form allows the user to edit the Publication.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Edit extends \PublicationBundle\Form\Admin\Publication\Add
+class Edit extends Add
 {
-    /**
-     * @var Publication
-     */
-    private $_publication;
-
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Publication     $publication
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Publication $publication, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        if (null === $this->publication) {
+            throw new LogicException('Cannot edit a null publication.');
+        }
 
-        $this->_publication = $publication;
+        parent::init();
 
         $this->remove('submit');
+        $this->addSubmit('Save', 'publication_edit');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'publication_edit');
-        $this->add($field);
-
-        $this->_populateFromPublication($publication);
-    }
-
-    private function _populateFromPublication(Publication $publication)
-    {
-        $formData = array(
-            'title' => $publication->getTitle(),
-        );
-
-        $this->setData($formData);
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->remove('title');
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name' => 'title',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        new TitleValidator($this->_entityManager, $this->_publication->getId()),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        $this->bind($this->publication);
     }
 }

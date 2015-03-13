@@ -34,6 +34,14 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'secretary_admin_photos' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@common_remote_typeahead',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'secretary_admin_promotion' => array(
             '@common_jquery',
             '@admin_css',

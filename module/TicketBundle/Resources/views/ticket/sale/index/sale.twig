@@ -47,15 +47,15 @@
                 }
             }).change();
 
-            $('#personSearch').typeaheadRemote(
+            $('#person_form\\[person\\]').typeaheadRemote(
                 {
                     source: '{{ url("ticket_sale_person_typeahead")}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#personId').val($(this).data('value').id);
+                    $('[name="person_form[person][id]"]').val($(this).data('value').id);
                 } else {
-                    $('#personId').val('');
+                    $('[name="person_form[person][id]"]').val('');
                 }
             });
 
@@ -65,18 +65,12 @@
                 $('#sale_invalid').removeClass('in');
                 $('#sale_confirm').addClass('disabled').prop('disabled');
 
-                var data = {
-                    force: $('#force').is(':checked') ? 1 : 0,
-                    is_guest: $('#is_guest').is(':checked') ? 1 : 0,
-                    person_id: $('#personId').val(),
-                    person: $('#personSearch').val(),
-                    guest_first_name: $('#guest_first_name').val(),
-                    guest_last_name: $('#guest_last_name').val(),
-                    guest_email: $('#guest_email').val(),
-                    payed: $('#payed').val()
-                }
-                $('.ticket_option').each(function () {
-                    data[$(this).attr('id')] = $(this).val();
+                var data = {};
+                $('#ticket_sale_form input').each(function () {
+                    if ($(this).attr('type') == 'checkbox')
+                        data[$(this).attr('name')] = $(this).is(':checked') ? 1 : 0;
+                    else
+                        data[$(this).attr('name')] = $(this).val();
                 });
 
                 $.ajax({
@@ -93,14 +87,7 @@
                         } else {
                             $('#sale_invalid').addClass('in');
                             $('div.help-block').remove();
-                            $('.form-group').removeClass('has-error');
-                            for(element in data.errors) {
-                                var list = $('<ul>', {'class': 'errors'});
-                                for (error in data.errors[element])
-                                    list.append($('<li>').html(data.errors[element][error]));
-                                var div = $('<div>', {'class': 'help-block'}).append(list);
-                                $('#' + element).closest('.form-group').addClass('has-error').find('input').after(div);
-                            }
+                            $('#ticket_sale_form').displayFormErrors(data.errors);
                         }
                     },
                     error: function () {

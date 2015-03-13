@@ -24,7 +24,15 @@ return Config::create(
     array(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
+        'translation_files' => array('validator'),
         'has_entities'      => false,
         'has_documents'     => true,
+    ),
+    array(
+        'validators' => array(
+            'invokables' => array(
+                'on_slug_name'   => 'OnBundle\Component\Validator\Name',
+            ),
+        ),
     )
 );

@@ -69,10 +69,9 @@ class Driver
      * @param Person $person The person to mark as a driver
      * @param $color The color for this driver
      */
-    public function __construct(Person $person, $color)
+    public function __construct(Person $person)
     {
         $this->person = $person;
-        $this->color = $color;
         $this->removed = false;
 
         $this->years = new ArrayCollection();

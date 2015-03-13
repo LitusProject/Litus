@@ -18,10 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Supplier\User;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit a user's data.
  *
@@ -30,21 +26,17 @@ use CommonBundle\Entity\User\Person,
  */
 class Edit extends \CommonBundle\Form\Admin\Person\Edit
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param Person          $person        The person we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, Person $person, $name = null)
+    protected $hydrator = 'CudiBundle\Hydrator\User\Person\Supplier';
+
+    public function init()
     {
-        parent::__construct($entityManager, $person, $name);
+        parent::init();
 
-        $this->remove('system_roles');
-        $this->remove('roles');
+        $this->remove('system_roles')
+            ->remove('unit_roles')
+            ->remove('roles');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'user_edit');
-        $this->add($field);
+        $this->remove('submit')
+            ->addSubmit('Save', 'user_edit');
     }
 }

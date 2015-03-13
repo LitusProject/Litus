@@ -49,13 +49,13 @@
             {% for unit in units %}
                 <tr>
                     <td style="text-align: right">&euro; {{ (unit.getUnit()/100)|number_format(2) }}</td>
-                    <td>{{ session.getOpenRegister().getAmountForUnit(unit).getAmount() }}</td>
+                    <td>{{ session.getOpenRegister().getAmountForUnit(unit) }}</td>
                 </tr>
             {% endfor %}
             {% for device in devices %}
                 <tr>
                     <td style="text-align: right">{{ device.getName() }}</td>
-                    <td>&euro; {{ (session.getOpenRegister().getAmountForDevice(device).getAmount()/100)|number_format(2) }}</td>
+                    <td>&euro; {{ (session.getOpenRegister().getAmountForDevice(device)/100)|number_format(2) }}</td>
                 </tr>
             {% endfor %}
             <tr>
@@ -82,13 +82,13 @@
                 {% for unit in units %}
                     <tr>
                         <td style="text-align: right">&euro; {{ (unit.getUnit()/100)|number_format(2) }}</td>
-                        <td>{{ session.getCloseRegister().getAmountForUnit(unit).getAmount() }}</td>
+                        <td>{{ session.getCloseRegister().getAmountForUnit(unit) }}</td>
                     </tr>
                 {% endfor %}
                 {% for device in devices %}
                     <tr>
                         <td style="text-align: right">{{ device.getName() }}</td>
-                        <td>&euro; {{ (session.getCloseRegister().getAmountForDevice(device).getAmount()/100)|number_format(2) }}</td>
+                        <td>&euro; {{ (session.getCloseRegister().getAmountForDevice(device)/100)|number_format(2) }}</td>
                     </tr>
                 {% endfor %}
                 <tr>

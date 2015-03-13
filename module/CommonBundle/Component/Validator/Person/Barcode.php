@@ -18,22 +18,11 @@
 
 namespace CommonBundle\Component\Validator\Person;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\User\Person;
 
-class Barcode extends \Zend\Validator\AbstractValidator
+class Barcode extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
-
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @var Person
-     */
-    private $_person = null;
 
     /**
      * Error messages
@@ -44,19 +33,24 @@ class Barcode extends \Zend\Validator\AbstractValidator
         self::NOT_VALID => 'The academic barcode already exists',
     );
 
-    /**
-     * Create a new Unique Article Barcode validator.
-     *
-     * @param EntityManager $entityManager The EntityManager instance
-     * @param Person        $person
-     * @param mixed         $opts          The validator's options
-     */
-    public function __construct(EntityManager $entityManager, Person $person = null, $opts = null)
-    {
-        parent::__construct($opts);
+    protected $options = array(
+        'person' => null,
+    );
 
-        $this->_entityManager = $entityManager;
-        $this->_person = $person;
+    /**
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
+     */
+    public function __construct($options = array())
+    {
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['person'] = array_shift($args);
+        }
+
+        parent::__construct($options);
     }
 
     /**
@@ -71,15 +65,15 @@ class Barcode extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (null === $this->_person) {
+        if (null === $this->options['person']) {
             return true;
         }
 
-        $barcode = $this->_entityManager
+        $barcode = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findOneByBarcode($value);
 
-        if (null === $barcode || ($this->_person && $barcode->getPerson() == $this->_person)) {
+        if (null === $barcode || ($this->options['person'] && $barcode->getPerson() == $this->options['person'])) {
             return true;
         }
 

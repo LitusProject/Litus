@@ -21,8 +21,8 @@ return array(
     'Groups' => 'Groepen',
 
     'Your Forms' => 'Jouw Formulieren',
-    'Start Date' => 'Begindatum',
-    'End Date' => 'Einddatum',
+    'Start Date' => 'Begin Datum',
+    'End Date' => 'Eind Datum',
     'Active' => 'Actief',
 
     'ID' => 'ID',

@@ -19,15 +19,23 @@
 namespace BrBundle\Component\ContractParser;
 
 /**
- *
- *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class Entries extends EntryItem
 {
+    /**
+     * @var Entry
+     */
     private $lastEntry;
+
+    /**
+     * @var array
+     */
     private $entries;
 
+    /**
+     * @param string $text
+     */
     public function __construct($text)
     {
         $this->entries = [];
@@ -35,28 +43,44 @@ class Entries extends EntryItem
         $this->entries[] = $this->lastEntry;
     }
 
+    /**
+     * @param string $text
+     */
     public function parse($text)
     {
         $this->lastEntry->parse($text);
     }
 
+    /**
+     * @param integer $indent
+     * @param string  $text
+     */
     public function passOn($indent, $text)
     {
         $this->lastEntry->handleLine($indent, $text);
     }
 
-    public function addEntry($entry)
+    /**
+     * @param Entry $entry
+     */
+    public function addEntry(Entry $entry)
     {
         $this->entries[] = $entry;
         $this->lastEntry = $entry;
     }
 
+    /**
+     * @return array
+     */
     public function getEntries()
     {
         return $this->entries;
     }
 
-    public function visitNode($nodeVisitor)
+    /**
+     * @param NodeVisitor $nodeVisitor
+     */
+    public function visitNode(NodeVisitor $nodeVisitor)
     {
         $nodeVisitor->visitEntries($this);
     }

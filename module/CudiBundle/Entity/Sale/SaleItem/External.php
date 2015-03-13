@@ -28,6 +28,8 @@ use CudiBundle\Entity\Sale\Article,
 class External extends \CudiBundle\Entity\Sale\SaleItem
 {
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", nullable=true)
      */
     private $person;

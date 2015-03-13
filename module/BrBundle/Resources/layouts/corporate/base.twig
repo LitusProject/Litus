@@ -32,6 +32,9 @@
                                 <a href="{{ url("br_corporate_index", {"language": language.getAbbrev()}) }}">{{ translate('Home') }}</a>
                             </li>
                         {% endif %}
+                            <li {% if 'overview' == getParam('action') and 'br_corporate_jobfair' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("br_corporate_jobfair", {"action": "overview", "language": language.getAbbrev()}) }}">{{ translate('Jobfair Information') }}</a>
+                            </li>
                         {% if (hasAccess('br_corporate_cv', 'grouped') or hasAccess('br_corporate_cv', 'list')) and authenticatedPerson != null and (authenticatedPerson.getCompany().getCvBookYears()|length > 0 or authenticatedPerson.getCompany().getCvBookArchiveYears()|length > 0) %}
                             <li {% if 'br_corporate_cv' == getParam('controller') %} class="active" {% endif %}>
                                 <a href="{{ url("br_corporate_cv", {"action": "grouped", "language": language.getAbbrev()}) }}">{{ translate('CV Book') }}</a>

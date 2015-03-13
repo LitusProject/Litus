@@ -19,7 +19,6 @@
 namespace CudiBundle\Controller\Admin\Stock;
 
 use CudiBundle\Entity\Stock\Retour,
-    CudiBundle\Form\Admin\Stock\Deliveries\Retour as RetourForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -94,18 +93,19 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYear()->getCode(true);
 
-        $form = new RetourForm($this->getEntityManager(), $prefix);
+        $form = $this->getForm('cudi_stock_delivery_retour', array(
+            'barcode_prefix' => $prefix,
+        ));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $formData = $form->getData();
 
                 $article = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($formData['article_id']);
+                    ->findOneById($formData['article']['id']);
 
                 $item = new Retour($article, $formData['number'], $this->getAuthentication()->getPersonObject(), $formData['comment']);
                 $this->getEntityManager()->persist($item);

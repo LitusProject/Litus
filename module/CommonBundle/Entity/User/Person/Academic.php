@@ -87,14 +87,14 @@ class Academic extends \CommonBundle\Entity\User\Person
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection The user's university statuses
      *
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Status\University", mappedBy="person", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Status\University", mappedBy="person", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $universityStatuses;
 
     /**
      * @var ArrayCollection The user's organization mapping
      *
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organization\AcademicYearMap", mappedBy="academic", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organization\AcademicYearMap", mappedBy="academic", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $organizationMap;
 
@@ -105,24 +105,9 @@ class Academic extends \CommonBundle\Entity\User\Person
      */
     private $unitMap;
 
-    /**
-     * @param string $username                 The user's username
-     * @param array  $roles                    The user's roles
-     * @param string $firstName                The user's first name
-     * @param string $lastName                 The user's last name
-     * @param string $email                    The user's e-mail address
-     * @param string $phoneNumber              The user's phone number
-     * @param string $sex                      The user's sex
-     * @param string $universityIdentification The user's university identification
-     */
-    public function __construct($username, array $roles, $firstName, $lastName, $email, $phoneNumber, $sex, $universityIdentification)
+    public function __construct()
     {
-        parent::__construct($username, $roles, $firstName, $lastName, $email, $phoneNumber, $sex);
-
-        $this->setPersonalEmail($email);
-        $this->setUniversityEmail($email);
-
-        $this->universityIdentification = $universityIdentification;
+        parent::__construct();
 
         $this->universityStatuses = new ArrayCollection();
         $this->organizationMap = new ArrayCollection();

@@ -59,7 +59,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     protected $_request;
 
     /**
-     * @var \Zend\Http\Header\Cookie The received cookies
+     * @var Cookie The received cookies
      */
     private $_cookies;
 
@@ -103,7 +103,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     public function setRequest(Request $request)
     {
-        $this->_cookies = $request->getCookie();
+        $this->_cookies = $request->getCookie() ? $request->getCookie() : null;
         $this->_request = $request;
 
         return $this;

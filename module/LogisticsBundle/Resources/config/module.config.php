@@ -24,8 +24,19 @@ return Config::create(
     array(
         'namespace'         => __NAMESPACE__,
         'directory'         => __DIR__,
-        'translation_files' => array('logistics'),
+        'translation_files' => array('logistics', 'validator'),
         'has_layouts'       => true,
         'has_documents'     => true,
+    ),
+    array(
+        'validators' => array(
+            'invokables' => array(
+                'logistics_typeahead_driver'           => 'LogisticsBundle\Component\Validator\Typeahead\Driver',
+                'logistics_typeahead_lease'            => 'LogisticsBundle\Component\Validator\Typeahead\Lease',
+                'logistics_piano_duration'             => 'LogisticsBundle\Component\Validator\PianoDuration',
+                'logistics_piano_reservation_conflict' => 'LogisticsBundle\Component\Validator\PianoReservationConflict',
+                'logistics_reservation_conflict'       => 'LogisticsBundle\Component\Validator\ReservationConflict',
+            ),
+        ),
     )
 );

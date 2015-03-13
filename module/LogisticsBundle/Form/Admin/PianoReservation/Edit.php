@@ -18,15 +18,6 @@
 
 namespace LogisticsBundle\Form\Admin\PianoReservation;
 
-use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
-    CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityManager,
-    LogisticsBundle\Component\Validator\PianoDuration as PianoDurationValidator,
-    LogisticsBundle\Component\Validator\PianoReservationConflict as ReservationConflictValidator,
-    LogisticsBundle\Entity\Reservation\PianoReservation,
-    Zend\Form\Element\Submit,
-    Zend\InputFilter\Factory as InputFactory;
-
 /**
  * This form allows the user to edit the reservation.
  *
@@ -34,78 +25,11 @@ use CommonBundle\Component\Validator\DateCompare as DateCompareValidator,
  */
 class Edit extends Add
 {
-    /**
-     * @var PianoReservation
-     */
-    private $_reservation;
-
-    /**
-     * @param EntityManager    $entityManager The EntityManager instance
-     * @param PianoReservation $reservation
-     * @param null|string|int  $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, PianoReservation $reservation, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
-        $this->_reservation = $reservation;
-
-        $this->remove('submit');
-
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'reservation_edit');
-        $this->add($field);
-
-        $this->_populateFromReservation($reservation);
-    }
-
-    private function _populateFromReservation(PianoReservation $reservation)
-    {
-        $person = $reservation->getPlayer();
-
-        $this->setData(
-            array(
-                'player_id' => $reservation->getPlayer()->getId(),
-                'player' => $person->getFullName() . ($person instanceof Academic ? ' - ' . $person->getUniversityIdentification() : ''),
-                'start_date' => $reservation->getStartDate()->format('d/m/Y H:i'),
-                'end_date' => $reservation->getEndDate()->format('d/m/Y H:i'),
-                'additional_info' => $reservation->getAdditionalInfo(),
-                'confirmed' => $reservation->isConfirmed(),
-            )
-        );
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = parent::getInputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->remove('end_date');
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'end_date',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'date',
-                            'options' => array(
-                                'format' => 'D d/m/Y H:i',
-                            ),
-                        ),
-                        new DateCompareValidator('start_date', 'D d/m/Y H:i'),
-                        new ReservationConflictValidator('start_date', 'D d/m/Y H:i', PianoReservation::PIANO_RESOURCE_NAME, $this->_entityManager, $this->_reservation->getId()),
-                        new PianoDurationValidator('start_date', 'D d/m/Y H:i', $this->_entityManager),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
+        $this->remove('submit')
+            ->addSubmit('Save', 'reservation_edit');
     }
 }

@@ -19,17 +19,28 @@
 namespace BrBundle\Component\ContractParser;
 
 /**
- *
- *
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  */
 class Entry implements Node
 {
+    /**
+     * @var integer
+     */
     private $indent;
+
+    /**
+     * @var EntryState
+     */
     private $state;
 
+    /**
+     * @var array
+     */
     private $nodes;
 
+    /**
+     * @param string $text
+     */
     public function __construct($text)
     {
         $this->indent = -1;
@@ -37,16 +48,25 @@ class Entry implements Node
         $this->parse($text);
     }
 
+    /**
+     * @param integer $indent
+     */
     public function setIndent($indent)
     {
         $this->indent = $indent;
     }
 
+    /**
+     * @return array
+     */
     public function getNodes()
     {
         return $this->nodes;
     }
 
+    /**
+     * @param string $text
+     */
     public function parse($text)
     {
         $indent = $this->nbSpacesLeadingLine($text);
@@ -59,6 +79,10 @@ class Entry implements Node
         $this->handleLine($indent, $rest);
     }
 
+    /**
+     * @param integer $indent
+     * @param string  $text
+     */
     public function handleLine($indent, $text)
     {
         if ($this->indent == -1) {
@@ -78,6 +102,9 @@ class Entry implements Node
         }
     }
 
+    /**
+     * @param string $textWithSymbol
+     */
     protected function parseEntry($textWithSymbol)
     {
         $textWithSymbol[0] = ' ';
@@ -85,11 +112,17 @@ class Entry implements Node
         $this->state = $this->state->addEntry($textWithoutSymbol);
     }
 
+    /**
+     * @param string $text
+     */
     protected function parseText($text)
     {
         $this->state = $this->state->addText($text);
     }
 
+    /**
+     * @param string $line
+     */
     protected function nbSpacesLeadingLine($line)
     {
         $l = strlen($line);
@@ -102,16 +135,18 @@ class Entry implements Node
         return $i;
     }
 
-    public function visitNode($nodeVisitor)
+    /**
+     * @param NodeVisitor $nodeVisitor
+     */
+    public function visitNode(NodeVisitor $nodeVisitor)
     {
         $nodeVisitor->visitEntry($this);
     }
 
     /**
-     *
      * @param Node $node
      */
-    public function addNodeToList($node)
+    public function addNodeToList(Node $node)
     {
         $this->nodes[] = $node;
     }

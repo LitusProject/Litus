@@ -70,15 +70,11 @@ class Slug
 
     /**
      * @param Person $person
-     * @param string $name
-     * @param string $url
      */
-    public function __construct(Person $person, $name, $url)
+    public function __construct(Person $person)
     {
         $this->creationPerson = $person->getId();
 
-        $this->name = $name;
-        $this->url = $url;
         $this->hits = 0;
     }
 

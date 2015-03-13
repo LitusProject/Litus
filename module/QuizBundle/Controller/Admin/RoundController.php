@@ -19,8 +19,6 @@
 namespace QuizBundle\Controller\Admin;
 
 use QuizBundle\Entity\Round,
-    QuizBundle\Form\Admin\Round\Add as AddForm,
-    QuizBundle\Form\Admin\Round\Edit as EditForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -64,18 +62,17 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = new AddForm($this->getEntityManager(), $quiz);
+        $form = $this->getForm('quiz_round_add', array('quiz' => $quiz));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
+                $round = $form->hydrateObject(
+                    new Round($quiz)
+                );
 
-                $round = new Round($quiz, $formData['name'], $formData['max_points'], $formData['order']);
                 $this->getEntityManager()->persist($round);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -116,19 +113,12 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form  = new EditForm($this->getEntityManager(), $round);
+        $form = $this->getForm('quiz_round_edit', array('round' => $round));
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $round->setName($formData['name'])
-                    ->setMaxPoints($formData['max_points'])
-                    ->setOrder($formData['order']);
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(

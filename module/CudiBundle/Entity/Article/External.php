@@ -27,24 +27,6 @@ use Doctrine\ORM\Mapping as ORM;
 class External extends \CudiBundle\Entity\Article
 {
     /**
-     * @return self
-     */
-    public function duplicate()
-    {
-        return new External(
-            $this->getTitle(),
-            $this->getAuthors(),
-            $this->getPublishers(),
-            $this->getYearPublished(),
-            $this->getISBN(),
-            $this->getURL(),
-            $this->getType(),
-            $this->isDownloadable(),
-            $this->isSameAsPreviousYear()
-        );
-    }
-
-    /**
      * @return boolean
      */
     public function isExternal()

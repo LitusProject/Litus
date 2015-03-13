@@ -23,38 +23,39 @@ namespace FormBundle\Component\Validator;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class StringField extends \Zend\Validator\AbstractValidator
+class StringField extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const ML_BOTH = 'mlboth';
     const NON_ML_LINES = 'nonmllines';
 
-    /**
-     * @var integer The number of lines specified in the form.
-     */
-    private $_lines;
-
-    /**
-     * @var boolean True for multiline fields.
-     */
-    private $_multiline;
+    protected $options = array(
+        'multiline' => false,
+        'lines' => 0,
+    );
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::ML_BOTH => 'Multiline fields must specify either both a line limit and a character limit or none.',
-        self::NON_ML_LINES => 'Non multiline fields should not specify a maximum number of lines.',
+        self::ML_BOTH => 'Multiline fields must specify either both a line limit and a character limit or none',
+        self::NON_ML_LINES => 'Non multiline fields should not specify a maximum number of lines',
     );
 
     /**
-     * @param mixed $opts The validator's options.
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
      */
-    public function __construct($multiline, $lines, $opts = null)
+    public function __construct($options = array())
     {
-        parent::__construct($opts);
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['multiline'] = array_shift($args);
+            $options['lines'] = array_shift($args);
+        }
 
-        $this->_multiline = $multiline;
-        $this->_lines = $lines;
+        parent::__construct($options);
     }
 
     /**
@@ -68,15 +69,15 @@ class StringField extends \Zend\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if ($this->_multiline) {
-            if ( ($this->_isSpecified($this->_lines) && !$this->_isSpecified($value)) ||
-                (!$this->_isSpecified($this->_lines) && $this->_isSpecified($value)) ) {
+        if ($this->options['multiline']) {
+            if ( ($this->_isSpecified($this->options['lines']) && !$this->_isSpecified($value)) ||
+                (!$this->_isSpecified($this->options['lines']) && $this->_isSpecified($value)) ) {
                 $this->error(self::ML_BOTH);
 
                 return false;
             }
         } else {
-            if ($this->_isSpecified($this->_lines)) {
+            if ($this->_isSpecified($this->options['lines'])) {
                 $this->error(self::NON_ML_LINES);
 
                 return false;

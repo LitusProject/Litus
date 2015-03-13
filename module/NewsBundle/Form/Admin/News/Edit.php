@@ -18,10 +18,6 @@
 
 namespace NewsBundle\Form\Admin\News;
 
-use Doctrine\ORM\EntityManager,
-    NewsBundle\Entity\Node\News,
-    Zend\Form\Element\Submit;
-
 /**
  * Edit News
  *
@@ -30,35 +26,12 @@ use Doctrine\ORM\EntityManager,
  */
 class Edit extends Add
 {
-    /**
-     * @param EntityManager   $entityManager The EntityManager instance
-     * @param News            $news          The news item we're going to modify
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, News $news, $name = null)
+    public function init()
     {
-        parent::__construct($entityManager, $name);
+        parent::init();
 
         $this->remove('submit');
 
-        $field = new Submit('submit');
-        $field->setValue('Save')
-            ->setAttribute('class', 'news_edit');
-        $this->add($field);
-
-        $this->_populateFromNews($news);
-    }
-
-    private function _populateFromNews(News $news)
-    {
-        $data = array(
-            'end_date' => $news->getEndDate() ? $news->getEndDate()->format('d/m/Y H:i') : '',
-        );
-        foreach ($this->getLanguages() as $language) {
-            $data['content_' . $language->getAbbrev()] = $news->getContent($language, false);
-            $data['title_' . $language->getAbbrev()] = $news->getTitle($language, false);
-        }
-
-        $this->setData($data);
+        $this->addSubmit('Save', 'news_edit');
     }
 }

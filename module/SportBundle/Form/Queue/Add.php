@@ -18,14 +18,6 @@
 
 namespace SportBundle\Form\Queue;
 
-use CommonBundle\Component\Form\Bootstrap\Element\Collection,
-    CommonBundle\Component\Form\Bootstrap\Element\Select,
-    CommonBundle\Component\Form\Bootstrap\Element\Submit,
-    CommonBundle\Component\Form\Bootstrap\Element\Text,
-    Doctrine\ORM\EntityManager,
-    Zend\InputFilter\Factory as InputFactory,
-    Zend\InputFilter\InputFilter;
-
 /**
  * Add a runner to the queue.
  *
@@ -34,57 +26,88 @@ use CommonBundle\Component\Form\Bootstrap\Element\Collection,
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * @var EntityManager The EntityManager instance
-     */
-    private $_entityManager = null;
-
-    /**
-     * @param EntityManager   $entityManager
-     * @param null|string|int $name          Optional name for the element
-     */
-    public function __construct(EntityManager $entityManager, $name = null)
+    public function init()
     {
-        parent::__construct($name);
+        parent::init();
 
-        $this->_entityManager = $entityManager;
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'information',
+            'label'      => 'Information',
+            'attributes' => array(
+                'id' => 'information',
+            ),
+            'elements'   => array(
+                array(
+                    'type'       => 'text',
+                    'name'       => 'university_identification',
+                    'label'      => 'University Identification',
+                    'attributes' => array(
+                        'id'           => 'university_identification',
+                        'autocomplete' => 'off',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'first_name',
+                    'label'      => 'First Name',
+                    'required'   => true,
+                    'attributes' => array(
+                        'id'           => 'first_name',
+                        'autocomplete' => 'off',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'text',
+                    'name'       => 'last_name',
+                    'label'      => 'Last Name',
+                    'required'   => true,
+                    'attributes' => array(
+                        'id'           => 'last_name',
+                        'autocomplete' => 'off',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type'       => 'select',
+                    'name'       => 'departments',
+                    'label'      => 'Departments',
+                    'required'   => true,
+                    'attributes' => array(
+                        'id'      => 'departments',
+                        'options' => $this->getDepartments(),
+                    ),
+                ),
+            ),
+        ));
 
-        $information = new Collection('information');
-        $information->setLabel('Information')
-            ->setAttribute('id', 'information');
-        $this->add($information);
-
-        $field = new Text('university_identification');
-        $field->setLabel('University Identification')
-            ->setAttribute('autocomplete', 'off');
-        $information->add($field);
-
-        $field = new Text('first_name');
-        $field->setLabel('First Name')
-            ->setRequired()
-            ->setAttribute('autocomplete', 'off');
-        $information->add($field);
-
-        $field = new Text('last_name');
-        $field->setLabel('Last Name')
-            ->setRequired()
-            ->setAttribute('autocomplete', 'off');
-        $information->add($field);
-
-        $field = new Select('department');
-        $field->setLabel('Department')
-            ->setRequired(true)
-            ->setAttribute('options', $this->_getDepartments());
-        $information->add($field);
-
-        $field = new Submit('queue');
-        $field->setValue('Queue');
-        $this->add($field);
+        $this->addSubmit('Queue', '', 'queue');
+        $this->get('queue')->setAttribute('id', 'queue');
     }
 
-    private function _getDepartments()
+    private function getDepartments()
     {
-        $departments = $this->_entityManager
+        $departments = $this->getEntityManager()
             ->getRepository('SportBundle\Entity\Department')
             ->findAll();
 
@@ -94,49 +117,5 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         return $array;
-    }
-
-    public function getInputFilter()
-    {
-        $inputFilter = new InputFilter();
-        $factory = new InputFactory();
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'university_identification',
-                    'required' => false,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'first_name',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        $inputFilter->add(
-            $factory->createInput(
-                array(
-                    'name'     => 'last_name',
-                    'required' => true,
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                )
-            )
-        );
-
-        return $inputFilter;
     }
 }

@@ -19,15 +19,8 @@
 namespace CalendarBundle\Controller\Admin;
 
 use CalendarBundle\Entity\Node\Event,
-    CalendarBundle\Entity\Node\Translation,
-    CalendarBundle\Form\Admin\Event\Add as AddForm,
-    CalendarBundle\Form\Admin\Event\Edit as EditForm,
-    CalendarBundle\Form\Admin\Event\Poster as PosterForm,
-    DateTime,
     Imagick,
-    Zend\File\Transfer\Adapter\Http as FileTransfer,
     Zend\Http\Headers,
-    Zend\InputFilter\InputInterface,
     Zend\View\Model\ViewModel;
 
 /**
@@ -73,42 +66,16 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addAction()
     {
-        $form = new AddForm($this->getEntityManager());
+        $form = $this->getForm('calendar_event_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = self::_loadDate($formData['start_date']);
+            if ($form->isValid()) {
+                $event = $form->hydrateObject();
 
-            if ($form->isValid() && $startDate) {
-                $formData = $form->getFormData($formData);
-
-                $event = new Event($this->getAuthentication()->getPersonObject(), $startDate, self::_loadDate($formData['end_date']));
                 $this->getEntityManager()->persist($event);
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    if (
-                        '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
-                            && '' != $formData['content_' . $language->getAbbrev()]
-                    ) {
-                        $event->addTranslation(
-                            new Translation(
-                                $event,
-                                $language,
-                                $formData['location_' . $language->getAbbrev()],
-                                $formData['title_' . $language->getAbbrev()],
-                                $formData['content_' . $language->getAbbrev()]
-                            )
-                        );
-                    }
-                }
-                $event->updateName();
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -140,50 +107,13 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        $form = new EditForm($this->getEntityManager(), $event);
+        $form = $this->getForm('calendar_event_edit', array('event' => $event));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
-            $startDate = self::_loadDate($formData['start_date']);
-
-            if ($form->isValid() && $startDate) {
-                $formData = $form->getFormData($formData);
-
-                $event->setStartDate($startDate)
-                    ->setEndDate(self::_loadDate($formData['end_date']));
-
-                $languages = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Language')
-                    ->findAll();
-
-                foreach ($languages as $language) {
-                    $translation = $event->getTranslation($language, false);
-
-                    if (null !== $translation) {
-                        $translation->setLocation($formData['location_' . $language->getAbbrev()])
-                            ->setTitle($formData['title_' . $language->getAbbrev()])
-                            ->setContent($formData['content_' . $language->getAbbrev()]);
-                    } else {
-                        if (
-                            '' != $formData['location_' . $language->getAbbrev()] && '' != $formData['title_' . $language->getAbbrev()]
-                                && '' != $formData['content_' . $language->getAbbrev()]
-                        ) {
-                            $translation = new Translation(
-                                    $event,
-                                    $language,
-                                    $formData['location_' . $language->getAbbrev()],
-                                    $formData['title_' . $language->getAbbrev()],
-                                    $formData['content_' . $language->getAbbrev()]
-                                );
-                            $event->addTranslation($translation);
-                            $this->getEntityManager()->persist($translation);
-                        }
-                    }
-                }
-                $event->updateName();
-
+            if ($form->isValid()) {
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -236,7 +166,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        $form = new PosterForm();
+        $form = $this->getForm('calendar_event_poster');
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
@@ -256,41 +186,45 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    private function receive($file, Event $event)
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('calendar.poster_path');
+
+        $image = new Imagick($file['tmp_name']);
+
+        if ($event->getPoster() != '' || $event->getPoster() !== null) {
+            $fileName = '/' . $event->getPoster();
+        } else {
+            do {
+                $fileName = '/' . sha1(uniqid());
+            } while (file_exists($filePath . $fileName));
+        }
+
+        $image->writeImage($filePath . $fileName);
+
+        $event->setPoster($fileName);
+    }
+
     public function uploadAction()
     {
         if (!($event = $this->_getEvent())) {
             return new ViewModel();
         }
 
-        $form = new PosterForm();
+        $form = $this->getForm('calendar_event_poster');
 
         if ($this->getRequest()->isPost()) {
-            $filePath = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('calendar.poster_path');
+            $form->setData(array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
-            $upload = new FileTransfer();
-            $inputFilter = $form->getInputFilter()->get('poster');
-            if ($inputFilter instanceof InputInterface) {
-                $upload->setValidators($inputFilter->getValidatorChain()->getValidators());
-            }
+            if ($form->isValid()) {
+                $formData = $form->getData();
 
-            if ($upload->isValid()) {
-                $upload->receive();
-
-                $image = new Imagick($upload->getFileName('poster'));
-                unlink($upload->getFileName('poster'));
-
-                if ($event->getPoster() != '' || $event->getPoster() !== null) {
-                    $fileName = '/' . $event->getPoster();
-                } else {
-                    do {
-                        $fileName = '/' . sha1(uniqid());
-                    } while (file_exists($filePath . $fileName));
-                }
-
-                $image->writeImage($filePath . $fileName);
-                $event->setPoster($fileName);
+                $this->receive($formData['poster'], $event);
 
                 $this->getEntityManager()->flush();
 
@@ -304,23 +238,17 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                         'status' => 'success',
                         'info' => array(
                             'info' => array(
-                                'name' => $fileName,
+                                'name' => $event->getPoster(),
                             ),
                         ),
                     )
                 );
             } else {
-                $formErrors = array();
-
-                if (sizeof($upload->getMessages()) > 0) {
-                    $formErrors['poster'] = $upload->getMessages();
-                }
-
                 return new ViewModel(
                     array(
                         'status' => 'error',
                         'form' => array(
-                            'errors' => $formErrors,
+                            'errors' => $form->getMessages(),
                         ),
                     )
                 );
@@ -447,14 +375,5 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         return $event;
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

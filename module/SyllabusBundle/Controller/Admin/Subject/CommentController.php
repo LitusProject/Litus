@@ -21,9 +21,6 @@ namespace SyllabusBundle\Controller\Admin\Subject;
 use CommonBundle\Component\Util\AcademicYear,
     SyllabusBundle\Entity\Subject\Comment,
     SyllabusBundle\Entity\Subject\Reply,
-    SyllabusBundle\Form\Admin\Subject\Comment\Add as AddCommentForm,
-    SyllabusBundle\Form\Admin\Subject\Comment\MarkAsRead as MarkAsReadForm,
-    SyllabusBundle\Form\Admin\Subject\Reply\Add as AddReplyForm,
     Zend\View\Model\ViewModel;
 
 /**
@@ -70,20 +67,14 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
             ->findBySubject($subject);
 
-        $form = new AddCommentForm();
+        $form = $this->getForm('syllabus_subject_comment_add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
+            $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
-                $comment = new Comment(
-                    $this->getAuthentication()->getPersonObject(),
-                    $subject,
-                    $formData['text'],
-                    $formData['type']
+                $comment = $form->hydrateObject(
+                    new Comment($this->getAuthentication()->getPersonObject(), $subject)
                 );
 
                 $this->getEntityManager()->persist($comment);
@@ -125,11 +116,15 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('SyllabusBundle\Entity\Subject\Reply')
             ->findAllByComment($comment);
 
-        $form = new AddReplyForm();
-        $markAsReadForm = new MarkAsReadForm($comment);
+        $form = $this->getForm('syllabus_subject_reply_add');
+        $markAsReadForm = $this->getForm(
+            'syllabus_subject_comment_mark-as-read',
+            array('comment' => $comment)
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+
             if (isset($formData['mark_as_read'])) {
                 $markAsReadForm->setData($formData);
 
@@ -161,12 +156,8 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 $form->setData($formData);
 
                 if ($form->isValid()) {
-                    $formData = $form->getFormData($formData);
-
-                    $reply = new Reply(
-                        $this->getAuthentication()->getPersonObject(),
-                        $comment,
-                        $formData['text']
+                    $reply = $form->hydrateObject(
+                        new Reply($this->getAuthentication()->getPersonObject(), $comment)
                     );
 
                     $this->getEntityManager()->persist($reply);

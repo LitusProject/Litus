@@ -64,7 +64,7 @@ class Subject extends EntityRepository
     {
         $years = array();
 
-        $academicYear = AcademicYearUtil::getUniversityYear($entityManager);
+        $academicYear = AcademicYearUtil::getUniversityYear($this->_em);
 
         $studies = $this->_em->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($person, $academicYear);

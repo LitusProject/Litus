@@ -20,7 +20,7 @@ namespace WikiBundle\Controller;
 
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Authentication\Authentication,
-    WikiBundle\Form\Auth\Login as LoginForm,
+    Exception,
     Zend\View\Model\ViewModel;
 
 /**
@@ -33,8 +33,6 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 {
     public function loginAction()
     {
-        $form = new LoginForm();
-
         if ($this->getAuthentication()->isAuthenticated()) {
             if ($this->getAuthentication()->isExternallyAuthenticated()) {
                 $this->redirectAfterAuthentication();
@@ -46,19 +44,20 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                 'Notice',
                 'You have to login again to go the wiki.'
             );
-
-            $form->setUsername(
-                $this->getAuthentication()->getPersonObject()->getUsername()
-            );
         }
+
+        $form = $this->getForm(
+            'wiki_auth_login',
+            array(
+                'username' => $this->getAuthentication()->isAuthenticated() ? $this->getAuthentication()->getPersonObject()->getUsername() : null,
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getFormData($formData);
-
                 $this->getAuthentication()->forget();
 
                 $this->getAuthentication()->authenticate(
@@ -67,7 +66,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 
                 if ($this->getAuthentication()->isAuthenticated()) {
                     if (!$this->getAuthentication()->isExternallyAuthenticated()) {
-                        throw new \Exception('Impossible state: logged in but not externally visible');
+                        throw new Exception('Impossible state: logged in but not externally visible');
                     }
 
                     $this->flashMessenger()->success(
@@ -185,8 +184,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
 
     protected function redirectAfterAuthentication()
     {
-        if (!$this->getAuthentication()->isAuthenticated()
-            || !$this->getAuthentication()->isExternallyAuthenticated()) {
+        if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->isExternallyAuthenticated()) {
             return null;
         }
 
