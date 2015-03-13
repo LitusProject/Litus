@@ -158,7 +158,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $membershipArticles = array();
         foreach ($ids as $organization => $id) {
-            echo $id;
             $membershipArticles[$organization] = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($id);
