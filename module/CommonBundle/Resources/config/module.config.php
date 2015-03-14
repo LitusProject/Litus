@@ -107,6 +107,7 @@ return Config::create(
                 'error/404'     => __DIR__ . '/../views/error/404.twig',
                 'error/index'   => __DIR__ . '/../views/error/index.twig',
             ),
+
             'doctype' => 'HTML5',
 
             'not_found_template' => 'error/404',

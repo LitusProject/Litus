@@ -223,33 +223,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     );
                 }
 
-                if (null !== $metaData) {
-                    if ($enableRegistration) {
-                        $becomeMember = $metaData->becomeMember() ? true : $formData['become_member'];
-                    } else {
-                        $becomeMember = $metaData->becomeMember();
-                    }
-
-                    if ($becomeMember) {
-                        if ($enableRegistration) {
-                            $metaData->setBecomeMember($becomeMember);
-                        }
-                    }
-                } elseif ($enableRegistration) {
-                    if ($formData['become_member']) {
-                        $metaData = new MetaData(
-                            $academic,
-                            $this->getCurrentAcademicYear(),
-                            $formData['become_member']
-                        );
-                    } else {
-                        $metaData = new MetaData(
-                            $academic,
-                            $this->getCurrentAcademicYear(),
-                            $formData['become_member']
-                        );
-                    }
-
+                if ($enableRegistration) {
                     $membershipArticles = array();
                     $ids = unserialize(
                         $this->getEntityManager()
