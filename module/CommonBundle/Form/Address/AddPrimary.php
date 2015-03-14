@@ -116,7 +116,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
         foreach ($streets as $id => $collection) {
             $streetSelects[] = array(
                 'type'       => 'select',
-                'name'       => $id,
+                'name'       => 'street_' . $id,
                 'label'      => 'Street',
                 'attributes' => array(
                     'class'   => 'street street-' . $id,
