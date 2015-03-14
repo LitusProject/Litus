@@ -54,7 +54,7 @@ class PrimaryAddress extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('CommonBundle\Entity\General\Address\Street')
                 ->findOneByCityAndName($city, $object->getStreet());
 
-            $data['street'][$city->getId()] = $street ? $street->getId() : 0;
+            $data['street']['street_' . $city->getId()] = $street ? $street->getId() : 0;
         } else {
             $data['city'] = 'other';
             $data['other'] = $this->stdExtract($object, self::$other_keys);
