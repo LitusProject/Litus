@@ -19,7 +19,8 @@
 namespace SecretaryBundle\Form\Registration;
 
 use CommonBundle\Entity\User\Person\Academic,
-    SecretaryBundle\Entity\Organization\MetaData;
+    SecretaryBundle\Entity\Organization\MetaData,
+    Zend\Validator\Identical;
 
 /**
  * Add Registration
@@ -285,6 +286,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'I have read and agree with the terms and conditions',
                     'attributes' => array(
                         'id' => 'conditions',
+                    ),
+                    'options'    => array(
+                        'input' => array(
+                            'validators' => array(
+                                array(
+                                    'name'    => 'identical',
+                                    'options' => array(
+                                        'token' => '1',
+                                        'messages' => array(
+                                            Identical::NOT_SAME => 'You must agree to the terms and conditions.',
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
                     ),
                 ),
             ),

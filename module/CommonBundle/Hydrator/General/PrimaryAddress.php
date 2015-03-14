@@ -82,7 +82,7 @@ class PrimaryAddress extends \CommonBundle\Component\Hydrator\Hydrator
 
             $street = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Address\Street')
-                ->findOneById($data['street'][$data['city']]);
+                ->findOneById($data['street']['street_' . $data['city']]);
 
             $object->setCity($city->getName())
                 ->setPostal($city->getPostal())
