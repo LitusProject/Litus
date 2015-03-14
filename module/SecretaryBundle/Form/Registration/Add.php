@@ -439,4 +439,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_other_organization');
     }
+
+    public function getInputFilterSpecification()
+    {
+        $specs = parent::getInputFilterSpecification();
+
+        if (null !== $this->metaData) {
+            if (isset($specs['organization_info']['conditions'])) {
+                unset($specs['organization_info']['conditions']);
+            }
+        }
+
+        return $specs;
+    }
 }
