@@ -222,21 +222,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         );
                     }
 
-                    if ($formData['become_member']) {
-                        $metaData = new MetaData(
-                            $academic,
-                            $this->getCurrentAcademicYear(),
-                            $formData['become_member']
-                        );
-
-                        if ($selectedOrganization)
+                    if ($organizationData['become_member']) {
+                        if ($selectedOrganization) {
                             $this->_bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
-                    } else {
-                        $metaData = new MetaData(
-                            $academic,
-                            $this->getCurrentAcademicYear(),
-                            $formData['become_member']
-                        );
+                        }
                     }
 
                     $academic->activate(
@@ -443,33 +432,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     );
                 }
 
-                if (null !== $metaData) {
-                    if ($enableRegistration) {
-                        $becomeMember = $metaData->becomeMember() ? true : $formData['become_member'];
-                    } else {
-                        $becomeMember = $metaData->becomeMember();
-                    }
-
-                    if ($becomeMember) {
-                        if ($enableRegistration) {
-                            $metaData->setBecomeMember($becomeMember);
-                        }
-                    }
-                } elseif ($enableRegistration) {
-                    if ($formData['become_member']) {
-                        $metaData = new MetaData(
-                            $academic,
-                            $this->getCurrentAcademicYear(),
-                            $formData['become_member']
-                        );
-                    } else {
-                        $metaData = new MetaData(
-                            $academic,
-                            $this->getCurrentAcademicYear(),
-                            $formData['become_member']
-                        );
-                    }
-
+                if ($enableRegistration) {
                     $membershipArticles = array();
                     $ids = unserialize(
                         $this->getEntityManager()
@@ -483,7 +446,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             ->findOneById($articleId);
                     }
 
-                    if ($metaData->becomeMember()) {
+                    if ($metaData->becomeMember() && null !== $selectedOrganization) {
                         $this->_bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
