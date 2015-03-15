@@ -32,7 +32,7 @@ use CommonBundle\Component\Util\File\TmpFile,
  */
 class MailController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function getAliasesAction()
+    public function aliasesAction()
     {
         $aliases = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\Alias')
@@ -51,7 +51,12 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
         );
     }
 
-    public function getListsArchiveAction()
+    public function getAliasesAction()
+    {
+        return $this->aliasesAction();
+    }
+
+    public function listsArchiveAction()
     {
         $lists = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\MailingList')
@@ -80,5 +85,10 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
                 'data' => $archive->getContent(),
             )
         );
+    }
+
+    public function getListsArchiveAction()
+    {
+        return $this->listsArchiveAction();
     }
 }
