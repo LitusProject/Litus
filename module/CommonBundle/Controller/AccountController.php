@@ -199,6 +199,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     ? $formData['organization_info']['become_member']
                     : false;
             }
+            $formData['organization_info']['conditions'] = true;
 
             $organizationData = $formData['organization_info'];
 
