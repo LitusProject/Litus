@@ -80,4 +80,9 @@ See you then!
         ),
         'description' => 'The prom bus confirmation mail ',
     ),
+    array(
+        'key'         => 'prom.enable_reservations',
+        'value'       => 0,
+        'description' => 'Enable busreservations',
+    ),
 );

@@ -48,6 +48,8 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 $enrollments = array();
                 $groupIds = isset($formData['groups']) ? $formData['groups'] : null;
 
+                $addresses = array();
+
                 foreach ($formData['to'] as $to) {
                     $academicYear = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -81,6 +83,12 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                                 }
                             }
                         }
+
+                        foreach ($enrollments as $enrollment) {
+                            if (null !== $enrollment->getAcademic()->getPersonalEmail()) {
+                                array_push($addresses, $enrollment->getAcademic()->getPersonalEmail());
+                            }
+                        }
                     } else {
                         $people = array_merge(
                             $people,
@@ -88,11 +96,13 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                                 ->getRepository('SecretaryBundle\Entity\Promotion')
                                 ->findAllByAcademicYear($academicYear)
                         );
-                    }
-                }
 
-                foreach ($enrollments as $enrollment) {
-                    array_push($people, $enrollment->getAcademic());
+                        foreach ($people as $person) {
+                            if (null !== $person->getEmailAddress()) {
+                                array_push($addresses, $person->getEmailAddress());
+                            }
+                        }
+                    }
                 }
 
                 $mailName = $this->getEntityManager()
@@ -180,19 +190,27 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                     $mail->addBcc($bcc);
                 }
                 $i = 0;
-                foreach ($people as $person) {
-                    if (null !== $person->getPersonalEmail()) {
-                        $i++;
-                        $mail->addBcc($person->getPersonalEmail(), $person->getFullName());
+                if ($formData['test']) {
+                    $body = '<br/>This email would have been sent to:<br/>';
+                    foreach ($addresses as $address) {
+                        $body = $body . $address . '<br/>';
                     }
+                    $part = new Part($body);
+                    $part->type = Mime::TYPE_HTML;
+                    $message->addPart($part);
+                } else {
+                    foreach ($addresses as $address) {
+                        $i++;
+                        $mail->addBcc($address);
 
-                    if ($i == 500) {
-                        $i = 0;
-                        if ('development' != getenv('APPLICATION_ENV')) {
-                            $this->getMailTransport()->send($mail);
+                        if ($i == 500) {
+                            $i = 0;
+                            if ('development' != getenv('APPLICATION_ENV')) {
+                                $this->getMailTransport()->send($mail);
+                            }
+
+                            $mail->setBcc(array());
                         }
-
-                        $mail->setBcc(array());
                     }
                 }
 

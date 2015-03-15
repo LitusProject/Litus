@@ -115,7 +115,29 @@
                 <fo:table-column column-width="30mm"/>
 
                 <fo:table-body>
-                    <xsl:apply-templates select="study"/>
+                    <fo:table-row>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@title_master"/></fo:block>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@start_master"/> - <xsl:value-of select="@end_master"/></fo:block>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@percentage_master"/>%</fo:block>
+                        </fo:table-cell>
+                    </fo:table-row>
+
+                    <fo:table-row>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@title_bach"/></fo:block>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@start_bach"/> - <xsl:value-of select="@end_bach"/></fo:block>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@percentage_bach"/>%</fo:block>
+                        </fo:table-cell>
+                    </fo:table-row>
                 </fo:table-body>
 
             </fo:table>
@@ -123,19 +145,28 @@
         </fo:block>
     </xsl:template>
 
-    <!-- A single row in the study table -->
-    <xsl:template match="study">
-        <fo:table-row>
-            <fo:table-cell>
-                <fo:block><xsl:value-of select="title"/></fo:block>
-            </fo:table-cell>
-            <fo:table-cell>
-                <fo:block><xsl:value-of select="@start"/> - <xsl:value-of select="@end"/></fo:block>
-            </fo:table-cell>
-            <fo:table-cell>
-                <fo:block><xsl:value-of select="@percentage"/>%</fo:block>
-            </fo:table-cell>
-        </fo:table-row>
+    <!-- The erasmus section -->
+    <xsl:template match="sec-special-erasmus">
+        <xsl:value-of select="location"/> - <xsl:value-of select="period"/>
+    </xsl:template>
+
+    <xsl:template match="cv/section">
+        <fo:block margin-top="{$section-top}mm">
+            <!-- Section title -->
+            <fo:inline font-weight="bold"><xsl:value-of select="@title"/></fo:inline>
+
+            <fo:block margin-left="{$section-content-left}mm">
+                <!-- Special subsections -->
+                <xsl:apply-templates select="*[starts-with(name(), 'sec-special-')]"/>
+
+                <!-- Section direct content -->
+                <xsl:value-of select="content"/>
+
+                <!-- Subsections -->
+                <xsl:apply-templates select="subsection"/>
+            </fo:block>
+
+        </fo:block>
     </xsl:template>
 
     <!-- The languages table -->
@@ -164,7 +195,73 @@
                 </fo:table-header>
 
                 <fo:table-body>
-                    <xsl:apply-templates select="language"/>
+                    <fo:table-row>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@name1"/></fo:block>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@oral1"/></fo:block>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@written1"/></fo:block>
+                        </fo:table-cell>
+                    </fo:table-row>
+
+                    <xsl:if test="string-length(@name2)!=0">
+                        <fo:table-row>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@name2"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@oral2"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@written2"/></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </xsl:if>
+
+                    <xsl:if test="string-length(@name3)!=0">
+                        <fo:table-row>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@name3"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@oral3"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@written3"/></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </xsl:if>
+
+                    <xsl:if test="string-length(@name4)!=0">
+                        <fo:table-row>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@name4"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@oral4"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@written4"/></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </xsl:if>
+
+                    <xsl:if test="string-length(@name5)!=0">
+                        <fo:table-row>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@name5"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@oral5"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@written5"/></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </xsl:if>
                 </fo:table-body>
 
             </fo:table>
@@ -172,44 +269,6 @@
         </fo:block>
     </xsl:template>
 
-    <!-- A single row in the language table -->
-    <xsl:template match="language">
-        <fo:table-row>
-            <fo:table-cell>
-                <fo:block><xsl:value-of select="@name"/></fo:block>
-            </fo:table-cell>
-            <fo:table-cell>
-                <fo:block><xsl:value-of select="@oral"/></fo:block>
-            </fo:table-cell>
-            <fo:table-cell>
-                <fo:block><xsl:value-of select="@written"/></fo:block>
-            </fo:table-cell>
-        </fo:table-row>
-    </xsl:template>
-
-    <!-- The erasmus section -->
-    <xsl:template match="sec-special-erasmus">
-        <xsl:value-of select="location"/> - <xsl:value-of select="period"/>
-    </xsl:template>
-
-    <xsl:template match="cv/section">
-        <fo:block margin-top="{$section-top}mm">
-            <!-- Section title -->
-            <fo:inline font-weight="bold"><xsl:value-of select="@title"/></fo:inline>
-
-            <fo:block margin-left="{$section-content-left}mm">
-                <!-- Special subsections -->
-                <xsl:apply-templates select="*[starts-with(name(), 'sec-special-')]"/>
-
-                <!-- Section direct content -->
-                <xsl:value-of select="content"/>
-
-                <!-- Subsections -->
-                <xsl:apply-templates select="subsection"/>
-            </fo:block>
-
-        </fo:block>
-    </xsl:template>
 
     <!-- A generic subsection -->
     <xsl:template match="subsection">

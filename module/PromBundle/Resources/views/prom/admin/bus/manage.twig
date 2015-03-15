@@ -12,11 +12,11 @@
 
         <table class="manage">
             <tr>
-                <th width="200px">Departure Time</th>
-                <th width="50px">Go or Return</th>
-                <th width="50px">Total Seats</th>
-                <th width="50px">Reserved Seats</th>
-                <th width="20px">Actions</th>
+                <th>Departure Time</th>
+                <th width="100px">Go or Return</th>
+                <th width="100px">Total Seats</th>
+                <th width="100px">Reserved Seats</th>
+                <th width="60px">Actions</th>
             </tr>
 
             {% for bus in paginator %}
@@ -36,6 +36,8 @@
                 </tr>
             {% endfor %}
         </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
     <aside>

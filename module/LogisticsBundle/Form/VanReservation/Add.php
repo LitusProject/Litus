@@ -185,6 +185,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->addSubmit('Add', 'reservation_add btn btn-primary', 'add')
             ->addSubmit('Edit', 'reservation_edit btn btn-primary', 'edit');
+
+        if ($this->reservation != null) {
+            $this->bind($this->reservation);
+        }
     }
 
     public function setReservation(VanReservation $reservation)
