@@ -48,6 +48,9 @@ return array(
         'common_admin_unit' => array(
             'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune',
         ),
+        'common_admin_visit' => array(
+            'manage', 'search',
+        ),
         'common_account' => array(
             'activate', 'edit', 'index', 'passbook', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage',
         ),
