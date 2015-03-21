@@ -33,6 +33,10 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
         $createForm = $this->getForm('prom_registration_create');
         $manageForm = $this->getForm('prom_registration_manage');
 
+        $enable = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('prom.enable_reservations');
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
@@ -45,6 +49,17 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                     $codeExist = $this->getEntityManager()
                         ->getRepository('PromBundle\Entity\Bus\ReservationCode')
                         ->codeExist($createFormData['create']['ticket_code']);
+
+                    if (! $codeExist) {
+                        return new ViewModel(
+                            array(
+                                'enable'     => $enable,
+                                'createForm' => $createForm,
+                                'manageForm' => $manageForm,
+                                'status'     => 'fail_code',
+                            )
+                        );
+                    }
 
                     $code = $this->getEntityManager()
                             ->getRepository('PromBundle\Entity\Bus\ReservationCode')
@@ -66,6 +81,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                     } else {
                         return new ViewModel(
                             array(
+                                'enable'     => $enable,
                                 'createForm' => $createForm,
                                 'manageForm' => $manageForm,
                                 'status'     => 'fail_code',
@@ -101,6 +117,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                         } else {
                             return new ViewModel(
                                 array(
+                                    'enable'     => $enable,
                                     'createForm' => $createForm,
                                     'manageForm' => $manageForm,
                                     'status'     => 'fail_combination',
@@ -110,6 +127,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                     } else {
                         return new ViewModel(
                             array(
+                                'enable'     => $enable,
                                 'createForm' => $createForm,
                                 'manageForm' => $manageForm,
                                 'status'     => 'fail_code',
@@ -122,6 +140,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 
         return new ViewModel(
             array(
+                'enable'     => $enable,
                 'createForm' => $createForm,
                 'manageForm' => $manageForm,
             )
@@ -133,6 +152,11 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
         $addForm->setData(array(
             'ticket_code' => $_COOKIE['VTK_bus_code'],
         ));
+
+        $code = $this->getEntityManager()
+            ->getRepository('PromBundle\Entity\Bus\ReservationCode')
+            ->getRegistrationCodeByCode($_COOKIE['VTK_bus_code']);
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             if (isset($formData)) {
@@ -153,9 +177,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                     $passenger = $this->getEntityManager()
                         ->getRepository('PromBundle\Entity\Bus\Passenger')
                         ->findOneByEmail($formData['email']);
-                    $code = $this->getEntityManager()
-                        ->getRepository('PromBundle\Entity\Bus\ReservationCode')
-                        ->getRegistrationCodeByCode($_COOKIE['VTK_bus_code']);
+
                     if (!isset($passenger)) {
                         $newPassenger = new Passenger($formData['first_name'], $formData['last_name'], $formData['email'], $code,$firstBus,$secondBus);
 
@@ -174,7 +196,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                                     ->getConfigValue('prom.confirmation_mail')
                             );
 
-                            $mail->setBody(str_replace('{{ busTime }}', $firstBus->getDepartureTime()->format('d/m/Y h:i'),$mailData['body']))
+                            $mail->setBody(str_replace('{{ busTime }}', $firstBus->getDepartureTime()->format('d/m/Y H:i'),$mailData['body']))
                                 ->setFrom($mailData['from'])
                                 ->addBcc($mailData['from'])
                                 ->setSubject($mailData['subject']);
@@ -195,7 +217,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                                     ->getConfigValue('prom.confirmation_mail')
                             );
 
-                            $mail->setBody(str_replace('{{ busTime }}', $secondBus->getDepartureTime()->format('d/m/Y h:i'),$mailData['body']))
+                            $mail->setBody(str_replace('{{ busTime }}', $secondBus->getDepartureTime()->format('d/m/Y H:i'),$mailData['body']))
                                 ->setFrom($mailData['from'])
                                 ->addBcc($mailData['from'])
                                 ->setSubject($mailData['subject']);
@@ -206,11 +228,11 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                         }
 
                         $this->redirect()->toRoute(
-                                'prom_registration_index',
-                                array(
-                                    'status' => 'success_registration',
-                                )
-                            );
+                            'prom_registration_index',
+                            array(
+                                'status' => 'success_registration',
+                            )
+                        );
                     } else {
                         return new ViewModel(
                             array(
@@ -222,12 +244,19 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                 }
             }
         }
-
-        return new ViewModel(
-            array(
-                'addForm' => $addForm,
-            )
-        );
+        if (! $code->isUsed()) {
+            return new ViewModel(
+                array(
+                    'addForm' => $addForm,
+                )
+            );
+        } else {
+            return new ViewModel(
+                array(
+                    'status' => 'used_code',
+                )
+            );
+        }
     }
 
     public function manageAction()
@@ -244,10 +273,10 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
             ->getRepository('PromBundle\Entity\Bus\Passenger')
             ->findPassengerByCodeQuery($code)->getResult()[0];
 
-        $firstBus = $passenger->getFirstBus();
-        $secondBus = $passenger->getSecondBus();
-        $firstBusId = (isset($firstBus) ? $firstBus->getId() : 0);
-        $secondBusId = (isset($secondBus) ? $secondBus->getId() : 0);
+        $originalFirstBus = $passenger->getFirstBus();
+        $originalSecondBus = $passenger->getSecondBus();
+        $firstBusId = (isset($originalFirstBus) ? $originalFirstBus->getId() : 0);
+        $secondBusId = (isset($originalSecondBus) ? $originalSecondBus->getId() : 0);
 
         $editForm->setData(array(
             'ticket_code' => $passenger->getCode()->getCode(),
@@ -269,10 +298,11 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                         $firstBus = $this->getEntityManager()
                             ->getRepository('PromBundle\Entity\Bus')
                             ->findOneById($formData['first_bus']);
-                        if (($firstBus->getTotalSeats() - $firstBus->getReservedSeats()) <= 0) {
-                            return new ViewModel( array(
-                                'editForm' => $editForm,
-                                'status'   => 'no_seats_left',
+                        if ( !($originalFirstBus == $firstBus) && (($firstBus->getTotalSeats() - $firstBus->getReservedSeats()) <= 0) ) {
+                            return new ViewModel(
+                                array(
+                                    'editForm' => $editForm,
+                                    'status'   => 'no_seats_left',
                                 )
                             );
                         }
@@ -281,10 +311,11 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                         $secondBus = $this->getEntityManager()
                             ->getRepository('PromBundle\Entity\Bus')
                             ->findOneById($formData['second_bus']);
-                        if (($secondBus->getTotalSeats() - $secondBus->getReservedSeats()) <= 0) {
-                            return new ViewModel( array(
-                                'editForm' => $editForm,
-                                'status'   => 'no_seats_left',
+                        if ( !($originalSecondBus == $secondBus) && (($secondBus->getTotalSeats() - $secondBus->getReservedSeats()) <= 0) ) {
+                            return new ViewModel(
+                                array(
+                                    'editForm' => $editForm,
+                                    'status'   => 'no_seats_left',
                                 )
                             );
                         }
@@ -292,19 +323,23 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                     $code = $this->getEntityManager()
                             ->getRepository('PromBundle\Entity\Bus\ReservationCode')
                             ->getRegistrationCodeByCode($_COOKIE['VTK_bus_code']);
+
                     $passenger = $this->getEntityManager()
                             ->getRepository('PromBundle\Entity\Bus\Passenger')
                             ->findOneByCode($code);
+
                     $passenger->setFirstBus($firstBus);
                     $passenger->setSecondBus($secondBus);
+
                     $this->getEntityManager()->persist($passenger);
                     $this->getEntityManager()->flush();
+
                     $this->redirect()->toRoute(
-                                'prom_registration_index',
-                                array(
-                                    'status' => 'success_manage',
-                                )
-                            );
+                        'prom_registration_index',
+                        array(
+                            'status' => 'success_manage',
+                        )
+                    );
                 }
             }
         }

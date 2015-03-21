@@ -78,6 +78,13 @@ return array(
             '@admin_css',
             '@common_remote_typeahead',
         ),
+        'common_admin_visit' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
 
         'common_account' => array(
             '@bootstrap_css',

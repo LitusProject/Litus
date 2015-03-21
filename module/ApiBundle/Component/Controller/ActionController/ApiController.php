@@ -23,6 +23,7 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Controller\DoctrineAware,
     CommonBundle\Component\Controller\Exception\RuntimeException,
     CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\Visit,
     Zend\Http\Header\HeaderInterface,
     Zend\Mvc\MvcEvent,
     Zend\Uri\UriFactory,
@@ -71,6 +72,8 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $this->_initLocalization();
         $this->_initUriScheme();
         $this->_initViewHelpers();
+
+        $this->_logVisit();
 
         if (false !== getenv('SERVED_BY')) {
             $this->getResponse()
@@ -142,6 +145,27 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                 'error' => (object) $error,
             )
         );
+    }
+
+    private function _logVisit()
+    {
+        $saveVisit = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.save_visits');
+
+        if ($saveVisit == '1') {
+            $visit = new Visit(
+                $this->getRequest()->getServer()->get('HTTP_USER_AGENT'),
+                $this->getRequest()->getServer()->get('REQUEST_URI'),
+                $this->getRequest()->getServer()->get('REQUEST_METHOD'),
+                $this->getEvent()->getRouteMatch()->getParam('controller'),
+                $this->getEvent()->getRouteMatch()->getParam('action'),
+                $this->getAuthentication()->getPersonObject()
+            );
+
+            $this->getEntityManager()->persist($visit);
+            $this->getEntityManager()->flush();
+        }
     }
 
     /**

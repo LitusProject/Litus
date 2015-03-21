@@ -408,6 +408,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ? $formData['organization_info']['become_member']
                     : false;
             }
+            $formData['organization_info']['conditions'] = true;
 
             $organizationData = $formData['organization_info'];
 

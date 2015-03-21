@@ -6,16 +6,16 @@
     </div>
     <div class="flashmessage alert alert-danger fade" id="no_seats_left">
         <a class="close">&times;</a>
-        {{ translate('There are no seats left in one of the busses you selected.') }}
+        {{ translate('There are no seats left in one of the buses you selected.') }}
     </div>
     <div class="row">
         <div class="col-md-6"></div>
         <div class="col-md-10">
-    		<h2>Manage Registration</h2>
-    		{% import 'site/partials/form.twig' as forms %}
+            <h2>Manage Registration</h2>
+            {% import 'site/partials/form.twig' as forms %}
             {{ forms.renderForm(editForm) }}
-    	</div>
-    	<div class="col-md-3"></div>
+        </div>
+        <div class="col-md-3"></div>
     </div>
 {% endblock %}
 

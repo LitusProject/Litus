@@ -29,7 +29,7 @@ use CommonBundle\Entity\User\Person,
  */
 class AuthController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-    public function getPersonAction()
+    public function personAction()
     {
         $this->initJson();
 
@@ -61,6 +61,11 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
                 'result' => (object) $result,
             )
         );
+    }
+
+    public function getPersonAction()
+    {
+        return $this->personAction();
     }
 
     /**
