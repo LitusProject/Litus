@@ -89,12 +89,12 @@ class Visit
     private $user;
 
     /**
-     * @param string $browser
-     * @param string $url
-     * @param string $requestMethod
-     * @param string $controller
-     * @param string $action
-     * @param Person $user
+     * @param string      $browser
+     * @param string      $url
+     * @param string      $requestMethod
+     * @param string      $controller
+     * @param string      $action
+     * @param null|Person $user
      */
     public function __construct($browser, $url, $requestMethod, $controller, $action, Person $user = null)
     {
