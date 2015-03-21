@@ -48,8 +48,11 @@ return array(
         'common_admin_unit' => array(
             'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune',
         ),
+        'common_admin_visit' => array(
+            'manage', 'search',
+        ),
         'common_account' => array(
-            'activate', 'edit', 'index', 'fileServer', 'passbook', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage'
+            'activate', 'edit', 'index', 'fileServer', 'passbook', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage',
         ),
         'common_session' => array(
             'manage', 'expire',

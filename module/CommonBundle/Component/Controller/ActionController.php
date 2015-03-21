@@ -18,22 +18,13 @@
 
 namespace CommonBundle\Component\Controller;
 
-
-
-
-
-
-
-
-
-
-
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
     CommonBundle\Component\Controller\Exception\RuntimeException,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
     CommonBundle\Entity\General\Language,
+    CommonBundle\Entity\General\Visit,
     Locale,
     Zend\Http\Header\HeaderInterface,
     Zend\Mvc\MvcEvent,
@@ -86,6 +77,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             return new ViewModel();
         }
 
+        $this->_logVisit();
+
         $this->initLocalization();
 
         if (false !== getenv('SERVED_BY')) {
@@ -131,6 +124,27 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             throw new Request\Exception\NoXmlHttpRequestException(
                 'This page is accessible only through an asynchroneous request'
             );
+        }
+    }
+
+    private function _logVisit()
+    {
+        $saveVisit = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.save_visits');
+
+        if ($saveVisit == '1') {
+            $visit = new Visit(
+                $this->getRequest()->getServer()->get('HTTP_USER_AGENT'),
+                $this->getRequest()->getServer()->get('REQUEST_URI'),
+                $this->getRequest()->getServer()->get('REQUEST_METHOD'),
+                $this->getEvent()->getRouteMatch()->getParam('controller'),
+                $this->getEvent()->getRouteMatch()->getParam('action'),
+                $this->getAuthentication()->getPersonObject()
+            );
+
+            $this->getEntityManager()->persist($visit);
+            $this->getEntityManager()->flush();
         }
     }
 

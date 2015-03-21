@@ -18,14 +18,6 @@
 
 namespace SecretaryBundle\Controller;
 
-
-
-
-
-
-
-
-
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
@@ -416,6 +408,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     ? $formData['organization_info']['become_member']
                     : false;
             }
+            $formData['organization_info']['conditions'] = true;
 
             $organizationData = $formData['organization_info'];
 

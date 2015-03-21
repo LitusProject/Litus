@@ -18,9 +18,6 @@
 
 namespace BrBundle\Controller;
 
-
-
-
 use BrBundle\Entity\Cv\Entry as CvEntry,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\User\Person\Academic,
@@ -57,7 +54,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
-        if ($this->getLanguage()->getName() == "English") {
+        if ($this->getLanguage()->getName() == 'English') {
             $this->redirect()->toRoute(
                 'br_cv_index',
                 array(

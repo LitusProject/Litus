@@ -18,9 +18,9 @@
 
 namespace SecretaryBundle\Form\Registration;
 
-
 use CommonBundle\Entity\User\Person\Academic,
-    SecretaryBundle\Entity\Organization\MetaData;
+    SecretaryBundle\Entity\Organization\MetaData,
+    Zend\Validator\Identical;
 
 /**
  * Add Registration
@@ -287,6 +287,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'id' => 'conditions',
                     ),
+                    'options'    => array(
+                        'input' => array(
+                            'validators' => array(
+                                array(
+                                    'name'    => 'identical',
+                                    'options' => array(
+                                        'token' => '1',
+                                        'messages' => array(
+                                            Identical::NOT_SAME => 'You must agree to the terms and conditions.',
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
                 ),
                 array(
                     'type'  => 'checkbox',
@@ -423,5 +438,18 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_other_organization');
+    }
+
+    public function getInputFilterSpecification()
+    {
+        $specs = parent::getInputFilterSpecification();
+
+        if (null !== $this->metaData) {
+            if (isset($specs['organization_info']['conditions'])) {
+                unset($specs['organization_info']['conditions']);
+            }
+        }
+
+        return $specs;
     }
 }

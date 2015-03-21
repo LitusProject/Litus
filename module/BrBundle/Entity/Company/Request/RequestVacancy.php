@@ -18,9 +18,6 @@
 
 namespace BrBundle\Entity\Company\Request;
 
-
-
-
 use BrBundle\Entity\Company\Job,
     BrBundle\Entity\Company\Request,
     BrBundle\Entity\User\Person\Corporate,
@@ -88,7 +85,7 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
     private function _setRequestType($type)
     {
         if (!in_array($type, self::$possibleRequests)) {
-            throw new Exception("The requested type does not exist for the vacancy requests");
+            throw new Exception('The requested type does not exist for the vacancy requests');
         }
 
         $this->requestType = $type;

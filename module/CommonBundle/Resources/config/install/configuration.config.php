@@ -460,4 +460,9 @@ You can remove any installed cookies from your computer or mobile device at any 
         'value'       => '0',
         'description' => 'Boolean that displays the wiki button on the homepage',
     ),
+    array(
+        'key'         => 'common.save_visits',
+        'value'       => '0',
+        'description' => 'Flag to log all visits in the database, will create a lot of data!',
+    ),
 );
