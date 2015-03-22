@@ -154,12 +154,15 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             ->getConfigValue('common.save_visits');
 
         if ($saveVisit == '1') {
+            $server = $this->getRequest()->getServer();
+            $route = $this->getEvent()->getRouteMatch();
+
             $visit = new Visit(
-                $this->getRequest()->getServer()->get('HTTP_USER_AGENT'),
-                $this->getRequest()->getServer()->get('REQUEST_URI'),
-                $this->getRequest()->getServer()->get('REQUEST_METHOD'),
-                $this->getEvent()->getRouteMatch()->getParam('controller'),
-                $this->getEvent()->getRouteMatch()->getParam('action'),
+                $server->get('HTTP_USER_AGENT'),
+                $server->get('REQUEST_URI'),
+                $server->get('REQUEST_METHOD'),
+                $route->getParam('controller'),
+                $route->getParam('action'),
                 $this->getAuthentication()->getPersonObject()
             );
 

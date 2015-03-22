@@ -25,7 +25,7 @@ namespace PromBundle\Form\Admin\Bus;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'PromBundle\Hydrator\ReservationCode';
+    protected $hydrator = 'PromBundle\Hydrator\Bus';
 
     public function init()
     {
@@ -53,7 +53,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(array(
             'type'     => 'text',
-            'name'     => 'nb_passengers',
+            'name'     => 'total_seats',
             'label'    => 'Total passengers',
             'required' => true,
             'options'  => array(
