@@ -88,7 +88,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'text',
             'name'       => 'phone_number',
             'label'      => 'Phone Number',
-            'required'   => true,
+            'required'   => false,
             'attributes' => array(
                 'placeholder' => '+CCAAANNNNNN',
             ),
@@ -127,7 +127,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'select',
             'name'       => 'cvbook',
             'label'      => 'CV Book',
-            'required'   => true,
+            'required'   => false,
             'attributes' => array(
                 'multiple'  => true,
                 'options'   => $this->_getCVBookYears(),

@@ -174,6 +174,23 @@ return array(
                 ),
             ),
         ),
+        'common_admin_visit' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/visit[/:action[/:id][/page/:page][/:field/:string]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'common_admin_visit',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'common_index' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -288,6 +305,7 @@ return array(
         'common_admin_role'     => 'CommonBundle\Controller\Admin\RoleController',
         'common_admin_session'  => 'CommonBundle\Controller\Admin\SessionController',
         'common_admin_unit'     => 'CommonBundle\Controller\Admin\UnitController',
+        'common_admin_visit'     => 'CommonBundle\Controller\Admin\VisitController',
 
         'common_index'          => 'CommonBundle\Controller\IndexController',
         'common_account'        => 'CommonBundle\Controller\AccountController',
