@@ -24,7 +24,7 @@ class Bus extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $std_keys = array(
         'total_seats',
-        'direction'
+        'direction',
     );
 
     protected function doExtract($object = null)

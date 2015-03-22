@@ -85,7 +85,6 @@ class Bus
      */
     public function __construct()
     {
-
         $this->seats = new ArrayCollection();
     }
 
