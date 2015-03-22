@@ -166,7 +166,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="blabla.csv"',
+            'Content-Disposition' => 'attachment; filename="PassengerList.csv"',
             'Content-Type'        => 'text/csv',
         ));
         $this->getResponse()->setHeaders($headers);
