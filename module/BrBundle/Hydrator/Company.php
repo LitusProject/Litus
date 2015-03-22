@@ -47,7 +47,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
 
         $years = array();
         $archiveYears = array();
-        if (count($data['cvbook']) > 0) {
+        if (isset($data['cvbook']) && count($data['cvbook']) > 0) {
             $repository = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\AcademicYear');
             foreach ($data['cvbook'] as $yearId) {
@@ -63,7 +63,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setCvBookArchiveYears($archiveYears);
 
         $years = array();
-        if (count($data['page']['years']) > 0) {
+        if (isset($data['page']['years']) && count($data['page']['years']) > 0) {
             $yearIds = $data['page']['years'];
             $repository = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\AcademicYear');
