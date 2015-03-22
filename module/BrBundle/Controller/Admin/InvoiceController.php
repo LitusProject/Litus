@@ -167,11 +167,13 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($invoice = $this->_getInvoice(false))) {
+        $date = DateTime::createFromFormat('d/m/Y', $this->getParam('date'));
+
+        if (!($invoice = $this->_getInvoice(false)) || !$date) {
             return new ViewModel();
         }
 
-        $invoice->setPaidTime(DateTime::createFromFormat('d/m/Y', $this->getParam('date')));
+        $invoice->setPaidTime($date);
         $this->getEntityManager()->flush();
 
         return new ViewModel(

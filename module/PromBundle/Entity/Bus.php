@@ -82,29 +82,10 @@ class Bus
 
     /**
      * Creates a new Bus with the given attributes
-     *
-     * @param DateTime $time The departure time
-     * @param $totalSeats The total available seats on the bus
-     * @param $direction The direction in which the bus is going
      */
-    public function __construct(DateTime $time, $totalSeats, $direction)
+    public function __construct()
     {
-        $this->departureTime = $time;
-
-        if ($this->isValidPassengerAmount($totalSeats)) {
-            $this->totalSeats = $totalSeats;
-        }
-
         $this->seats = new ArrayCollection();
-        $this->direction = $direction;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDirection()
-    {
-        return $this->direction;
     }
 
     /**
@@ -116,7 +97,23 @@ class Bus
     }
 
     /**
-     * @return \DateTime
+     * @return string
+     */
+    public function getDirection()
+    {
+        return $this->direction;
+    }
+
+    /**
+     * @param string $direction The direction in which the bus is going
+     */
+    public function setDirection($direction)
+    {
+        $this->direction = $direction;
+    }
+
+    /**
+     * @return DateTime
      */
     public function getDepartureTime()
     {
@@ -142,11 +139,15 @@ class Bus
     }
 
     /**
-     * @param $nb The total amount of seats
+     * @param int $totalSeats The total amount of seats
      */
-    public function setTotalSeats($nb)
+    public function setTotalSeats($totalSeats)
     {
-        $this->totalSeats = $nb;
+        if (!$this->isValidPassengerAmount($totalSeats)) {
+            return;
+        }
+
+        $this->totalSeats = $totalSeats;
     }
 
     /**
@@ -201,11 +202,10 @@ class Bus
      */
     private function isValidPassengerAmount($passengerAmount)
     {
-        if ($passengerAmount <= $this->maxPassengerNb) {
-            return true;
+        if ($passengerAmount > $this->maxPassengerNb) {
+            throw new Exception('The passenger amount is exceeding ' . $this->maxPassengerNb);
         }
-        throw new Exception("The passenger amount is exceeding " . $this->maxPassengerNb);
 
-        return false;
+        return true;
     }
 }

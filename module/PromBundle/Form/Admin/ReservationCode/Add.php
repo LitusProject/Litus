@@ -25,8 +25,6 @@ namespace PromBundle\Form\Admin\ReservationCode;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'PromBundle\Hydrator\ReservationCode';
-
     public function init()
     {
         parent::init();

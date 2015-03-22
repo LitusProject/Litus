@@ -488,7 +488,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             }
 
             if (null !== $teamData) {
-                $behind = 0;
                 $difference = 0;
                 if (null !== $currentPlace) {
                     if ($currentPlace != 0) {

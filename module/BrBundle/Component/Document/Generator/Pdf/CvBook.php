@@ -404,22 +404,4 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
 
         return $result;
     }
-
-    private function _getLanguageArray(Entry $cv)
-    {
-        $languages = array();
-        foreach ($cv->getLanguages() as $language) {
-            $languages[] = new Object(
-                'language',
-                array(
-                    'name'      => $language->getName(),
-                    'oral'      => $this->_translator->translate($language->getOralSkill()),
-                    'written'   => $this->_translator->translate($language->getWrittenSkill()),
-                ),
-                null
-            );
-        }
-
-        return $languages;
-    }
 }

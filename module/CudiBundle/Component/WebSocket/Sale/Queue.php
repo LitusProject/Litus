@@ -72,7 +72,7 @@ class Queue
         $repository = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem');
 
-        return json_encode(
+        $json = json_encode(
             (object) array(
                 'queue' => array(
                     'selling' => $this->_createJsonQueue(
@@ -90,6 +90,8 @@ class Queue
                 ),
             )
         );
+
+        return $json;
     }
 
     /**

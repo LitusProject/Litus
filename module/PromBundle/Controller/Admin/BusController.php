@@ -58,13 +58,9 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $departureTime = self::_loadDate($formData['departure_time']);
-
-                $newBus = new Bus($departureTime, $formData['nb_passengers'], $formData['direction']);
-
-                $this->getEntityManager()->persist($newBus);
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject()
+                );
 
                 $this->getEntityManager()->flush();
 
@@ -145,15 +141,6 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
                 'passengers' => $passengers,
             )
         );
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 
     private function _getBus()
