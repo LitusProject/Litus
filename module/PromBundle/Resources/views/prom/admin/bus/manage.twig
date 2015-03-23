@@ -55,4 +55,20 @@
             </div>
         {% endif %}
     </aside>
+
+    <aside>
+        {% if hasAccess('prom_admin_bus', 'export') %}
+            <div class="sidebox">
+                <div class="title">Export passengers</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to export all passengers from all buses!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('prom_admin_bus', {'action': 'export'}) }}">&rarr; Export Passengers</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 {% endblock %}

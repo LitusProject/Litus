@@ -107,7 +107,7 @@ class ReservationCode
      */
     private function _generateRandomString($length = 10)
     {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters = '123456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
 
