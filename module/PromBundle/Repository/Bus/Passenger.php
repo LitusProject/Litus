@@ -50,7 +50,22 @@ class Passenger extends EntityRepository
             ->where(
                     $query->expr()->eq('p.email', ':email')
             )
-            ->setParameter('code', $email)
+            ->setParameter('email', $email)
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllPassengersByBusQuery($bus)
+    {
+        $query = $this->_em->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('PromBundle\Entity\Bus\Passenger', 'p')
+            ->where(
+                    $query->expr()->eq('p.firstBus', ':bus')
+            )
+            ->setParameter('bus', $bus)
+            ->orderBy('p.firstName','ASC')
             ->getQuery();
 
         return $resultSet;

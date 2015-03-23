@@ -149,7 +149,11 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
                 '',
             );
 
-            foreach ($bus->getReservedSeatsArray() as $passenger) {
+            $sortedPassengers = $this->getEntityManager()
+                ->getRepository('PromBundle\Entity\Bus\Passenger')
+                ->findAllPassengersByBus($bus);
+
+            foreach ($sortedPassengers as $passenger) {
                 $results[] = array(
                     $passenger->getFirstName(),
                     $passenger->getLastName(),
