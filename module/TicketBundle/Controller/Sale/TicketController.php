@@ -61,7 +61,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
@@ -79,7 +79,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
@@ -97,7 +97,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
@@ -115,7 +115,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "success"),
+                'result' => (object) array('status' => 'success'),
             )
         );
     }

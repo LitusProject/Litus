@@ -50,7 +50,7 @@ foreach (new DirectoryIterator(__DIR__ . '/scripts') as $fileInfo) {
 
 sort($files);
 
-$options = getopt("f:");
+$options = getopt('f:');
 
 // Run
 include 'util.php';

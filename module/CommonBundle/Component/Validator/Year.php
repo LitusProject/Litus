@@ -28,6 +28,6 @@ class Year extends \Zend\Validator\Date
     public function __construct()
     {
         parent::__construct('Y');
-        parent::setMessage('The given year is not valid');
+        $this->setMessage('The given year is not valid');
     }
 }
