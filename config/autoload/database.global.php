@@ -27,7 +27,7 @@ $databaseConfig = include __DIR__ . '/../database.config.php';
 return array(
     'service_manager' => array(
         'factories' => array(
-            'doctrine.cache.orm_default' => function ($serviceManager) {
+            'doctrine.cache.orm_default' => function () {
                 if ('production' == getenv('APPLICATION_ENV')) {
                     if (!extension_loaded('memcached')) {
                         throw new \RuntimeException('Litus requires the memcached extension to be loaded');

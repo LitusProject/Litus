@@ -78,8 +78,6 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
                     }
                 }
             }
-        } elseif ($object instanceof CheckboxFieldEntity) {
-            // NOP
         } elseif ($object instanceof FileFieldEntity) {
             $fileData = $data['file_form'];
             $object->setMaxSize($fileData['max_size'] === '' ? 4 : $fileData['max_size']);
