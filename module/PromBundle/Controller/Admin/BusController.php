@@ -137,10 +137,10 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
     {
         $buses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
-            ->findAllBuses();
+            ->getGoBusses();
 
         $file = new CsvFile();
-        $heading = array('First Name', 'Last Name');
+        $heading = array('First Name', 'Last Name', 'Code', 'Return Bus', 'Return Bus ID');
 
         $results = array();
         foreach ($buses as $bus) {
@@ -154,9 +154,15 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
                 ->findAllPassengersByBus($bus);
 
             foreach ($sortedPassengers as $passenger) {
+                $returnBus = $passenger->getSecondBus() == null ? '' : $passenger->getSecondBus()->getDepartureTime()->format('d/m/Y H:i');
+                $returnBusId = $returnBus == '' ? '' : $passenger->getSecondBus()->getId();
+
                 $results[] = array(
                     $passenger->getFirstName(),
                     $passenger->getLastName(),
+                    $passenger->getCode()->getCode(),
+                    $returnBus,
+                    $returnBusId,
                 );
             }
 
