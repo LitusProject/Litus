@@ -37,7 +37,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
         $groupNames = array();
         foreach ($groups as $group) {
-            if (strpos($group->getName(), "Master") === 0) {
+            if (strpos($group->getName(), 'Master') === 0) {
                 $groupNames[$group->getId()] = $group->getName();
             }
         }

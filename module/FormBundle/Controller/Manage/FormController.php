@@ -574,7 +574,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
         }
 
         if ($form->getType() == 'doodle') {
-            $document = new DoodleGenerator($this->getEntityManager(), $viewerMap, $this->getLanguage());
+            $document = new DoodleGenerator($this->getEntityManager(), $viewerMap);
         } else {
             $document = new FormGenerator($this->getEntityManager(), $viewerMap, $this->getLanguage());
         }

@@ -189,7 +189,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                         ->setSubject($storedMessage->getSubject());
                 }
 
-                $bccs = preg_split("/[,;\s]+/", $formData['bcc']);
+                $bccs = preg_split('/[,;\s]+/', $formData['bcc']);
                 foreach ($bccs as $bcc) {
                     $mail->addBcc($bcc);
                 }

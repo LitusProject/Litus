@@ -79,7 +79,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'result' => (object) array("status" => "error"),
+                'result' => (object) array('status' => 'error'),
             )
         );
     }

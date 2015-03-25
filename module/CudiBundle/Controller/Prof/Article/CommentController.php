@@ -97,7 +97,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 
         if ($mapping->getComment()->getPerson()->getId() != $this->getAuthentication()->getPersonObject()->getId()) {
             return array(
-                'result' => (object) array("status" => "error"),
+                'result' => (object) array('status' => 'error'),
             );
         }
 

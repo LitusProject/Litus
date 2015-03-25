@@ -100,7 +100,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         switch ($command->command) {
             case 'action':
                 if ($this->isAuthenticated($user->getSocket())) {
-                    $this->_gotAction($user, $command);
+                    $this->_gotAction($command);
                 }
                 break;
             case 'initialize':
@@ -172,7 +172,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * @param User   $user
      * @param string $command
      */
-    private function _gotAction(User $user, $command)
+    private function _gotAction($command)
     {
         switch ($command->action) {
             case 'reloadQueue':
@@ -307,6 +307,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $queueSize = sizeof($nextLaps);
 
         $fastestLap = $this->_getFastestLap();
+        $officialResults = $this->_getOfficialResults();
+        $averageLapTime = $this->_getAverageLapTime();
+        $groupsOfFriends = $this->_getGroupsOfFriends();
+        $mostLabs = $this->_getMostFrequentRunners();
 
         $data = (object) array(
             'laps' => (object) array(
@@ -318,10 +322,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 'fastestRunner' => $fastestLap['runner'],
                 'fastestTime' => $fastestLap['time'],
                 'laps' => $laps,
-                'officialResults' => $this->_getOfficialResults(),
-                'averageLapTime' => $this->_getAverageLapTime(),
-                'groupsOfFriends' => $this->_getGroupsOfFriends(),
-                'mostLaps' => $this->_getMostFrequentRunners(),
+                'officialResults' => $officialResults,
+                'averageLapTime' => $averageLapTime,
+                'groupsOfFriends' => $groupsOfFriends,
+                'mostLaps' => $mostLabs,
             ),
         );
 
