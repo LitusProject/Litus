@@ -84,7 +84,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
         $optionsForm = $this->_form->has('options_form') ? $this->_form->get('options_form') : $this->_form;
 
         $number = 0;
-        if (count($this->options['event']->getOptions()) == 0) {
+        if (empty($this->options['event']->getOptions())) {
             $number += $optionsForm->get('number_member')->getValue();
             if (!$this->options['event']->isOnlyMembers()) {
                 $number += $optionsForm->get('number_non_member')->getValue();
@@ -97,6 +97,12 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
                     $number += $optionsForm->get('option_' . $option->getId() . '_number_non_member')->getValue();
                 }
             }
+        }
+
+        if ($number == 0) {
+            $this->error(self::NOT_VALID);
+
+            return false;
         }
 
         if ($this->options['person'] == null && is_numeric($this->_form->get('person_form')->get('person')->getValue())) {
