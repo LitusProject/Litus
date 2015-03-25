@@ -29,7 +29,7 @@ class Price extends \Zend\Validator\Regex
     {
         parent::__construct('/^[0-9]+.?[0-9]{0,2}$/');
 
-        parent::setMessage(
+        $this->setMessage(
             'The given price is not valid'
         );
     }

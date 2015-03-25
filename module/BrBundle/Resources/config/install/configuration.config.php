@@ -159,10 +159,10 @@ Example content of this section.
         'value'       => serialize(
             array(
                 /*
-                '0910' => array(
-                    'full_year' => '2009-2010',
-                    'file' => 'cvboek0910.pdf',
-                ),
+                Structure:
+                {key: year code XXYY} = array:
+                    {key: 'full_year'} = {full year XXXX-YYYY}
+                    {key: 'file'}      = {filename}
                  */
             )
         ),

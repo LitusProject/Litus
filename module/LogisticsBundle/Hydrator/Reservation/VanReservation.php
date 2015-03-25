@@ -36,8 +36,6 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
             ? $object->getDriver()->getPerson()->getId()
             : -1;
 
-        /*$data['passenger']['id'] = '';
-        $data['passenger']['value'] = '';*/
         if (null !== $object->getPassenger()) {
             $data['passenger']['id'] = $object->getPassenger()->getId();
             $data['passenger']['value'] = $object->getPassenger()->getFullName();

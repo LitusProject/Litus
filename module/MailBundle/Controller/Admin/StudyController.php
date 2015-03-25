@@ -197,7 +197,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
         $enrollments = array_merge($studyEnrollments, $groupEnrollments);
 
         $addresses = array();
-        $bccs = preg_split("/[,;\s]+/", $bcc);
+        $bccs = preg_split('/[,;\s]+/', $bcc);
         foreach ($bccs as $bcc) {
             $addresses[$bcc] = $bcc;
         }

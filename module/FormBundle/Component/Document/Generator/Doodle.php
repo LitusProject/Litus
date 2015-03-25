@@ -32,9 +32,8 @@ class Doodle extends \CommonBundle\Component\Document\Generator\Csv
     /**
      * @param EntityManager $entityManager
      * @param ViewerMap     $viewerMap
-     * @param Language      $language
      */
-    public function __construct(EntityManager $entityManager, ViewerMap $viewerMap, Language $language)
+    public function __construct(EntityManager $entityManager, ViewerMap $viewerMap)
     {
         $headers = array('ID', 'Submitter', 'Submitted');
         if ($viewerMap->isMail()) {

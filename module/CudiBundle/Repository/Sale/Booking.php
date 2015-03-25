@@ -770,7 +770,7 @@ class Booking extends EntityRepository
             ->findOneActive();
 
         if ($period === null) {
-            throw new Exception("There is no active stock period!");
+            throw new Exception('There is no active stock period!');
         }
 
         $query = $this->getEntityManager()->createQueryBuilder();

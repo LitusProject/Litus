@@ -258,7 +258,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('student_email_domain');
 
-        return preg_replace('/[^a-z0-9\.@]/i', '', iconv("UTF-8", "US-ASCII//TRANSLIT", $email)) . $studentDomain;
+        return preg_replace('/[^a-z0-9\.@]/i', '', iconv('UTF-8', 'US-ASCII//TRANSLIT', $email)) . $studentDomain;
     }
 
     /**

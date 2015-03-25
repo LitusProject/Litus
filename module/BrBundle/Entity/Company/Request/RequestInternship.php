@@ -85,7 +85,7 @@ class RequestInternship extends \BrBundle\Entity\Company\Request
     private function _setRequestType($type)
     {
         if (!in_array($type, self::$possibleRequests)) {
-            throw new Exception("The requested type does not exist for the vacancy requests");
+            throw new Exception('The requested type does not exist for the vacancy requests');
         }
 
         $this->requestType = $type;

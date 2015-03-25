@@ -19,7 +19,7 @@
 return array(
     'prombundle' => array(
         'prom_admin_bus' => array(
-            'add','manage','view','delete',
+            'add','manage','view','delete', 'export',
         ),
         'prom_admin_code' => array(
             'add','expire','export','manage','view',

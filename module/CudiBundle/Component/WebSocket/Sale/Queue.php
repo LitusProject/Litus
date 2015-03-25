@@ -72,24 +72,34 @@ class Queue
         $repository = $this->_entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem');
 
-        return json_encode(
+        $selling = $this->_createJsonQueue(
+            $repository->findAllByStatus($session, 'selling')
+        );
+
+        $collected = $this->_createJsonQueue(
+            $repository->findAllByStatus($session, 'selling')
+        );
+
+        $collecting = $this->_createJsonQueue(
+            $repository->findAllByStatus($session, 'selling')
+        );
+
+        $signed_in = $this->_createJsonQueue(
+            $repository->findAllByStatus($session, 'selling')
+        );
+
+        $json = json_encode(
             (object) array(
                 'queue' => array(
-                    'selling' => $this->_createJsonQueue(
-                        $repository->findAllByStatus($session, 'selling')
-                    ),
-                    'collected' => $this->_createJsonQueue(
-                        $repository->findAllByStatus($session, 'collected')
-                    ),
-                    'collecting' => $this->_createJsonQueue(
-                        $repository->findAllByStatus($session, 'collecting')
-                    ),
-                    'signed_in' => $this->_createJsonQueue(
-                        $repository->findAllByStatus($session, 'signed_in')
-                    ),
+                    'selling' => $selling,
+                    'collected' => $collected,
+                    'collecting' => $collecting,
+                    'signed_in' => $signed_in,
                 ),
             )
         );
+
+        return $json;
     }
 
     /**

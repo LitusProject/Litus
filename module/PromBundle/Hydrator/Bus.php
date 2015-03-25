@@ -16,13 +16,15 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ShiftBundle\Hydrator;
+namespace PromBundle\Hydrator;
+
+use PromBundle\Entity\Bus as BusEntity;
 
 class Bus extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $std_keys = array(
-        'departure_time',
-        'nb_passengers',
+        'total_seats',
+        'direction',
     );
 
     protected function doExtract($object = null)
@@ -30,8 +32,6 @@ class Bus extends \CommonBundle\Component\Hydrator\Hydrator
         if (null === $object) {
             return array();
         }
-
-        $manager = $object->getManager();
 
         $data = $this->stdExtract($object, self::$std_keys);
 
@@ -42,6 +42,12 @@ class Bus extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
+        if (null === $object) {
+            $object = new BusEntity();
+        }
+
+        $object->setDepartureTime(self::loadDateTime($data['departure_time']));
+
         return $this->stdHydrate($data, $object, self::$std_keys);
     }
 }

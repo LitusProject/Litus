@@ -54,7 +54,7 @@ class EntriesOnlyEntry extends Entry
         if (count($this->getNodes()) == 1) {
             return $this->getNodes()[0];
         } else {
-            throw new Exception("There should be only one or zero entries.");
+            throw new Exception('There should be only one or zero entries.');
         }
     }
 }

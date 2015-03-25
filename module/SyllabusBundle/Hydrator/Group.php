@@ -30,8 +30,8 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new GroupEntity();
         }
 
-        $extraMembers = preg_split("/[,;\s]+/", $data['extra_members']);
-        $excludedMembers = preg_split("/[,;\s]+/", $data['excluded_members']);
+        $extraMembers = preg_split('/[,;\s]+/', $data['extra_members']);
+        $excludedMembers = preg_split('/[,;\s]+/', $data['excluded_members']);
 
         $object->setExtraMembers(serialize($extraMembers))
             ->setExcludedMembers(serialize($excludedMembers));

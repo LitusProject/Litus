@@ -37,75 +37,74 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
     public function testOneLiner1()
     {
-        $this->parserTester("*  Test",
-                "<entries><entry>Test</entry></entries>");
+        $this->parserTester('*  Test',
+                '<entries><entry>Test</entry></entries>');
     }
 
     public function testOneLiner2()
     {
         $this->parserTester(
-                "*Test",
-
-                "<entries><entry>Test</entry></entries>");
+                '*Test',
+                '<entries><entry>Test</entry></entries>');
     }
 
     public function testTwoLiner()
     {
         $this->parserTester(
-                "*  Two\n" .
-                "*  Liner",
+                '*  Two' . PHP_EOL .
+                '*  Liner',
 
-                "<entries>" .
-                "<entry>Two</entry>" .
-                "<entry>Liner</entry>" .
-                "</entries>");
+                '<entries>' .
+                '<entry>Two</entry>' .
+                '<entry>Liner</entry>' .
+                '</entries>');
     }
 
     public function testClearTrailingSpaces()
     {
         $this->parserTester(
-                "*  Two    \n" .
-                "*  Liner",
+                '*  Two    ' . PHP_EOL .
+                '*  Liner',
 
-                "<entries>" .
-                "<entry>Two</entry>" .
-                "<entry>Liner</entry>" .
-                "</entries>");
+                '<entries>' .
+                '<entry>Two</entry>' .
+                '<entry>Liner</entry>' .
+                '</entries>');
     }
 
     public function testTextNextLine()
     {
-        $this->parserTester("*\n    Next",
-                 "<entries><entry>Next</entry></entries>");
+        $this->parserTester('*' . PHP_EOL . '    Next',
+                 '<entries><entry>Next</entry></entries>');
     }
 
     public function testTwoLevels1()
     {
-        $t =    "* One\n" .
-                "  * One Point One";
-        $x =    "<entries><entry>One<entries><entry>One Point One" .
-                "</entry></entries></entry></entries>";
+        $t =    '* One' . PHP_EOL .
+                '  * One Point One';
+        $x =    '<entries><entry>One<entries><entry>One Point One' .
+                '</entry></entries></entry></entries>';
 
         $this->parserTester($t, $x);
     }
 
     public function testTwoLevels2()
     {
-        $t =   "*  \n" .
-               "  One\n" .
-               "  * One Point One";
-        $x =   "<entries><entry>One<entries><entry>One Point One" .
-               "</entry></entries></entry></entries>";
+        $t =   '*  ' . PHP_EOL .
+               '  One' . PHP_EOL .
+               '  * One Point One';
+        $x =   '<entries><entry>One<entries><entry>One Point One' .
+               '</entry></entries></entry></entries>';
 
         $this->parserTester($t, $x);
     }
     public function testTwoLevels3()
     {
-        $t =   "*    *  One Point One\n" .
-               "        AndSomeMore TExt";
+        $t =   '*    *  One Point One' . PHP_EOL .
+               '        AndSomeMore TExt';
 
-        $x =   "<entries><entry><entries><entry>One Point One\nAndSomeMore TExt" .
-               "</entry></entries></entry></entries>";
+        $x =   '<entries><entry><entries><entry>One Point One' . PHP_EOL . 'AndSomeMore TExt' .
+               '</entry></entries></entry></entries>';
         $this->parserTester($t, $x);
     }
 
@@ -113,8 +112,8 @@ class ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Parser();
         try {
-            $parser->parse("IllegalText");
-            $this->fail("No exception thrown");
+            $parser->parse('IllegalText');
+            $this->fail('No exception thrown');
         } catch (IllegalFormatException $e) {
             $this->assertEquals($e->getLineNumber(), 1);
         }
@@ -124,8 +123,8 @@ class ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Parser();
         try {
-            $parser->parse("* ValidBullet\nIllegalText");
-            $this->fail("No exception thrown");
+            $parser->parse('* ValidBullet' . PHP_EOL . 'IllegalText');
+            $this->fail('No exception thrown');
         } catch (IllegalFormatException $e) {
             $this->assertEquals($e->getLineNumber(), 2);
         }
@@ -135,7 +134,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Parser();
         try {
-            $parser->parse("*  A\n    IllegalText");
+            $parser->parse('*  A' . PHP_EOL . '    IllegalText');
             $this->fail('No exception thrown');
         } catch (IllegalFormatException $e) {
             $this->assertEquals($e->getLineNumber(), 2);
@@ -146,7 +145,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Parser();
         try {
-            $parser->parse("*  A\n IllegalText");
+            $parser->parse('*  A' . PHP_EOL . ' IllegalText');
             $this->fail('No exception thrown');
         } catch (IllegalFormatException $e) {
             $this->assertEquals($e->getLineNumber(), 2);
@@ -157,7 +156,7 @@ class ParserTest extends PHPUnit_Framework_TestCase
     {
         $parser = new Parser();
         try {
-            $parser->parse("*  A\n *    IllegalText");
+            $parser->parse('*  A' . PHP_EOL . ' *    IllegalText');
             $this->fail('No exception thrown');
         } catch (IllegalFormatException $e) {
             $this->assertEquals($e->getLineNumber(), 2);

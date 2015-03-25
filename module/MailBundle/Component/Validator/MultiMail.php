@@ -49,7 +49,7 @@ class MultiMail extends \CommonBundle\Component\Validator\AbstractValidator
 
         $validator = new EmailAddressValidator();
 
-        $addresses = preg_split("/[,;\s]+/", $value);
+        $addresses = preg_split('/[,;\s]+/', $value);
 
         foreach ($addresses as $address) {
             if (!$validator->isValid($address)) {

@@ -79,12 +79,12 @@ class User
             return;
         }
 
-        $key = base64_encode(sha1($requestHeaders['Sec-WebSocket-Key'] . "258EAFA5-E914-47DA-95CA-C5AB0DC85B11", true));
+        $key = base64_encode(sha1($requestHeaders['Sec-WebSocket-Key'] . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
 
         $response = "HTTP/1.1 101 Switching Protocols\r\n"
             . "Upgrade: WebSocket\r\n"
             . "Connection: Upgrade\r\n"
-            . "Sec-WebSocket-Accept: " . $key . "\r\n"
+            . 'Sec-WebSocket-Accept: ' . $key . "\r\n"
             . "\r\n";
 
         if ($this->write($response)) {

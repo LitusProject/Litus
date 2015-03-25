@@ -60,7 +60,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
-        if ($this->getLanguage()->getName() == "English") {
+        if ($this->getLanguage()->getName() == 'English') {
             $this->redirect()->toRoute(
                 'br_cv_index',
                 array(

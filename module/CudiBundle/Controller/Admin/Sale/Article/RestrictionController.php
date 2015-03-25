@@ -60,7 +60,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
                         $restriction->addStudy($study);
                     }
                 } else {
-                    throw new RuntimeException("Unsupported restriction type");
+                    throw new RuntimeException('Unsupported restriction type');
                 }
 
                 $this->getEntityManager()->persist($restriction);

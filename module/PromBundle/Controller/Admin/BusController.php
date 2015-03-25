@@ -18,10 +18,15 @@
 
 namespace PromBundle\Controller\Admin;
 
-use DateTime,
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    DateTime,
+    PromBundle\Component\Document\Generator\Pdf\BusList as BusListGenerator,
     PromBundle\Entity\Bus,
     PromBundle\Entity\Bus\Passenger,
     PromBundle\Entity\Bus\ReservationCode,
+    Zend\Http\Headers,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -58,13 +63,9 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $departureTime = self::_loadDate($formData['departure_time']);
-
-                $newBus = new Bus($departureTime, $formData['nb_passengers'], $formData['direction']);
-
-                $this->getEntityManager()->persist($newBus);
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject()
+                );
 
                 $this->getEntityManager()->flush();
 
@@ -132,6 +133,55 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
         return new ViewModel();
     }
 
+    public function exportAction()
+    {
+        $buses = $this->getEntityManager()
+            ->getRepository('PromBundle\Entity\Bus')
+            ->findAllBuses();
+
+        $file = new CsvFile();
+        $heading = array('First Name', 'Last Name');
+
+        $results = array();
+        foreach ($buses as $bus) {
+            $results[] = array(
+                $bus->getDepartureTime()->format('d/m/Y H:i'),
+                '',
+            );
+
+            $sortedPassengers = $this->getEntityManager()
+                ->getRepository('PromBundle\Entity\Bus\Passenger')
+                ->findAllPassengersByBus($bus);
+
+            foreach ($sortedPassengers as $passenger) {
+                $results[] = array(
+                    $passenger->getFirstName(),
+                    $passenger->getLastName(),
+                );
+            }
+
+            $results[] = array(
+                '','',
+            );
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="PassengerList.csv"',
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
     public function viewAction()
     {
         if (!($bus = $this->_getBus())) {
@@ -145,15 +195,6 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
                 'passengers' => $passengers,
             )
         );
-    }
-
-    /**
-     * @param  string        $date
-     * @return DateTime|null
-     */
-    private static function _loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 
     private function _getBus()

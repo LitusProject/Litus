@@ -596,7 +596,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     private function _getYears()
     {
-        $currentYear = date("Y");
+        $currentYear = date('Y');
         $years = array();
         for ($i = -1; $i < 20; $i++) {
             $year = $currentYear - $i;
