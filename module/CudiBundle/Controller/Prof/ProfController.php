@@ -97,7 +97,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         if ($mapping->getProf()->getId() == $this->getAuthentication()->getPersonObject()->getId()) {
             return new ViewModel(
                 array(
-                    'result' => (object) array("status" => "error"),
+                    'result' => (object) array('status' => 'error'),
                 )
             );
         }

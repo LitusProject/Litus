@@ -193,7 +193,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    "driver" => $person->getFullName(),
+                    'driver' => $person->getFullName(),
                 ),
             )
         );
@@ -214,7 +214,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    "driver" => "",
+                    'driver' => '',
                 ),
             )
         );

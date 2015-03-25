@@ -41,7 +41,7 @@ class Decimal extends \Zend\Validator\Regex
 
         parent::__construct('/^[0-9]+.?[0-9]{0,' . $options['max_after_decimal'] . '}$/');
 
-        parent::setMessage(
+        $this->setMessage(
             'Invalid decimal number'
         );
     }
