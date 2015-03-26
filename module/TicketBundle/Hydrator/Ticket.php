@@ -49,7 +49,7 @@ class Ticket extends \CommonBundle\Component\Hydrator\Hydrator
 
         foreach ($object->getOptions() as $option) {
             $numbers['option_' . $option->getId() . '_number_member'] = $data['options_form']['option_' . $option->getId() . '_number_member'];
-            $numbers['option_' . $option->getId() . '_number_non_member'] = $data['options_form']['option_' . $option->getId() . '_number_non_member'];
+            $numbers['option_' . $option->getId() . '_number_non_member'] = isset($data['options_form']['option_' . $option->getId() . '_number_non_member']) ? $data['options_form']['option_' . $option->getId() . '_number_non_member'] : 0;
         }
 
         return TicketBook::book(
