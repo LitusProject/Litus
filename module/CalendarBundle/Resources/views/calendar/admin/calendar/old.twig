@@ -31,7 +31,7 @@
 
             <tbody>
                 {% for event in paginator %}
-                    <tr class="item">
+                    <tr class="item item-{{ event.getId() }}">
                         <td>{{ event.getTitle(language) }}</td>
                         <td>{{ event.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ event.getEndDate().format('d/m/Y H:i') }}</td>
@@ -95,12 +95,13 @@
             e.preventDefault();
             var removeEvent = $('#removeEvent');
             removeEvent.find('.title').html($(this).data('title'));
+            var id = $this.data('id');
             removeEvent.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('calendar_admin_calendar', {"action": "delete"})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
-                        $('.flashmessage').removeClass('in');
-                        $('.event_removed_success').addClass('in');
-                        $this.parent().parent().remove();
+                        $('.flashmessage').addClass('hide');
+                        $('.event_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
                         removeEvent.modal('hide');
                     } else {
                         errorRemove();
@@ -111,8 +112,8 @@
         }
 
         function errorRemove() {
-            $('.flashmessage').removeClass('in');
-            $('.event_removed_error').addClass('in');
+            $('.flashmessage').addClass('hide');
+            $('.event_removed_error').removeClass('hide');
             $('#removeEvent').modal('hide');
         }
     </script>

@@ -35,9 +35,12 @@ class Event extends EntityRepository
         $query->select('e')
             ->from('CalendarBundle\Entity\Node\Event', 'e')
             ->where(
-                $query->expr()->orX(
-                    $query->expr()->gt('e.endDate', ':now'),
-                    $query->expr()->gt('e.startDate', ':now')
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->gt('e.endDate', ':now'),
+                        $query->expr()->gt('e.startDate', ':now')
+                    ),
+                    $query->expr()->eq('e.isHistory', 'false')
                 )
             )
             ->orderBy('e.startDate', 'ASC')
@@ -58,9 +61,12 @@ class Event extends EntityRepository
         $resultSet = $query->select('e')
             ->from('CalendarBundle\Entity\Node\Event', 'e')
             ->where(
-                $query->expr()->lt('e.startDate', ':now')
+                $query->expr()->andX(
+                    $query->expr()->lt('e.startDate', ':now'),
+                    $query->expr()->eq('e.isHistory', 'false')
+                )
             )
-            ->orderBy('e.startDate', 'ASC')
+            ->orderBy('e.startDate', 'DESC')
             ->setParameter('now', new DateTime())
             ->getQuery();
 
@@ -75,7 +81,8 @@ class Event extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gte('e.startDate', ':first'),
-                    $query->expr()->lt('e.startDate', ':last')
+                    $query->expr()->lt('e.startDate', ':last'),
+                    $query->expr()->eq('e.isHistory', 'false')
                 )
             )
             ->orderBy('e.startDate', 'ASC')

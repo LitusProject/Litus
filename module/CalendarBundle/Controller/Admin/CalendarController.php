@@ -148,7 +148,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($event);
+        $event->setIsHistory(true);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
