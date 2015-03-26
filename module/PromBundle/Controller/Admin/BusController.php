@@ -18,11 +18,9 @@
 
 namespace PromBundle\Controller\Admin;
 
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     DateTime,
-    PromBundle\Component\Document\Generator\Pdf\BusList as BusListGenerator,
+    PromBundle\Component\Document\Generator\Bus\Csv as CsvGenerator,
     PromBundle\Entity\Bus,
     PromBundle\Entity\Bus\Passenger,
     PromBundle\Entity\Bus\ReservationCode,
@@ -137,40 +135,17 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
     {
         $buses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
-            ->findAllBuses();
+            ->getGoBusses();
 
         $file = new CsvFile();
-        $heading = array('First Name', 'Last Name');
-
-        $results = array();
-        foreach ($buses as $bus) {
-            $results[] = array(
-                $bus->getDepartureTime()->format('d/m/Y H:i'),
-                '',
-            );
-
-            $sortedPassengers = $this->getEntityManager()
-                ->getRepository('PromBundle\Entity\Bus\Passenger')
-                ->findAllPassengersByBus($bus);
-
-            foreach ($sortedPassengers as $passenger) {
-                $results[] = array(
-                    $passenger->getFirstName(),
-                    $passenger->getLastName(),
-                );
-            }
-
-            $results[] = array(
-                '','',
-            );
-        }
-
-        $document = new CsvGenerator($heading, $results);
+        $document = new CsvGenerator($this->getEntityManager(), $buses);
         $document->generateDocument($file);
+
+        $filename = 'PassengerList.csv';
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="PassengerList.csv"',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
             'Content-Type'        => 'text/csv',
         ));
         $this->getResponse()->setHeaders($headers);
