@@ -67,7 +67,13 @@ EOT
         return 'DisableBookingsOutOfStock';
     }
 
-    private function getCurrentAcademicYear()
+    /**
+     * Get the current academic year.
+     *
+     * @param  boolean                                   $organization
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
+    public function getCurrentAcademicYear($organization = null)
     {
         $startAcademicYear = AcademicYearUtil::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
