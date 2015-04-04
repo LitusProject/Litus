@@ -568,7 +568,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             return new ViewModel();
         }
 
-        return $this->studiesAction(
+        return $this->doStudiesAction(
             $academic,
             $this->getCurrentAcademicYear()
         );
@@ -586,7 +586,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             );
         }
 
-        return $this->saveStudiesAction(
+        return $this->doSaveStudiesAction(
             $academic,
             $this->getCurrentAcademicYear(),
             $this->getRequest()->getPost()->toArray()
@@ -606,7 +606,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             return new ViewModel();
         }
 
-        return $this->subjectAction(
+        return $this->doSubjectAction(
             $academic,
             $this->getCurrentAcademicYear(),
             $this->getForm('secretary_registration_subject_add')
@@ -625,7 +625,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             );
         }
 
-        return $this->saveSubjectAction(
+        return $this->doSaveSubjectAction(
             $academic,
             $this->getCurrentAcademicYear(),
             $this->getRequest()->getPost()->toArray()

@@ -36,7 +36,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($event = $this->getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -66,7 +66,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function exportAction()
     {
-        if (!($event = $this->getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -93,7 +93,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function printAction()
     {
-        if (!($event = $this->getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -122,7 +122,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($event = $this->getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -173,7 +173,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
     }
 
-    private function getEvent()
+    private function getEventEntity()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

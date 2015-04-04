@@ -47,7 +47,7 @@ interface ServiceLocatorAwareInterface extends \Zend\ServiceManager\ServiceLocat
     /**
      * Get the current academic year.
      *
-     * @param  boolean                                   $organization
+     * @param  boolean|null                              $organization
      * @return \CommonBundle\Entity\General\AcademicYear
      */
     public function getCurrentAcademicYear($organization = null);

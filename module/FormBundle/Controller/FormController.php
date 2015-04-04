@@ -37,7 +37,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 {
     public function indexAction()
     {
-        if (!($formSpecification = $this->getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return $this->notFoundAction();
         }
 
@@ -273,7 +273,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function doodleAction()
     {
-        if (!($formSpecification = $this->getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return $this->notFoundAction();
         }
 
@@ -422,7 +422,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function saveDoodleAction()
     {
-        if (!($formSpecification = $this->getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return $this->notFoundAction();
         }
 
@@ -669,7 +669,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function loginAction()
     {
-        if (!($form = $this->getForm()) || null === $this->getParam('key') || $this->getAuthentication()->isAuthenticated()) {
+        if (!($form = $this->getFormEntity()) || null === $this->getParam('key') || $this->getAuthentication()->isAuthenticated()) {
             return $this->notFoundAction();
         }
 
@@ -727,7 +727,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function getForm()
+    private function getFormEntity()
     {
         if (null === $this->getParam('id')) {
             return;

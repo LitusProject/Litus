@@ -565,10 +565,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function isValidLapTime(DateInterval $interval)
     {
-        if ($this->convertDateIntervalToSeconds($interval) < self::$MIN_LAP_TIME) {
-            return false;
-        }
-
-        return true;
+        return $this->convertDateIntervalToSeconds($interval) >= self::$MIN_LAP_TIME;
     }
 }

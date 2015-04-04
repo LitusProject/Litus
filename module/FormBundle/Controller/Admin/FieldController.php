@@ -35,7 +35,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($formSpecification = $this->getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -67,7 +67,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($formSpecification = $this->getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -279,7 +279,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($formSpecification = $this->getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -314,7 +314,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return \FormBundle\Entity\Node\Form|null
      */
-    private function getForm()
+    private function getFormEntity()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

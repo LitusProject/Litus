@@ -32,7 +32,7 @@ class MailController extends \FormBundle\Component\Controller\FormController
     {
         $this->initAjax();
 
-        if (!($formSpecification = $this->getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -104,7 +104,7 @@ class MailController extends \FormBundle\Component\Controller\FormController
         );
     }
 
-    private function getForm()
+    private function getFormEntity()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

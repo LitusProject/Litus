@@ -343,7 +343,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
 
-        return $this->studiesAction(
+        return $this->doStudiesAction(
             $academic,
             $this->getCurrentAcademicYear()
         );
@@ -367,7 +367,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $this->initAjax();
 
-        return $this->saveStudiesAction(
+        return $this->doSaveStudiesAction(
             $academic,
             $this->getCurrentAcademicYear(),
             $this->getRequest()->getPost()->toArray()
@@ -390,7 +390,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
 
-        return $this->subjectAction(
+        return $this->doSubjectAction(
             $academic,
             $this->getCurrentAcademicYear(),
             $this->getForm('secretary_registration_subject_add')
@@ -415,7 +415,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $this->initAjax();
 
-        return $this->saveSubjectAction(
+        return $this->doSaveSubjectAction(
             $academic,
             $this->getCurrentAcademicYear(),
             $this->getRequest()->getPost()->toArray()

@@ -30,7 +30,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($formSpecification = $this->getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -69,7 +69,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
 
     public function addAction()
     {
-        if (!($formSpecification = $this->getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -228,7 +228,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * @return \FormBundle\Entity\Node\Form|null
      */
-    private function getForm()
+    private function getFormEntity()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

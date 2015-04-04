@@ -37,7 +37,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
      * @param Academic     $academic
      * @param AcademicYear $academicYear
      */
-    protected function studiesAction(Academic $academic, AcademicYear $academicYear)
+    protected function doStudiesAction(Academic $academic, AcademicYear $academicYear)
     {
         $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
@@ -65,7 +65,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
      * @param AcademicYear $academicYear
      * @param array        $data
      */
-    protected function saveStudiesAction(Academic $academic, AcademicYear $academicYear, $data)
+    protected function doSaveStudiesAction(Academic $academic, AcademicYear $academicYear, $data)
     {
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
@@ -123,7 +123,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
      * @param AcademicYear   $academicYear
      * @param AddSubjectForm $form
      */
-    protected function subjectAction(Academic $academic, AcademicYear $academicYear, AddSubjectForm $form)
+    protected function doSubjectAction(Academic $academic, AcademicYear $academicYear, AddSubjectForm $form)
     {
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -213,7 +213,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
      * @param AcademicYear $academicYear
      * @param array        $data
      */
-    protected function saveSubjectAction(Academic $academic, AcademicYear $academicYear, $data)
+    protected function doSaveSubjectAction(Academic $academic, AcademicYear $academicYear, $data)
     {
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')

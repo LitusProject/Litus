@@ -289,8 +289,8 @@ EOT
     /**
      * Get the current academic year.
      *
-     * @param  boolean                                   $organization
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @param  boolean|null $organization
+     * @return AcademicYear
      */
     public function getCurrentAcademicYear($organization = null)
     {

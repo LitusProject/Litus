@@ -128,7 +128,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($formSpecification = $this->getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -193,7 +193,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($form = $this->getForm())) {
+        if (!($form = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -263,7 +263,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $this->getEntityManager()->remove($field);
     }
 
-    private function getForm()
+    private function getFormEntity()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

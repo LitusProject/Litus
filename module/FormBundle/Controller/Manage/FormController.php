@@ -63,7 +63,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        if (!($form = $this->getForm())) {
+        if (!($form = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -125,7 +125,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        if (!($formSpecification = $this->getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -315,7 +315,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function doodleAddAction()
     {
-        if (!($formSpecification = $this->getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -534,7 +534,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        if (!($form = $this->getForm())) {
+        if (!($form = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -640,7 +640,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
         );
     }
 
-    private function getForm()
+    private function getFormEntity()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

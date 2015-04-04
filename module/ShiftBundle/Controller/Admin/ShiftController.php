@@ -280,7 +280,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function pdfAction()
     {
-        if (!($event = $this->getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -359,7 +359,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return $shift;
     }
 
-    private function getEvent()
+    private function getEventEntity()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
