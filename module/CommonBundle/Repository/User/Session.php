@@ -32,7 +32,7 @@ class Session extends EntityRepository
 {
     public function findAllExpiredQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CommonBundle\Entity\User\Session', 's')
             ->where(
@@ -49,7 +49,7 @@ class Session extends EntityRepository
 
     public function findAllActiveByPersonQuery(PersonEntity $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CommonBundle\Entity\User\Session', 's')
             ->where(

@@ -59,7 +59,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
 
     public function posterAction()
     {
-        if (null === ($poster = $this->_getPoster())) {
+        if (null === ($poster = $this->getPoster())) {
             return $this->error(404, 'No poster key was provided with the request');
         }
 
@@ -96,7 +96,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
     /**
      * @return string|null
      */
-    private function _getPoster()
+    private function getPoster()
     {
         if (null !== $this->getRequest()->getQuery('poster')) {
             return $this->getRequest()->getQuery('poster');

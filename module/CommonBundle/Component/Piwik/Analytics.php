@@ -30,17 +30,17 @@ class Analytics
     /**
      * @var string The API's URL
      */
-    private $_url = '';
+    private $url = '';
 
-    /**∏
+    /**
      * @var string The authentication token that should be used
      */
-    private $_tokenAuth = '';
+    private $tokenAuth = '';
 
     /**
      * @var integer The ID of the site that should be queried
      */
-    private $_idSite = 0;
+    private $idSite = 0;
 
     /**
      * @param string  $url       The API's URL
@@ -49,9 +49,9 @@ class Analytics
      */
     public function __construct($url, $tokenAuth, $idSite)
     {
-        $this->_url = $url;
-        $this->_tokenAuth = $tokenAuth;
-        $this->_idSite = $idSite;
+        $this->url = $url;
+        $this->tokenAuth = $tokenAuth;
+        $this->idSite = $idSite;
     }
 
     /**
@@ -69,7 +69,7 @@ class Analytics
             'period' => $period,
         );
 
-        if (null === ($data = $this->_getData($parameters))) {
+        if (null === ($data = $this->getData($parameters))) {
             return null;
         }
 
@@ -93,7 +93,7 @@ class Analytics
             'lastMinutes' => $lastMinutes,
         );
 
-        if (null === ($data = $this->_getData($parameters))) {
+        if (null === ($data = $this->getData($parameters))) {
             return array(
                 'visits'  => 'N/A',
                 'actions' => 'N/A',
@@ -112,11 +112,11 @@ class Analytics
      * @param  array $parameters The request's parameters
      * @return array
      */
-    private function _getData(array $parameters)
+    private function getData(array $parameters)
     {
         try {
             $client = new Client(
-                $this->_url,
+                $this->url,
                 array(
                     'timeout' => 5,
                 )
@@ -127,8 +127,8 @@ class Analytics
                     array(
                         'module'     => 'API',
                         'format'     => 'json',
-                        'token_auth' => $this->_tokenAuth,
-                        'idSite'     => $this->_idSite,
+                        'token_auth' => $this->tokenAuth,
+                        'idSite'     => $this->idSite,
                     ),
                     $parameters
                 )

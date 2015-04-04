@@ -32,14 +32,14 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        if (!($page = $this->_getPage())) {
+        if (!($page = $this->getPage())) {
             return $this->notFoundAction();
         }
 
-        $submenu = $this->_buildSubmenu($page);
+        $submenu = $this->buildSubmenu($page);
         $parent = $page->getParent();
         if (empty($submenu) && null !== $parent) {
-            $submenu = $this->_buildSubmenu($parent);
+            $submenu = $this->buildSubmenu($parent);
         }
 
         return new ViewModel(
@@ -82,7 +82,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Page
      */
-    private function _getPage()
+    private function getPage()
     {
         if (null === $this->getParam('name')) {
             return;

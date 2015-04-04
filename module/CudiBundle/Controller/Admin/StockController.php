@@ -42,10 +42,10 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         }
 
         $academicYear = $this->getAcademicYear();
-        $semester = $this->_getSemester();
+        $semester = $this->getSemester();
 
         if (null !== $this->getParam('field')) {
-            $articles = $this->_search($academicYear, $semester);
+            $articles = $this->search($academicYear, $semester);
         }
 
         if (!isset($articles)) {
@@ -76,7 +76,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         }
 
         if (null !== $this->getParam('field')) {
-            $articles = $this->_searchNotDelivered($period);
+            $articles = $this->searchNotDelivered($period);
         }
 
         if (!isset($articles)) {
@@ -105,13 +105,13 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $semester = $this->_getSemester();
+        $semester = $this->getSemester();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $articles = $this->_search($this->getAcademicYear(), $semester)
+        $articles = $this->search($this->getAcademicYear(), $semester)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -151,7 +151,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $articles = $this->_searchNotDelivered($period);
+        $articles = $this->searchNotDelivered($period);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -195,7 +195,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -365,7 +365,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -383,7 +383,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -562,7 +562,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         }
     }
 
-    private function _search(AcademicYear $academicYear, $semester = 0)
+    private function search(AcademicYear $academicYear, $semester = 0)
     {
         switch ($this->getParam('field')) {
             case 'title':
@@ -580,7 +580,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         }
     }
 
-    private function _searchNotDelivered(Period $period)
+    private function searchNotDelivered(Period $period)
     {
         switch ($this->getParam('field')) {
             case 'title':
@@ -598,7 +598,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         }
     }
 
-    private function _getArticle()
+    private function getArticle()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -639,7 +639,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         return $item;
     }
 
-    private function _getSemester()
+    private function getSemester()
     {
         $semester = $this->getParam('semester');
 

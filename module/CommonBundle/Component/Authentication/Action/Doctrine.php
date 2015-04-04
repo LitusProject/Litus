@@ -34,12 +34,12 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @var TransportInterface The mail transport interface
      */
-    private $_mailTransport;
+    private $mailTransport;
 
     /**
      * @param EntityManager      $entityManager The EntityManager instance
@@ -47,8 +47,8 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
      */
     public function __construct(EntityManager $entityManager, TransportInterface $mailTransport)
     {
-        $this->_entityManager = $entityManager;
-        $this->_mailTransport = $mailTransport;
+        $this->entityManager = $entityManager;
+        $this->mailTransport = $mailTransport;
     }
 
     /**
@@ -69,24 +69,24 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
         if ($result->getPersonObject()->getFailedLogins() >= 5 && null === $result->getPersonObject()->getCode()) {
             do {
                 $code = md5(uniqid(rand(), true));
-                $found = $this->_entityManager
+                $found = $this->entityManager
                     ->getRepository('CommonBundle\Entity\User\Code')
                     ->findOneByCode($code);
             } while (isset($found));
 
             $code = new Code($code);
-            $this->_entityManager->persist($code);
+            $this->entityManager->persist($code);
 
             $result->getPersonObject()
                 ->setCode($code);
 
             if (!($language = $result->getPersonObject()->getLanguage())) {
-                $language = $this->_entityManager->getRepository('CommonBundle\Entity\General\Language')
+                $language = $this->entityManager->getRepository('CommonBundle\Entity\General\Language')
                     ->findOneByAbbrev('en');
             }
 
             $mailData = unserialize(
-                $this->_entityManager
+                $this->entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.account_deactivated_mail')
             );
@@ -94,11 +94,11 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
             $message = $mailData[$language->getAbbrev()]['content'];
             $subject = $mailData[$language->getAbbrev()]['subject'];
 
-            $mailaddress = $this->_entityManager
+            $mailaddress = $this->entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('system_mail_address');
 
-            $mailname = $this->_entityManager
+            $mailname = $this->entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('system_mail_name');
 
@@ -109,10 +109,10 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
                 ->setSubject($subject);
 
             if ('development' != getenv('APPLICATION_ENV')) {
-                $this->_mailTransport->send($mail);
+                $this->mailTransport->send($mail);
             }
         }
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
     }
 
     /**
@@ -125,6 +125,6 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
     {
         $result->getPersonObject()
             ->setFailedLogins(0);
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
     }
 }

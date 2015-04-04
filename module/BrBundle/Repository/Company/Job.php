@@ -32,7 +32,7 @@ class Job extends EntityRepository
 {
     public function findOneActiveByTypeAndId($type, $id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -56,7 +56,7 @@ class Job extends EntityRepository
 
     public function findAllByCompanyQuery(CompanyEntity $company)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->where(
@@ -71,7 +71,7 @@ class Job extends EntityRepository
 
     public function findAllActiveByTypeQuery($type)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -93,7 +93,7 @@ class Job extends EntityRepository
 
     public function findAllActiveByTypeByJobNameQuery($type)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -114,7 +114,7 @@ class Job extends EntityRepository
 
     public function findAllActiveByTypeByDateQuery($type)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -135,7 +135,7 @@ class Job extends EntityRepository
 
     public function findAllActiveByTypeAndSectorByDateQuery($type, $sector)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -158,7 +158,7 @@ class Job extends EntityRepository
 
     public function findAllActiveByTypeAndSectorQuery($type, $sector)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -182,7 +182,7 @@ class Job extends EntityRepository
 
     public function findAllActiveByTypeAndSectorByJobNameQuery($type, $sector)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -205,7 +205,7 @@ class Job extends EntityRepository
 
     public function findAllActiveByCompanyAndTypeQuery(CompanyEntity $company, $type)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->where(

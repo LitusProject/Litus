@@ -33,7 +33,7 @@ class TimeSlot extends EntityRepository
 {
     public function findOneOccupationByPersonAndTime(Person $person, DateTime $start, DateTime $end)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $timeSlots = $query->select('f.id')
             ->from('FormBundle\Entity\Field\TimeSlot', 'f')
             ->where(
@@ -62,7 +62,7 @@ class TimeSlot extends EntityRepository
             $ids[] = $timeSlot['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('FormBundle\Entity\Entry', 'e')
             ->innerJoin('e.field', 'f')
@@ -83,7 +83,7 @@ class TimeSlot extends EntityRepository
 
     public function findAllConflictingByFormAndTimeQuery(Form $form, DateTime $start, DateTime $end)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('t')
             ->from('FormBundle\Entity\Field\TimeSlot', 't')
             ->where(
@@ -115,7 +115,7 @@ class TimeSlot extends EntityRepository
 
     public function findAllForReminderMailQuery(DateTime $start, DateTime $end)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $reminderDoodles = $query->select('d')
             ->from('FormBundle\Entity\Node\Form\Doodle', 'd')
             ->where(
@@ -129,7 +129,7 @@ class TimeSlot extends EntityRepository
             $ids[] = $doodle->getId();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('t')
             ->from('FormBundle\Entity\Field\TimeSlot', 't')
             ->innerJoin('t.form', 'f')

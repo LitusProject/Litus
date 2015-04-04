@@ -64,7 +64,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $result->servedBy = ucfirst(getenv('SERVED_BY'));
         }
 
-        $result->menu = $this->_getMenu();
+        $result->menu = $this->getMenu();
 
         $e->setResult($result);
 
@@ -93,8 +93,8 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function getLanguage()
     {
-        if (null !== $this->_language) {
-            return $this->_language;
+        if (null !== $this->language) {
+            return $this->language;
         }
 
         $language = $this->getEntityManager()
@@ -110,7 +110,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()->flush();
         }
 
-        $this->_language = $language;
+        $this->language = $language;
 
         return $language;
     }
@@ -137,7 +137,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         return $this->getCurrentAcademicYear(true);
     }
 
-    private function _addToMenu($controller, $settings, &$menu)
+    private function addToMenu($controller, $settings, &$menu)
     {
         if (!is_array($settings)) {
             $settings = array('title' => $settings);
@@ -162,7 +162,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         return false;
     }
 
-    private function _getMenu()
+    private function getMenu()
     {
         $config = $this->getServiceLocator()->get('Config');
         $config = $config['litus']['admin'];
@@ -175,7 +175,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $newSubmenu = new NamedPriorityQueue();
 
             foreach ($submenu as $controller => $settings) {
-                $this->_addToMenu($controller, $settings, $newSubmenu);
+                $this->addToMenu($controller, $settings, $newSubmenu);
             }
 
             if (count($newSubmenu)) {
@@ -196,7 +196,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $newSubmenuItems = new NamedPriorityQueue();
 
             foreach ($submenu['items'] as $controller => $settings) {
-                $this->_addToMenu($controller, $settings, $newSubmenuItems);
+                $this->addToMenu($controller, $settings, $newSubmenuItems);
 
                 if ($currentController === $controller) {
                     $active = true;

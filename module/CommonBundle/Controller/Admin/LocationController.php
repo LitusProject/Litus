@@ -92,7 +92,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($location = $this->_getLocation())) {
+        if (!($location = $this->getLocation())) {
             return new ViewModel();
         }
 
@@ -131,7 +131,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($location = $this->_getLocation())) {
+        if (!($location = $this->getLocation())) {
             return new ViewModel();
         }
 
@@ -179,7 +179,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Location|null
      */
-    private function _getLocation()
+    private function getLocation()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

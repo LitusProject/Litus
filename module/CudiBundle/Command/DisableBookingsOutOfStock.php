@@ -41,7 +41,7 @@ EOT
     {
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findAllByAcademicYear($this->_getCurrentAcademicYear());
+            ->findAllByAcademicYear($this->getCurrentAcademicYear());
 
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
@@ -67,7 +67,7 @@ EOT
         return 'DisableBookingsOutOfStock';
     }
 
-    private function _getCurrentAcademicYear()
+    private function getCurrentAcademicYear()
     {
         $startAcademicYear = AcademicYearUtil::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);

@@ -33,12 +33,12 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
         if (null !== $this->getParam('field')) {
-            $subjects = $this->_search($academicYear);
+            $subjects = $this->search($academicYear);
         }
 
         if (!isset($subjects)) {
@@ -68,7 +68,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
@@ -124,11 +124,11 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($subject = $this->_getSubject())) {
+        if (!($subject = $this->getSubject())) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
@@ -189,11 +189,11 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
-        $subjects = $this->_search($academicYear);
+        $subjects = $this->search($academicYear);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -221,7 +221,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return;
         }
 
@@ -244,7 +244,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _search(AcademicYearEntity $academicYear)
+    private function search(AcademicYearEntity $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'name':
@@ -261,7 +261,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     /**
      * @return Subject
      */
-    private function _getSubject()
+    private function getSubject()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -302,7 +302,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         return $study;
     }
 
-    private function _getAcademicYear()
+    private function getAcademicYear()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {

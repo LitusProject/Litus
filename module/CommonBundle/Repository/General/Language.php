@@ -30,7 +30,7 @@ class Language extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('CommonBundle\Entity\General\Language', 'l')
             ->orderBy('l.name', 'ASC')

@@ -47,7 +47,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             );
         } else {
             $paginator = $this->paginator()->createFromQuery(
-                $this->_search(),
+                $this->search(),
                 $this->getParam('page')
             );
         }
@@ -99,7 +99,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompany())) {
             return new ViewModel();
         }
 
@@ -140,7 +140,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompany())) {
             return new ViewModel();
         }
 
@@ -199,7 +199,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editLogoAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompany())) {
             return new ViewModel();
         }
 
@@ -266,7 +266,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $companies = $this->_search()
+        $companies = $this->search()
                 ->setMaxResults($numResults)
                 ->getResult();
 
@@ -286,7 +286,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _search()
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'name':
@@ -299,7 +299,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     /**
      * @return Company
      */
-    private function _getCompany()
+    private function getCompany()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -340,7 +340,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         return $company;
     }
 
-    private function _getCompanyByLogo()
+    private function getCompanyByLogo()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

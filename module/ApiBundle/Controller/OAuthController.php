@@ -96,7 +96,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
         return new ViewModel(
             array(
                 'form' => $form,
-                'shibbolethUrl' => $this->_getShibbolethUrl($this->getRequest()->getQuery('redirect_uri')),
+                'shibbolethUrl' => $this->getShibbolethUrl($this->getRequest()->getQuery('redirect_uri')),
             )
         );
     }
@@ -327,7 +327,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
      *
      * @return string
      */
-    protected function _getShibbolethUrl($redirect = '')
+    protected function getShibbolethUrl($redirect = '')
     {
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

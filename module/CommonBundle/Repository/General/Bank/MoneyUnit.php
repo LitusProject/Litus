@@ -30,7 +30,7 @@ class MoneyUnit extends EntityRepository
 {
     public function findOneByUnit($unit)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('u')
             ->from('CommonBundle\Entity\General\Bank\MoneyUnit', 'u')
             ->where(

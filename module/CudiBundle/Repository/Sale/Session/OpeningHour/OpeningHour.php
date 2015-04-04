@@ -32,7 +32,7 @@ class OpeningHour extends EntityRepository
 {
     public function findAllActiveQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour', 'o')
             ->where(
@@ -47,7 +47,7 @@ class OpeningHour extends EntityRepository
 
     public function findAllOldQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour', 'o')
             ->where(
@@ -73,7 +73,7 @@ class OpeningHour extends EntityRepository
         $end = clone $start;
         $end->add(new DateInterval('P7D'));
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour', 'o')
             ->where(
@@ -97,7 +97,7 @@ class OpeningHour extends EntityRepository
         $end = clone $start;
         $end->add($interval);
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour', 'o')
             ->where(
@@ -122,7 +122,7 @@ class OpeningHour extends EntityRepository
         $end->setTime(0, 0);
         $end->add(new DateInterval($interval));
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour', 'o')
             ->where(
@@ -141,7 +141,7 @@ class OpeningHour extends EntityRepository
 
     public function findCurrent()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour', 'o')
             ->where(

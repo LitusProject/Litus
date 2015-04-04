@@ -31,7 +31,7 @@ class Code extends EntityRepository
 {
     public function findOnePersonByCode($code)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person', 'p')
             ->innerJoin('p.code', 'c')

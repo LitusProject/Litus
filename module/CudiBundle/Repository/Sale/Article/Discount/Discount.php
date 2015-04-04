@@ -32,7 +32,7 @@ class Discount extends EntityRepository
 {
     public function findOneByArticleAndType(Article $article, $type)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('d')
             ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
             ->leftJoin('d.template', 't')
@@ -56,7 +56,7 @@ class Discount extends EntityRepository
 
     public function findOneByArticleAndTypeAndOrganization(Article $article, $type, Organization $organization = null)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('d')
             ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
             ->leftJoin('d.template', 't')
@@ -89,7 +89,7 @@ class Discount extends EntityRepository
 
     public function findAllByArticleQuery(Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('d')
             ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
             ->innerJoin('d.article', 'a')

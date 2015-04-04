@@ -33,7 +33,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     public function manageAction()
     {
         if (null !== $this->getParam('field')) {
-            $academics = $this->_search();
+            $academics = $this->search();
 
             $paginator = $this->paginator()->createFromArray(
                 $academics,
@@ -64,11 +64,11 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademic())) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
@@ -99,7 +99,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($study = $this->_getStudyEnrollment())) {
+        if (!($study = $this->getStudyEnrollment())) {
             return new ViewModel();
         }
 
@@ -117,7 +117,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($subject = $this->_getSubjectEnrollment())) {
+        if (!($subject = $this->getSubjectEnrollment())) {
             return new ViewModel();
         }
 
@@ -133,11 +133,11 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addStudyAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademic())) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
@@ -218,11 +218,11 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addSubjectAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademic())) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
@@ -289,7 +289,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        $academics = $this->_search();
+        $academics = $this->search();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -320,7 +320,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    private function _search()
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'name':
@@ -334,7 +334,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         }
     }
 
-    private function _getAcademic()
+    private function getAcademic()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -375,7 +375,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         return $academic;
     }
 
-    private function _getStudyEnrollment()
+    private function getStudyEnrollment()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -416,7 +416,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         return $study;
     }
 
-    private function _getSubjectEnrollment()
+    private function getSubjectEnrollment()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -457,7 +457,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         return $subject;
     }
 
-    private function _getAcademicYear()
+    private function getAcademicYear()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {

@@ -89,7 +89,7 @@ class ContractEntry
         $this->orderEntry = $orderEntry;
         $this->setContractText($orderEntry->getProduct()->getContractText());
         $this->setPosition($position);
-        $this->_setVersion($version);
+        $this->setVersion($version);
     }
 
     /**
@@ -104,7 +104,7 @@ class ContractEntry
      * @param  int $versionNmbr
      * @return int
      */
-    private function _setVersion($versionNmbr)
+    private function setVersion($versionNmbr)
     {
         if ($versionNmbr < 0) {
             throw new InvalidArgumentException('Version number must be larger or equal to zero');

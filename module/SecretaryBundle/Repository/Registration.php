@@ -34,7 +34,7 @@ class Registration extends EntityRepository
 {
     public function findOneByAcademicAndAcademicYear(Academic $academic, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SecretaryBundle\Entity\Registration', 'r')
             ->where(
@@ -56,7 +56,7 @@ class Registration extends EntityRepository
     {
         $ids = array(0);
         if ($organization !== null) {
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('a.id')
                 ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
                 ->innerJoin('m.academic', 'a')
@@ -76,7 +76,7 @@ class Registration extends EntityRepository
             }
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SecretaryBundle\Entity\Registration', 'r')
             ->innerJoin('r.academic', 'a')
@@ -100,7 +100,7 @@ class Registration extends EntityRepository
     {
         $ids = array(0);
         if ($organization !== null) {
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('a.id')
                 ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
                 ->innerJoin('m.academic', 'a')
@@ -120,7 +120,7 @@ class Registration extends EntityRepository
             }
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SecretaryBundle\Entity\Registration', 'r')
             ->innerJoin('r.academic', 'a')
@@ -162,11 +162,11 @@ class Registration extends EntityRepository
         }
 
         if (null === $organization) {
-            $resultSet = $this->_em
+            $resultSet = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Barcode')
                 ->findAllByBarcode($barcode);
         } else {
-            $resultSet = $this->_em
+            $resultSet = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Barcode')
                 ->findAllByBarcodeAndOrganization($barcode, $academicYear, $organization);
         }
@@ -176,7 +176,7 @@ class Registration extends EntityRepository
             $ids[] = $result->getPerson()->getId();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SecretaryBundle\Entity\Registration', 'r')
             ->where(
@@ -195,7 +195,7 @@ class Registration extends EntityRepository
 
     public function findAllSince(DateTime $since)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SecretaryBundle\Entity\Registration', 'r')
             ->where(

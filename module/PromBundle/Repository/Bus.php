@@ -30,7 +30,7 @@ class Bus extends EntityRepository
 {
     public function getGoBusses()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultArray = $query->select('b')
             ->from('PromBundle\Entity\Bus', 'b')
             ->where(
@@ -46,7 +46,7 @@ class Bus extends EntityRepository
 
     public function getReturnBusses()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultArray = $query->select('b')
             ->from('PromBundle\Entity\Bus', 'b')
             ->where(
@@ -62,7 +62,7 @@ class Bus extends EntityRepository
 
     public function findAllBuses()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultArray = $query->select('b')
             ->from('PromBundle\Entity\Bus', 'b')
             ->orderBy('b.departureTime', 'ASC')

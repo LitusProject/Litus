@@ -38,7 +38,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $academicYear = $this->getAcademicYear();
 
         if (null !== $this->getParam('field')) {
-            $articles = $this->_search();
+            $articles = $this->search();
         }
 
         if (!isset($articles)) {
@@ -128,7 +128,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -184,7 +184,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -200,7 +200,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -226,7 +226,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $articles = $this->_search()
+        $articles = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -257,7 +257,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $academicYear = $this->getAcademicYear();
 
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -310,7 +310,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function convertToExternalAction()
     {
-        if (!($previous = $this->_getArticle())) {
+        if (!($previous = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -393,7 +393,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function convertToInternalAction()
     {
-        if (!($previous = $this->_getArticle())) {
+        if (!($previous = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -491,7 +491,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel();
     }
 
-    private function _search()
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'title' :
@@ -520,7 +520,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return \CudiBundle\Entity\Article|null
      */
-    private function _getArticle()
+    private function getArticle()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

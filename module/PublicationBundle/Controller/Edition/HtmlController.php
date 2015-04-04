@@ -29,7 +29,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        $edition = $this->_getEdition();
+        $edition = $this->getEdition();
 
         if (!$edition) {
             return new ViewModel();
@@ -42,7 +42,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getEdition()
+    private function getEdition()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

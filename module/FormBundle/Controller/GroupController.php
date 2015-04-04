@@ -31,7 +31,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function viewAction()
     {
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroup())) {
             return $this->notFoundAction();
         }
 
@@ -76,10 +76,10 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($entries[$form->getForm()->getId()]['entry']) {
                     $startForm = $form->getForm();
                 }
-            } elseif ($this->_isCookieSet()) {
+            } elseif ($this->isCookieSet()) {
                 $guestInfo = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                    ->findOneBySessionId($this->_getCookie());
+                    ->findOneBySessionId($this->getCookie());
 
                 $guestInfo->renew($this->getRequest());
 
@@ -110,7 +110,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function _getGroup()
+    private function getGroup()
     {
         if (null === $this->getParam('id')) {
             return;
@@ -130,7 +130,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return boolean
      */
-    private function _isCookieSet()
+    private function isCookieSet()
     {
         /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');
@@ -141,7 +141,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return string
      */
-    private function _getCookie()
+    private function getCookie()
     {
         /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');

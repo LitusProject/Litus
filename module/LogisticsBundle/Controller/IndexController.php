@@ -137,7 +137,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getReservation())) {
             return $this->notFoundAction();
         }
 
@@ -214,7 +214,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getReservation())) {
             return $this->notFoundAction();
         }
 
@@ -230,7 +230,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
     public function moveAction()
     {
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getReservation())) {
             return $this->notFoundAction();
         }
 
@@ -257,7 +257,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        $reservations = $this->_getReservations();
+        $reservations = $this->getReservations();
 
         if (null === $reservations) {
             return $this->notFoundAction();
@@ -328,7 +328,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         );
     }
 
-    private function _getReservations()
+    private function getReservations()
     {
         if (null === $this->getParam('start') || null === $this->getParam('end')) {
             return;
@@ -354,7 +354,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     /**
      * @return VanReservation
      */
-    private function _getReservation()
+    private function getReservation()
     {
         if (null === $this->getParam('id')) {
             return;

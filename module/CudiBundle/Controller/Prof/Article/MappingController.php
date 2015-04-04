@@ -31,7 +31,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 {
     public function addAction()
     {
-        if (!($subject = $this->_getSubject())) {
+        if (!($subject = $this->getSubject())) {
             return new ViewModel();
         }
 
@@ -47,7 +47,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                if (!($article = $this->_getArticle($formData['article']['id']))) {
+                if (!($article = $this->getArticle($formData['article']['id']))) {
                     return new ViewModel();
                 }
 
@@ -108,7 +108,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping())) {
+        if (!($mapping = $this->getMapping())) {
             return new ViewModel();
         }
 
@@ -139,7 +139,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping())) {
+        if (!($mapping = $this->getMapping())) {
             return new ViewModel();
         }
 
@@ -166,7 +166,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
-    private function _getMapping()
+    private function getMapping()
     {
         if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
@@ -217,7 +217,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
         return $mapping;
     }
 
-    private function _getSubject()
+    private function getSubject()
     {
         if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
@@ -268,7 +268,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
         return $mapping->getSubject();
     }
 
-    private function _getArticle($id = null)
+    private function getArticle($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
 

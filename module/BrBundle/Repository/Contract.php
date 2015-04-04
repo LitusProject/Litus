@@ -32,7 +32,7 @@ class Contract extends EntityRepository
 {
     public function findCurrentVersionNb($id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $highestVersionNb = $query->select('MAX(e.version)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.contractEntries','e')
@@ -48,7 +48,7 @@ class Contract extends EntityRepository
 
     public function findNextInvoiceNb()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $highestInvoiceNb = $query->select('MAX(c.invoiceNb)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->getQuery()
@@ -59,7 +59,7 @@ class Contract extends EntityRepository
 
     public function findNextContractNb()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $highestContractNb = $query->select('MAX(c.contractNb)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->getQuery()
@@ -70,7 +70,7 @@ class Contract extends EntityRepository
 
     public function findAllNewOrSignedByPerson(CollaboratorEntity $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('c')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
@@ -89,7 +89,7 @@ class Contract extends EntityRepository
 
     public function findAllNewOrSignedByPersonQuery(CollaboratorEntity $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('c')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
@@ -107,7 +107,7 @@ class Contract extends EntityRepository
 
     public function getContractAmountByPerson(CollaboratorEntity $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('COUNT(c)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->where(
@@ -122,7 +122,7 @@ class Contract extends EntityRepository
 
     public function getContractedRevenueByPerson(CollaboratorEntity $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('SUM(o.totalCost)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
@@ -138,7 +138,7 @@ class Contract extends EntityRepository
 
     public function getPaidRevenueByPerson(CollaboratorEntity $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('SUM(o.totalCost)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
@@ -161,7 +161,7 @@ class Contract extends EntityRepository
 
     public function findContractAuthors()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('DISTINCT(c.author)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->getQuery()
@@ -172,7 +172,7 @@ class Contract extends EntityRepository
 
     public function findAllNewOrSignedByCompanyQuery(CompanyEntity $company)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('c')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
@@ -190,7 +190,7 @@ class Contract extends EntityRepository
 
     public function getContractAmountByCompany(CompanyEntity $company)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('COUNT(c)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->where(
@@ -205,7 +205,7 @@ class Contract extends EntityRepository
 
     public function getContractedRevenueByCompany(CompanyEntity $company)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('SUM(o.totalCost)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
@@ -221,7 +221,7 @@ class Contract extends EntityRepository
 
     public function getPaidRevenueByCompany(CompanyEntity $company)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('SUM(o.totalCost)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
@@ -244,7 +244,7 @@ class Contract extends EntityRepository
 
     public function findContractCompanyQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('DISTINCT(c.company)')
             ->from('BrBundle\Entity\Contract', 'c')
             ->getQuery();
@@ -254,7 +254,7 @@ class Contract extends EntityRepository
 
     public function findAllNewOrSignedQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('c')
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerJoin('c.order', 'o')

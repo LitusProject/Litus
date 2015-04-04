@@ -31,7 +31,7 @@ class HasAccess extends \Zend\View\Helper\AbstractHelper
     /**
      * @var HasAccessDriver The driver object
      */
-    private $_driver = null;
+    private $driver = null;
 
     /**
      * @param  HasAccessDriver $driver The driver object
@@ -39,7 +39,7 @@ class HasAccess extends \Zend\View\Helper\AbstractHelper
      */
     public function setDriver(HasAccessDriver $driver)
     {
-        $this->_driver = $driver;
+        $this->driver = $driver;
 
         return $this;
     }
@@ -51,11 +51,11 @@ class HasAccess extends \Zend\View\Helper\AbstractHelper
      */
     public function __invoke($resource, $action)
     {
-        if (null === $this->_driver) {
+        if (null === $this->driver) {
             throw new Exception\RuntimeException('No driver object was provided');
         }
 
-        $driver = $this->_driver;
+        $driver = $this->driver;
 
         return $driver($resource, $action);
     }

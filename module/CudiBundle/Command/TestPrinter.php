@@ -44,15 +44,15 @@ EOT
 
     protected function executeCommand()
     {
-        if (false === ($printer = $this->_getPrinter())) {
+        if (false === ($printer = $this->getPrinter())) {
             return 1;
         }
 
-        if (false === ($ticket = $this->_getTicket())) {
+        if (false === ($ticket = $this->getTicket())) {
             return 2;
         }
 
-        $this->_send($printer, $ticket);
+        $this->send($printer, $ticket);
     }
 
     protected function getLogName()
@@ -60,7 +60,7 @@ EOT
         return 'TestPrinter';
     }
 
-    private function _getPrinter()
+    private function getPrinter()
     {
         $printers = unserialize(
             $this->getEntityManager()
@@ -83,7 +83,7 @@ EOT
         return false;
     }
 
-    private function _getTicket()
+    private function getTicket()
     {
         switch ($this->getArgument('ticket')) {
             case 'signin':
@@ -106,7 +106,7 @@ EOT
     /**
      * @param integer $ticket
      */
-    private function _send($printer, $ticket)
+    private function send($printer, $ticket)
     {
         $ticket = (object) array(
             'type' => $ticket,

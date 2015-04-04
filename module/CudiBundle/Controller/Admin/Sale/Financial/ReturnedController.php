@@ -34,7 +34,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     {
         $academicYear = $this->getAcademicYear();
         if (null !== $this->getParam('field')) {
-            $records = $this->_individualSearch($academicYear);
+            $records = $this->individualSearch($academicYear);
         }
 
         if (!isset($records)) {
@@ -81,7 +81,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $records = $this->_individualSearch($academicYear)
+        $records = $this->individualSearch($academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -110,7 +110,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
-    private function _individualSearch(AcademicYear $academicYear)
+    private function individualSearch(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'article':
@@ -163,7 +163,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     public function sessionAction()
     {
-        if (!($session = $this->_getSession())) {
+        if (!($session = $this->getSession())) {
             return new ViewModel();
         }
 
@@ -178,7 +178,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->findAll();
 
         if (null !== $this->getParam('field')) {
-            $records = $this->_sessionSearch($session);
+            $records = $this->sessionSearch($session);
         }
 
         if (!isset($records)) {
@@ -208,7 +208,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($session = $this->_getSession())) {
+        if (!($session = $this->getSession())) {
             return new ViewModel();
         }
 
@@ -216,7 +216,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $records = $this->_sessionSearch($session)
+        $records = $this->sessionSearch($session)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -244,7 +244,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
-    private function _sessionSearch(Session $session)
+    private function sessionSearch(Session $session)
     {
         switch ($this->getParam('field')) {
             case 'article':
@@ -270,7 +270,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     {
         $academicYear = $this->getAcademicYear();
         if (null !== $this->getParam('field')) {
-            $records = $this->_articlesSearch($academicYear);
+            $records = $this->articlesSearch($academicYear);
         }
 
         if (!isset($records)) {
@@ -312,7 +312,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $articles = $this->_articlesSearch($academicYear)
+        $articles = $this->articlesSearch($academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -339,7 +339,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
-    private function _articlesSearch(AcademicYear $academicYear)
+    private function articlesSearch(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'title':
@@ -363,7 +363,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     public function articleAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -378,7 +378,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->findAll();
 
         if (null !== $this->getParam('field')) {
-            $records = $this->_articleSearch($article, $this->getAcademicYear());
+            $records = $this->articleSearch($article, $this->getAcademicYear());
         }
 
         if (!isset($records)) {
@@ -412,7 +412,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -422,7 +422,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $records = $this->_articleSearch($article, $academicYear)
+        $records = $this->articleSearch($article, $academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -450,7 +450,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
-    private function _articleSearch(Article $article, AcademicYear $academicYear)
+    private function articleSearch(Article $article, AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'person':
@@ -471,7 +471,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     /**
      * @return Session
      */
-    private function _getSession()
+    private function getSession()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -514,7 +514,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
         return $session;
     }
 
-    private function _getArticle()
+    private function getArticle()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

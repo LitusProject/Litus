@@ -39,7 +39,7 @@ EOT
     {
         $removedEntities = false;
 
-        $allActions = $this->_getAllActions();
+        $allActions = $this->getAllActions();
 
         $currentActions = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Acl\Action')
@@ -110,7 +110,7 @@ EOT
         return 'AclCleanup';
     }
 
-    private function _getModules()
+    private function getModules()
     {
         $config = $this->getServiceLocator()
             ->get('Config');
@@ -123,19 +123,19 @@ EOT
         );
     }
 
-    private function _getAllActions()
+    private function getAllActions()
     {
         $acl = array();
-        $modules = $this->_getModules();
+        $modules = $this->getModules();
 
         foreach ($modules as $module) {
-            $acl = array_merge($acl, $this->_getAclConfiguration($module));
+            $acl = array_merge($acl, $this->getAclConfiguration($module));
         }
 
         return $acl;
     }
 
-    private function _getAclConfiguration($module)
+    private function getAclConfiguration($module)
     {
         $configuration = $this->getServiceLocator()->get('Config');
         $configuration = $configuration['litus']['install'];

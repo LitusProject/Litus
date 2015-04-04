@@ -31,7 +31,7 @@ class Barcode extends EntityRepository
 {
     public function findOneByBarcode($barcode)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
             ->innerJoin('b.article', 'a')
@@ -54,7 +54,7 @@ class Barcode extends EntityRepository
 
     public function findAllByArticleQuery(Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
             ->innerJoin('b.article', 'a')

@@ -29,7 +29,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplier())) {
             return new ViewModel();
         }
 
@@ -56,7 +56,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplier())) {
             return new ViewModel();
         }
 
@@ -106,7 +106,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($user = $this->_getUser())) {
+        if (!($user = $this->getUser())) {
             return new ViewModel();
         }
 
@@ -147,7 +147,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($user = $this->_getUser())) {
+        if (!($user = $this->getUser())) {
             return new ViewModel();
         }
 
@@ -164,7 +164,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     /**
      * @return \CudiBundle\Entity\Supplier|null
      */
-    private function _getSupplier()
+    private function getSupplier()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -208,7 +208,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     /**
      * @return \CudiBundle\Entity\User\Person\Supplier|null
      */
-    private function _getUser()
+    private function getUser()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

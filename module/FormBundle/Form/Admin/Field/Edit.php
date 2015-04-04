@@ -33,13 +33,13 @@ class Edit extends Add
         $this->get('type')->setAttribute('disabled', 'disabled')
             ->setRequired(false);
 
-        $this->get('visibility')->get('value')->setAttribute('data-current_value', $this->_field->getVisibilityValue());
+        $this->get('visibility')->get('value')->setAttribute('data-current_value', $this->field->getVisibilityValue());
 
         $this->remove('submit');
         $this->remove('submit_repeat');
 
         $this->addSubmit('Save', 'form_edit');
 
-        $this->bind($this->_field);
+        $this->bind($this->field);
     }
 }

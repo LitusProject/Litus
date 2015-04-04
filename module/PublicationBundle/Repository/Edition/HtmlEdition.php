@@ -32,7 +32,7 @@ class HtmlEdition extends EntityRepository
 {
     public function findAllByPublicationAndAcademicYearQuery(PublicationEntity $publication, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PublicationBundle\Entity\Edition\Html', 'p')
             ->where(
@@ -51,7 +51,7 @@ class HtmlEdition extends EntityRepository
 
     public function findOneByPublicationTitleAndAcademicYear(PublicationEntity $publication, $title, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PublicationBundle\Entity\Edition\Html', 'p')
             ->where(

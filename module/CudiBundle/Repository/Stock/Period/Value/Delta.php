@@ -32,7 +32,7 @@ class Delta extends EntityRepository
 {
     public function findTotalByArticleAndPeriod(Article $article, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('SUM(v.value)')
             ->from('CudiBundle\Entity\Stock\Period\Value\Delta', 'v')
             ->where(
@@ -51,7 +51,7 @@ class Delta extends EntityRepository
 
     public function findAllByArticleAndPeriodQuery(Article $article, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('CudiBundle\Entity\Stock\Period\Value\Delta', 'v')
             ->where(

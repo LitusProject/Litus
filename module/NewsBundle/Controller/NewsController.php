@@ -49,7 +49,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($news = $this->_getNews())) {
+        if (!($news = $this->getNews())) {
             return $this->notFoundAction();
         }
 
@@ -79,7 +79,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    public function _getNews()
+    public function getNews()
     {
         if (null === $this->getParam('name')) {
             return;

@@ -28,7 +28,7 @@ trait ElementTrait
     /**
      * @var boolean
      */
-    private $_required = false;
+    private $required = false;
 
     /**
      * Specifies whether this element is a required field.
@@ -50,7 +50,7 @@ trait ElementTrait
         }
         $this->setLabelAttributes($labelAttributes);
 
-        $this->_required = $flag;
+        $this->required = $flag;
 
         return $this;
     }
@@ -60,7 +60,7 @@ trait ElementTrait
      */
     public function isRequired()
     {
-        return $this->_required;
+        return $this->required;
     }
 
     /**

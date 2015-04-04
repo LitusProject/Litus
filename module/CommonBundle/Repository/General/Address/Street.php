@@ -31,7 +31,7 @@ class Street extends EntityRepository
 {
     public function findOneByCityAndName(CityEntity $city, $name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CommonBundle\Entity\General\Address\Street', 's')
             ->where(

@@ -42,7 +42,7 @@ EOT
 
     protected function executeCommand()
     {
-        $this->_destroyAccount($this->getArgument('id'));
+        $this->destroyAccount($this->getArgument('id'));
     }
 
     protected function getLogName()
@@ -50,7 +50,7 @@ EOT
         return 'DestroyAccount';
     }
 
-    private function _destroyAccount($id)
+    private function destroyAccount($id)
     {
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')

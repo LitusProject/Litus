@@ -31,7 +31,7 @@ class Lap extends EntityRepository
 {
     public function findPreviousQuery(AcademicYear $academicYear, $nbResults = 1)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('SportBundle\Entity\Lap', 'l')
             ->where(
@@ -51,7 +51,7 @@ class Lap extends EntityRepository
 
     public function findAllPreviousLapsQuery(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('SportBundle\Entity\Lap', 'l')
             ->where(
@@ -70,7 +70,7 @@ class Lap extends EntityRepository
 
     public function findCurrent(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('SportBundle\Entity\Lap', 'l')
             ->where(
@@ -91,7 +91,7 @@ class Lap extends EntityRepository
 
     public function findNext(AcademicYear $academicYear, $nbResults = 1)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('SportBundle\Entity\Lap', 'l')
             ->where(
@@ -116,7 +116,7 @@ class Lap extends EntityRepository
 
     public function countAll(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('SportBundle\Entity\Lap', 'l')
             ->select(
@@ -138,7 +138,7 @@ class Lap extends EntityRepository
 
     public function countRunners(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('SportBundle\Entity\Lap', 'l')
             ->select(
@@ -156,7 +156,7 @@ class Lap extends EntityRepository
 
     public function getRunnersAndCount(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('IDENTITY(l.runner) runner','COUNT(l.runner) lapCount')
             ->from('SportBundle\Entity\Lap', 'l')
             ->where(

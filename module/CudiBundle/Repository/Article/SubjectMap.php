@@ -33,7 +33,7 @@ class SubjectMap extends EntityRepository
 {
     public function findOneByArticleAndSubjectAndAcademicYear(Article $article, SubjectEntity $subject, AcademicYear $academicYear, $isProf = false)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
             ->where(
@@ -57,7 +57,7 @@ class SubjectMap extends EntityRepository
 
     public function findAllBySubjectAndAcademicYearQuery(SubjectEntity $subject, AcademicYear $academicYear, $isProf = false)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
             ->innerJoin('m.article', 'a')
@@ -79,7 +79,7 @@ class SubjectMap extends EntityRepository
 
     public function findAllByArticleAndAcademicYearQuery(Article $article, AcademicYear $academicYear, $isProf = false)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
             ->where(
@@ -99,7 +99,7 @@ class SubjectMap extends EntityRepository
 
     public function findAllByArticleQuery(Article $article, $isProf = false)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
             ->where(

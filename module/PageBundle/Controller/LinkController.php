@@ -30,7 +30,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        if (!($link = $this->_getLink())) {
+        if (!($link = $this->getLink())) {
             return $this->notFoundAction();
         }
 
@@ -39,7 +39,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
-    private function _getLink()
+    private function getLink()
     {
         if (null === $this->getParam('id')) {
             return;

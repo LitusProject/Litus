@@ -30,7 +30,7 @@ class Category extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('PageBundle\Entity\Category', 'c')
             ->where(
@@ -43,7 +43,8 @@ class Category extends EntityRepository
 
     public function findByParent($parent)
     {
-        return $this->_em->getRepository('PageBundle\Entity\Category')
+        return $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Category')
             ->findBy(array('parent' => $parent, 'active' => true));
     }
 }

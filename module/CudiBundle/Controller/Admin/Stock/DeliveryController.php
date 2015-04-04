@@ -53,7 +53,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
     public function supplierAction()
     {
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplier())) {
             return new ViewModel();
         }
 
@@ -184,7 +184,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
-        if (!($delivery = $this->_getDelivery())) {
+        if (!($delivery = $this->getDelivery())) {
             return new ViewModel();
         }
 
@@ -279,7 +279,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
-    private function _getDelivery()
+    private function getDelivery()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -320,7 +320,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         return $delivery;
     }
 
-    private function _getSupplier()
+    private function getSupplier()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

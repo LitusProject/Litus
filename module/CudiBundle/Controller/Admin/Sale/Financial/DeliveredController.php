@@ -33,7 +33,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     {
         $academicYear = $this->getAcademicYear();
         if (null !== $this->getParam('field')) {
-            $records = $this->_individualSearch($academicYear);
+            $records = $this->individualSearch($academicYear);
         }
 
         if (!isset($records)) {
@@ -71,7 +71,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $deliveries = $this->_individualSearch($academicYear)
+        $deliveries = $this->individualSearch($academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -95,7 +95,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _individualSearch(AcademicYear $academicYear)
+    private function individualSearch(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'article':
@@ -113,7 +113,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     {
         $academicYear = $this->getAcademicYear();
         if (null !== $this->getParam('field')) {
-            $records = $this->_articlesSearch($academicYear);
+            $records = $this->articlesSearch($academicYear);
         }
 
         if (!isset($records)) {
@@ -155,7 +155,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $articles = $this->_articlesSearch($academicYear)
+        $articles = $this->articlesSearch($academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -182,7 +182,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _articlesSearch(AcademicYear $academicYear)
+    private function articlesSearch(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'title':
@@ -206,7 +206,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function articleAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -265,7 +265,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function supplierAction()
     {
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplier())) {
             return new ViewModel();
         }
 
@@ -276,7 +276,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->findAll();
 
         if (null !== $this->getParam('field')) {
-            $records = $this->_supplierSearch($supplier, $this->getAcademicYear());
+            $records = $this->supplierSearch($supplier, $this->getAcademicYear());
         }
 
         if (!isset($records)) {
@@ -305,7 +305,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplier())) {
             return new ViewModel();
         }
 
@@ -315,7 +315,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $deliveries = $this->_supplierSearch($supplier, $academicYear)
+        $deliveries = $this->supplierSearch($supplier, $academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -338,7 +338,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _supplierSearch(Supplier $supplier, AcademicYear $academicYear)
+    private function supplierSearch(Supplier $supplier, AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'article':
@@ -348,7 +348,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         }
     }
 
-    private function _getArticle()
+    private function getArticle()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -391,7 +391,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         return $article;
     }
 
-    private function _getSupplier()
+    private function getSupplier()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

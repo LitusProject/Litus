@@ -33,12 +33,12 @@ class PhotosZip
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    private $entityManager = null;
 
     /**
      * @var array The array containing the promotions
      */
-    private $_promotions;
+    private $promotions;
 
     /**
      * @param EntityManager $entityManager The entityManager
@@ -46,8 +46,8 @@ class PhotosZip
      */
     public function __construct(EntityManager $entityManager, array $promotions)
     {
-        $this->_entityManager = $entityManager;
-        $this->_promotions = $promotions;
+        $this->entityManager = $entityManager;
+        $this->promotions = $promotions;
     }
 
     /**
@@ -64,13 +64,13 @@ class PhotosZip
         $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
         $zip->close();
 
-        $filePath = 'public' . $this->_entityManager
+        $filePath = 'public' . $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.profile_path') . '/';
 
-        foreach ($this->_promotions as $promotion) {
+        foreach ($this->promotions as $promotion) {
             if ($promotion->getAcademic()->getPhotoPath()) {
-                $extension = $this->_getExtension($filePath . $promotion->getAcademic()->getPhotoPath());
+                $extension = $this->getExtension($filePath . $promotion->getAcademic()->getPhotoPath());
 
                 $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
                 $zip->addFile(
@@ -85,7 +85,7 @@ class PhotosZip
     /**
      * returns the extension of the given file. Based on the constant int output of exif_imagetype
      */
-    private function _getExtension($fileName)
+    private function getExtension($fileName)
     {
         $fileType = exif_imagetype ($fileName);
         $result = '';

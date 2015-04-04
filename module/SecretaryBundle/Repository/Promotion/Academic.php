@@ -32,7 +32,7 @@ class Academic extends EntityRepository
 {
     public function findOneByAcademicAndAcademicYear(AcademicPerson $academic, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('SecretaryBundle\Entity\Promotion\Academic', 'a')
             ->where(

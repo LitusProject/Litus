@@ -33,12 +33,12 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
         if (null !== $this->getParam('field')) {
-            $mappings = $this->_search($academicYear);
+            $mappings = $this->search($academicYear);
         }
 
         if (!isset($mappings)) {
@@ -68,7 +68,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
@@ -118,16 +118,16 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($study = $this->_getStudy())) {
+        if (!($study = $this->getStudy())) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
         if (null !== $this->getParam('field')) {
-            $mappings = $this->_searchSubject($study, $academicYear);
+            $mappings = $this->searchSubject($study, $academicYear);
         }
 
         if (!isset($mappings)) {
@@ -179,7 +179,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping())) {
+        if (!($mapping = $this->getMapping())) {
             return new ViewModel();
         }
 
@@ -197,11 +197,11 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
-        $mappings = $this->_search($academicYear);
+        $mappings = $this->search($academicYear);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -230,15 +230,15 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($study = $this->_getStudy())) {
+        if (!($study = $this->getStudy())) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
-        $subjects = $this->_searchSubject($study, $academicYear);
+        $subjects = $this->searchSubject($study, $academicYear);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -268,7 +268,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return;
         }
 
@@ -293,7 +293,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function _search(AcademicYearEntity $academicYear)
+    private function search(AcademicYearEntity $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'name':
@@ -303,7 +303,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         }
     }
 
-    private function _searchSubject(Study $study, AcademicYearEntity $academicYear)
+    private function searchSubject(Study $study, AcademicYearEntity $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'name':
@@ -317,7 +317,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         }
     }
 
-    private function _getMapping()
+    private function getMapping()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -358,7 +358,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         return $mapping;
     }
 
-    private function _getStudy()
+    private function getStudy()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -399,7 +399,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         return $study;
     }
 
-    private function _getAcademicYear()
+    private function getAcademicYear()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {

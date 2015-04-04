@@ -36,12 +36,12 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
         if (null !== $this->getParam('field')) {
-            $tickets = $this->_search($event);
+            $tickets = $this->search($event);
         }
 
         if (!isset($tickets)) {
@@ -66,7 +66,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function exportAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
@@ -93,7 +93,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function printAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
@@ -122,11 +122,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
-        $tickets = $this->_search($event);
+        $tickets = $this->search($event);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -155,7 +155,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
-    private function _search(Event $event)
+    private function search(Event $event)
     {
         switch ($this->getParam('field')) {
             case 'person':
@@ -173,7 +173,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
     }
 
-    private function _getEvent()
+    private function getEvent()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -214,7 +214,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         return $event;
     }
 
-    private function _getTicket()
+    private function getTicket()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

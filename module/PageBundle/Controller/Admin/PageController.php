@@ -34,7 +34,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     public function manageAction()
     {
         if (null !== $this->getParam('field')) {
-            $pages = $this->_search();
+            $pages = $this->search();
         }
 
         if (!isset($pages)) {
@@ -107,7 +107,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($page = $this->_getPage())) {
+        if (!($page = $this->getPage())) {
             return new ViewModel();
         }
 
@@ -160,7 +160,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($page = $this->_getPage())) {
+        if (!($page = $this->getPage())) {
             return new ViewModel();
         }
 
@@ -224,7 +224,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        $pages = $this->_search();
+        $pages = $this->search();
 
         foreach ($pages as $key => $page) {
             if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
@@ -256,7 +256,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _search()
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'title':
@@ -266,7 +266,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         }
     }
 
-    private function _getPage()
+    private function getPage()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

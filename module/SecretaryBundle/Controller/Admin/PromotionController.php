@@ -37,13 +37,13 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
         if (null !== $this->getParam('field')) {
             $paginator = $this->paginator()->createFromArray(
-                $this->_search($academicYear),
+                $this->search($academicYear),
                 $this->getParam('page')
             );
         }
@@ -73,11 +73,11 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
-        $promotions = $this->_search($academicYear);
+        $promotions = $this->search($academicYear);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -109,7 +109,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
@@ -216,7 +216,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($promotion = $this->_getPromotion())) {
+        if (!($promotion = $this->getPromotion())) {
             return new ViewModel();
         }
 
@@ -232,7 +232,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     public function updateAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
@@ -286,7 +286,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         return new ViewModel();
     }
 
-    private function _search(AcademicYear $academicYear)
+    private function search(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'name':
@@ -300,7 +300,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         }
     }
 
-    protected function _getAcademicYear()
+    protected function getAcademicYear()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {
@@ -327,7 +327,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         return $academicYear;
     }
 
-    private function _getPromotion()
+    private function getPromotion()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

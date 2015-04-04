@@ -52,7 +52,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket())) {
+        if (!($ticket = $this->getTicket())) {
             return new ViewModel();
         }
 
@@ -70,7 +70,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket()) && !$ticket->getEvent()->areTicketsGenerated()) {
+        if (!($ticket = $this->getTicket()) && !$ticket->getEvent()->areTicketsGenerated()) {
             return new ViewModel();
         }
 
@@ -88,7 +88,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket())) {
+        if (!($ticket = $this->getTicket())) {
             return new ViewModel();
         }
 
@@ -106,7 +106,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket())) {
+        if (!($ticket = $this->getTicket())) {
             return new ViewModel();
         }
 
@@ -120,7 +120,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
         );
     }
 
-    private function _getTicket()
+    private function getTicket()
     {
         if (null === $this->getParam('ticket')) {
             $this->flashMessenger()->error(

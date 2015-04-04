@@ -33,7 +33,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 {
     public function overviewAction()
     {
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getPerson())) {
             return new ViewModel();
         }
 
@@ -59,7 +59,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function addAction()
     {
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getPerson())) {
             return new ViewModel();
         }
 
@@ -108,11 +108,11 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function editAction()
     {
-        if (!($oldJob = $this->_getInternship())) {
+        if (!($oldJob = $this->getInternship())) {
             return new ViewModel();
         }
 
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getPerson())) {
             return new ViewModel();
         }
 
@@ -162,11 +162,11 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function deleteAction()
     {
-        if (!($internship = $this->_getInternship())) {
+        if (!($internship = $this->getInternship())) {
             return new ViewModel();
         }
 
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getPerson())) {
             return new ViewModel();
         }
 
@@ -182,7 +182,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         );
     }
 
-    private function _getInternship()
+    private function getInternship()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -223,7 +223,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         return $internship;
     }
 
-    private function _getSectors()
+    private function getSectors()
     {
         $sectorArray = array();
         foreach (Company::$possibleSectors as $key => $sector) {
@@ -236,7 +236,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     /**
      * @return Corporate
      */
-    private function _getPerson()
+    private function getPerson()
     {
         $person = $this->getAuthentication()->getPersonObject();
 

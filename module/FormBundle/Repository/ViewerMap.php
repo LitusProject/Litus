@@ -33,7 +33,7 @@ class ViewerMap extends EntityRepository
 {
     public function findOneByPersonAndForm(Person $person, Form $form)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\ViewerMap', 'n')
             ->innerJoin('n.form', 'f')
@@ -55,7 +55,7 @@ class ViewerMap extends EntityRepository
 
     public function findAllByFormQuery(Form $form)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\ViewerMap', 'n')
             ->where(
@@ -69,7 +69,7 @@ class ViewerMap extends EntityRepository
 
     public function findAllByPersonQuery(Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\ViewerMap', 'n')
             ->innerJoin('n.form', 'f')
@@ -90,7 +90,7 @@ class ViewerMap extends EntityRepository
             $forms[] = $form->getForm()->getId();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\ViewerMap', 'n')
             ->where(
@@ -107,7 +107,7 @@ class ViewerMap extends EntityRepository
 
     public function findAllGroupsByPerson(Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $forms = $query->select('f.id')
             ->from('FormBundle\Entity\ViewerMap', 'n')
             ->innerJoin('n.form', 'f')
@@ -123,7 +123,7 @@ class ViewerMap extends EntityRepository
             $ids[] = $form['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $mappings = $query->select('m')
             ->from('FormBundle\Entity\Node\Group\Mapping', 'm')
             ->innerJoin('m.form', 'f')

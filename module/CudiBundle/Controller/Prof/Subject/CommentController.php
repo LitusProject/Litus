@@ -31,7 +31,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($subject = $this->_getSubject())) {
+        if (!($subject = $this->getSubject())) {
             return new ViewModel();
         }
 
@@ -131,7 +131,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($comment = $this->_getComment())) {
+        if (!($comment = $this->getComment())) {
             return new ViewModel();
         }
 
@@ -154,7 +154,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     /**
      * @return \SyllabusBundle\Entity\Subject|null
      */
-    private function _getSubject($id = null)
+    private function getSubject($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
@@ -207,7 +207,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
         return $mapping->getSubject();
     }
 
-    private function _getComment()
+    private function getComment()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -230,7 +230,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
             ->findOneById($this->getParam('id'));
 
-        if (null === $comment || null === $this->_getSubject($comment->getSubject()->getId())) {
+        if (null === $comment || null === $this->getSubject($comment->getSubject()->getId())) {
             $this->flashMessenger()->error(
                 'Error',
                 'No comment with the given ID was found!'

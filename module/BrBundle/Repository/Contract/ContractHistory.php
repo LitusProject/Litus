@@ -31,7 +31,7 @@ class ContractHistory extends EntityRepository
 {
     public function findAllContractVersions(Contract $contract)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('h')
             ->from('BrBundle\Entity\Contract\ContractHistory', 'h')
             ->where(

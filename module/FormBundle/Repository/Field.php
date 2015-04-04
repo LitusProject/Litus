@@ -31,7 +31,7 @@ class Field extends EntityRepository
 {
     public function findAllByFormQuery(Form $form)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Field', 'n')
             ->where(
@@ -46,7 +46,7 @@ class Field extends EntityRepository
 
     public function findLatestField(Form $form)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Field', 'n')
             ->where(

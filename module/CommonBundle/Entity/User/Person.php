@@ -282,7 +282,7 @@ abstract class Person implements RoleAware
      */
     public function getFlattenedRoles()
     {
-        return $this->_flattenRolesInheritance(
+        return $this->flattenRolesInheritance(
             $this->getRoles()
         );
     }
@@ -709,13 +709,13 @@ abstract class Person implements RoleAware
      * @param  array $return           The one-dimensional return array
      * @return array
      */
-    private function _flattenRolesInheritance(array $inheritanceRoles, array $return = array())
+    private function flattenRolesInheritance(array $inheritanceRoles, array $return = array())
     {
         foreach ($inheritanceRoles as $role) {
             if (!in_array($role, $return)) {
                 $return[] = $role;
             }
-            $return = $this->_flattenRolesInheritance($role->getParents(), $return);
+            $return = $this->flattenRolesInheritance($role->getParents(), $return);
         }
 
         return $return;

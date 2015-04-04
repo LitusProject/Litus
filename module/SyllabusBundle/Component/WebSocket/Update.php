@@ -35,17 +35,17 @@ class Update extends \CommonBundle\Component\WebSocket\Server
     /**
      * @var EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @var TransportInterface
      */
-    private $_mailTransport;
+    private $mailTransport;
 
     /**
      * @var string
      */
-    private $_status = 'done';
+    private $status = 'done';
 
     /**
      * @param EntityManager      $entityManager
@@ -59,8 +59,8 @@ class Update extends \CommonBundle\Component\WebSocket\Server
                 ->getConfigValue('syllabus.update_socket_file')
         );
 
-        $this->_entityManager = $entityManager;
-        $this->_mailTransport = $mailTransport;
+        $this->entityManager = $entityManager;
+        $this->mailTransport = $mailTransport;
     }
 
     /**
@@ -73,7 +73,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
     {
         $command = json_decode($data);
 
-        $key = $this->_entityManager
+        $key = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('syllabus.queue_socket_key');
 
@@ -94,13 +94,13 @@ class Update extends \CommonBundle\Component\WebSocket\Server
                 return;
             }
 
-            $authSession = $this->_entityManager
+            $authSession = $this->entityManager
                 ->getRepository('CommonBundle\Entity\User\Session')
                 ->findOneById($command->authSession);
 
             $allowed = false;
             if ($authSession) {
-                $acl = new Acl($this->_entityManager);
+                $acl = new Acl($this->entityManager);
 
                 foreach ($authSession->getPerson()->getRoles() as $role) {
                     if (
@@ -124,12 +124,12 @@ class Update extends \CommonBundle\Component\WebSocket\Server
 
         $this->addAuthenticated($user->getSocket());
 
-        if ($command->command == 'update' && 'done' == $this->_status) {
-            $this->_entityManager->clear();
-            $this->_status = 'updating';
-            new StudyParser($this->_entityManager, $this->_mailTransport, array($this, 'callback'));
+        if ($command->command == 'update' && 'done' == $this->status) {
+            $this->entityManager->clear();
+            $this->status = 'updating';
+            new StudyParser($this->entityManager, $this->mailTransport, array($this, 'callback'));
             $this->callback('done');
-            $this->_status = 'done';
+            $this->status = 'done';
         }
     }
 

@@ -46,12 +46,12 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     /**
      * @var \CommonBundle\Component\Acl\Driver\HasAccess The access driver
      */
-    private $_hasAccessDriver = null;
+    private $hasAccessDriver = null;
 
     /**
      * @var \CommonBundle\Entity\General\Language The current language
      */
-    private $_language = null;
+    private $language = null;
 
     /**
      * Execute the request.
@@ -66,14 +66,14 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             ->plugin('headMeta')
             ->setCharset('utf-8');
 
-        $this->_initAuthenticationService();
-        $this->_initControllerPlugins();
-        $this->_initFallbackLanguage();
-        $this->_initLocalization();
-        $this->_initUriScheme();
-        $this->_initViewHelpers();
+        $this->initAuthenticationService();
+        $this->initControllerPlugins();
+        $this->initFallbackLanguage();
+        $this->initLocalization();
+        $this->initUriScheme();
+        $this->initViewHelpers();
 
-        $this->_logVisit();
+        $this->logVisit();
 
         if (false !== getenv('SERVED_BY')) {
             $this->getResponse()
@@ -84,9 +84,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $result = parent::onDispatch($e);
         $result->setTerminal(true);
 
-        if ($this->_validateKey() || $this->_validateOAuth()) {
+        if ($this->validateKey() || $this->validateOAuth()) {
             if ('development' != getenv('APPLICATION_ENV')) {
-                $this->hasAccess()->setDriver($this->_hasAccessDriver);
+                $this->hasAccess()->setDriver($this->hasAccessDriver);
             }
 
             if (
@@ -130,7 +130,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     public function error($code, $message)
     {
-        if (!$this->_isAuthorizeAction()) {
+        if (!$this->isAuthorizeAction()) {
             $this->initJson();
         }
 
@@ -147,7 +147,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         );
     }
 
-    private function _logVisit()
+    private function logVisit()
     {
         $saveVisit = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -178,7 +178,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      * @return void
      * @throws RuntimeException
      */
-    private function _initFallbackLanguage()
+    private function initFallbackLanguage()
     {
         try {
             $fallbackLanguage = $this->getEntityManager()
@@ -202,7 +202,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      *
      * @return void
      */
-    private function _initViewHelpers()
+    private function initViewHelpers()
     {
         $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
 
@@ -213,7 +213,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         // HasAccess View Helper
         $renderer->plugin('hasAccess')->setDriver(
             new HasAccessDriver(
-                $this->_getAcl(),
+                $this->getAcl(),
                 $this->getAuthentication()->isAuthenticated(),
                 $this->getAuthentication()->getPersonObject()
             )
@@ -256,7 +256,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         );
     }
 
-    private function _initAuthenticationService()
+    private function initAuthenticationService()
     {
         $this->getServiceLocator()->get('authentication_service')
             ->setRequest($this->getRequest())
@@ -268,7 +268,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      *
      * @return void
      */
-    private function _initControllerPlugins()
+    private function initControllerPlugins()
     {
         // Url Plugin
         $this->url()->setLanguage($this->getLanguage());
@@ -276,7 +276,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         // HasAccess Plugin
         $this->hasAccess()->setDriver(
             new HasAccessDriver(
-                $this->_getAcl(),
+                $this->getAcl(),
                 $this->getAuthentication()->isAuthenticated(),
                 $this->getAuthentication()->getPersonObject()
             )
@@ -288,7 +288,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      *
      * @return void
      */
-    private function _initLocalization()
+    private function initLocalization()
     {
         $this->getTranslator()->setCache($this->getCache())
             ->setLocale($this->getLanguage()->getAbbrev());
@@ -301,7 +301,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      *
      * @return void
      */
-    private function _initUriScheme()
+    private function initUriScheme()
     {
         UriFactory::registerScheme('litus', 'ApiBundle\Component\Uri\Litus');
     }
@@ -311,7 +311,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      *
      * @return boolean
      */
-    private function _isAuthorizeAction()
+    private function isAuthorizeAction()
     {
         return ('authorize' == $this->getParam('action') || 'shibboleth' == $this->getParam('action')) && 'api_oauth' == $this->getParam('controller');
     }
@@ -321,7 +321,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      *
      * @return boolean
      */
-    private function _isOAuthAction()
+    private function isOAuthAction()
     {
         return 'api_oauth' == $this->getParam('controller');
     }
@@ -331,7 +331,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      *
      * @return \CommonBundle\Component\Acl\Acl
      */
-    private function _getAcl()
+    private function getAcl()
     {
         if (null !== $this->getCache()) {
             if (!$this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
@@ -431,7 +431,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     protected function getKey($field = 'key')
     {
-        if ($this->_isOAuthAction()) {
+        if ($this->isOAuthAction()) {
             $field = 'client_id';
         }
 
@@ -480,8 +480,8 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                 ->findOneByAbbrev($this->getRequest()->getPost('language'));
         }
 
-        if (null !== $this->_language) {
-            return $this->_language;
+        if (null !== $this->language) {
+            return $this->language;
         }
 
         if ($this->getParam('language')) {
@@ -505,7 +505,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             }
         }
 
-        $this->_language = $language;
+        $this->language = $language;
 
         return $language;
     }
@@ -579,15 +579,15 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      *
      * @return boolean
      */
-    private function _validateKey()
+    private function validateKey()
     {
         if ('development' == getenv('APPLICATION_ENV')) {
             return true;
         }
 
-        if ($this->_isAuthorizeAction()) {
-            $this->_hasAccessDriver = new HasAccessDriver(
-                $this->_getAcl(),
+        if ($this->isAuthorizeAction()) {
+            $this->hasAccessDriver = new HasAccessDriver(
+                $this->getAcl(),
                 false,
                 null
             );
@@ -608,8 +608,8 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             return false;
         }
 
-        $this->_hasAccessDriver = new HasAccessDriver(
-            $this->_getAcl(),
+        $this->hasAccessDriver = new HasAccessDriver(
+            $this->getAcl(),
             true,
             $key
         );
@@ -622,15 +622,15 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      *
      * @return boolean
      */
-    private function _validateOAuth()
+    private function validateOAuth()
     {
         if ('development' == getenv('APPLICATION_ENV')) {
             return true;
         }
 
-        if ($this->_isAuthorizeAction()) {
-            $this->_hasAccessDriver = new HasAccessDriver(
-                $this->_getAcl(),
+        if ($this->isAuthorizeAction()) {
+            $this->hasAccessDriver = new HasAccessDriver(
+                $this->getAcl(),
                 false,
                 null
             );
@@ -643,8 +643,8 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             return false;
         }
 
-        $this->_hasAccessDriver = new HasAccessDriver(
-            $this->_getAcl(),
+        $this->hasAccessDriver = new HasAccessDriver(
+            $this->getAcl(),
             true,
             $accessToken->getPerson($this->getEntityManager())
         );

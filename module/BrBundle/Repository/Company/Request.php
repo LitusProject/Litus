@@ -30,7 +30,7 @@ class Request extends EntityRepository
 {
     public function findRequestById($id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('r')
             ->from('BrBundle\Entity\Company\Request', 'r')
             ->where(

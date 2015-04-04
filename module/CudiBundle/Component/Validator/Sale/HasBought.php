@@ -33,7 +33,7 @@ class HasBought extends \CommonBundle\Component\Validator\AbstractValidator impl
     /**
      * @var Form
      */
-    private $_form;
+    private $form;
 
     /**
      * Error messages
@@ -58,7 +58,7 @@ class HasBought extends \CommonBundle\Component\Validator\AbstractValidator impl
 
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($this->_form->get('person')->get('id')->getValue());
+            ->findOneById($this->form->get('person')->get('id')->getValue());
 
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -83,7 +83,7 @@ class HasBought extends \CommonBundle\Component\Validator\AbstractValidator impl
      */
     public function setForm(Form $form)
     {
-        $this->_form = $form;
+        $this->form = $form;
 
         return $this;
     }

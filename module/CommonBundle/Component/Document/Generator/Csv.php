@@ -25,12 +25,12 @@ class Csv
     /**
      * @var array The array containing the headers
      */
-    private $_headers;
+    private $headers;
 
     /**
      * @var array The array containing the results
      */
-    private $_results;
+    private $results;
 
     /**
      * @param string[] $headers The array containing the headers
@@ -38,8 +38,8 @@ class Csv
      */
     public function __construct(array $headers, array $results)
     {
-        $this->_headers = $headers;
-        $this->_results = $results;
+        $this->headers = $headers;
+        $this->results = $results;
     }
 
     /**
@@ -49,9 +49,9 @@ class Csv
      */
     public function generateDocument(CsvFile $file)
     {
-        $file->appendContent($this->_headers);
+        $file->appendContent($this->headers);
 
-        foreach ($this->_results as $result) {
+        foreach ($this->results as $result) {
             $file->appendContent($result);
         }
     }

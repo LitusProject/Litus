@@ -122,7 +122,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
         }
 
-        if (!($subject = $this->_getSubject())) {
+        if (!($subject = $this->getSubject())) {
             return new ViewModel();
         }
 
@@ -199,7 +199,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function editAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -289,7 +289,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function deleteAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -330,7 +330,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     /**
      * @return Article|null
      */
-    private function _getArticle($id = null)
+    private function getArticle($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
@@ -378,7 +378,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     /**
      * @return \SyllabusBundle\Entity\Subject|null
      */
-    private function _getSubject()
+    private function getSubject()
     {
         if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;

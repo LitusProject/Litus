@@ -54,7 +54,7 @@ class ReturnItem extends EntityRepository
     public function findNumberByArticleAndAcademicYear(ArticleEntity $article, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+            $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('COUNT(i.id)')
@@ -189,7 +189,7 @@ class ReturnItem extends EntityRepository
 
     public function findAllByOrganizationAndAcademicYearQuery(Organization $organization = null, AcademicYear $academicYear)
     {
-        $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+        $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -278,7 +278,7 @@ class ReturnItem extends EntityRepository
 
     public function findAllByOrganizationAndSessionQuery(Organization $organization = null, SessionEntity $session)
     {
-        $ids = $this->_personsByAcademicYearAndOrganization($session->getAcademicYear(), $organization);
+        $ids = $this->personsByAcademicYearAndOrganization($session->getAcademicYear(), $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -366,7 +366,7 @@ class ReturnItem extends EntityRepository
 
     public function findAllByOrganizationAndArticleQuery(Organization $organization = null, ArticleEntity $article, AcademicYear $academicYear)
     {
-        $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+        $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -385,7 +385,7 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
-    private function _personsByAcademicYearAndOrganization(AcademicYear $academicYear, Organization $organization = null)
+    private function personsByAcademicYearAndOrganization(AcademicYear $academicYear, Organization $organization = null)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p.id')

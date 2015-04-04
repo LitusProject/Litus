@@ -30,7 +30,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function manageAction()
     {
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroup())) {
             return new ViewModel();
         }
 
@@ -64,7 +64,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
 
     public function addAction()
     {
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroup())) {
             return new ViewModel();
         }
 
@@ -150,7 +150,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
-        if (!($viewer = $this->_getViewer())) {
+        if (!($viewer = $this->getViewer())) {
             return new ViewModel();
         }
 
@@ -199,7 +199,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
         );
     }
 
-    private function _getGroup()
+    private function getGroup()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -256,7 +256,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
         return $group;
     }
 
-    private function _getViewer()
+    private function getViewer()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

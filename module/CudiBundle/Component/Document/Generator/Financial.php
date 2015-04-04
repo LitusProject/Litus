@@ -35,7 +35,7 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * @var AcademicYear
      */
-    private $_academicYear;
+    private $academicYear;
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
@@ -54,7 +54,7 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
             $file->getFilename()
         );
 
-        $this->_academicYear = $academicYear;
+        $this->academicYear = $academicYear;
     }
 
     /**
@@ -83,7 +83,7 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
 
         $articles = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findAllByAcademicYear($this->_academicYear);
+            ->findAllByAcademicYear($this->academicYear);
 
         $external = array();
         $internal = array();

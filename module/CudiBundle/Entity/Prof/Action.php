@@ -106,7 +106,7 @@ class Action
     /**
      * @var EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @param Person  $person     The person executed this action
@@ -147,15 +147,15 @@ class Action
     public function getEntity()
     {
         if ('article' == $this->entity) {
-            return $this->_entityManager
+            return $this->entityManager
                 ->getRepository('CudiBundle\Entity\Article')
                 ->findOneById($this->entityId);
         } elseif ('file' == $this->entity) {
-            return $this->_entityManager
+            return $this->entityManager
                 ->getRepository('CudiBundle\Entity\File\Mapping')
                 ->findOneById($this->entityId);
         } elseif ('mapping' == $this->entity) {
-            return $this->_entityManager
+            return $this->entityManager
                 ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findOneById($this->entityId);
         }
@@ -187,15 +187,15 @@ class Action
     public function getPreviousEntity()
     {
         if ('article' == $this->entity) {
-            return $this->_entityManager
+            return $this->entityManager
                 ->getRepository('CudiBundle\Entity\Article')
                 ->findOneById($this->previousId);
         } elseif ('file' == $this->entity) {
-            return $this->_entityManager
+            return $this->entityManager
                 ->getRepository('CudiBundle\Entity\File\Mapping')
                 ->findOneById($this->previousId);
         } elseif ('mapping' == $this->entity) {
-            return $this->_entityManager
+            return $this->entityManager
                 ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findOneById($this->previousId);
         }
@@ -320,7 +320,7 @@ class Action
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }

@@ -128,7 +128,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($formSpecification = $this->_getForm())) {
+        if (!($formSpecification = $this->getForm())) {
             return new ViewModel();
         }
 
@@ -193,7 +193,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($form = $this->_getForm())) {
+        if (!($form = $this->getForm())) {
             return new ViewModel();
         }
 
@@ -218,7 +218,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findAllByForm($form);
 
         foreach ($fields as $field) {
-            $this->_deleteField($field);
+            $this->deleteField($field);
         }
 
         $entries = $this->getEntityManager()
@@ -250,7 +250,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _deleteField($field)
+    private function deleteField($field)
     {
         $entries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Entry')
@@ -263,7 +263,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $this->getEntityManager()->remove($field);
     }
 
-    private function _getForm()
+    private function getForm()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

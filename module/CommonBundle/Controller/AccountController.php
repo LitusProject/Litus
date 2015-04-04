@@ -138,7 +138,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_other_organization');
 
-        $termsAndConditions = $this->_getTermsAndConditions();
+        $termsAndConditions = $this->getTermsAndConditions();
 
         if (null !== $metaData) {
             $form = $this->getForm('common_account_edit', array(
@@ -242,7 +242,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 }
 
                 if (null !== $selectedOrganization) {
-                    $this->_setOrganization(
+                    $this->setOrganization(
                         $academic,
                         $this->getCurrentAcademicYear(),
                         $selectedOrganization
@@ -268,7 +268,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     }
 
                     if ($metaData->becomeMember() && null !== $selectedOrganization) {
-                        $this->_bookRegistrationArticles($academic, $organizationData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
+                        $this->bookRegistrationArticles($academic, $organizationData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
@@ -310,7 +310,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     'Your data was succesfully updated!'
                 );
 
-                $this->_doRedirect();
+                $this->doRedirect();
 
                 return new ViewModel();
             }
@@ -343,7 +343,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
 
-        return $this->_studiesAction(
+        return $this->studiesAction(
             $academic,
             $this->getCurrentAcademicYear()
         );
@@ -367,7 +367,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $this->initAjax();
 
-        return $this->_saveStudiesAction(
+        return $this->saveStudiesAction(
             $academic,
             $this->getCurrentAcademicYear(),
             $this->getRequest()->getPost()->toArray()
@@ -390,7 +390,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
 
-        return $this->_subjectAction(
+        return $this->subjectAction(
             $academic,
             $this->getCurrentAcademicYear(),
             $this->getForm('secretary_registration_subject_add')
@@ -415,7 +415,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $this->initAjax();
 
-        return $this->_saveSubjectAction(
+        return $this->saveSubjectAction(
             $academic,
             $this->getCurrentAcademicYear(),
             $this->getRequest()->getPost()->toArray()
@@ -424,7 +424,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function activateAction()
     {
-        if (!($user = $this->_getUser())) {
+        if (!($user = $this->getUser())) {
             return new ViewModel();
         }
 
@@ -584,7 +584,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     /**
      * @return Person|null
      */
-    private function _getUser()
+    private function getUser()
     {
         if (null === $this->getParam('code')) {
             $this->flashMessenger()->error(
@@ -622,7 +622,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     /**
      * @return null
      */
-    private function _doRedirect()
+    private function doRedirect()
     {
         if (null === $this->getParam('return')) {
             $this->redirect()->toRoute(

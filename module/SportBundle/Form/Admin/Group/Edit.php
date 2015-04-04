@@ -49,14 +49,14 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Department',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->_getDepartments(),
+                'options' => $this->getDepartments(),
             ),
         ));
 
         $this->addSubmit('Add Runner', 'product_add');
     }
 
-    private function _getDepartments()
+    private function getDepartments()
     {
         $departments = $this->getEntityManager()
             ->getRepository('SportBundle\Entity\Department')

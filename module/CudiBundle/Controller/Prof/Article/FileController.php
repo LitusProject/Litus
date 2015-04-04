@@ -33,7 +33,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -80,7 +80,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
 
-        if (!($mapping = $this->_getFileMapping())) {
+        if (!($mapping = $this->getFileMapping())) {
             return new ViewModel();
         }
 
@@ -107,7 +107,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
     public function uploadAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -183,7 +183,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getFileMapping())) {
+        if (!($mapping = $this->getFileMapping())) {
             return new ViewModel();
         }
 
@@ -210,7 +210,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
-    private function _getArticle($id = null)
+    private function getArticle($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
@@ -255,7 +255,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         return $article;
     }
 
-    private function _getFileMapping()
+    private function getFileMapping()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

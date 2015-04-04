@@ -31,7 +31,7 @@ class AcademicYearMap extends EntityRepository
 {
     public function findAllByTitleAndAcademicYear($title, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\AcademicYearMap', 'm')
             ->where(
@@ -56,7 +56,7 @@ class AcademicYearMap extends EntityRepository
 
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\AcademicYearMap', 'm')
             ->innerJoin('m.study', 's')

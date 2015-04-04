@@ -86,7 +86,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($news = $this->_getNews())) {
+        if (!($news = $this->getNews())) {
             return new ViewModel();
         }
 
@@ -126,7 +126,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($news = $this->_getNews())) {
+        if (!($news = $this->getNews())) {
             return new ViewModel();
         }
 
@@ -143,7 +143,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getNews()
+    private function getNews()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

@@ -32,7 +32,7 @@ class Start extends EntityRepository
 {
     public function findOneByArticleAndPeriod(Article $article, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('CudiBundle\Entity\Stock\Period\Value\Start', 'v')
             ->where(

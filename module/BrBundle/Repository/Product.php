@@ -30,7 +30,7 @@ class Product extends EntityRepository
 {
     public function findProductByIdQuery($id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('p')
             ->from('BrBundle\Entity\Product', 'p')
             ->where(

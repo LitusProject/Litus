@@ -42,17 +42,17 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
 
     public function sendAction()
     {
-        if (!($type = $this->_getType())) {
+        if (!($type = $this->getType())) {
             return new ViewModel();
         }
 
         if ('organization' == $type) {
-            if (!($status = $this->_getOrganizationStatus())) {
+            if (!($status = $this->getOrganizationStatus())) {
                 return new ViewModel();
             }
             $statuses = OrganizationStatus::$possibleStatuses;
         } else {
-            if (!($status = $this->_getUniversityStatus())) {
+            if (!($status = $this->getUniversityStatus())) {
                 return new ViewModel();
             }
             $statuses = UniversityStatus::$possibleStatuses;
@@ -148,7 +148,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
         );
     }
 
-    private function _getType()
+    private function getType()
     {
         if (null === $this->getParam('type')) {
             $this->flashMessenger()->error(
@@ -187,7 +187,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
         return $type;
     }
 
-    private function _getUniversityStatus()
+    private function getUniversityStatus()
     {
         if (null === $this->getParam('group')) {
             $this->flashMessenger()->error(
@@ -226,7 +226,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
         return $status;
     }
 
-    private function _getOrganizationStatus()
+    private function getOrganizationStatus()
     {
         if (null === $this->getParam('group')) {
             $this->flashMessenger()->error(

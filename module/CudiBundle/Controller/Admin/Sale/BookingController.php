@@ -40,12 +40,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($activePeriod = $this->_getPeriod())) {
+        if (!($activePeriod = $this->getPeriod())) {
             return new ViewModel();
         }
 
         if (null !== $this->getParam('field')) {
-            $bookings = $this->_search($activePeriod, $this->getParam('type'));
+            $bookings = $this->search($activePeriod, $this->getParam('type'));
         }
 
         if (!isset($bookings)) {
@@ -80,12 +80,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($activePeriod = $this->_getPeriod())) {
+        if (!($activePeriod = $this->getPeriod())) {
             return new ViewModel();
         }
 
         if (null !== $this->getParam('field')) {
-            $bookings = $this->_search($activePeriod, 'inactive');
+            $bookings = $this->search($activePeriod, 'inactive');
         }
 
         if (!isset($bookings)) {
@@ -120,7 +120,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($activePeriod = $this->_getPeriod())) {
+        if (!($activePeriod = $this->getPeriod())) {
             return new ViewModel();
         }
 
@@ -202,7 +202,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($booking = $this->_getBooking())) {
+        if (!($booking = $this->getBooking())) {
             return new ViewModel();
         }
 
@@ -210,7 +210,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($activePeriod = $this->_getPeriod())) {
+        if (!($activePeriod = $this->getPeriod())) {
             return new ViewModel();
         }
 
@@ -246,7 +246,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function deleteAction()
     {
-        if (!($booking = $this->_getBooking())) {
+        if (!($booking = $this->getBooking())) {
             return new ViewModel();
         }
 
@@ -275,7 +275,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function assignAction()
     {
-        if (!($booking = $this->_getBooking())) {
+        if (!($booking = $this->getBooking())) {
             return new ViewModel();
         }
 
@@ -337,7 +337,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function unassignAction()
     {
-        if (!($booking = $this->_getBooking())) {
+        if (!($booking = $this->getBooking())) {
             return new ViewModel();
         }
 
@@ -369,7 +369,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function expireAction()
     {
-        if (!($booking = $this->_getBooking())) {
+        if (!($booking = $this->getBooking())) {
             return new ViewModel();
         }
 
@@ -388,7 +388,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function extendAction()
     {
-        if (!($booking = $this->_getBooking())) {
+        if (!($booking = $this->getBooking())) {
             return new ViewModel();
         }
 
@@ -414,7 +414,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function returnAction()
     {
-        if (!($booking = $this->_getBooking()) || $booking->getStatus() != 'sold') {
+        if (!($booking = $this->getBooking()) || $booking->getStatus() != 'sold') {
             return new ViewModel();
         }
 
@@ -589,7 +589,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($activePeriod = $this->_getPeriod())) {
+        if (!($activePeriod = $this->getPeriod())) {
             return new ViewModel();
         }
 
@@ -597,7 +597,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $bookings = $this->_search($activePeriod, $this->getParam('type'))
+        $bookings = $this->search($activePeriod, $this->getParam('type'))
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -624,7 +624,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $form = $this->getForm('cudi_sale_booking_person');
 
-        if ($person = $this->_getPerson()) {
+        if ($person = $this->getPerson()) {
             $paginator = $this->paginator()->createFromQuery(
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -651,13 +651,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function articleAction()
     {
-        if (!($activePeriod = $this->_getPeriod())) {
+        if (!($activePeriod = $this->getPeriod())) {
             return new ViewModel();
         }
 
         $form = $this->getForm('cudi_sale_booking_article');
 
-        if ($article = $this->_getArticle()) {
+        if ($article = $this->getArticle()) {
             $paginator = $this->paginator()->createFromQuery(
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -703,7 +703,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function undoAction()
     {
-        if (!($log = $this->_getLog())) {
+        if (!($log = $this->getLog())) {
             return new ViewModel();
         }
 
@@ -738,7 +738,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @param string $type
      */
-    private function _search(Period $activePeriod, $type)
+    private function search(Period $activePeriod, $type)
     {
         switch ($this->getParam('field')) {
             case 'person':
@@ -759,7 +759,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return Period
      */
-    private function _getPeriod()
+    private function getPeriod()
     {
         if (null === $this->getParam('period')) {
             return $this->getActiveStockPeriod();
@@ -788,7 +788,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         return $period;
     }
 
-    private function _getBooking()
+    private function getBooking()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -829,7 +829,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         return $booking;
     }
 
-    private function _getPerson()
+    private function getPerson()
     {
         if (null === $this->getParam('id')) {
             return;
@@ -858,7 +858,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         return $person;
     }
 
-    private function _getArticle()
+    private function getArticle()
     {
         if (null === $this->getParam('id')) {
             return;
@@ -887,7 +887,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         return $article;
     }
 
-    private function _getLog()
+    private function getLog()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

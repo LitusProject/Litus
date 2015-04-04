@@ -84,7 +84,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 
     public function editAction()
     {
-        if (!($publication = $this->_getPublication())) {
+        if (!($publication = $this->getPublication())) {
             return new ViewModel();
         }
 
@@ -123,7 +123,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
-        if (!($publication = $this->_getPublication())) {
+        if (!($publication = $this->getPublication())) {
             return new ViewModel();
         }
 
@@ -140,7 +140,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
     /**
      * @return Publication
      */
-    private function _getPublication()
+    private function getPublication()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

@@ -31,7 +31,7 @@ class Logo extends EntityRepository
 {
     public function findAllByCompanyQuery(CompanyEntity $company)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('BrBundle\Entity\Company\Logo', 'l')
             ->where(
@@ -45,7 +45,7 @@ class Logo extends EntityRepository
 
     public function findOneByTypeAndCompany($type, CompanyEntity $company)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('BrBundle\Entity\Company\Logo', 'l')
             ->where(
@@ -65,7 +65,7 @@ class Logo extends EntityRepository
 
     public function findAllByTypeQuery($type)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('BrBundle\Entity\Company\Logo', 'l')
             ->where(

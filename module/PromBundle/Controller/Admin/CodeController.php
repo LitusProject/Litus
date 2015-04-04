@@ -91,7 +91,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function expireAction()
     {
-        if (!($code = $this->_getCode())) {
+        if (!($code = $this->getCode())) {
             return new ViewModel();
         }
 
@@ -143,7 +143,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($code = $this->_getCode())) {
+        if (!($code = $this->getCode())) {
             return new ViewModel();
         }
 
@@ -163,7 +163,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getCode()
+    private function getCode()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

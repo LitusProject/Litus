@@ -57,7 +57,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Minimum Rank',
             'required'   => true,
             'options'    => array(
-                'options' => $this->_createRanksArray(),
+                'options' => $this->createRanksArray(),
             ),
         ));
 
@@ -98,7 +98,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $this->addSubmit('Send', 'mail');
     }
 
-    private function _createRanksArray()
+    private function createRanksArray()
     {
         $rankingCriteria = unserialize($this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

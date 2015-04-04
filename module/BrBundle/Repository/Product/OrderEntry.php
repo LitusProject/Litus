@@ -32,7 +32,7 @@ class OrderEntry extends EntityRepository
 {
     public function findOneByOrderAndProduct(EditOrder $order, Product $product)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('BrBundle\Entity\Product\OrderEntry', 'o')
             ->where(

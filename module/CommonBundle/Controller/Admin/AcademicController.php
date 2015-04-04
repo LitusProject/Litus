@@ -31,7 +31,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field') && ($academics = $this->_search())) {
+        if (null !== $this->getParam('field') && ($academics = $this->search())) {
             $paginator = $this->paginator()->createFromQuery(
                 $academics,
                 $this->getParam('page')
@@ -105,7 +105,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademic())) {
             return new ViewModel();
         }
 
@@ -143,7 +143,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function activateAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademic())) {
             return new ViewModel();
         }
 
@@ -175,7 +175,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademic())) {
             return new ViewModel();
         }
 
@@ -232,7 +232,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $academics = $this->_search()
+        $academics = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -262,7 +262,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Query|null
      */
-    private function _search()
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'username':
@@ -283,7 +283,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Academic|null
      */
-    private function _getAcademic()
+    private function getAcademic()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

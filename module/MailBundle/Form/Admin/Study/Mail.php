@@ -32,7 +32,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var AcademicYear
      */
-    private $_academicYear;
+    private $academicYear;
 
     public function init()
     {
@@ -40,7 +40,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
 
         $this->setAttribute('id', 'uploadFile');
 
-        $studies = $this->_getStudies();
+        $studies = $this->getStudies();
         if (0 != count($studies)) {
             $this->add(array(
                 'type'       => 'select',
@@ -56,7 +56,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ));
         }
 
-        $groups = $this->_getGroups();
+        $groups = $this->getGroups();
         if (0 != count($groups)) {
             $this->add(array(
                 'type'       => 'select',
@@ -122,7 +122,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $storedMessages = $this->_getStoredMessages();
+        $storedMessages = $this->getStoredMessages();
         if (1 < count($storedMessages)) {
             $this->add(array(
                 'type'     => 'fieldset',
@@ -214,16 +214,16 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setAcademicYear(AcademicYear $academicYear)
     {
-        $this->_academicYear = $academicYear;
+        $this->academicYear = $academicYear;
 
         return $this;
     }
 
-    private function _getStudies()
+    private function getStudies()
     {
         $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findAllParentsByAcademicYear($this->_academicYear);
+            ->findAllParentsByAcademicYear($this->academicYear);
 
         $studyNames = array();
         foreach ($studies as $study) {
@@ -233,7 +233,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         return $studyNames;
     }
 
-    private function _getGroups()
+    private function getGroups()
     {
         $groups = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Group')
@@ -247,7 +247,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         return $groupNames;
     }
 
-    private function _getStoredMessages()
+    private function getStoredMessages()
     {
         $storedMessages = $this->getDocumentManager()
             ->getRepository('MailBundle\Document\Message')

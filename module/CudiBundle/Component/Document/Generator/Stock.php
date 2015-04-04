@@ -35,22 +35,22 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * @var string
      */
-    private $_articles;
+    private $articles;
 
     /**
      * @var string
      */
-    private $_order;
+    private $order;
 
     /**
      * @var boolean
      */
-    private $_onlyInStock;
+    private $onlyInStock;
 
     /**
      * @var AcademicYear
      */
-    private $_academicYear;
+    private $academicYear;
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
@@ -72,10 +72,10 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
             $file->getFilename()
         );
 
-        $this->_articles = $articles;
-        $this->_order = $order;
-        $this->_onlyInStock = $onlyInStock;
-        $this->_academicYear = $academicYear;
+        $this->articles = $articles;
+        $this->order = $order;
+        $this->onlyInStock = $onlyInStock;
+        $this->academicYear = $academicYear;
     }
 
     /**
@@ -97,26 +97,26 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($configs->getConfigValue('cudi.person'));
 
-        if ($this->_order == 'barcode') {
+        if ($this->order == 'barcode') {
             $stock = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
-                ->findAllByAcademicYearSortBarcode($this->_academicYear);
+                ->findAllByAcademicYearSortBarcode($this->academicYear);
         } else {
             $stock = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Article')
-                ->findAllByAcademicYear($this->_academicYear);
+                ->findAllByAcademicYear($this->academicYear);
         }
 
         $items = array();
         foreach ($stock as $item) {
-            if ($this->_articles == 'external' && $item->getMainArticle()->isInternal()) {
+            if ($this->articles == 'external' && $item->getMainArticle()->isInternal()) {
                 continue;
             }
-            if ($this->_articles == 'internal' && !$item->getMainArticle()->isInternal()) {
+            if ($this->articles == 'internal' && !$item->getMainArticle()->isInternal()) {
                 continue;
             }
 
-            if ($item->getStockValue() <= 0 && $this->_onlyInStock) {
+            if ($item->getStockValue() <= 0 && $this->onlyInStock) {
                 continue;
             }
 

@@ -114,7 +114,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($period = $this->_getPeriod())) {
+        if (!($period = $this->getPeriod())) {
             return new ViewModel();
         }
 
@@ -138,7 +138,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
     public function searchAction()
     {
-        if (!($period = $this->_getPeriod())) {
+        if (!($period = $this->getPeriod())) {
             return new ViewModel();
         }
 
@@ -187,7 +187,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getPeriod()
+    private function getPeriod()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

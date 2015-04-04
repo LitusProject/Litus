@@ -34,7 +34,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 {
     public function overviewAction()
     {
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getPerson())) {
             return new ViewModel();
         }
 
@@ -62,7 +62,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
     {
         $form = $this->getForm('br_corporate_job_add');
 
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getPerson())) {
             return new ViewModel();
         }
 
@@ -109,11 +109,11 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function editAction()
     {
-        if (!($oldJob = $this->_getJob())) {
+        if (!($oldJob = $this->getJob())) {
             return new ViewModel();
         }
 
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getPerson())) {
             return new ViewModel();
         }
 
@@ -163,11 +163,11 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function deleteAction()
     {
-        if (!($vacancy = $this->_getVacancy())) {
+        if (!($vacancy = $this->getVacancy())) {
             return new ViewModel();
         }
 
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getPerson())) {
             return new ViewModel();
         }
 
@@ -183,7 +183,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         );
     }
 
-    private function _getVacancy()
+    private function getVacancy()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -224,7 +224,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         return $vacancy;
     }
 
-    private function _getSectors()
+    private function getSectors()
     {
         $sectorArray = array();
         foreach (Company::$possibleSectors as $key => $sector) {
@@ -234,7 +234,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         return $sectorArray;
     }
 
-    private function _getJob()
+    private function getJob()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -278,7 +278,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
     /**
      * @return Corporate
      */
-    private function _getPerson()
+    private function getPerson()
     {
         $person = $this->getAuthentication()->getPersonObject();
 

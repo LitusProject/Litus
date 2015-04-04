@@ -61,7 +61,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         }
 
         if (null !== $this->getParam('field')) {
-            $orders = $this->_search($period);
+            $orders = $this->search($period);
         }
 
         if (!isset($orders)) {
@@ -99,7 +99,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $orders = $this->_search($period)
+        $orders = $this->search($period)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -129,7 +129,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function supplierAction()
     {
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplier())) {
             return new ViewModel();
         }
 
@@ -160,7 +160,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($order = $this->_getOrder())) {
+        if (!($order = $this->getOrder())) {
             return new ViewModel();
         }
 
@@ -267,7 +267,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function editItemAction()
     {
-        if (!($item = $this->_getOrderItem())) {
+        if (!($item = $this->getOrderItem())) {
             return new ViewModel();
         }
 
@@ -321,7 +321,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($item = $this->_getOrderItem())) {
+        if (!($item = $this->getOrderItem())) {
             return new ViewModel();
         }
 
@@ -337,7 +337,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function placeAction()
     {
-        if (!($order = $this->_getOrder())) {
+        if (!($order = $this->getOrder())) {
             return new ViewModel();
         }
 
@@ -363,7 +363,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function pdfAction()
     {
-        if (!($order = $this->_getOrder())) {
+        if (!($order = $this->getOrder())) {
             return new ViewModel();
         }
 
@@ -389,7 +389,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function exportAction()
     {
-        if (!($order = $this->_getOrder())) {
+        if (!($order = $this->getOrder())) {
             return new ViewModel();
         }
 
@@ -418,7 +418,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function cancelAction()
     {
-        if (!($order = $this->_getOrder())) {
+        if (!($order = $this->getOrder())) {
             return new ViewModel();
         }
 
@@ -436,7 +436,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
-    private function _search(Period $period)
+    private function search(Period $period)
     {
         switch ($this->getParam('field')) {
             case 'title':
@@ -450,7 +450,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         }
     }
 
-    private function _getSupplier()
+    private function getSupplier()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -491,7 +491,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         return $supplier;
     }
 
-    private function _getOrder()
+    private function getOrder()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -535,7 +535,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     /**
      * @return \CudiBundle\Entity\Stock\Order\Item|null
      */
-    private function _getOrderItem()
+    private function getOrderItem()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

@@ -85,7 +85,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 
     public function viewAction()
     {
-        $vacancy = $this->_getVacancy();
+        $vacancy = $this->getVacancy();
 
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -99,7 +99,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
-    private function _getVacancy()
+    private function getVacancy()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -138,15 +138,5 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
         }
 
         return $vacancy;
-    }
-
-    private function _getSectors()
-    {
-        $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
     }
 }

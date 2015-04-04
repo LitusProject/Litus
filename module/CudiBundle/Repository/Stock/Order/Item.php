@@ -36,7 +36,7 @@ class Item extends EntityRepository
 {
     public function findOneOpenByArticle(Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
@@ -141,7 +141,7 @@ class Item extends EntityRepository
 
     public function findAllByPeriodQuery(Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
@@ -168,7 +168,7 @@ class Item extends EntityRepository
 
     public function findAllByTitleAndPeriodQuery($title, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
@@ -201,7 +201,7 @@ class Item extends EntityRepository
 
     public function findAllBySupplierStringAndPeriodQuery($supplier, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
@@ -233,7 +233,7 @@ class Item extends EntityRepository
 
     public function findAllByOrderOnAlphaQuery(OrderEntity $order)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i, a, m')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
@@ -250,7 +250,7 @@ class Item extends EntityRepository
 
     public function findAllByOrderOnBarcodeQuery(OrderEntity $order)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i, a, b')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')

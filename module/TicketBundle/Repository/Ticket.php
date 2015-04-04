@@ -33,7 +33,7 @@ class Ticket extends EntityRepository
 {
     public function findOneByEventAndNumber(EventEntity $event, $number)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('t')
             ->from('TicketBundle\Entity\Ticket', 't')
             ->where(
@@ -53,7 +53,7 @@ class Ticket extends EntityRepository
 
     public function findAllByEventQuery(EventEntity $event)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('t')
             ->from('TicketBundle\Entity\Ticket', 't')
             ->where(
@@ -67,7 +67,7 @@ class Ticket extends EntityRepository
 
     public function findAllByEventAndPersonQuery(EventEntity $event, Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('t')
             ->from('TicketBundle\Entity\Ticket', 't')
             ->where(
@@ -85,7 +85,7 @@ class Ticket extends EntityRepository
 
     public function findAllEmptyByEventQuery(EventEntity $event)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('t')
             ->from('TicketBundle\Entity\Ticket', 't')
             ->where(
@@ -103,7 +103,7 @@ class Ticket extends EntityRepository
 
     public function findAllActiveByEvent(EventEntity $event)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('t')
             ->from('TicketBundle\Entity\Ticket', 't')
             ->where(
@@ -133,7 +133,7 @@ class Ticket extends EntityRepository
 
     public function findAllByEventAndPersonName(EventEntity $event, $name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('t')
             ->from('TicketBundle\Entity\Ticket', 't')
             ->leftJoin('t.guestInfo', 'g')
@@ -200,7 +200,7 @@ class Ticket extends EntityRepository
 
     public function findAllByEventAndOption(EventEntity $event, $option)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('t')
             ->from('TicketBundle\Entity\Ticket', 't')
             ->leftJoin('t.option', 'o')
@@ -254,7 +254,7 @@ class Ticket extends EntityRepository
             $ids[] = $item['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('t')
             ->from('TicketBundle\Entity\Ticket', 't')
             ->innerJoin('t.person', 'p')

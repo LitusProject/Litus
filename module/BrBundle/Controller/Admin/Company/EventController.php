@@ -31,7 +31,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompany())) {
             return new ViewModel();
         }
 
@@ -53,7 +53,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompany())) {
             return new ViewModel();
         }
 
@@ -102,7 +102,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
@@ -144,7 +144,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
@@ -160,7 +160,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editPosterAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
@@ -207,7 +207,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function uploadAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
@@ -263,7 +263,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return BrBundle\Entity\Company|null
      */
-    private function _getCompany()
+    private function getCompany()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -307,7 +307,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return \BrBundle\Entity\Company\Event|null
      */
-    private function _getEvent()
+    private function getEvent()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

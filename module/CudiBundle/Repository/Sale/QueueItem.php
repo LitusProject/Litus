@@ -32,7 +32,7 @@ class QueueItem extends EntityRepository
 {
     public function getNextQueueNumber(SessionEntity $session)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('MAX(i.queueNumber)')
             ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where(
@@ -51,7 +51,7 @@ class QueueItem extends EntityRepository
 
     public function findOneByPersonNotSold(SessionEntity $session, Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where(
@@ -73,7 +73,7 @@ class QueueItem extends EntityRepository
 
     public function findAllByStatusQuery(SessionEntity $session, $status)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where(
@@ -92,7 +92,7 @@ class QueueItem extends EntityRepository
 
     public function findAllBySessionQuery(SessionEntity $session)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where(
@@ -113,7 +113,7 @@ class QueueItem extends EntityRepository
 
     public function findNbBySession(SessionEntity $session)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('COUNT(i)')
             ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where(
@@ -136,7 +136,7 @@ class QueueItem extends EntityRepository
 
     public function findOneSoldByPersonAndSession(Person $person, SessionEntity $session)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where(

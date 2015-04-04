@@ -82,7 +82,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($action = $this->_getAction())) {
+        if (!($action = $this->getAction())) {
             return new ViewModel();
         }
 
@@ -97,7 +97,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function refuseAction()
     {
-        if (!($action = $this->_getAction())) {
+        if (!($action = $this->getAction())) {
             return new ViewModel();
         }
 
@@ -122,7 +122,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmAction()
     {
-        if (!($action = $this->_getAction())) {
+        if (!($action = $this->getAction())) {
             return new ViewModel();
         }
 
@@ -225,7 +225,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmArticleAction()
     {
-        if (!($action = $this->_getAction())) {
+        if (!($action = $this->getAction())) {
             return new ViewModel();
         }
 
@@ -291,7 +291,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmFileAction()
     {
-        if (!($action = $this->_getAction())) {
+        if (!($action = $this->getAction())) {
             return new ViewModel();
         }
 
@@ -333,7 +333,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getAction()
+    private function getAction()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

@@ -32,7 +32,7 @@ class Edit extends Add
     /**
      * @var Form
      */
-    private $_form;
+    private $form;
 
     public function init()
     {
@@ -42,7 +42,7 @@ class Edit extends Add
 
         $group = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
-            ->findOneByForm($this->_form);
+            ->findOneByForm($this->form);
 
         if (null !== $group) {
             $this->get('start_date')
@@ -66,7 +66,7 @@ class Edit extends Add
         }
 
         $this->remove('type');
-        if ($this->_form instanceof Doodle) {
+        if ($this->form instanceof Doodle) {
             $this->remove('max');
         } else {
             $this->remove('names_visible_for_others');
@@ -77,14 +77,14 @@ class Edit extends Add
         $this->remove('submit');
         $this->addSubmit('Save', 'form_edit');
 
-        if (null !== $this->_form) {
-            $this->bind($this->_form);
+        if (null !== $this->form) {
+            $this->bind($this->form);
         }
     }
 
     public function setForm(Form $form)
     {
-        $this->_form = $form;
+        $this->form = $form;
 
         return $this;
     }

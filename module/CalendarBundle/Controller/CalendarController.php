@@ -45,7 +45,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function viewAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return $this->notFoundAction();
         }
 
@@ -68,7 +68,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function posterAction()
     {
-        if (!($event = $this->_getEventByPoster())) {
+        if (!($event = $this->getEventByPoster())) {
             return $this->notFoundAction();
         }
 
@@ -217,7 +217,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Event|null
      */
-    public function _getEvent()
+    public function getEvent()
     {
         if (null === $this->getParam('name')) {
             return;
@@ -237,7 +237,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Event|null
      */
-    private function _getEventByPoster()
+    private function getEventByPoster()
     {
         if (null === $this->getParam('name')) {
             return;

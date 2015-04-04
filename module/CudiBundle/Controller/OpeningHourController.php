@@ -48,9 +48,9 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         if (isset($page)) {
-            $submenu = $this->_buildSubmenu($page);
+            $submenu = $this->buildSubmenu($page);
             if (empty($submenu) && null !== $page->getParent()) {
-                $submenu = $this->_buildSubmenu($page->getParent());
+                $submenu = $this->buildSubmenu($page->getParent());
             }
         }
 

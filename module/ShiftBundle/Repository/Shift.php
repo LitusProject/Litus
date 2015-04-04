@@ -38,7 +38,7 @@ class Shift extends EntityRepository
 {
     public function findAllActiveQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
@@ -53,7 +53,7 @@ class Shift extends EntityRepository
 
     public function findAllActiveByNameQuery($name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
@@ -72,7 +72,7 @@ class Shift extends EntityRepository
 
     public function findAllOldQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
@@ -87,7 +87,7 @@ class Shift extends EntityRepository
 
     public function findAllActiveByEventQuery(Event $event)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
@@ -106,7 +106,7 @@ class Shift extends EntityRepository
 
     public function findAllActiveByUnitQuery(UnitEntity $unit)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
@@ -125,7 +125,7 @@ class Shift extends EntityRepository
 
     public function findAllActiveBetweenDatesQuery($startDate, $endDate)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->where(
@@ -146,7 +146,7 @@ class Shift extends EntityRepository
 
     public function findAllActiveByPerson(Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $responsibleResultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.responsibles', 'r')
@@ -167,7 +167,7 @@ class Shift extends EntityRepository
             $shifts[$result->getStartDate()->format('YmdHi') . $result->getId()] = $result;
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $volunteerResultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.volunteers', 'v')
@@ -212,7 +212,7 @@ class Shift extends EntityRepository
 
     public function findAllByPersonAsReponsibleQuery(Person $person, AcademicYear $academicYear = null)
     {
-        $queryBuilder = $this->_em->createQueryBuilder();
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $query = $queryBuilder->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.responsibles', 'r');
@@ -245,7 +245,7 @@ class Shift extends EntityRepository
 
     public function findAllByPersonAsVolunteerQuery(Person $person, AcademicYear $academicYear = null)
     {
-        $queryBuilder = $this->_em->createQueryBuilder();
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $query = $queryBuilder->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.volunteers', 'v');
@@ -278,7 +278,7 @@ class Shift extends EntityRepository
 
     public function findOneByVolunteer($id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.volunteers', 'v')
@@ -295,7 +295,7 @@ class Shift extends EntityRepository
 
     public function findOneByResponsible($id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.responsibles', 'r')
@@ -312,7 +312,7 @@ class Shift extends EntityRepository
 
     public function findOneActiveByVolunteer($id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.volunteers', 'v')
@@ -333,7 +333,7 @@ class Shift extends EntityRepository
 
     public function findOneActiveByResponsible($id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.responsibles', 'r')

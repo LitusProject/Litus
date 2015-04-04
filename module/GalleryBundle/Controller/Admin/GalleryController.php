@@ -92,7 +92,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($album = $this->_getAlbum())) {
+        if (!($album = $this->getAlbum())) {
             return new ViewModel();
         }
 
@@ -131,7 +131,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($album = $this->_getAlbum())) {
+        if (!($album = $this->getAlbum())) {
             return new ViewModel();
         }
 
@@ -150,7 +150,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function photosAction()
     {
-        if (!($album = $this->_getAlbum())) {
+        if (!($album = $this->getAlbum())) {
             return new ViewModel();
         }
 
@@ -175,7 +175,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addPhotosAction()
     {
-        if (!($album = $this->_getAlbum())) {
+        if (!($album = $this->getAlbum())) {
             return new ViewModel();
         }
 
@@ -188,7 +188,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function deletePhotoAction()
     {
-        if (!($photo = $this->_getPhoto())) {
+        if (!($photo = $this->getPhoto())) {
             return new ViewModel();
         }
 
@@ -217,7 +217,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function uploadAction()
     {
-        if (!($album = $this->_getAlbum())) {
+        if (!($album = $this->getAlbum())) {
             return new ViewModel();
         }
 
@@ -321,7 +321,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function censorPhotoAction()
     {
-        if (!($photo = $this->_getPhoto())) {
+        if (!($photo = $this->getPhoto())) {
             return new ViewModel();
         }
 
@@ -340,7 +340,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function unCensorPhotoAction()
     {
-        if (!($photo = $this->_getPhoto())) {
+        if (!($photo = $this->getPhoto())) {
             return new ViewModel();
         }
 
@@ -357,7 +357,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel();
     }
 
-    public function _getAlbum()
+    public function getAlbum()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -398,7 +398,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return $album;
     }
 
-    public function _getPhoto()
+    public function getPhoto()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

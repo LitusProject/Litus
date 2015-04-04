@@ -33,7 +33,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -118,7 +118,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping())) {
+        if (!($mapping = $this->getMapping())) {
             return new ViewModel();
         }
 
@@ -149,7 +149,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
     /**
      * @return SubjectMap
      */
-    private function _getMapping()
+    private function getMapping()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -190,7 +190,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
         return $article;
     }
 
-    private function _getArticle()
+    private function getArticle()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

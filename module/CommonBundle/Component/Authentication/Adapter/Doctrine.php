@@ -33,42 +33,42 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    private $entityManager = null;
 
     /**
      * @var string The name of the entity that holds the authentication information
      */
-    private $_entityName = '';
+    private $entityName = '';
 
     /**
      * @var string The name of the column that holds the identity
      */
-    private $_identityColumn = '';
+    private $identityColumn = '';
 
     /**
      * @var bool Whether or not the username check is case-sensitive
      */
-    private $_caseSensitive = false;
+    private $caseSensitive = false;
 
     /**
      * @var string The identity value that should be checked
      */
-    private $_identity = '';
+    private $identity = '';
 
     /**
      * @var string The credential value that should be checked
      */
-    private $_credential = '';
+    private $credential = '';
 
     /**
      * @var array The result of the authentication (with extended info)
      */
-    private $_authenticationResult = array();
+    private $authenticationResult = array();
 
     /**
      * @var \CommonBundle\Entity\User\Person The object returned by our DQL query
      */
-    private $_personObject = null;
+    private $personObject = null;
 
     /**
      * @param  EntityManager                      $entityManager  The EntityManager instance
@@ -79,7 +79,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
      */
     public function __construct(EntityManager $entityManager, $entityName, $identityColumn, $caseSensitive = false)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         // A bit of a dirty hack to get Zend's DI to play nice
         $entityName = str_replace('"', '', $entityName);
@@ -89,10 +89,10 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
                 'The entity name cannot have a leading backslash'
             );
         }
-        $this->_entityName = $entityName;
+        $this->entityName = $entityName;
 
-        $this->_identityColumn = $identityColumn;
-        $this->_caseSensitive = $caseSensitive;
+        $this->identityColumn = $identityColumn;
+        $this->caseSensitive = $caseSensitive;
 
         $this->setAuthenticationResult(
             array(
@@ -109,7 +109,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
      */
     protected function getEntityManager()
     {
-        return $this->_entityManager;
+        return $this->entityManager;
     }
 
     /**
@@ -117,7 +117,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
      */
     protected function getEntityName()
     {
-        return $this->_entityName;
+        return $this->entityName;
     }
 
     /**
@@ -125,7 +125,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
      */
     protected function getIdentityColumn()
     {
-        return $this->_identityColumn;
+        return $this->identityColumn;
     }
 
     /**
@@ -133,7 +133,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
      */
     protected function getCaseSensitive()
     {
-        return $this->_caseSensitive;
+        return $this->caseSensitive;
     }
 
     /**
@@ -142,7 +142,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
      */
     public function setIdentity($identity)
     {
-        $this->_identity = $identity;
+        $this->identity = $identity;
 
         return $this;
     }
@@ -152,7 +152,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
      */
     public function getIdentity()
     {
-        return $this->_identity;
+        return $this->identity;
     }
 
     /**
@@ -161,7 +161,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
      */
     public function setCredential($credential)
     {
-        $this->_credential = $credential;
+        $this->credential = $credential;
 
         return $this;
     }
@@ -171,7 +171,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
      */
     protected function getCredential()
     {
-        return $this->_credential;
+        return $this->credential;
     }
 
     /**
@@ -179,8 +179,8 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
      */
     protected function setAuthenticationResult(array $authenticationResult)
     {
-        $this->_authenticationResult = array_merge(
-            $this->_authenticationResult,
+        $this->authenticationResult = array_merge(
+            $this->authenticationResult,
             $authenticationResult
         );
     }
@@ -190,7 +190,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
      */
     protected function getPersonObject()
     {
-        return $this->_personObject;
+        return $this->personObject;
     }
 
     /**
@@ -261,7 +261,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
                 )
             );
         } else {
-            $this->_personObject = $resultSet[0];
+            $this->personObject = $resultSet[0];
             $this->validatePersonObject();
         }
     }
@@ -279,10 +279,10 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     protected function createResult()
     {
         return new Result(
-            $this->_authenticationResult['code'],
-            $this->_authenticationResult['identity'],
-            $this->_authenticationResult['messages'],
-            $this->_authenticationResult['personObject']
+            $this->authenticationResult['code'],
+            $this->authenticationResult['identity'],
+            $this->authenticationResult['messages'],
+            $this->authenticationResult['personObject']
         );
     }
 }

@@ -32,7 +32,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($quiz = $this->_getQuiz())) {
+        if (!($quiz = $this->getQuiz())) {
             return new ViewModel();
         }
 
@@ -58,7 +58,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($quiz = $this->_getQuiz())) {
+        if (!($quiz = $this->getQuiz())) {
             return new ViewModel();
         }
 
@@ -109,7 +109,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($round = $this->_getRound())) {
+        if (!($round = $this->getRound())) {
             return new ViewModel();
         }
 
@@ -148,7 +148,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($round = $this->_getRound())) {
+        if (!($round = $this->getRound())) {
             return new ViewModel();
         }
 
@@ -168,7 +168,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     public function sortAction()
     {
         $this->initAjax();
-        if (!($quiz = $this->_getQuiz())) {
+        if (!($quiz = $this->getQuiz())) {
             return new ViewModel();
         }
 
@@ -199,7 +199,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return null|\QuizBundle\Entity\Quiz
      */
-    private function _getQuiz()
+    private function getQuiz()
     {
         if ($this->getParam('quizid') === null) {
             $this->flashMessenger()->error(
@@ -259,7 +259,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return null|Round
      */
-    private function _getRound()
+    private function getRound()
     {
         if ($this->getParam('id') === null) {
             $this->flashMessenger()->error(

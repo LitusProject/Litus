@@ -31,7 +31,7 @@ class Study extends EntityRepository
 {
     public function findOneByArticle(Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('CudiBundle\Entity\Sale\Article\Restriction\Study', 'r')
             ->where(

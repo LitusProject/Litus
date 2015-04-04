@@ -34,20 +34,20 @@ class Queue
     /**
      * @var EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @var array Array with active queue items (selling or collecting)
      */
-    private $_queueItems;
+    private $queueItems;
 
     /**
      * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
-        $this->_queueItems = array();
+        $this->entityManager = $entityManager;
+        $this->queueItems = array();
     }
 
     /**
@@ -56,7 +56,7 @@ class Queue
     public function getNumberSignedIn(Session $session)
     {
         return count(
-            $this->_entityManager
+            $this->entityManager
                 ->getRepository('CudiBundle\Entity\Sale\QueueItem')
                 ->findAllByStatus($session, 'signed_in')
         );
@@ -69,22 +69,22 @@ class Queue
      */
     public function getJsonQueue(Session $session)
     {
-        $repository = $this->_entityManager
+        $repository = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem');
 
-        $selling = $this->_createJsonQueue(
+        $selling = $this->createJsonQueue(
             $repository->findAllByStatus($session, 'selling')
         );
 
-        $collected = $this->_createJsonQueue(
+        $collected = $this->createJsonQueue(
             $repository->findAllByStatus($session, 'selling')
         );
 
-        $collecting = $this->_createJsonQueue(
+        $collecting = $this->createJsonQueue(
             $repository->findAllByStatus($session, 'selling')
         );
 
-        $signed_in = $this->_createJsonQueue(
+        $signed_in = $this->createJsonQueue(
             $repository->findAllByStatus($session, 'selling')
         );
 
@@ -113,15 +113,15 @@ class Queue
             return;
         }
 
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
-        $prefix = $this->_entityManager
+        $prefix = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_item_barcode_prefix');
 
-        $enableCollectScanning = $this->_entityManager
+        $enableCollectScanning = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
@@ -157,15 +157,15 @@ class Queue
      */
     public function getJsonQueueList(Session $session)
     {
-        $numItems = $this->_entityManager
+        $numItems = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.number_queue_items');
 
         return json_encode(
             (object) array(
                 'queue' => array_slice(
-                    $this->_createJsonQueue(
-                        $this->_entityManager
+                    $this->createJsonQueue(
+                        $this->entityManager
                             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
                             ->findAllBySession($session)
                     ),
@@ -184,7 +184,7 @@ class Queue
      */
     public function addPerson(Session $session, $universityIdentification, $forced = false)
     {
-        $person = $this->_entityManager
+        $person = $this->entityManager
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneByUsername($universityIdentification);
 
@@ -197,7 +197,7 @@ class Queue
         }
 
         if (!$forced) {
-            if (!$session->canSignIn($this->_entityManager, $person)) {
+            if (!$session->canSignIn($this->entityManager, $person)) {
                 return json_encode(
                     (object) array(
                         'error' => 'rejected',
@@ -206,7 +206,7 @@ class Queue
             }
         }
 
-        $bookings = $this->_entityManager
+        $bookings = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllAssignedByPerson($person);
 
@@ -218,18 +218,18 @@ class Queue
             );
         }
 
-        $queueItem = $this->_entityManager
+        $queueItem = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneByPersonNotSold($session, $person);
 
         if (null == $queueItem) {
-            $queueItem = new EntityQueueItem($this->_entityManager, $person, $session);
+            $queueItem = new EntityQueueItem($this->entityManager, $person, $session);
 
-            $this->_entityManager->persist($queueItem);
-            $this->_entityManager->flush();
+            $this->entityManager->persist($queueItem);
+            $this->entityManager->flush();
         } elseif ($queueItem->getStatus() == 'hold') {
             $queueItem->setStatus('signed_in');
-            $this->_entityManager->flush();
+            $this->entityManager->flush();
         }
 
         return $queueItem;
@@ -240,9 +240,9 @@ class Queue
      */
     public function unlockByUser(User $user)
     {
-        foreach ($this->_queueItems as $item) {
+        foreach ($this->queueItems as $item) {
             if ($item->getUser()->getSocket() == $user->getSocket()) {
-                $item = $this->_entityManager
+                $item = $this->entityManager
                     ->getRepository('CudiBundle\Entity\Sale\QueueItem')
                     ->findOneById($item->getId());
 
@@ -251,7 +251,7 @@ class Queue
                 } elseif ($item->getStatus() == 'selling') {
                     $item->setStatus('collected');
                 }
-                $this->_entityManager->flush();
+                $this->entityManager->flush();
             }
         }
     }
@@ -262,30 +262,30 @@ class Queue
      */
     public function startCollecting(User $user, $id, $bulk = false)
     {
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('collecting');
         $item->setCollectPrinted(true);
 
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
 
-        $enableCollectScanning = $this->_entityManager
+        $enableCollectScanning = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        $lightVersion = $this->_entityManager
+        $lightVersion = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.sale_light_version');
 
         if ($enableCollectScanning && !$lightVersion && !$bulk) {
-            $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
+            $this->queueItems[$id] = new QueueItem($this->entityManager, $user, $id);
 
-            return $this->_queueItems[$id]->getCollectInfo();
+            return $this->queueItems[$id]->getCollectInfo();
         }
 
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
     }
 
     /**
@@ -293,23 +293,23 @@ class Queue
      */
     public function stopCollecting($id, $articles = null)
     {
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('collected');
 
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
 
-        $enableCollectScanning = $this->_entityManager
+        $enableCollectScanning = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        if (!$enableCollectScanning || !isset($this->_queueItems[$id]) || null == $articles) {
+        if (!$enableCollectScanning || !isset($this->queueItems[$id]) || null == $articles) {
             return;
         }
 
-        $this->_queueItems[$id]->setCollectedArticles($articles);
+        $this->queueItems[$id]->setCollectedArticles($articles);
     }
 
     /**
@@ -317,13 +317,13 @@ class Queue
      */
     public function cancelCollecting($id)
     {
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('signed_in')
             ->setCollectPrinted(false);
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
     }
 
     /**
@@ -332,27 +332,27 @@ class Queue
      */
     public function startSale(User $user, $id)
     {
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('selling');
-        $paydesk = $this->_entityManager
+        $paydesk = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\PayDesk')
             ->findOneByCode($user->getExtraData('paydesk'));
         if (null !== $paydesk) {
             $item->setPayDesk($paydesk);
         }
 
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
 
-        if (!isset($this->_queueItems[$id])) {
-            $this->_queueItems[$id] = new QueueItem($this->_entityManager, $user, $id);
+        if (!isset($this->queueItems[$id])) {
+            $this->queueItems[$id] = new QueueItem($this->entityManager, $user, $id);
         } else {
-            $this->_queueItems[$id]->setUser($user);
+            $this->queueItems[$id]->setUser($user);
         }
 
-        return $this->_queueItems[$id]->getSaleInfo();
+        return $this->queueItems[$id]->getSaleInfo();
     }
 
     /**
@@ -360,12 +360,12 @@ class Queue
      */
     public function cancelSale($id)
     {
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('collected');
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
     }
 
     /**
@@ -377,24 +377,24 @@ class Queue
      */
     public function concludeSale($id, $articles, $discounts, $payMethod)
     {
-        if (!isset($this->_queueItems[$id])) {
+        if (!isset($this->queueItems[$id])) {
             return;
         }
 
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
-        $saleItems = $this->_queueItems[$id]->conclude($articles, $discounts);
+        $saleItems = $this->queueItems[$id]->conclude($articles, $discounts);
 
-        if (isset($this->_queueItems[$id])) {
-            unset($this->_queueItems[$id]);
+        if (isset($this->queueItems[$id])) {
+            unset($this->queueItems[$id]);
         }
 
         $item->setStatus('sold')
             ->setPayMethod($payMethod);
 
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
 
         return $saleItems;
     }
@@ -404,16 +404,16 @@ class Queue
      */
     public function setHold($id)
     {
-        if (isset($this->_queueItems[$id])) {
-            unset($this->_queueItems[$id]);
+        if (isset($this->queueItems[$id])) {
+            unset($this->queueItems[$id]);
         }
 
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('hold');
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
     }
 
     /**
@@ -421,16 +421,16 @@ class Queue
      */
     public function setUnhold($id)
     {
-        if (isset($this->_queueItems[$id])) {
-            unset($this->_queueItems[$id]);
+        if (isset($this->queueItems[$id])) {
+            unset($this->queueItems[$id]);
         }
 
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setStatus('signed_in');
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
     }
 
     /**
@@ -438,7 +438,7 @@ class Queue
      */
     public function addArticle($id, $articleId)
     {
-        if (!isset($this->_queueItems[$id])) {
+        if (!isset($this->queueItems[$id])) {
             return json_encode(
                 array(
                     'addArticle' => array(
@@ -458,11 +458,11 @@ class Queue
             );
         }
 
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
-        $article = $this->_entityManager
+        $article = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneById($articleId);
 
@@ -476,11 +476,11 @@ class Queue
             );
         }
 
-        $period = $this->_entityManager
+        $period = $this->entityManager
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
 
-        $period->setEntityManager($this->_entityManager);
+        $period->setEntityManager($this->entityManager);
 
         if ($article->getStockValue() - $period->getNbAssigned($article) <= 0) {
             return json_encode(
@@ -513,8 +513,8 @@ class Queue
         );
 
         foreach ($article->getDiscounts() as $discount) {
-            if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager, $this->_getCurrentAcademicYear()) &&
-                    $discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
+            if (!$discount->alreadyApplied($article, $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear()) &&
+                    $discount->canBeApplied($item->getPerson(), $this->getCurrentAcademicYear(), $this->entityManager)) {
                 $result['discounts'][] = array(
                     'type' => $discount->getRawType(),
                     'value' => $discount->apply($article->getSellPrice()),
@@ -535,14 +535,14 @@ class Queue
      */
     public function undoSale($id)
     {
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setPayMethod(null)
             ->setStatus('collected');
 
-        $saleItems = $this->_entityManager
+        $saleItems = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\SaleItem')
             ->findByQueueItem($item);
 
@@ -556,14 +556,14 @@ class Queue
             } else {
                 $articles[$saleItem->getArticle()->getId()]['number'] += $saleItem->getNumber();
             }
-            $this->_entityManager->remove($saleItem);
+            $this->entityManager->remove($saleItem);
         }
 
         foreach ($articles as $article) {
             $article['article']->setStockValue($article['article']->getStockValue() + $article['number']);
 
             while ($article['number'] > 0) {
-                $booking = $this->_entityManager
+                $booking = $this->entityManager
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findOneSoldByPersonAndArticle($item->getPerson(), $article['article']);
 
@@ -573,23 +573,23 @@ class Queue
 
                 if ($booking->getNumber() > $article['number']) {
                     $remainder = new Booking(
-                        $this->_entityManager,
+                        $this->entityManager,
                         $booking->getPerson(),
                         $booking->getArticle(),
                         'assigned',
                         $article['number']
                     );
-                    $this->_entityManager->persist($remainder);
+                    $this->entityManager->persist($remainder);
                     $booking->setNumber($booking->getNumber() - $article['number']);
                     $article['number'] = 0;
                 } else {
-                    $booking->setStatus('assigned', $this->_entityManager);
+                    $booking->setStatus('assigned', $this->entityManager);
                     $article['number'] -= $booking->getNumber();
                 }
             }
         }
 
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
     }
 
     /**
@@ -599,13 +599,13 @@ class Queue
      *
      * @return array
      */
-    private function _createJsonQueue($items)
+    private function createJsonQueue($items)
     {
-        $prefix = $this->_entityManager
+        $prefix = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_item_barcode_prefix');
 
-        $enableCollectScanning = $this->_entityManager
+        $enableCollectScanning = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
@@ -635,8 +635,8 @@ class Queue
     /**
      * @return \CommonBundle\Entity\General\AcademicYear
      */
-    private function _getCurrentAcademicYear()
+    private function getCurrentAcademicYear()
     {
-        return AcademicYear::getUniversityYear($this->_entityManager);
+        return AcademicYear::getUniversityYear($this->entityManager);
     }
 }

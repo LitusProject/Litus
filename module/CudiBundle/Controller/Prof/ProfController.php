@@ -30,7 +30,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
 {
     public function addAction()
     {
-        if (!($subject = $this->_getSubject())) {
+        if (!($subject = $this->getSubject())) {
             return new ViewModel();
         }
 
@@ -90,7 +90,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping())) {
+        if (!($mapping = $this->getMapping())) {
             return new ViewModel();
         }
 
@@ -138,7 +138,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
-    private function _getSubject($id = null)
+    private function getSubject($id = null)
     {
         if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
@@ -191,7 +191,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         return $mapping->getSubject();
     }
 
-    private function _getMapping()
+    private function getMapping()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -214,7 +214,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findOneById($this->getParam('id'));
 
-        if (null === $mapping || null === $this->_getSubject($mapping->getSubject()->getId())) {
+        if (null === $mapping || null === $this->getSubject($mapping->getSubject()->getId())) {
             $this->flashMessenger()->error(
                 'Error',
                 'No mapping with the given ID was found!'

@@ -61,7 +61,7 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
 
                 $mail->addTo($formData['from']);
 
-                $volunteers = $this->_getVolunteers($formData['minimum_rank'], $academicYear);
+                $volunteers = $this->getVolunteers($formData['minimum_rank'], $academicYear);
 
                 foreach ($volunteers as $volunteer) {
                     $mail->addBcc($volunteer->getEmail(), $volunteer->getFullName());
@@ -94,7 +94,7 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
         );
     }
 
-    private function _getVolunteers($minRank, AcademicYear $academicYear)
+    private function getVolunteers($minRank, AcademicYear $academicYear)
     {
         $rankingCriteria = unserialize(
             $this->getEntityManager()

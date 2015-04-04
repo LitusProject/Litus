@@ -35,12 +35,12 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * @var Event
      */
-    private $_event;
+    private $event;
 
     /**
      * @var array
      */
-    private $_shifts;
+    private $shifts;
 
     /**
      * Create a new Event PDF Generator.
@@ -61,8 +61,8 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             $file->getFilename()
         );
 
-        $this->_event = $event;
-        $this->_shifts = $this->getEntityManager()
+        $this->event = $event;
+        $this->shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findBy(array('event' => $event), array('startDate' => 'ASC'));
     }
@@ -80,7 +80,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
         $organization_logo = $configs->getConfigValue('organization_logo');
 
         $shifts = array();
-        foreach ($this->_shifts as $shift) {
+        foreach ($this->shifts as $shift) {
             $people = array();
 
             foreach ($shift->getResponsibles() as $responsible) {
@@ -165,8 +165,8 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             new Object(
                 'event',
                 array(
-                    'name' => $this->_event->getTitle(),
-                    'date' => $this->_event->getStartDate()->format('d F Y H:i'),
+                    'name' => $this->event->getTitle(),
+                    'date' => $this->event->getStartDate()->format('d F Y H:i'),
                 ),
                 array(
                     new Object(

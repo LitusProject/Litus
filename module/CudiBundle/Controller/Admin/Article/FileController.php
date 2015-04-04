@@ -33,7 +33,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -75,7 +75,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -143,7 +143,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($mapping = $this->_getFileMapping())) {
+        if (!($mapping = $this->getFileMapping())) {
             return new ViewModel();
         }
 
@@ -185,7 +185,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getFileMapping())) {
+        if (!($mapping = $this->getFileMapping())) {
             return new ViewModel();
         }
 
@@ -205,7 +205,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
 
-        if (!($mapping = $this->_getFileMapping())) {
+        if (!($mapping = $this->getFileMapping())) {
             return new ViewModel();
         }
 
@@ -232,7 +232,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function frontAction()
     {
-        if (!($article = $this->_getSaleArticle())) {
+        if (!($article = $this->getSaleArticle())) {
             return new ViewModel();
         }
 
@@ -254,7 +254,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getArticle()
+    private function getArticle()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -295,7 +295,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         return $article;
     }
 
-    private function _getSaleArticle()
+    private function getSaleArticle()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -339,7 +339,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     /**
      * @return \CudiBundle\Entity\File\Mapping
      */
-    private function _getFileMapping()
+    private function getFileMapping()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

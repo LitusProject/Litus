@@ -114,7 +114,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroup())) {
             return new ViewModel();
         }
 
@@ -174,7 +174,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroup())) {
             return new ViewModel();
         }
 
@@ -209,7 +209,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function formsAction()
     {
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroup())) {
             return new ViewModel();
         }
 
@@ -312,7 +312,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroup())) {
             return new ViewModel();
         }
 
@@ -364,7 +364,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping())) {
+        if (!($mapping = $this->getMapping())) {
             return new ViewModel();
         }
 
@@ -397,7 +397,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function _getGroup()
+    private function getGroup()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -438,7 +438,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         return $group;
     }
 
-    private function _getMapping()
+    private function getMapping()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

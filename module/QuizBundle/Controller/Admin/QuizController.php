@@ -93,7 +93,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($quiz = $this->_getQuiz())) {
+        if (!($quiz = $this->getQuiz())) {
             return new ViewModel();
         }
 
@@ -131,7 +131,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($quiz = $this->_getQuiz())) {
+        if (!($quiz = $this->getQuiz())) {
             return new ViewModel();
         }
 
@@ -151,7 +151,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return null|Quiz
      */
-    private function _getQuiz()
+    private function getQuiz()
     {
         if ($this->getParam('id') === null) {
             $this->flashMessenger()->error(

@@ -31,7 +31,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function indexAction()
     {
-        $academicYear = $this->_getAcademicYear();
+        $academicYear = $this->getAcademicYear();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -79,7 +79,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _getAcademicYear()
+    private function getAcademicYear()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {

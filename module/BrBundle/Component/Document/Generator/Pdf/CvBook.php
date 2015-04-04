@@ -37,12 +37,12 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * @var AcademicYear
      */
-    private $_year;
+    private $year;
 
     /**
      * @var Translator
      */
-    private $_translator;
+    private $translator;
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
@@ -62,20 +62,20 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             $file->getFilename()
         );
 
-        $this->_year = $year;
-        $this->_translator = $translator;
+        $this->year = $year;
+        $this->translator = $translator;
     }
 
     protected function generateXml(TmpFile $tmpFile)
     {
         $xml = new Generator($tmpFile);
 
-        $data = Util::getGrouped($this->getEntityManager(), $this->_year);
+        $data = Util::getGrouped($this->getEntityManager(), $this->year);
 
         $groups = array();
 
         foreach ($data as $studyData) {
-            $groups[] = $this->_generateGroup($studyData['name'], $studyData['entries']);
+            $groups[] = $this->generateGroup($studyData['name'], $studyData['entries']);
         }
 
         $organization_logo = $this->getEntityManager()
@@ -91,14 +91,14 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 'cvbook',
                 array(
                     'logo' => $organization_logo,
-                    'index' => $this->_translator->translate('Alphabetical Index'),
-                    'toc' => $this->_translator->translate('Table of Contents'),
+                    'index' => $this->translator->translate('Alphabetical Index'),
+                    'toc' => $this->translator->translate('Table of Contents'),
                 ),
                 array(
                     new Object(
                         'foreword',
                         array(
-                            'title' => $this->_translator->translate('Foreword'),
+                            'title' => $this->translator->translate('Foreword'),
                         ),
                         Object::fromString($foreword)
                     ),
@@ -112,11 +112,11 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         );
     }
 
-    private function _generateGroup($groupName, $entries)
+    private function generateGroup($groupName, $entries)
     {
         $cvs = array();
         foreach ($entries as $entry) {
-            $cvs[] = $this->_generateCv($entry);
+            $cvs[] = $this->generateCv($entry);
         }
 
         return new Object(
@@ -128,7 +128,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         );
     }
 
-    private function _generateCv(Entry $cv)
+    private function generateCv(Entry $cv)
     {
         $picturePath = 'public' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -145,24 +145,24 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 'phone'     => $cv->getPhoneNumber(),
                 'img'       => $picturePath . '/' . $cv->getAcademic()->getPhotoPath(),
             ),
-            $this->_getSections($cv)
+            $this->getSections($cv)
         );
     }
 
-    private function _getSections(Entry $cv)
+    private function getSections(Entry $cv)
     {
         $result = array();
 
         $result[] = new Object(
             'address',
-            $this->_getAddressArray($cv),
+            $this->getAddressArray($cv),
             null
         );
 
         $result[] = new Object(
             'section',
             array(
-                'title' => $this->_translator->translate('Studies'),
+                'title' => $this->translator->translate('Studies'),
             ),
             array(
                 new Object(
@@ -189,7 +189,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             $result[] = new Object(
                 'section',
                 array(
-                    'title' => $this->_translator->translate('Erasmus'),
+                    'title' => $this->translator->translate('Erasmus'),
                 ),
                 array(
                     new Object(
@@ -217,8 +217,8 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         foreach ($cv->getLanguages() as $language) {
             $tmp = array(
                 'name' . $index      => $language->getName(),
-                'oral' . $index      => $this->_translator->translate($language->getOralSkill()),
-                'written' . $index   => $this->_translator->translate($language->getWrittenSkill()),
+                'oral' . $index      => $this->translator->translate($language->getOralSkill()),
+                'written' . $index   => $this->translator->translate($language->getWrittenSkill()),
             );
             $languages = array_merge($languages,$tmp);
             $index++;
@@ -227,15 +227,15 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $result[] = new Object(
             'section',
             array(
-                'title' => $this->_translator->translate('Languages'),
+                'title' => $this->translator->translate('Languages'),
             ),
             array(
                 new Object(
                     'sec-special-languages',
                     array_merge(
                         array(
-                        'oral' => $this->_translator->translate('Oral Skills'),
-                        'written' => $this->_translator->translate('Written Skills'),
+                        'oral' => $this->translator->translate('Oral Skills'),
+                        'written' => $this->translator->translate('Written Skills'),
                         ),
                         $languages
                     ),
@@ -244,7 +244,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 new Object(
                     'subsection',
                     array(
-                        'title' => $this->_translator->translate('Additional Info'),
+                        'title' => $this->translator->translate('Additional Info'),
                     ),
                     array(
                         new Object(
@@ -260,13 +260,13 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $result[] = new Object(
             'section',
             array(
-                'title' => $this->_translator->translate('Capabilities'),
+                'title' => $this->translator->translate('Capabilities'),
             ),
             array(
                 new Object(
                     'subsection',
                     array(
-                        'title' => $this->_translator->translate('Computer Skills'),
+                        'title' => $this->translator->translate('Computer Skills'),
                     ),
                     new Object(
                         'content',
@@ -277,7 +277,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 new Object(
                     'subsection',
                     array(
-                        'title' => $this->_translator->translate('Experiences'),
+                        'title' => $this->translator->translate('Experiences'),
                     ),
                     new Object(
                         'content',
@@ -291,7 +291,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $result[] = new Object(
             'section',
             array(
-                'title' => $this->_translator->translate('Thesis'),
+                'title' => $this->translator->translate('Thesis'),
             ),
             array(
                 new Object(
@@ -305,13 +305,13 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $result[] = new Object(
             'section',
             array(
-                'title' => $this->_translator->translate('Career'),
+                'title' => $this->translator->translate('Career'),
             ),
             array(
                 new Object(
                     'subsection',
                     array(
-                        'title' => $this->_translator->translate('Future Interest'),
+                        'title' => $this->translator->translate('Future Interest'),
                     ),
                     new Object(
                         'content',
@@ -322,7 +322,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 new Object(
                     'subsection',
                     array(
-                        'title' => $this->_translator->translate('Mobility in Europe'),
+                        'title' => $this->translator->translate('Mobility in Europe'),
                     ),
                     new Object(
                         'content',
@@ -333,7 +333,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 new Object(
                     'subsection',
                     array(
-                        'title' => $this->_translator->translate('Mobility in the World'),
+                        'title' => $this->translator->translate('Mobility in the World'),
                     ),
                     new Object(
                         'content',
@@ -344,7 +344,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 new Object(
                     'subsection',
                     array(
-                        'title' => $this->_translator->translate('Career Expectations'),
+                        'title' => $this->translator->translate('Career Expectations'),
                     ),
                     new Object(
                         'content',
@@ -358,13 +358,13 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $result[] = new Object(
             'section',
             array(
-                'title' => $this->_translator->translate('Personal'),
+                'title' => $this->translator->translate('Personal'),
             ),
             array(
                 new Object(
                     'subsection',
                     array(
-                        'title' => $this->_translator->translate('Hobbies'),
+                        'title' => $this->translator->translate('Hobbies'),
                     ),
                     new Object(
                         'content',
@@ -375,7 +375,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 new Object(
                     'subsection',
                     array(
-                        'title' => $this->_translator->translate('About Myself'),
+                        'title' => $this->translator->translate('About Myself'),
                     ),
                     new Object(
                         'content',
@@ -389,7 +389,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         return $result;
     }
 
-    private function _getAddressArray(Entry $cv)
+    private function getAddressArray(Entry $cv)
     {
         $result = array(
             'street'    => $cv->getAddress()->getStreet(),

@@ -95,7 +95,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($session = $this->_getSession())) {
+        if (!($session = $this->getSession())) {
             return new ViewModel();
         }
 
@@ -152,7 +152,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editRegisterAction()
     {
-        if (!($cashRegister = $this->_getCashRegister())) {
+        if (!($cashRegister = $this->getCashRegister())) {
             return new ViewModel();
         }
 
@@ -197,7 +197,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function closeAction()
     {
-        if (!($session = $this->_getSession())) {
+        if (!($session = $this->getSession())) {
             return new ViewModel();
         }
 
@@ -255,7 +255,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function queueItemsAction()
     {
-        if (!($session = $this->_getSession())) {
+        if (!($session = $this->getSession())) {
             return new ViewModel();
         }
 
@@ -285,7 +285,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return Session
      */
-    private function _getSession()
+    private function getSession()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -329,7 +329,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return CashRegister
      */
-    private function _getCashRegister()
+    private function getCashRegister()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

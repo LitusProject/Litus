@@ -127,7 +127,7 @@ class Product
     /**
      * @var EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @param Person       $author       The author of this section
@@ -270,7 +270,7 @@ class Product
     public function getVatPercentage()
     {
         $types = unserialize(
-            $this->_entityManager
+            $this->entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.vat_types')
         );
@@ -391,7 +391,7 @@ class Product
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }

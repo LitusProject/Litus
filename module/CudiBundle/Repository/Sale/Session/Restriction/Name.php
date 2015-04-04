@@ -31,7 +31,7 @@ class Name extends EntityRepository
 {
     public function findOneBySessionAndType(Session $session)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('CudiBundle\Entity\Sale\Session\Restriction\Name', 'r')
             ->where(

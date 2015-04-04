@@ -33,7 +33,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($publication = $this->_getPublication())) {
+        if (!($publication = $this->getPublication())) {
             return new ViewModel();
         }
 
@@ -55,7 +55,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($publication = $this->_getPublication())) {
+        if (!($publication = $this->getPublication())) {
             return new ViewModel();
         }
 
@@ -82,7 +82,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
     public function uploadAction()
     {
-        if (!($publication = $this->_getPublication())) {
+        if (!($publication = $this->getPublication())) {
             return new ViewModel();
         }
 
@@ -94,7 +94,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             $this->getRequest()->getFiles()->toArray()
         ));
 
-        $date = self::_loadDate($formData['date']);
+        $date = self::loadDate($formData['date']);
 
         if ($form->isValid() && $date) {
             $formData = $form->getData();
@@ -202,7 +202,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($edition = $this->_getEdition())) {
+        if (!($edition = $this->getEdition())) {
             return new ViewModel();
         }
 
@@ -212,7 +212,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         $filePath = 'public' . $publicFilePath;
 
         if (file_exists($filePath . $edition->getFileName())) {
-            $this->_rrmdir($filePath . $edition->getFileName());
+            $this->rrmdir($filePath . $edition->getFileName());
         }
         $this->getEntityManager()->remove($edition);
         $this->getEntityManager()->flush();
@@ -224,7 +224,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getEdition()
+    private function getEdition()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -265,7 +265,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         return $edition;
     }
 
-    private function _getPublication()
+    private function getPublication()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -309,11 +309,11 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @param string $dir
      */
-    private function _rrmdir($dir)
+    private function rrmdir($dir)
     {
         foreach (glob($dir . '/*') as $file) {
             if (is_dir($file)) {
-                $this->_rrmdir($file);
+                $this->rrmdir($file);
             } else {
                 unlink($file);
             }
@@ -325,7 +325,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
      * @param  string        $date
      * @return DateTime|null
      */
-    private static function _loadDate($date)
+    private static function loadDate($date)
     {
         return DateTime::createFromFormat('d#m#Y', $date) ?: null;
     }

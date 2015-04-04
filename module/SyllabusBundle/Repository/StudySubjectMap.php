@@ -38,7 +38,7 @@ class StudySubjectMap extends EntityRepository
             $parentIds[] = $parent->getId();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
             ->where(
@@ -60,7 +60,7 @@ class StudySubjectMap extends EntityRepository
             $parentIds[] = $parent->getId();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
             ->innerJoin('m.subject', 's')
@@ -85,7 +85,7 @@ class StudySubjectMap extends EntityRepository
             $parentIds[] = $parent->getId();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
             ->innerJoin('m.subject', 's')
@@ -105,7 +105,7 @@ class StudySubjectMap extends EntityRepository
 
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s.id')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
             ->innerJoin('m.subject', 's')
@@ -121,7 +121,7 @@ class StudySubjectMap extends EntityRepository
             $ids[$item['id']] = $item['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Subject', 's')
             ->where(
@@ -135,7 +135,7 @@ class StudySubjectMap extends EntityRepository
 
     public function findAllByNameAndAcademicYearQuery($name, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s.id')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
             ->innerJoin('m.subject', 's')
@@ -155,7 +155,7 @@ class StudySubjectMap extends EntityRepository
             $ids[$item['id']] = $item['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Subject', 's')
             ->where(
@@ -169,7 +169,7 @@ class StudySubjectMap extends EntityRepository
 
     public function findAllByCodeAndAcademicYearQuery($code, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s.id')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
             ->innerJoin('m.subject', 's')
@@ -189,7 +189,7 @@ class StudySubjectMap extends EntityRepository
             $ids[$item['id']] = $item['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Subject', 's')
             ->where(
@@ -203,7 +203,7 @@ class StudySubjectMap extends EntityRepository
 
     public function findAllBySubjectAndAcademicYearQuery(SubjectEntity $subject, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
             ->where(
@@ -221,7 +221,7 @@ class StudySubjectMap extends EntityRepository
 
     public function findOneByStudySubjectAndAcademicYear(StudyEntity $study, SubjectEntity $subject, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
             ->where(

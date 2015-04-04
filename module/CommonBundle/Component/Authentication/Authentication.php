@@ -33,17 +33,17 @@ class Authentication
     /**
      * @var DoctrineAdapter The authentication adapter
      */
-    private $_adapter = null;
+    private $adapter = null;
 
     /**
      * @var AuthenticationService The authentication service
      */
-    private $_service = null;
+    private $service = null;
 
     /**
      * @var Result The authentication result
      */
-    private $_result = null;
+    private $result = null;
 
     /**
      * Construct a new Authentication object.
@@ -53,8 +53,8 @@ class Authentication
      */
     public function __construct(DoctrineAdapter $adapter, AuthenticationService $service)
     {
-        $this->_adapter = $adapter;
-        $this->_service = $service;
+        $this->adapter = $adapter;
+        $this->service = $service;
     }
 
     /**
@@ -68,17 +68,17 @@ class Authentication
      */
     public function authenticate($identity = '', $credential = '', $rememberMe = false, $shibboleth = false)
     {
-        if (isset($this->_result) && $identity == '') {
+        if (isset($this->result) && $identity == '') {
             return;
         }
 
         if ('' != $identity) {
-            $this->_adapter
+            $this->adapter
                 ->setIdentity($identity)
                 ->setCredential($credential);
         }
 
-        $this->_result = $this->_service->authenticate($this->_adapter, $rememberMe, $shibboleth);
+        $this->result = $this->service->authenticate($this->adapter, $rememberMe, $shibboleth);
     }
 
     /**
@@ -88,8 +88,8 @@ class Authentication
      */
     public function forget()
     {
-        $session = $this->_service->clearIdentity();
-        unset($this->_result);
+        $session = $this->service->clearIdentity();
+        unset($this->result);
 
         return $session;
     }
@@ -101,17 +101,17 @@ class Authentication
      */
     public function isAuthenticated()
     {
-        if (isset($this->_result)) {
-            return $this->_result->isValid();
+        if (isset($this->result)) {
+            return $this->result->isValid();
         }
 
         $this->authenticate();
 
-        if (!isset($this->_result)) {
+        if (!isset($this->result)) {
             return false;
         }
 
-        return $this->_result->isValid();
+        return $this->result->isValid();
     }
 
     /**
@@ -125,7 +125,7 @@ class Authentication
             return false;
         }
 
-        return $this->_service->isExternallyVisible();
+        return $this->service->isExternallyVisible();
     }
 
     /**
@@ -137,11 +137,11 @@ class Authentication
     {
         $this->authenticate();
 
-        if (!isset($this->_result)) {
+        if (!isset($this->result)) {
             return null;
         }
 
-        return $this->_result->getPersonObject();
+        return $this->result->getPersonObject();
     }
 
     /**
@@ -153,10 +153,10 @@ class Authentication
     {
         $this->authenticate();
 
-        if (!isset($this->_result)) {
+        if (!isset($this->result)) {
             return null;
         }
 
-        return $this->_result->getSessionObject();
+        return $this->result->getSessionObject();
     }
 }

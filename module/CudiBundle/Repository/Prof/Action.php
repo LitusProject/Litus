@@ -31,7 +31,7 @@ class Action extends EntityRepository
 {
     public function findAllUncompletedQuery($nbResults = null)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -49,7 +49,7 @@ class Action extends EntityRepository
 
     public function findAllCompletedQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -63,7 +63,7 @@ class Action extends EntityRepository
 
     public function findAllRefusedQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -77,7 +77,7 @@ class Action extends EntityRepository
 
     public function findAllByPersonQuery(Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -92,7 +92,7 @@ class Action extends EntityRepository
 
     public function findAllByEntityAndActionAndPersonQuery($entity, $action, Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -113,7 +113,7 @@ class Action extends EntityRepository
 
     public function findAllByEntityAndEntityIdAndActionAndPersonQuery($entity, $entityId, $action, Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -136,7 +136,7 @@ class Action extends EntityRepository
 
     public function findAllByEntityAndEntityIdAndPersonQuery($entity, $entityId, Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -157,7 +157,7 @@ class Action extends EntityRepository
 
     public function findAllByEntityAndPreviousIdAndActionQuery($entity, $previousId, $action)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -178,7 +178,7 @@ class Action extends EntityRepository
 
     public function findAllByEntityAndEntityIdAndActionQuery($entity, $entityId, $action)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -199,7 +199,7 @@ class Action extends EntityRepository
 
     public function findAllByEntityAndActionQuery($entity, $action)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(

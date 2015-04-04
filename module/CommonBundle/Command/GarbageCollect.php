@@ -42,12 +42,12 @@ EOT
         $doneSomething = false;
 
         if ($this->getOption('all') || $this->getOption('sessions')) {
-            $this->_gcSessions();
+            $this->gcSessions();
             $doneSomething = true;
         }
 
         if ($this->getOption('all') || $this->getOption('shibboleth')) {
-            $this->_gcShibboleth();
+            $this->gcShibboleth();
             $doneSomething = true;
         }
 
@@ -63,7 +63,7 @@ EOT
         return 'GarbageCollect';
     }
 
-    private function _gcSessions()
+    private function gcSessions()
     {
         $em = $this->getEntityManager();
         $sessions = $em->getRepository('CommonBundle\Entity\User\Session')
@@ -78,7 +78,7 @@ EOT
         $em->flush();
     }
 
-    private function _gcShibboleth()
+    private function gcShibboleth()
     {
         $em = $this->getEntityManager();
         $sessions = $em->getRepository('CommonBundle\Entity\User\Shibboleth\Code')

@@ -37,17 +37,17 @@ class Client
     /**
      * @var Authentication The authentication instance
      */
-    private $_authentication;
+    private $authentication;
 
     /**
      * @var Connection The connection to the Lilo server
      */
-    private $_connection;
+    private $connection;
 
     /**
      * @var RequestInterface The request to the page
      */
-    private $_request;
+    private $request;
 
     /**
      * Constructs a new Lilo client.
@@ -58,9 +58,9 @@ class Client
      */
     public function __construct(Connection $connection, Authentication $authentication = null, RequestInterface $request)
     {
-        $this->_authentication = $authentication;
-        $this->_connection = $connection;
-        $this->_request = $request;
+        $this->authentication = $authentication;
+        $this->connection = $connection;
+        $this->request = $request;
     }
 
     /**
@@ -72,7 +72,7 @@ class Client
      */
     public function sendLog($message, array $tags = array())
     {
-        $this->_connection->send(
+        $this->connection->send(
             new LogData($message, $tags)
         );
     }
@@ -85,8 +85,8 @@ class Client
      */
     public function sendException(Exception $exception)
     {
-        $this->_connection->send(
-            new ExceptionData($exception, $this->_authentication, $this->_request)
+        $this->connection->send(
+            new ExceptionData($exception, $this->authentication, $this->request)
         );
     }
 

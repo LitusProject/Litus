@@ -76,8 +76,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $startDate = self::_loadDate($formData['start_date']);
-                $endDate = self::_loadDate($formData['end_date']);
+                $startDate = self::loadDate($formData['start_date']);
+                $endDate = self::loadDate($formData['end_date']);
 
                 $formData = $form->getData();
                 $interval = $startDate->diff($endDate);
@@ -138,7 +138,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($shift = $this->_getShift())) {
+        if (!($shift = $this->getShift())) {
             return new ViewModel();
         }
 
@@ -178,7 +178,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->_getShift())) {
+        if (!($shift = $this->getShift())) {
             return new ViewModel();
         }
 
@@ -246,7 +246,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $shifts = $this->_search()
+        $shifts = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -280,7 +280,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function pdfAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
@@ -305,7 +305,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     /**
     *   @return \Doctrine\ORM\Query
     */
-    private function _search()
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'name':
@@ -318,7 +318,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return Shift|null
      */
-    private function _getShift()
+    private function getShift()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -359,7 +359,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return $shift;
     }
 
-    private function _getEvent()
+    private function getEvent()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -404,7 +404,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
      * @param  string        $date
      * @return DateTime|null
      */
-    private static function _loadDate($date)
+    private static function loadDate($date)
     {
         return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }

@@ -135,7 +135,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
     {
         $this->initAjax();
 
-        if (!($entry = $this->_getEntry())) {
+        if (!($entry = $this->getEntry())) {
             return new ViewModel();
         }
 
@@ -149,7 +149,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
         );
     }
 
-    private function _getEntry()
+    private function getEntry()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

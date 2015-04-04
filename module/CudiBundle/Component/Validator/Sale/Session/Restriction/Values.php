@@ -41,7 +41,7 @@ class Values extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array The message variables
      */
     protected $messageVariables = array(
-        'start_value'  => array('options' => '_startValue'),
+        'start_value'  => array('options' => 'startValue'),
     );
 
     protected $options = array(
@@ -52,7 +52,7 @@ class Values extends \CommonBundle\Component\Validator\AbstractValidator
      * Original start value against which to validate
      * @var string
      */
-    protected $_startValue;
+    protected $startValue;
 
     /**
      * Sets validator options
@@ -87,7 +87,7 @@ class Values extends \CommonBundle\Component\Validator\AbstractValidator
 
         if (($context !== null) && isset($context) && array_key_exists($this->options['start_value'], $context)) {
             $startValue = $context[$this->options['start_value']];
-            $this->_startValue = $startValue;
+            $this->startValue = $startValue;
         } else {
             $this->error(self::NOT_VALID);
 

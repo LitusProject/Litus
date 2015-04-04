@@ -30,7 +30,7 @@ class Url extends \Zend\Mvc\Controller\Plugin\Url
     /**
      * @var Language
      */
-    private $_language;
+    private $language;
 
     /**
      * @param Language $language
@@ -39,7 +39,7 @@ class Url extends \Zend\Mvc\Controller\Plugin\Url
      */
     public function setLanguage(Language $language)
     {
-        $this->_language = $language;
+        $this->language = $language;
 
         return $this;
     }
@@ -58,8 +58,8 @@ class Url extends \Zend\Mvc\Controller\Plugin\Url
      */
     public function fromRoute($route = null, $params = array(), $options = array(), $reuseMatchedParams = false)
     {
-        if (!isset($params['language']) && $this->_language) {
-            $params['language'] = $this->_language->getAbbrev();
+        if (!isset($params['language']) && $this->language) {
+            $params['language'] = $this->language->getAbbrev();
         }
 
         return parent::fromRoute($route, $params, $options, $reuseMatchedParams);

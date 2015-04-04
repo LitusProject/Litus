@@ -33,7 +33,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
@@ -65,7 +65,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
@@ -110,11 +110,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroup())) {
             return new ViewModel();
         }
 
@@ -160,11 +160,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function studiesAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroup())) {
             return new ViewModel();
         }
 
@@ -244,7 +244,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroup())) {
             return new ViewModel();
         }
 
@@ -262,7 +262,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping())) {
+        if (!($mapping = $this->getMapping())) {
             return new ViewModel();
         }
 
@@ -278,11 +278,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function exportAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroup())) {
             return new ViewModel();
         }
 
@@ -303,7 +303,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function _getAcademicYear()
+    private function getAcademicYear()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {
@@ -330,7 +330,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         return $academicYear;
     }
 
-    private function _getGroup()
+    private function getGroup()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -373,7 +373,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         return $group;
     }
 
-    private function _getMapping()
+    private function getMapping()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

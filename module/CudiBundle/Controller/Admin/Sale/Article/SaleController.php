@@ -31,7 +31,7 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
 {
     public function saleAction()
     {
-        if (!($article = $this->_getSaleArticle())) {
+        if (!($article = $this->getSaleArticle())) {
             return new ViewModel();
         }
 
@@ -110,7 +110,7 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
     /**
      * @return \CudiBundle\Entity\Sale\Article|null
      */
-    private function _getSaleArticle()
+    private function getSaleArticle()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

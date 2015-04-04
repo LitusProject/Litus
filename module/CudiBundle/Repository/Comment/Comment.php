@@ -31,7 +31,7 @@ class Comment extends EntityRepository
 {
     public function findAllByArticleQuery(Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('CudiBundle\Entity\Comment\Mapping', 'm')
             ->from('CudiBundle\Entity\Comment\Comment', 'c')
@@ -49,7 +49,7 @@ class Comment extends EntityRepository
 
     public function findAllExternalByArticleQuery(Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('CudiBundle\Entity\Comment\Mapping', 'm')
             ->from('CudiBundle\Entity\Comment\Comment', 'c')
@@ -68,7 +68,7 @@ class Comment extends EntityRepository
 
     public function findAllSiteByArticleQuery(Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('CudiBundle\Entity\Comment\Mapping', 'm')
             ->from('CudiBundle\Entity\Comment\Comment', 'c')

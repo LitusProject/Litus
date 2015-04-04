@@ -48,7 +48,7 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
 
     public function editAction()
     {
-        if (!($message = $this->_getMessage())) {
+        if (!($message = $this->getMessage())) {
             return new ViewModel();
         }
 
@@ -88,7 +88,7 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
     {
         $this->initAjax();
 
-        if (!($message = $this->_getMessage())) {
+        if (!($message = $this->getMessage())) {
             return new ViewModel();
         }
 
@@ -106,7 +106,7 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
     /**
      * @return \MailBundle\Document\Message|null
      */
-    private function _getMessage()
+    private function getMessage()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

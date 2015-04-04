@@ -200,7 +200,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
+        if (!($shift = $this->getShift()) || !($person = $this->getPerson())) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -240,7 +240,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
+        if (!($shift = $this->getShift()) || !($person = $this->getPerson())) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -331,7 +331,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->_getShift()) || !($person = $this->_getPerson())) {
+        if (!($shift = $this->getShift()) || !($person = $this->getPerson())) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -547,7 +547,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return \ShiftBundle\Entity\Shift|null
      */
-    private function _getShift()
+    private function getShift()
     {
         if (null === $this->getRequest()->getPost('id')) {
             return null;
@@ -563,7 +563,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return \CommonBundle\Entity\User\Person|null
      */
-    private function _getPerson()
+    private function getPerson()
     {
         if (null === $this->getRequest()->getPost('person')) {
             return null;

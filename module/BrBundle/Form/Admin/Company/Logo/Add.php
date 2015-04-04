@@ -35,7 +35,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var Company The company to add the logo
      */
-    private $_company;
+    private $company;
 
     public function init()
     {
@@ -104,7 +104,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name' => 'company_logo_type',
                             'options' => array(
-                                'company' => $this->_company,
+                                'company' => $this->company,
                             ),
                         ),
                     ),
@@ -121,7 +121,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setCompany(Company $company)
     {
-        $this->_company = $company;
+        $this->company = $company;
 
         return $this;
     }

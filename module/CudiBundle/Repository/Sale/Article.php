@@ -33,9 +33,9 @@ class Article extends EntityRepository
 {
     public function findAllByAcademicYearQuery(AcademicYear $academicYear, $semester = 0)
     {
-        $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
+        $articles = $this->getArticleIdsBySemester($academicYear, $semester);
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -53,9 +53,9 @@ class Article extends EntityRepository
 
     public function findAllByAcademicYearSortBarcode(AcademicYear $academicYear)
     {
-        $articles = $this->_getArticleIdsBySemester($academicYear);
+        $articles = $this->getArticleIdsBySemester($academicYear);
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -80,7 +80,7 @@ class Article extends EntityRepository
 
     public function findOneByArticle(ArticleEntity $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->where(
@@ -99,7 +99,7 @@ class Article extends EntityRepository
 
     public function findOneByBarcode($barcode)
     {
-        $barcode = $this->_em
+        $barcode = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article\Barcode')
             ->findOneByBarcode($barcode);
 
@@ -112,9 +112,9 @@ class Article extends EntityRepository
 
     public function findAllByTypeAndAcademicYearQuery($type, AcademicYear $academicYear)
     {
-        $articles = $this->_getArticleIdsBySemester($academicYear);
+        $articles = $this->getArticleIdsBySemester($academicYear);
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -134,9 +134,9 @@ class Article extends EntityRepository
 
     public function findAllByTitleAndAcademicYearQuery($title, AcademicYear $academicYear, $semester = 0)
     {
-        $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
+        $articles = $this->getArticleIdsBySemester($academicYear, $semester);
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -156,9 +156,9 @@ class Article extends EntityRepository
 
     public function findAllByAuthorAndAcademicYearQuery($author, AcademicYear $academicYear, $semester = 0)
     {
-        $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
+        $articles = $this->getArticleIdsBySemester($academicYear, $semester);
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -178,9 +178,9 @@ class Article extends EntityRepository
 
     public function findAllByTitleOrAuthorAndAcademicYearQuery($string, AcademicYear $academicYear)
     {
-        $articles = $this->_getArticleIdsBySemester($academicYear, 0);
+        $articles = $this->getArticleIdsBySemester($academicYear, 0);
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -203,9 +203,9 @@ class Article extends EntityRepository
 
     public function findAllByPublisherAndAcademicYearQuery($publisher, AcademicYear $academicYear, $semester = 0)
     {
-        $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
+        $articles = $this->getArticleIdsBySemester($academicYear, $semester);
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -225,9 +225,9 @@ class Article extends EntityRepository
 
     public function findAllByBarcodeAndAcademicYearQuery($barcode, AcademicYear $academicYear, $semester = 0)
     {
-        $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
+        $articles = $this->getArticleIdsBySemester($academicYear, $semester);
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $articles = $query->select('m.id')
             ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
             ->innerJoin('b.article', 'a')
@@ -248,7 +248,7 @@ class Article extends EntityRepository
             $ids[] = $id['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -266,9 +266,9 @@ class Article extends EntityRepository
 
     public function findAllBySupplierStringAndAcademicYearQuery($supplier, AcademicYear $academicYear, $semester = 0)
     {
-        $articles = $this->_getArticleIdsBySemester($academicYear, $semester);
+        $articles = $this->getArticleIdsBySemester($academicYear, $semester);
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -289,7 +289,7 @@ class Article extends EntityRepository
 
     public function findAllBySupplierQuery(Supplier $supplier)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
@@ -310,9 +310,9 @@ class Article extends EntityRepository
 
     public function findAllByTitleOrBarcodeAndAcademicYearQuery($title, AcademicYear $academicYear)
     {
-        $articles = $this->_getArticleIdsBySemester($academicYear);
+        $articles = $this->getArticleIdsBySemester($academicYear);
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a, m')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
@@ -335,9 +335,9 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    private function _getArticleIdsBySemester(AcademicYear $academicYear, $semester = 0)
+    private function getArticleIdsBySemester(AcademicYear $academicYear, $semester = 0)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         if ($semester == 0) {
             $resultSet = $query->select('a.id')
                 ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
@@ -354,7 +354,7 @@ class Article extends EntityRepository
                 ->getQuery()
                 ->getResult();
         } else {
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('a.id')
                 ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
                 ->innerJoin('m.article', 'a')
@@ -381,7 +381,7 @@ class Article extends EntityRepository
             $articles[$item['id']] = $item['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a.id')
             ->from('CudiBundle\Entity\Article', 'a')
             ->where(

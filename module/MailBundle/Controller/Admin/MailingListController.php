@@ -119,11 +119,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function entriesAction()
     {
-        if (!($list = $this->_getList())) {
+        if (!($list = $this->getList())) {
             return new ViewModel();
         }
 
-        if (!$this->_checkAccess($list, false)) {
+        if (!$this->checkAccess($list, false)) {
             return new ViewModel();
         }
 
@@ -190,11 +190,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function adminsAction()
     {
-        if (!($list = $this->_getList())) {
+        if (!($list = $this->getList())) {
             return new ViewModel();
         }
 
-        if (!$this->_checkAccess($list, true)) {
+        if (!$this->checkAccess($list, true)) {
             return new ViewModel();
         }
 
@@ -278,11 +278,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($list = $this->_getList())) {
+        if (!($list = $this->getList())) {
             return new ViewModel();
         }
 
-        if (!$this->_checkAccess($list, false)) {
+        if (!$this->checkAccess($list, false)) {
             return new ViewModel();
         }
 
@@ -300,11 +300,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($entry = $this->_getEntry())) {
+        if (!($entry = $this->getEntry())) {
             return new ViewModel();
         }
 
-        if (!$this->_checkAccess($entry->getList(), false)) {
+        if (!$this->checkAccess($entry->getList(), false)) {
             return new ViewModel();
         }
 
@@ -320,7 +320,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function deleteAllEntriesAction()
     {
-        if (!($list = $this->_getList())) {
+        if (!($list = $this->getList())) {
             return new ViewModel();
         }
 
@@ -354,11 +354,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($admin = $this->_getAdmin())) {
+        if (!($admin = $this->getAdmin())) {
             return new ViewModel();
         }
 
-        if (!$this->_checkAccess($admin->getList(), true)) {
+        if (!$this->checkAccess($admin->getList(), true)) {
             return new ViewModel();
         }
 
@@ -376,11 +376,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($adminRole = $this->_getAdminRole())) {
+        if (!($adminRole = $this->getAdminRole())) {
             return new ViewModel();
         }
 
-        if (!$this->_checkAccess($adminRole->getList(), true)) {
+        if (!$this->checkAccess($adminRole->getList(), true)) {
             return new ViewModel();
         }
 
@@ -402,7 +402,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $lists = $this->_search()
+        $lists = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -424,7 +424,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     /**
     * @return \Doctrine\ORM\Query|null
     */
-    private function _search()
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'name':
@@ -434,7 +434,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         }
     }
 
-    private function _getList()
+    private function getList()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -475,7 +475,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         return $list;
     }
 
-    private function _getEntry()
+    private function getEntry()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -516,7 +516,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         return $entry;
     }
 
-    private function _getAdmin()
+    private function getAdmin()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -557,7 +557,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         return $admin;
     }
 
-    private function _getAdminRole()
+    private function getAdminRole()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -601,7 +601,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     /**
      * @param boolean $adminEdit
      */
-    private function _checkAccess($list, $adminEdit)
+    private function checkAccess($list, $adminEdit)
     {
         $person = $this->getAuthentication()->getPersonObject();
         if (!$list->canBeEditedBy($person, $adminEdit)) {

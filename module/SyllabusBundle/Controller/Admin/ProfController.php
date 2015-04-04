@@ -31,11 +31,11 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 {
     public function addAction()
     {
-        if (!($subject = $this->_getSubject())) {
+        if (!($subject = $this->getSubject())) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
@@ -95,7 +95,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping())) {
+        if (!($mapping = $this->getMapping())) {
             return new ViewModel();
         }
 
@@ -135,7 +135,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getSubject()
+    private function getSubject()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -176,7 +176,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         return $study;
     }
 
-    private function _getMapping()
+    private function getMapping()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -217,7 +217,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         return $mapping;
     }
 
-    private function _getAcademicYear()
+    private function getAcademicYear()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {

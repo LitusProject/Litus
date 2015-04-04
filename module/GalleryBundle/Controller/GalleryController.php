@@ -106,7 +106,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function albumAction()
     {
-        if (!($album = $this->_getAlbumByName())) {
+        if (!($album = $this->getAlbumByName())) {
             return $this->notFoundAction();
         }
 
@@ -137,7 +137,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
-        if (!($photo = $this->_getPhoto())) {
+        if (!($photo = $this->getPhoto())) {
             return $this->notFoundAction();
         }
 
@@ -159,7 +159,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
-        if (!($photo = $this->_getPhoto())) {
+        if (!($photo = $this->getPhoto())) {
             return $this->notFoundAction();
         }
 
@@ -175,7 +175,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    public function _getAlbumByName()
+    public function getAlbumByName()
     {
         if (null === $this->getParam('name')) {
             return;
@@ -192,7 +192,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return $album;
     }
 
-    public function _getPhoto()
+    public function getPhoto()
     {
         if (null === $this->getParam('name')) {
             return;

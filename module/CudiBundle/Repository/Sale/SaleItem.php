@@ -123,7 +123,7 @@ class SaleItem extends EntityRepository
         return $resultSet;
     }
 
-    private function _personsByAcademicYearAndOrganization(AcademicYear $academicYear, Organization $organization = null)
+    private function personsByAcademicYearAndOrganization(AcademicYear $academicYear, Organization $organization = null)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p.id')
@@ -147,7 +147,7 @@ class SaleItem extends EntityRepository
         return $ids;
     }
 
-    private function _selectOnlyMembers($ids, AcademicYear $academicYear)
+    private function selectOnlyMembers($ids, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a.id')
@@ -175,7 +175,7 @@ class SaleItem extends EntityRepository
     public function findNumberBySupplier(Supplier $supplier, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+            $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.number)')
@@ -226,7 +226,7 @@ class SaleItem extends EntityRepository
     public function findNumberByArticleAndAcademicYear(ArticleEntity $article, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+            $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.number)')
@@ -275,8 +275,8 @@ class SaleItem extends EntityRepository
     public function findNumberByArticleAndAcademicYearAndMember(ArticleEntity $article, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $ids = $this->_selectOnlyMembers(
-                $this->_personsByAcademicYearAndOrganization($academicYear, $organization),
+            $ids = $this->selectOnlyMembers(
+                $this->personsByAcademicYearAndOrganization($academicYear, $organization),
                 $academicYear
             );
 
@@ -299,8 +299,8 @@ class SaleItem extends EntityRepository
                 ->getQuery()
                 ->getSingleScalarResult();
         } else {
-            $ids = $this->_selectOnlyMembers(
-                $this->_personsByAcademicYearAndOrganization($academicYear),
+            $ids = $this->selectOnlyMembers(
+                $this->personsByAcademicYearAndOrganization($academicYear),
                 $academicYear
             );
 
@@ -334,7 +334,7 @@ class SaleItem extends EntityRepository
     public function findNumberByArticleAndAcademicYearAndDiscount(ArticleEntity $article, AcademicYear $academicYear, $discount, Organization $organization = null)
     {
         if (null !== $organization) {
-            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+            $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.number)')
@@ -388,7 +388,7 @@ class SaleItem extends EntityRepository
     public function findTotalRevenueBySupplier(Supplier $supplier, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+            $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.price)')
@@ -439,7 +439,7 @@ class SaleItem extends EntityRepository
     public function findTotalPurchaseBySupplier(Supplier $supplier, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+            $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.purchasePrice)')
@@ -490,7 +490,7 @@ class SaleItem extends EntityRepository
     public function findTotalRevenueByArticleAndAcademicYear(ArticleEntity $article, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+            $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.price)')
@@ -625,7 +625,7 @@ class SaleItem extends EntityRepository
 
     public function findAllByOrganizationAndAcademicYearQuery(Organization $organization = null, AcademicYear $academicYear)
     {
-        $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+        $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -765,7 +765,7 @@ class SaleItem extends EntityRepository
 
     public function findAllByOrganizationAndSessionQuery(Organization $organization = null, SessionEntity $session)
     {
-        $ids = $this->_personsByAcademicYearAndOrganization($session->getAcademicYear(), $organization);
+        $ids = $this->personsByAcademicYearAndOrganization($session->getAcademicYear(), $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -872,7 +872,7 @@ class SaleItem extends EntityRepository
 
     public function findAllByOrganizationAndArticleQuery(Organization $organization = null, ArticleEntity $article, AcademicYear $academicYear)
     {
-        $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+        $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -1002,7 +1002,7 @@ class SaleItem extends EntityRepository
 
     public function findAllByOrganizationAndSupplierQuery(Organization $organization = null, Supplier $supplier, AcademicYear $academicYear)
     {
-        $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+        $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -1044,7 +1044,7 @@ class SaleItem extends EntityRepository
 
     public function findOneByPersonAndArticle(Person $person, ArticleEntity $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.queueItem', 'q')
@@ -1065,7 +1065,7 @@ class SaleItem extends EntityRepository
 
     public function findOneByArticleAndPersonAndDiscountType(ArticleEntity $article, Person $person, $discountType, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.queueItem', 'q')

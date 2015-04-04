@@ -30,7 +30,7 @@ class Object
     /**
      * @var string The object's content
      */
-    private $_content;
+    private $content;
 
     /**
      * @param  string                                                              $tag     The object's tag
@@ -46,35 +46,35 @@ class Object
 
         if ($content === null) {
             if ($params === null) {
-                $this->_content = '<' . $tag . '/>';
+                $this->content = '<' . $tag . '/>';
             } else {
-                $this->_content .= '<' . $tag;
+                $this->content .= '<' . $tag;
                 foreach ($params as $key => $value) {
-                    $this->_content .= ' ' . $key . '="' . $this->_escape($value) . '"';
+                    $this->content .= ' ' . $key . '="' . $this->escape($value) . '"';
                 }
-                $this->_content .= '/>';
+                $this->content .= '/>';
             }
         } else {
             if ($params === null) {
-                $this->_content = '<' . $tag . '>';
+                $this->content = '<' . $tag . '>';
             } else {
-                $this->_content .= '<' . $tag;
+                $this->content .= '<' . $tag;
                 foreach ($params as $key => $value) {
-                    $this->_content .= ' ' . $key . '="' . $this->_escape($value) . '"';
+                    $this->content .= ' ' . $key . '="' . $this->escape($value) . '"';
                 }
-                $this->_content .= '>';
+                $this->content .= '>';
             }
 
             if (is_string($content)) {
-                $this->_content .= $this->_escape($content);
+                $this->content .= $this->escape($content);
             } elseif ($content instanceof Object) {
-                $this->_content .= $content->__toString();
+                $this->content .= $content->__toString();
             } elseif (is_array($content)) {
                 foreach ($content as $part) {
                     if (is_string($part)) {
-                        $this->_content .= $this->_escape($part);
+                        $this->content .= $this-_escape($part);
                     } elseif ($part instanceof Object) {
-                        $this->_content .= $part->__toString();
+                        $this->content .= $part->__toString();
                     } else {
                         throw new Exception\InvalidArgumentException('The given content was invalid');
                     }
@@ -83,7 +83,7 @@ class Object
                 throw new Exception\InvalidArgumentException('The given content was invalid');
             }
 
-            $this->_content .= '</' . $tag . '>';
+            $this->content .= '</' . $tag . '>';
         }
     }
 
@@ -96,7 +96,7 @@ class Object
     public static function fromString($xmlString)
     {
         $result = new Object('tag');
-        $result->_content = $xmlString;
+        $result->content = $xmlString;
 
         return $result;
     }
@@ -107,7 +107,7 @@ class Object
      * @param  string $value The value that should be converted
      * @return string
      */
-    private function _escape($value)
+    private function escape($value)
     {
         return Utf8::utf8ToHtml($value, true);
     }
@@ -117,6 +117,6 @@ class Object
      */
     public function __toString()
     {
-        return $this->_content;
+        return $this->content;
     }
 }

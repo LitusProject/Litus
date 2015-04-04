@@ -31,7 +31,7 @@ class VanReservation extends EntityRepository
 {
     public function findAllActiveQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
             ->where(
@@ -46,7 +46,7 @@ class VanReservation extends EntityRepository
 
     public function findAllOldQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
             ->where(
@@ -61,7 +61,7 @@ class VanReservation extends EntityRepository
 
     public function findAllByDatesQuery(DateTime $start, DateTime $end)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\VanReservation', 'r')
             ->where(

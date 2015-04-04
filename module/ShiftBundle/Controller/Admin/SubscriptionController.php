@@ -33,7 +33,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 {
     public function manageAction()
     {
-        if (!($shift = $this->_getShift())) {
+        if (!($shift = $this->getShift())) {
             return new ViewModel();
         }
 
@@ -94,7 +94,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        if (!($subscription = $this->_getSubscription())) {
+        if (!($subscription = $this->getSubscription())) {
             return new ViewModel();
         }
 
@@ -160,7 +160,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    private function _getSubscription()
+    private function getSubscription()
     {
         $type = $this->getParam('type');
 
@@ -229,7 +229,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     /**
      * @return Shift
      */
-    private function _getShift()
+    private function getShift()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

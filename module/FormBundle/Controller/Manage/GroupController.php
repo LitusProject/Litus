@@ -50,7 +50,7 @@ class GroupController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroup())) {
             return new ViewModel();
         }
 
@@ -87,7 +87,7 @@ class GroupController extends \FormBundle\Component\Controller\FormController
         );
     }
 
-    private function _getGroup()
+    private function getGroup()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

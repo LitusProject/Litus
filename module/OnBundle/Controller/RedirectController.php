@@ -29,7 +29,7 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function indexAction()
     {
-        if (!($slug = $this->_getSlug())) {
+        if (!($slug = $this->getSlug())) {
             return $this->notFoundAction();
         }
 
@@ -43,7 +43,7 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel();
     }
 
-    private function _getSlug()
+    private function getSlug()
     {
         if (null === $this->getParam('name')) {
             return null;

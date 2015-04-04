@@ -82,7 +82,7 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
     {
         $this->initAjax();
 
-        if (!($alias = $this->_getAlias())) {
+        if (!($alias = $this->getAlias())) {
             return new ViewModel();
         }
 
@@ -104,7 +104,7 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $aliases = $this->_search()
+        $aliases = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -127,7 +127,7 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
     /**
      * @return \Doctrine\ORM\Query|null
      */
-    private function _search()
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'alias':
@@ -137,7 +137,7 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
         }
     }
 
-    private function _getAlias()
+    private function getAlias()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

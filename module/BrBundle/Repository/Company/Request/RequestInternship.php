@@ -30,7 +30,7 @@ class RequestInternship extends EntityRepository
 {
     public function findNewRequests()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('BrBundle\Entity\Company\Request\RequestInternship', 'r')
             ->where(

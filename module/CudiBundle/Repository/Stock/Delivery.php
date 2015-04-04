@@ -35,7 +35,7 @@ class Delivery extends EntityRepository
 {
     public function findAllBySupplierAndPeriodQuery(Supplier $supplier, PeriodEntity $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('o')
             ->from('CudiBundle\Entity\Stock\Delivery', 'o')
             ->innerJoin('o.article', 'a')
@@ -61,7 +61,7 @@ class Delivery extends EntityRepository
 
     public function findAllByPeriodQuery(PeriodEntity $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('o')
             ->from('CudiBundle\Entity\Stock\Delivery', 'o')
             ->where(

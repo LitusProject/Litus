@@ -32,7 +32,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($quiz = $this->_getQuiz())) {
+        if (!($quiz = $this->getQuiz())) {
             return new ViewModel();
         }
 
@@ -58,7 +58,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($quiz = $this->_getQuiz())) {
+        if (!($quiz = $this->getQuiz())) {
             return new ViewModel();
         }
 
@@ -109,7 +109,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($team = $this->_getTeam())) {
+        if (!($team = $this->getTeam())) {
             return new ViewModel();
         }
 
@@ -148,7 +148,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($team = $this->_getTeam())) {
+        if (!($team = $this->getTeam())) {
             return new ViewModel();
         }
 
@@ -168,7 +168,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return null|\QuizBundle\Entity\Quiz
      */
-    private function _getQuiz()
+    private function getQuiz()
     {
         if ($this->getParam('quizid') === null) {
             $this->flashMessenger()->error(
@@ -228,7 +228,7 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return null|Team
      */
-    private function _getTeam()
+    private function getTeam()
     {
         if ($this->getParam('id') === null) {
             $this->flashMessenger()->error(

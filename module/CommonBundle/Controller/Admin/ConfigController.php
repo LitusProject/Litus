@@ -61,7 +61,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($entry = $this->_getEntry())) {
+        if (!($entry = $this->getEntry())) {
             return new ViewModel();
         }
 
@@ -100,7 +100,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * @return Config|null
      */
-    private function _getEntry()
+    private function getEntry()
     {
         if (null === $this->getParam('key')) {
             $this->flashMessenger()->error(

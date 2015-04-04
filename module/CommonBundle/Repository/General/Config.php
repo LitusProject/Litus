@@ -31,7 +31,7 @@ class Config extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('CommonBundle\Entity\General\Config', 'c')
             ->orderBy('c.key', 'ASC')
@@ -42,7 +42,7 @@ class Config extends EntityRepository
 
     public function findAllByPrefix($prefix)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $configs = $query->select('c')
             ->from('CommonBundle\Entity\General\Config', 'c')
             ->where(

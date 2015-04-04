@@ -82,7 +82,7 @@ class LeaseController extends AdminController
 
     public function editAction()
     {
-        if (!($item = $this->_getItem())) {
+        if (!($item = $this->getItem())) {
             return new ViewModel();
         }
 
@@ -119,7 +119,7 @@ class LeaseController extends AdminController
     {
         $this->initAjax();
 
-        if (!($item = $this->_getItem())) {
+        if (!($item = $this->getItem())) {
             return new ViewModel();
         }
 
@@ -157,7 +157,7 @@ class LeaseController extends AdminController
     /**
      * @return Item
      */
-    private function _getItem()
+    private function getItem()
     {
         if ($this->getParam('id') === null) {
             $this->flashMessenger()->error(

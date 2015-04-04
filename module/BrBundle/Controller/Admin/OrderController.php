@@ -54,7 +54,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($collaborator = $this->_getCollaborator())) {
+        if (!($collaborator = $this->getCollaborator())) {
             return new ViewModel();
         }
 
@@ -93,7 +93,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function productAction()
     {
-        if (!($order = $this->_getOrder(false))) {
+        if (!($order = $this->getOrder(false))) {
             return new ViewModel();
         }
 
@@ -101,7 +101,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($collaborator = $this->_getCollaborator())) {
+        if (!($collaborator = $this->getCollaborator())) {
             return new ViewModel();
         }
 
@@ -141,7 +141,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($order = $this->_getOrder(false))) {
+        if (!($order = $this->getOrder(false))) {
             return new ViewModel();
         }
 
@@ -149,7 +149,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($collaborator = $this->_getCollaborator())) {
+        if (!($collaborator = $this->getCollaborator())) {
             return new ViewModel();
         }
 
@@ -189,7 +189,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($order = $this->_getOrder())) {
+        if (!($order = $this->getOrder())) {
             return new ViewModel();
         }
 
@@ -207,7 +207,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($entry = $this->_getEntry(false))) {
+        if (!($entry = $this->getEntry(false))) {
             return new ViewModel();
         }
 
@@ -239,7 +239,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function _getOrder($allowSigned = true)
+    private function getOrder($allowSigned = true)
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -295,7 +295,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         return $order;
     }
 
-    private function _getEntry($allowSigned = true)
+    private function getEntry($allowSigned = true)
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -354,7 +354,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return Collaborator
      */
-    private function _getCollaborator()
+    private function getCollaborator()
     {
         $collaborator = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Collaborator')

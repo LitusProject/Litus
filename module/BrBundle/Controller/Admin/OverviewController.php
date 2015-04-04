@@ -29,7 +29,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function personAction()
     {
-        list($array, $totals) = $this->_getPersonOverview();
+        list($array, $totals) = $this->getPersonOverview();
 
         return new ViewModel(
             array(
@@ -41,7 +41,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
     public function companyAction()
     {
-        list($array, $totals) = $this->_getCompanyOverview();
+        list($array, $totals) = $this->getCompanyOverview();
 
         return new ViewModel(
             array(
@@ -53,7 +53,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
     public function personviewAction()
     {
-        if (!($person = $this->_getAuthor())) {
+        if (!($person = $this->getAuthor())) {
             return new ViewModel();
         }
 
@@ -75,7 +75,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
     public function companyviewAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompany())) {
             return new ViewModel();
         }
 
@@ -95,7 +95,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    private function _getCompanyOverview()
+    private function getCompanyOverview()
     {
         $companyNmbr = 0;
         $totalContracted = 0;
@@ -152,7 +152,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         return [$collection, $totals];
     }
 
-    private function _getPersonOverview()
+    private function getPersonOverview()
     {
         $contractNmbr = 0;
         $totalContracted = 0;
@@ -214,7 +214,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         return [$collection, $totals];
     }
 
-    private function _getAuthor()
+    private function getAuthor()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -255,7 +255,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         return $person;
     }
 
-    private function _getCompany()
+    private function getCompany()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

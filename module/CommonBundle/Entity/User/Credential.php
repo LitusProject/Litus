@@ -86,7 +86,7 @@ class Credential
         $this->salt = bin2hex(openssl_random_pseudo_bytes(16));
         $this->iterations = $iterations;
 
-        $this->hash = $this->_hash($credential);
+        $this->hash = $this->hash($credential);
     }
 
     /**
@@ -103,7 +103,7 @@ class Credential
      * @param  string $credential The credential to hash
      * @return string the hashed credential
      */
-    private function _hash($credential)
+    private function hash($credential)
     {
         $hash = hash_hmac($this->algorithm, $credential, $this->salt);
         for ($i = 0; $i < $this->iterations; $i++) {
@@ -121,7 +121,7 @@ class Credential
      */
     public function validateCredential($credential)
     {
-        return $this->_hash($credential) == $this->hash;
+        return $this->hash($credential) == $this->hash;
     }
 
     /**
@@ -148,6 +148,6 @@ class Credential
 
         $this->algorithm = self::DEFAULT_ALGORITHM;
         $this->iterations = self::DEFAULT_NB_ITERATIONS;
-        $this->hash = $this->_hash($credential);
+        $this->hash = $this->hash($credential);
     }
 }

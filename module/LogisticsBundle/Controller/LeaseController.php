@@ -40,8 +40,8 @@ class LeaseController extends LogisticsController
             $this->getParam('page')
         );
 
-        $leaseForm = $this->_handleLeaseForm();
-        $returnForm = $this->_handleReturnForm();
+        $leaseForm = $this->handleLeaseForm();
+        $returnForm = $this->handleReturnForm();
 
         return new ViewModel(
             array(
@@ -55,7 +55,7 @@ class LeaseController extends LogisticsController
 
     public function showAction()
     {
-        if (!($lease = $this->_getLease())) {
+        if (!($lease = $this->getLease())) {
             return new ViewModel();
         }
 
@@ -68,7 +68,7 @@ class LeaseController extends LogisticsController
 
     public function historyAction()
     {
-        if (!($item = $this->_getItem($this->getRequest()->getQuery('searchItem')['id']))) {
+        if (!($item = $this->getItem($this->getRequest()->getQuery('searchItem')['id']))) {
             return new ViewModel();
         }
 
@@ -126,7 +126,7 @@ class LeaseController extends LogisticsController
         );
     }
 
-    private function _handleLeaseForm()
+    private function handleLeaseForm()
     {
         $form = $this->getForm('logistics_lease_add-lease');
 
@@ -173,7 +173,7 @@ class LeaseController extends LogisticsController
         return $form;
     }
 
-    private function _handleReturnForm()
+    private function handleReturnForm()
     {
         $form = $this->getForm('logistics_lease_add-return');
 
@@ -222,7 +222,7 @@ class LeaseController extends LogisticsController
         return $form;
     }
 
-    private function _getLease()
+    private function getLease()
     {
         if ($this->getParam('id') === null) {
             $this->flashMessenger()->error(
@@ -253,7 +253,7 @@ class LeaseController extends LogisticsController
         return $lease;
     }
 
-    private function _getItem($id = null)
+    private function getItem($id = null)
     {
         if (null === $id) {
             $id = $this->getParam('id');

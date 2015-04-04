@@ -33,7 +33,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 {
     public function manageAction()
     {
-        if (!($session = $this->_getSession())) {
+        if (!($session = $this->getSession())) {
             return new ViewModel();
         }
 
@@ -103,7 +103,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($restriction = $this->_getRestriction())) {
+        if (!($restriction = $this->getRestriction())) {
             return new ViewModel();
         }
 
@@ -120,7 +120,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     /**
      * @return \CudiBundle\Entity\Sale\Session|null
      */
-    private function _getSession()
+    private function getSession()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -164,7 +164,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     /**
      * @return \CudiBundle\Entity\Sale\Session\Restriction|null
      */
-    private function _getRestriction()
+    private function getRestriction()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

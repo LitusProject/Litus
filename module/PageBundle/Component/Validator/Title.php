@@ -39,7 +39,7 @@ class Title extends \CommonBundle\Component\Validator\AbstractValidator implemen
     /**
      * @var Form
      */
-    private $_form;
+    private $form;
 
     /**
      * @var array The error messages
@@ -76,10 +76,10 @@ class Title extends \CommonBundle\Component\Validator\AbstractValidator implemen
         $this->setValue($value);
 
         $parentName = null;
-        if ('' != $this->_form->get('parent_' . $this->_form->get('category')->getValue())->getValue()) {
+        if ('' != $this->form->get('parent_' . $this->form->get('category')->getValue())->getValue()) {
             $realParent = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Node\Page')
-                ->findOneById($this->_form->get('parent_' . $this->_form->get('category')->getValue())->getValue());
+                ->findOneById($this->form->get('parent_' . $this->form->get('category')->getValue())->getValue());
 
             $parentName = $realParent->getName();
         }
@@ -105,7 +105,7 @@ class Title extends \CommonBundle\Component\Validator\AbstractValidator implemen
      */
     public function setForm(Form $form)
     {
-        $this->_form = $form;
+        $this->form = $form;
 
         return $this;
     }

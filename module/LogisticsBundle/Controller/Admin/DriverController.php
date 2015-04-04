@@ -83,7 +83,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($driver = $this->_getDriver())) {
+        if (!($driver = $this->getDriver())) {
             return new ViewModel();
         }
 
@@ -123,7 +123,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($driver = $this->_getDriver())) {
+        if (!($driver = $this->getDriver())) {
             return new ViewModel();
         }
 
@@ -140,7 +140,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * @return Driver
      */
-    private function _getDriver()
+    private function getDriver()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

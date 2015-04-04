@@ -31,12 +31,12 @@ class Generator
     /**
      * @var TmpFile The file where the data will be saved to
      */
-    private $_data = null;
+    private $data = null;
 
     /**
      * @var bool Whether or not the file should be destroyed, defaults to true
      */
-    private $_destroy = true;
+    private $destroy = true;
 
     /**
      * @param TmpFile|null $tmpFile The file where the data will be saved to
@@ -44,14 +44,14 @@ class Generator
     public function __construct(TmpFile $tmpFile = null)
     {
         if ($tmpFile === null) {
-            $this->_data = new TmpFile();
-            $this->_destroy = true;
+            $this->data = new TmpFile();
+            $this->destroy = true;
         } else {
-            $this->_data = $tmpFile;
-            $this->_destroy = false;
+            $this->data = $tmpFile;
+            $this->destroy = false;
         }
 
-        $this->_data->appendContent('<?xml version="1.0" encoding="ISO-8859-1"?>');
+        $this->data->appendContent('<?xml version="1.0" encoding="ISO-8859-1"?>');
     }
 
     /**
@@ -62,20 +62,20 @@ class Generator
      */
     public function append(Object $object)
     {
-        $this->_data->appendContent(
+        $this->data->appendContent(
             $object->__toString()
         );
     }
 
     public function __toString()
     {
-        return $this->_data->getContent();
+        return $this->data->getContent();
     }
 
     public function __destruct()
     {
-        if ($this->_destroy) {
-            $this->_data->destroy();
+        if ($this->destroy) {
+            $this->data->destroy();
         }
     }
 }

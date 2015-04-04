@@ -35,19 +35,19 @@ class Acl extends \Zend\Permissions\Acl\Acl
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    private $entityManager;
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
      */
     public function __construct(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         $this->loadResources();
         $this->loadRoles();
 
-        unset($this->_entityManager);
+        unset($this->entityManager);
     }
 
     /**
@@ -57,13 +57,13 @@ class Acl extends \Zend\Permissions\Acl\Acl
      */
     protected function loadResources()
     {
-        $query = new QueryBuilder($this->_entityManager);
+        $query = new QueryBuilder($this->entityManager);
         $query->select('r')
             ->from('CommonBundle\Entity\Acl\Resource', 'r')
             ->where('r.parent IS NULL');
 
         foreach ($query->getQuery()->getResult() as $resource) {
-            $this->_addResource($resource);
+            $this->addResource($resource);
         }
     }
 
@@ -73,15 +73,15 @@ class Acl extends \Zend\Permissions\Acl\Acl
      * @param  Resource $resource The resource that should be added
      * @return void
      */
-    private function _addResource(Resource $resource)
+    private function addResource(Resource $resource)
     {
         $this->addResource(
             $resource->getName(),
             (null === $resource->getParent()) ? null : $resource->getParent()->getName()
         );
 
-        foreach ($resource->getChildren($this->_entityManager) as $childResource) {
-            $this->_addResource($childResource);
+        foreach ($resource->getChildren($this->entityManager) as $childResource) {
+            $this->addResource($childResource);
         }
     }
 
@@ -92,8 +92,8 @@ class Acl extends \Zend\Permissions\Acl\Acl
      */
     protected function loadRoles()
     {
-        foreach ($this->_entityManager->getRepository('CommonBundle\Entity\Acl\Role')->findAll() as $role) {
-            $this->_addRole($role);
+        foreach ($this->entityManager->getRepository('CommonBundle\Entity\Acl\Role')->findAll() as $role) {
+            $this->addRole($role);
         }
     }
 
@@ -103,7 +103,7 @@ class Acl extends \Zend\Permissions\Acl\Acl
      * @param  Role $role The role that should be added
      * @return void
      */
-    private function _addRole(Role $role)
+    private function addRole(Role $role)
     {
         if ($this->hasRole($role->getName())) {
             return;
@@ -112,7 +112,7 @@ class Acl extends \Zend\Permissions\Acl\Acl
         $parents = array();
         foreach ($role->getParents() as $parentRole) {
             if (!$this->hasRole($parentRole->getName())) {
-                $this->_addRole($parentRole);
+                $this->addRole($parentRole);
             }
 
             $parents[] = $parentRole->getName();

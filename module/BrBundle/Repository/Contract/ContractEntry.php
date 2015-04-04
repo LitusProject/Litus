@@ -30,7 +30,7 @@ class ContractEntry extends EntityRepository
 {
     public function findHighestVersionNb()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $highestVersion = $query->select('MAX(c.version)')
             ->from('BrBundle\Entity\Contract\ContractEntry', 'c')
             ->getQuery()
@@ -41,7 +41,7 @@ class ContractEntry extends EntityRepository
 
     public function findAllContractEntriesByContract(Contract $contract)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('BrBundle\Entity\Contract\ContractEntry', 'c')
             ->where(
@@ -57,7 +57,7 @@ class ContractEntry extends EntityRepository
 
     public function findContractEntriesByContractAndVersion(Contract $contract, $version)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('BrBundle\Entity\Contract\ContractEntry', 'c')
             ->where(

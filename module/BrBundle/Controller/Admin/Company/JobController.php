@@ -30,7 +30,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function manageAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompany())) {
             return new ViewModel();
         }
 
@@ -56,7 +56,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 
     public function addAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompany())) {
             return new ViewModel();
         }
 
@@ -104,7 +104,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($job = $this->_getJob())) {
+        if (!($job = $this->getJob())) {
             return new ViewModel();
         }
 
@@ -146,7 +146,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($job = $this->_getJob())) {
+        if (!($job = $this->getJob())) {
             return new ViewModel();
         }
 
@@ -163,7 +163,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
     /**
      * @return \BrBundle\Entity\Company
      */
-    private function _getCompany()
+    private function getCompany()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -207,7 +207,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
     /**
      * @return Job
      */
-    private function _getJob()
+    private function getJob()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

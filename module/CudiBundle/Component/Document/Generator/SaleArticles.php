@@ -56,7 +56,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
 
         parent::__construct(
             $headers,
-            $this->_getData($entityManager, $academicYear, $semester)
+            $this->getData($entityManager, $academicYear, $semester)
         );
     }
 
@@ -65,7 +65,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
      * @param AcademicYear  $academicYear
      * @param int           $semester
      */
-    private function _getData(EntityManager $entityManager, AcademicYear $academicYear, $semester)
+    private function getData(EntityManager $entityManager, AcademicYear $academicYear, $semester)
     {
         $articles = $entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')

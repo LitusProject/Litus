@@ -31,7 +31,7 @@ class Banner extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('BannerBundle\Entity\Node\Banner', 'n')
             ->orderBy('n.creationTime', 'DESC')
@@ -44,7 +44,7 @@ class Banner extends EntityRepository
     {
         $now = new DateTime();
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('BannerBundle\Entity\Node\Banner', 'n')
             ->where(

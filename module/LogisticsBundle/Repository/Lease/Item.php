@@ -30,7 +30,7 @@ class Item extends EntityRepository
 {
     public function findAllByNameQuery($name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('LogisticsBundle\Entity\Lease\Item', 'i')
             ->where(
@@ -45,7 +45,7 @@ class Item extends EntityRepository
 
     public function findAllByNameOrBarcodeQuery($string)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('LogisticsBundle\Entity\Lease\Item', 'i')
             ->where(

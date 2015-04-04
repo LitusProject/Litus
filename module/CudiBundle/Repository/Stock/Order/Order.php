@@ -37,7 +37,7 @@ class Order extends EntityRepository
 {
     public function findAllBySupplierAndPeriodQuery(Supplier $supplier, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('o')
             ->from('CudiBundle\Entity\Stock\Order\Order', 'o')
             ->where(
@@ -67,7 +67,7 @@ class Order extends EntityRepository
 
     public function findOneOpenBySupplier(Supplier $supplier)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('CudiBundle\Entity\Stock\Order\Order', 'o')
             ->where(
@@ -86,7 +86,7 @@ class Order extends EntityRepository
 
     public function addNumberByArticle(Article $article, $number, Person $person)
     {
-        $item = $this->_em
+        $item = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Order\Item')
             ->findOneOpenByArticle($article);
 
@@ -96,11 +96,11 @@ class Order extends EntityRepository
             $order = $this->findOneOpenBySupplier($article->getSupplier());
             if (null === $order) {
                 $order = new OrderEntity($article->getSupplier(), $person);
-                $this->_em->persist($order);
+                $this->getEntityManager()->persist($order);
             }
 
             $item = new ItemEntity($article, $order, $number);
-            $this->_em->persist($item);
+            $this->getEntityManager()->persist($item);
         }
 
         return $item;

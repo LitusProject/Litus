@@ -31,7 +31,7 @@ class Organization extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('CommonBundle\Entity\General\Organization', 'o')
             ->orderBy('o.name', 'ASC')

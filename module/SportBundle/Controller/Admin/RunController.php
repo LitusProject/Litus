@@ -51,7 +51,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('SportBundle\Entity\Lap')
-                ->findAllPreviousLapsQuery($this->_getAcademicYear()),
+                ->findAllPreviousLapsQuery($this->getAcademicYear()),
             $this->getParam('page')
         );
 
@@ -63,7 +63,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'academicYear' => $this->_getAcademicYear(),
+                'academicYear' => $this->getAcademicYear(),
             )
         );
     }
@@ -74,7 +74,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             'SportBundle\Entity\Group',
             $this->getParam('page'),
             array(
-                'academicYear' => $this->_getAcademicYear(),
+                'academicYear' => $this->getAcademicYear(),
             ),
             array(
                 'name' => 'ASC',
@@ -89,14 +89,14 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'academicYear' => $this->_getAcademicYear(),
+                'academicYear' => $this->getAcademicYear(),
             )
         );
     }
 
     public function editGroupAction()
     {
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroup())) {
             return new ViewModel();
         }
 
@@ -180,7 +180,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'academicYear' => $this->_getAcademicYear(),
+                'academicYear' => $this->getAcademicYear(),
             )
         );
     }
@@ -189,7 +189,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     {
         $laps = $this->getEntityManager()
             ->getRepository('SportBundle\Entity\Lap')
-            ->findByAcademicYear($this->_getAcademicYear());
+            ->findByAcademicYear($this->getAcademicYear());
 
         $rewardTimeLimit = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -199,7 +199,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         foreach ($laps as $lap) {
             if (
                     null !== $lap->getEndTime()
-                    && $this->_convertDateIntervalToSeconds($lap->getLapTime()) <= $rewardTimeLimit
+                    && $this->convertDateIntervalToSeconds($lap->getLapTime()) <= $rewardTimeLimit
                 ) {
                 $runner = $lap->getRunner();
                 $runner->setEntityManager($this->getEntityManager());
@@ -237,7 +237,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     {
         $runners = $this->getEntityManager()
             ->getRepository('SportBundle\Entity\Runner')
-            ->findAllWithoutIdentification($this->_getAcademicYear());
+            ->findAllWithoutIdentification($this->getAcademicYear());
 
         return new ViewModel(
             array(
@@ -248,7 +248,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($runner = $this->_getRunner())) {
+        if (!($runner = $this->getRunner())) {
             return new ViewModel();
         }
 
@@ -313,7 +313,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     {
         $runners = $this->getEntityManager()
                 ->getRepository('SportBundle\Entity\Lap')
-                ->getRunnersAndCount($this->_getAcademicYear());
+                ->getRunnersAndCount($this->getAcademicYear());
 
         $runnersList = array();
         foreach ($runners as $runner) {
@@ -324,10 +324,10 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $runnerEntity->setEntityManager($this->getEntityManager());
 
             $name = $runnerEntity->getFullName();
-            $points = $runnerEntity->getPoints($this->_getAcademicYear());
+            $points = $runnerEntity->getPoints($this->getAcademicYear());
 
             $totalTime = 0;
-            $laps = $runnerEntity->getLaps($this->_getAcademicYear());
+            $laps = $runnerEntity->getLaps($this->getAcademicYear());
             foreach ($laps as $lap) {
                 $lapTime = $lap->getLapTime();
                 $totalTime = $totalTime + $lapTime->h*3600 + $lapTime->i*60 + $lapTime->s;
@@ -357,12 +357,12 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'academicYear' => $this->_getAcademicYear(),
+                'academicYear' => $this->getAcademicYear(),
             )
         );
     }
 
-    public function _getRunner()
+    public function getRunner()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -403,7 +403,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         return $runner;
     }
 
-    private function _getAcademicYear()
+    private function getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
             return $this->getCurrentAcademicYear();
@@ -447,7 +447,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             ->getConfigValue('sport.queue_socket_public');
     }
 
-    private function _convertDateIntervalToSeconds(DateInterval $interval)
+    private function convertDateIntervalToSeconds(DateInterval $interval)
     {
         return $interval->h*3600 + $interval->i*60 + $interval->s;
     }
@@ -455,7 +455,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     /**
      * @return Group
      */
-    private function _getGroup()
+    private function getGroup()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

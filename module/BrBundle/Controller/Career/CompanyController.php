@@ -44,7 +44,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 
     public function viewAction()
     {
-        if (!($page = $this->_getPage())) {
+        if (!($page = $this->getPage())) {
             return new ViewModel();
         }
 
@@ -128,7 +128,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
-    private function _getPage()
+    private function getPage()
     {
         if (null === $this->getParam('company')) {
             $this->flashMessenger()->error(
@@ -154,47 +154,6 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
             $this->flashMessenger()->error(
                 'Error',
                 'No company with the given name was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_career_company',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        return $company;
-    }
-
-    private function _getCompanyByLogo()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the company!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_career_company',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        $company = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company')
-            ->findOneByLogo($this->getParam('id'));
-
-        if (null === $company) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No company with the given ID was found!'
             );
 
             $this->redirect()->toRoute(

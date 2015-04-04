@@ -50,13 +50,13 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
     public function subjectAction()
     {
-        if (!($subject = $this->_getSubject())) {
+        if (!($subject = $this->getSubject())) {
             return new ViewModel();
         }
 
         $academicYear = $this->getCurrentAcademicYear();
 
-        $articleMappings = $this->_getArticlesFromMappings(
+        $articleMappings = $this->getArticlesFromMappings(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findAllBySubjectAndAcademicYear($subject, $academicYear, true)
@@ -74,7 +74,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByStart($previous);
 
-        $previousArticleMappings = $this->_getArticlesFromMappings(
+        $previousArticleMappings = $this->getArticlesFromMappings(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                 ->findAllBySubjectAndAcademicYear($subject, $previousAcademicYear, true)
@@ -165,7 +165,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
-    private function _getArticlesFromMappings($mappings)
+    private function getArticlesFromMappings($mappings)
     {
         $articleMappings = array();
         foreach ($mappings as $mapping) {
@@ -200,7 +200,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         return $articleMappings;
     }
 
-    private function _getSubject()
+    private function getSubject()
     {
         if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;

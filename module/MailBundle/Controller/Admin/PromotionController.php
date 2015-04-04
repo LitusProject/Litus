@@ -240,23 +240,4 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
             )
         );
     }
-
-    private function _getPeople($listTo)
-    {
-        $people = array();
-        foreach ($listTo as $to) {
-            $academicYear = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\AcademicYear')
-                ->findOneById($to);
-
-            $people = array_merge(
-                $people,
-                $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Promotion')
-                    ->findAllByAcademicYear($academicYear)
-            );
-        }
-
-        return $people;
-    }
 }

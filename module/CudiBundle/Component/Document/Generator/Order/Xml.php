@@ -33,12 +33,12 @@ class Xml
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    private $entityManager = null;
 
     /**
      * @var Order
      */
-    private $_order;
+    private $order;
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
@@ -46,8 +46,8 @@ class Xml
      */
     public function __construct(EntityManager $entityManager, Order $order)
     {
-        $this->_order = $order;
-        $this->_entityManager = $entityManager;
+        $this->order = $order;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -57,28 +57,28 @@ class Xml
      */
     public function generateArchive(TmpFile $archive)
     {
-        $filePath = $this->_entityManager
+        $filePath = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
 
         $zip = new ZipArchive();
 
-        foreach ($this->_order->getItems() as $item) {
+        foreach ($this->order->getItems() as $item) {
             if (!$item->getArticle()->getMainArticle()->isInternal()) {
                 continue;
             }
 
             $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
             $xmlFile = new TmpFile();
-            $this->_generateXml($item, $xmlFile);
+            $this->generateXml($item, $xmlFile);
 
             $file = new TmpFile();
-            $document = new FrontGenerator($this->_entityManager, $item->getArticle(), $file);
+            $document = new FrontGenerator($this->entityManager, $item->getArticle(), $file);
             $document->generate();
 
             $zip->addFile($file->getFilename(), 'front_' . $item->getArticle()->getId() . '.pdf');
 
-            $mappings = $this->_entityManager
+            $mappings = $this->entityManager
                 ->getRepository('CudiBundle\Entity\File\Mapping')
                 ->findAllPrintableByArticle($item->getArticle()->getMainArticle());
 
@@ -91,7 +91,7 @@ class Xml
         }
     }
 
-    private function _generateXml(Item $item, TmpFile $tmpFile)
+    private function generateXml(Item $item, TmpFile $tmpFile)
     {
         $xml = new Generator($tmpFile);
 
@@ -112,7 +112,7 @@ class Xml
             ),
         );
 
-        $mappings = $this->_entityManager
+        $mappings = $this->entityManager
             ->getRepository('CudiBundle\Entity\File\Mapping')
             ->findAllByArticle($mainArticle);
         foreach ($mappings as $mapping) {
@@ -239,7 +239,7 @@ class Xml
                     new Object(
                         'LastUsedValue',
                         null,
-                        $this->_order->getDeliveryDate()->format('d/m/Y')
+                        $this->order->getDeliveryDate()->format('d/m/Y')
                     ),
                 )
             ),
@@ -271,7 +271,7 @@ class Xml
             ),
         );
 
-        $jobId = $this->_entityManager
+        $jobId = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.order_job_id');
 
@@ -283,7 +283,7 @@ class Xml
                     new Object(
                         'Job',
                         array(
-                            'JobID' => str_replace('{{ date }}', $this->_order->getDateOrdered()->format('YmdHi'), $jobId),
+                            'JobID' => str_replace('{{ date }}', $this->order->getDateOrdered()->format('YmdHi'), $jobId),
                         ),
                         array(
                             new Object(

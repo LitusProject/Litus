@@ -40,12 +40,12 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * @var ZendPaginator $paginator The paginator
      */
-    private $_paginator = null;
+    private $paginator = null;
 
     /**
      * @var int The number of items on each page
      */
-    private $_itemsPerPage = 25;
+    private $itemsPerPage = 25;
 
     /**
      * @var ServiceLocatorInterface
@@ -64,7 +64,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
             throw new Exception\InvalidArgumentException('The number of items per page has to be positive integer');
         }
 
-        $this->_itemsPerPage = $itemsPerPage;
+        $this->itemsPerPage = $itemsPerPage;
     }
 
     /**
@@ -74,7 +74,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
      */
     public function getItemsPerPage()
     {
-        return $this->_itemsPerPage;
+        return $this->itemsPerPage;
     }
 
     /**
@@ -86,16 +86,16 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
      */
     public function createFromArray(array $records, $currentPage)
     {
-        $this->_paginator = new ZendPaginator(
+        $this->paginator = new ZendPaginator(
             new ArrayAdapter($records)
         );
 
-        $this->_paginator->setCurrentPageNumber($currentPage);
-        $this->_paginator->setItemCountPerPage(
-            $this->_itemsPerPage
+        $this->paginator->setCurrentPageNumber($currentPage);
+        $this->paginator->setItemCountPerPage(
+            $this->itemsPerPage
         );
 
-        return $this->_paginator;
+        return $this->paginator;
     }
 
     /**
@@ -152,14 +152,14 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
      */
     public function createFromQuery($query, $currentPage)
     {
-        $this->_paginator = new ZendPaginator(
+        $this->paginator = new ZendPaginator(
             new DoctrinePaginatorAdapter(new DoctrinePaginator($query))
         );
 
-        $this->_paginator->setCurrentPageNumber($currentPage);
-        $this->_paginator->setItemCountPerPage($this->_itemsPerPage);
+        $this->paginator->setCurrentPageNumber($currentPage);
+        $this->paginator->setItemCountPerPage($this->itemsPerPage);
 
-        return $this->_paginator;
+        return $this->paginator;
     }
 
     /**
@@ -174,12 +174,12 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
 
         $prefix = array();
         if ($currentPage > 1) {
-            $prefix = array_fill(0, $this->_itemsPerPage * ($currentPage - 1), true);
+            $prefix = array_fill(0, $this->itemsPerPage * ($currentPage - 1), true);
         }
 
         $suffix = array();
-        if ($totalNumber - ($this->_itemsPerPage * ($currentPage)) > 0) {
-            $suffix = array_fill(0, $totalNumber - ($this->_itemsPerPage * ($currentPage)), true);
+        if ($totalNumber - ($this->itemsPerPage * ($currentPage)) > 0) {
+            $suffix = array_fill(0, $totalNumber - ($this->itemsPerPage * ($currentPage)), true);
         }
 
         $data = array_merge(
@@ -188,16 +188,16 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
             $suffix
         );
 
-        $this->_paginator = new ZendPaginator(
+        $this->paginator = new ZendPaginator(
             new ArrayAdapter($data)
         );
 
-        $this->_paginator->setCurrentPageNumber($currentPage);
-        $this->_paginator->setItemCountPerPage(
-            $this->_itemsPerPage
+        $this->paginator->setCurrentPageNumber($currentPage);
+        $this->paginator->setItemCountPerPage(
+            $this->itemsPerPage
         );
 
-        return $this->_paginator;
+        return $this->paginator;
     }
 
     /**
@@ -235,7 +235,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
             'matchedRouteName' => $controller->getEvent()->getRouteMatch()->getMatchedRouteName(),
             'matchedRouteParams' => $params,
             'query' => sizeof($query) > 0 ? '?' . $query->toString() : '',
-            'pages' => $this->_paginator->getPages(),
+            'pages' => $this->paginator->getPages(),
         );
     }
 

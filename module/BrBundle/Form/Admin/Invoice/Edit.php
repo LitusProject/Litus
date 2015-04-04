@@ -32,13 +32,13 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var Invoice
      */
-    private $_invoice;
+    private $invoice;
 
     public function init()
     {
         parent::init();
 
-        foreach ($this->_invoice->getEntries() as $entry) {
+        foreach ($this->invoice->getEntries() as $entry) {
             $this->add(array(
                 'type'     => 'textarea',
                 'name'     => 'entry_' . $entry->getId(),
@@ -68,8 +68,8 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Save', 'invoice_edit');
 
-        if (null !== $this->_invoice) {
-            $this->bind($this->_invoice);
+        if (null !== $this->invoice) {
+            $this->bind($this->invoice);
         }
     }
 
@@ -79,7 +79,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setInvoice(Invoice $invoice)
     {
-        $this->_invoice = $invoice;
+        $this->invoice = $invoice;
 
         return $this;
     }

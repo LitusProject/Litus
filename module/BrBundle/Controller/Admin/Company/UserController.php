@@ -30,7 +30,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompany())) {
             return;
         }
 
@@ -57,7 +57,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompany())) {
             return;
         }
 
@@ -107,7 +107,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($user = $this->_getUser())) {
+        if (!($user = $this->getUser())) {
             return;
         }
 
@@ -147,7 +147,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function activateAction()
     {
-        if (!($user = $this->_getUser())) {
+        if (!($user = $this->getUser())) {
             return new ViewModel();
         }
 
@@ -181,7 +181,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($user = $this->_getUser())) {
+        if (!($user = $this->getUser())) {
             return new ViewModel();
         }
 
@@ -198,7 +198,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return \BrBundle\Entity\Company
      */
-    private function _getCompany()
+    private function getCompany()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -242,7 +242,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return \CommonBundle\Entity\User\Person\Corporate
      */
-    private function _getUser()
+    private function getUser()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

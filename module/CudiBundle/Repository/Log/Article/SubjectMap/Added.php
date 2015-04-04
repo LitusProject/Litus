@@ -31,7 +31,7 @@ class Added extends EntityRepository
 {
     public function findAllAfterQuery(DateTime $date)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('CudiBundle\Entity\Log\Article\SubjectMap\Added', 'l')
             ->where(

@@ -32,7 +32,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function eventAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return $this->notFoundAction();
         }
 
@@ -101,7 +101,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket())) {
+        if (!($ticket = $this->getTicket())) {
             return $this->notFoundAction();
         }
 
@@ -123,7 +123,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * @return Event|null
      */
-    private function _getEvent()
+    private function getEvent()
     {
         if (null === $this->getParam('id')) {
             return;
@@ -143,7 +143,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * @return Ticket|null
      */
-    private function _getTicket()
+    private function getTicket()
     {
         if (null === $this->getParam('id')) {
             return;

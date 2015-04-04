@@ -85,7 +85,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($category = $this->_getCategory())) {
+        if (!($category = $this->getCategory())) {
             return new ViewModel();
         }
 
@@ -125,7 +125,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($category = $this->_getCategory())) {
+        if (!($category = $this->getCategory())) {
             return new ViewModel();
         }
 
@@ -142,7 +142,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    private function _getCategory()
+    private function getCategory()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

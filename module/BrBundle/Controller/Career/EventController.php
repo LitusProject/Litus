@@ -47,7 +47,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
     public function viewAction()
     {
-        $event = $this->_getEvent();
+        $event = $this->getEvent();
 
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -88,7 +88,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
-    private function _getEvent()
+    private function getEvent()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

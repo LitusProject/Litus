@@ -47,7 +47,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function approveAction()
     {
-        if (!($request = $this->_getRequest())) {
+        if (!($request = $this->getRequest())) {
             return new ViewModel();
         }
 
@@ -73,7 +73,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function rejectAction()
     {
-        if (!($request = $this->_getRequest())) {
+        if (!($request = $this->getRequest())) {
             return new ViewModel();
         }
 
@@ -97,7 +97,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel();
     }
 
-    private function _getRequest()
+    private function getRequest()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -138,7 +138,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         return $request;
     }
 
-    private function _getSectors()
+    private function getSectors()
     {
         $sectorArray = array();
         foreach (Company::$possibleSectors as $key => $sector) {

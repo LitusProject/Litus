@@ -40,7 +40,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
     /**
      * @var Form
      */
-    private $_form;
+    private $form;
 
     /**
      * Error messages
@@ -81,7 +81,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
     {
         $this->setValue($value);
 
-        $optionsForm = $this->_form->has('options_form') ? $this->_form->get('options_form') : $this->_form;
+        $optionsForm = $this->form->has('options_form') ? $this->form->get('options_form') : $this->form;
 
         $number = 0;
         if (empty($this->options['event']->getOptions())) {
@@ -105,15 +105,15 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
             return false;
         }
 
-        if ($this->options['person'] == null && is_numeric($this->_form->get('person_form')->get('person')->getValue())) {
+        if ($this->options['person'] == null && is_numeric($this->form->get('person_form')->get('person')->getValue())) {
             $person = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person')
-                ->findOneById($this->_form->get('person_form')->get('person')->getValue());
+                ->findOneById($this->form->get('person_form')->get('person')->getValue());
         } else {
             $person = $this->options['person'];
         }
 
-        if (null == $person && !$this->_form->get('is_guest')->getValue()) {
+        if (null == $person && !$this->form->get('is_guest')->getValue()) {
             $this->error(self::NOT_VALID);
 
             return false;
@@ -146,7 +146,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
      */
     public function setForm(Form $form)
     {
-        $this->_form = $form;
+        $this->form = $form;
 
         return $this;
     }

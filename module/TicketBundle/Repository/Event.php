@@ -31,7 +31,7 @@ class Event extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('TicketBundle\Entity\Event', 'e')
             ->innerJoin('e.activity', 'a')
@@ -46,7 +46,7 @@ class Event extends EntityRepository
 
     public function findOldQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('TicketBundle\Entity\Event', 'e')
             ->innerJoin('e.activity', 'a')

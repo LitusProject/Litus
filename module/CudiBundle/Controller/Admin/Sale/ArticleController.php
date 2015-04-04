@@ -40,10 +40,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     public function manageAction()
     {
         $academicYear = $this->getAcademicYear();
-        $semester = $this->_getSemester();
+        $semester = $this->getSemester();
 
         if (null !== $this->getParam('field')) {
-            $articles = $this->_search($academicYear, $semester);
+            $articles = $this->search($academicYear, $semester);
         }
 
         if (!isset($articles)) {
@@ -130,7 +130,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticle())) {
             return new ViewModel();
         }
 
@@ -194,7 +194,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($saleArticle = $this->_getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticle())) {
             return new ViewModel();
         }
 
@@ -270,7 +270,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function viewAction()
     {
-        if (!($saleArticle = $this->_getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticle())) {
             return new ViewModel();
         }
 
@@ -288,7 +288,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($saleArticle = $this->_getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticle())) {
             return new ViewModel();
         }
 
@@ -304,7 +304,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function assignAllAction()
     {
-        if (!($saleArticle = $this->_getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticle())) {
             return new ViewModel();
         }
 
@@ -332,8 +332,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $semester = $this->_getSemester();
-        $articles = $this->_search($this->getAcademicYear(), $semester)
+        $semester = $this->getSemester();
+        $articles = $this->search($this->getAcademicYear(), $semester)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -359,7 +359,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        if (!($article = $this->_getSaleArticle())) {
+        if (!($article = $this->getSaleArticle())) {
             return new ViewModel();
         }
 
@@ -408,7 +408,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function mailAction()
     {
-        if (!($saleArticle = $this->_getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticle())) {
             return new ViewModel();
         }
 
@@ -480,7 +480,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function cancelBookingsAction()
     {
-        if (!($saleArticle = $this->_getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticle())) {
             return new ViewModel();
         }
 
@@ -508,7 +508,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel();
     }
 
-    private function _search(AcademicYear $academicYear, $semester)
+    private function search(AcademicYear $academicYear, $semester)
     {
         switch ($this->getParam('field')) {
             case 'title':
@@ -533,7 +533,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return SaleArticle|null
      */
-    private function _getSaleArticle()
+    private function getSaleArticle()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -577,7 +577,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return \CudiBundle\Entity\Article|null
      */
-    private function _getArticle()
+    private function getArticle()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -621,7 +621,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return int
      */
-    private function _getSemester()
+    private function getSemester()
     {
         $semester = $this->getParam('semester');
 

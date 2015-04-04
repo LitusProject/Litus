@@ -67,7 +67,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($banner = $this->_getBanner())) {
+        if (!($banner = $this->getBanner())) {
             return new ViewModel();
         }
 
@@ -109,7 +109,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        $isNew = !($banner = $this->_getBanner(false));
+        $isNew = !($banner = $this->getBanner(false));
 
         if ($isNew) {
             $form = $this->getForm('banner_banner_add');
@@ -198,7 +198,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($banner = $this->_getBanner())) {
+        if (!($banner = $this->getBanner())) {
             return new ViewModel();
         }
 
@@ -217,7 +217,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * @return Banner|null
      */
-    private function _getBanner($redirect = true)
+    private function getBanner($redirect = true)
     {
         if (null === $this->getParam('id')) {
             if ($redirect) {

@@ -28,17 +28,17 @@ class Attachment
     /**
      * @var string The filename of the attachment
      */
-    private $_filename = '';
+    private $filename = '';
 
     /**
      * @var string The attachment's content-type
      */
-    private $_contentType = '';
+    private $contentType = '';
 
     /**
      * @var string The binary data of the attachment
      */
-    private $_data = '';
+    private $data = '';
 
     /**
      * @param string $filename    The filename of the attachment
@@ -47,9 +47,9 @@ class Attachment
      */
     public function __construct($filename, $contentType, $data)
     {
-        $this->_filename = $filename;
-        $this->_contentType = $contentType;
-        $this->_data = $data;
+        $this->filename = $filename;
+        $this->contentType = $contentType;
+        $this->data = $data;
     }
 
     /**
@@ -57,7 +57,7 @@ class Attachment
      */
     public function getFilename()
     {
-        return $this->_filename;
+        return $this->filename;
     }
 
     /**
@@ -65,7 +65,7 @@ class Attachment
      */
     public function getContentType()
     {
-        return $this->_contentType;
+        return $this->contentType;
     }
 
     /**
@@ -73,6 +73,6 @@ class Attachment
      */
     public function getData()
     {
-        return $this->_data;
+        return $this->data;
     }
 }

@@ -83,7 +83,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplier())) {
             return new ViewModel();
         }
 
@@ -122,7 +122,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
     /**
      * @return Supplier
      */
-    private function _getSupplier()
+    private function getSupplier()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

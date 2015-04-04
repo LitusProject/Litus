@@ -32,7 +32,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompany())) {
             return new ViewModel();
         }
 
@@ -109,7 +109,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompany())) {
             return new ViewModel();
         }
 
@@ -162,7 +162,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($logo = $this->_getLogo())) {
+        if (!($logo = $this->getLogo())) {
             return new ViewModel();
         }
 
@@ -187,7 +187,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Company
      */
-    private function _getCompany()
+    private function getCompany()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -231,7 +231,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Logo
      */
-    private function _getLogo()
+    private function getLogo()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

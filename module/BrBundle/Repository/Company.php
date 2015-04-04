@@ -30,7 +30,7 @@ class Company extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('BrBundle\Entity\Company', 'c')
             ->where(
@@ -44,7 +44,7 @@ class Company extends EntityRepository
 
     public function findAllByNameQuery($name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('BrBundle\Entity\Company', 'c')
             ->where(

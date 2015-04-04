@@ -89,7 +89,7 @@ class InvoiceEntry
         $this->orderEntry = $orderEntry;
         $this->position = $position;
         $this->setInvoiceText($orderEntry->getProduct()->getInvoiceDescription());
-        $this->_setVersion($version);
+        $this->setVersion($version);
     }
 
     /**
@@ -103,7 +103,7 @@ class InvoiceEntry
     /**
      * @param int $versionNmbr
      */
-    private function _setVersion($versionNmbr)
+    private function setVersion($versionNmbr)
     {
         if ($versionNmbr < 0) {
             throw new InvalidArgumentException('version number must be larger or equal to zero');

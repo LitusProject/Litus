@@ -35,7 +35,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($formSpecification = $this->_getForm())) {
+        if (!($formSpecification = $this->getForm())) {
             return new ViewModel();
         }
 
@@ -67,7 +67,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($formSpecification = $this->_getForm())) {
+        if (!($formSpecification = $this->getForm())) {
             return new ViewModel();
         }
 
@@ -172,7 +172,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($field = $this->_getField())) {
+        if (!($field = $this->getField())) {
             return new ViewModel();
         }
 
@@ -237,7 +237,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($field = $this->_getField())) {
+        if (!($field = $this->getField())) {
             return new ViewModel();
         }
 
@@ -279,7 +279,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($formSpecification = $this->_getForm())) {
+        if (!($formSpecification = $this->getForm())) {
             return new ViewModel();
         }
 
@@ -314,7 +314,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return \FormBundle\Entity\Node\Form|null
      */
-    private function _getForm()
+    private function getForm()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -358,7 +358,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return \FormBundle\Entity\Field|null
      */
-    private function _getField()
+    private function getField()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

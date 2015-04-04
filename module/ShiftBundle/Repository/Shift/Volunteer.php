@@ -33,7 +33,7 @@ class Volunteer extends EntityRepository
 {
     public function findAllByCountMinimumQuery(AcademicYear $academicYear, $minimum)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.volunteers', 'v')
@@ -61,7 +61,7 @@ class Volunteer extends EntityRepository
 
     public function findAllByCountLimitsQuery(AcademicYear $academicYear, $minimum, $maximum)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.volunteers', 'v')
@@ -93,7 +93,7 @@ class Volunteer extends EntityRepository
 
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('ShiftBundle\Entity\Shift\Volunteer', 'v')
             ->where(

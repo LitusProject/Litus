@@ -92,7 +92,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($template = $this->_getTemplate())) {
+        if (!($template = $this->getTemplate())) {
             return new ViewModel();
         }
 
@@ -108,7 +108,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($template = $this->_getTemplate())) {
+        if (!($template = $this->getTemplate())) {
             return new ViewModel();
         }
 
@@ -146,7 +146,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
     /**
      * @return Template
      */
-    private function _getTemplate()
+    private function getTemplate()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

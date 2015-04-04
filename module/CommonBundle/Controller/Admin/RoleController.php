@@ -64,7 +64,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->_updateCache();
+                $this->updateCache();
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -91,7 +91,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function membersAction()
     {
-        if (!($role = $this->_getRole())) {
+        if (!($role = $this->getRole())) {
             return new ViewModel();
         }
 
@@ -109,7 +109,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($role = $this->_getRole())) {
+        if (!($role = $this->getRole())) {
             return new ViewModel();
         }
 
@@ -121,7 +121,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $this->getEntityManager()->flush();
 
-                $this->_updateCache();
+                $this->updateCache();
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -150,7 +150,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($role = $this->_getRole())) {
+        if (!($role = $this->getRole())) {
             return new ViewModel();
         }
 
@@ -165,7 +165,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         $this->getEntityManager()->flush();
 
-        $this->_updateCache();
+        $this->updateCache();
 
         return new ViewModel(
             array(
@@ -178,11 +178,11 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($role = $this->_getRole())) {
+        if (!($role = $this->getRole())) {
             return new ViewModel();
         }
 
-        if (!($member = $this->_getMember())) {
+        if (!($member = $this->getMember())) {
             return new ViewModel();
         }
 
@@ -204,7 +204,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         foreach ($roles as $role) {
             foreach ($role->getActions() as $action) {
-                if ($this->_findActionWithParents($action, $role->getParents())) {
+                if ($this->findActionWithParents($action, $role->getParents())) {
                     $role->removeAction($action);
                 }
             }
@@ -212,7 +212,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         $this->getEntityManager()->flush();
 
-        $this->_updateCache();
+        $this->updateCache();
 
         $this->flashMessenger()->success(
             'Success',
@@ -232,7 +232,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Role|null
      */
-    private function _getRole()
+    private function getRole()
     {
         if (null === $this->getParam('name')) {
             $this->flashMessenger()->error(
@@ -276,7 +276,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Person|null
      */
-    private function _getMember()
+    private function getMember()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -320,7 +320,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return null
      */
-    private function _updateCache()
+    private function updateCache()
     {
         if (null !== $this->getCache() && $this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
             $this->getCache()->replaceItem(
@@ -337,14 +337,14 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
      * @param  array   $parents
      * @return boolean
      */
-    private function _findActionWithParents(Action $action, array $parents)
+    private function findActionWithParents(Action $action, array $parents)
     {
         foreach ($parents as $parent) {
             if (in_array($action, $parent->getActions())) {
                 return true;
             }
 
-            if ($this->_findActionWithParents($action, $parent->getParents())) {
+            if ($this->findActionWithParents($action, $parent->getParents())) {
                 return true;
             }
         }

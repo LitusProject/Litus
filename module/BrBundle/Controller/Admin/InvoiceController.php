@@ -36,7 +36,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function viewAction()
     {
-        if (!($invoice = $this->_getInvoice())) {
+        if (!($invoice = $this->getInvoice())) {
             return new ViewModel();
         }
 
@@ -65,7 +65,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function historyAction()
     {
-        if (!($invoice = $this->_getInvoice())) {
+        if (!($invoice = $this->getInvoice())) {
             return new ViewModel();
         }
 
@@ -86,7 +86,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($invoice = $this->_getInvoice(false))) {
+        if (!($invoice = $this->getInvoice(false))) {
             return new ViewModel();
         }
 
@@ -127,7 +127,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function downloadAction()
     {
-        if (!($invoice = $this->_getInvoice())) {
+        if (!($invoice = $this->getInvoice())) {
             return new ViewModel();
         }
 
@@ -163,7 +163,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
         $date = DateTime::createFromFormat('d/m/Y', $this->getParam('date'));
 
-        if (!($invoice = $this->_getInvoice(false)) || !$date) {
+        if (!($invoice = $this->getInvoice(false)) || !$date) {
             return new ViewModel();
         }
 
@@ -183,7 +183,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($invoice = $this->_getInvoice())) {
+        if (!($invoice = $this->getInvoice())) {
             return new ViewModel();
         }
 
@@ -206,7 +206,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
      * @param  boolean      $allowPaid
      * @return Invoice|null
      */
-    private function _getInvoice($allowPaid = true)
+    private function getInvoice($allowPaid = true)
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

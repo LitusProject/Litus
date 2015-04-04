@@ -30,7 +30,7 @@ class Visit extends EntityRepository
 {
     public function findAllByControllerQuery($controller)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('CommonBundle\Entity\General\Visit', 'v')
             ->where(
@@ -48,7 +48,7 @@ class Visit extends EntityRepository
 
     public function findAllByUserQuery($name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('CommonBundle\Entity\General\Visit', 'v')
             ->innerJoin('v.user', 'p')
@@ -79,7 +79,7 @@ class Visit extends EntityRepository
 
     public function findAllByUrlQuery($url)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('CommonBundle\Entity\General\Visit', 'v')
             ->where(

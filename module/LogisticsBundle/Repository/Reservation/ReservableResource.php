@@ -30,7 +30,7 @@ class ReservableResource extends EntityRepository
 {
     public function findOneByName($name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\ReservableResource', 'r')
             ->where(
@@ -46,7 +46,7 @@ class ReservableResource extends EntityRepository
 
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\ReservableResource', 'r')
             ->getQuery();

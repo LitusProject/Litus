@@ -89,7 +89,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($product = $this->_getProduct())) {
+        if (!($product = $this->getProduct())) {
             return new ViewModel();
         }
 
@@ -129,7 +129,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($product = $this->_getProduct())) {
+        if (!($product = $this->getProduct())) {
             return new ViewModel();
         }
 
@@ -161,7 +161,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _getProduct()
+    private function getProduct()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

@@ -30,7 +30,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($article = $this->_getSaleArticle())) {
+        if (!($article = $this->getSaleArticle())) {
             return new ViewModel();
         }
 
@@ -84,7 +84,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($barcode = $this->_getBarcode()) || $barcode->isMain()) {
+        if (!($barcode = $this->getBarcode()) || $barcode->isMain()) {
             return new ViewModel();
         }
 
@@ -101,7 +101,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return \CudiBundle\Entity\Sale\Article|null
      */
-    private function _getSaleArticle()
+    private function getSaleArticle()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -142,7 +142,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
         return $article;
     }
 
-    private function _getBarcode()
+    private function getBarcode()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

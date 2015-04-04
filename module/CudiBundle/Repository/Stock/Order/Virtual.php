@@ -32,7 +32,7 @@ class Virtual extends EntityRepository
 {
     public function findNbByPeriodAndArticle(Period $period, Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('SUM(v.number)')
             ->from('CudiBundle\Entity\Stock\Order\Virtual', 'v')
             ->where(
@@ -61,7 +61,7 @@ class Virtual extends EntityRepository
 
     public function findAllByPeriodAndArticleQuery(Period $period, Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('v')
             ->from('CudiBundle\Entity\Stock\Order\Virtual', 'v')
             ->where(

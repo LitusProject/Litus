@@ -52,7 +52,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
     public function supplierAction()
     {
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplier())) {
             return new ViewModel();
         }
 
@@ -155,7 +155,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($retour = $this->_getRetour())) {
+        if (!($retour = $this->getRetour())) {
             return new ViewModel();
         }
 
@@ -170,7 +170,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getRetour()
+    private function getRetour()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -211,7 +211,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
         return $retour;
     }
 
-    private function _getSupplier()
+    private function getSupplier()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

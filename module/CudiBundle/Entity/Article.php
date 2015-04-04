@@ -146,7 +146,7 @@ abstract class Article
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @var array The possible types of an article
@@ -497,11 +497,11 @@ abstract class Article
      */
     public function getSaleArticle()
     {
-        if (null == $this->_entityManager) {
+        if (null == $this->entityManager) {
             return null;
         }
 
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneByArticle($this);
     }
@@ -513,7 +513,7 @@ abstract class Article
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }

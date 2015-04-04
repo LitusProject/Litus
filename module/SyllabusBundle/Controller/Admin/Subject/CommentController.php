@@ -32,7 +32,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return new ViewModel();
         }
 
@@ -59,7 +59,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function subjectAction()
     {
-        if (!($subject = $this->_getSubject())) {
+        if (!($subject = $this->getSubject())) {
             return new ViewModel();
         }
 
@@ -108,7 +108,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function replyAction()
     {
-        if (!($comment = $this->_getComment())) {
+        if (!($comment = $this->getComment())) {
             return new ViewModel();
         }
 
@@ -195,7 +195,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($comment = $this->_getComment())) {
+        if (!($comment = $this->getComment())) {
             return new ViewModel();
         }
 
@@ -212,7 +212,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return \SyllabusBundle\Entity\Subject|null
      */
-    private function _getSubject($id = null)
+    private function getSubject($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
@@ -258,7 +258,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return Comment|null
      */
-    private function _getComment()
+    private function getComment()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -302,7 +302,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return \CommonBundle\Entity\General\AcademicYear|null
      */
-    private function _getAcademicYear()
+    private function getAcademicYear()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {

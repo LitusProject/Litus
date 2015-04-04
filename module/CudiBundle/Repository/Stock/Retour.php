@@ -33,7 +33,7 @@ class Retour extends EntityRepository
 {
     public function findAllBySupplierAndPeriodQuery(Supplier $supplier, PeriodEntity $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('r')
             ->from('CudiBundle\Entity\Stock\Retour', 'r')
             ->innerJoin('r.article', 'a')
@@ -59,7 +59,7 @@ class Retour extends EntityRepository
 
     public function findTotalByArticleAndPeriod(Article $article, PeriodEntity $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('SUM(r.number)')
             ->from('CudiBundle\Entity\Stock\Retour', 'r')
             ->where(
@@ -84,7 +84,7 @@ class Retour extends EntityRepository
 
     public function findAllByPeriodQuery(PeriodEntity $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('r')
             ->from('CudiBundle\Entity\Stock\Retour', 'r')
             ->where(

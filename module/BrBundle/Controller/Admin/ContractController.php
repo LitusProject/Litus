@@ -54,7 +54,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function viewAction()
     {
-        if (!($contract = $this->_getContract())) {
+        if (!($contract = $this->getContract())) {
             return new ViewModel();
         }
 
@@ -67,7 +67,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function historyAction()
     {
-        if (!($contract = $this->_getContract())) {
+        if (!($contract = $this->getContract())) {
             return new ViewModel();
         }
 
@@ -88,7 +88,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($contract = $this->_getContract(false))) {
+        if (!($contract = $this->getContract(false))) {
             return new ViewModel();
         }
 
@@ -133,7 +133,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($contract = $this->_getContract())) {
+        if (!($contract = $this->getContract())) {
             return new ViewModel();
         }
 
@@ -169,7 +169,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function signAction()
     {
-        if (!($contract = $this->_getContract(false))) {
+        if (!($contract = $this->getContract(false))) {
             return new ViewModel();
         }
 
@@ -210,7 +210,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function downloadAction()
     {
-        if (!($contract = $this->_getContract())) {
+        if (!($contract = $this->getContract())) {
             return new ViewModel();
         }
 
@@ -288,7 +288,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
      * @param  boolean       $allowSigned
      * @return Contract|null
      */
-    private function _getContract($allowSigned = true)
+    private function getContract($allowSigned = true)
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

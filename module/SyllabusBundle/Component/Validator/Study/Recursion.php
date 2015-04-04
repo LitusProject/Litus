@@ -37,7 +37,7 @@ class Recursion extends \CommonBundle\Component\Validator\AbstractValidator impl
     /**
     * @var Form The form to validate
     */
-    private $_form;
+    private $form;
 
     /**
      * Error messages
@@ -78,7 +78,7 @@ class Recursion extends \CommonBundle\Component\Validator\AbstractValidator impl
 
         $parent = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findOneByKulId($this->_form->get('parent')->get('id')->getValue());
+            ->findOneByKulId($this->form->get('parent')->get('id')->getValue());
 
         if (null === $parent) {
             return true;
@@ -106,6 +106,6 @@ class Recursion extends \CommonBundle\Component\Validator\AbstractValidator impl
      */
     public function setForm(Form $form)
     {
-        $this->_form = $form;
+        $this->form = $form;
     }
 }

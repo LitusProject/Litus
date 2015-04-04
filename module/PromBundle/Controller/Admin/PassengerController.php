@@ -47,7 +47,7 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
 
     public function deleteAction()
     {
-        if (!($passenger = $this->_getPassenger())) {
+        if (!($passenger = $this->getPassenger())) {
             return new ViewModel();
         }
 
@@ -66,7 +66,7 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
 
     public function removeBusAction()
     {
-        if (!($passenger = $this->_getPassenger())) {
+        if (!($passenger = $this->getPassenger())) {
             return new ViewModel();
         }
 
@@ -101,7 +101,7 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
         return new ViewModel();
     }
 
-    private function _getPassenger()
+    private function getPassenger()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

@@ -32,7 +32,7 @@ class Mapping extends EntityRepository
 {
     public function findOneByArticleAndFile(Article $article, FileEntity $file)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\File\Mapping', 'm')
             ->where(
@@ -52,7 +52,7 @@ class Mapping extends EntityRepository
 
     public function findAllPrintableByArticleQuery(Article $article, $isProf = false)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\File\Mapping', 'm')
             ->where(
@@ -71,7 +71,7 @@ class Mapping extends EntityRepository
 
     public function findAllByArticleQuery(Article $article, $isProf = false)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\File\Mapping', 'm')
             ->where(

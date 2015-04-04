@@ -39,7 +39,7 @@ class Ean12 extends \CommonBundle\Repository\User\Barcode
             return null;
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CommonBundle\Entity\User\Barcode\Ean12', 'b')
             ->where(

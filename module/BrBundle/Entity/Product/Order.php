@@ -122,7 +122,7 @@ class Order
     /**
      * @var EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @param Collaborator $creationPerson
@@ -294,7 +294,7 @@ class Order
             }
         } else {
             foreach ($this->orderEntries as $orderEntry) {
-                $orderEntry->getProduct()->setEntityManager($this->_entityManager);
+                $orderEntry->getProduct()->setEntityManager($this->entityManager);
                 $cost = $cost + (($orderEntry->getProduct()->getPrice() * (1 + $orderEntry->getProduct()->getVatPercentage()/100)) * $orderEntry->getQuantity()) ;
             }
         }
@@ -308,7 +308,7 @@ class Order
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }

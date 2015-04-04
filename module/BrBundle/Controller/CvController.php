@@ -64,7 +64,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
-        $message = $this->_getBadAccountMessage($person);
+        $message = $this->getBadAccountMessage($person);
         if ($message !== null) {
             return new ViewModel(
                 array(
@@ -172,7 +172,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
-        $message = $this->_getBadAccountMessage($person);
+        $message = $this->getBadAccountMessage($person);
         if ($message !== null) {
             return new ViewModel(
                 array(
@@ -254,7 +254,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         return new ViewModel();
     }
 
-    private function _getBadAccountMessage(Academic $person)
+    private function getBadAccountMessage(Academic $person)
     {
         $content = '';
 

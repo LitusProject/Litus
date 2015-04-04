@@ -35,7 +35,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $academicYear = $this->_getAcademicYear();
+        $academicYear = $this->getAcademicYear();
 
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
@@ -86,7 +86,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
     /**
      * @return AcademicYear
      */
-    private function _getAcademicYear()
+    private function getAcademicYear()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {

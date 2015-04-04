@@ -63,7 +63,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        if (!($form = $this->_getForm())) {
+        if (!($form = $this->getForm())) {
             return new ViewModel();
         }
 
@@ -125,7 +125,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        if (!($formSpecification = $this->_getForm())) {
+        if (!($formSpecification = $this->getForm())) {
             return new ViewModel();
         }
 
@@ -227,7 +227,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        if (!($formEntry = $this->_getEntry())) {
+        if (!($formEntry = $this->getEntry())) {
             return new ViewModel();
         }
 
@@ -315,7 +315,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function doodleAddAction()
     {
-        if (!($formSpecification = $this->_getForm())) {
+        if (!($formSpecification = $this->getForm())) {
             return new ViewModel();
         }
 
@@ -394,7 +394,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        if (!($formEntry = $this->_getEntry())) {
+        if (!($formEntry = $this->getEntry())) {
             return new ViewModel();
         }
 
@@ -490,7 +490,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        if (!($formEntry = $this->_getEntry())) {
+        if (!($formEntry = $this->getEntry())) {
             return new ViewModel();
         }
 
@@ -534,7 +534,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
-        if (!($form = $this->_getForm())) {
+        if (!($form = $this->getForm())) {
             return new ViewModel();
         }
 
@@ -614,7 +614,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function downloadFilesAction()
     {
-        if (!($field = $this->_getField()) || $field->getType() != 'file') {
+        if (!($field = $this->getField()) || $field->getType() != 'file') {
             return new ViewModel();
         }
 
@@ -640,7 +640,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
         );
     }
 
-    private function _getForm()
+    private function getForm()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -683,7 +683,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
         return $formSpecification;
     }
 
-    private function _getEntry()
+    private function getEntry()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -724,7 +724,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
         return $entry;
     }
 
-    private function _getField()
+    private function getField()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

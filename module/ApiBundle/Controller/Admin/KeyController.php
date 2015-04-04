@@ -84,7 +84,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($key = $this->_getKey())) {
+        if (!($key = $this->getKey())) {
             return new ViewModel();
         }
 
@@ -123,7 +123,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($key = $this->_getKey())) {
+        if (!($key = $this->getKey())) {
             return new ViewModel();
         }
 
@@ -143,7 +143,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
     /**
      * @return Key|null
      */
-    private function _getKey()
+    private function getKey()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

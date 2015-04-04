@@ -92,7 +92,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
 
     public function deleteAction()
     {
-        if (!($bus = $this->_getBus())) {
+        if (!($bus = $this->getBus())) {
             return new ViewModel();
         }
 
@@ -159,7 +159,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
 
     public function viewAction()
     {
-        if (!($bus = $this->_getBus())) {
+        if (!($bus = $this->getBus())) {
             return new ViewModel();
         }
 
@@ -172,7 +172,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
-    private function _getBus()
+    private function getBus()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

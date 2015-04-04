@@ -51,7 +51,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                 'multiple' => true,
             ),
             'options'    => array(
-                'options' => $this->_createPromotionsArray(),
+                'options' => $this->createPromotionsArray(),
             ),
         ));
 
@@ -98,7 +98,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $storedMessages = $this->_getStoredMessages();
+        $storedMessages = $this->getStoredMessages();
         if (1 <= count($storedMessages)) {
             $this->add(array(
                 'type'     => 'fieldset',
@@ -184,7 +184,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $this->addSubmit('Send', 'mail', 'Send');
     }
 
-    private function _createPromotionsArray()
+    private function createPromotionsArray()
     {
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -198,7 +198,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         return $promotionsArray;
     }
 
-    private function _getStoredMessages()
+    private function getStoredMessages()
     {
         $storedMessages = $this->getDocumentManager()
             ->getRepository('MailBundle\Document\Message')

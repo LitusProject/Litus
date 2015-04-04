@@ -32,12 +32,12 @@ class Doctrine extends \CommonBundle\Component\Authentication\Result
     /**
      * @var Person The user object given by the DQL query
      */
-    private $_personObject = null;
+    private $personObject = null;
 
     /**
      * @var Session The session object
      */
-    private $_sessionObject = null;
+    private $sessionObject = null;
 
     /**
      * Overwriting the standard constructor to allow for some specific fields.
@@ -52,8 +52,8 @@ class Doctrine extends \CommonBundle\Component\Authentication\Result
     {
         parent::__construct($code, $identity, $messages);
 
-        $this->_personObject = $personObject;
-        $this->_sessionObject = $sessionObject;
+        $this->personObject = $personObject;
+        $this->sessionObject = $sessionObject;
     }
 
     /**
@@ -63,7 +63,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\Result
      */
     public function getPersonObject()
     {
-        return $this->_personObject;
+        return $this->personObject;
     }
 
     /**
@@ -73,7 +73,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\Result
      */
     public function getSessionObject()
     {
-        return $this->_sessionObject;
+        return $this->sessionObject;
     }
 
     /**
@@ -83,7 +83,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\Result
      */
     public function setSessionObject(Session $sessionObject)
     {
-        $this->_sessionObject = $sessionObject;
+        $this->sessionObject = $sessionObject;
 
         return $this;
     }

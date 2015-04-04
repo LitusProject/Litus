@@ -41,7 +41,7 @@ class SubjectProfMap extends EntityRepository
      */
     public function findOneBySubjectIdAndProfAndAcademicYear($subjectId, Academic $prof, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
             ->where(
@@ -63,7 +63,7 @@ class SubjectProfMap extends EntityRepository
 
     public function findAllBySubjectAndAcademicYearQuery(SubjectEntity $subject, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
             ->where(
@@ -81,7 +81,7 @@ class SubjectProfMap extends EntityRepository
 
     public function findAllByProfAndAcademicYearQuery(Academic $prof, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
             ->where(
@@ -99,7 +99,7 @@ class SubjectProfMap extends EntityRepository
 
     public function findAllByNameAndProfAndAcademicYearTypeAheadQuery($name, Academic $prof, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\SubjectProfMap', 'm')
             ->innerJoin('m.subject', 's')

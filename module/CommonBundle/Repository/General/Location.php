@@ -30,7 +30,7 @@ class Location extends EntityRepository
 {
     public function findAllActiveQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('CommonBundle\Entity\General\Location', 'l')
             ->where(

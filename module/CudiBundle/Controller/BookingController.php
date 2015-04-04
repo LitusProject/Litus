@@ -59,7 +59,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($booking = $this->_getBooking())) {
+        if (!($booking = $this->getBooking())) {
             return $this->notFoundAction();
         }
 
@@ -552,7 +552,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _getBooking()
+    private function getBooking()
     {
         if (null === $this->getParam('id') || !is_numeric($this->getParam('id'))) {
             return;

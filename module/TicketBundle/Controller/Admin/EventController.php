@@ -100,7 +100,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
@@ -141,7 +141,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
@@ -158,7 +158,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return Event|null
      */
-    private function _getEvent()
+    private function getEvent()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

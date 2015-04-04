@@ -40,12 +40,12 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * @var \BrBundle\Entity\Contract
      */
-    private $_contract;
+    private $contract;
 
     /**
      * @var \Zend\I18n\Translator\Translator
      */
-    private $_translator;
+    private $translator;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
@@ -63,8 +63,8 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                 ->getConfigValue('br.file_path') . '/contracts/'
                 . $contract->getId() . '/contract.pdf'
         );
-        $this->_translator = $translator;
-        $this->_contract = $contract;
+        $this->translator = $translator;
+        $this->contract = $contract;
     }
 
     protected function generateXml(TmpFile $tmpFile)
@@ -73,17 +73,17 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
         $configs = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config');
 
-        $title = $this->_contract->getTitle();
-        $company = $this->_contract->getOrder()->getCompany();
+        $title = $this->contract->getTitle();
+        $company = $this->contract->getOrder()->getCompany();
 
         $locale = $configs->getConfigValue('br.contract_language');
-        $this->_translator->setLocale($locale);
+        $this->translator->setLocale($locale);
 
         $formatter = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::NONE);
-        $date = $formatter->format($this->_contract->getOrder()->getCreationTime());
+        $date = $formatter->format($this->contract->getOrder()->getCreationTime());
 
-        $ourContactPerson = $this->_contract->getOrder()->getCreationPerson()->getPerson()->getFullName();
-        $entries = $this->_contract->getEntries();
+        $ourContactPerson = $this->contract->getOrder()->getCreationPerson()->getPerson()->getFullName();
+        $entries = $this->contract->getEntries();
 
         $unionName = $configs->getConfigValue('organization_name');
         $unionNameShort = $configs->getConfigValue('organization_short_name');
@@ -127,7 +127,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                     new XmlObject(
                         'company',
                         array(
-                            'contact_person' => $this->_contract->getOrder()->getContact()->getFullName(),
+                            'contact_person' => $this->contract->getOrder()->getContact()->getFullName(),
                         ),
                         array(
                             new XmlObject('name', null, $company->getName()),
@@ -163,7 +163,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                                     new XmlObject(
                                         'country',
                                         null,
-                                        $this->_translator->translate($company->getAddress()->getCountry())
+                                        $this->translator->translate($company->getAddress()->getCountry())
                                     ),
                                 )
                             ),

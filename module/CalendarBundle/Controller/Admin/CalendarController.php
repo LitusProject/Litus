@@ -103,7 +103,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
@@ -144,7 +144,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
@@ -162,7 +162,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editPosterAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
@@ -209,7 +209,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function uploadAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEvent())) {
             return new ViewModel();
         }
 
@@ -264,7 +264,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function posterAction()
     {
-        if (!($event = $this->_getEventByPoster())) {
+        if (!($event = $this->getEventByPoster())) {
             return new ViewModel();
         }
 
@@ -292,7 +292,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Event|null
      */
-    private function _getEvent()
+    private function getEvent()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -336,7 +336,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Event|null
      */
-    private function _getEventByPoster()
+    private function getEventByPoster()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

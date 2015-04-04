@@ -90,7 +90,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function membersAction()
     {
-        if (!($unit = $this->_getUnit())) {
+        if (!($unit = $this->getUnit())) {
             return new ViewModel();
         }
 
@@ -160,7 +160,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($unit = $this->_getUnit())) {
+        if (!($unit = $this->getUnit())) {
             return new ViewModel();
         }
 
@@ -199,7 +199,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($unit = $this->_getUnit())) {
+        if (!($unit = $this->getUnit())) {
             return new ViewModel();
         }
 
@@ -220,7 +220,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($member = $this->_getMember())) {
+        if (!($member = $this->getMember())) {
             return new ViewModel();
         }
 
@@ -242,13 +242,13 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
         foreach ($units as $unit) {
             foreach ($unit->getRoles() as $role) {
-                if ($this->_findRoleWithParent($role, $unit->getParent())) {
+                if ($this->findRoleWithParent($role, $unit->getParent())) {
                     $unit->removeRole($role);
                 }
             }
 
             foreach ($unit->getCoordinatorRoles() as $coordinatorRole) {
-                if ($this->_findCoordinatorRoleWithParent($coordinatorRole, $unit->getParent())) {
+                if ($this->findCoordinatorRoleWithParent($coordinatorRole, $unit->getParent())) {
                     $unit->removeCoordinatorRole($coordinatorRole);
                 }
             }
@@ -274,7 +274,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Unit|null
      */
-    private function _getUnit()
+    private function getUnit()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -318,7 +318,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return UnitMap|null
      */
-    private function _getMember()
+    private function getMember()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -363,7 +363,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
      * @param Role      $role
      * @param Unit|null $parent
      */
-    private function _findRoleWithParent(Role $role, Unit $parent = null)
+    private function findRoleWithParent(Role $role, Unit $parent = null)
     {
         if (null === $parent) {
             return false;
@@ -373,14 +373,14 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             return true;
         }
 
-        return $this->_findRoleWithParent($role, $parent->getParent());
+        return $this->findRoleWithParent($role, $parent->getParent());
     }
 
     /**
      * @param Role      $role
      * @param Unit|null $parent
      */
-    private function _findCoordinatorRoleWithParent(Role $role, Unit $parent = null)
+    private function findCoordinatorRoleWithParent(Role $role, Unit $parent = null)
     {
         if (null === $parent) {
             return false;
@@ -390,6 +390,6 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             return true;
         }
 
-        return $this->_findCoordinatorRoleWithParent($role, $parent->getParent());
+        return $this->findCoordinatorRoleWithParent($role, $parent->getParent());
     }
 }

@@ -33,17 +33,17 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    private $entityManager;
 
     /**
      * @var Person The authenticated person
      */
-    private $_authenticatedPerson = null;
+    private $authenticatedPerson;
 
     /**
      * @var AcademicYear The current academic year
      */
-    private $_currentAcademicYear = null;
+    private $currentAcademicYear;
 
     /**
      * @param EntityManager $entityManager       The EntityManager instance
@@ -54,9 +54,9 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
     public function __construct(EntityManager $entityManager, Person $authenticatedPerson, AcademicYear $currentAcademicYear, TmpFile $pass, $imageDirectory)
     {
         parent::__construct($pass, $imageDirectory);
-        $this->_entityManager = $entityManager;
-        $this->_authenticatedPerson = $authenticatedPerson;
-        $this->_currentAcademicYear = $currentAcademicYear;
+        $this->entityManager = $entityManager;
+        $this->authenticatedPerson = $authenticatedPerson;
+        $this->currentAcademicYear = $currentAcademicYear;
     }
 
     /**
@@ -66,7 +66,7 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
      */
     protected function getCertificate()
     {
-        $certificatePasswords = $this->_entityManager
+        $certificatePasswords = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.passkit_certificates');
 
@@ -80,19 +80,19 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
      */
     protected function getJson()
     {
-        $passTypeIdentifiers = $this->_entityManager
+        $passTypeIdentifiers = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.passkit_pass_type_identifiers');
 
-        $teamIdentifier = $this->_entityManager
+        $teamIdentifier = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.passkit_team_identifier');
 
-        $organizationName = $this->_entityManager
+        $organizationName = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_name');
 
-        $shortOrganizationName = $this->_entityManager
+        $shortOrganizationName = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_short_name');
 
@@ -128,32 +128,32 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
                 'description'        => $shortOrganizationName . ' Membership',
                 'foregroundColor'    => 'rgb(255, 255, 255)',
                 'backgroundColor'    => 'rgb(34, 50, 90)',
-                'expirationDate'     => $this->_currentAcademicYear->getEndDate()->format('c'),
+                'expirationDate'     => $this->currentAcademicYear->getEndDate()->format('c'),
                 'barcode'            => array(
                     'format'          => 'PKBarcodeFormatPDF417',
-                    'message'         => $this->_authenticatedPerson->getUsername(),
+                    'message'         => $this->authenticatedPerson->getUsername(),
                     'messageEncoding' => 'iso-8859-1',
                 ),
                 'generic'            => array(
                     'primaryFields' => array(
                         array(
                             'key'   => 'member',
-                            'value' => $this->_authenticatedPerson->getFullName(),
+                            'value' => $this->authenticatedPerson->getFullName(),
                         ),
                     ),
                     'secondaryFields' => array(
                         array(
                             'key'   => 'academicYear',
                             'label' => 'lAcademicYear',
-                            'value' => $this->_currentAcademicYear->getStartDate()->format('Y')
+                            'value' => $this->currentAcademicYear->getStartDate()->format('Y')
                                 . '-'
-                                . $this->_currentAcademicYear->getEndDate()->format('Y'),
+                                . $this->currentAcademicYear->getEndDate()->format('Y'),
                         ),
                         array(
                             'key'   => 'status',
                             'label' => 'lStatus',
-                            'value' => $this->_authenticatedPerson
-                                ->getOrganizationStatus($this->_currentAcademicYear)
+                            'value' => $this->authenticatedPerson
+                                ->getOrganizationStatus($this->currentAcademicYear)
                                 ->getStatus(),
                         ),
                     ),

@@ -31,7 +31,7 @@ class Organization extends EntityRepository
 {
     public function findAllByStatusQuery($status, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CommonBundle\Entity\User\Status\Organization', 's')
             ->where(

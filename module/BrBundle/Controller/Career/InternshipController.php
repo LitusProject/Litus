@@ -85,7 +85,7 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
 
     public function viewAction()
     {
-        $internship = $this->_getInternship();
+        $internship = $this->getInternship();
 
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -99,7 +99,7 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
         );
     }
 
-    private function _getInternship()
+    private function getInternship()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

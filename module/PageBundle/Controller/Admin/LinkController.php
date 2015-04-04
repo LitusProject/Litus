@@ -82,7 +82,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($link = $this->_getLink())) {
+        if (!($link = $this->getLink())) {
             return new ViewModel();
         }
 
@@ -122,7 +122,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($link = $this->_getLink())) {
+        if (!($link = $this->getLink())) {
             return new ViewModel();
         }
 
@@ -139,7 +139,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getLink()
+    private function getLink()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

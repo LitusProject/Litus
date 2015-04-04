@@ -36,12 +36,12 @@ class Tar
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    private $entityManager = null;
 
     /**
      * @var array The array containing the mailinglists
      */
-    private $_lists;
+    private $lists;
 
     /**
      * @param EntityManager $entityManager The entityManager
@@ -49,8 +49,8 @@ class Tar
      */
     public function __construct(EntityManager $entityManager, array $lists)
     {
-        $this->_entityManager = $entityManager;
-        $this->_lists = $lists;
+        $this->entityManager = $entityManager;
+        $this->lists = $lists;
     }
 
     /**
@@ -65,8 +65,8 @@ class Tar
 
         $tar->addString('GENERATED', $now->format('YmdHi') . PHP_EOL);
 
-        foreach ($this->_lists as $list) {
-            $entries = $this->_entityManager
+        foreach ($this->lists as $list) {
+            $entries = $this->entityManager
                 ->getRepository('MailBundle\Entity\MailingList\Entry')
                 ->findByList($list);
 

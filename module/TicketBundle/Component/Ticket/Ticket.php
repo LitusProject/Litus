@@ -119,14 +119,14 @@ class Ticket
         } else {
             if (count($event->getOptions()) == 0) {
                 for ($i = 0 ; $i < $numbers['member'] ; $i++) {
-                    $ticket = self::_createTicket($event, $person, $guestInfo, true, $payed, null, $entityManager);
+                    $ticket = self::createTicket($event, $person, $guestInfo, true, $payed, null, $entityManager);
                     $entityManager->persist($ticket);
                     $createdTickets[] = $ticket;
                 }
 
                 if (!$event->isOnlyMembers()) {
                     for ($i = 0 ; $i < $numbers['non_member'] ; $i++) {
-                        $ticket = self::_createTicket($event, $person, $guestInfo, false, $payed, null, $entityManager);
+                        $ticket = self::createTicket($event, $person, $guestInfo, false, $payed, null, $entityManager);
                         $entityManager->persist($ticket);
                         $createdTickets[] = $ticket;
                     }
@@ -135,7 +135,7 @@ class Ticket
                 foreach ($event->getOptions() as $option) {
                     $count = $numbers['option_' . $option->getId() . '_number_member'];
                     for ($i = 0 ; $i < $count ; $i++) {
-                        $ticket = self::_createTicket($event, $person, $guestInfo, true, $payed, $option, $entityManager);
+                        $ticket = self::createTicket($event, $person, $guestInfo, true, $payed, $option, $entityManager);
                         $entityManager->persist($ticket);
                         $createdTickets[] = $ticket;
                     }
@@ -143,7 +143,7 @@ class Ticket
                     if (!$event->isOnlyMembers()) {
                         $count = $numbers['option_' . $option->getId() . '_number_non_member'];
                         for ($i = 0 ; $i < $count ; $i++) {
-                            $ticket = self::_createTicket($event, $person, $guestInfo, false, $payed, $option, $entityManager);
+                            $ticket = self::createTicket($event, $person, $guestInfo, false, $payed, $option, $entityManager);
                             $entityManager->persist($ticket);
                             $createdTickets[] = $ticket;
                         }
@@ -164,7 +164,7 @@ class Ticket
      * @param Option|null    $option
      * @param EntityManager  $entityManager
      */
-    private static function _createTicket(Event $event, Person $person = null, GuestInfo $guestInfo = null, $member, $payed, Option $option = null, EntityManager $entityManager)
+    private static function createTicket(Event $event, Person $person = null, GuestInfo $guestInfo = null, $member, $payed, Option $option = null, EntityManager $entityManager)
     {
         $ticket = new TicketEntity(
             $event,

@@ -42,7 +42,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
 
     public function yearAction()
     {
-        if (!($publication = $this->_getPublication())) {
+        if (!($publication = $this->getPublication())) {
             return new ViewModel();
         }
 
@@ -60,11 +60,11 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
-        if (!($publication = $this->_getPublication())) {
+        if (!($publication = $this->getPublication())) {
             return new ViewModel();
         }
 
-        if (!($year = $this->_getYear())) {
+        if (!($year = $this->getYear())) {
             return new ViewModel();
         }
 
@@ -91,7 +91,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _getPublication()
+    private function getPublication()
     {
         if (null === $this->getParam('publication')) {
             $this->flashMessenger()->error(
@@ -132,7 +132,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
         return $publication;
     }
 
-    private function _getYear()
+    private function getYear()
     {
         if (null === $this->getParam('year')) {
             $this->flashMessenger()->error(

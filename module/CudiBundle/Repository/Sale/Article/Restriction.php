@@ -31,7 +31,7 @@ class Restriction extends EntityRepository
 {
     public function findAllByArticleQuery(Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('CudiBundle\Entity\Sale\Article\Restriction', 'r')
             ->innerJoin('r.article', 'a')

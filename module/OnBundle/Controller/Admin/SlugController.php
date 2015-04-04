@@ -82,7 +82,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($slug = $this->_getSlug())) {
+        if (!($slug = $this->getSlug())) {
             return new ViewModel();
         }
 
@@ -122,7 +122,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($slug = $this->_getSlug())) {
+        if (!($slug = $this->getSlug())) {
             return new ViewModel();
         }
 
@@ -140,7 +140,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Slug
      */
-    private function _getSlug()
+    private function getSlug()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

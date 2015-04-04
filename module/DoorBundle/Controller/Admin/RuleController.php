@@ -42,7 +42,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'logGraph' => $this->_getLogGraph(),
+                'logGraph' => $this->getLogGraph(),
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'entityManager' => $this->getEntityManager(),
@@ -88,7 +88,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($rule = $this->_getRule())) {
+        if (!($rule = $this->getRule())) {
             return new ViewModel();
         }
 
@@ -145,7 +145,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($rule = $this->_getRule())) {
+        if (!($rule = $this->getRule())) {
             return new ViewModel();
         }
 
@@ -163,7 +163,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Rule
      */
-    private function _getRule()
+    private function getRule()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
@@ -204,7 +204,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         return $rule;
     }
 
-    private function _getLogGraph()
+    private function getLogGraph()
     {
         if (null !== $this->getCache()) {
             if ($this->getCache()->hasItem('CommonBundle_Controller_RuleController_LogGraph')) {
@@ -216,16 +216,16 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
             $this->getCache()->setItem(
                 'CommonBundle_Controller_RuleController_LogGraph',
-                $this->_getLogGraphData()
+                $this->getLogGraphData()
             );
 
             return $this->getCache()->getItem('CommonBundle_Controller_RuleController_LogGraph');
         }
 
-        return $this->_getLogGraphData();
+        return $this->getLogGraphData();
     }
 
-    private function _getLogGraphData()
+    private function getLogGraphData()
     {
         $now = new DateTime();
 

@@ -30,7 +30,7 @@ class Passenger extends EntityRepository
 {
     public function findPassengerByCodeQuery($code)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PromBundle\Entity\Bus\Passenger', 'p')
             ->where(
@@ -44,7 +44,7 @@ class Passenger extends EntityRepository
 
     public function findPassengerByEmailQuery($email)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PromBundle\Entity\Bus\Passenger', 'p')
             ->where(
@@ -58,7 +58,7 @@ class Passenger extends EntityRepository
 
     public function findAllPassengersByBusQuery($bus)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PromBundle\Entity\Bus\Passenger', 'p')
             ->where(

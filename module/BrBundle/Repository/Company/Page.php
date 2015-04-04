@@ -31,7 +31,7 @@ class Page extends EntityRepository
 {
     public function findOneActiveBySlug($slug, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('BrBundle\Entity\Company\Page', 'p')
             ->innerJoin('p.years', 'y')
@@ -54,7 +54,7 @@ class Page extends EntityRepository
 
     public function findAllActiveQuery(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('BrBundle\Entity\Company\Page', 'p')
             ->innerJoin('p.years', 'y')
@@ -73,7 +73,7 @@ class Page extends EntityRepository
 
     public function findAllActiveBySearchQuery(AcademicYear $academicYear, $string)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p, c')
             ->from('BrBundle\Entity\Company\Page', 'p')
             ->innerJoin('p.years', 'y')

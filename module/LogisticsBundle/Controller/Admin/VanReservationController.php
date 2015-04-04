@@ -120,7 +120,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
     public function editAction()
     {
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getReservation())) {
             return new ViewModel();
         }
 
@@ -159,7 +159,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getReservation())) {
             return new ViewModel();
         }
 
@@ -177,7 +177,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getReservation())) {
             return new ViewModel();
         }
 
@@ -203,7 +203,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getReservation())) {
             return new ViewModel();
         }
 
@@ -223,7 +223,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     /**
      * @return VanReservation
      */
-    private function _getReservation()
+    private function getReservation()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

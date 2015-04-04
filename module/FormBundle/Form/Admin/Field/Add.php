@@ -41,17 +41,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     /**
     * @var Form
     */
-    protected $_form;
+    protected $form;
 
     /**
     * @var Field
     */
-    protected $_field;
+    protected $field;
 
     /**
     * @var boolean
     */
-    protected $_repeat;
+    protected $repeat;
 
     public function init()
     {
@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'required'   => true,
             'attributes' => array(
                 'id'      => 'form_type',
-                'options' => $this->_form instanceof Doodle ? array('timeslot' => 'Time Slot') : Field::$POSSIBLE_TYPES,
+                'options' => $this->form instanceof Doodle ? array('timeslot' => 'Time Slot') : Field::$POSSIBLE_TYPES,
             ),
         ));
 
@@ -176,9 +176,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->addSubmit('Add', 'field_add');
         $this->addSubmit('Add And Repeat', 'field_add', 'submit_repeat');
 
-        if (null !== $this->_field) {
-            if ($this->_repeat) {
-                $field = clone $this->_field;
+        if (null !== $this->field) {
+            if ($this->repeat) {
+                $field = clone $this->field;
                 if ($field instanceof TimeSlotFieldEntity) {
                     $interval = $field->getStartDate()->diff($field->getEndDate());
                     $startDate = $field->getStartDate();
@@ -190,7 +190,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 $this->populateValues($hydrator->extract($field));
             } else {
                 $hydrator = $this->getHydrator();
-                $this->populateValues($hydrator->extract($this->_field));
+                $this->populateValues($hydrator->extract($this->field));
             }
         }
     }
@@ -218,8 +218,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     protected function getVisibilityOptions()
     {
         $options = array('always' => 'Always');
-        foreach ($this->_form->getFields() as $field) {
-            if (null !== $this->_field && $field->getId() == $this->_field->getId()) {
+        foreach ($this->form->getFields() as $field) {
+            if (null !== $this->field && $field->getId() == $this->field->getId()) {
                 continue;
             }
 
@@ -268,7 +268,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     */
     public function setForm(Form $form)
     {
-        $this->_form = $form;
+        $this->form = $form;
 
         return $this;
     }
@@ -279,7 +279,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     */
     public function setField(Field $field = null)
     {
-        $this->_field = $field;
+        $this->field = $field;
 
         return $this;
     }
@@ -290,14 +290,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     */
     public function setRepeat($repeat)
     {
-        $this->_repeat = $repeat;
+        $this->repeat = $repeat;
 
         return $this;
     }
 
     public function getInputFilterSpecification()
     {
-        $type = $this->_getType();
+        $type = $this->getType();
 
         if ($type == 'string') {
             $this->get('string_form')->setRequired();
@@ -327,21 +327,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         return $specs;
     }
 
-    private function _getType()
+    private function getType()
     {
-        if (null === $this->_field) {
+        if (null === $this->field) {
             return $this->data['type'];
         }
 
-        if ($this->_field instanceof StringFieldEntity) {
+        if ($this->field instanceof StringFieldEntity) {
             return 'string';
-        } elseif ($this->_field instanceof DropdownFieldEntity) {
+        } elseif ($this->field instanceof DropdownFieldEntity) {
             return 'dropdown';
-        } elseif ($this->_field instanceof CheckboxFieldEntity) {
+        } elseif ($this->field instanceof CheckboxFieldEntity) {
             return 'checkbox';
-        } elseif ($this->_field instanceof FileFieldEntity) {
+        } elseif ($this->field instanceof FileFieldEntity) {
             return 'file';
-        } elseif ($this->_field instanceof TimeSlotFieldEntity) {
+        } elseif ($this->field instanceof TimeSlotFieldEntity) {
             return 'timeslot';
         }
     }

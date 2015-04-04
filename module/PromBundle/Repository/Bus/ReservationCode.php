@@ -30,7 +30,7 @@ class ReservationCode extends EntityRepository
 {
     public function codeExist($code)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultCode = $query->select('c')
             ->from('PromBundle\Entity\Bus\ReservationCode', 'c')
             ->where(
@@ -45,7 +45,7 @@ class ReservationCode extends EntityRepository
 
     public function getRegistrationCodeByCode($code)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultCode = $query->select('c')
             ->from('PromBundle\Entity\Bus\ReservationCode', 'c')
             ->where(

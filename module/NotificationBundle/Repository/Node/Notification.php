@@ -31,7 +31,7 @@ class Notification extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('NotificationBundle\Entity\Node\Notification', 'n')
             ->orderBy('n.creationTime', 'DESC')
@@ -44,7 +44,7 @@ class Notification extends EntityRepository
     {
         $now = new DateTime();
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('NotificationBundle\Entity\Node\Notification', 'n')
             ->where(

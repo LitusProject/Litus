@@ -30,7 +30,7 @@ class GetParam extends \Zend\View\Helper\AbstractHelper
     /**
      * @var RouteMatch The matched router object
      */
-    private $_routeMatch = null;
+    private $routeMatch = null;
 
     /**
      * @param  RouteMatch $routeMatch The matched router object
@@ -38,7 +38,7 @@ class GetParam extends \Zend\View\Helper\AbstractHelper
      */
     public function setRouteMatch(RouteMatch $routeMatch)
     {
-        $this->_routeMatch = $routeMatch;
+        $this->routeMatch = $routeMatch;
 
         return $this;
     }
@@ -50,10 +50,10 @@ class GetParam extends \Zend\View\Helper\AbstractHelper
      */
     public function __invoke($key, $default = null)
     {
-        if (null === $this->_routeMatch) {
+        if (null === $this->routeMatch) {
             throw new Exception\RuntimeException('No matched route was provided');
         }
 
-        return $this->_routeMatch->getParam($key, $default);
+        return $this->routeMatch->getParam($key, $default);
     }
 }

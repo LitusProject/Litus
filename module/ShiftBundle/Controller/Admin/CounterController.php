@@ -32,7 +32,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function indexAction()
     {
-        $academicYear = $this->_getAcademicYear();
+        $academicYear = $this->getAcademicYear();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -48,7 +48,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
     public function unitsAction()
     {
-        $academicYear = $this->_getAcademicYear();
+        $academicYear = $this->getAcademicYear();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -56,7 +56,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
         $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findByAcademicYear($this->_getAcademicYear());
+            ->findByAcademicYear($this->getAcademicYear());
 
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
@@ -113,17 +113,17 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getPerson())) {
             return new ViewModel();
         }
 
         $asResponsible = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllByPersonAsReponsible($person, $this->_getAcademicYear());
+            ->findAllByPersonAsReponsible($person, $this->getAcademicYear());
 
         $asVolunteer = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllByPersonAsVolunteer($person, $this->_getAcademicYear());
+            ->findAllByPersonAsVolunteer($person, $this->getAcademicYear());
 
         $payed = array();
         foreach ($asVolunteer as $shift) {
@@ -227,7 +227,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        $academicYear = $this->_getAcademicYear();
+        $academicYear = $this->getAcademicYear();
 
         $people = null;
         switch ($this->getParam('field')) {
@@ -320,7 +320,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _getAcademicYear()
+    private function getAcademicYear()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {
@@ -347,7 +347,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return $academicYear;
     }
 
-    private function _getPerson()
+    private function getPerson()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(

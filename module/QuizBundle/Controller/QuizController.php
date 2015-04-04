@@ -32,7 +32,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($quiz = $this->_getQuiz())) {
+        if (!($quiz = $this->getQuiz())) {
             return new ViewModel();
         }
 
@@ -67,7 +67,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($team = $this->_getTeam()) || !($round = $this->_getRound())) {
+        if (!($team = $this->getTeam()) || !($round = $this->getRound())) {
             return new ViewModel();
         }
 
@@ -111,7 +111,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($quiz = $this->_getQuiz())) {
+        if (!($quiz = $this->getQuiz())) {
             return new ViewModel();
         }
 
@@ -164,7 +164,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return null|\QuizBundle\Entity\Quiz
      */
-    private function _getQuiz()
+    private function getQuiz()
     {
         if ($this->getParam('quizid') === null) {
             $this->flashMessenger()->error(
@@ -224,7 +224,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return null|\QuizBundle\Entity\Round
      */
-    private function _getRound()
+    private function getRound()
     {
         if ($this->getParam('roundid') === null) {
             $this->flashMessenger()->error(
@@ -284,7 +284,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return null|\QuizBundle\Entity\Team
      */
-    private function _getTeam()
+    private function getTeam()
     {
         if ($this->getParam('teamid') === null) {
             $this->flashMessenger()->error(

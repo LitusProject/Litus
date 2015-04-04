@@ -37,22 +37,22 @@ class QueueItem
     /**
      * @var integer The id of the sale session
      */
-    private $_id;
+    private $id;
 
     /**
      * @var EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @var User
      */
-    private $_user;
+    private $user;
 
     /**
      * @var array
      */
-    private $_articles;
+    private $articles;
 
     /**
      * @param EntityManager $entityManager
@@ -60,10 +60,10 @@ class QueueItem
      */
     public function __construct(EntityManager $entityManager, User $user, $id)
     {
-        $this->_entityManager = $entityManager;
-        $this->_id = $id;
-        $this->_user = $user;
-        $this->_articles = array();
+        $this->entityManager = $entityManager;
+        $this->id = $id;
+        $this->user = $user;
+        $this->articles = array();
     }
 
     /**
@@ -71,7 +71,7 @@ class QueueItem
      */
     public function getId()
     {
-        return $this->_id;
+        return $this->id;
     }
 
     /**
@@ -80,7 +80,7 @@ class QueueItem
      */
     public function setUser(User $user)
     {
-        $this->_user = $user;
+        $this->user = $user;
 
         return $this;
     }
@@ -90,7 +90,7 @@ class QueueItem
      */
     public function getUser()
     {
-        return $this->_user;
+        return $this->user;
     }
 
     /**
@@ -98,9 +98,9 @@ class QueueItem
      */
     public function isLocked()
     {
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
-            ->findOneById($this->_id);
+            ->findOneById($this->id);
 
         return ($item->getStatus() == 'collecting' || $item->getStatus() == 'selling');
     }
@@ -110,9 +110,9 @@ class QueueItem
      */
     public function getItem()
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
-            ->findOneById($this->_id);
+            ->findOneById($this->id);
     }
 
     /**
@@ -120,11 +120,11 @@ class QueueItem
      */
     public function getCollectInfo()
     {
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
-            ->findOneById($this->_id);
+            ->findOneById($this->id);
 
-        $acco = $this->_entityManager
+        $acco = $this->entityManager
             ->getRepository('CudiBundle\Entity\User\Person\Sale\Acco')
             ->findOneByPerson($item->getPerson());
 
@@ -137,10 +137,10 @@ class QueueItem
                         'id' => $item->getPerson()->getId(),
                         'name' => $item->getPerson()->getFullName(),
                         'universityIdentification' => $item->getPerson()->getUniversityIdentification(),
-                        'member' => $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
+                        'member' => $item->getPerson()->isMember($this->getCurrentAcademicYear()),
                         'acco' => isset($acco) ? $acco->hasAccoCard() : false,
                     ),
-                    'articles' => $this->_getArticles(),
+                    'articles' => $this->getArticles(),
                 ),
             )
         );
@@ -151,11 +151,11 @@ class QueueItem
      */
     public function getSaleInfo()
     {
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
-            ->findOneById($this->_id);
+            ->findOneById($this->id);
 
-        $acco = $this->_entityManager
+        $acco = $this->entityManager
             ->getRepository('CudiBundle\Entity\User\Person\Sale\Acco')
             ->findOneByPerson($item->getPerson());
 
@@ -168,10 +168,10 @@ class QueueItem
                         'id' => $item->getPerson()->getId(),
                         'name' => $item->getPerson()->getFullName(),
                         'universityIdentification' => $item->getPerson()->getUniversityIdentification(),
-                        'member' => $item->getPerson()->isMember($this->_getCurrentAcademicYear()),
+                        'member' => $item->getPerson()->isMember($this->getCurrentAcademicYear()),
                         'acco' => isset($acco) ? $acco->hasAccoCard() : false,
                     ),
-                    'articles' => $this->_getArticles(),
+                    'articles' => $this->getArticles(),
                 ),
             )
         );
@@ -182,7 +182,7 @@ class QueueItem
      */
     public function setCollectedArticles($articles)
     {
-        $this->_articles = $articles;
+        $this->articles = $articles;
     }
 
     /**
@@ -192,16 +192,16 @@ class QueueItem
      */
     public function conclude($articles, $discounts)
     {
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
-            ->findOneById($this->_id);
+            ->findOneById($this->id);
 
-        $bookings = $this->_entityManager
+        $bookings = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllOpenByPerson($item->getPerson());
 
         $memberShipArticles = unserialize(
-            $this->_entityManager
+            $this->entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_article')
         );
@@ -215,19 +215,19 @@ class QueueItem
 
             if ($articles->{$booking->getArticle()->getId()} < $booking->getNumber()) {
                 $remainder = new Booking(
-                    $this->_entityManager,
+                    $this->entityManager,
                     $booking->getPerson(),
                     $booking->getArticle(),
                     'assigned',
                     $booking->getNumber() - $articles->{$booking->getArticle()->getId()}
                 );
-                $this->_entityManager->persist($remainder);
+                $this->entityManager->persist($remainder);
                 $booking->setNumber($articles->{$booking->getArticle()->getId()})
-                    ->setStatus('sold', $this->_entityManager);
+                    ->setStatus('sold', $this->entityManager);
                 $articles->{$booking->getArticle()->getId()} = 0;
             } else {
                 $articles->{$booking->getArticle()->getId()} -= $booking->getNumber();
-                $booking->setStatus('sold', $this->_entityManager);
+                $booking->setStatus('sold', $this->entityManager);
             }
 
             if (isset($soldArticles[$booking->getArticle()->getId()])) {
@@ -241,14 +241,14 @@ class QueueItem
 
             if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
                 $status = $booking->getPerson()
-                    ->getOrganizationStatus($this->_getCurrentAcademicYear());
+                    ->getOrganizationStatus($this->getCurrentAcademicYear());
                 if (null === $status) {
                     $booking->getPerson()
                         ->addOrganizationStatus(
                             new OrganizationStatus(
                                 $booking->getPerson(),
                                 'member',
-                                $this->_getCurrentAcademicYear()
+                                $this->getCurrentAcademicYear()
                             )
                         );
                 } else {
@@ -257,16 +257,16 @@ class QueueItem
                     }
                 }
 
-                $registration = $this->_entityManager
+                $registration = $this->entityManager
                     ->getRepository('SecretaryBundle\Entity\Registration')
-                    ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
+                    ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->getCurrentAcademicYear());
 
                 if (null === $registration) {
                     $registration = new Registration(
                         $booking->getPerson(),
-                        $this->_getCurrentAcademicYear()
+                        $this->getCurrentAcademicYear()
                     );
-                    $this->_entityManager->persist($registration);
+                    $this->entityManager->persist($registration);
                 }
                 $registration->setPayed();
             }
@@ -277,7 +277,7 @@ class QueueItem
                 continue;
             }
 
-            $article = $this->_entityManager
+            $article = $this->entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($id);
 
@@ -286,14 +286,14 @@ class QueueItem
             }
 
             $booking = new Booking(
-                $this->_entityManager,
+                $this->entityManager,
                 $item->getPerson(),
                 $article,
                 'sold',
                 $number,
                 true
             );
-            $this->_entityManager->persist($booking);
+            $this->entityManager->persist($booking);
 
             if (isset($soldArticles[$booking->getArticle()->getId()])) {
                 $soldArticles[$booking->getArticle()->getId()]['number'] += $booking->getNumber();
@@ -306,14 +306,14 @@ class QueueItem
 
             if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
                 $status = $booking->getPerson()
-                    ->getOrganizationStatus($this->_getCurrentAcademicYear());
+                    ->getOrganizationStatus($this->getCurrentAcademicYear());
                 if (null === $status) {
                     $booking->getPerson()
                         ->addOrganizationStatus(
                             new OrganizationStatus(
                                 $booking->getPerson(),
                                 'member',
-                                $this->_getCurrentAcademicYear()
+                                $this->getCurrentAcademicYear()
                             )
                         );
                 } else {
@@ -322,16 +322,16 @@ class QueueItem
                     }
                 }
 
-                $registration = $this->_entityManager
+                $registration = $this->entityManager
                     ->getRepository('SecretaryBundle\Entity\Registration')
-                    ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->_getCurrentAcademicYear());
+                    ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->getCurrentAcademicYear());
 
                 if (null === $registration) {
                     $registration = new Registration(
                         $booking->getPerson(),
-                        $this->_getCurrentAcademicYear()
+                        $this->getCurrentAcademicYear()
                     );
-                    $this->_entityManager->persist($registration);
+                    $this->entityManager->persist($registration);
                 }
                 $registration->setPayed();
             }
@@ -344,10 +344,10 @@ class QueueItem
                 $bestDiscount = null;
                 foreach ($soldArticle['article']->getDiscounts() as $discount) {
                     if (in_array($discount->getRawType(), $discounts)) {
-                        if (!$discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
+                        if (!$discount->canBeApplied($item->getPerson(), $this->getCurrentAcademicYear(), $this->entityManager)) {
                             continue;
                         }
-                        if ($discount->alreadyApplied($soldArticle['article'], $item->getPerson(), $this->_entityManager, $this->_getCurrentAcademicYear())) {
+                        if ($discount->alreadyApplied($soldArticle['article'], $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear())) {
                             continue;
                         }
                         $newPrice = $discount->apply($soldArticle['article']->getSellPrice());
@@ -366,7 +366,7 @@ class QueueItem
                     $item,
                     isset($bestDiscount) ? $bestDiscount->getRawType() : null
                 );
-                $this->_entityManager->persist($saleItem);
+                $this->entityManager->persist($saleItem);
                 $saleItems[] = $saleItem;
 
                 $soldArticle['number'] -= $number;
@@ -382,28 +382,28 @@ class QueueItem
                 break;
             }
         }
-        $acco = $this->_entityManager
+        $acco = $this->entityManager
             ->getRepository('CudiBundle\Entity\User\Person\Sale\Acco')
             ->findOneByPerson($item->getPerson());
 
         if (isset($acco)) {
             $acco->setHasAccoCard($hasAccoCard);
         } else {
-            $this->_entityManager->persist(new AccoCard($item->getPerson(), $hasAccoCard));
+            $this->entityManager->persist(new AccoCard($item->getPerson(), $hasAccoCard));
         }
 
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
 
         return $saleItems;
     }
 
-    private function _getArticles()
+    private function getArticles()
     {
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
-            ->findOneById($this->_id);
+            ->findOneById($this->id);
 
-        $bookings = $this->_entityManager
+        $bookings = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllOpenByPerson($item->getPerson());
 
@@ -431,13 +431,13 @@ class QueueItem
                     'number' => $booking->getNumber(),
                     'status' => $booking->getStatus(),
                     'sellable' => $booking->getArticle()->isSellable(),
-                    'collected' => isset($this->_articles->{$booking->getArticle()->getId()}) ? $this->_articles->{$booking->getArticle()->getId()} : 0,
+                    'collected' => isset($this->articles->{$booking->getArticle()->getId()}) ? $this->articles->{$booking->getArticle()->getId()} : 0,
                     'discounts' => array(),
                 );
 
                 foreach ($booking->getArticle()->getDiscounts() as $discount) {
-                    if (!$discount->alreadyApplied($booking->getArticle(), $item->getPerson(), $this->_entityManager, $this->_getCurrentAcademicYear()) &&
-                            $discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
+                    if (!$discount->alreadyApplied($booking->getArticle(), $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear()) &&
+                            $discount->canBeApplied($item->getPerson(), $this->getCurrentAcademicYear(), $this->entityManager)) {
                         $result['discounts'][] = array(
                             'type' => $discount->getRawType(),
                             'value' => $discount->apply($booking->getArticle()->getSellPrice()),
@@ -450,9 +450,9 @@ class QueueItem
             }
         }
 
-        foreach ($this->_articles as $id => $number) {
+        foreach ($this->articles as $id => $number) {
             if (!in_array($id, $bookedArticles) && $number > 0) {
-                $article = $this->_entityManager
+                $article = $this->entityManager
                     ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($id);
 
@@ -477,8 +477,8 @@ class QueueItem
                 );
 
                 foreach ($article->getDiscounts() as $discount) {
-                    if (!$discount->alreadyApplied($article, $item->getPerson(), $this->_entityManager, $this->_getCurrentAcademicYear()) &&
-                            $discount->canBeApplied($item->getPerson(), $this->_getCurrentAcademicYear(), $this->_entityManager)) {
+                    if (!$discount->alreadyApplied($article, $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear()) &&
+                            $discount->canBeApplied($item->getPerson(), $this->getCurrentAcademicYear(), $this->entityManager)) {
                         $result['discounts'][] = array(
                             'type' => $discount->getRawType(),
                             'value' => $discount->apply($article->getSellPrice()),
@@ -496,8 +496,8 @@ class QueueItem
     /**
      * @return \CommonBundle\Entity\General\AcademicYear
      */
-    private function _getCurrentAcademicYear()
+    private function getCurrentAcademicYear()
     {
-        return AcademicYear::getUniversityYear($this->_entityManager);
+        return AcademicYear::getUniversityYear($this->entityManager);
     }
 }

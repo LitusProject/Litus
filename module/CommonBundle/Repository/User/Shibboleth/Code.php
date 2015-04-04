@@ -31,7 +31,7 @@ class Code extends EntityRepository
 {
     public function findLastByUniversityIdentification($universityIdentification)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('CommonBundle\Entity\User\Shibboleth\Code', 'c')
             ->where(
@@ -48,7 +48,7 @@ class Code extends EntityRepository
 
     public function findAllExpiredQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('CommonBundle\Entity\User\Shibboleth\Code', 'c')
             ->where(

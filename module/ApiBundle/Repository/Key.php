@@ -31,7 +31,7 @@ class Key extends EntityRepository
 {
     public function findAllActiveQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('k')
             ->from('ApiBundle\Entity\Key', 'k')
             ->where(
@@ -45,7 +45,7 @@ class Key extends EntityRepository
 
     public function findOneActiveByCode($code)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('k')
             ->from('ApiBundle\Entity\Key', 'k')
             ->where(

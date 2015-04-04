@@ -154,7 +154,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
     public function editAction()
     {
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getReservation())) {
             return new ViewModel();
         }
 
@@ -241,7 +241,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getReservation())) {
             return new ViewModel();
         }
 
@@ -255,7 +255,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
         );
     }
 
-    private function _getReservation()
+    private function getReservation()
     {
         if (null === $this->getParam('id')) {
             $this->flashMessenger()->error(
