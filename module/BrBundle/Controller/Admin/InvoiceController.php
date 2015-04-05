@@ -36,7 +36,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function viewAction()
     {
-        if (!($invoice = $this->getInvoice())) {
+        if (!($invoice = $this->getInvoiceEntity())) {
             return new ViewModel();
         }
 
@@ -65,7 +65,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function historyAction()
     {
-        if (!($invoice = $this->getInvoice())) {
+        if (!($invoice = $this->getInvoiceEntity())) {
             return new ViewModel();
         }
 
@@ -86,7 +86,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($invoice = $this->getInvoice(false))) {
+        if (!($invoice = $this->getInvoiceEntity(false))) {
             return new ViewModel();
         }
 
@@ -127,7 +127,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function downloadAction()
     {
-        if (!($invoice = $this->getInvoice())) {
+        if (!($invoice = $this->getInvoiceEntity())) {
             return new ViewModel();
         }
 
@@ -163,7 +163,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
         $date = DateTime::createFromFormat('d/m/Y', $this->getParam('date'));
 
-        if (!($invoice = $this->getInvoice(false)) || !$date) {
+        if (!($invoice = $this->getInvoiceEntity(false)) || !$date) {
             return new ViewModel();
         }
 
@@ -183,7 +183,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($invoice = $this->getInvoice())) {
+        if (!($invoice = $this->getInvoiceEntity())) {
             return new ViewModel();
         }
 
@@ -203,35 +203,17 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @param  boolean      $allowPaid
+     * @param  boolean      $allowSigned
      * @return Invoice|null
      */
-    private function getInvoice($allowPaid = true)
+    private function getInvoiceEntity($allowPaid = true)
     {
-        if (null === $this->getParam('id')) {
+        $invoice = $this->getEntityById('BrBundle\Entity\Invoice');
+
+        if (!($invoice instanceof Invoice)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the invoice!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_order',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $invoice = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Invoice')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $invoice) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No invoice with the given ID was found!'
+                'No invoice was found!'
             );
 
             $this->redirect()->toRoute(

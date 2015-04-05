@@ -20,6 +20,7 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Collaborator,
     BrBundle\Entity\Product\Order,
+    BrBundle\Entity\Product\OrderEntry,
     Zend\View\Model\ViewModel;
 
 /**
@@ -54,7 +55,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($collaborator = $this->getCollaborator())) {
+        if (!($collaborator = $this->getCollaboratorEntity())) {
             return new ViewModel();
         }
 
@@ -93,7 +94,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function productAction()
     {
-        if (!($order = $this->getOrder(false))) {
+        if (!($order = $this->getOrderEntity(false))) {
             return new ViewModel();
         }
 
@@ -101,7 +102,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($collaborator = $this->getCollaborator())) {
+        if (!($collaborator = $this->getCollaboratorEntity())) {
             return new ViewModel();
         }
 
@@ -141,7 +142,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($order = $this->getOrder(false))) {
+        if (!($order = $this->getOrderEntity(false))) {
             return new ViewModel();
         }
 
@@ -149,7 +150,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($collaborator = $this->getCollaborator())) {
+        if (!($collaborator = $this->getCollaboratorEntity())) {
             return new ViewModel();
         }
 
@@ -189,7 +190,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($order = $this->getOrder())) {
+        if (!($order = $this->getOrderEntity())) {
             return new ViewModel();
         }
 
@@ -207,7 +208,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($entry = $this->getEntry(false))) {
+        if (!($entry = $this->getEntryEntity(false))) {
             return new ViewModel();
         }
 
@@ -239,12 +240,18 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function getOrder($allowSigned = true)
+    /**
+     * @param  boolean    $allowSigned
+     * @return Order|null
+     */
+    private function getOrderEntity($allowSigned = true)
     {
-        if (null === $this->getParam('id')) {
+        $order = $this->getEntityById('BrBundle\Entity\Product\Order');
+
+        if (!($order instanceof Order)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the order!'
+                'No order was found!'
             );
 
             $this->redirect()->toRoute(
@@ -257,25 +264,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        $order = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Product\Order')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $order) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No order with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_order',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
         if ($order->getContract()->isSigned() && !$allowSigned) {
             $this->flashMessenger()->error(
                 'Error',
@@ -295,12 +283,18 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         return $order;
     }
 
-    private function getEntry($allowSigned = true)
+    /**
+     * @param  boolean         $allowSigned
+     * @return OrderEntry|null
+     */
+    private function getEntryEntity($allowSigned = true)
     {
-        if (null === $this->getParam('id')) {
+        $entry = $this->getEntityById('BrBundle\Entity\Product\OrderEntry');
+
+        if (!($entry instanceof OrderEntry)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the order entry!'
+                'No entry was found!'
             );
 
             $this->redirect()->toRoute(
@@ -313,25 +307,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        $entry = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Product\OrderEntry')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $entry) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No order entry with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_order',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
         if ($entry->getOrder()->getContract()->isSigned() && !$allowSigned) {
             $this->flashMessenger()->error(
                 'Error',
@@ -352,9 +327,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Collaborator
+     * @return Collaborator|null
      */
-    private function getCollaborator()
+    private function getCollaboratorEntity()
     {
         $collaborator = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Collaborator')

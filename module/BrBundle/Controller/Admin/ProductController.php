@@ -89,7 +89,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($product = $this->getProduct())) {
+        if (!($product = $this->getProductEntity())) {
             return new ViewModel();
         }
 
@@ -129,7 +129,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($product = $this->getProduct())) {
+        if (!($product = $this->getProductEntity())) {
             return new ViewModel();
         }
 
@@ -161,32 +161,17 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function getProduct()
+    /**
+     * @return Company|null
+     */
+    private function getProductEntity()
     {
-        if (null === $this->getParam('id')) {
+        $product = $this->getEntityById('BrBundle\Entity\Product');
+
+        if (!($product instanceof Product)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the product!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_product',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $product = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Product')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $product) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No product with the given ID was found!'
+                'No company was found!'
             );
 
             $this->redirect()->toRoute(

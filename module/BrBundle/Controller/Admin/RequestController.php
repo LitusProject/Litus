@@ -18,7 +18,8 @@
 
 namespace BrBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company\Request,
+    Zend\View\Model\ViewModel;
 
 /**
  * RequestController
@@ -47,7 +48,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function approveAction()
     {
-        if (!($request = $this->getRequest())) {
+        if (!($request = $this->getRequestEntity())) {
             return new ViewModel();
         }
 
@@ -73,7 +74,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function rejectAction()
     {
-        if (!($request = $this->getRequest())) {
+        if (!($request = $this->getRequestEntity())) {
             return new ViewModel();
         }
 
@@ -97,32 +98,17 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel();
     }
 
-    private function getRequest()
+    /**
+     * @return Request|null
+     */
+    private function getRequestEntity()
     {
-        if (null === $this->getParam('id')) {
+        $request = $this->getEntityById('BrBundle\Entity\Company\Request');
+
+        if (!($request instanceof Request)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the request!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_request',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $request = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request')
-            ->findRequestById($this->getParam('id'));
-
-        if (null === $request) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No request with the given ID was found!'
+                'No request was found!'
             );
 
             $this->redirect()->toRoute(

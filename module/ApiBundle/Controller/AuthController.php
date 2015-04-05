@@ -33,7 +33,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (null === ($person = $this->getPerson())) {
+        if (!($person = $this->getPersonEntity())) {
             return $this->error(500, 'The person was not found');
         }
 
@@ -71,7 +71,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
     /**
      * @return Person|null
      */
-    private function getPerson()
+    private function getPersonEntity()
     {
         if (null !== $this->getAccessToken()) {
             return $this->getAccessToken()->getPerson($this->getEntityManager());

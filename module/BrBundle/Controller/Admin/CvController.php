@@ -19,6 +19,7 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Component\Document\Generator\Pdf\CvBook as CvBookGenerator,
+    BrBundle\Entity\Cv\Entry,
     CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
@@ -135,7 +136,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
     {
         $this->initAjax();
 
-        if (!($entry = $this->getEntry())) {
+        if (!($entry = $this->getEntryEntity())) {
             return new ViewModel();
         }
 
@@ -149,32 +150,17 @@ class CvController extends \BrBundle\Component\Controller\CvController
         );
     }
 
-    private function getEntry()
+    /**
+     * @return Entry|null
+     */
+    private function getEntryEntity()
     {
-        if (null === $this->getParam('id')) {
+        $entry = $this->getEntityById('BrBundle\Entity\Cv\Entry');
+
+        if (!($entry instanceof Entry)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the entry!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_cv_entry',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $entry = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $entry) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No entry with the given ID was found!'
+                'No entry was found!'
             );
 
             $this->redirect()->toRoute(

@@ -36,7 +36,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
     {
         $this->initJson();
 
-        if (null === $this->getAccessToken() || !($person = $this->getPerson())) {
+        if (!($person = $this->getPersonEntity())) {
             return $this->error(401, 'The access token is not valid');
         }
 
@@ -94,11 +94,11 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        if (null === $this->getAccessToken() || !($person = $this->getPerson())) {
+        if (!($person = $this->getPersonEntity())) {
             return $this->error(401, 'The access token is not valid');
         }
 
-        if (!($shift = $this->getShift())) {
+        if (!($shift = $this->getShiftEntity())) {
             return $this->error(500, 'The shift was not found');
         }
 
@@ -133,11 +133,11 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        if (null === $this->getAccessToken() || !($person = $this->getPerson())) {
+        if (!($person = $this->getPersonEntity())) {
             return $this->error(401, 'The access token is not valid');
         }
 
-        if (!($shift = $this->getShift())) {
+        if (!($shift = $this->getShiftEntity())) {
             return $this->error(500, 'The shift was not found');
         }
 
@@ -217,11 +217,11 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        if (null === $this->getAccessToken() || !($person = $this->getPerson())) {
+        if (!($person = $this->getPersonEntity())) {
             return $this->error(401, 'The access token is not valid');
         }
 
-        if (!($shift = $this->getShift())) {
+        if (!($shift = $this->getShiftEntity())) {
             return $this->error(500, 'The shift was not found');
         }
 
@@ -252,7 +252,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
     /**
      * @return Person|null
      */
-    private function getPerson()
+    private function getPersonEntity()
     {
         if (null === $this->getAccessToken()) {
             return null;
@@ -264,7 +264,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
     /**
      * @return Shift|null
      */
-    private function getShift()
+    private function getShiftEntity()
     {
         if (null === $this->getRequest()->getPost('id')) {
             return null;

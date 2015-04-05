@@ -37,7 +37,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (null === $this->getAccessToken() || !($person = $this->getPerson())) {
+        if (!($person = $this->getPersonEntity())) {
             return $this->error(401, 'The access token is not valid');
         }
 
@@ -71,11 +71,11 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        if (null === $this->getAccessToken() || !($person = $this->getPerson())) {
+        if (!($person = $this->getPersonEntity())) {
             return $this->error(401, 'The access token is not valid');
         }
 
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return $this->error(500, 'The article was not found');
         }
 
@@ -150,7 +150,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (null === $this->getAccessToken() || !($person = $this->getPerson())) {
+        if (!($person = $this->getPersonEntity())) {
             return $this->error(401, 'The access token is not valid');
         }
 
@@ -237,15 +237,15 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             return $this->error(401, 'The access token is not valid');
         }
 
-        if (null === $this->getBooking()) {
+        if (!($booking = $this->getBookingEntity())) {
             return $this->error(500, 'The booking was not found');
         }
 
-        if (!($this->getBooking()->getArticle()->isUnbookable())) {
+        if (!($booking->getArticle()->isUnbookable())) {
             return $this->error(500, 'This article cannot be unbooked');
         }
 
-        $this->getBooking()->setStatus('canceled', $this->getEntityManager());
+        $booking->setStatus('canceled', $this->getEntityManager());
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -274,7 +274,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                     ->findNbBySession($session),
             );
 
-            if ($person = $this->getPerson()) {
+            if ($person = $this->getPersonEntity()) {
                 $bookings = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findAllAssignedByPerson($person);
@@ -329,7 +329,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (null === $this->getAccessToken() || !($person = $this->getPerson())) {
+        if (!($person = $this->getPersonEntity())) {
             return $this->error(401, 'The access token is not valid');
         }
 
@@ -391,7 +391,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (null === $this->getAccessToken() || !($person = $this->getPerson())) {
+        if (!($person = $this->getPersonEntity())) {
             return $this->error(401, 'The access token is not valid');
         }
 
@@ -554,7 +554,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     /**
      * @return Booking|null
      */
-    private function getBooking()
+    private function getBookingEntity()
     {
         if (null === $this->getRequest()->getPost('id')) {
             return null;
@@ -568,7 +568,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     /**
      * @return Article|null
      */
-    private function getArticle()
+    private function getArticleEntity()
     {
         if (null === $this->getRequest()->getPost('id')) {
             return null;
@@ -582,7 +582,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
     /**
      * @return Person|null
      */
-    private function getPerson()
+    private function getPersonEntity()
     {
         if (null === $this->getAccessToken()) {
             return null;

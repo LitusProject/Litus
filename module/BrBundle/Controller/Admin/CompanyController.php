@@ -99,7 +99,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($company = $this->getCompany())) {
+        if (!($company = $this->getCompanyEntity())) {
             return new ViewModel();
         }
 
@@ -140,7 +140,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($company = $this->getCompany())) {
+        if (!($company = $this->getCompanyEntity())) {
             return new ViewModel();
         }
 
@@ -199,7 +199,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editLogoAction()
     {
-        if (!($company = $this->getCompany())) {
+        if (!($company = $this->getCompanyEntity())) {
             return new ViewModel();
         }
 
@@ -297,75 +297,16 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @return Company
+     * @return Company|null
      */
-    private function getCompany()
+    private function getCompanyEntity()
     {
-        if (null === $this->getParam('id')) {
+        $company = $this->getEntityById('BrBundle\Entity\Company');
+
+        if (!($company instanceof Company)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the company!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_company',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $company = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $company) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No company with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_company',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $company;
-    }
-
-    private function getCompanyByLogo()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the company!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_company',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $company = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company')
-            ->findOneByLogo($this->getParam('id'));
-
-        if (null === $company) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No company with the given ID was found!'
+                'No company was found!'
             );
 
             $this->redirect()->toRoute(

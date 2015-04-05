@@ -18,7 +18,8 @@
 
 namespace BrBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use BrBundle\Entity\Collaborator,
+    Zend\View\Model\ViewModel;
 
 /**
  * CollaboratorController
@@ -82,7 +83,7 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        if (!($collaborator = $this->getCollaborator())) {
+        if (!($collaborator = $this->getCollaboratorEntity())) {
             return new ViewModel();
         }
 
@@ -121,7 +122,7 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
     public function retireAction()
     {
-        if (!($collaborator = $this->getCollaborator())) {
+        if (!($collaborator = $this->getCollaboratorEntity())) {
             return new ViewModel();
         }
 
@@ -146,7 +147,7 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
     public function rehireAction()
     {
-        if (!($collaborator = $this->getCollaborator())) {
+        if (!($collaborator = $this->getCollaboratorEntity())) {
             return new ViewModel();
         }
 
@@ -169,36 +170,21 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel();
     }
 
-    private function getCollaborator()
+    /**
+     * @return Collaborator|null
+     */
+    private function getCollaboratorEntity()
     {
-        if (null === $this->getParam('id')) {
+        $collaborator = $this->getEntityById('BrBundle\Entity\Collaborator');
+
+        if (!($collaborator instanceof Collaborator)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the collaborator!'
+                'No collaborator was found!'
             );
 
             $this->redirect()->toRoute(
-                'br_admin_collaborator',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $collaborator = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Collaborator')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $collaborator) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No collaborator with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_collaborator',
+                'br_admin_company',
                 array(
                     'action' => 'manage',
                 )

@@ -67,7 +67,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($banner = $this->getBanner())) {
+        if (!($banner = $this->getBannerEntity())) {
             return new ViewModel();
         }
 
@@ -109,7 +109,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        $isNew = !($banner = $this->getBanner(false));
+        $isNew = !($banner = $this->getBannerEntity(false));
 
         if ($isNew) {
             $form = $this->getForm('banner_banner_add');
@@ -198,7 +198,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($banner = $this->getBanner())) {
+        if (!($banner = $this->getBannerEntity())) {
             return new ViewModel();
         }
 
@@ -215,46 +215,25 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     }
 
     /**
+     * @param  boolean     $redirect
      * @return Banner|null
      */
-    private function getBanner($redirect = true)
+    private function getBannerEntity($redirect = true)
     {
-        if (null === $this->getParam('id')) {
-            if ($redirect) {
-                $this->flashMessenger()->error(
-                    'Error',
-                    'No ID was given to identify the banner!'
-                );
+        $banner = $this->getEntityById('BannerBundle\Entity\Node\Banner');
 
-                $this->redirect()->toRoute(
-                    'banner_admin_banner',
-                    array(
-                        'action' => 'manage',
-                    )
-                );
-            }
+        if (!($banner instanceof Banner) && $redirect) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No baner was found!'
+            );
 
-            return;
-        }
-
-        $banner = $this->getEntityManager()
-            ->getRepository('BannerBundle\Entity\Node\Banner')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $banner) {
-            if ($redirect) {
-                $this->flashMessenger()->error(
-                    'Error',
-                    'No banner with the given ID was found!'
-                );
-
-                $this->redirect()->toRoute(
-                    'banner_admin_banner',
-                    array(
-                        'action' => 'manage',
-                    )
-                );
-            }
+            $this->redirect()->toRoute(
+                'banner_admin_banner',
+                array(
+                    'action' => 'manage',
+                )
+            );
 
             return;
         }
