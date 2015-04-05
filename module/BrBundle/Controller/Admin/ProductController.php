@@ -162,7 +162,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @return Company|null
+     * @return Product|null
      */
     private function getProductEntity()
     {

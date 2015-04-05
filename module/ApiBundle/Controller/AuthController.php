@@ -34,7 +34,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         $this->initJson();
 
         if (!($person = $this->getPersonEntity())) {
-            return $this->error(500, 'The person was not found');
+            return $this->error(404, 'The person was not found');
         }
 
         $result = array(

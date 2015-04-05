@@ -203,7 +203,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @param  boolean      $allowSigned
+     * @param  boolean      $allowPaid
      * @return Invoice|null
      */
     private function getInvoiceEntity($allowPaid = true)

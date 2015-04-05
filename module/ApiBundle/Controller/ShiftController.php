@@ -99,7 +99,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         }
 
         if (!($shift = $this->getShiftEntity())) {
-            return $this->error(500, 'The shift was not found');
+            return $this->error(404, 'The shift was not found');
         }
 
         if (!($shift->canHaveAsResponsible($this->getEntityManager(), $person))) {
@@ -138,7 +138,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         }
 
         if (!($shift = $this->getShiftEntity())) {
-            return $this->error(500, 'The shift was not found');
+            return $this->error(404, 'The shift was not found');
         }
 
         if (!($shift->canHaveAsVolunteer($this->getEntityManager(), $person))) {
@@ -222,7 +222,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         }
 
         if (!($shift = $this->getShiftEntity())) {
-            return $this->error(500, 'The shift was not found');
+            return $this->error(404, 'The shift was not found');
         }
 
         if (!($shift->canSignout($this->getEntityManager()))) {

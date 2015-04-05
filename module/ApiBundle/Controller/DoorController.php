@@ -91,7 +91,7 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
         $this->initJson();
 
         if (!($academic = $this->getAcademicEntity())) {
-            return $this->error(500, 'The person does not exist');
+            return $this->error(404, 'The person does not exist');
         }
 
         $log = new Log($academic);

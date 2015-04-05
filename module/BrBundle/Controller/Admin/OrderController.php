@@ -98,7 +98,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if ($order->getContract()->isSigned() == true) {
+        if ($order->getContract()->isSigned()) {
             return new ViewModel();
         }
 
@@ -146,7 +146,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if ($order->getContract()->isSigned() == true) {
+        if ($order->getContract()->isSigned()) {
             return new ViewModel();
         }
 

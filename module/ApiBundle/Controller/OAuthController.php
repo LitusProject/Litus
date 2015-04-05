@@ -185,7 +185,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 ->findOneByCode($this->getRequest()->getPost('code'));
 
             if (null === $authorizationCode) {
-                return $this->error(500, 'This authorization code does not exist');
+                return $this->error(404, 'This authorization code does not exist');
             }
 
             if ($authorizationCode->hasExpired()) {
@@ -257,7 +257,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 ->findOneByCode($this->getRequest()->getPost('refresh_token'));
 
             if (null === $refreshToken) {
-                return $this->error(500, 'This refresh token does not exist');
+                return $this->error(404, 'This refresh token does not exist');
             }
 
             if ($refreshToken->hasExpired()) {

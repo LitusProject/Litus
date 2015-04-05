@@ -179,7 +179,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'event' => $event->getEventEntity(),
+                'event' => $event->getEvent(),
                 'form' => $form,
             )
         );

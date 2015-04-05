@@ -68,7 +68,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
             ->getConfigValue('calendar.poster_path') . '/';
 
         if (!file_exists($filePath . $poster)) {
-            return $this->error(500, 'The poster file does not exist');
+            return $this->error(404, 'The poster file does not exist');
         }
 
         if (!file_exists($filePath . $poster . '_thumb')) {
