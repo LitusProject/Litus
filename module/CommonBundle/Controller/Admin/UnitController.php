@@ -90,7 +90,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function membersAction()
     {
-        if (!($unit = $this->getUnit())) {
+        if (!($unit = $this->getUnitEntity())) {
             return new ViewModel();
         }
 
@@ -160,7 +160,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($unit = $this->getUnit())) {
+        if (!($unit = $this->getUnitEntity())) {
             return new ViewModel();
         }
 
@@ -199,7 +199,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($unit = $this->getUnit())) {
+        if (!($unit = $this->getUnitEntity())) {
             return new ViewModel();
         }
 
@@ -220,11 +220,11 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($member = $this->getMember())) {
+        if (!($unitMap = $this->getUnitMapEntity())) {
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($member);
+        $this->getEntityManager()->remove($unitMap);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -274,32 +274,14 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Unit|null
      */
-    private function getUnit()
+    private function getUnitEntity()
     {
-        if (null === $this->getParam('id')) {
+        $unit = $this->getEntityById('CommonBundle\Entity\General\Organization\Unit');
+
+        if (!($unit instanceof Unit)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the unit!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_admin_unit',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $unit = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $unit) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No unit with the given ID was found!'
+                'No unit was found!'
             );
 
             $this->redirect()->toRoute(
@@ -318,12 +300,14 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return UnitMap|null
      */
-    private function getMember()
+    private function getUnitMapEntity()
     {
-        if (null === $this->getParam('id')) {
+        $unitMap = $this->getEntityById('CommonBundle\Entity\User\Person\Organization\UnitMap');
+
+        if (!($unitMap instanceof UnitMap)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the member!'
+                'No unit map was found!'
             );
 
             $this->redirect()->toRoute(
@@ -336,27 +320,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $member = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $member) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No member with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_admin_unit',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $member;
+        return $unitMap;
     }
 
     /**

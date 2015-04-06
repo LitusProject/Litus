@@ -424,7 +424,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function activateAction()
     {
-        if (!($user = $this->getUser())) {
+        if (!($user = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -469,6 +469,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     public function passbookAction()
     {
         $academic = $this->getAuthentication()->getPersonObject();
+
         if (!($academic instanceof Academic)) {
             $this->flashMessenger()->error(
                 'Error',
@@ -584,29 +585,16 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     /**
      * @return Person|null
      */
-    private function getUser()
+    private function getPersonEntity()
     {
-        if (null === $this->getParam('code')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No code was given to identify the user!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
-            return;
-        }
-
-        $user = $this->getEntityManager()
+        $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Code')
             ->findOnePersonByCode($this->getParam('code'));
 
-        if (null === $user) {
+        if (!($person instanceof Person)) {
             $this->flashMessenger()->error(
                 'Error',
-                'The given code is not valid!'
+                'No person was found!'
             );
 
             $this->redirect()->toRoute(
@@ -616,7 +604,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return;
         }
 
-        return $user;
+        return $person;
     }
 
     /**

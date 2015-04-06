@@ -105,7 +105,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($academic = $this->getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -143,7 +143,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function activateAction()
     {
-        if (!($academic = $this->getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -175,7 +175,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -283,32 +283,14 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Academic|null
      */
-    private function getAcademic()
+    private function getAcademicEntity()
     {
-        if (null === $this->getParam('id')) {
+        $academic = $this->getEntityById('CommonBundle\Entity\User\Person\Academic');
+
+        if (!($academic instanceof Academic)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the academic!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_admin_academic',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $academic = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $academic) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No academic with the given ID was found!'
+                'No academic was found!'
             );
 
             $this->redirect()->toRoute(

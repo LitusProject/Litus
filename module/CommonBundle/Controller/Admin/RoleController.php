@@ -91,7 +91,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function membersAction()
     {
-        if (!($role = $this->getRole())) {
+        if (!($role = $this->getRoleEntity())) {
             return new ViewModel();
         }
 
@@ -109,7 +109,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($role = $this->getRole())) {
+        if (!($role = $this->getRoleEntity())) {
             return new ViewModel();
         }
 
@@ -150,7 +150,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($role = $this->getRole())) {
+        if (!($role = $this->getRoleEntity())) {
             return new ViewModel();
         }
 
@@ -178,11 +178,11 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($role = $this->getRole())) {
+        if (!($role = $this->getRoleEntity())) {
             return new ViewModel();
         }
 
-        if (!($member = $this->getMember())) {
+        if (!($member = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -232,32 +232,14 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Role|null
      */
-    private function getRole()
+    private function getRoleEntity()
     {
-        if (null === $this->getParam('name')) {
+        $role = $this->getEntityById('CommonBundle\Entity\Acl\Role', 'name', 'name');
+
+        if (!($role instanceof Role)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No name was given to identify the role!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_admin_role',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $role = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Acl\Role')
-            ->findOneByName($this->getParam('name'));
-
-        if (null === $role) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No role with the given name was found!'
+                'No role was found!'
             );
 
             $this->redirect()->toRoute(
@@ -276,12 +258,14 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Person|null
      */
-    private function getMember()
+    private function getPersonEntity()
     {
-        if (null === $this->getParam('id')) {
+        $person = $this->getEntityById('CommonBundle\Entity\User\Person');
+
+        if (!($person instanceof Person)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the member!'
+                'No person was found!'
             );
 
             $this->redirect()->toRoute(
@@ -294,27 +278,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $member = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $member) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No member with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_admin_role',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $member;
+        return $person;
     }
 
     /**

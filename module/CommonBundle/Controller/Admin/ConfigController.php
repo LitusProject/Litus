@@ -61,7 +61,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($entry = $this->getEntry())) {
+        if (!($entry = $this->getConfigEntity())) {
             return new ViewModel();
         }
 
@@ -100,12 +100,14 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * @return Config|null
      */
-    private function getEntry()
+    private function getConfigEntity()
     {
-        if (null === $this->getParam('key')) {
+        $config = $this->getEntityById('CommonBundle\Entity\General\Config', 'key', 'key');
+
+        if (!($config instanceof Config)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No key was given to identify the configuration entry!'
+                'No config was found!'
             );
 
             $this->redirect()->toRoute(
@@ -118,26 +120,6 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             return;
         }
 
-        $role = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->findOneByKey($this->getParam('key'));
-
-        if (null === $role) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No configuration entry with the given key was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_admin_config',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $role;
+        return $config;
     }
 }

@@ -92,7 +92,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($location = $this->getLocation())) {
+        if (!($location = $this->getLocationEntity())) {
             return new ViewModel();
         }
 
@@ -131,7 +131,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($location = $this->getLocation())) {
+        if (!($location = $this->getLocationEntity())) {
             return new ViewModel();
         }
 
@@ -179,32 +179,14 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Location|null
      */
-    private function getLocation()
+    private function getLocationEntity()
     {
-        if (null === $this->getParam('id')) {
+        $location = $this->getEntityById('CommonBundle\Entity\General\Location');
+
+        if (!($location instanceof Location)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the location!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_admin_location',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $location = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Location')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $location) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No location with the given ID was found!'
+                'No location was found!'
             );
 
             $this->redirect()->toRoute(
