@@ -68,7 +68,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function posterAction()
     {
-        if (!($event = $this->getEventByPoster())) {
+        if (!($event = $this->getEventEntityByPoster())) {
             return $this->notFoundAction();
         }
 

@@ -222,18 +222,20 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $banner = $this->getEntityById('BannerBundle\Entity\Node\Banner');
 
-        if (!($banner instanceof Banner) && $redirect) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No baner was found!'
-            );
+        if (!($banner instanceof Banner)) {
+            if ($redirect) {
+                $this->flashMessenger()->error(
+                    'Error',
+                    'No baner was found!'
+                );
 
-            $this->redirect()->toRoute(
-                'banner_admin_banner',
-                array(
-                    'action' => 'manage',
-                )
-            );
+                $this->redirect()->toRoute(
+                    'banner_admin_banner',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+            }
 
             return;
         }
