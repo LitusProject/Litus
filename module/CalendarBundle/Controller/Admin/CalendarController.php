@@ -103,7 +103,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($event = $this->getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -144,7 +144,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($event = $this->getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -162,7 +162,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editPosterAction()
     {
-        if (!($event = $this->getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -209,7 +209,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function uploadAction()
     {
-        if (!($event = $this->getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -264,7 +264,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function posterAction()
     {
-        if (!($event = $this->getEventByPoster())) {
+        if (!($event = $this->getEventEntityByPoster())) {
             return new ViewModel();
         }
 
@@ -292,32 +292,14 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Event|null
      */
-    private function getEvent()
+    private function getEventEntity()
     {
-        if (null === $this->getParam('id')) {
+        $event = $this->getEntityById('CalendarBundle\Entity\Node\Event');
+
+        if (!($event instanceof Event)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the event!'
-            );
-
-            $this->redirect()->toRoute(
-                'calendar_admin_calendar',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $event = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $event) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No event with the given ID was found!'
+                'No event was found!'
             );
 
             $this->redirect()->toRoute(
@@ -336,32 +318,14 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Event|null
      */
-    private function getEventByPoster()
+    private function getEventEntityByPoster()
     {
-        if (null === $this->getParam('id')) {
+        $event = $this->getEntityById('CalendarBundle\Entity\Node\Event', 'id', 'poster');
+
+        if (!($event instanceof Event)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the event!'
-            );
-
-            $this->redirect()->toRoute(
-                'calendar_admin_calendar',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $event = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findOneByPoster($this->getParam('id'));
-
-        if (null === $event) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No event with the given ID was found!'
+                'No event was found!'
             );
 
             $this->redirect()->toRoute(

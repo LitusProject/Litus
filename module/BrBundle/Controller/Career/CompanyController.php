@@ -18,7 +18,8 @@
 
 namespace BrBundle\Controller\Career;
 
-use DateTime,
+use BrBundle\Entity\Company\Page,
+    DateTime,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -44,7 +45,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 
     public function viewAction()
     {
-        if (!($page = $this->getPage())) {
+        if (!($page = $this->getPageEntity())) {
             return new ViewModel();
         }
 
@@ -128,44 +129,31 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
-    private function getPage()
+    /**
+     * @return Page|null
+     */
+    private function getPageEntity()
     {
-        if (null === $this->getParam('company')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No name was given to identify the company!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_career_company',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        $company = $this->getEntityManager()
+        $page = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Page')
-            ->findOneActiveBySlug($this->getParam('company'), $this->getCurrentAcademicYear());
+            ->findOneActiveBySlug($this->getParam('company', 0), $this->getCurrentAcademicYear());
 
-        if (null === $company) {
+        if (!($page instanceof Page)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No company with the given name was found!'
+                'No page was found!'
             );
 
             $this->redirect()->toRoute(
                 'br_career_company',
                 array(
-                    'action' => 'overview',
+                    'action' => 'manage',
                 )
             );
 
             return;
         }
 
-        return $company;
+        return $page;
     }
 }

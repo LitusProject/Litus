@@ -42,9 +42,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     ),
                 )
             );
-        }
-
-        if (!($person instanceof Academic)) {
+        } elseif (!($person instanceof Academic)) {
             return new ViewModel(
                 array(
                     'messages' => array(
@@ -52,9 +50,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     ),
                 )
             );
-        }
-
-        if ($this->getLanguage()->getName() == 'English') {
+        } elseif ($this->getLanguage()->getName() == 'English') {
             $this->redirect()->toRoute(
                 'br_cv_index',
                 array(
@@ -160,9 +156,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     ),
                 )
             );
-        }
-
-        if (!($person instanceof Academic)) {
+        } elseif (!($person instanceof Academic)) {
             return new ViewModel(
                 array(
                     'messages' => array(
@@ -254,6 +248,10 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         return new ViewModel();
     }
 
+    /**
+     * @param  Academic          $person
+     * @return FlashMessage|null
+     */
     private function getBadAccountMessage(Academic $person)
     {
         $content = '';

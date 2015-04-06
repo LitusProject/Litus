@@ -33,7 +33,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 {
     public function groupedAction()
     {
-        if (!($person = $this->getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -88,7 +88,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     public function listAction()
     {
-        if (!($person = $this->getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -145,7 +145,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
     {
         $this->initAjax();
 
-        if (!($person = $this->getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -202,7 +202,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     public function downloadArchiveAction()
     {
-        if (!($person = $this->getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -316,9 +316,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
     }
 
     /**
-     * @return Corporate
+     * @return Corporate|null
      */
-    private function getPerson()
+    private function getCorporateEntity()
     {
         $person = $this->getAuthentication()->getPersonObject();
 
@@ -334,6 +334,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
+
+            return;
         }
 
         return $person;

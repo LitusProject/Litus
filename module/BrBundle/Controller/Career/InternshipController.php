@@ -19,6 +19,7 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Company,
+    BrBundle\Entity\Company\Job,
     Zend\View\Model\ViewModel;
 
 /**
@@ -85,7 +86,9 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
 
     public function viewAction()
     {
-        $internship = $this->getInternship();
+        if (!($internship = $this->getInternshipEntity())) {
+            return new ViewModel();
+        }
 
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -99,32 +102,19 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
         );
     }
 
-    private function getInternship()
+    /**
+     * @return Job|null
+     */
+    private function getInternshipEntity()
     {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the internship!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_career_internship',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        $internship = $this->getEntityManager()
+        $job = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findOneActiveByTypeAndId('internship', $this->getParam('id'));
+            ->findOneActiveByTypeAndId('internship', $this->getParam('id', 0));
 
-        if (null === $internship) {
+        if (!($job instanceof Job)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No internship with the given ID was found!'
+                'No job was found!'
             );
 
             $this->redirect()->toRoute(
@@ -137,6 +127,6 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
             return;
         }
 
-        return $internship;
+        return $job;
     }
 }

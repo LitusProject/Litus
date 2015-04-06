@@ -515,9 +515,10 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * @param  string     $entityName
      * @param  string     $paramKey
+     * @param  string     $entityKey
      * @return mixed|null
      */
-    protected function getEntityById($entityName, $paramKey = 'id')
+    protected function getEntityById($entityName, $paramKey = 'id', $entityKey = 'id')
     {
         if (null === $this->getParam($paramKey)) {
             return;
@@ -525,7 +526,11 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
 
         $entity = $this->getEntityManager()
             ->getRepository($entityName)
-            ->findOneById($this->getParam($paramKey));
+            ->findOneBy(
+                array(
+                    $entityKey => $this->getParam($paramKey),
+                )
+            );
 
         if (null === $entity) {
             return;

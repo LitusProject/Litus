@@ -18,7 +18,8 @@
 
 namespace BrBundle\Controller\Career;
 
-use DateTime,
+use BrBundle\Entity\Company\Event,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -47,7 +48,9 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
     public function viewAction()
     {
-        $event = $this->getEvent();
+        if (!($event = $this->getEventEntity())) {
+            return new ViewModel();
+        }
 
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -88,32 +91,17 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
-    private function getEvent()
+    /**
+     * @return Event|null
+     */
+    private function getEventEntity()
     {
-        if (null === $this->getParam('id')) {
+        $event = $this->getEntityById('BrBundle\Entity\Company\Event');
+
+        if (!($event instanceof Event) || $event->getEvent()->getStartDate() < new DateTime() || !$event->getCompany()->isActive()) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the event!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_career_event',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        $event = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Event')
-            ->findOneActiveById($this->getParam('id'));
-
-        if (null === $event) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No event with the given ID was found!'
+                'No event was found!'
             );
 
             $this->redirect()->toRoute(

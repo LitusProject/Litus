@@ -45,7 +45,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function viewAction()
     {
-        if (!($event = $this->getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return $this->notFoundAction();
         }
 
@@ -217,17 +217,11 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Event|null
      */
-    public function getEvent()
+    private function getEventEntity()
     {
-        if (null === $this->getParam('name')) {
-            return;
-        }
+        $event = $this->getEntityById('CalendarBundle\Entity\Node\Event', 'name', 'name');
 
-        $event = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findOneByName($this->getParam('name'));
-
-        if (null === $event) {
+        if (!($event instanceof Event)) {
             return;
         }
 
@@ -237,17 +231,11 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Event|null
      */
-    private function getEventByPoster()
+    private function getEventEntityByPoster()
     {
-        if (null === $this->getParam('name')) {
-            return;
-        }
+        $event = $this->getEntityById('CalendarBundle\Entity\Node\Event', 'name', 'name');
 
-        $event = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findOneByPoster($this->getParam('name'));
-
-        if (null === $event) {
+        if (!($event instanceof Event)) {
             return;
         }
 
