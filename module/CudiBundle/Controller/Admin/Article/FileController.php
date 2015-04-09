@@ -20,7 +20,10 @@ namespace CudiBundle\Controller\Admin\Article;
 
 use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Front as FrontGenerator,
+    CudiBundle\Entity\Article,
     CudiBundle\Entity\File\File,
+    CudiBundle\Entity\File\Mapping,
+    CudiBundle\Entity\Sale\Article as SaleArticle,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -33,7 +36,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -75,7 +78,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -143,7 +146,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($mapping = $this->getFileMapping())) {
+        if (!($mapping = $this->getFileMappingEntity())) {
             return new ViewModel();
         }
 
@@ -164,7 +167,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_article_file',
                     array(
                         'action' => 'manage',
-                        'id' => $mapping->getArticle()->getId(),
+                        'id' => $mapping->getArticleEntity()->getId(),
                     )
                 );
 
@@ -176,7 +179,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             array(
                 'form' => $form,
                 'file' => $mapping->getFile(),
-                'article' => $mapping->getArticle(),
+                'article' => $mapping->getArticleEntity(),
             )
         );
     }
@@ -185,7 +188,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getFileMapping())) {
+        if (!($mapping = $this->getFileMappingEntity())) {
             return new ViewModel();
         }
 
@@ -205,7 +208,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
 
-        if (!($mapping = $this->getFileMapping())) {
+        if (!($mapping = $this->getFileMappingEntity())) {
             return new ViewModel();
         }
 
@@ -232,7 +235,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
     public function frontAction()
     {
-        if (!($article = $this->getSaleArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -254,73 +257,17 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function getArticle()
+    /**
+     * @return Article|null
+     */
+    private function getArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Article');
+
+        if (!($article instanceof Article)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $article;
-    }
-
-    private function getSaleArticle()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -337,14 +284,16 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return \CudiBundle\Entity\File\Mapping
+     * @return SaleArticle|null
      */
-    private function getFileMapping()
+    private function getSaleArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
+
+        if (!($article instanceof SaleArticle)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the file!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -357,14 +306,20 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             return;
         }
 
-        $file = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\File\Mapping')
-            ->findOneById($this->getParam('id'));
+        return $article;
+    }
 
-        if (null === $file) {
+    /**
+     * @return Mapping|null
+     */
+    private function getFileMappingEntity()
+    {
+        $mapping = $this->getEntityById('CudiBundle\Entity\File\Mapping');
+
+        if (!($mapping instanceof Mapping)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No file with the given ID was found!'
+                'No mapping was found!'
             );
 
             $this->redirect()->toRoute(
@@ -377,6 +332,6 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             return;
         }
 
-        return $file;
+        return $mapping;
     }
 }

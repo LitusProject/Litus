@@ -19,7 +19,7 @@
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Sale\Article,
+    CudiBundle\Entity\Sale\Article as Sale,
     CudiBundle\Entity\Sale\Session,
     Zend\View\Model\ViewModel;
 
@@ -163,7 +163,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     public function sessionAction()
     {
-        if (!($session = $this->getSession())) {
+        if (!($session = $this->getSessionEntity())) {
             return new ViewModel();
         }
 
@@ -208,7 +208,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($session = $this->getSession())) {
+        if (!($session = $this->getSessionEntity())) {
             return new ViewModel();
         }
 
@@ -363,7 +363,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     public function articleAction()
     {
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -412,7 +412,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -450,7 +450,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
-    private function articleSearch(Article $article, AcademicYear $academicYear)
+    private function articleSearch(SaleArticle $article, AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'person':
@@ -469,38 +469,20 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @return Session
+     * @return Session|null
      */
-    private function getSession()
+    private function getSessionEntity()
     {
-        if (null === $this->getParam('id')) {
+        $session = $this->getEntityById('CudiBundle\Entity\Sale\Session');
+
+        if (!($session instanceof Session)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the session!'
+                'No session was found!'
             );
 
             $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_sold',
-                array(
-                    'action' => 'sessions',
-                )
-            );
-
-            return;
-        }
-
-        $session = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Session')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $session) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No session with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_sold',
+                'cudi_admin_sales_financial_returned',
                 array(
                     'action' => 'sessions',
                 )
@@ -514,36 +496,21 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
         return $session;
     }
 
-    private function getArticle()
+    /**
+     * @return SaleArticle|null
+     */
+    private function getSaleArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
+
+        if (!($article instanceof SaleArticle)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_sold',
-                array(
-                    'action' => 'articles',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_sold',
+                'cudi_admin_sales_financial_returned',
                 array(
                     'action' => 'articles',
                 )

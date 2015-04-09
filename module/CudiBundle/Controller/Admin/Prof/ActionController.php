@@ -20,6 +20,7 @@ namespace CudiBundle\Controller\Admin\Prof;
 
 use CudiBundle\Entity\Article\History,
     CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog,
+    CudiBundle\Entity\Prof\Action,
     Zend\View\Model\ViewModel;
 
 /**
@@ -82,7 +83,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($action = $this->getAction())) {
+        if (!($action = $this->getActionEntity())) {
             return new ViewModel();
         }
 
@@ -97,7 +98,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function refuseAction()
     {
-        if (!($action = $this->getAction())) {
+        if (!($action = $this->getActionEntity())) {
             return new ViewModel();
         }
 
@@ -122,14 +123,14 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmAction()
     {
-        if (!($action = $this->getAction())) {
+        if (!($action = $this->getActionEntity())) {
             return new ViewModel();
         }
 
         $action->setEntityManager($this->getEntityManager());
 
         if ($action->getEntityName() == 'article') {
-            if ($action->getAction() == 'add') {
+            if ($action->getActionEntity() == 'add') {
                 $this->redirect()->toRoute(
                     'cudi_admin_prof_action',
                     array(
@@ -139,7 +140,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 );
 
                 return new ViewModel();
-            } elseif ($action->getAction() == 'delete') {
+            } elseif ($action->getActionEntity() == 'delete') {
                 $action->getEntity()->setIsHistory(true);
             } else {
                 $edited = $action->getEntity();
@@ -182,14 +183,14 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     ->setPreviousId($edited->getId());
             }
         } elseif ($action->getEntityName() == 'mapping') {
-            if ($action->getAction() == 'add') {
+            if ($action->getActionEntity() == 'add') {
                 $action->getEntity()->setIsProf(false);
                 $this->getEntityManager()->persist(new SubjectMapAddedLog($this->getAuthentication()->getPersonObject(), $action->getEntity()));
             } else {
                 $action->getEntity()->setRemoved();
             }
         } elseif ($action->getEntityName() == 'file') {
-            if ($action->getAction() == 'add') {
+            if ($action->getActionEntity() == 'add') {
                 $this->redirect()->toRoute(
                     'cudi_admin_prof_action',
                     array(
@@ -225,7 +226,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmArticleAction()
     {
-        if (!($action = $this->getAction())) {
+        if (!($action = $this->getActionEntity())) {
             return new ViewModel();
         }
 
@@ -291,7 +292,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
     public function confirmFileAction()
     {
-        if (!($action = $this->getAction())) {
+        if (!($action = $this->getActionEntity())) {
             return new ViewModel();
         }
 
@@ -333,32 +334,17 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function getAction()
+    /**
+     * @return Action|null
+     */
+    private function getActionEntity()
     {
-        if (null === $this->getParam('id')) {
+        $action = $this->getEntityById('CudiBundle\Entity\Prof\Action');
+
+        if (!($action instanceof Action)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the action!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_prof_action',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $action = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Prof\Action')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $action) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No action with the given ID was found!'
+                'No action was found!'
             );
 
             $this->redirect()->toRoute(

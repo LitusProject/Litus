@@ -19,6 +19,7 @@
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
 use CommonBundle\Entity\General\AcademicYear,
+    CudiBundle\Entity\Sale\Article as SaleArticle,
     CudiBundle\Entity\Supplier,
     Zend\View\Model\ViewModel;
 
@@ -206,7 +207,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function articleAction()
     {
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -265,7 +266,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function supplierAction()
     {
-        if (!($supplier = $this->getSupplier())) {
+        if (!($supplier = $this->getSupplierEntity())) {
             return new ViewModel();
         }
 
@@ -348,32 +349,17 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         }
     }
 
-    private function getArticle()
+    /**
+     * @return SaleArticle|null
+     */
+    private function getSaleArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
+
+        if (!($article instanceof SaleArticle)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_delivered',
-                array(
-                    'action' => 'articles',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -391,32 +377,17 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         return $article;
     }
 
-    private function getSupplier()
+    /**
+     * @return Supplier|null
+     */
+    private function getSupplierEntity()
     {
-        if (null === $this->getParam('id')) {
+        $supplier = $this->getEntityById('CudiBundle\Entity\Supplier');
+
+        if (!($supplier instanceof Supplier)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the supplier!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_delivered',
-                array(
-                    'action' => 'suppliers',
-                )
-            );
-
-            return;
-        }
-
-        $supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $supplier) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No supplier with the given ID was found!'
+                'No supplier was found!'
             );
 
             $this->redirect()->toRoute(

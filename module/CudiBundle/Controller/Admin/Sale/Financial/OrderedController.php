@@ -188,7 +188,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function orderAction()
     {
-        if (!($order = $this->getOrder())) {
+        if (!($order = $this->getOrderEntity())) {
             return new ViewModel();
         }
 
@@ -227,7 +227,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($order = $this->getOrder())) {
+        if (!($order = $this->getOrderEntity())) {
             return new ViewModel();
         }
 
@@ -300,7 +300,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function supplierAction()
     {
-        if (!($supplier = $this->getSupplier())) {
+        if (!($supplier = $this->getSupplierEntity())) {
             return new ViewModel();
         }
 
@@ -340,7 +340,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($supplier = $this->getSupplier())) {
+        if (!($supplier = $this->getSupplierEntity())) {
             return new ViewModel();
         }
 
@@ -383,53 +383,17 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
         }
     }
 
-    private function getOrder()
+    /**
+     * @return Order|null
+     */
+    private function getOrderEntity()
     {
-        if (null === $this->getParam('id')) {
+        $order = $this->getEntityById('CudiBundle\Entity\Stock\Order\Order');
+
+        if (!($order instanceof Order)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the order!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_ordered',
-                array(
-                    'action' => 'orders',
-                )
-            );
-
-            return;
-        }
-
-        $orders = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Order\Order')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $orders) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No order with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_ordered',
-                array(
-                    'action' => 'orders',
-                )
-            );
-
-            return;
-        }
-
-        return $orders;
-    }
-
-    private function getSupplier()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the supplier!'
+                'No order was found!'
             );
 
             $this->redirect()->toRoute(
@@ -442,14 +406,20 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             return;
         }
 
-        $supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findOneById($this->getParam('id'));
+        return $order;
+    }
 
-        if (null === $supplier) {
+    /**
+     * @return Supplier|null
+     */
+    private function getSupplierEntity()
+    {
+        $supplier = $this->getEntityById('CudiBundle\Entity\Supplier');
+
+        if (!($supplier instanceof Supplier)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No supplier with the given ID was found!'
+                'No supplier was found!'
             );
 
             $this->redirect()->toRoute(

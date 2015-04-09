@@ -18,7 +18,8 @@
 
 namespace CudiBundle\Controller\Admin\Article;
 
-use CudiBundle\Entity\Article\Internal as InternalArticle,
+use CudiBundle\Entity\Article,
+    CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Log\Article\SubjectMap\Added as AddedLog,
     CudiBundle\Entity\Log\Article\SubjectMap\Removed as RemovedLog,
@@ -33,7 +34,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -118,19 +119,20 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getMapping())) {
+        if (!($mapping = $this->getSubjectMappingEntity())) {
             return new ViewModel();
         }
 
         $mapping->setRemoved();
         $this->getEntityManager()->persist(new RemovedLog($this->getAuthentication()->getPersonObject(), $mapping));
 
-        $article = $mapping->getArticle();
+        $article = $mapping->getArticleEntity();
 
         if ($article instanceof InternalArticle) {
             $cachePath = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.front_page_cache_dir');
+
             if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage())) {
                 unlink($cachePath . '/' . $article->getFrontPage());
             }
@@ -147,55 +149,16 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
     }
 
     /**
-     * @return SubjectMap
+     * @return SubjectMap|null
      */
-    private function getMapping()
+    private function getSubjectMappingEntity()
     {
-        if (null === $this->getParam('id')) {
+        $mapping = $this->getEntityById('CudiBundle\Entity\Article\SubjectMap');
+
+        if (!($mapping instanceof SubjectMap)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the mapping!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_article_subject',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No mapping with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_article_subject',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $article;
-    }
-
-    private function getArticle()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the article!'
+                'No mapping was found!'
             );
 
             $this->redirect()->toRoute(
@@ -208,14 +171,20 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             return;
         }
 
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($this->getParam('id'));
+        return $mapping;
+    }
 
-        if (null === $article) {
+    /**
+     * @return Article|null
+     */
+    private function getArticleEntity()
+    {
+        $article = $this->getEntityById('CudiBundle\Entity\Article');
+
+        if (!($article instanceof Article)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(

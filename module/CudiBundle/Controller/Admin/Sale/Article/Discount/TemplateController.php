@@ -92,7 +92,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($template = $this->getTemplate())) {
+        if (!($template = $this->getTemplateEntity())) {
             return new ViewModel();
         }
 
@@ -108,7 +108,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($template = $this->getTemplate())) {
+        if (!($template = $this->getTemplateEntity())) {
             return new ViewModel();
         }
 
@@ -144,34 +144,16 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @return Template
+     * @return Template|null
      */
-    private function getTemplate()
+    private function getTemplateEntity()
     {
-        if (null === $this->getParam('id')) {
+        $template = $this->getEntityById('CudiBundle\Entity\Sale\Article\Discount\Template');
+
+        if (!($template instanceof Template)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the template!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_article_discount_template',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $template = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Template')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $template) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No template with the given ID was found!'
+                'No template was found!'
             );
 
             $this->redirect()->toRoute(
