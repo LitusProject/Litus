@@ -395,7 +395,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function articleAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -447,7 +447,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($article = $this->getArticleEntity())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
