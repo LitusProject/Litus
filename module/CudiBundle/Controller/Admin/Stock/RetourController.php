@@ -19,6 +19,7 @@
 namespace CudiBundle\Controller\Admin\Stock;
 
 use CudiBundle\Entity\Stock\Retour,
+    CudiBundle\Entity\Supplier,
     Zend\View\Model\ViewModel;
 
 /**
@@ -52,7 +53,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
     public function supplierAction()
     {
-        if (!($supplier = $this->getSupplier())) {
+        if (!($supplier = $this->getSupplierEntity())) {
             return new ViewModel();
         }
 
@@ -155,7 +156,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($retour = $this->getRetour())) {
+        if (!($retour = $this->getRetourEntity())) {
             return new ViewModel();
         }
 
@@ -170,32 +171,17 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function getRetour()
+    /**
+     * @return Retour|null
+     */
+    private function getRetourEntity()
     {
-        if (null === $this->getParam('id')) {
+        $retour = $this->getEntityById('CudiBundle\Entity\Stock\Retour');
+
+        if (!($retour instanceof Retour)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the retour!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_stock_retour',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $retour = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Retour')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $retour) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No retour with the given ID was found!'
+                'No retour was found!'
             );
 
             $this->redirect()->toRoute(
@@ -211,32 +197,17 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
         return $retour;
     }
 
-    private function getSupplier()
+    /**
+     * @return Supplier|null
+     */
+    private function getSupplierEntity()
     {
-        if (null === $this->getParam('id')) {
+        $supplier = $this->getEntityById('CudiBundle\Entity\Supplier');
+
+        if (!($supplier instanceof Supplier)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the supplier!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_stock_retour',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $supplier) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No supplier with the given ID was found!'
+                'No supplier was found!'
             );
 
             $this->redirect()->toRoute(

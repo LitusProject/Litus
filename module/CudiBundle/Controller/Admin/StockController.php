@@ -25,6 +25,7 @@ use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder,
     CudiBundle\Entity\Stock\Period,
     CudiBundle\Entity\Stock\Period\Value\Delta,
+    Cudibundle\Entity\Sale\Article as SaleArticle,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -195,7 +196,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -365,7 +366,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -383,7 +384,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -598,12 +599,17 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         }
     }
 
-    private function getArticle()
+    /**
+     * @return SaleArticle|null
+     */
+    private function getSaleArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
+
+        if (!($article instanceof SaleArticle)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the sale article!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -616,29 +622,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return;
         }
 
-        $item = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $item) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No sale article with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_stock',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $item;
+        return $article;
     }
 
+    /**
+     * @return int
+     */
     private function getSemester()
     {
         $semester = $this->getParam('semester');

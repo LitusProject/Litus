@@ -21,7 +21,10 @@ namespace CudiBundle\Controller\Admin\Stock;
 use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator,
     CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator,
+    CudiBundle\Entity\Stock\Order\Item as OrderItem,
+    CudiBundle\Entity\Stock\Order\Order,
     CudiBundle\Entity\Stock\Period,
+    CudiBundle\Entity\Supplier,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -129,7 +132,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function supplierAction()
     {
-        if (!($supplier = $this->getSupplier())) {
+        if (!($supplier = $this->getSupplierEntity())) {
             return new ViewModel();
         }
 
@@ -160,7 +163,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($order = $this->getOrder())) {
+        if (!($order = $this->getOrderEntity())) {
             return new ViewModel();
         }
 
@@ -267,7 +270,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function editItemAction()
     {
-        if (!($item = $this->getOrderItem())) {
+        if (!($item = $this->getOrderItemEntity())) {
             return new ViewModel();
         }
 
@@ -337,7 +340,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function placeAction()
     {
-        if (!($order = $this->getOrder())) {
+        if (!($order = $this->getOrderEntity())) {
             return new ViewModel();
         }
 
@@ -363,7 +366,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function pdfAction()
     {
-        if (!($order = $this->getOrder())) {
+        if (!($order = $this->getOrderEntity())) {
             return new ViewModel();
         }
 
@@ -389,7 +392,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function exportAction()
     {
-        if (!($order = $this->getOrder())) {
+        if (!($order = $this->getOrderEntity())) {
             return new ViewModel();
         }
 
@@ -418,7 +421,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function cancelAction()
     {
-        if (!($order = $this->getOrder())) {
+        if (!($order = $this->getOrderEntity())) {
             return new ViewModel();
         }
 
@@ -450,32 +453,17 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         }
     }
 
-    private function getSupplier()
+    /**
+     * @return Supplier|null
+     */
+    private function getSupplierEntity()
     {
-        if (null === $this->getParam('id')) {
+        $supplier = $this->getEntityById('CudiBundle\Entity\Supplier');
+
+        if (!($supplier instanceof Supplier)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the supplier!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_stock_order',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $supplier) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No supplier with the given ID was found!'
+                'No supplier was found!'
             );
 
             $this->redirect()->toRoute(
@@ -491,32 +479,17 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         return $supplier;
     }
 
-    private function getOrder()
+    /**
+     * @return Order|null
+     */
+    private function getOrderEntity()
     {
-        if (null === $this->getParam('id')) {
+        $order = $this->getEntityById('CudiBundle\Entity\Stock\Order\Order');
+
+        if (!($order instanceof Order)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the order!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_stock_order',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $order = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Order\Order')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $order) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No order with the given ID was found!'
+                'No order was found!'
             );
 
             $this->redirect()->toRoute(
@@ -533,34 +506,16 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return \CudiBundle\Entity\Stock\Order\Item|null
+     * @return OrderItem|null
      */
-    private function getOrderItem()
+    private function getOrderItemEntity()
     {
-        if (null === $this->getParam('id')) {
+        $item = $this->getEntityById('CudiBundle\Entity\Stock\Order\Item');
+
+        if (!($item instanceof OrderItem)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the order item!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_stock_order',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $item = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Order\Item')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $item) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No order item with the given ID was found!'
+                'No order item was found!'
             );
 
             $this->redirect()->toRoute(

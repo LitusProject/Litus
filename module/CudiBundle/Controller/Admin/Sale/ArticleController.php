@@ -21,6 +21,7 @@ namespace CudiBundle\Controller\Admin\Sale;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Component\Document\Generator\SaleArticles as SaleArticlesGenerator,
+    CudiBundle\Entity\Article,
     CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\Log\Article\Sale\Bookable as BookableLog,
     CudiBundle\Entity\Log\Article\Sale\Unbookable as UnbookableLog,
@@ -130,7 +131,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -194,7 +195,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($saleArticle = $this->getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -270,7 +271,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function viewAction()
     {
-        if (!($saleArticle = $this->getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -288,7 +289,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($saleArticle = $this->getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -304,7 +305,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function assignAllAction()
     {
-        if (!($saleArticle = $this->getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -359,7 +360,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        if (!($article = $this->getSaleArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -408,7 +409,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function mailAction()
     {
-        if (!($saleArticle = $this->getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -480,7 +481,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function cancelBookingsAction()
     {
-        if (!($saleArticle = $this->getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -533,32 +534,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return SaleArticle|null
      */
-    private function getSaleArticle()
+    private function getSaleArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
+
+        if (!($article instanceof SaleArticle)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -575,34 +558,16 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \CudiBundle\Entity\Article|null
+     * @return Article|null
      */
-    private function getArticle()
+    private function getArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Article');
+
+        if (!($article instanceof Article)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(

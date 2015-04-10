@@ -20,6 +20,7 @@ namespace CudiBundle\Controller\Admin\Stock;
 
 use CudiBundle\Entity\Stock\Delivery,
     CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder,
+    CudiBundle\Entity\Supplier,
     Zend\View\Model\ViewModel;
 
 /**
@@ -53,7 +54,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
     public function supplierAction()
     {
-        if (!($supplier = $this->getSupplier())) {
+        if (!($supplier = $this->getSupplierEntity())) {
             return new ViewModel();
         }
 
@@ -184,7 +185,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
-        if (!($delivery = $this->getDelivery())) {
+        if (!($delivery = $this->getDeliveryEntity())) {
             return new ViewModel();
         }
 
@@ -279,32 +280,17 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
-    private function getDelivery()
+    /**
+     * @return Delivery|null
+     */
+    private function getDeliveryEntity()
     {
-        if (null === $this->getParam('id')) {
+        $delivery = $this->getEntityById('CudiBundle\Entity\Stock\Delivery');
+
+        if (!($delivery instanceof Delivery)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the delivery!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_stock_delivery',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $delivery = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Delivery')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $delivery) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No delivery with the given ID was found!'
+                'No delivery was found!'
             );
 
             $this->redirect()->toRoute(
@@ -320,32 +306,17 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
         return $delivery;
     }
 
-    private function getSupplier()
+    /**
+     * @return Supplier|null
+     */
+    private function getSupplierEntity()
     {
-        if (null === $this->getParam('id')) {
+        $supplier = $this->getEntityById('CudiBundle\Entity\Supplier');
+
+        if (!($supplier instanceof Supplier)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the supplier!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_stock_delivery',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $supplier) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No supplier with the given ID was found!'
+                'No supplier was found!'
             );
 
             $this->redirect()->toRoute(

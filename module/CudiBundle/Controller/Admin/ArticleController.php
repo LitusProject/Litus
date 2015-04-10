@@ -24,6 +24,7 @@ use CudiBundle\Entity\Article\External,
     CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Comment\Mapping as CommentMapping,
     CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog,
+    Cudibundle\Entity\Article,
     Zend\View\Model\ViewModel;
 
 /**
@@ -128,7 +129,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -184,7 +185,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -200,7 +201,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -257,7 +258,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $academicYear = $this->getAcademicYear();
 
-        if (!($article = $this->getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -310,7 +311,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function convertToExternalAction()
     {
-        if (!($previous = $this->getArticle())) {
+        if (!($previous = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -393,7 +394,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function convertToInternalAction()
     {
-        if (!($previous = $this->getArticle())) {
+        if (!($previous = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -518,38 +519,20 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \CudiBundle\Entity\Article|null
+     * @return Article|null
      */
-    private function getArticle()
+    private function getArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Article');
+
+        if (!($article instanceof Article)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
-                'cudi_admin_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_article',
+                'cudi_admin_stock',
                 array(
                     'action' => 'manage',
                 )

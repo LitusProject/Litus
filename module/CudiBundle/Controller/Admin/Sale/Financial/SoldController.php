@@ -181,7 +181,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function sessionAction()
     {
-        if (!($session = $this->getSession())) {
+        if (!($session = $this->getSessionEntity())) {
             return new ViewModel();
         }
 
@@ -229,7 +229,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($session = $this->getSession())) {
+        if (!($session = $this->getSessionEntity())) {
             return new ViewModel();
         }
 
@@ -670,34 +670,16 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return Session
+     * @return Session|null
      */
-    private function getSession()
+    private function getSessionEntity()
     {
-        if (null === $this->getParam('id')) {
+        $session = $this->getEntityById('CudiBundle\Entity\Sale\Session');
+
+        if (!($session instanceof Session)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the session!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_sold',
-                array(
-                    'action' => 'sessions',
-                )
-            );
-
-            return;
-        }
-
-        $session = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Session')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $session) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No session with the given ID was found!'
+                'No session was found!'
             );
 
             $this->redirect()->toRoute(

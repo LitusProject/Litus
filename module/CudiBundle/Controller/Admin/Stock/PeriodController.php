@@ -114,11 +114,9 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($period = $this->getPeriod())) {
+        if (!($period = $this->getPeriodEntity())) {
             return new ViewModel();
         }
-
-        $period->setEntityManager($this->getEntityManager());
 
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
@@ -138,11 +136,9 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
     public function searchAction()
     {
-        if (!($period = $this->getPeriod())) {
+        if (!($period = $this->getPeriodEntity())) {
             return new ViewModel();
         }
-
-        $period->setEntityManager($this->getEntityManager());
 
         switch ($this->getParam('field')) {
             case 'title':
@@ -187,12 +183,17 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function getPeriod()
+    /**
+     * @return Period|null
+     */
+    private function getPeriodEntity()
     {
-        if (null === $this->getParam('id')) {
+        $period = $this->getEntityById('CudiBundle\Entity\Stock\Period');
+
+        if (!($period instanceof Supplier)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the period!'
+                'No period was found!'
             );
 
             $this->redirect()->toRoute(
@@ -205,25 +206,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
             return;
         }
 
-        $period = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Stock\Period')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $period) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No period with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_stock_period',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
+        $period->setEntityManager($this->getEntityManager());
 
         return $period;
     }
