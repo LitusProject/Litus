@@ -190,7 +190,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
     {
         $period = $this->getEntityById('CudiBundle\Entity\Stock\Period');
 
-        if (!($period instanceof Supplier)) {
+        if (!($period instanceof Period)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No period was found!'

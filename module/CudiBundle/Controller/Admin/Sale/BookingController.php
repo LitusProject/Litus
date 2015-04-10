@@ -20,6 +20,7 @@ namespace CudiBundle\Controller\Admin\Sale;
 
 use CommonBundle\Entity\User\Person\Academic,
     CudiBundle\Component\Mail\Booking as BookingMail,
+    CudiBundle\Entity\Log,
     CudiBundle\Entity\Sale\Article as SaleArticle,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Sale\QueueItem,

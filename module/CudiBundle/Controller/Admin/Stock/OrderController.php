@@ -324,7 +324,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($item = $this->getOrderItem())) {
+        if (!($item = $this->getOrderItemEntity())) {
             return new ViewModel();
         }
 
