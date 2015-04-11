@@ -124,7 +124,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
         }
 
-        if (!($subject = $this->getSubject())) {
+        if (!($subject = $this->getSubjectEntity())) {
             return new ViewModel();
         }
 
@@ -330,12 +330,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @param  int          $id
+     * @param  int|null     $id
      * @return Article|null
      */
     private function getArticleEntity($id = null)
     {
-        $id = $id == null ? $this->getParam('id', 0) : $id;
+        $id = $id === null ? $this->getParam('id', 0) : $id;
 
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')

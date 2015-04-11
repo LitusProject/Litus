@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Controller\Prof\Article;
 
-use CudiBundle\Entity\Article,
+use CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\File\File,
     CudiBundle\Entity\File\Mapping,
     CudiBundle\Entity\Prof\Action,
@@ -34,7 +34,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        if (!($article = $this->getInternalArticleEntity())) {
             return new ViewModel();
         }
 
@@ -108,7 +108,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
     public function uploadAction()
     {
-        if (!($article = $this->getArticleEntity())) {
+        if (!($article = $this->getInternalArticleEntity())) {
             return new ViewModel();
         }
 
@@ -212,15 +212,15 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @return Article|null
+     * @return InternalArticle|null
      */
-    private function getArticleEntity()
+    private function getInternalArticleEntity()
     {
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneByIdAndProf($this->getParam('id', 0), $this->getAuthentication()->getPersonObject());
 
-        if (!($article instanceof Article)) {
+        if (!($article instanceof InternalArticle)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No article was found!'

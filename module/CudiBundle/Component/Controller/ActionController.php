@@ -44,7 +44,7 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * Returns the active stock period.
      *
-     * @return Period
+     * @return Period|null
      */
     protected function getActiveStockPeriodEntity()
     {

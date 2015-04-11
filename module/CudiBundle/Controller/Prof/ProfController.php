@@ -140,13 +140,10 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @param  int          $id
      * @return Subject|null
      */
-    private function getSubjectEntity($id = null)
+    private function getSubjectEntity()
     {
-        $id = $id == null ? $this->getParam('id', 0) : $id;
-
         if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
         }
@@ -184,8 +181,6 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
      */
     private function getSubjectProfMapEntity()
     {
-        $id = $id == null ? $this->getParam('id', 0) : $id;
-
         if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
         }

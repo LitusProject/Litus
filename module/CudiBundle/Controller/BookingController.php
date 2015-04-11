@@ -59,7 +59,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($booking = $this->getBooking())) {
+        if (!($booking = $this->getBookingEntity())) {
             return $this->notFoundAction();
         }
 

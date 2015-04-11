@@ -154,12 +154,12 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @param  int          $id
+     * @param  int|null     $id
      * @return Subject|null
      */
     private function getSubjectEntity($id = null)
     {
-        $id = $id == null ? $this->getParam('id') : $id;
+        $id = $id === null ? $this->getParam('id') : $id;
 
         if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;

@@ -245,12 +245,12 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @param  int          $id
+     * @param  int|null     $id
      * @return Article|null
      */
     private function getArticleEntity($id = null)
     {
-        $id = $id == null ? $this->getParam('id', 0) : $id;
+        $id = $id === null ? $this->getParam('id', 0) : $id;
 
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
