@@ -39,7 +39,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($currentPeriod = $this->getActiveStockPeriod())) {
+        if (!($currentPeriod = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -79,7 +79,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function inactiveAction()
     {
-        if (!($currentPeriod = $this->getActiveStockPeriod())) {
+        if (!($currentPeriod = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -119,7 +119,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($currentPeriod = $this->getActiveStockPeriod())) {
+        if (!($currentPeriod = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -127,7 +127,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $form = $this->getForm('cudi_sale_booking_add');
 
@@ -144,7 +144,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                     ->getConfigValue('cudi.enable_automatic_assignment');
 
                 if ($enableAssignment) {
-                    $currentPeriod = $this->getActiveStockPeriod();
+                    $currentPeriod = $this->getActiveStockPeriodEntity();
 
                     $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
                     if ($available > 0) {
@@ -209,7 +209,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($currentPeriod = $this->getActiveStockPeriod())) {
+        if (!($currentPeriod = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -224,7 +224,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findAllByPersonAndAcademicYearQuery($booking->getPerson(), $this->getAcademicYear()),
+                ->findAllByPersonAndAcademicYearQuery($booking->getPerson(), $this->getAcademicYearEntity()),
             $this->getParam('page')
         );
 
@@ -282,7 +282,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($currentPeriod = $this->getActiveStockPeriod())) {
+        if (!($currentPeriod = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -631,7 +631,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $paginator = $this->paginator()->createFromQuery(
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
-                    ->findAllByPersonAndAcademicYearQuery($person, $this->getAcademicYear()),
+                    ->findAllByPersonAndAcademicYearQuery($person, $this->getAcademicYearEntity()),
                 $this->getParam('page')
             );
 
@@ -664,14 +664,14 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $paginator = $this->paginator()->createFromQuery(
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
-                    ->findAllByArticleAndAcademicYearQuery($article, $this->getAcademicYear()),
+                    ->findAllByArticleAndAcademicYearQuery($article, $this->getAcademicYearEntity()),
                 $this->getParam('page')
             );
 
             return new ViewModel(
                 array(
                     'form' => $form,
-                    'currentAcademicYear' => $this->getAcademicYear(),
+                    'currentAcademicYear' => $this->getAcademicYearEntity(),
                     'paginator' => $paginator,
                     'paginationControl' => $this->paginator()->createControl(),
                     'article' => $article,
@@ -682,7 +682,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'form' => $form,
-                'currentAcademicYear' => $this->getAcademicYear(),
+                'currentAcademicYear' => $this->getAcademicYearEntity(),
             )
         );
     }
@@ -765,7 +765,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     private function getPeriodEntity()
     {
         if (null === $this->getParam('period')) {
-            return $this->getActiveStockPeriod();
+            return $this->getActiveStockPeriodEntity();
         }
 
         $period = $this->getEntityById('CudiBundle\Entity\Stock\Period', 'period');

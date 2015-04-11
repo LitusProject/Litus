@@ -18,7 +18,9 @@
 
 namespace CudiBundle\Controller\Prof\Subject;
 
-use SyllabusBundle\Entity\Subject\Comment,
+use SyllabusBundle\Entity\Subject,
+    SyllabusBundle\Entity\SubjectProfMap,
+    SyllabusBundle\Entity\Subject\Comment,
     SyllabusBundle\Entity\Subject\Reply,
     Zend\View\Model\ViewModel;
 
@@ -31,7 +33,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($subject = $this->getSubject())) {
+        if (!($subject = $this->getSubjectEntity())) {
             return new ViewModel();
         }
 
@@ -131,7 +133,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($comment = $this->getComment())) {
+        if (!($comment = $this->getCommentEntity())) {
             return new ViewModel();
         }
 
@@ -152,30 +154,14 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Subject|null
+     * @param  int          $id
+     * @return Subject|null
      */
-    private function getSubject($id = null)
+    private function getSubjectEntity($id = null)
     {
         $id = $id == null ? $this->getParam('id') : $id;
 
         if (!($academicYear = $this->getCurrentAcademicYear())) {
-            return;
-        }
-
-        if (null === $id) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the subject!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_prof_subject',
-                array(
-                    'action' => 'manage',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
             return;
         }
 
@@ -187,10 +173,10 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                 $academicYear
             );
 
-        if (null === $mapping) {
+        if (!($mapping instanceof SubjectProfMap)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No subject with the given ID was found!'
+                'No subject was found!'
             );
 
             $this->redirect()->toRoute(
@@ -207,33 +193,17 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
         return $mapping->getSubject();
     }
 
-    private function getComment()
+    /**
+     * @return Comment|null
+     */
+    private function getCommentEntity()
     {
-        if (null === $this->getParam('id')) {
+        $comment = $this->getEntityById('SyllabusBundle\Entity\Subject\Comment');
+
+        if (!($comment instanceof Comment) || null === $this->getSubjectEntity($comment->getSubject()->getId())) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the comment!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_prof_article',
-                array(
-                    'action' => 'manage',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
-            return;
-        }
-
-        $comment = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Subject\Comment')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $comment || null === $this->getSubject($comment->getSubject()->getId())) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No comment with the given ID was found!'
+                'No comment was found!'
             );
 
             $this->redirect()->toRoute(

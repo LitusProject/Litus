@@ -58,7 +58,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -85,15 +85,15 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
     public function addAction()
     {
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $prefix = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYear()->getCode(true);
+            ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYearEntity()->getCode(true);
 
         $form = $this->getForm('cudi_stock_delivery_add', array(
             'barcode_prefix' => $prefix,
@@ -181,7 +181,7 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -244,11 +244,11 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

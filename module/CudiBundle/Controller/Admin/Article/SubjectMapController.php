@@ -38,7 +38,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 

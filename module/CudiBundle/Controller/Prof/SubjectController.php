@@ -50,7 +50,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
     public function subjectAction()
     {
-        if (!($subject = $this->getSubject())) {
+        if (!($subject = $this->getSubjectEntity())) {
             return new ViewModel();
         }
 
@@ -200,45 +200,31 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         return $articleMappings;
     }
 
-    private function getSubject()
+    /**
+     * @return Subject|null
+     */
+    private function getSubjectEntity()
     {
         if (!($academicYear = $this->getCurrentAcademicYear())) {
-            return;
-        }
-
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the subject!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_prof_subject',
-                array(
-                    'action' => 'manage',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
             return;
         }
 
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findOneBySubjectIdAndProfAndAcademicYear(
-                $this->getParam('id'),
+                $this->getParam('id', 0),
                 $this->getAuthentication()->getPersonObject(),
                 $academicYear
             );
 
-        if (null === $mapping) {
+        if (!($mapping instanceof SubjectProfMap)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No subject with the given ID was found!'
+                'No subject was found!'
             );
 
             $this->redirect()->toRoute(
-                'cudi_prof_subject',
+                'cudi_prof_article',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),

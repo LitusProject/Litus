@@ -32,7 +32,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 {
     public function individualAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
         if (null !== $this->getParam('field')) {
             $records = $this->individualSearch($academicYear);
         }
@@ -66,7 +66,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -112,7 +112,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function articlesAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
         if (null !== $this->getParam('field')) {
             $records = $this->articlesSearch($academicYear);
         }
@@ -150,7 +150,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -211,7 +211,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -220,7 +220,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Delivery')
-                ->findAllByArticleEntityQuery($article, $this->getAcademicYear()),
+                ->findAllByArticleEntityQuery($article, $this->getAcademicYearEntity()),
             $this->getParam('page')
         );
 
@@ -237,7 +237,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function suppliersAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -270,20 +270,20 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
         if (null !== $this->getParam('field')) {
-            $records = $this->supplierSearch($supplier, $this->getAcademicYear());
+            $records = $this->supplierSearch($supplier, $this->getAcademicYearEntity());
         }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Delivery')
-                ->findAllBySupplierEntityQuery($supplier, $this->getAcademicYear());
+                ->findAllBySupplierEntityQuery($supplier, $this->getAcademicYearEntity());
         }
 
         $paginator = $this->paginator()->createFromQuery(
@@ -310,7 +310,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

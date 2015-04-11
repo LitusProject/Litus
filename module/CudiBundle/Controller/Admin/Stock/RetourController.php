@@ -57,7 +57,7 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -84,15 +84,15 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $prefix = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYear()->getCode(true);
+            ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYearEntity()->getCode(true);
 
         $form = $this->getForm('cudi_stock_delivery_retour', array(
             'barcode_prefix' => $prefix,

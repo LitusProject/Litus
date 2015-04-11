@@ -36,7 +36,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         if (null !== $this->getParam('field')) {
             $articles = $this->search();
@@ -69,7 +69,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     public function addAction()
     {
         $form = $this->getForm('cudi_article_add');
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -219,7 +219,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function searchAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $this->initAjax();
 
@@ -256,7 +256,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function duplicateAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
@@ -514,7 +514,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             case 'subject':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
-                    ->findAllBySubjectQuery($this->getParam('string'), $this->getAcademicYear());
+                    ->findAllBySubjectQuery($this->getParam('string'), $this->getAcademicYearEntity());
         }
     }
 

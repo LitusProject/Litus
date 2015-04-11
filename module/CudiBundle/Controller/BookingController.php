@@ -552,7 +552,10 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function getBooking()
+    /**
+     * @return Booking
+     */
+    private function getBookingEntity()
     {
         if (null === $this->getParam('id') || !is_numeric($this->getParam('id'))) {
             return;
@@ -561,10 +564,6 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $booking = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findOneById($this->getParam('id'));
-
-        if (null === $booking) {
-            return;
-        }
 
         return $booking;
     }

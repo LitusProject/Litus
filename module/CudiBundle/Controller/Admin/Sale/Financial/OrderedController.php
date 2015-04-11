@@ -32,7 +32,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function individualAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         if (null !== $this->getParam('field')) {
             $records = $this->individualSearch($academicYear);
@@ -67,7 +67,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -113,7 +113,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function ordersAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
         if (null !== $this->getParam('field')) {
             $records = $this->ordersSearch($academicYear);
         }
@@ -147,7 +147,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -192,7 +192,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
         if (null !== $this->getParam('field')) {
             $records = $this->orderSearch($order, $academicYear);
         }
@@ -231,7 +231,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -271,7 +271,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function suppliersAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -304,20 +304,20 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
         if (null !== $this->getParam('field')) {
-            $records = $this->supplierSearch($supplier, $this->getAcademicYear());
+            $records = $this->supplierSearch($supplier, $this->getAcademicYearEntity());
         }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Item')
-                ->findAllBySupplierEntityQuery($supplier, $this->getAcademicYear());
+                ->findAllBySupplierEntityQuery($supplier, $this->getAcademicYearEntity());
         }
 
         $paginator = $this->paginator()->createFromQuery(
@@ -344,7 +344,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

@@ -32,7 +32,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 {
     public function individualAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
         if (null !== $this->getParam('field')) {
             $records = $this->individualSearch($academicYear);
         }
@@ -75,7 +75,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -134,7 +134,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     public function sessionsAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -268,7 +268,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
     public function articlesAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
         if (null !== $this->getParam('field')) {
             $records = $this->articlesSearch($academicYear);
         }
@@ -306,7 +306,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -367,7 +367,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -378,13 +378,13 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->findAll();
 
         if (null !== $this->getParam('field')) {
-            $records = $this->articleSearch($article, $this->getAcademicYear());
+            $records = $this->articleSearch($article, $this->getAcademicYearEntity());
         }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\ReturnItem')
-                ->findAllByArticleEntityQuery($article, $this->getAcademicYear());
+                ->findAllByArticleEntityQuery($article, $this->getAcademicYearEntity());
         }
 
         $paginator = $this->paginator()->createFromQuery(
@@ -416,7 +416,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

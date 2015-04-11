@@ -59,7 +59,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function overviewAction()
     {
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -94,7 +94,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function searchAction()
     {
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -136,7 +136,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -214,13 +214,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     {
         $prefix = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYear()->getCode(true);
+            ->getConfigValue('cudi.article_barcode_prefix') . $this->getAcademicYearEntity()->getCode(true);
 
         $form = $this->getForm('cudi_stock_order_add', array(
             'barcode_prefix' => $prefix,
         ));
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

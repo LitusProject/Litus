@@ -38,11 +38,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
         $semester = $this->getSemester();
 
         if (null !== $this->getParam('field')) {
@@ -72,7 +72,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function notDeliveredAction()
     {
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -102,7 +102,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function searchAction()
     {
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -112,7 +112,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $articles = $this->search($this->getAcademicYear(), $semester)
+        $articles = $this->search($this->getAcademicYearEntity(), $semester)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -148,7 +148,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function searchNotDeliveredAction()
     {
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -192,7 +192,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -362,7 +362,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -380,7 +380,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function deltaAction()
     {
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -440,7 +440,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                     $formData['articles'],
                     $formData['order'],
                     isset($formData['in_stock']) && $formData['in_stock'],
-                    $this->getAcademicYear(),
+                    $this->getAcademicYearEntity(),
                     $file
                 );
                 $document->generate();
@@ -463,7 +463,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
     public function bulkUpdateAction()
     {
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 
@@ -481,11 +481,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             if ($formData['order'] == 'barcode') {
                 $stock = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByAcademicYearSortBarcode($this->getAcademicYear());
+                    ->findAllByAcademicYearSortBarcode($this->getAcademicYearEntity());
             } else {
                 $stock = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findAllByAcademicYear($this->getAcademicYear());
+                    ->findAllByAcademicYear($this->getAcademicYearEntity());
             }
 
             $articles = array();

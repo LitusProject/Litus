@@ -40,7 +40,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
         $semester = $this->getSemester();
 
         if (null !== $this->getParam('field')) {
@@ -334,7 +334,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getConfigValue('search_max_results');
 
         $semester = $this->getSemester();
-        $articles = $this->search($this->getAcademicYear(), $semester)
+        $articles = $this->search($this->getAcademicYearEntity(), $semester)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -380,7 +380,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -435,7 +435,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 foreach ($formData['to'] as $status) {
                     $bookings = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Booking')
-                        ->findAllByStatusAndArticleAndPeriod($status, $saleArticle, $this->getActiveStockPeriod());
+                        ->findAllByStatusAndArticleAndPeriod($status, $saleArticle, $this->getActiveStockPeriodEntity());
 
                     foreach ($bookings as $booking) {
                         if (isset($persons[$booking->getPerson()->getId()])) {
@@ -487,7 +487,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         $bookings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findAllActiveByArticleAndPeriod($saleArticle, $this->getActiveStockPeriod());
+            ->findAllActiveByArticleAndPeriod($saleArticle, $this->getActiveStockPeriodEntity());
 
         $idsCancelled = array();
         foreach ($bookings as $booking) {

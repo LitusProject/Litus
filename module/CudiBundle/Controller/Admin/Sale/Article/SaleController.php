@@ -36,7 +36,7 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        if (!($period = $this->getActiveStockPeriod())) {
+        if (!($period = $this->getActiveStockPeriodEntity())) {
             return new ViewModel();
         }
 

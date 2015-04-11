@@ -33,7 +33,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
 {
     public function overviewAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -111,7 +111,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
 
     public function periodAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -206,7 +206,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
     public function exportAction()
     {
         $file = new TmpFile();
-        $document = new FinancialGenerator($this->getEntityManager(), $this->getAcademicYear(), $file);
+        $document = new FinancialGenerator($this->getEntityManager(), $this->getAcademicYearEntity(), $file);
         $document->generate();
 
         $now = new DateTime();
