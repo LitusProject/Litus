@@ -18,7 +18,8 @@
 
 namespace FormBundle\Controller\Manage;
 
-use Zend\Mail\Message,
+use FormBundle\Entity\Node\Form,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -104,16 +105,21 @@ class MailController extends \FormBundle\Component\Controller\FormController
         );
     }
 
+    /**
+     * @return Form|null
+     */
     private function getFormEntity()
     {
-        if (null === $this->getParam('id')) {
+        $form = $this->getEntityById('FormBundle\Entity\Node\Form');
+
+        if (!($form instanceof Form)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the form!'
+                'No form was found!'
             );
 
             $this->redirect()->toRoute(
-                'form_admin_form',
+                'form_manage',
                 array(
                     'action' => 'manage',
                 )
@@ -122,25 +128,7 @@ class MailController extends \FormBundle\Component\Controller\FormController
             return;
         }
 
-        $form = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Form')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $form) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No form with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_admin_form',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
+        $form->setEntityManager($this->getEntityManager());
 
         return $form;
     }

@@ -18,7 +18,8 @@
 
 namespace FormBundle\Controller\Admin;
 
-use FormBundle\Entity\ViewerMap,
+use FormBundle\Entity\Node\Group,
+    FormBundle\Entity\ViewerMap,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,7 +31,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function manageAction()
     {
-        if (!($group = $this->getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
 
@@ -64,7 +65,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
 
     public function addAction()
     {
-        if (!($group = $this->getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
 
@@ -150,7 +151,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
-        if (!($viewer = $this->getViewer())) {
+        if (!($viewer = $this->getViewerMapEntity())) {
             return new ViewModel();
         }
 
@@ -199,69 +200,17 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
         );
     }
 
-    private function getGroup()
+    /**
+     * @return Group|null
+     */
+    private function getGroupEntity()
     {
-        if (null === $this->getParam('id')) {
+        $group = $this->getEntityById('FormBundle\Entity\Node\Group');
+
+        if (!($group instanceof Group) || sizeof($group->getForms()) == 0) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the group!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_admin_group',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $group = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $group) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No group with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_admin_group',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        if (sizeof($group->getForms()) == 0) {
-            $this->flashMessenger()->error(
-                'Error',
-                'This group has no forms!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_admin_group',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $group;
-    }
-
-    private function getViewer()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the viewer!'
+                'No group was found!'
             );
 
             $this->redirect()->toRoute(
@@ -274,14 +223,20 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
             return;
         }
 
-        $viewer = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\ViewerMap')
-            ->findOneById($this->getParam('id'));
+        return $group;
+    }
 
-        if (null === $viewer) {
+    /**
+     * @return ViewerMap|null
+     */
+    private function getViewerMapEntity()
+    {
+        $viewer = $this->getEntityById('FormBundle\Entity\ViewerMap');
+
+        if (!($viewer instanceof ViewerMap)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No viewer with the given ID was found!'
+                'No viewer was found!'
             );
 
             $this->redirect()->toRoute(

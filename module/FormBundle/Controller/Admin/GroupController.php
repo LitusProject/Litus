@@ -114,7 +114,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($group = $this->getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
 
@@ -174,7 +174,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($group = $this->getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
 
@@ -209,7 +209,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function formsAction()
     {
-        if (!($group = $this->getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
 
@@ -312,7 +312,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($group = $this->getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
 
@@ -364,7 +364,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getMapping())) {
+        if (!($mapping = $this->getMappingEntity())) {
             return new ViewModel();
         }
 
@@ -397,32 +397,17 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function getGroup()
+    /**
+     * @return Group|null
+     */
+    private function getGroupEntity()
     {
-        if (null === $this->getParam('id')) {
+        $group = $this->getEntityById('FormBundle\Entity\Node\Group');
+
+        if (!($group instanceof Group)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the group!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_admin_group',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $group = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $group) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No group with the given ID was found!'
+                'No group was found!'
             );
 
             $this->redirect()->toRoute(
@@ -438,32 +423,17 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         return $group;
     }
 
-    private function getMapping()
+    /**
+     * @return Mapping|null
+     */
+    private function getMappingEntity()
     {
-        if (null === $this->getParam('id')) {
+        $mapping = $this->getEntityById('FormBundle\Entity\Node\Group\Mapping');
+
+        if (!($mapping instanceof Mapping)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the mapping!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_admin_group',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $mapping = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group\Mapping')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $mapping) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No mapping with the given ID was found!'
+                'No mapping was found!'
             );
 
             $this->redirect()->toRoute(

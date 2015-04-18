@@ -90,7 +90,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $group = $this->getGroup($formSpecification);
+        $group = $this->getGroupEntity($formSpecification);
         $progressBarInfo = null;
 
         if ($group) {
@@ -227,7 +227,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($entry = $this->getEntry())) {
+        if (!($entry = $this->getEntryEntity())) {
             return $this->notFoundAction();
         }
 
@@ -236,7 +236,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $now = new DateTime();
         $formClosed = ($now < $entry->getForm()->getStartDate() || $now > $entry->getForm()->getEndDate() || !$entry->getForm()->isActive());
 
-        $group = $this->getGroup($entry->getForm());
+        $group = $this->getGroupEntity($entry->getForm());
         $progressBarInfo = null;
 
         if (null !== $group) {
@@ -312,7 +312,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $group = $this->getGroup($formSpecification);
+        $group = $this->getGroupEntity($formSpecification);
         $progressBarInfo = null;
 
         if ($group) {
@@ -458,7 +458,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $group = $this->getGroup($formSpecification);
+        $group = $this->getGroupEntity($formSpecification);
 
         if (null !== $group) {
             $progressBarInfo = $this->progressBarInfo($group, $formSpecification);
@@ -549,7 +549,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($formEntry = $this->getEntry())) {
+        if (!($formEntry = $this->getEntryEntity())) {
             return $this->notFoundAction();
         }
 
@@ -565,7 +565,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $group = $this->getGroup($formEntry->getForm());
+        $group = $this->getGroupEntity($formEntry->getForm());
         $progressBarInfo = null;
 
         if (null !== $group) {
@@ -727,17 +727,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @return Form|null
+     */
     private function getFormEntity()
     {
-        if (null === $this->getParam('id')) {
-            return;
-        }
+        $form = $this->getEntityById('FormBundle\Entity\Node\Form');
 
-        $form = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Form')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $form) {
+        if (!($form instanceof Form)) {
             return;
         }
 
@@ -746,17 +743,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         return $form;
     }
 
-    private function getEntry()
+    /**
+     * @return FormEntry|null
+     */
+    private function getEntryEntity()
     {
-        if (null === $this->getParam('id')) {
-            return;
-        }
+        $entry = $this->getEntityById('FormBundle\Entity\Node\Entry');
 
-        $entry = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $entry || (!$entry->getForm()->isEditableByUser() && !$entry->isDraft() && $this->getParam('action') != 'view')) {
+        if (!($entry instanceof FormEntry) || (!$entry->getForm()->isEditableByUser() && !$entry->isDraft() && $this->getParam('action') != 'view')) {
             return;
         }
 
@@ -784,7 +778,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         return $entry;
     }
 
-    private function getGroup(Form $form)
+    /**
+     * @param  Form       $form
+     * @return Group|null
+     */
+    private function getGroupEntity(Form $form)
     {
         $mapping = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
@@ -795,6 +793,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         }
     }
 
+    /**
+     * @param  Group $group
+     * @param  Form  $form
+     * @return array
+     */
     private function progressBarInfo(Group $group, Form $form)
     {
         $data = array(
@@ -892,6 +895,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         return $data;
     }
 
+    /**
+     * @param  Group|null $group
+     * @param  array      $progressBarInfo
+     * @param  Form       $formSpecification
+     * @param  boolean    $draft
+     * @return null
+     */
     private function redirectFormComplete(Group $group = null, $progressBarInfo, Form $formSpecification, $draft = false)
     {
         if ($group && !$draft) {

@@ -19,6 +19,7 @@
 namespace FormBundle\Controller;
 
 use DateTime,
+    FormBundle\Entity\Node\Group,
     FormBundle\Entity\Node\GuestInfo,
     Zend\View\Model\ViewModel;
 
@@ -31,7 +32,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function viewAction()
     {
-        if (!($group = $this->getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return $this->notFoundAction();
         }
 
@@ -110,17 +111,14 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function getGroup()
+    /**
+     * @return Form|null
+     */
+    private function getGroupEntity()
     {
-        if (null === $this->getParam('id')) {
-            return;
-        }
+        $group = $this->getEntityById('FormBundle\Entity\Node\Group');
 
-        $group = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $group) {
+        if (!($group instanceof Group)) {
             return;
         }
 

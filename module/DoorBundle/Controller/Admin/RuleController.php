@@ -88,7 +88,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($rule = $this->getRule())) {
+        if (!($rule = $this->getRuleEntity())) {
             return new ViewModel();
         }
 
@@ -145,7 +145,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($rule = $this->getRule())) {
+        if (!($rule = $this->getRuleEntity())) {
             return new ViewModel();
         }
 
@@ -161,34 +161,16 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return Rule
+     * @return Rule|null
      */
-    private function getRule()
+    private function getRuleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $rule = $this->getEntityById('DoorBundle\Document\Rule');
+
+        if (!($rule instanceof Rule)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the rule!'
-            );
-
-            $this->redirect()->toRoute(
-                'door_admin_rule',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $rule = $this->getDocumentManager()
-            ->getRepository('DoorBundle\Document\Rule')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $rule) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No door with the given ID was found!'
+                'No rule was found!'
             );
 
             $this->redirect()->toRoute(
@@ -204,6 +186,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         return $rule;
     }
 
+    /**
+     * @return array
+     */
     private function getLogGraph()
     {
         if (null !== $this->getCache()) {
@@ -225,6 +210,9 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         return $this->getLogGraphData();
     }
 
+    /**
+     * @return array
+     */
     private function getLogGraphData()
     {
         $now = new DateTime();

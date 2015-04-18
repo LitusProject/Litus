@@ -19,11 +19,13 @@
 namespace FormBundle\Controller\Admin;
 
 use FormBundle\Component\Exception\UnsupportedTypeException,
+    FormBundle\Entity\Field,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
     FormBundle\Entity\Field\File as FileField,
     FormBundle\Entity\Field\String as StringField,
     FormBundle\Entity\Field\TimeSlot as TimeSlotField,
+    FormBundle\Entity\Node\Form,
     Zend\View\Model\ViewModel;
 
 /**
@@ -172,7 +174,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($field = $this->getField())) {
+        if (!($field = $this->getFieldEntity())) {
             return new ViewModel();
         }
 
@@ -237,7 +239,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($field = $this->getField())) {
+        if (!($field = $this->getFieldEntity())) {
             return new ViewModel();
         }
 
@@ -312,14 +314,16 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \FormBundle\Entity\Node\Form|null
+     * @return Form|null
      */
     private function getFormEntity()
     {
-        if (null === $this->getParam('id')) {
+        $form = $this->getEntityById('FormBundle\Entity\Node\Form');
+
+        if (!($form instanceof Form)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the form!'
+                'No form was found!'
             );
 
             $this->redirect()->toRoute(
@@ -332,58 +336,20 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        $formSpecification = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Form')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $formSpecification) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No form with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_admin_form',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $formSpecification;
+        return $form;
     }
 
     /**
-     * @return \FormBundle\Entity\Field|null
+     * @return Field|null
      */
-    private function getField()
+    private function getFieldEntity()
     {
-        if (null === $this->getParam('id')) {
+        $field = $this->getEntityById('FormBundle\Entity\Field');
+
+        if (!($field instanceof Field)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the field!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_admin_form',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $field = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Field')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $field) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No field with the given ID was found!'
+                'No field was found!'
             );
 
             $this->redirect()->toRoute(
