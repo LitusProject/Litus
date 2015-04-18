@@ -112,7 +112,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Form|null
+     * @return Group|null
      */
     private function getGroupEntity()
     {

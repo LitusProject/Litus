@@ -897,14 +897,14 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     /**
      * @param  Group|null $group
-     * @param  array      $progressBarInfo
+     * @param  array|null $progressBarInfo
      * @param  Form       $formSpecification
      * @param  boolean    $draft
      * @return null
      */
-    private function redirectFormComplete(Group $group = null, $progressBarInfo, Form $formSpecification, $draft = false)
+    private function redirectFormComplete(Group $group = null, $progressBarInfo = null, Form $formSpecification, $draft = false)
     {
-        if ($group && !$draft) {
+        if ($group && !$draft && isset($progressBarInfo['next_form'])) {
             if ($progressBarInfo['next_form'] == 0) {
                 $this->redirect()->toRoute(
                     'form_group',
