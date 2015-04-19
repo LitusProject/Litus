@@ -250,7 +250,7 @@ class LeaseController extends LogisticsController
     }
 
     /**
-     * @param  int       $id
+     * @param  int|null  $id
      * @return Item|null
      */
     private function getItemEntity($id = null)
