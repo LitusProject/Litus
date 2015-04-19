@@ -154,7 +154,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
     public function editAction()
     {
-        if (!($reservation = $this->getReservation())) {
+        if (!($reservation = $this->getPianoReservationEntity())) {
             return new ViewModel();
         }
 
@@ -241,7 +241,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
     {
         $this->initAjax();
 
-        if (!($reservation = $this->getReservation())) {
+        if (!($reservation = $this->getPianoReservationEntity())) {
             return new ViewModel();
         }
 
@@ -255,32 +255,17 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
         );
     }
 
-    private function getReservation()
+    /**
+     * @return PianoReservation|null
+     */
+    private function getPianoReservationEntity()
     {
-        if (null === $this->getParam('id')) {
+        $reservation = $this->getEntityById('LogisticsBundle\Entity\Reservation\PianoReservation');
+
+        if (!($reservation instanceof PianoReservation)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the reservation!'
-            );
-
-            $this->redirect()->toRoute(
-                'logistics_admin_piano_reservation',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $reservation = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $reservation) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
+                'No reservation was found!'
             );
 
             $this->redirect()->toRoute(

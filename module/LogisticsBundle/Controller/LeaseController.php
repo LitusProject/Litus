@@ -55,7 +55,7 @@ class LeaseController extends LogisticsController
 
     public function showAction()
     {
-        if (!($lease = $this->getLease())) {
+        if (!($lease = $this->getLeaseEntity())) {
             return new ViewModel();
         }
 
@@ -68,7 +68,7 @@ class LeaseController extends LogisticsController
 
     public function historyAction()
     {
-        if (!($item = $this->getItem($this->getRequest()->getQuery('searchItem')['id']))) {
+        if (!($item = $this->getItemEntity($this->getRequest()->getQuery('searchItem')['id']))) {
             return new ViewModel();
         }
 
@@ -126,6 +126,9 @@ class LeaseController extends LogisticsController
         );
     }
 
+    /**
+     * @return \CommonBundle\Component\Form\Form
+     */
     private function handleLeaseForm()
     {
         $form = $this->getForm('logistics_lease_add-lease');
@@ -173,6 +176,9 @@ class LeaseController extends LogisticsController
         return $form;
     }
 
+    /**
+     * @return \CommonBundle\Component\Form\Form
+     */
     private function handleReturnForm()
     {
         $form = $this->getForm('logistics_lease_add-return');
@@ -222,27 +228,17 @@ class LeaseController extends LogisticsController
         return $form;
     }
 
-    private function getLease()
+    /**
+     * @return Lease|null
+     */
+    private function getLeaseEntity()
     {
-        if ($this->getParam('id') === null) {
+        $lease = $this->getEntityById('LogisticsBundle\Entity\Lease\Lease');
+
+        if (!($lease instanceof Lease)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No id was given to identify the lease!'
-            );
-
-            $this->redirect()->toRoute('logistics_lease');
-
-            return;
-        }
-
-        $lease = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Lease\Lease')
-            ->find($this->getParam('id'));
-
-        if ($lease === null) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No lease with the given id was found!'
+                'No lease was found!'
             );
 
             $this->redirect()->toRoute('logistics_lease');
@@ -253,20 +249,22 @@ class LeaseController extends LogisticsController
         return $lease;
     }
 
-    private function getItem($id = null)
+    /**
+     * @param  int       $id
+     * @return Item|null
+     */
+    private function getItemEntity($id = null)
     {
-        if (null === $id) {
-            $id = $this->getParam('id');
-        }
+        $id = $id === null ? $this->getParam('id', 0) : $id;
 
         $item = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Lease\Item')
             ->findOneById($id);
 
-        if ($item === null) {
+        if (!($item instanceof Item)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No item with the given id or barcode was found!'
+                'No lease item was found!'
             );
 
             $this->redirect()->toRoute('logistics_lease');

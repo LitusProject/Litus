@@ -38,16 +38,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 
         $form = $this->getForm('logistics_piano-reservation_add');
 
-        $reservations = array();
-        if ($this->getAuthentication()->isAuthenticated()) {
-            $reservations = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
-                ->findAllByDatesAndPerson(
-                    $this->getCurrentAcademicYear()->getUniversityStartDate(),
-                    $this->getCurrentAcademicYear()->getUniversityEndDate(),
-                    $this->getAuthentication()->getPersonObject()
-                );
-        }
+        $reservations = $this->getReservations();
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -103,68 +94,10 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getConfigValue('logistics.piano_auto_confirm_immediatly');
 
                 if ((sizeof($otherReservations) == 0 && $reservation->getStartDate() > $deadline) || $autoConfirm) {
-                    $mailData = unserialize(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('logistics.piano_new_reservation_confirmed')
-                    );
                     $reservation->setConfirmed();
-                } else {
-                    $mailData = unserialize(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('logistics.piano_new_reservation')
-                    );
                 }
 
-                if (!($language = $this->getAuthentication()->getPersonObject()->getLanguage())) {
-                    $language = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Language')
-                        ->findOneByAbbrev('en');
-                }
-
-                $message = $mailData[$language->getAbbrev()]['content'];
-                $subject = $mailData[$language->getAbbrev()]['subject'];
-
-                $formatterDate = new IntlDateFormatter(
-                    $language->getAbbrev(),
-                    IntlDateFormatter::NONE,
-                    IntlDateFormatter::NONE,
-                    date_default_timezone_get(),
-                    IntlDateFormatter::GREGORIAN,
-                    'EEE d/MM/Y HH:mm'
-                );
-
-                $mail = new Message();
-                $mail->setBody(
-                        str_replace('{{ name }}', $this->getAuthentication()->getPersonObject()->getFullName(),
-                            str_replace('{{ start }}', $formatterDate->format($reservation->getStartDate()),
-                                str_replace('{{ end }}', $formatterDate->format($reservation->getEndDate()), $message)
-                            )
-                        )
-                    )
-                    ->setFrom(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('system_mail_address')
-                    )
-                    ->addTo($this->getAuthentication()->getPersonObject()->getEmail(), $this->getAuthentication()->getPersonObject()->getFullName())
-                    ->addTo(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('logistics.piano_mail_to')
-                    )
-                    ->addBcc(
-                        $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('system_administrator_mail'),
-                        'System Administrator'
-                    )
-                    ->setSubject($subject);
-
-                if ('development' != getenv('APPLICATION_ENV')) {
-                    $this->getMailTransport()->send($mail);
-                }
+                $this->sendMail($reservation);
 
                 $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();
@@ -191,6 +124,93 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                 'reservations' => $reservations,
             )
         );
+    }
+
+    /**
+     * @return array
+     */
+    private function getReservations()
+    {
+        if ($this->getAuthentication()->isAuthenticated()) {
+            return $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
+                ->findAllByDatesAndPerson(
+                    $this->getCurrentAcademicYear()->getUniversityStartDate(),
+                    $this->getCurrentAcademicYear()->getUniversityEndDate(),
+                    $this->getAuthentication()->getPersonObject()
+                );
+        }
+
+        return array();
+    }
+
+    /**
+     * @param PianoReservation $reservation
+     */
+    private function sendMail(PianoReservation $reservation)
+    {
+        if ($reservation->isConfirmed()) {
+            $mailData = unserialize(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('logistics.piano_new_reservation_confirmed')
+            );
+        } else {
+            $mailData = unserialize(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('logistics.piano_new_reservation')
+            );
+        }
+
+        if (!($language = $this->getAuthentication()->getPersonObject()->getLanguage())) {
+            $language = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+        }
+
+        $message = $mailData[$language->getAbbrev()]['content'];
+        $subject = $mailData[$language->getAbbrev()]['subject'];
+
+        $formatterDate = new IntlDateFormatter(
+            $language->getAbbrev(),
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::NONE,
+            date_default_timezone_get(),
+            IntlDateFormatter::GREGORIAN,
+            'EEE d/MM/Y HH:mm'
+        );
+
+        $mail = new Message();
+        $mail->setBody(
+                str_replace('{{ name }}', $this->getAuthentication()->getPersonObject()->getFullName(),
+                    str_replace('{{ start }}', $formatterDate->format($reservation->getStartDate()),
+                        str_replace('{{ end }}', $formatterDate->format($reservation->getEndDate()), $message)
+                    )
+                )
+            )
+            ->setFrom(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('system_mail_address')
+            )
+            ->addTo($this->getAuthentication()->getPersonObject()->getEmail(), $this->getAuthentication()->getPersonObject()->getFullName())
+            ->addTo(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('logistics.piano_mail_to')
+            )
+            ->addBcc(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('system_administrator_mail'),
+                'System Administrator'
+            )
+            ->setSubject($subject);
+
+        if ('development' != getenv('APPLICATION_ENV')) {
+            $this->getMailTransport()->send($mail);
+        }
     }
 
     /**

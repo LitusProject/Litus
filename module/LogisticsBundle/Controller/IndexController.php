@@ -137,7 +137,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        if (!($reservation = $this->getReservation())) {
+        if (!($reservation = $this->getVanReservationEntity())) {
             return $this->notFoundAction();
         }
 
@@ -214,7 +214,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        if (!($reservation = $this->getReservation())) {
+        if (!($reservation = $this->getVanReservationEntity())) {
             return $this->notFoundAction();
         }
 
@@ -230,7 +230,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
     public function moveAction()
     {
-        if (!($reservation = $this->getReservation())) {
+        if (!($reservation = $this->getVanReservationEntity())) {
             return $this->notFoundAction();
         }
 
@@ -328,6 +328,9 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         );
     }
 
+    /**
+     * @return array
+     */
     private function getReservations()
     {
         if (null === $this->getParam('start') || null === $this->getParam('end')) {
@@ -352,19 +355,13 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     }
 
     /**
-     * @return VanReservation
+     * @return VanReservation|null
      */
-    private function getReservation()
+    private function getVanReservationEntity()
     {
-        if (null === $this->getParam('id')) {
-            return;
-        }
+        $reservation = $this->getEntityById('LogisticsBundle\Entity\Reservation\VanReservation');
 
-        $reservation = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
-            ->findOneById($this->getParam('id'));
-
-        if (null == $reservation) {
+        if (!($reservation instanceof VanReservation)) {
             return;
         }
 
