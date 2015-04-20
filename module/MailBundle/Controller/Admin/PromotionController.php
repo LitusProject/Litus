@@ -18,10 +18,6 @@
 
 namespace MailBundle\Controller\Admin;
 
-
-
-
-
 use Zend\Mail\Message,
     Zend\Mime\Message as MimeMessage,
     Zend\Mime\Mime,
@@ -194,6 +190,8 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                     $mail->addBcc($bcc);
                 }
                 $i = 0;
+                $uniqueAddresses = array_unique($addresses);
+
                 if ($formData['test']) {
                     $body = '<br/>This email would have been sent to:<br/>';
                     foreach ($addresses as $address) {
@@ -203,7 +201,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                     $part->type = Mime::TYPE_HTML;
                     $message->addPart($part);
                 } else {
-                    foreach ($addresses as $address) {
+                    foreach ($uniqueAddresses as $address) {
                         $i++;
                         $mail->addBcc($address);
 

@@ -18,12 +18,6 @@
 
 namespace CalendarBundle\Entity\Node;
 
-
-
-
-
-
-
 use CommonBundle\Component\Util\Url as UrlUtil,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -76,6 +70,13 @@ class Event extends \CommonBundle\Entity\Node
     private $name;
 
     /**
+     * @var boolean The flag whether the article is old or not
+     *
+     * @ORM\Column(name="is_history", type="boolean")
+     */
+    private $isHistory;
+
+    /**
      * @param Person $person
      */
     public function __construct(Person $person)
@@ -83,6 +84,7 @@ class Event extends \CommonBundle\Entity\Node
         parent::__construct($person);
 
         $this->translations = new ArrayCollection();
+        $this->isHistory = false;
     }
 
     /**
@@ -263,6 +265,26 @@ class Event extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation();
         $this->name = $this->getStartDate()->format('d_m_Y_H_i_s') . '_' . UrlUtil::createSlug($translation->getTitle());
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isHistory()
+    {
+        return $this->isHistory;
+    }
+
+    /**
+     * @param boolean $isHistory
+     *
+     * @return self
+     */
+    public function setIsHistory($isHistory)
+    {
+        $this->isHistory = $isHistory;
 
         return $this;
     }
