@@ -179,7 +179,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
      */
     private function getUniversityStatus()
     {
-        $type = $this->getParam('group', '');
+        $status = $this->getParam('group', '');
 
         if (!array_key_exists($status, UniversityStatus::$possibleStatuses)) {
             $this->flashMessenger()->error(
@@ -197,7 +197,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
             return;
         }
 
-        return $type;
+        return $status;
     }
 
     /**
@@ -205,7 +205,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
      */
     private function getOrganizationStatus()
     {
-        $type = $this->getParam('group', '');
+        $status = $this->getParam('group', '');
 
         if (!array_key_exists($status, OrganizationStatus::$possibleStatuses)) {
             $this->flashMessenger()->error(
@@ -223,6 +223,6 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
             return;
         }
 
-        return $type;
+        return $status;
     }
 }

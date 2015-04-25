@@ -178,7 +178,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
      * @param  Person       $person
      * @param  AcademicYear $academicYear
      * @param  int          $semester
-     * @return string
+     * @return string|null
      */
     private function getSubjects(Person $person, AcademicYear $academicYear, $semester)
     {
@@ -194,7 +194,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         }
 
         if (empty($subjects)) {
-            return;
+            return null;
         }
 
         $text = '';

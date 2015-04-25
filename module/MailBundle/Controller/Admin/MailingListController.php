@@ -18,7 +18,8 @@
 
 namespace MailBundle\Controller\Admin;
 
-use MailBundle\Entity\MailingList,
+use CommonBundle\Entity\User\Person\Academic,
+    MailBundle\Entity\MailingList,
     MailBundle\Entity\MailingList\AdminMap as ListAdmin,
     MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole,
     MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry,
@@ -377,7 +378,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($adminRole = $this->getAdminRole())) {
+        if (!($adminRole = $this->getAdminRoleMapEntity())) {
             return new ViewModel();
         }
 
@@ -547,6 +548,10 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     private function checkAccess(MailingList $list, $adminEdit)
     {
         $person = $this->getAuthentication()->getPersonObject();
+
+        if (!($person instanceof Academic)) {
+            return false;
+        }
 
         if (!$list->canBeEditedBy($person, $adminEdit)) {
             $this->flashMessenger()->error(

@@ -88,9 +88,9 @@ abstract class MailingList
     /**
      * This method checks whether the list can be edited by the given academic.
      *
-     * @param  Academic     $academic  The academic that should be checked
-     * @param  boolean      $editAdmin Whether or not to check for permission to edit the admins of the list
-     * @return boolean|null
+     * @param  Academic $academic  The academic that should be checked
+     * @param  boolean  $editAdmin Whether or not to check for permission to edit the admins of the list
+     * @return boolean
      */
     public function canBeEditedBy(Academic $academic, $editAdmin = false)
     {
@@ -119,5 +119,7 @@ abstract class MailingList
                 return true;
             }
         }
+
+        return false;
     }
 }
