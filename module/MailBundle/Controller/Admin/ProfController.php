@@ -153,6 +153,10 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @param string $subject
+     * @param string $message
+     */
     private function saveConfig($subject, $message)
     {
         $config = $this->getEntityManager()
@@ -170,6 +174,12 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * @param  Person       $person
+     * @param  AcademicYear $academicYear
+     * @param  int          $semester
+     * @return string
+     */
     private function getSubjects(Person $person, AcademicYear $academicYear, $semester)
     {
         $allSubjects = $this->getEntityManager()

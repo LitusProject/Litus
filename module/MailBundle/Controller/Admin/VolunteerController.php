@@ -94,6 +94,11 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
         );
     }
 
+    /**
+     * @param  string       $minRank
+     * @param  AcademicYear $academicYear
+     * @return array
+     */
     private function getVolunteers($minRank, AcademicYear $academicYear)
     {
         $rankingCriteria = unserialize(

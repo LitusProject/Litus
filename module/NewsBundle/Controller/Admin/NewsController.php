@@ -18,7 +18,8 @@
 
 namespace NewsBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use NewsBundle\Entity\Node\News,
+    Zend\View\Model\ViewModel;
 
 /**
  * NewsController
@@ -86,7 +87,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($news = $this->getNews())) {
+        if (!($news = $this->getNewsEntity())) {
             return new ViewModel();
         }
 
@@ -126,12 +127,11 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($news = $this->getNews())) {
+        if (!($news = $this->getNewsEntity())) {
             return new ViewModel();
         }
 
         $this->getEntityManager()->remove($news);
-
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -143,32 +143,17 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function getNews()
+    /**
+     * @return News|null
+     */
+    private function getNewsEntity()
     {
-        if (null === $this->getParam('id')) {
+        $news = $this->getEntityById('NewsBundle\Entity\Node\News');
+
+        if (!($news instanceof News)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the news item!'
-            );
-
-            $this->redirect()->toRoute(
-                'news_admin_news',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $news = $this->getEntityManager()
-            ->getRepository('NewsBundle\Entity\Node\News')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $news) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No news item with the given ID was found!'
+                'No news was found!'
             );
 
             $this->redirect()->toRoute(

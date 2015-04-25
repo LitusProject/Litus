@@ -18,7 +18,8 @@
 
 namespace NotificationBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use NotificationBundle\Entity\Node\Notification,
+    Zend\View\Model\ViewModel;
 
 /**
  * NotificationController
@@ -85,7 +86,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        if (!($notification = $this->getNotification())) {
+        if (!($notification = $this->getNotificationEntity())) {
             return new ViewModel();
         }
 
@@ -125,7 +126,7 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        if (!($notification = $this->getNotification())) {
+        if (!($notification = $this->getNotificationEntity())) {
             return new ViewModel();
         }
 
@@ -142,32 +143,17 @@ class NotificationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    private function getNotification()
+    /**
+     * @return Notification|null
+     */
+    private function getNotificationEntity()
     {
-        if (null === $this->getParam('id')) {
+        $notification = $this->getEntityById('NotificationBundle\Entity\Node\Notification');
+
+        if (!($notification instanceof Notification)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the notification!'
-            );
-
-            $this->redirect()->toRoute(
-                'notification_admin_notification',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $notification = $this->getEntityManager()
-            ->getRepository('NotificationBundle\Entity\Node\Notification')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $notification) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No notification with the given ID was found!'
+                'No notification was found!'
             );
 
             $this->redirect()->toRoute(

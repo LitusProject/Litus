@@ -189,6 +189,12 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
         );
     }
 
+    /**
+     * @param  array $studyIds
+     * @param  array $groupIds
+     * @param  array $bcc
+     * @return array
+     */
     private function getAddresses($studyIds, $groupIds, $bcc)
     {
         $studyEnrollments = $this->getStudyEnrollments($studyIds);
@@ -219,6 +225,10 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
         return $addresses;
     }
 
+    /**
+     * @param  array $studyIds
+     * @return array
+     */
     private function getStudyEnrollments($studyIds)
     {
         if (empty($studyIds)) {
@@ -250,6 +260,10 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
         return $enrollments;
     }
 
+    /**
+     * @param  array $groupIds
+     * @return array
+     */
     private function getGroupEnrollments($groupIds)
     {
         if (empty($groupIds)) {
