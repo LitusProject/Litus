@@ -91,7 +91,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function expireAction()
     {
-        if (!($code = $this->getCode())) {
+        if (!($code = $this->getReservationCodeEntity())) {
             return new ViewModel();
         }
 
@@ -143,7 +143,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($code = $this->getCode())) {
+        if (!($code = $this->getReservationCodeEntity())) {
             return new ViewModel();
         }
 
@@ -163,36 +163,21 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function getCode()
+    /**
+     * @return ReservationCode|null
+     */
+    private function getReservationCodeEntity()
     {
-        if (null === $this->getParam('id')) {
+        $code = $this->getEntityById('PromBundle\Entity\Bus\ReservationCode');
+
+        if (!($code instanceof ReservationCode)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the code!'
+                'No code was found!'
             );
 
             $this->redirect()->toRoute(
                 'prom_admin_code',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $code = $this->getEntityManager()
-            ->getRepository('PromBundle\Entity\Bus\ReservationCode')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $code) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No code with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'prom_admin_bus',
                 array(
                     'action' => 'manage',
                 )

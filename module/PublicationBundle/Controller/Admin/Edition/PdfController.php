@@ -33,7 +33,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function manageAction()
     {
-        if (!($publication = $this->getPublication())) {
+        if (!($publication = $this->getPublicationEntity())) {
             return new ViewModel();
         }
 
@@ -55,7 +55,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
     public function addAction()
     {
-        if (!($publication = $this->getPublication())) {
+        if (!($publication = $this->getPublicationEntity())) {
             return new ViewModel();
         }
 
@@ -81,7 +81,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
     public function uploadAction()
     {
-        if (!($publication = $this->getPublication())) {
+        if (!($publication = $this->getPublicationEntity())) {
             return new ViewModel();
         }
 
@@ -150,7 +150,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($edition = $this->getEdition())) {
+        if (!($edition = $this->getEditionEntity())) {
             return new ViewModel();
         }
 
@@ -174,7 +174,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
     public function viewAction()
     {
-        if (!($edition = $this->getEdition())) {
+        if (!($edition = $this->getEditionEntity())) {
             return new ViewModel();
         }
 
@@ -202,34 +202,16 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
     }
 
     /**
-     * @return resource
+     * @return PdfEdition|null
      */
-    private function getEdition()
+    private function getPdfEditionEntity()
     {
-        if (null === $this->getParam('id')) {
+        $edition = $this->getEntityById('PublicationBundle\Entity\Edition\Pdf');
+
+        if (!($edition instanceof PdfEdition)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the edition!'
-            );
-
-            $this->redirect()->toRoute(
-                'publication_admin_publication',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $edition = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Edition\Pdf')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $edition) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No edition with the given ID was found!'
+                'No edition was found!'
             );
 
             $this->redirect()->toRoute(
@@ -244,32 +226,20 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
         return $edition;
     }
-    private function getPublication()
+
+    /**
+     * @return Publication|null
+     */
+    private function getPublicationEntity()
     {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the publication!'
-            );
-
-            $this->redirect()->toRoute(
-                'publication_admin_publication',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
         $publication = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\Publication')
             ->findOneActiveById($this->getParam('id'));
 
-        if (null === $publication) {
+        if (!($publication instanceof Publication)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No publication with the given ID was found!'
+                'No publication was found!'
             );
 
             $this->redirect()->toRoute(

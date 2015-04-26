@@ -18,7 +18,8 @@
 
 namespace PageBundle\Controller;
 
-use Zend\View\Model\ViewModel;
+use PageBundle\Entity\Link,
+    Zend\View\Model\ViewModel;
 
 /**
  * LinkController
@@ -30,7 +31,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        if (!($link = $this->getLink())) {
+        if (!($link = $this->getLinkEntity())) {
             return $this->notFoundAction();
         }
 
@@ -39,17 +40,14 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
-    private function getLink()
+    /**
+     * @return Link|null
+     */
+    private function getLinkEntity()
     {
-        if (null === $this->getParam('id')) {
-            return;
-        }
+        $link = $this->getEntityById('PageBundle\Entity\Link');
 
-        $link = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Link')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $link) {
+        if (!($link instanceof Link)) {
             return;
         }
 

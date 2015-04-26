@@ -18,7 +18,9 @@
 
 namespace PublicationBundle\Controller\Archive;
 
-use Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear,
+    PublicationBundle\Entity\Publication,
+    Zend\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -91,32 +93,17 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function getPublication()
+    /**
+     * @return Publication|null
+     */
+    private function getPublicationEntity()
     {
-        if (null === $this->getParam('publication')) {
+        $publication = $this->getEntityById('PublicationBundle\Entity\Publication');
+
+        if (!($publication instanceof Publication)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the publication!'
-            );
-
-            $this->redirect()->toRoute(
-                'publication_archive',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        $publication = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Publication')
-            ->findOneById($this->getParam('publication'));
-
-        if (null === $publication) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No publication with the given ID was found!'
+                'No publication was found!'
             );
 
             $this->redirect()->toRoute(
@@ -132,32 +119,17 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
         return $publication;
     }
 
-    private function getYear()
+    /**
+     * @return AcademicYear|null
+     */
+    private function getAcademicYearEntity()
     {
-        if (null === $this->getParam('year')) {
+        $year = $this->getEntityById('CommonBundle\Entity\General\AcademicYear', 'year');
+
+        if (!($year instanceof AcademicYear)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the year!'
-            );
-
-            $this->redirect()->toRoute(
-                'publication_archive',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        $year = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneById($this->getParam('year'));
-
-        if (null === $year) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No year with the given ID was found!'
+                'No year was found!'
             );
 
             $this->redirect()->toRoute(

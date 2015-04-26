@@ -107,7 +107,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($page = $this->getPage())) {
+        if (!($page = $this->getPageEntity())) {
             return new ViewModel();
         }
 
@@ -160,7 +160,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($page = $this->getPage())) {
+        if (!($page = $this->getPageEntity())) {
             return new ViewModel();
         }
 
@@ -256,6 +256,9 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @return array|null
+     */
     private function search()
     {
         switch ($this->getParam('field')) {
@@ -266,48 +269,17 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         }
     }
 
-    private function getPage()
+    /**
+     * @return Page|null
+     */
+    private function getPageEntity()
     {
-        if (null === $this->getParam('id')) {
+        $page = $this->getEntityById('PageBundle\Entity\Node\Page');
+
+        if (!($page instanceof Page) || !$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the page!'
-            );
-
-            $this->redirect()->toRoute(
-                'page_admin_page',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $page = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Node\Page')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $page) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No page with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'page_admin_page',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->error(
-                'Error',
-                'You do not have the permissions to modify this page!'
+                'No page was found!'
             );
 
             $this->redirect()->toRoute(

@@ -92,7 +92,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
 
     public function deleteAction()
     {
-        if (!($bus = $this->getBus())) {
+        if (!($bus = $this->getBusEntity())) {
             return new ViewModel();
         }
 
@@ -159,7 +159,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
 
     public function viewAction()
     {
-        if (!($bus = $this->getBus())) {
+        if (!($bus = $this->getBusEntity())) {
             return new ViewModel();
         }
 
@@ -172,32 +172,17 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
-    private function getBus()
+    /**
+     * @return Bus|null
+     */
+    private function getBusEntity()
     {
-        if (null === $this->getParam('id')) {
+        $bus = $this->getEntityById('PromBundle\Entity\Bus');
+
+        if (!($bus instanceof Bus)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the bus!'
-            );
-
-            $this->redirect()->toRoute(
-                'prom_admin_bus',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $bus = $this->getEntityManager()
-            ->getRepository('PromBundle\Entity\Bus')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $bus) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No bus with the given ID was found!'
+                'No bus was found!'
             );
 
             $this->redirect()->toRoute(

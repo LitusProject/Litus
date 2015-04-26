@@ -20,6 +20,7 @@ namespace PromBundle\Controller\Registration;
 use PromBundle\Entity\Bus\Passenger,
     Zend\Mail\Message,
     Zend\View\Model\ViewModel;
+
 /**
  * IndexController
  *
@@ -146,6 +147,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
             )
         );
     }
+
     public function createAction()
     {
         $addForm = $this->getForm('prom_registration_add');
@@ -179,7 +181,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                         ->findOneByEmail($formData['email']);
 
                     if (!isset($passenger)) {
-                        $newPassenger = new Passenger($formData['first_name'], $formData['last_name'], $formData['email'], $code,$firstBus,$secondBus);
+                        $newPassenger = new Passenger($formData['first_name'], $formData['last_name'], $formData['email'], $code, $firstBus, $secondBus);
 
                         $this->getEntityManager()->persist($newPassenger);
                         $code->setUsed();
@@ -196,7 +198,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                                     ->getConfigValue('prom.confirmation_mail')
                             );
 
-                            $mail->setBody(str_replace('{{ busTime }}', $firstBus->getDepartureTime()->format('d/m/Y H:i'),$mailData['body']))
+                            $mail->setBody(str_replace('{{ busTime }}', $firstBus->getDepartureTime()->format('d/m/Y H:i'), $mailData['body']))
                                 ->setFrom($mailData['from'])
                                 ->addBcc($mailData['from'])
                                 ->setSubject($mailData['subject']);
@@ -217,7 +219,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                                     ->getConfigValue('prom.confirmation_mail')
                             );
 
-                            $mail->setBody(str_replace('{{ busTime }}', $secondBus->getDepartureTime()->format('d/m/Y H:i'),$mailData['body']))
+                            $mail->setBody(str_replace('{{ busTime }}', $secondBus->getDepartureTime()->format('d/m/Y H:i'), $mailData['body']))
                                 ->setFrom($mailData['from'])
                                 ->addBcc($mailData['from'])
                                 ->setSubject($mailData['subject']);
@@ -263,7 +265,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
     {
         $editForm = $this->getForm('prom_registration_edit',
             array('passenger' => 'test')
-            );
+        );
 
         $code = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus\ReservationCode')

@@ -18,7 +18,8 @@
 
 namespace PublicationBundle\Controller\Edition;
 
-use Zend\View\Model\ViewModel;
+use PublicationBundle\Entity\Edition\Html as HtmlEdition,
+    Zend\View\Model\ViewModel;
 
 /**
  * HtmlController
@@ -42,38 +43,23 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function getEdition()
+    /**
+     * @return HtmlEdition|null
+     */
+    private function getHtmlEditionEntity()
     {
-        if (null === $this->getParam('id')) {
+        $edition = $this->getEntityById('PublicationBundle\Entity\Edition\Html');
+
+        if (!($edition instanceof HtmlEdition)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the edition!'
+                'No edition was found!'
             );
 
             $this->redirect()->toRoute(
                 'publication_archive',
                 array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        $edition = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Edition\Html')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $edition) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No edition with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'publication_archive',
-                array(
-                    'action' => 'overview',
+                    'action' => 'manage',
                 )
             );
 

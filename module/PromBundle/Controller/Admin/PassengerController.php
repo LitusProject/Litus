@@ -18,7 +18,8 @@
 
 namespace PromBundle\Controller\Admin;
 
-use Zend\Mail\Message,
+use PromBundle\Entity\Bus\Passenger,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -47,7 +48,7 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
 
     public function deleteAction()
     {
-        if (!($passenger = $this->getPassenger())) {
+        if (!($passenger = $this->getPassengerEntity())) {
             return new ViewModel();
         }
 
@@ -66,7 +67,7 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
 
     public function removeBusAction()
     {
-        if (!($passenger = $this->getPassenger())) {
+        if (!($passenger = $this->getPassengerEntity())) {
             return new ViewModel();
         }
 
@@ -101,32 +102,17 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
         return new ViewModel();
     }
 
-    private function getPassenger()
+    /**
+     * @return Passenger|null
+     */
+    private function getPassengerEntity()
     {
-        if (null === $this->getParam('id')) {
+        $passenger = $this->getEntityById('PromBundle\Entity\Bus\Passenger');
+
+        if (!($passenger instanceof Passenger)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the passenger!'
-            );
-
-            $this->redirect()->toRoute(
-                'prom_admin_passenger',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $passenger = $this->getEntityManager()
-            ->getRepository('PromBundle\Entity\Bus\Passenger')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $passenger) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No passenger with the given ID was found!'
+                'No passenger was found!'
             );
 
             $this->redirect()->toRoute(

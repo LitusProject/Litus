@@ -492,6 +492,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel();
     }
 
+    /**
+     * @return Doctrine\ORM\Query
+     */
     private function search()
     {
         switch ($this->getParam('field')) {
