@@ -257,7 +257,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return array|null
+     * @return array
      */
     private function search()
     {
@@ -267,6 +267,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('PageBundle\Entity\Node\Page')
                     ->findAllByTitle($this->getParam('string'));
         }
+
+        return array();
     }
 
     /**

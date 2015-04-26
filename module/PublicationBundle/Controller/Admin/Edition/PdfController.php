@@ -150,7 +150,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($edition = $this->getEditionEntity())) {
+        if (!($edition = $this->getPdfEditionEntity())) {
             return new ViewModel();
         }
 
@@ -174,7 +174,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
     public function viewAction()
     {
-        if (!($edition = $this->getEditionEntity())) {
+        if (!($edition = $this->getPdfEditionEntity())) {
             return new ViewModel();
         }
 

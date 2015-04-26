@@ -71,7 +71,8 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
             return new ViewModel();
         }
 
-        $passenger->setBus(null);
+        $passenger->setFirstBus(null);
+        $passenger->setSecondBus(null);
 
         $mailData = unserialize(
             $this->getEntityManager()

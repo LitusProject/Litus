@@ -44,7 +44,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
 
     public function yearAction()
     {
-        if (!($publication = $this->getPublication())) {
+        if (!($publication = $this->getPublicationEntity())) {
             return new ViewModel();
         }
 
@@ -62,11 +62,11 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
-        if (!($publication = $this->getPublication())) {
+        if (!($publication = $this->getPublicationEntity())) {
             return new ViewModel();
         }
 
-        if (!($year = $this->getYear())) {
+        if (!($year = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 

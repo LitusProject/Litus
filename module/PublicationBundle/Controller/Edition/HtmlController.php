@@ -30,9 +30,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        $edition = $this->getEdition();
-
-        if (!$edition) {
+        if (!($edition = $this->getHtmlEditionEntity())) {
             return new ViewModel();
         }
 
