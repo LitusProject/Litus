@@ -127,6 +127,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         }
     }
 
+    /**
+     * @return null
+     */
     private function logVisit()
     {
         $saveVisit = $this->getEntityManager()
@@ -151,6 +154,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         }
     }
 
+    /**
+     * @return null
+     */
     private function initAcademicYear()
     {
         $this->getServiceLocator()
@@ -158,7 +164,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @return CommonBundle\Entity\General\AcademicYear
      */
     protected function findCurrentAcademicYear()
     {
@@ -175,7 +181,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * Initializes our custom controller plugins.
      *
-     * @return void
+     * @return null
      */
     private function initControllerPlugins()
     {

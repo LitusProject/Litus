@@ -147,6 +147,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         );
     }
 
+    /**
+     * @return null
+     */
     private function logVisit()
     {
         $saveVisit = $this->getEntityManager()
@@ -256,6 +259,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         );
     }
 
+    /**
+     * @return null
+     */
     private function initAuthenticationService()
     {
         $this->getServiceLocator()->get('authentication_service')

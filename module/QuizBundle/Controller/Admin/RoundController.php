@@ -18,7 +18,8 @@
 
 namespace QuizBundle\Controller\Admin;
 
-use QuizBundle\Entity\Round,
+use QuizBundle\Entity\Quiz,
+    QuizBundle\Entity\Round,
     Zend\View\Model\ViewModel;
 
 /**
@@ -32,7 +33,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($quiz = $this->getQuiz())) {
+        if (!($quiz = $this->getQuizEntity())) {
             return new ViewModel();
         }
 
@@ -58,7 +59,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($quiz = $this->getQuiz())) {
+        if (!($quiz = $this->getQuizEntity())) {
             return new ViewModel();
         }
 
@@ -109,7 +110,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($round = $this->getRound())) {
+        if (!($round = $this->getRoundEntity())) {
             return new ViewModel();
         }
 
@@ -148,7 +149,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($round = $this->getRound())) {
+        if (!($round = $this->getRoundEntity())) {
             return new ViewModel();
         }
 
@@ -168,7 +169,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     public function sortAction()
     {
         $this->initAjax();
-        if (!($quiz = $this->getQuiz())) {
+        if (!($quiz = $this->getQuizEntity())) {
             return new ViewModel();
         }
 
@@ -197,50 +198,16 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return null|\QuizBundle\Entity\Quiz
+     * @return Quiz|null
      */
-    private function getQuiz()
+    private function getQuizEntity()
     {
-        if ($this->getParam('quizid') === null) {
+        $quiz = $this->getEntityById('QuizBundle\Entity\Quiz', 'quizid');
+
+        if (!($quiz instanceof Quiz) || !$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
                 'Error',
-                'No id was given to identify the quiz!'
-            );
-
-            $this->redirect()->toRoute(
-                'quiz_admin_quiz',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $quiz = $this->getEntityManager()
-            ->getRepository('QuizBundle\Entity\Quiz')
-            ->findOneById($this->getParam('quizid'));
-
-        if ($quiz === null) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No quiz with the given id was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'quiz_admin_quiz',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->error(
-                'Error',
-                'You do not have the permissions to modify this quiz!'
+                'No quiz was found!'
             );
 
             $this->redirect()->toRoute(
@@ -257,52 +224,16 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return null|Round
+     * @return Round|null
      */
-    private function getRound()
+    private function getRoundEntity()
     {
-        if ($this->getParam('id') === null) {
+        $round = $this->getEntityById('QuizBundle\Entity\Round');
+
+        if (!($round instanceof Round) || !$round->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
                 'Error',
-                'No id was given to identify the round!'
-            );
-
-            $this->redirect()->toRoute(
-                'quiz_admin_round',
-                array(
-                    'action' => 'manage',
-                    'quizid' => $this->getParam('quizid'),
-                )
-            );
-
-            return;
-        }
-
-        $round = $this->getEntityManager()
-            ->getRepository('QuizBundle\Entity\Round')
-            ->findOneById($this->getParam('id'));
-
-        if ($round === null) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No round with the given id was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'quiz_admin_round',
-                array(
-                    'action' => 'manage',
-                    'quizid' => $this->getParam('quizid'),
-                )
-            );
-
-            return;
-        }
-
-        if (!$round->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->error(
-                'Error',
-                'You do not have the permissions to modify this quiz!'
+                'No round was found!'
             );
 
             $this->redirect()->toRoute(

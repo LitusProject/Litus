@@ -683,11 +683,17 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         );
     }
 
+    /**
+     * @return CommonBundle\Entity\User\Person|null
+     */
     private function getAcademic()
     {
         return $this->getAuthentication()->getPersonObject();
     }
 
+    /**
+     * @return boolean
+     */
     private function isValidCode()
     {
         $code = $this->getEntityManager()
@@ -701,6 +707,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         return false;
     }
 
+    /**
+     * @return string
+     */
     private function getRegisterhibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()
@@ -729,6 +738,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         return $shibbolethUrl . '?source=register';
     }
 
+    /**
+     * @return null
+     */
     private function authenticate()
     {
         $authentication = new Authentication(

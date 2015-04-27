@@ -49,6 +49,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         return $result;
     }
 
+    /**
+     * @return CommonBundle\Entity\General\AcademicYear|null
+     */
     protected function findCurrentAcademicYear()
     {
         return $this->getCurrentAcademicYear(true);

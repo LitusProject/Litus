@@ -20,6 +20,7 @@ namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
+    SecretaryBundle\Entity\Promotion,
     SecretaryBundle\Entity\Promotion\Academic,
     SecretaryBundle\Entity\Promotion\External,
     Zend\View\Model\ViewModel;
@@ -37,7 +38,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (!($academicYear = $this->getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -73,7 +74,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -109,7 +110,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (!($academicYear = $this->getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -216,7 +217,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($promotion = $this->getPromotion())) {
+        if (!($promotion = $this->getPromotionEntity())) {
             return new ViewModel();
         }
 
@@ -232,7 +233,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     public function updateAction()
     {
-        if (!($academicYear = $this->getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -286,6 +287,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         return new ViewModel();
     }
 
+    /**
+     * @return array
+     */
     private function search(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
@@ -298,9 +302,14 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
                     ->getRepository('SecretaryBundle\Entity\Promotion')
                     ->findAllByEMail($this->getParam('string'), $academicYear);
         }
+
+        return array();
     }
 
-    protected function getAcademicYear()
+    /**
+     * @return CommonBundle\Entity\General\AcademicYear|null
+     */
+    private function getAcademicYearEntity()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {
@@ -327,32 +336,17 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         return $academicYear;
     }
 
-    private function getPromotion()
+    /**
+     * @return Promotion|null
+     */
+    private function getPromotionEntity()
     {
-        if (null === $this->getParam('id')) {
+        $promotion = $this->getEntityById('SecretaryBundle\Entity\Promotion');
+
+        if (!($promotion instanceof Promotion)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the promotion!'
-            );
-
-            $this->redirect()->toRoute(
-                'secretary_admin_promotion',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $promotion = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Promotion')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $promotion) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No promotion with the given ID was found!'
+                'No promotion was found!'
             );
 
             $this->redirect()->toRoute(

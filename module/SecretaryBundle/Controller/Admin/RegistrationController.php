@@ -40,7 +40,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 {
     public function manageAction()
     {
-        $academicYear = $this->getAcademicYear();
+        if (!($academicYear = $this->getAcademicYearEntity())) {
+            return new ViewModel();
+        }
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -75,7 +77,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function barcodeAction()
     {
-        if (!($registration = $this->getRegistration())) {
+        if (!($registration = $this->getRegistrationEntity())) {
             return new ViewModel();
         }
 
@@ -147,7 +149,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function addAction()
     {
-        $academicYear = $this->getAcademicYear();
+        if (!($academicYear = $this->getAcademicYearEntity())) {
+            return new ViewModel();
+        }
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -264,7 +268,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function editAction()
     {
-        if (!($registration = $this->getRegistration())) {
+        if (!($registration = $this->getRegistrationEntity())) {
             return new ViewModel();
         }
 
@@ -372,7 +376,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        if (!($registration = $this->getRegistration())) {
+        if (!($registration = $this->getRegistrationEntity())) {
             return new ViewModel();
         }
 
@@ -405,8 +409,13 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function searchAction()
     {
-        $academicYear = $this->getAcademicYear();
-        $organization = $this->getOrganization();
+        if (!($academicYear = $this->getAcademicYearEntity())) {
+            return new ViewModel();
+        }
+
+        if (!($organization = $this->getOrganizationEntity())) {
+            return new ViewModel();
+        }
 
         $this->initAjax();
 
@@ -473,7 +482,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    private function getAcademicYear()
+    /**
+     * @return CommonBundle\Entity\General\AcademicYear|null
+     */
+    private function getAcademicYearEntity()
     {
         if (null === $this->getParam('academicyear')) {
             return $this->getCurrentAcademicYear();
@@ -505,32 +517,17 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         return $academicYear;
     }
 
-    private function getRegistration()
+    /**
+     * @return Registration|null
+     */
+    private function getRegistrationEntity()
     {
-        if (null === $this->getParam('id')) {
+        $registration = $this->getEntityById('SecretaryBundle\Entity\Registration');
+
+        if (!($registration instanceof Registration)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the registration!'
-            );
-
-            $this->redirect()->toRoute(
-                'secretary_admin_registration',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $registration = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Registration')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $registration) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No registration with the given ID was found!'
+                'No registration was found!'
             );
 
             $this->redirect()->toRoute(
@@ -546,19 +543,21 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         return $registration;
     }
 
+    /**
+     * @return CommonBundle\Entity\General\Organization|null
+     */
     private function getOrganization()
     {
-        if (null === $this->getParam('organization')) {
-            return;
-        }
-
         $organization = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization')
-            ->findOneById($this->getParam('organization'));
+            ->findOneById($this->getParam('organization', 0));
 
         return $organization;
     }
 
+    /**
+     * @param Registration $registration
+     */
     private function cancelRegistration(Registration $registration)
     {
         $academic = $registration->getAcademic();
@@ -592,6 +591,12 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         RegistrationArticles::cancel($this->getEntityManager(), $academic, $registration->getAcademicYear());
     }
 
+    /**
+     * @param  string                                $type
+     * @param  Person                                $person
+     * @param  int                                   $barcode
+     * @return CommonBundle\Entity\User\Barcode|null
+     */
     private function createBarcode($type, Person $person, $barcode)
     {
         switch ($type) {

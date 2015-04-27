@@ -93,7 +93,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($quiz = $this->getQuiz())) {
+        if (!($quiz = $this->getQuizEntity())) {
             return new ViewModel();
         }
 
@@ -131,7 +131,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($quiz = $this->getQuiz())) {
+        if (!($quiz = $this->getQuizEntity())) {
             return new ViewModel();
         }
 
@@ -149,50 +149,16 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return null|Quiz
+     * @return Quiz|null
      */
-    private function getQuiz()
+    private function getQuizEntity()
     {
-        if ($this->getParam('id') === null) {
+        $quiz = $this->getEntityById('QuizBundle\Entity\Quiz');
+
+        if (!($quiz instanceof Quiz) || !$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
                 'Error',
-                'No id was given to identify the quiz!'
-            );
-
-            $this->redirect()->toRoute(
-                'quiz_admin_quiz',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $quiz = $this->getEntityManager()
-            ->getRepository('QuizBundle\Entity\Quiz')
-            ->findOneById($this->getParam('id'));
-
-        if ($quiz === null) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No quiz with the given id was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'quiz_admin_quiz',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->error(
-                'Error',
-                'You do not have the permissions to modify this quiz!'
+                'No quiz was found!'
             );
 
             $this->redirect()->toRoute(

@@ -132,12 +132,21 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return CommonBundle\Entity\General\AcademicYear|null
+     */
     public function findCurrentAcademicYear()
     {
         return $this->getCurrentAcademicYear(true);
     }
 
-    private function addToMenu($controller, $settings, &$menu)
+    /**
+     * @param  string           $controller
+     * @param  string|array     $settings
+     * @param  SplPriorityQueue $menu
+     * @return boolean
+     */
+    private function addToMenu($controller, $settings, SplPriorityQueue &$menu)
     {
         if (!is_array($settings)) {
             $settings = array('title' => $settings);
@@ -162,6 +171,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         return false;
     }
 
+    /**
+     * @return array
+     */
     private function getMenu()
     {
         $config = $this->getServiceLocator()->get('Config');
