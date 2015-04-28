@@ -133,7 +133,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return CommonBundle\Entity\General\AcademicYear|null
+     * @return \CommonBundle\Entity\General\AcademicYear
      */
     public function findCurrentAcademicYear()
     {
@@ -141,12 +141,12 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  string           $controller
-     * @param  string|array     $settings
-     * @param  SplPriorityQueue $menu
+     * @param  string            $controller
+     * @param  string|array      $settings
+     * @param  \SplPriorityQueue $menu
      * @return boolean
      */
-    private function addToMenu($controller, $settings, SplPriorityQueue &$menu)
+    private function addToMenu($controller, $settings, \SplPriorityQueue &$menu)
     {
         if (!is_array($settings)) {
             $settings = array('title' => $settings);

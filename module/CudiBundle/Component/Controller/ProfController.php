@@ -50,7 +50,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return CommonBundle\Entity\General\AcademicYear|null
+     * @return \CommonBundle\Entity\General\AcademicYear
      */
     protected function findCurrentAcademicYear()
     {

@@ -164,7 +164,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * @return CommonBundle\Entity\General\AcademicYear
+     * @return \CommonBundle\Entity\General\AcademicYear
      */
     protected function findCurrentAcademicYear()
     {

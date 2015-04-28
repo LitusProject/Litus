@@ -684,7 +684,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     }
 
     /**
-     * @return CommonBundle\Entity\User\Person|null
+     * @return \CommonBundle\Entity\User\Person|null
      */
     private function getAcademic()
     {

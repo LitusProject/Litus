@@ -70,7 +70,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'activeAcademicYear' => $academicYear,
                 'academicYears' => $academicYears,
                 'organizations' => $organizations,
-                'currentOrganization' => $this->getOrganization(),
+                'currentOrganization' => $this->getOrganizationEntity(),
             )
         );
     }
@@ -142,7 +142,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'academicYears' => $academicYears,
                 'form' => $form,
                 'organizations' => $organizations,
-                'currentOrganization' => $this->getOrganization(),
+                'currentOrganization' => $this->getOrganizationEntity(),
             )
         );
     }
@@ -261,7 +261,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'activeAcademicYear' => $academicYear,
                 'academicYears' => $academicYears,
                 'organizations' => $organizations,
-                'currentOrganization' => $this->getOrganization(),
+                'currentOrganization' => $this->getOrganizationEntity(),
             )
         );
     }
@@ -367,7 +367,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'academicYears' => $academicYears,
                 'form' => $form,
                 'organizations' => $organizations,
-                'currentOrganization' => $this->getOrganization(),
+                'currentOrganization' => $this->getOrganizationEntity(),
             )
         );
     }
@@ -483,7 +483,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-     * @return CommonBundle\Entity\General\AcademicYear|null
+     * @return \CommonBundle\Entity\General\AcademicYear|null
      */
     private function getAcademicYearEntity()
     {
@@ -544,9 +544,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-     * @return CommonBundle\Entity\General\Organization|null
+     * @return \CommonBundle\Entity\General\Organization|null
      */
-    private function getOrganization()
+    private function getOrganizationEntity()
     {
         $organization = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization')
@@ -592,10 +592,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-     * @param  string                                $type
-     * @param  Person                                $person
-     * @param  int                                   $barcode
-     * @return CommonBundle\Entity\User\Barcode|null
+     * @param  string                                 $type
+     * @param  Person                                 $person
+     * @param  int                                    $barcode
+     * @return \CommonBundle\Entity\User\Barcode|null
      */
     private function createBarcode($type, Person $person, $barcode)
     {

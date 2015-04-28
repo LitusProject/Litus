@@ -307,7 +307,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     }
 
     /**
-     * @return CommonBundle\Entity\General\AcademicYear|null
+     * @return \CommonBundle\Entity\General\AcademicYear|null
      */
     private function getAcademicYearEntity()
     {

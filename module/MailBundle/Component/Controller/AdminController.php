@@ -24,7 +24,7 @@ namespace MailBundle\Component\Controller;
 class AdminController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     /**
-     * @return CommonBundle\Entity\General\AcademicYear|null
+     * @return \CommonBundle\Entity\General\AcademicYear
      */
     public function findCurrentAcademicYear()
     {

@@ -35,7 +35,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($quiz = $this->getQuiz())) {
+        if (!($quiz = $this->getQuizEntity())) {
             return new ViewModel();
         }
 
@@ -70,7 +70,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($team = $this->getTeam()) || !($round = $this->getRound())) {
+        if (!($team = $this->getTeamEntity()) || !($round = $this->getRoundEntity())) {
             return new ViewModel();
         }
 
@@ -114,7 +114,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($quiz = $this->getQuiz())) {
+        if (!($quiz = $this->getQuizEntity())) {
             return new ViewModel();
         }
 
