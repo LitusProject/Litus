@@ -406,7 +406,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($start);
 
-        if (!($runner instanceof AcademicYearEntity)) {
+        if (!($academicYear instanceof AcademicYearEntity)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No academic year was found!'
