@@ -549,13 +549,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getShift()
     {
-        if (null === $this->getRequest()->getPost('id')) {
-            return null;
-        }
-
         $shift = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findOneById($this->getRequest()->getPost('id'));
+            ->findOneById($this->getRequest()->getPost('id', 0));
 
         return $shift;
     }
@@ -565,13 +561,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getPerson()
     {
-        if (null === $this->getRequest()->getPost('person')) {
-            return null;
-        }
-
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($this->getRequest()->getPost('person'));
+            ->findOneById($this->getRequest()->getPost('person', 0));
 
         return $person;
     }

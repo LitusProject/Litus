@@ -18,7 +18,9 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\File\TmpFile,
+use CalendarBundle\Entity\Node\Event,
+    CommonBundle\Component\Util\File\TmpFile,
+    DateInterval,
     DateTime,
     ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator,
     ShiftBundle\Entity\Shift,
@@ -124,21 +126,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    /**
-     * @param integer $duplicate
-     */
-    private function addInterval(DateTime $time, $interval, $duplicate)
-    {
-        for ($i = 0; $i < $duplicate; $i++) {
-            $time = $time->add($interval);
-        }
-
-        return clone $time;
-    }
-
     public function editAction()
     {
-        if (!($shift = $this->getShift())) {
+        if (!($shift = $this->getShiftEntity())) {
             return new ViewModel();
         }
 
@@ -178,7 +168,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->getShift())) {
+        if (!($shift = $this->getShiftEntity())) {
             return new ViewModel();
         }
 
@@ -303,7 +293,22 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-    *   @return \Doctrine\ORM\Query
+     * @param  DateTime     $time
+     * @param  DateInterval $interval
+     * @param  integer      $duplicate
+     * @return DateTime
+     */
+    private function addInterval(DateTime $time, $interval, $duplicate)
+    {
+        for ($i = 0; $i < $duplicate; $i++) {
+            $time = $time->add($interval);
+        }
+
+        return clone $time;
+    }
+
+    /**
+    *   @return \Doctrine\ORM\Query|null
     */
     private function search()
     {
@@ -318,32 +323,14 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return Shift|null
      */
-    private function getShift()
+    private function getShiftEntity()
     {
-        if (null === $this->getParam('id')) {
+        $shift = $this->getEntityById('ShiftBundle\Entity\Shift');
+
+        if (!($shift instanceof Shift)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the shift!'
-            );
-
-            $this->redirect()->toRoute(
-                'shift_admin_shift',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $shift = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Shift')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $shift) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No shift with the given ID was found!'
+                'No shift was found!'
             );
 
             $this->redirect()->toRoute(
@@ -359,36 +346,21 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return $shift;
     }
 
+    /**
+     * @return Event|null
+     */
     private function getEventEntity()
     {
-        if (null === $this->getParam('id')) {
+        $event = $this->getEntityById('CalendarBundle\Entity\Node\Event');
+
+        if (!($event instanceof Event)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the event!'
+                'No event was found!'
             );
 
             $this->redirect()->toRoute(
-                'calendar_admin_calendar',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $event = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $event) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No event with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'calendar_admin_calendar',
+                'shift_admin_shift',
                 array(
                     'action' => 'manage',
                 )

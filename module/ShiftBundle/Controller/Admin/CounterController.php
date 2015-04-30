@@ -19,6 +19,7 @@
 namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Zend\View\Model\ViewModel;
 
@@ -113,7 +114,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
-        if (!($person = $this->getPerson())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -320,6 +321,9 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
     private function getAcademicYear()
     {
         $date = null;
@@ -347,32 +351,17 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return $academicYear;
     }
 
-    private function getPerson()
+    /**
+     * @return Person|null
+     */
+    private function getPersonEntity()
     {
-        if (null === $this->getParam('id')) {
+        $person = $this->getEntityById('CommonBundle\Entity\User\Person');
+
+        if (!($person instanceof Person)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the person!'
-            );
-
-            $this->redirect()->toRoute(
-                'shift_admin_shift_counter',
-                array(
-                    'action' => 'index',
-                )
-            );
-
-            return;
-        }
-
-        $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $person) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No person with the given ID was found!'
+                'No person was found!'
             );
 
             $this->redirect()->toRoute(

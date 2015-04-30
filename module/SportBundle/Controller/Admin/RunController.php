@@ -20,8 +20,10 @@ namespace SportBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\WebSocket as WebSocketUtil,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     DateInterval,
     DateTime,
+    SportBundle\Entity\Group,
     SportBundle\Entity\Runner,
     Zend\View\Model\ViewModel;
 
@@ -51,7 +53,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('SportBundle\Entity\Lap')
-                ->findAllPreviousLapsQuery($this->getAcademicYear()),
+                ->findAllPreviousLapsQuery($this->getAcademicYearEntity()),
             $this->getParam('page')
         );
 
@@ -63,7 +65,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'academicYear' => $this->getAcademicYear(),
+                'academicYear' => $this->getAcademicYearEntity(),
             )
         );
     }
@@ -74,7 +76,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             'SportBundle\Entity\Group',
             $this->getParam('page'),
             array(
-                'academicYear' => $this->getAcademicYear(),
+                'academicYear' => $this->getAcademicYearEntity(),
             ),
             array(
                 'name' => 'ASC',
@@ -89,14 +91,14 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'academicYear' => $this->getAcademicYear(),
+                'academicYear' => $this->getAcademicYearEntity(),
             )
         );
     }
 
     public function editGroupAction()
     {
-        if (!($group = $this->getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
 
@@ -180,7 +182,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'academicYear' => $this->getAcademicYear(),
+                'academicYear' => $this->getAcademicYearEntity(),
             )
         );
     }
@@ -189,7 +191,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     {
         $laps = $this->getEntityManager()
             ->getRepository('SportBundle\Entity\Lap')
-            ->findByAcademicYear($this->getAcademicYear());
+            ->findByAcademicYear($this->getAcademicYearEntity());
 
         $rewardTimeLimit = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -237,7 +239,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     {
         $runners = $this->getEntityManager()
             ->getRepository('SportBundle\Entity\Runner')
-            ->findAllWithoutIdentification($this->getAcademicYear());
+            ->findAllWithoutIdentification($this->getAcademicYearEntity());
 
         return new ViewModel(
             array(
@@ -248,7 +250,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($runner = $this->getRunner())) {
+        if (!($runner = $this->getRunnerEntity())) {
             return new ViewModel();
         }
 
@@ -313,7 +315,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     {
         $runners = $this->getEntityManager()
                 ->getRepository('SportBundle\Entity\Lap')
-                ->getRunnersAndCount($this->getAcademicYear());
+                ->getRunnersAndCount($this->getAcademicYearEntity());
 
         $runnersList = array();
         foreach ($runners as $runner) {
@@ -324,10 +326,10 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $runnerEntity->setEntityManager($this->getEntityManager());
 
             $name = $runnerEntity->getFullName();
-            $points = $runnerEntity->getPoints($this->getAcademicYear());
+            $points = $runnerEntity->getPoints($this->getAcademicYearEntity());
 
             $totalTime = 0;
-            $laps = $runnerEntity->getLaps($this->getAcademicYear());
+            $laps = $runnerEntity->getLaps($this->getAcademicYearEntity());
             foreach ($laps as $lap) {
                 $lapTime = $lap->getLapTime();
                 $totalTime = $totalTime + $lapTime->h*3600 + $lapTime->i*60 + $lapTime->s;
@@ -357,37 +359,22 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'academicYear' => $this->getAcademicYear(),
+                'academicYear' => $this->getAcademicYearEntity(),
             )
         );
     }
 
-    public function getRunner()
+    /**
+     * @return Runner|null
+     */
+    private function getRunnerEntity()
     {
-        if (null === $this->getParam('id')) {
+        $runner = $this->getEntityById('SportBundle\Entity\Runner');
+
+        if (!($runner instanceof Runner)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the runner!'
-            );
-
-            $this->redirect()->toRoute(
-                'sport_admin_run',
-                array(
-                    'action' => 'identification',
-                )
-            );
-
-            return;
-        }
-
-        $runner = $this->getEntityManager()
-            ->getRepository('SportBundle\Entity\Runner')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $runner) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No runner with the given ID was found!'
+                'No runner was found!'
             );
 
             $this->redirect()->toRoute(
@@ -403,7 +390,10 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         return $runner;
     }
 
-    private function getAcademicYear()
+    /**
+     * @return AcademicYearEntity|null
+     */
+    private function getAcademicYearEntity()
     {
         if (null === $this->getParam('academicyear')) {
             return $this->getCurrentAcademicYear();
@@ -416,7 +406,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($start);
 
-        if (null === $academicYear) {
+        if (!($runner instanceof AcademicYearEntity)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No academic year was found!'
@@ -447,37 +437,23 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             ->getConfigValue('sport.queue_socket_public');
     }
 
+    /**
+     * @param  DateInterval $interval
+     * @return int
+     */
     private function convertDateIntervalToSeconds(DateInterval $interval)
     {
         return $interval->h*3600 + $interval->i*60 + $interval->s;
     }
 
     /**
-     * @return Group
+     * @return Group|null
      */
-    private function getGroup()
+    private function getGroupEntity()
     {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the group!'
-            );
+        $group = $this->getEntityById('SportBundle\Entity\Group');
 
-            $this->redirect()->toRoute(
-                'sport_admin_run',
-                array(
-                    'action' => 'groups',
-                )
-            );
-
-            return;
-        }
-
-        $group = $this->getEntityManager()
-            ->getRepository('SportBundle\Entity\Group')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $group) {
+        if (!($group instanceof Group)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No group with the given ID was found!'

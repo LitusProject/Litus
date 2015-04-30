@@ -79,6 +79,9 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
     private function getAcademicYear()
     {
         $date = null;
