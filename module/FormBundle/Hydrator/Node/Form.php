@@ -57,13 +57,15 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setMultiple($data['multiple']);
 
+        /** @var \FormBundle\Hydrator\Mail\Mail $hydrator */
+        $hydrator = $this->getHydrator('FormBundle\Hydrator\Mail\Mail');
+
         if ($object instanceof DoodleEntity) {
             $object->setNamesVisibleForOthers($data['names_visible_for_others']);
 
             if ($data['reminder_mail']) {
                 $object->setReminderMail(
-                    $this->getHydrator('FormBundle\Hydrator\Mail\Mail')
-                        ->hydrate($data['reminder_mail_form'], $object->getReminderMail())
+                    $hydrator->hydrate($data['reminder_mail_form'], $object->getReminderMail())
                 );
             } else {
                 $object->setReminderMail(null);
@@ -72,8 +74,7 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
 
         if ($data['mail']) {
             $object->setMail(
-                $this->getHydrator('FormBundle\Hydrator\Mail\Mail')
-                    ->hydrate($data['mail_form'], $object->getMail())
+                $hydrator->hydrate($data['mail_form'], $object->getMail())
             );
         } else {
             $object->setMail(null);
@@ -158,9 +159,11 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
         $data['mail'] = $object->hasMail();
 
+        /** @var \FormBundle\Hydrator\Mail\Mail $hydrator */
+        $hydrator = $this->getHydrator('FormBundle\Hydrator\Mail\Mail');
+
         if ($object->hasMail()) {
-            $data['mail_form'] = $this->getHydrator('FormBundle\Hydrator\Mail\Mail')
-                ->extract($object->getMail());
+            $data['mail_form'] = $hydrator->extract($object->getMail());
         }
 
         if ($object instanceof DoodleEntity) {
@@ -168,8 +171,7 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
             $data['reminder_mail'] = $object->hasReminderMail();
 
             if ($object->hasReminderMail()) {
-                $data['reminder_mail_form'] = $this->getHydrator('FormBundle\Hydrator\Mail\Mail')
-                    ->extract($object->getReminderMail());
+                $data['reminder_mail_form'] = $hydrator->extract($object->getReminderMail());
             }
         }
 

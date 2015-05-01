@@ -40,9 +40,11 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new CompanyEntity();
         }
 
+        /** @var \CommonBundle\Hydrator\General\Address $hydrator */
+        $hydrator = $this->getHydrator('CommonBundle\Hydrator\General\Address');
+
         $object->setAddress(
-            $this->getHydrator('CommonBundle\Hydrator\General\Address')
-                ->hydrate($data['address'], $object->getAddress())
+            $hydrator->hydrate($data['address'], $object->getAddress())
         );
 
         $years = array();
@@ -105,8 +107,10 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
             $data['cvbook'][] = 'archive-' . $year;
         }
 
-        $data['address'] = $this->getHydrator('CommonBundle\Hydrator\General\Address')
-            ->extract($object->getAddress());
+        /** @var \CommonBundle\Hydrator\General\Address $hydrator */
+        $hydrator = $this->getHydrator('CommonBundle\Hydrator\General\Address');
+
+        $data['address'] = $hydrator->extract($object->getAddress());
 
         $page = $object->getPage();
         if (null !== $page) {

@@ -33,9 +33,11 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
+        /** @var \CommonBundle\Hydrator\User\Person\Academic $hydrator */
+        $hydrator = $this->getHydrator('CommonBundle\Hydrator\User\Person\Academic');
+
         $data = array(
-            'academic'          => $this->getHydrator('CommonBundle\Hydrator\User\Person\Academic')
-                ->extract($object->getAcademic()),
+            'academic'          => $hydrator->extract($object->getAcademic()),
             'organization_info' => $this->stdExtract($object, self::$std_keys),
         );
 
@@ -57,6 +59,9 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
     {
         $year = $this->getCurrentAcademicYear(false);
 
+        /** @var \CommonBundle\Hydrator\User\Person\Academic $hydrator */
+        $hydrator = $this->getHydrator('CommonBundle\Hydrator\User\Person\Academic');
+
         if (null === $object) {
             if (!isset($data['academic'])) {
                 throw new LogicException('Cannot create a MetaData without Academic.');
@@ -68,14 +73,12 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($academic['university']['identification']);
 
-            $academic = $this->getHydrator('CommonBundle\Hydrator\User\Person\Academic')
-                ->hydrate($academic, $academicEntity);
+            $academic = $hydrator->hydrate($academic, $academicEntity);
 
             $object = new MetaDataEntity($academic, $year);
         } else {
             if (isset($data['academic'])) {
-                $this->getHydrator('CommonBundle\Hydrator\User\Person\Academic')
-                    ->hydrate($data['academic'], $object->getAcademic());
+                $hydrator->hydrate($data['academic'], $object->getAcademic());
             }
         }
 

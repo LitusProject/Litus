@@ -30,10 +30,12 @@ class Location extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
+        /** @var \CommonBundle\Hydrator\General\Address $hydrator */
+        $hydrator = $this->getHydrator('CommonBundle\Hydrator\General\Address');
+
         if (null === $object) {
             return array(
-                'address' => $this->getHydrator('CommonBundle\Hydrator\General\Address')
-                        ->extract(null),
+                'address' => $hydrator->extract(null),
             );
         }
 
@@ -41,8 +43,7 @@ class Location extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data['geographical'] = $this->stdExtract($object, self::$geo_keys);
 
-        $data['address'] = $this->getHydrator('CommonBundle\Hydrator\General\Address')
-            ->extract($object->getAddress());
+        $data['address'] = $hydrator->extract($object->getAddress());
 
         return $data;
     }
@@ -53,10 +54,12 @@ class Location extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new LocationEntity();
         }
 
+        /** @var \CommonBundle\Hydrator\General\Address $hydrator */
+        $hydrator = $this->getHydrator('CommonBundle\Hydrator\General\Address');
+
         if (isset($data['address'])) {
             $object->setAddress(
-                $this->getHydrator('CommonBundle\Hydrator\General\Address')
-                    ->hydrate($data['address'], $object->getAddress())
+                $hydrator->hydrate($data['address'], $object->getAddress())
             );
         }
 

@@ -28,16 +28,17 @@ class Supplier extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        $addressHydrator = $this->getHydrator('CommonBundle\Hydrator\General\Address');
+        /** @var \CommonBundle\Hydrator\General\Address $hydratorAddress */
+        $hydratorAddress = $this->getHydrator('CommonBundle\Hydrator\General\Address');
 
         if (null === $object) {
             return array(
-                'address' => $addressHydrator->extract(null),
+                'address' => $hydratorAddress->extract(null),
             );
         }
 
         $data = $this->stdExtract($object, self::$std_keys);
-        $data['address'] = $addressHydrator->extract($object->getAddress());
+        $data['address'] = $hydratorAddress->extract($object->getAddress());
 
         return $data;
     }
@@ -48,9 +49,11 @@ class Supplier extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new SupplierEntity();
         }
 
+        /** @var \CommonBundle\Hydrator\General\Address $hydratorAddress */
+        $hydratorAddress = $this->getHydrator('CommonBundle\Hydrator\General\Address');
+
         $object->setAddress(
-            $this->getHydrator('CommonBundle\Hydrator\General\Address')
-                ->hydrate($data['address'], $object->getAddress())
+            $hydratorAddress->hydrate($data['address'], $object->getAddress())
         );
 
         return $this->stdHydrate($data, $object, self::$std_keys);

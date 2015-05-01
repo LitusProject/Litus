@@ -30,35 +30,29 @@ use RuntimeException,
 class HydratorPluginManager extends \Zend\Stdlib\Hydrator\HydratorPluginManager
 {
     /**
-     * @param  string            $name
-     * @param  array             $options
-     * @param  boolean           $usePeeringServiceManagers
-     * @return HydratorInterface
+     * @param  string  $name
+     * @param  array   $options
+     * @param  boolean $usePeeringServiceManagers
+     * @return object
      */
     public function get($name, $options = array(), $usePeeringServiceManagers = true)
     {
         if ($this->has($name)) {
-            $hydrator = parent::get($name, $options, $usePeeringServiceManagers);
-        } else {
-            if (0 === strpos($name, '\\')) {
-                $name = substr($name, 1);
-            }
-
-            $hydratorName = '\\' . $this->getHydratorName($name);
-            if (!class_exists($hydratorName)) {
-                throw new RuntimeException('Unknown hydrator: ' . $hydratorName);
-            }
-
-            $this->setInvokableClass($name, $hydratorName);
-
-            $hydrator = parent::get($name, $options, $usePeeringServiceManagers);
+            return parent::get($name, $options, $usePeeringServiceManagers);
         }
 
-        if (!($hydrator instanceof HydratorInterface)) {
-            throw new RuntimeException('Invalid type of hydrator: ' . $hydratorName);
+        if (0 === strpos($name, '\\')) {
+            $name = substr($name, 1);
         }
 
-        return $hydrator;
+        $hydratorName = '\\' . $this->getHydratorName($name);
+        if (!class_exists($hydratorName)) {
+            throw new RuntimeException('Unknown hydrator: ' . $hydratorName);
+        }
+
+        $this->setInvokableClass($name, $hydratorName);
+
+        return parent::get($name, $options, $usePeeringServiceManagers);
     }
 
     /**
