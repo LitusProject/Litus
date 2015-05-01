@@ -37,7 +37,7 @@ use CommonBundle\Entity\User\Person,
  *      "articles_subject_map_removed"="CudiBundle\Entity\Log\Article\SubjectMap\Removed"
  * })
  */
-class Log
+abstract class Log
 {
     /**
      * @var integer The ID of the log

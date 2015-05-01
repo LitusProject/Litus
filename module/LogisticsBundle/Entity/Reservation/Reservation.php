@@ -36,7 +36,7 @@ use CommonBundle\Entity\User\Person,
  *      "piano"="LogisticsBundle\Entity\Reservation\PianoReservation"
  * })
  */
-class Reservation
+abstract class Reservation
 {
     /**
      * @var The reservation's unique identifier
