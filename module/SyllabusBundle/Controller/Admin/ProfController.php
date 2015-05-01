@@ -19,6 +19,8 @@
 namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    SyllabusBundle\Entity\Subject,
     SyllabusBundle\Entity\SubjectProfMap,
     Zend\View\Model\ViewModel;
 
@@ -31,11 +33,11 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 {
     public function addAction()
     {
-        if (!($subject = $this->getSubject())) {
+        if (!($subject = $this->getSubjectEntity())) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -95,7 +97,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getMapping())) {
+        if (!($mapping = $this->getSubjectProfMapEntity())) {
             return new ViewModel();
         }
 
@@ -135,12 +137,17 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function getSubject()
+    /**
+     * @return Subject|null
+     */
+    private function getSubjectEntity()
     {
-        if (null === $this->getParam('id')) {
+        $subject = $this->getEntityById('SyllabusBundle\Entity\Subject');
+
+        if (!($subject instanceof Subject)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the subject!'
+                'No subject was found!'
             );
 
             $this->redirect()->toRoute(
@@ -153,35 +160,20 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $study = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Subject')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $study) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No subject with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'syllabus_admin_study',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $study;
+        return $subject;
     }
 
-    private function getMapping()
+    /**
+     * @return SubjectProfMap|null
+     */
+    private function getSubjectProfMapEntity()
     {
-        if (null === $this->getParam('id')) {
+        $map = $this->getEntityById('SyllabusBundle\Entity\SubjectProfMap');
+
+        if (!($map instanceof SubjectProfMap)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the mapping!'
+                'No prof map was found!'
             );
 
             $this->redirect()->toRoute(
@@ -194,30 +186,13 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $mapping) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No mapping with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'syllabus_admin_study',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $mapping;
+        return $map;
     }
 
-    private function getAcademicYear()
+    /**
+     * @return AcademicYearEntity|null
+     */
+    private function getAcademicYearEntity()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {
@@ -225,7 +200,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
-        if (null === $academicYear) {
+        if (!($academicYear instanceof AcademicYearEntity)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No academic year was found!'

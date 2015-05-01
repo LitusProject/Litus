@@ -32,7 +32,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function eventAction()
     {
-        if (!($event = $this->getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return $this->notFoundAction();
         }
 
@@ -101,7 +101,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($ticket = $this->getTicket())) {
+        if (!($ticket = $this->getTicketEntity())) {
             return $this->notFoundAction();
         }
 
@@ -123,17 +123,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * @return Event|null
      */
-    private function getEvent()
+    private function getEventEntity()
     {
-        if (null === $this->getParam('id')) {
-            return;
-        }
+        $event = $this->getEntityById('TicketBundle\Entity\Event');
 
-        $event = $this->getEntityManager()
-            ->getRepository('TicketBundle\Entity\Event')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $event || !$event->isActive()) {
+        if (!($event instanceof Event) || !$event->isActive()) {
             return;
         }
 
@@ -143,17 +137,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * @return Ticket|null
      */
-    private function getTicket()
+    private function getTicketEntity()
     {
-        if (null === $this->getParam('id')) {
-            return;
-        }
+        $ticket = $this->getEntityById('TicketBundle\Entity\Ticket');
 
-        $ticket = $this->getEntityManager()
-            ->getRepository('TicketBundle\Entity\Ticket')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $ticket || $ticket->getPerson() != $this->getAuthentication()->getPersonObject()) {
+        if (!($ticket instanceof Ticket) || $ticket->getPerson() != $this->getAuthentication()->getPersonObject()) {
             return;
         }
 
