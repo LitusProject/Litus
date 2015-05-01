@@ -29,7 +29,7 @@ trait FieldsetTrait
             'type' => 'inputfilter',
         );
 
-        foreach ($this->byName as $name => $elementOrFieldset) {
+        foreach ($this->elements as $name => $elementOrFieldset) {
             if ($elementOrFieldset instanceof InputFilterProviderInterface) {
                 $spec[$name] = $elementOrFieldset->getInputFilterSpecification();
             } elseif ($elementOrFieldset instanceof InputProviderInterface) {
@@ -42,7 +42,7 @@ trait FieldsetTrait
 
     public function setRequired($required = true)
     {
-        foreach ($this->byName as $elementOrFieldset) {
+        foreach ($this->elements as $elementOrFieldset) {
             if ($elementOrFieldset instanceof ElementInterface) {
                 $elementOrFieldset->setRequired($required);
             }

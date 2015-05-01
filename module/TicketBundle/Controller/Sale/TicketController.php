@@ -71,7 +71,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->getTicketEntity()) && !$ticket->getEvent()->areTicketsGenerated()) {
+        if (!($ticket = $this->getTicketEntity()) || !$ticket->getEvent()->areTicketsGenerated()) {
             return new ViewModel();
         }
 
