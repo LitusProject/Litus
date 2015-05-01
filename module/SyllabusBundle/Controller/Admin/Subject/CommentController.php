@@ -244,7 +244,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $comment = $this->getEntityById('SyllabusBundle\Entity\Subject\Comment');
 
-        if (!($subject instanceof Comment)) {
+        if (!($comment instanceof Comment)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No comment was found!'

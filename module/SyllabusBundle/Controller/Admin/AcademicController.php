@@ -323,7 +323,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     }
 
     /**
-     * @return array|null
+     * @return array
      */
     private function search()
     {
@@ -337,6 +337,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findAllByUniversityIdentification($this->getParam('string'));
         }
+
+        return array();
     }
 
     /**
