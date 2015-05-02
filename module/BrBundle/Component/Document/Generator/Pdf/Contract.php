@@ -25,7 +25,7 @@ use BrBundle\Component\ContractParser\Parser as BulletParser,
     CommonBundle\Component\Util\Xml\Object as XmlObject,
     Doctrine\ORM\EntityManager,
     IntlDateFormatter,
-    Zend\I18n\Translator\Translator;
+    Zend\I18n\Translator\TranslatorInterface;
 
 /**
  * Generate a PDF for a contract.
@@ -38,20 +38,21 @@ use BrBundle\Component\ContractParser\Parser as BulletParser,
 class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \BrBundle\Entity\Contract
+     * @var ContractEntity
      */
     private $contract;
 
     /**
-     * @var \Zend\I18n\Translator\Translator
+     * @var TranslatorInterface
      */
     private $translator;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Contract   $contract      The contract for which we want to generate a PDF
+     * @param EntityManager       $entityManager The EntityManager instance
+     * @param ContractEntity      $contract      The contract for which we want to generate a PDF
+     * @param TranslatorInterface $translator
      */
-    public function __construct(EntityManager $entityManager, ContractEntity $contract, Translator $translator)
+    public function __construct(EntityManager $entityManager, ContractEntity $contract, TranslatorInterface $translator)
     {
         parent::__construct(
             $entityManager,
@@ -67,6 +68,9 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $this->contract = $contract;
     }
 
+    /**
+     * @param TmpFile $tmpFile
+     */
     protected function generateXml(TmpFile $tmpFile)
     {
         $xml = new XmlGenerator($tmpFile);
