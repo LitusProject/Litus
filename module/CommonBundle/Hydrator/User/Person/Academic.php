@@ -23,7 +23,7 @@ use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
 
 class Academic extends \CommonBundle\Hydrator\User\Person
 {
-    protected static $std_keys = array(
+    protected static $stdKeys = array(
         'university_identification', 'personal_email',
     );
 
@@ -53,7 +53,7 @@ class Academic extends \CommonBundle\Hydrator\User\Person
 
         $data = array_merge(
             $data,
-            $this->stdExtract($object, self::$std_keys)
+            $this->stdExtract($object, self::$stdKeys)
         );
 
         $academicYear = $this->getCurrentAcademicYear();
@@ -155,6 +155,6 @@ class Academic extends \CommonBundle\Hydrator\User\Person
 
         parent::doHydrate($data, $object);
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

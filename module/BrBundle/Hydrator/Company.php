@@ -32,7 +32,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $std_keys = array('name', 'vat_number', 'phone_number', 'website', 'sector');
+    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website', 'sector');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -87,7 +87,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
             ->setSummary($data['page']['summary'])
             ->setDescription($data['page']['description']);
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -96,7 +96,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['cvbook'] = array();
         foreach ($object->getCvBookYears() as $year) {

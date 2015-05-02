@@ -33,7 +33,7 @@ class Message extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $std_keys = array('subject', 'body');
+    private static $stdKeys = array('subject', 'body');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -43,7 +43,7 @@ class Message extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException();
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -52,7 +52,7 @@ class Message extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         return $data;
     }

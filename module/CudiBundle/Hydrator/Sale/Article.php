@@ -24,7 +24,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doExtract($object = null)
     {
-        static $std_keys = array(
+        static $stdKeys = array(
             'bookable', 'unbookable', 'sellable',
         );
 
@@ -32,7 +32,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, $std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['can_expire'] = $object->canExpire();
 
@@ -47,7 +47,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        static $std_keys = array(
+        static $stdKeys = array(
             'sell_price', 'purchase_price', 'can_expire',
         );
 
@@ -55,7 +55,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException('Cannot create a sale article');
         }
 
-        $this->stdHydrate($data, $object, $std_keys);
+        $this->stdHydrate($data, $object, self::$stdKeys);
 
         $supplier = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')

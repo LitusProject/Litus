@@ -36,7 +36,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $std_keys = array('tax_free');
+    private static $stdKeys = array('tax_free');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -111,7 +111,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
         $this->getEntityManager()->persist(new ContractHistoryEntity($contract));
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -120,7 +120,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['title'] = $object->getContract()->getTitle();
         $data['company'] = $object->getCompany()->getId();

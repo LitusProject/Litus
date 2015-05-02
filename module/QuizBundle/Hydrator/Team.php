@@ -22,7 +22,7 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 class Team extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('name', 'number');
+    private static $stdKeys = array('name', 'number');
 
     protected function doExtract($object = null)
     {
@@ -30,7 +30,7 @@ class Team extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        return $this->stdExtract($object, self::$std_keys);
+        return $this->stdExtract($object, self::$stdKeys);
     }
 
     protected function doHydrate(array $data, $object = null)
@@ -39,6 +39,6 @@ class Team extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException('Cannot create a quiz team in the hydrator');
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

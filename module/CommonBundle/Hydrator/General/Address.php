@@ -22,7 +22,7 @@ use CommonBundle\Entity\General\Address as AddressEntity;
 
 class Address extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array(
+    private static $stdKeys = array(
         'street', 'number', 'mailbox',
         'postal', 'city',
     );
@@ -35,7 +35,7 @@ class Address extends \CommonBundle\Component\Hydrator\Hydrator
             );
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
         $data['country'] = $object->getCountryCode();
 
         return $data;
@@ -47,6 +47,6 @@ class Address extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new AddressEntity();
         }
 
-        return $this->stdHydrate($data, $object, array(self::$std_keys, 'country'));
+        return $this->stdHydrate($data, $object, array(self::$stdKeys, 'country'));
     }
 }

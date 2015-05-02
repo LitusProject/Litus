@@ -23,7 +23,7 @@ use CommonBundle\Entity\User\Status\University as UniversityStatus,
 
 class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array(
+    private static $stdKeys = array(
         'tshirt_size',
     );
 
@@ -38,7 +38,7 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = array(
             'academic'          => $hydrator->extract($object->getAcademic()),
-            'organization_info' => $this->stdExtract($object, self::$std_keys),
+            'organization_info' => $this->stdExtract($object, self::$stdKeys),
         );
 
         $data['organization_info']['receive_irreeel_at_cudi'] = $object->receiveIrreeelAtCudi();
@@ -105,6 +105,6 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
                 ->setReceiveIrreeelAtCudi(false);
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

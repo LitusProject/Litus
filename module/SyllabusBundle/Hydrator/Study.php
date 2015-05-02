@@ -22,7 +22,7 @@ use SyllabusBundle\Entity\Study as StudyEntity;
 
 class Study extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('kul_id', 'title', 'phase', 'language');
+    private static $stdKeys = array('kul_id', 'title', 'phase', 'language');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -36,7 +36,7 @@ class Study extends \CommonBundle\Component\Hydrator\Hydrator
                 ->findOneById($data['parent']['id'])
         );
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -45,7 +45,7 @@ class Study extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['parent']['id'] = $object->getParent() ? $object->getParent()->getId() : '';
         $data['parent']['value'] = $object->getParent() ? $object->getParent()->getFullTitle() : '';

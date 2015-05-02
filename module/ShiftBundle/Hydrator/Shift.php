@@ -23,7 +23,7 @@ use CommonBundle\Entity\User\Person\Academic,
 
 class Shift extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array(
+    private static $stdKeys = array(
         'nb_responsibles',
         'nb_volunteers',
         'name',
@@ -40,7 +40,7 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
 
         $manager = $object->getManager();
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
@@ -122,6 +122,6 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setEvent(null);
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

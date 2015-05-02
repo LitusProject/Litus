@@ -31,7 +31,7 @@ class Logo extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $std_keys = array('type', 'url');
+    private static $stdKeys = array('type', 'url');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -39,7 +39,7 @@ class Logo extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException('Cannot create a logo');
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)

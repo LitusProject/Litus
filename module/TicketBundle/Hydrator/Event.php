@@ -27,7 +27,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[]
      */
-    private static $std_keys = array(
+    private static $stdKeys = array(
         'active', 'bookable_praesidium', 'bookable', 'number_of_tickets',
         'limit_per_person', 'only_members',
     );
@@ -140,7 +140,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->setPriceNonMembers($priceNonMembers)
             ->setAllowRemove($data['allow_remove']);
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -149,7 +149,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['event'] = $object->getActivity()->getId();
         $data['bookings_close_date'] = $object->getBookingsCloseDate() ? $object->getBookingsCloseDate()->format('d/m/Y H:i') : '';

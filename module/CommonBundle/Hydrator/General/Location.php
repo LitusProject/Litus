@@ -26,7 +26,7 @@ class Location extends \CommonBundle\Component\Hydrator\Hydrator
         'latitude', 'longitude',
     );
 
-    private static $std_keys = array('name');
+    private static $stdKeys = array('name');
 
     protected function doExtract($object = null)
     {
@@ -67,6 +67,6 @@ class Location extends \CommonBundle\Component\Hydrator\Hydrator
             $this->stdHydrate($data['geographical'], $object, self::$geo_keys);
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

@@ -22,7 +22,7 @@ use LogisticsBundle\Entity\Reservation\VanReservation as VanReservationEntity;
 
 class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('reason', 'load', 'additional_info');
+    private static $stdKeys = array('reason', 'load', 'additional_info');
 
     protected function doExtract($object = null)
     {
@@ -30,7 +30,7 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['driver'] = null !== $object->getDriver()
             ? $object->getDriver()->getPerson()->getId()
@@ -83,6 +83,6 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setEndDate(self::loadDateTime($data['end_date']));
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

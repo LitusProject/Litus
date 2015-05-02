@@ -22,7 +22,7 @@ use SyllabusBundle\Entity\Group as GroupEntity;
 
 class Group extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('name', 'cv_book');
+    private static $stdKeys = array('name', 'cv_book');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -36,7 +36,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setExtraMembers(serialize($extraMembers))
             ->setExcludedMembers(serialize($excludedMembers));
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -56,7 +56,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
             $excludedMembers = array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['extra_members'] = implode(',', $extraMembers);
         $data['excluded_members'] = implode(',', $excludedMembers);

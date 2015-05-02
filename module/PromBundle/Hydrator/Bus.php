@@ -22,7 +22,7 @@ use PromBundle\Entity\Bus as BusEntity;
 
 class Bus extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array(
+    private static $stdKeys = array(
         'total_seats',
         'direction',
     );
@@ -33,7 +33,7 @@ class Bus extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['departure_time'] = $object->getDepartureTime()->format('d/m/Y H:i');
 
@@ -48,6 +48,6 @@ class Bus extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setDepartureTime(self::loadDateTime($data['departure_time']));
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

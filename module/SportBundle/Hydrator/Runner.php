@@ -22,7 +22,7 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 class Runner extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('runner_identification');
+    private static $stdKeys = array('runner_identification');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -30,7 +30,7 @@ class Runner extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException();
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -39,6 +39,6 @@ class Runner extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        return $this->stdExtract($object, self::$std_keys);
+        return $this->stdExtract($object, self::$stdKeys);
     }
 }

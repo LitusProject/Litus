@@ -382,7 +382,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      * We want an easy method to retrieve the Cache from
      * the DI container.
      *
-     * @return \Zend\Cache\Storage\Adapter\Apc
+     * @return \Zend\Cache\Storage\Adapter\Apc|null
      */
     public function getCache()
     {
@@ -553,7 +553,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      * We want an easy method to retrieve the Translator from
      * the DI container.
      *
-     * @return \Zend\I18n\Translator\Translator
+     * @return \Zend\I18n\Translator\TranslatorInterface
      */
     public function getTranslator()
     {

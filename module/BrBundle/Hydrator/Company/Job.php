@@ -31,7 +31,7 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $std_keys = array('name', 'description', 'benefits', 'profile', 'contact', 'city', 'sector');
+    private static $stdKeys = array('name', 'description', 'benefits', 'profile', 'contact', 'city', 'sector');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -42,7 +42,7 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setStartDate(self::loadDateTime($data['start_date']))
             ->setEndDate(self::loadDateTime($data['end_date']));
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -51,7 +51,7 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');

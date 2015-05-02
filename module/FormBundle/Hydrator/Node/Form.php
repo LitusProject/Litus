@@ -24,7 +24,7 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
 
 class Form extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('active', 'max', 'multiple', 'editable_by_user', 'send_guest_login_mail', 'non_member');
+    private static $stdKeys = array('active', 'max', 'multiple', 'editable_by_user', 'send_guest_login_mail', 'non_member');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -143,7 +143,7 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
             return $data;
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['tab_content'] = array();
         foreach ($this->getLanguages() as $language) {

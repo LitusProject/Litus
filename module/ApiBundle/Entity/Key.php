@@ -226,11 +226,7 @@ class Key implements RoleAware
             return false;
         }
 
-        if ($this->checkHost && gethostbyname($this->host) != $ip) {
-            return false;
-        }
-
-        return true;
+        return !($this->checkHost && gethostbyname($this->host) != $ip);
     }
 
     /**

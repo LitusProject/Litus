@@ -22,7 +22,7 @@ use CudiBundle\Entity\Supplier as SupplierEntity;
 
 class Supplier extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array(
+    private static $stdKeys = array(
         'name', 'phone_number', 'vat_number', 'template', 'contact',
     );
 
@@ -37,7 +37,7 @@ class Supplier extends \CommonBundle\Component\Hydrator\Hydrator
             );
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
         $data['address'] = $hydratorAddress->extract($object->getAddress());
 
         return $data;
@@ -56,6 +56,6 @@ class Supplier extends \CommonBundle\Component\Hydrator\Hydrator
             $hydratorAddress->hydrate($data['address'], $object->getAddress())
         );
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

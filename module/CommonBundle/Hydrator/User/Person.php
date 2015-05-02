@@ -24,7 +24,7 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
 
 abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    protected static $std_keys = array(
+    protected static $stdKeys = array(
         'first_name',
         'last_name',
         'email',
@@ -40,7 +40,7 @@ abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
 
         $academicYear = $this->getCurrentAcademicYear();
 
-        $data = $this->stdExtract($object, array(self::$std_keys, 'username'));
+        $data = $this->stdExtract($object, array(self::$stdKeys, 'username'));
 
         $data['roles'] = $this->rolesToData($object->getRoles());
         $data['system_roles'] = $this->rolesToData($object->getSystemRoles());
@@ -110,7 +110,7 @@ abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
             }
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function dataToRoles($rolesData)

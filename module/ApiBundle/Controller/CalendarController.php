@@ -98,8 +98,9 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
      */
     private function getPoster()
     {
-        if (null !== $this->getRequest()->getQuery('poster')) {
-            return $this->getRequest()->getQuery('poster');
+        $poster = $this->getRequest()->getQuery('poster');
+        if (is_string($poster)) {
+            return $poster;
         }
 
         return null;
