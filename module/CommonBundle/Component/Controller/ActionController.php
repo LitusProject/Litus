@@ -333,7 +333,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function initLocalization()
     {
-        $this->getTranslator()->setCache($this->getCache())
+        $translator = $this->getTranslator()->getTranslator();
+
+        $translator->setCache($this->getCache())
             ->setLocale($this->getLanguage()->getAbbrev());
 
         \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
@@ -464,7 +466,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      * We want an easy method to retrieve the Translator from
      * the DI container.
      *
-     * @return \Zend\I18n\Translator\TranslatorInterface
+     * @return \Zend\Mvc\I18n\Translator
      */
     public function getTranslator()
     {

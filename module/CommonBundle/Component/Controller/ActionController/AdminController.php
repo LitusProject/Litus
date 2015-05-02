@@ -79,8 +79,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     protected function initLocalization()
     {
         $language = $this->getLanguage();
+        $translator = $this->getTranslator()->getTranslator();
 
-        $this->getTranslator()->setCache($this->getCache())
+        $translator->setCache($this->getCache())
             ->setLocale($language->getAbbrev());
 
         AbstractValidator::setDefaultTranslator($this->getTranslator());

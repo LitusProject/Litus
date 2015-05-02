@@ -296,7 +296,9 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function initLocalization()
     {
-        $this->getTranslator()->setCache($this->getCache())
+        $translator = $this->getTranslator()->getTranslator();
+
+        $translator->setCache($this->getCache())
             ->setLocale($this->getLanguage()->getAbbrev());
 
         AbstractValidator::setDefaultTranslator($this->getTranslator());
@@ -382,15 +384,11 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      * We want an easy method to retrieve the Cache from
      * the DI container.
      *
-     * @return \Zend\Cache\Storage\Adapter\Apc|null
+     * @return \Zend\Cache\Storage\StorageInterface
      */
     public function getCache()
     {
-        if ($this->getServiceLocator()->has('cache')) {
-            return $this->getServiceLocator()->get('cache');
-        }
-
-        return null;
+        return $this->getServiceLocator()->get('cache');
     }
 
     /**
@@ -553,7 +551,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      * We want an easy method to retrieve the Translator from
      * the DI container.
      *
-     * @return \Zend\I18n\Translator\TranslatorInterface
+     * @return \Zend\Mvc\I18n\Translator
      */
     public function getTranslator()
     {
