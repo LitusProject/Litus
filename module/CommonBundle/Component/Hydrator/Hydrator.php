@@ -233,7 +233,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
      */
     public function getPersonEntity()
     {
-        if ($this->getAuthentication()->isAuthentication()) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             return $this->getAuthentication()->getPersonObject();
         }
 
