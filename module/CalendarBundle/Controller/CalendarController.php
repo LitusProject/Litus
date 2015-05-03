@@ -233,7 +233,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
      */
     private function getEventEntityByPoster()
     {
-        $event = $this->getEntityById('CalendarBundle\Entity\Node\Event', 'name', 'name');
+        $event = $this->getEntityById('CalendarBundle\Entity\Node\Event', 'name', 'poster');
 
         if (!($event instanceof Event)) {
             return;

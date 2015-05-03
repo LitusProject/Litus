@@ -59,6 +59,8 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
 
     public function posterAction()
     {
+        $this->initJson();
+
         if (!($poster = $this->getPoster())) {
             return $this->error(404, 'No poster key was provided with the request');
         }
