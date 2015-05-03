@@ -155,7 +155,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
      */
     private function getTicketEntity()
     {
-        if (!($person = $this->getPersonEntity())){
+        if (!($person = $this->getPersonEntity())) {
             return;
         }
 

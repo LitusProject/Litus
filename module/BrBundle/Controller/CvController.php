@@ -148,7 +148,6 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
     public function editAction()
     {
-
         if ($this->getAuthentication()->isAuthenticated()) {
             return new ViewModel(
                 array(

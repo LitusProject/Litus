@@ -461,10 +461,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-
         $person = null;
         $guestInfo = null;
         $formEntry = null;
+
         if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
             $formEntry = $this->getEntityManager()
