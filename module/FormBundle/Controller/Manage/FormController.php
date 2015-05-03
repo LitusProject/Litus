@@ -39,7 +39,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 {
     public function indexAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -61,7 +61,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function viewAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -123,7 +123,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function addAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -225,7 +225,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function editAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -392,7 +392,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function doodleAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -488,7 +488,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
     {
         $this->initAjax();
 
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -532,7 +532,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function downloadAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -720,5 +720,17 @@ class FormController extends \FormBundle\Component\Controller\FormController
         }
 
         return $field;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\User\Person|null
+     */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return null;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
     }
 }

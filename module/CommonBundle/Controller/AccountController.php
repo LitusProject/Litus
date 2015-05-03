@@ -40,26 +40,17 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 {
     public function indexAction()
     {
-        if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
         $metaData = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
-            ->findOneByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+            ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $studies = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-            ->findAllByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $mappings = array();
         foreach ($studies as $enrollment) {
@@ -73,7 +64,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $subjects = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
-            ->findAllByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $subjectIds = array();
         foreach ($subjects as $enrollment) {
@@ -107,18 +98,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function editAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-
-        if (!($academic instanceof Academic)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -329,17 +309,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function studiesAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -351,17 +321,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function saveStudiesAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -376,17 +336,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function subjectsAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -399,17 +349,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function saveSubjectsAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -468,18 +408,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function passbookAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-
-        if (!($academic instanceof Academic)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -510,6 +439,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function uploadProfileImageAction()
     {
+        if (!($academic = $this->getAcademicEntity())) {
+            return new ViewModel();
+        }
+
         $form = $this->getForm('common_account_profile');
 
         if ($this->getRequest()->isPost()) {
@@ -518,7 +451,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $this->getRequest()->getFiles()->toArray()
             ));
 
-            $academic = $this->getAuthentication()->getPersonObject();
             $filePath = 'public' . $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('common.profile_path');
@@ -580,6 +512,42 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 );
             }
         }
+    }
+
+    /**
+     * @return Academic|null
+     */
+    private function getAcademicEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
+            );
+
+            $this->redirect()->toRoute(
+                'common_index'
+            );
+
+            return null;
+        }
+
+        $academic = $this->getAuthentication()->getPersonObject();
+
+        if (!($academic instanceof Academic)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
+            );
+
+            $this->redirect()->toRoute(
+                'common_index'
+            );
+
+            return;
+        }
+
+        return $academic;
     }
 
     /**

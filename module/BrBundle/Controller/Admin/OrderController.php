@@ -331,6 +331,22 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getCollaboratorEntity()
     {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not a collaborator, so you cannot add or edit orders.'
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_order',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
         $collaborator = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Collaborator')
             ->findCollaboratorByPersonId($this->getAuthentication()->getPersonObject()->getId());

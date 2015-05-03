@@ -33,11 +33,10 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             $this->getParam('page')
         );
 
-        $current = $this->getAuthentication()->getPersonObject();
-        if ($current != null) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             $driver = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Driver')
-                ->findOneById($current->getId());
+                ->findOneById($this->getAuthentication()->getPersonObject()->getId());
             $isDriverLoggedIn = ($driver !== null);
         } else {
             $isDriverLoggedIn = false;
@@ -45,7 +44,6 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
         return new ViewModel(
             array(
-                'currentUser' => $current,
                 'isDriverLoggedIn' => $isDriverLoggedIn,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
@@ -62,11 +60,10 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             $this->getParam('page')
         );
 
-        $current = $this->getAuthentication()->getPersonObject();
-        if ($current != null) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             $driver = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Driver')
-                ->findOneById($current->getId());
+                ->findOneById($this->getAuthentication()->getPersonObject()->getId());
             $isDriverLoggedIn = ($driver !== null);
         } else {
             $isDriverLoggedIn = false;
@@ -74,7 +71,6 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
         return new ViewModel(
             array(
-                'currentUser' => $current,
                 'isDriverLoggedIn' => $isDriverLoggedIn,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),

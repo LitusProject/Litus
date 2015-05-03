@@ -30,13 +30,13 @@ class GroupController extends \FormBundle\Component\Controller\FormController
 {
     public function indexAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
         $groups = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
-            ->findAllGroupsByPerson($this->getAuthentication()->getPersonObject());
+            ->findAllGroupsByPerson($person);
 
         return new ViewModel(
             array(
@@ -47,7 +47,7 @@ class GroupController extends \FormBundle\Component\Controller\FormController
 
     public function viewAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -114,5 +114,17 @@ class GroupController extends \FormBundle\Component\Controller\FormController
         $group->setEntityManager($this->getEntityManager());
 
         return $group;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\User\Person|null
+     */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return null;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
     }
 }

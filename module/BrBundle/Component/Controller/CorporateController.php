@@ -41,10 +41,6 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     {
         $result = parent::onDispatch($e);
 
-        if (!method_exists($this->getAuthentication()->getPersonObject(), 'getCompany') && $this->getAuthentication()->isAuthenticated()) {
-            throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
-        }
-
         $result->cvArchiveYears = unserialize(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
@@ -67,6 +63,22 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
         $e->setResult($result);
 
         return $result;
+    }
+
+    /**
+     * @return Corporate
+     */
+    protected function getCorporateEntity()
+    {
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
+
+            if ($person instanceof Corporate) {
+                return $person;
+            }
+        }
+
+        throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
     }
 
     /**

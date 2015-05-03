@@ -37,7 +37,7 @@ class Banner extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new BannerEntity($this->getPerson());
+            $object = new BannerEntity($this->getPersonEntity());
         }
 
         $startDate = self::loadDateTime($data['start_date']);

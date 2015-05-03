@@ -32,9 +32,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 {
     public function cvAction()
     {
-        $person = $this->getAuthentication()->getPersonObject();
-
-        if (null === $person) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             return new ViewModel(
                 array(
                     'messages' => array(
@@ -42,7 +40,11 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     ),
                 )
             );
-        } elseif (!($person instanceof Academic)) {
+        }
+
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if (!($person instanceof Academic)) {
             return new ViewModel(
                 array(
                     'messages' => array(
@@ -146,9 +148,8 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
     public function editAction()
     {
-        $person = $this->getAuthentication()->getPersonObject();
 
-        if (null === $person) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             return new ViewModel(
                 array(
                     'messages' => array(
@@ -156,7 +157,11 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     ),
                 )
             );
-        } elseif (!($person instanceof Academic)) {
+        }
+
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if (!($person instanceof Academic)) {
             return new ViewModel(
                 array(
                     'messages' => array(

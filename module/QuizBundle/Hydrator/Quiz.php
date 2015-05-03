@@ -43,7 +43,7 @@ class Quiz extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new QuizEntity($this->getPerson());
+            $object = new QuizEntity($this->getPersonEntity());
         }
 
         if (isset($data['edit_roles'])) {

@@ -19,7 +19,8 @@
 namespace CommonBundle\Component\Authentication\Result;
 
 use CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\User\Session;
+    CommonBundle\Entity\User\Session,
+    RuntimeException;
 
 /**
  * Extending the general authentication result to support Doctrine.
@@ -57,12 +58,24 @@ class Doctrine extends \CommonBundle\Component\Authentication\Result
     }
 
     /**
+     * @return boolean
+     */
+    public function hasPersonObject()
+    {
+        return (null !== $this->personObject);
+    }
+
+    /**
      * Return the user object given by the DQL query.
      *
      * @return Person
      */
     public function getPersonObject()
     {
+        if (null === $this->personObject) {
+            throw new RuntimeException('No user was authenticated');
+        }
+
         return $this->personObject;
     }
 

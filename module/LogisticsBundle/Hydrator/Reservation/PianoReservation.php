@@ -52,7 +52,7 @@ class PianoReservation extends \CommonBundle\Component\Hydrator\Hydrator
 
             $object = new PianoReservationEntity(
                 $resource,
-                $this->getAuthentication()->getPersonObject()
+                $this->getPersonEntity()
             );
         }
 

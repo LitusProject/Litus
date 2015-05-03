@@ -18,7 +18,8 @@
 
 namespace LogisticsBundle\Controller;
 
-use DateInterval,
+use CommonBundle\Entity\User\Person,
+    DateInterval,
     DateTime,
     IntlDateFormatter,
     LogisticsBundle\Entity\Reservation\PianoReservation,
@@ -32,8 +33,8 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function indexAction()
     {
-        if (!$this->getAuthentication()->isAuthenticated()) {
-            return new ViewModel();
+        if (!($person = $this->getPersonEntity())) {
+            return $this->notFoundAction();
         }
 
         $form = $this->getForm('logistics_piano-reservation_add');
@@ -63,12 +64,12 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $reservation = new PianoReservation(
                     $piano,
-                    $this->getAuthentication()->getPersonObject()
+                    $person
                 );
 
                 $reservation->setStartDate($startDate)
                     ->setEndDate($endDate)
-                    ->setPlayer($this->getAuthentication()->getPersonObject());
+                    ->setPlayer($person);
 
                 $startWeek = new DateTime();
                 $startWeek->setISODate($reservation->getStartDate()->format('Y'), $weekIndex, 1)
@@ -78,7 +79,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $otherReservations = $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
-                    ->findAllConfirmedByDatesAndPerson($startWeek, $endWeek, $this->getAuthentication()->getPersonObject());
+                    ->findAllConfirmedByDatesAndPerson($startWeek, $endWeek, $person);
 
                 $deadline = new DateTime();
                 $deadline->add(
@@ -97,7 +98,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                     $reservation->setConfirmed();
                 }
 
-                $this->sendMail($reservation);
+                $this->sendMail($reservation, $person);
 
                 $this->getEntityManager()->persist($reservation);
                 $this->getEntityManager()->flush();
@@ -127,17 +128,29 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
+     * @return Person|null
+     */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
+    }
+
+    /**
      * @return array
      */
     private function getReservations()
     {
-        if ($this->getAuthentication()->isAuthenticated()) {
+        if ($person = $this->getPersonEntity()) {
             return $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Reservation\PianoReservation')
                 ->findAllByDatesAndPerson(
                     $this->getCurrentAcademicYear()->getUniversityStartDate(),
                     $this->getCurrentAcademicYear()->getUniversityEndDate(),
-                    $this->getAuthentication()->getPersonObject()
+                    $person
                 );
         }
 
@@ -147,7 +160,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @param PianoReservation $reservation
      */
-    private function sendMail(PianoReservation $reservation)
+    private function sendMail(PianoReservation $reservation, Person $person)
     {
         if ($reservation->isConfirmed()) {
             $mailData = unserialize(
@@ -163,7 +176,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
             );
         }
 
-        if (!($language = $this->getAuthentication()->getPersonObject()->getLanguage())) {
+        if (!($language = $person->getLanguage())) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('en');
@@ -183,7 +196,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 
         $mail = new Message();
         $mail->setBody(
-                str_replace('{{ name }}', $this->getAuthentication()->getPersonObject()->getFullName(),
+                str_replace('{{ name }}', $person->getFullName(),
                     str_replace('{{ start }}', $formatterDate->format($reservation->getStartDate()),
                         str_replace('{{ end }}', $formatterDate->format($reservation->getEndDate()), $message)
                     )
@@ -194,7 +207,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('system_mail_address')
             )
-            ->addTo($this->getAuthentication()->getPersonObject()->getEmail(), $this->getAuthentication()->getPersonObject()->getFullName())
+            ->addTo($person->getEmail(), $person->getFullName())
             ->addTo(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')

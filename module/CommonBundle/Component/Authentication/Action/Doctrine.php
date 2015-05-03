@@ -59,7 +59,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
      */
     public function failedAction(Result $result)
     {
-        if (null === $result->getPersonObject() || !$result->getPersonObject()->hasCredential()) {
+        if (!$result->hasPersonObject() || !$result->getPersonObject()->hasCredential()) {
             return;
         }
 

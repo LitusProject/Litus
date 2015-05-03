@@ -222,30 +222,4 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
         return $sectorArray;
     }
-
-    /**
-     * @return Corporate|null
-     */
-    private function getCorporateEntity()
-    {
-        $person = $this->getAuthentication()->getPersonObject();
-
-        if ($person === null || !($person instanceof Corporate)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login to view the CV book.'
-            );
-
-            $this->redirect()->toRoute(
-                'br_corporate_index',
-                array(
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
-            return;
-        }
-
-        return $person;
-    }
 }

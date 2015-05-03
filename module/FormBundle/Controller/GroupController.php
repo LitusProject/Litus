@@ -60,9 +60,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         $startForm = $group->getForms()[0]->getForm();
 
         foreach ($group->getForms() as $form) {
-            $person = $this->getAuthentication()->getPersonObject();
-
-            if (null !== $person) {
+            if ($this->getAuthentication()->isAuthenticated()) {
+                $person = $this->getAuthentication()->getPersonObject();
                 $entries[$form->getForm()->getId()] = array(
                     'entry' => current(
                         $this->getEntityManager()

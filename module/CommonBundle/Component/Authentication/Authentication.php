@@ -19,7 +19,8 @@
 namespace CommonBundle\Component\Authentication;
 
 use CommonBundle\Component\Authentication\AbstractAuthenticationService as AuthenticationService,
-    CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter;
+    CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
+    RuntimeException;
 
 /**
  * Authentication
@@ -131,14 +132,14 @@ class Authentication
     /**
      * Return the person object.
      *
-     * @return null|\CommonBundle\Entity\User\Person
+     * @return \CommonBundle\Entity\User\Person
      */
     public function getPersonObject()
     {
         $this->authenticate();
 
         if (!isset($this->result)) {
-            return null;
+            throw new RuntimeException('No user was authenticated');
         }
 
         return $this->result->getPersonObject();

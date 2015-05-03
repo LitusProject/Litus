@@ -320,7 +320,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function editAction()
     {
-        if (!($academic = $this->getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -557,7 +557,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function studiesAction()
     {
-        if (!($academic = $this->getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -578,7 +578,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -595,7 +595,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function subjectsAction()
     {
-        if (!($academic = $this->getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -617,7 +617,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     {
         $this->initAjax();
 
-        if (!($academic = $this->getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -634,7 +634,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function completeAction()
     {
-        if (!($academic = $this->getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -684,11 +684,21 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person|null
+     * @return Academic|null
      */
-    private function getAcademic()
+    private function getAcademicEntity()
     {
-        return $this->getAuthentication()->getPersonObject();
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return;
+        }
+
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if (!($person instanceof Academic)) {
+            return;
+        }
+
+        return $person;
     }
 
     /**

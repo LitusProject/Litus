@@ -18,7 +18,8 @@
 
 namespace QuizBundle\Controller;
 
-use QuizBundle\Entity\Point,
+use CommonBundle\Entity\User\Person,
+    QuizBundle\Entity\Point,
     QuizBundle\Entity\Quiz,
     QuizBundle\Entity\Round,
     QuizBundle\Entity\Team,
@@ -165,13 +166,41 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
+     * @return Person|null
+     */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No user was authenticated!'
+            );
+
+            $this->redirect()->toRoute(
+                'quiz_admin_quiz',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
+    }
+
+    /**
      * @return Quiz|null
      */
     private function getQuizEntity()
     {
+        if (!($person = $this->getPersonEntity())) {
+            return;
+        }
+
         $quiz = $this->getEntityById('QuizBundle\Entity\Quiz', 'quizid');
 
-        if (!($quiz instanceof Quiz) || !$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+        if (!($quiz instanceof Quiz) || !$quiz->canBeEditedBy($person)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No quiz was found!'
@@ -195,9 +224,13 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getRoundEntity()
     {
+        if (!($person = $this->getPersonEntity())) {
+            return;
+        }
+
         $round = $this->getEntityById('QuizBundle\Entity\Round', 'roundid');
 
-        if (!($round instanceof Round) || !$round->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+        if (!($round instanceof Round) || !$round->getQuiz()->canBeEditedBy($person)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No round was found!'
@@ -221,9 +254,13 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getTeamEntity()
     {
+        if (!($person = $this->getPersonEntity())) {
+            return;
+        }
+
         $team = $this->getEntityById('QuizBundle\Entity\Team', 'teamid');
 
-        if (!($team instanceof Team) || !$team->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+        if (!($team instanceof Team) || !$team->getQuiz()->canBeEditedBy($person)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No team was found!'

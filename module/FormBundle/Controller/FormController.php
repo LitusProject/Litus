@@ -63,12 +63,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $person = $this->getAuthentication()->getPersonObject();
+        $person = null;
         $guestInfo = null;
         $entries = null;
         $draftVersion = null;
 
-        if (null !== $person) {
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
             $entries = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findAllByFormAndPerson($formSpecification, $person);
@@ -301,9 +302,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $person = $this->getAuthentication()->getPersonObject();
-
-        if ($person === null && !$formSpecification->isNonMember()) {
+        if (!$this->getAuthentication()->isAuthenticated() && !$formSpecification->isNonMember()) {
             return new ViewModel(
                 array(
                     'message'       => 'Please login to view this form.',
@@ -336,18 +335,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        if ($person === null && !$formSpecification->isNonMember()) {
-            return new ViewModel(
-                array(
-                    'message'       => 'Please login to view this form.',
-                    'specification' => $formSpecification,
-                )
-            );
-        }
-
+        $person = null;
         $formEntry = null;
         $guestInfo = null;
-        if (null !== $person) {
+        if ($this->getAuthentication()->isAuthencticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findOneByFormAndPerson($formSpecification, $person);
@@ -447,10 +439,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $person = $this->getAuthentication()->getPersonObject();
-        $guestInfo = null;
-
-        if ($person === null && !$formSpecification->isNonMember()) {
+        if (!$this->getAuthentication()->isAuthenticated() && !$formSpecification->isNonMember()) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -472,8 +461,12 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
+
+        $person = null;
+        $guestInfo = null;
         $formEntry = null;
-        if (null !== $person) {
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findOneByFormAndPerson($formSpecification, $person);
@@ -589,11 +582,12 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        $person = $this->getAuthentication()->getPersonObject();
+        $person = null;
         $guestInfo = null;
         $draftVersion = null;
 
-        if (null !== $person) {
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
             $draftVersion = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
                 ->findDraftVersionByFormAndPerson($formEntry->getForm(), $person);
@@ -704,7 +698,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('FormBundle\Entity\Entry')
             ->findOneByValue($this->getParam('id'));
 
-        if (null === $fieldEntry || $fieldEntry->getFormEntry()->getCreationPerson() != $this->getAuthentication()->getPersonObject()) {
+        if (null === $fieldEntry || !$this->getAuthentication()->isAuthenticated() || $fieldEntry->getFormEntry()->getCreationPerson() != $this->getAuthentication()->getPersonObject()) {
             return $this->notFoundAction();
         }
 
@@ -759,8 +753,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $person = $this->getAuthentication()->getPersonObject();
+        $person = null;
         $guestInfo = null;
+
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
+        }
+
         if ($this->isCookieSet() && null === $person) {
             $guestInfo = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\GuestInfo')

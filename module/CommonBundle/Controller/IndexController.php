@@ -115,7 +115,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     private function getBookings()
     {
         $bookings = null;
-        if (null !== $this->getAuthentication()->getPersonObject()) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             $bookings = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllOpenByPerson($this->getAuthentication()->getPersonObject());
@@ -237,7 +237,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getMyShifts()
     {
-        if (!$this->getAuthentication()->getPersonObject()) {
+        if (!$this->getAuthentication()->isAuthenticated()) {
             return null;
         }
 

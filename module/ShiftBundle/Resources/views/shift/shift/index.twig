@@ -147,7 +147,7 @@
 
                         $.post(
                             '{{ url('shift', {"action": "responsible"}) }}',
-                            {"id": button.data('id'), "person": "{{ authenticatedPerson.getId() }}"},
+                            {"id": button.data('id')},
                             function (data) {
                                 if (data && 'success' == data.status) {
                                     $('.flashmessage').removeClass('in');
@@ -194,7 +194,7 @@
 
                         $.post(
                             '{{ url('shift', {"action": "volunteer"}) }}',
-                            {"id": button.data('id'), "person": "{{ authenticatedPerson.getId() }}"},
+                            {"id": button.data('id')},
                             function (data) {
                                 if (data && 'success' == data.status) {
                                     $('.flashmessage').removeClass('in');
@@ -236,7 +236,7 @@
 
                 $.post(
                     '{{ url('shift', {"action": "signOut"}) }}',
-                    {"id": $(this).data('id'), "person": "{{ authenticatedPerson.getId() }}"},
+                    {"id": $(this).data('id')},
                     function (data) {
                         if (data && 'success' == data.status) {
                             $('.flashmessage').removeClass('in');

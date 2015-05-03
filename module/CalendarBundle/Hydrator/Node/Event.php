@@ -33,7 +33,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new EventEntity($this->getPerson());
+            $object = new EventEntity($this->getPersonEntity());
         }
 
         $startDate = self::loadDateTime($data['start_date']);

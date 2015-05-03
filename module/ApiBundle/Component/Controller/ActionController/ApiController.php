@@ -166,7 +166,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                 $server->get('REQUEST_METHOD'),
                 $route->getParam('controller'),
                 $route->getParam('action'),
-                $this->getAuthentication()->getPersonObject()
+                $this->getAuthentication()->isAuthenticated() ? $this->getAuthentication()->getPersonObject() : null
             );
 
             $this->getEntityManager()->persist($visit);
@@ -218,7 +218,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             new HasAccessDriver(
                 $this->getAcl(),
                 $this->getAuthentication()->isAuthenticated(),
-                $this->getAuthentication()->getPersonObject()
+                $this->getAuthentication()->isAuthenticated() ? $this->getAuthentication()->getPersonObject() : null
             )
         );
 
@@ -284,7 +284,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             new HasAccessDriver(
                 $this->getAcl(),
                 $this->getAuthentication()->isAuthenticated(),
-                $this->getAuthentication()->getPersonObject()
+                $this->getAuthentication()->isAuthenticated() ? $this->getAuthentication()->getPersonObject() : null
             )
         );
     }

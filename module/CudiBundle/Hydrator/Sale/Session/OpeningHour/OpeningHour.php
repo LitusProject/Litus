@@ -46,7 +46,7 @@ class OpeningHour extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new OpeningHourEntity($this->getPerson());
+            $object = new OpeningHourEntity($this->getPersonEntity());
         }
 
         $object->setStart(self::loadDateTime($data['start']))

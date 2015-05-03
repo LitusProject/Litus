@@ -43,33 +43,21 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $unitSearchForm = $this->getForm('shift_shift_search_unit');
         $dateSearchForm = $this->getForm('shift_shift_search_date');
 
-        if (!$this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->warn(
-                'Warning',
-                'Please login to view the shifts!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index',
-                array(
-                    'action' => 'index',
-                )
-            );
-
-            return new ViewModel();
+        if (!($person = $this->getPersonEntity())) {
+            return $this->notFoundAction();
         }
 
         $myShifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
+            ->findAllActiveByPerson($person);
 
         $token = $this->getDocumentManager()
             ->getRepository('ShiftBundle\Document\Token')
-            ->findOneByPerson($this->getAuthentication()->getPersonObject());
+            ->findOneByPerson($person);
 
         if (null === $token) {
             $token = new Token(
-                $this->getAuthentication()->getPersonObject()
+                $person
             );
             $this->getDocumentManager()->persist($token);
             $this->getDocumentManager()->flush();
@@ -200,7 +188,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->getShift()) || !($person = $this->getPerson())) {
+        if (!($shift = $this->getShiftEntity()) || !($person = $this->getPersonEntity())) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -240,7 +228,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->getShift()) || !($person = $this->getPerson())) {
+        if (!($shift = $this->getShiftEntity()) || !($person = $this->getPersonEntity())) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -331,7 +319,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->getShift()) || !($person = $this->getPerson())) {
+        if (!($shift = $this->getShiftEntity()) || !($person = $this->getPersonEntity())) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -442,15 +430,19 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
+        if (!($person = $this->getPersonEntity())) {
+            return $this->notFoundAction();
+        }
+
         $academicYear = $this->getCurrentAcademicYear(true);
 
         $asVolunteer = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllByPersonAsVolunteer($this->getAuthentication()->getPersonObject(), $academicYear);
+            ->findAllByPersonAsVolunteer($person, $academicYear);
 
         $asResponsible = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllByPersonAsReponsible($this->getAuthentication()->getPersonObject(), $academicYear);
+            ->findAllByPersonAsReponsible($person, $academicYear);
 
         $now = new DateTime();
 
@@ -479,7 +471,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
             $shiftsAsVolunteerCount++;
             foreach ($shift->getVolunteers() as $volunteer) {
-                if ($volunteer->getPerson() == $this->getAuthentication()->getPersonObject() && !($volunteer->isPayed())) {
+                if ($volunteer->getPerson() == $person && !($volunteer->isPayed())) {
                     $unPayedShifts += 1;
                     $unPayedCoins += $shift->getReward();
                 }
@@ -526,7 +518,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $shiftsAsResponsibleCount++;
         }
 
-        $praesidium = $this->getAuthentication()->getPersonObject()->isPraesidium($academicYear);
+        $praesidium = $person->isPraesidium($academicYear);
 
         return new ViewModel(
             array(
@@ -545,26 +537,26 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
+     * @return \CommonBundle\Entity\User\Person|null
+     */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
+    }
+
+    /**
      * @return \ShiftBundle\Entity\Shift|null
      */
-    private function getShift()
+    private function getShiftEntity()
     {
         $shift = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findOneById($this->getRequest()->getPost('id', 0));
 
         return $shift;
-    }
-
-    /**
-     * @return \CommonBundle\Entity\User\Person|null
-     */
-    private function getPerson()
-    {
-        $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($this->getRequest()->getPost('person', 0));
-
-        return $person;
     }
 }

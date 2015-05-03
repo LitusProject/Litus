@@ -131,6 +131,10 @@ class LeaseController extends LogisticsController
      */
     private function handleLeaseForm()
     {
+        if (!($person = $this->getPersonEntity())) {
+            return;
+        }
+
         $form = $this->getForm('logistics_lease_add-lease');
 
         if ($this->getRequest()->isPost()) {
@@ -149,7 +153,7 @@ class LeaseController extends LogisticsController
                         $item,
                         $formData['leased_amount'],
                         new DateTime(),
-                        $this->getAuthentication()->getPersonObject(),
+                        $person,
                         $formData['leased_to'],
                         $formData['leased_pawn'],
                         $formData['comment']
@@ -181,6 +185,10 @@ class LeaseController extends LogisticsController
      */
     private function handleReturnForm()
     {
+        if (!($person = $this->getPersonEntity())) {
+            return;
+        }
+
         $form = $this->getForm('logistics_lease_add-return');
 
         if ($this->getRequest()->isPost()) {
@@ -201,7 +209,7 @@ class LeaseController extends LogisticsController
 
                     $lease->setReturned(true)
                         ->setReturnedAmount($data['returned_amount'])
-                        ->setReturnedTo($this->getAuthentication()->getPersonObject())
+                        ->setReturnedTo($person)
                         ->setReturnedDate(new DateTime())
                         ->setReturnedPawn($data['returned_pawn'])
                         ->setReturnedBy($data['returned_by'])
@@ -226,6 +234,25 @@ class LeaseController extends LogisticsController
         }
 
         return $form;
+    }
+
+    /**
+     * @return Person|null
+     */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No person was authenticated!'
+            );
+
+            $this->redirect()->toRoute('logistics_index');
+
+            return;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
     }
 
     /**

@@ -54,7 +54,7 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
                 ->findOneByName(VanReservationEntity::VAN_RESOURCE_NAME);
 
-            $object = new VanReservationEntity($resource, $this->getPerson());
+            $object = new VanReservationEntity($resource, $this->getPersonEntity());
         }
 
         $driver = $this->getEntityManager()

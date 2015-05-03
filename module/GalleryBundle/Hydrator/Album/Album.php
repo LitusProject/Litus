@@ -48,7 +48,7 @@ class Album extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new AlbumEntity($this->getPerson());
+            $object = new AlbumEntity($this->getPersonEntity());
         }
 
         if (isset($data['date'])) {

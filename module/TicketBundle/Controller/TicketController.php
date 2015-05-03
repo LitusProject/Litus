@@ -36,11 +36,15 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return $this->notFoundAction();
         }
 
+        if (!($person = $this->getPersonEntity())) {
+            return $this->notFoundAction();
+        }
+
         $tickets = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
-            ->findAllByEventAndPerson($event, $this->getAuthentication()->getPersonObject());
+            ->findAllByEventAndPerson($event, $person);
 
-        $form = $this->getForm('ticket_ticket_book', array('event' => $event, 'person' => $this->getAuthentication()->getPersonObject()));
+        $form = $this->getForm('ticket_ticket_book', array('event' => $event, 'person' => $person));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -60,7 +64,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                 TicketBook::book(
                     $event,
-                    $this->getAuthentication()->getPersonObject(),
+                    $person,
                     null,
                     $numbers,
                     false,
@@ -84,7 +88,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             }
         }
 
-        $organizationStatus = $this->getAuthentication()->getPersonObject()->getOrganizationStatus($this->getCurrentAcademicYear());
+        $organizationStatus = $person->getOrganizationStatus($this->getCurrentAcademicYear());
 
         return new ViewModel(
             array(
@@ -121,6 +125,18 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     }
 
     /**
+     * @return \CommonBundle\Entity\User\Person|null
+     */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
+    }
+
+    /**
      * @return Event|null
      */
     private function getEventEntity()
@@ -139,9 +155,13 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
      */
     private function getTicketEntity()
     {
+        if (!($person = $this->getPersonEntity())){
+            return;
+        }
+
         $ticket = $this->getEntityById('TicketBundle\Entity\Ticket');
 
-        if (!($ticket instanceof Ticket) || $ticket->getPerson() != $this->getAuthentication()->getPersonObject()) {
+        if (!($ticket instanceof Ticket) || $ticket->getPerson() != $person) {
             return;
         }
 

@@ -146,7 +146,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 $server->get('REQUEST_METHOD'),
                 $route->getParam('controller'),
                 $route->getParam('action'),
-                $this->getAuthentication()->getPersonObject()
+                $this->getAuthentication()->isAuthenticated() ? $this->getAuthentication()->getPersonObject() : null
             );
 
             $this->getEntityManager()->persist($visit);
@@ -193,7 +193,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             new HasAccessDriver(
                 $this->getAcl(),
                 $this->getAuthentication()->isAuthenticated(),
-                $this->getAuthentication()->getPersonObject()
+                $this->getAuthentication()->isAuthenticated() ? $this->getAuthentication()->getPersonObject() : null
             )
         );
     }
@@ -246,7 +246,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             new HasAccessDriver(
                 $this->getAcl(),
                 $this->getAuthentication()->isAuthenticated(),
-                $this->getAuthentication()->getPersonObject()
+                $this->getAuthentication()->isAuthenticated() ? $this->getAuthentication()->getPersonObject() : null
             )
         );
 
