@@ -29,7 +29,9 @@ trait FieldsetTrait
             'type' => 'inputfilter',
         );
 
-        foreach ($this->elements as $name => $elementOrFieldset) {
+        $elements = array_merge($this->elements, $this->fieldsets);
+
+        foreach ($elements as $name => $elementOrFieldset) {
             if ($elementOrFieldset instanceof InputFilterProviderInterface) {
                 $spec[$name] = $elementOrFieldset->getInputFilterSpecification();
             } elseif ($elementOrFieldset instanceof InputProviderInterface) {
