@@ -57,7 +57,7 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 
         $nbPayDesks = sizeof($payDesks);
         for ($i = 0; $i < $nbPayDesks; $i++) {
-            if (strpos('paydesk', $payDesks[$i]->getCode()) !== 0) {
+            if (strpos($payDesks[$i]->getCode(), 'paydesk') !== 0) {
                 unset($payDesks[$i]);
             }
         }
@@ -71,6 +71,9 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
                 'payDesks' => $payDesks,
+                'enableCollecting' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.enable_collect_scanning'),
                 'logos' => $logos,
                 'logoPath' => $logoPath,
             )
