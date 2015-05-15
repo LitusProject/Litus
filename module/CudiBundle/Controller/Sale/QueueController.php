@@ -71,6 +71,9 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
                 'payDesks' => $payDesks,
+                'enableCollecting' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.enable_collect_scanning'),
                 'logos' => $logos,
                 'logoPath' => $logoPath,
             )
