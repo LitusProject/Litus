@@ -29,6 +29,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Banner extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -40,6 +43,9 @@ class Banner extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveQuery()
     {
         $now = new DateTime();

@@ -262,7 +262,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                         $booking = new Booking(
                             $this->getEntityManager(),
-                            $authenticatedPerson,
+                            $academic,
                             $saleArticle,
                             'booked',
                             $formValue

@@ -127,7 +127,7 @@ class LeaseController extends LogisticsController
     }
 
     /**
-     * @return \CommonBundle\Component\Form\Form
+     * @return null|\CommonBundle\Component\Form\Form
      */
     private function handleLeaseForm()
     {
@@ -181,7 +181,7 @@ class LeaseController extends LogisticsController
     }
 
     /**
-     * @return \CommonBundle\Component\Form\Form
+     * @return null|\CommonBundle\Component\Form\Form
      */
     private function handleReturnForm()
     {
@@ -237,7 +237,7 @@ class LeaseController extends LogisticsController
     }
 
     /**
-     * @return Person|null
+     * @return null|\CommonBundle\Entity\User\Person
      */
     private function getPersonEntity()
     {

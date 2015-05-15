@@ -29,6 +29,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Key extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -43,6 +46,9 @@ class Key extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findOneActiveByCode($code)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

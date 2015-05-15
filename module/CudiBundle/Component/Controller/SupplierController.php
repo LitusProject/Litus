@@ -40,7 +40,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     {
         $result = parent::onDispatch($e);
 
-        $result->supplier = $this->getSupplier();
+        $result->supplier = $this->getSupplierEntity();
         $result->loginForm = $this->getForm('common_auth_login')
             ->setAttribute('class', '')
             ->setAttribute('action', $this->url()->fromRoute(

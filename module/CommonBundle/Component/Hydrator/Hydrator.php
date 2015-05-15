@@ -227,17 +227,13 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     }
 
     /**
-     * Returns the logged in user. The return value is null if no one is logged in.
+     * Returns the logged in user.
      *
      * @return \CommonBundle\Entity\User\Person
      */
     public function getPersonEntity()
     {
-        if ($this->getAuthentication()->isAuthenticated()) {
-            return $this->getAuthentication()->getPersonObject();
-        }
-
-        return null;
+        return $this->getAuthentication()->getPersonObject();
     }
 
     /**

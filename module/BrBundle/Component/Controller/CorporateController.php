@@ -18,7 +18,8 @@
 
 namespace BrBundle\Component\Controller;
 
-use CommonBundle\Component\Controller\Exception\HasNoAccessException,
+use BrBundle\Entity\User\Person\Corporate,
+    CommonBundle\Component\Controller\Exception\HasNoAccessException,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\Mvc\MvcEvent;

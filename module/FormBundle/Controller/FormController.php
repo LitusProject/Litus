@@ -338,7 +338,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $person = null;
         $formEntry = null;
         $guestInfo = null;
-        if ($this->getAuthentication()->isAuthencticated()) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
             $formEntry = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Entry')
