@@ -76,15 +76,15 @@ class Queue
             $repository->findAllByStatus($session, 'selling')
         );
 
-        $collected = $this->createJsonQueue(
+        $collected = $this->_createJsonQueue(
             $repository->findAllByStatus($session, 'collected')
         );
 
-        $collecting = $this->createJsonQueue(
+        $collecting = $this->_createJsonQueue(
             $repository->findAllByStatus($session, 'collecting')
         );
 
-        $signed_in = $this->createJsonQueue(
+        $signed_in = $this->_createJsonQueue(
             $repository->findAllByStatus($session, 'signed_in')
         );
 
