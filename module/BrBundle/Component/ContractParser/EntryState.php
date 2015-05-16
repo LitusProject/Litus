@@ -54,7 +54,8 @@ abstract class EntryState
     }
 
     /**
-     * @param string $text
+     * @param  string $text
+     * @return self
      */
     abstract public function addEntry($text);
 

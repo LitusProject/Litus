@@ -34,7 +34,8 @@ class Entries extends EntryItem
     private $entries;
 
     /**
-     * @param string $text
+     * @param  string $text
+     * @return null
      */
     public function __construct($text)
     {
@@ -44,7 +45,8 @@ class Entries extends EntryItem
     }
 
     /**
-     * @param string $text
+     * @param  string $text
+     * @return null
      */
     public function parse($text)
     {
@@ -52,8 +54,9 @@ class Entries extends EntryItem
     }
 
     /**
-     * @param integer $indent
-     * @param string  $text
+     * @param  integer $indent
+     * @param  string  $text
+     * @return null
      */
     public function passOn($indent, $text)
     {
@@ -61,7 +64,8 @@ class Entries extends EntryItem
     }
 
     /**
-     * @param Entry $entry
+     * @param  Entry $entry
+     * @return null
      */
     public function addEntry(Entry $entry)
     {
@@ -78,7 +82,8 @@ class Entries extends EntryItem
     }
 
     /**
-     * @param NodeVisitor $nodeVisitor
+     * @param  NodeVisitor $nodeVisitor
+     * @return null
      */
     public function visitNode(NodeVisitor $nodeVisitor)
     {

@@ -29,7 +29,8 @@ class IllegalFormatException extends \Exception
     private $lineNb;
 
     /**
-     * @param integer $lineNumber
+     * @param  integer $lineNumber
+     * @return null
      */
     public function setLineNumber($lineNumber)
     {
@@ -37,7 +38,7 @@ class IllegalFormatException extends \Exception
     }
 
     /**
-    * @return integer
+    * @return int
     */
     public function getLineNumber()
     {

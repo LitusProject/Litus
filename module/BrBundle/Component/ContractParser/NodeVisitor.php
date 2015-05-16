@@ -25,19 +25,19 @@ interface NodeVisitor
 {
     /**
      * @param  Entry $entry
-     * @return void
+     * @return null
      */
     public function visitEntry(Entry $entry);
 
     /**
      * @param  Entries $entries
-     * @return void
+     * @return null
      */
     public function visitEntries(Entries $entries);
 
     /**
      * @param  Text $text
-     * @return void
+     * @return null
      */
     public function visitText(Text $text);
 }
