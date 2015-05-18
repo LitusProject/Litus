@@ -198,6 +198,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $this;
     }
 
+    /**
+     * @return array
+     */
     private function getCompanyArray()
     {
         $companies = $this->getEntityManager()
@@ -214,6 +217,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $companyArray;
     }
 
+    /**
+     * @return array
+     */
     private function getContactArray(Company $company)
     {
         $contacts = $company->getContacts();
@@ -228,6 +234,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $contactArray;
     }
 
+    /**
+     * @return array
+     */
     private function getProducts()
     {
         return $this->getEntityManager()
@@ -235,6 +244,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->findByAcademicYear($this->currentYear);
     }
 
+    /**
+     * @return array
+     */
     public function getInputFilterSpecification()
     {
         $specs = parent::getInputFilterSpecification();

@@ -167,6 +167,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
     }
 
+    /**
+     * @param  Product $product
+     * @return self
+     */
     public function setProduct(Product $product)
     {
         $this->product = $product;
@@ -174,6 +178,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $this;
     }
 
+    /**
+     * @return array
+     */
     private function getVatTypes()
     {
         $types = unserialize(
@@ -190,6 +197,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $typesArray;
     }
 
+    /**
+     * @return array
+     */
     private function createEventsArray()
     {
         $events = $this->getEntityManager()
@@ -215,6 +225,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $eventsArray;
     }
 
+    /**
+     * @return string
+     */
     private function getContractText()
     {
         return $this->getEntityManager()

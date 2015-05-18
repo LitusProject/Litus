@@ -28,6 +28,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Collaborator extends EntityRepository
 {
+    /**
+     * @param  int                           $id
+     * @return \BrBundle\Entity\Collaborator
+     */
     public function findCollaboratorByPersonId($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

@@ -299,7 +299,7 @@ class Order
             }
         }
 
-        return ($cost / 100) - $this->getContract()->getDiscount();
+        return (double) (($cost / 100) - $this->getContract()->getDiscount());
     }
 
     /**

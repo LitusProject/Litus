@@ -286,6 +286,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    /**
+     * @return \Doctrine\ORM\Query|null
+     */
     private function search()
     {
         switch ($this->getParam('field')) {

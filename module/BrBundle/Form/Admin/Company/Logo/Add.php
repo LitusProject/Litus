@@ -91,7 +91,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Type',
             'required'   => true,
             'attributes' => array(
-                'options' => Logo::$POSSIBLE_TYPES,
+                'options' => Logo::$possibleTypes,
                 'data-help' => 'The location where the logo will be used:
                     <ul>
                         <li><b>Homepage:</b> In the footer of the website</li>

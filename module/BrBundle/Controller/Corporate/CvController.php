@@ -261,6 +261,10 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         );
     }
 
+    /**
+     * @param  AcademicYear $academicYear
+     * @return array
+     */
     private function getList(AcademicYear $academicYear)
     {
         return $this->getEntityManager()
@@ -268,6 +272,11 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             ->findAllByAcademicYear($academicYear);
     }
 
+    /**
+     * @param  array $entries
+     * @param  array $filters
+     * @return array
+     */
     private function doFilter($entries, $filters)
     {
         if (isset($filters['string'])) {
@@ -281,6 +290,11 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         return $entries;
     }
 
+    /**
+     * @param  array  $entries
+     * @param  string $string
+     * @return array
+     */
     private function filterString($entries, $string)
     {
         $result = array();
@@ -301,6 +315,11 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         return $result;
     }
 
+    /**
+     * @param  array $entries
+     * @param  int   $grade
+     * @return array
+     */
     private function filterGrade($entries, $grade)
     {
         $result = array();

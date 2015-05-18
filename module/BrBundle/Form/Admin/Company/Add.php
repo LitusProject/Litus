@@ -130,7 +130,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required'   => false,
             'attributes' => array(
                 'multiple'  => true,
-                'options'   => $this->getCVBookYears(),
+                'options'   => $this->getCvBookYears(),
                 'data-help' => 'The selected years will be visible in the corporate app of this company. The archived ones are downloadable in pdf format.',
             ),
         ));
@@ -199,6 +199,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
     }
 
+    /**
+     * @return array
+     */
     private function getSectors()
     {
         $sectorArray = array();
@@ -209,6 +212,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $sectorArray;
     }
 
+    /**
+     * @return array
+     */
     private function getYears()
     {
         $years = $this->getEntityManager()
@@ -223,6 +229,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $options;
     }
 
+    /**
+     * @return array
+     */
     private function getArchiveYears()
     {
         $years = unserialize(
@@ -239,7 +248,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $options;
     }
 
-    private function getCVBookYears()
+    /**
+     * @return array
+     */
+    private function getCvBookYears()
     {
         $cvYears = $this->getArchiveYears();
         $years = $this->getYears();

@@ -692,7 +692,7 @@ class Entry
     /**
      * Retrieves the languages of this entry.
      *
-     * @return ArrayCollection
+     * @return array
      */
     public function getLanguages()
     {

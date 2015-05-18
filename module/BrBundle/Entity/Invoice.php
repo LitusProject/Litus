@@ -103,7 +103,7 @@ class Invoice
         $this->setOrder($order);
         $this->creationTime = new DateTime();
         $this->setVersion(0);
-        $this->setVATContext();
+        $this->setVatContext();
 
         $this->invoiceEntries = new ArrayCollection();
     }
@@ -117,7 +117,7 @@ class Invoice
         return $this->creationTime->format('Y') . $brNumber . str_pad($this->order->getContract()->getInvoiceNb(), 3, '0', STR_PAD_LEFT);
     }
 
-    public function setVATContext($text = '')
+    public function setVatContext($text = '')
     {
         $this->VATcontext = $text;
 

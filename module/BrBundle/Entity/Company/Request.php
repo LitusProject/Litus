@@ -93,14 +93,26 @@ abstract class Request
         return $this->creationTime;
     }
 
+    /**
+     * @return null
+     */
     public function handled()
     {
         $this->handled = true;
     }
 
+    /**
+     * @return null
+     */
     abstract public function approveRequest();
 
+    /**
+     * @return null
+     */
     abstract public function rejectRequest();
 
+    /**
+     * @return \BrBundle\Entity\Company\Job
+     */
     abstract public function getJob();
 }

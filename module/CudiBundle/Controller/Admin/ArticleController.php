@@ -493,7 +493,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Doctrine\ORM\Query
+     * @return \Doctrine\ORM\Query|null
      */
     private function search()
     {

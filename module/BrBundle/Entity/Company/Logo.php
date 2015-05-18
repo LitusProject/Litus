@@ -85,7 +85,7 @@ class Logo
     /**
      * @var array The possible types of a logo
      */
-    public static $POSSIBLE_TYPES = array(
+    public static $possibleTypes = array(
         'homepage' => 'Homepage',
         'cudi' => 'Cudi',
     );
@@ -104,7 +104,7 @@ class Logo
      */
     public static function isValidLogoType($type)
     {
-        return array_key_exists($type, self::$POSSIBLE_TYPES);
+        return array_key_exists($type, self::$possibleTypes);
     }
 
     /**
@@ -120,7 +120,7 @@ class Logo
      */
     public function getType()
     {
-        return self::$POSSIBLE_TYPES[$this->type];
+        return self::$possibleTypes[$this->type];
     }
 
     /**

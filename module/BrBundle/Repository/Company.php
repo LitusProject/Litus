@@ -28,6 +28,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Company extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -42,6 +45,9 @@ class Company extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByNameQuery($name)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

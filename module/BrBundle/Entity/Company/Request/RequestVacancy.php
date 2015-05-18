@@ -115,6 +115,9 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
         return $this->requestType;
     }
 
+    /**
+     * @return null
+     */
     public function approveRequest()
     {
         switch ($this->requestType) {
@@ -135,6 +138,9 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
         }
     }
 
+    /**
+     * @return null
+     */
     public function rejectRequest()
     {
         switch ($this->requestType) {

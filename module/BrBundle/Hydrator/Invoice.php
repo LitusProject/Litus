@@ -35,7 +35,7 @@ class Invoice extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException('Cannot create an invoice');
         }
 
-        $object->setVATContext($data['VATContext']);
+        $object->setVatContext($data['VATContext']);
 
         $newVersionNb = 0;
 
