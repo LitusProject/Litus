@@ -34,7 +34,12 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        if (null === $this->getParam('field')) {
+        if (null !== $this->getParam('field') && ($companies = $this->search())) {
+            $paginator = $this->paginator()->createFromQuery(
+                $companies,
+                $this->getParam('page')
+            );
+        } else {
             $paginator = $this->paginator()->createFromEntity(
                 'BrBundle\Entity\Company',
                 $this->getParam('page'),
@@ -44,11 +49,6 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 array(
                     'name' => 'ASC',
                 )
-            );
-        } else {
-            $paginator = $this->paginator()->createFromQuery(
-                $this->search(),
-                $this->getParam('page')
             );
         }
 

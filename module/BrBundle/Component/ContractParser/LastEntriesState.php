@@ -65,7 +65,7 @@ class LastEntriesState extends EntryState
 
     /**
      * @param  string $text
-     * @return self
+     * @return null
      */
     public function passOn($indent, $text)
     {

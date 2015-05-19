@@ -68,7 +68,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $invoiceDate = $this->invoide->getCreationTime()->format('j/m/Y');
         $dueDate = $this->invoide->getExpirationTime($this->getEntityManager())->format('j/m/Y');
-        $clientVat = $this->VatFormat($this->invoide->getOrder()->getCompany()->getVatNumber());
+        $clientVat = $this->vatFormat($this->invoide->getOrder()->getCompany()->getVatNumber());
         $reference = '/'; // TODO? (this was here already)
 
         $invoiceNb = $this->invoide->getInvoiceNumber($this->getEntityManager());
@@ -276,7 +276,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
      * @param  string $vat
      * @return string
      */
-    private function VatFormat($vat)
+    private function vatFormat($vat)
     {
         return substr_replace(substr_replace(substr_replace($vat, ' ', 2, 0), '.', 7, 0), '.', 11, 0);
     }

@@ -28,6 +28,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Request extends EntityRepository
 {
+    /**
+     * @param  int                              $id
+     * @return \BrBundle\Entity\Company\Request
+     */
     public function findRequestById($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

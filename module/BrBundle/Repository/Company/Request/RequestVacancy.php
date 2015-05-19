@@ -28,6 +28,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class RequestVacancy extends EntityRepository
 {
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
     public function findNewRequests()
     {
         $query = $this->getEntityManager()->createQueryBuilder();

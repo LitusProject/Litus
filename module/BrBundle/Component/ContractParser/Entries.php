@@ -34,8 +34,7 @@ class Entries extends EntryItem
     private $entries;
 
     /**
-     * @param  string $text
-     * @return null
+     * @param string $text
      */
     public function __construct($text)
     {

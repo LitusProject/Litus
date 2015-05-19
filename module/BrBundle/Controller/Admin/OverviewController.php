@@ -97,6 +97,9 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    /**
+     * @return array
+     */
     private function getCompanyOverview()
     {
         $companyNmbr = 0;
@@ -118,7 +121,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 ->getRepository('BrBundle\Entity\Contract')
                 ->findAllNewOrSignedByCompany($company);
 
-            $companyNmbr = $companyNmbr + 1;
+            $companyNmbr++;
 
             $contracted = 0;
             $signed = 0;
@@ -154,6 +157,9 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         return [$collection, $totals];
     }
 
+    /**
+     * @return array
+     */
     private function getPersonOverview()
     {
         $contractNmbr = 0;
@@ -180,7 +186,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             $paid = 0;
 
             foreach ($contracts as $contract) {
-                $contractNmbr = $contractNmbr + 1;
+                $contractNmbr++;
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
                 $value = $contract->getOrder()->getTotalCost();
                 $contracted = $contracted + $value;

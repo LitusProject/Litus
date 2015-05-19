@@ -62,17 +62,16 @@ class Letter extends CommonBundle\Component\Document\Generator\Pdf
         $companyAddress = self::formatAddress($company->getAddress());
         $companyName = $company->getName();
 
-        $ourContactPerson = $this->contract->getAuthor();
-        $ourContactPerson = $ourContactPerson->getFirstName() . ' ' . $ourContactPerson->getLastName();
+        $ourContactPerson = $this->contract->getAuthor()->getPerson();
 
-        $title = $configs->getConfigValue('br.letter.title.' . $company->getSex());
+        $title = $configs->getConfigValue('br.letter.title.' . $ourContactPerson->getSex());
 
         $xml->append(new XmlObject('letter', null,
                  array(
                      new XmlObject('our_union', null,
                         array(
                             new XmlObject('name', null, $ourUnionName),
-                            new XmlObject('contact_person', null, $ourContactPerson),
+                            new XmlObject('contact_person', null, $ourContactPerson->getFirstName() . ' ' . $ourContactPerson->getLastName()),
                             new XmlObject('address', null, $ourUnionAddress),
                             new XmlObject('logo', null, $ourUnionLogo),
                             new XmlObject('vat_number', null, $ourUnionVatNb),
@@ -85,8 +84,8 @@ class Letter extends CommonBundle\Component\Document\Generator\Pdf
                              new XmlObject('contact_person', null,
                                 array(
                                     new XmlObject('title', null, $title),
-                                    new XmlObject('first_name', null, $company->getFirstName()),
-                                    new XmlObject('last_name', null, $company->getLastName()),
+                                    new XmlObject('first_name', null, $ourContactPerson->getFirstName()),
+                                    new XmlObject('last_name', null, $ourContactPerson->getLastName()),
                                 )
                              ),
                              new XmlObject('address', null, $companyAddress),
