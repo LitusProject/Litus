@@ -30,6 +30,10 @@ use BrBundle\Entity\Collaborator as CollaboratorEntity,
  */
 class Contract extends EntityRepository
 {
+    /**
+     * @param  int $id
+     * @return int
+     */
     public function findCurrentVersionNb($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -46,6 +50,9 @@ class Contract extends EntityRepository
         return $highestVersionNb;
     }
 
+    /**
+     * @return int
+     */
     public function findNextInvoiceNb()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -57,6 +64,9 @@ class Contract extends EntityRepository
         return ++$highestInvoiceNb;
     }
 
+    /**
+     * @return int
+     */
     public function findNextContractNb()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -68,6 +78,10 @@ class Contract extends EntityRepository
         return ++$highestContractNb;
     }
 
+    /**
+     * @param  CollaboratorEntity                           $person
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
     public function findAllNewOrSignedByPerson(CollaboratorEntity $person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -87,6 +101,10 @@ class Contract extends EntityRepository
         return $result;
     }
 
+    /**
+     * @param  CollaboratorEntity  $person
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllNewOrSignedByPersonQuery(CollaboratorEntity $person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -105,6 +123,10 @@ class Contract extends EntityRepository
         return $result;
     }
 
+    /**
+     * @param  CollaboratorEntity $person
+     * @return int
+     */
     public function getContractAmountByPerson(CollaboratorEntity $person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -120,6 +142,10 @@ class Contract extends EntityRepository
         return $result;
     }
 
+    /**
+     * @param  CollaboratorEntity $person
+     * @return int
+     */
     public function getContractedRevenueByPerson(CollaboratorEntity $person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -136,6 +162,10 @@ class Contract extends EntityRepository
         return $result;
     }
 
+    /**
+     * @param  CollaboratorEntity $person
+     * @return int
+     */
     public function getPaidRevenueByPerson(CollaboratorEntity $person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -159,6 +189,9 @@ class Contract extends EntityRepository
         return $result;
     }
 
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
     public function findContractAuthors()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -170,6 +203,10 @@ class Contract extends EntityRepository
         return $result;
     }
 
+    /**
+     * @param  CompanyEntity       $company
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllNewOrSignedByCompanyQuery(CompanyEntity $company)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -188,6 +225,10 @@ class Contract extends EntityRepository
         return $result;
     }
 
+    /**
+     * @param  CompanyEntity $company
+     * @return int
+     */
     public function getContractAmountByCompany(CompanyEntity $company)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -203,6 +244,10 @@ class Contract extends EntityRepository
         return $result;
     }
 
+    /**
+     * @param  CompanyEntity $company
+     * @return int
+     */
     public function getContractedRevenueByCompany(CompanyEntity $company)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -219,6 +264,10 @@ class Contract extends EntityRepository
         return $result;
     }
 
+    /**
+     * @param  CompanyEntity $company
+     * @return int
+     */
     public function getPaidRevenueByCompany(CompanyEntity $company)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -242,6 +291,9 @@ class Contract extends EntityRepository
         return $result;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findContractCompanyQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -252,6 +304,9 @@ class Contract extends EntityRepository
         return $result;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllNewOrSignedQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();

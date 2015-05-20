@@ -68,8 +68,8 @@ class Name extends \CommonBundle\Component\Validator\AbstractValidator implement
     /**
      * Returns true if no matching record is found in the database.
      *
-     * @param  string  $value   The value of the field that will be validated
-     * @param  array   $context The context of the field that will be validated
+     * @param  string     $value   The value of the field that will be validated
+     * @param  array|null $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)

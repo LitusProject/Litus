@@ -31,6 +31,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Entry extends EntityRepository
 {
+    /**
+     * @param  AcademicYear        $year
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearQuery(AcademicYear $year)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -47,6 +51,9 @@ class Entry extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllUngroupedStudiesQuery()
     {
         $subQuery = $this->getEntityManager()->createQueryBuilder();
@@ -88,6 +95,11 @@ class Entry extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Group               $gropu
+     * @param  AcademicYear        $year
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByGroupAndAcademicYearQuery(Group $group, AcademicYear $year)
     {
         $subQuery = $this->getEntityManager()->createQueryBuilder();
@@ -119,6 +131,11 @@ class Entry extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Study               $study
+     * @param  AcademicYear        $year
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByStudyAndAcademicYearQuery(Study $study, AcademicYear $year)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

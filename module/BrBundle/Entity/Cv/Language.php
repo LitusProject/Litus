@@ -32,7 +32,7 @@ class Language
     /**
      * @var array The possible written skills.
      */
-    public static $WRITTEN_SKILLS = array(
+    public static $writtenSkills = array(
         'none' => 'None_skills',
         'active' => 'Active (Writing)',
         'passive' => 'Passive (Reading)',
@@ -41,7 +41,7 @@ class Language
     /**
      * @var array The possible oral skills.
      */
-    public static $ORAL_SKILLS = array(
+    public static $oralSkills = array(
         'none' => 'None_skills',
         'active' => 'Active (Speaking)',
         'passive' => 'Passive (Listening)',
@@ -129,7 +129,7 @@ class Language
      */
     public static function isValidWrittenSkill($skill)
     {
-        return array_key_exists($skill, self::$WRITTEN_SKILLS);
+        return array_key_exists($skill, self::$writtenSkills);
     }
 
     /**
@@ -138,7 +138,7 @@ class Language
      */
     public static function isValidOralSkill($skill)
     {
-        return array_key_exists($skill, self::$ORAL_SKILLS);
+        return array_key_exists($skill, self::$oralSkills);
     }
 
     /**
@@ -160,7 +160,7 @@ class Language
      */
     public function getWrittenSkill()
     {
-        return self::$WRITTEN_SKILLS[$this->written];
+        return self::$writtenSkills[$this->written];
     }
 
     /**
@@ -191,7 +191,7 @@ class Language
      */
     public function getOralSkill()
     {
-        return self::$ORAL_SKILLS[$this->oral];
+        return self::$oralSkills[$this->oral];
     }
 
     /**

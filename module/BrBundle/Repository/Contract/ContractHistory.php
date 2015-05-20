@@ -29,6 +29,10 @@ use BrBundle\Entity\Contract,
  */
 class ContractHistory extends EntityRepository
 {
+    /**
+     * @param  Contract            $contract
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllContractVersions(Contract $contract)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

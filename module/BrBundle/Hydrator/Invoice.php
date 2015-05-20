@@ -63,7 +63,7 @@ class Invoice extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = array();
 
-        $data['VATContext'] = $object->getVATContext();
+        $data['VATContext'] = $object->getVatContext();
 
         foreach ($object->getEntries() as $entry) {
             $data['entry_' . $entry->getId()] = $entry->getInvoiceText();

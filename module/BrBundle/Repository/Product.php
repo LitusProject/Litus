@@ -28,6 +28,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Product extends EntityRepository
 {
+    /**
+     * @param  int                 $id
+     * @return \Doctrine\ORM\Query
+     */
     public function findProductByIdQuery($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

@@ -148,9 +148,9 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  Language    $language
-     * @param  boolean     $allowFallback
-     * @return Translation
+     * @param  Language|null    $language
+     * @param  boolean          $allowFallback
+     * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {

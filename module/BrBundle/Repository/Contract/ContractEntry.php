@@ -28,6 +28,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class ContractEntry extends EntityRepository
 {
+    /**
+     * @return int
+     */
     public function findHighestVersionNb()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -39,6 +42,10 @@ class ContractEntry extends EntityRepository
         return $highestVersion;
     }
 
+    /**
+     * @param  Contract            $contract
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllContractEntriesByContract(Contract $contract)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -55,6 +62,11 @@ class ContractEntry extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Contract            $contract
+     * @param  int                 $version
+     * @return \Doctrine\ORM\Query
+     */
     public function findContractEntriesByContractAndVersion(Contract $contract, $version)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

@@ -23,6 +23,9 @@ namespace CommonBundle\Command;
  */
 class AclCleanup extends \CommonBundle\Component\Console\Command
 {
+    /**
+     * @return null
+     */
     protected function configure()
     {
         $this
@@ -35,6 +38,9 @@ EOT
         );
     }
 
+    /**
+     * @return null
+     */
     protected function executeCommand()
     {
         $removedEntities = false;
@@ -105,11 +111,17 @@ EOT
         }
     }
 
+    /**
+     * @return string
+     */
     protected function getLogName()
     {
         return 'AclCleanup';
     }
 
+    /**
+     * @return array
+     */
     private function getModules()
     {
         $config = $this->getServiceLocator()
@@ -123,6 +135,9 @@ EOT
         );
     }
 
+    /**
+     * @return array
+     */
     private function getAllActions()
     {
         $acl = array();
@@ -135,6 +150,10 @@ EOT
         return $acl;
     }
 
+    /**
+     * @param  string $module
+     * @return array
+     */
     private function getAclConfiguration($module)
     {
         $configuration = $this->getServiceLocator()->get('Config');

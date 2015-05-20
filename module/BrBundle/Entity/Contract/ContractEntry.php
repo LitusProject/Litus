@@ -101,8 +101,8 @@ class ContractEntry
     }
 
     /**
-     * @param  int $versionNmbr
-     * @return int
+     * @param  int  $versionNmbr
+     * @return null
      */
     private function setVersion($versionNmbr)
     {

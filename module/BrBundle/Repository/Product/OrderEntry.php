@@ -30,6 +30,11 @@ use BrBundle\Entity\Product,
  */
 class OrderEntry extends EntityRepository
 {
+    /**
+     * @param  EditOrder                               $order
+     * @param  Product                                 $product
+     * @return \BrBundle\Entity\Product\OrderEntr|null
+     */
     public function findOneByOrderAndProduct(EditOrder $order, Product $product)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

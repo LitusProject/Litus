@@ -91,7 +91,7 @@ class Invoice
      *
      * @ORM\Column(type="string")
      */
-    private $VATcontext;
+    private $vatContext;
 
     /**
      * Creates a new invoice
@@ -119,14 +119,14 @@ class Invoice
 
     public function setVatContext($text = '')
     {
-        $this->VATcontext = $text;
+        $this->vatContext = $text;
 
         return $this;
     }
 
-    public function getVATContext()
+    public function getVatContext()
     {
-        return $this->VATcontext;
+        return $this->vatContext;
     }
 
     /**
@@ -160,11 +160,7 @@ class Invoice
      */
     public function isPayed()
     {
-        if (null === $this->paidTime) {
-            return false;
-        }
-
-        return true;
+        return (null !== $this->paidTime);
     }
 
     /**
