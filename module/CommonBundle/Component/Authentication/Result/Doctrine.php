@@ -43,11 +43,11 @@ class Doctrine extends \CommonBundle\Component\Authentication\Result
     /**
      * Overwriting the standard constructor to allow for some specific fields.
      *
-     * @param int     $code               The result code
-     * @param string  $identity           The authenticated user's identity
-     * @param array   $messages           The result messages
-     * @param Person  $personObject|null  The user object given by the DQL query
-     * @param Session $sessionObject|null The session object
+     * @param int          $code          The result code
+     * @param string       $identity      The authenticated user's identity
+     * @param array        $messages      The result messages
+     * @param Person|null  $personObject  The user object given by the DQL query
+     * @param Session|null $sessionObject The session object
      */
     public function __construct($code, $identity, array $messages = array(), Person $personObject = null, Session $sessionObject = null)
     {

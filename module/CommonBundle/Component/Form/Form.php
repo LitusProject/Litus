@@ -111,7 +111,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
             'value'      => $value,
         );
 
-        if ($class) {
+        if (null !== $class) {
             $attributes['class'] = $class;
         }
 

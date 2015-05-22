@@ -140,6 +140,9 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
         return $this;
     }
 
+    /**
+     * @return array
+     */
     private function getConfiguration()
     {
         $configuration = $this->getServiceLocator()->get('Config');

@@ -23,7 +23,7 @@ use Zend\Form\FormInterface;
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @method string getName()
- * @method mixed getOption()
+ * @method mixed getOption(string $option)
  * @property array options
  */
 trait ElementTrait

@@ -29,10 +29,10 @@ class Utf8
      * Convert a UTF-8 string to HTML.
      *
      * @static
-     * @param  string                                                          $utf8       The string in UTF-8 charset
-     * @param  boolean                                                         $encodeTags True will convert "<" to "&lt;", default value is false
-     * @return string
-     * @throws \CommonBundle\Component\Util\Exception\InvalidArgumentException The given first parameter was not a string
+     * @param  string                             $utf8       The string in UTF-8 charset
+     * @param  boolean                            $encodeTags True will convert "<" to "&lt;", default value is false
+     * @return string|null
+     * @throws Exception\InvalidArgumentException The given first parameter was not a string
      */
     public static function utf8ToHtml($utf8, $encodeTags = false)
     {
@@ -55,6 +55,7 @@ class Utf8
                 // One-byte character
                 $result .= ($encodeTags) ? htmlentities($char) : $char;
             } elseif ($ascii < 192) {
+                /** @ignore */
                 // Non-utf8 character or not a start byte
             } elseif ($ascii < 224) {
                 // Two-byte character

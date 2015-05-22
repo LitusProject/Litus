@@ -47,7 +47,7 @@ class Url extends \Zend\View\Helper\Url
      * Generates an url given the name of a route.
      *
      * @see    Zend\Mvc\Router\RouteInterface::assemble()
-     * @param  string                     $name               Name of the route
+     * @param  string|null                $name               Name of the route
      * @param  array                      $params             Parameters for the link
      * @param  array                      $options            Options for the route
      * @param  boolean                    $reuseMatchedParams Whether to reuse matched parameters

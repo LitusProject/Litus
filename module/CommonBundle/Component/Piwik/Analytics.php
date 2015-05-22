@@ -109,10 +109,10 @@ class Analytics
     /**
      * Retrieves the data at the given URI.
      *
-     * @param  array $parameters The request's parameters
-     * @return array
+     * @param  array      $parameters The request's parameters
+     * @return array|null
      */
-    private function getData(array $parameters)
+    private function getData($parameters)
     {
         try {
             $client = new Client(

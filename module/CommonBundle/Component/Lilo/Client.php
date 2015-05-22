@@ -52,11 +52,11 @@ class Client
     /**
      * Constructs a new Lilo client.
      *
-     * @param Connection          $connection     The connection to the Lilo server
-     * @param Authentication|null $authentication The authentication instance
-     * @param RequestInterface    $request        The request to the page
+     * @param Connection            $connection     The connection to the Lilo server
+     * @param Authentication|null   $authentication The authentication instance
+     * @param RequestInterface|null $request        The request to the page
      */
-    public function __construct(Connection $connection, Authentication $authentication = null, RequestInterface $request)
+    public function __construct(Connection $connection, Authentication $authentication = null, RequestInterface $request = null)
     {
         $this->authentication = $authentication;
         $this->connection = $connection;
@@ -67,7 +67,7 @@ class Client
      * Sends a log message to the server.
      *
      * @param  string $message The message that should be sent
-     * @param  string $tags    The tags associated with the message
+     * @param  array  $tags    The tags associated with the message
      * @return void
      */
     public function sendLog($message, array $tags = array())

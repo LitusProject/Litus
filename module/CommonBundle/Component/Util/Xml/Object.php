@@ -34,8 +34,8 @@ class Object
 
     /**
      * @param  string                                                              $tag     The object's tag
-     * @param  array                                                               $params  The object's paramters
-     * @param  mixed                                                               $content The object's content
+     * @param  array|null                                                          $params  The object's paramters
+     * @param  mixed|null                                                          $content The object's content
      * @throws \CommonBundle\Component\Util\Xml\Exception\InvalidArugmentException The given content was invalid
      */
     public function __construct($tag, array $params = null, $content = null)
@@ -104,8 +104,8 @@ class Object
     /**
      * Converts an UTF-8 value to HTML.
      *
-     * @param  string $value The value that should be converted
-     * @return string
+     * @param  string      $value The value that should be converted
+     * @return string|null
      */
     private function escape($value)
     {

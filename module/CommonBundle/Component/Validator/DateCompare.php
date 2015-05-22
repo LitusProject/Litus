@@ -72,8 +72,8 @@ class DateCompare extends AbstractValidator
     /**
      * Returns true if and only if the end date is after the start date
      *
-     * @param  mixed   $value
-     * @param  array   $context
+     * @param  mixed      $value
+     * @param  array|null $context
      * @return boolean
      */
     public function isValid($value, $context = null)

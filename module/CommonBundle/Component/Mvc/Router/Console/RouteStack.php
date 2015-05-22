@@ -46,9 +46,9 @@ class RouteStack extends \DoctrineModule\Mvc\Router\Console\SymfonyCli implement
     /**
      * Add a route to the stack.
      *
-     * @param  string $name
-     * @param  mixed  $route
-     * @param  int    $priority
+     * @param  string   $name
+     * @param  mixed    $route
+     * @param  int|null $priority
      * @return self
      */
     public function addRoute($name, $route, $priority = null)

@@ -44,8 +44,8 @@ class GetParam extends \Zend\View\Helper\AbstractHelper
     }
 
     /**
-     * @param  string $key     The parameter's key
-     * @param  string $default A default value for when the key is not present
+     * @param  string      $key     The parameter's key
+     * @param  string|null $default A default value for when the key is not present
      * @return string
      */
     public function __invoke($key, $default = null)
