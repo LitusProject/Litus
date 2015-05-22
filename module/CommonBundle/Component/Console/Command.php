@@ -51,7 +51,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
             return $this->executeCommand();
         } catch (Exception $e) {
             if ('production' == getenv('APPLICATION_ENV')) {
-                $this->getServiceLocator->get('lilo')
+                $this->getServiceLocator()->get('lilo')
                     ->sendException($e);
             }
 

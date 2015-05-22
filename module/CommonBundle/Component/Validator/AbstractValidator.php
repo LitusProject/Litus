@@ -38,7 +38,7 @@ abstract class AbstractValidator extends \Zend\Validator\AbstractValidator imple
      * @param  string|array                $path
      * @return string
      */
-    protected static function getFormValue($context = null, $path = "")
+    protected static function getFormValue($context = null, $path = '')
     {
         if (null === $context || !(is_array($context) || $context instanceof ElementInterface)) {
             return null;

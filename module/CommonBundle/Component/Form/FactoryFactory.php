@@ -58,7 +58,7 @@ class FactoryFactory implements \Zend\ServiceManager\FactoryInterface
         $filterChain = new FilterChain();
         $filterChain->setPluginManager($filterManager);
 
-        /** @var \Zend\Validator\ValidatorPluginManager $filterManager */
+        /** @var \Zend\Validator\ValidatorPluginManager $validatorManager */
         $validatorManager = $serviceManager->get('ValidatorManager');
         $validatorChain = new ValidatorChain();
         $validatorChain->setPluginManager($validatorManager);

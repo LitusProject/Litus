@@ -120,7 +120,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
      * @param mixed|null $object
      * @param string     $method
      */
-    private function checkType($object = null, $method = "")
+    private function checkType($object = null, $method = '')
     {
         if (null !== $object && null !== $this->entity) {
             if (!($object instanceof $this->entity)) {
