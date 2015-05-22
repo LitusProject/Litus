@@ -104,7 +104,7 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
      * @param  string        $document    The name of the document that should be paginated
      * @param  int           $currentPage The page we now are on
      * @param  array         $conditions  These conditions will be passed to the Repository call
-     * @param  array         $orderBy     An array containing constraints on how to order the results
+     * @param  array|null    $orderBy     An array containing constraints on how to order the results
      * @return ZendPaginator
      */
     public function createFromDocument($document, $currentPage, array $conditions = array(), array $orderBy = null)
@@ -203,8 +203,8 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     /**
      * A method to quickly create the array needed to build the pagination control.
      *
-     * @param  bool  $fullWidth Whether the paginationControl should be displayed using the full width or not
-     * @return array
+     * @param  bool       $fullWidth Whether the paginationControl should be displayed using the full width or not
+     * @return array|null
      */
     public function createControl($fullWidth = false)
     {

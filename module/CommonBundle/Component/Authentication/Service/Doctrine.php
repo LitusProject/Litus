@@ -75,7 +75,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
      * @param boolean                                                      $rememberMe Remember this authentication session
      * @param boolean                                                      $shibboleth Whether or not this is sessions initiated by Shibboleth
      *
-     * @return Result
+     * @return Result|null
      */
     public function authenticate(DoctrineAdapter $adapter = null, $rememberMe = false, $shibboleth = false)
     {

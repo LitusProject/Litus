@@ -21,8 +21,16 @@ namespace CommonBundle\Component\Form;
 use Zend\InputFilter\InputFilterProviderInterface,
     Zend\InputFilter\InputProviderInterface;
 
+/**
+ * @method self setElementRequired(boolean $required)
+ * @property array elements
+ * @property array fieldsets
+ */
 trait FieldsetTrait
 {
+    /**
+     * @return array
+     */
     public function getInputFilterSpecification()
     {
         $spec = array(
@@ -42,6 +50,10 @@ trait FieldsetTrait
         return $spec;
     }
 
+    /**
+     * @param  boolean $required
+     * @return self
+     */
     public function setRequired($required = true)
     {
         foreach ($this->elements as $elementOrFieldset) {

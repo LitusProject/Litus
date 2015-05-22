@@ -146,7 +146,7 @@ abstract class Pdf
             escapeshellcmd($fopCommand . ' -q -xsl ' . $this->xslPath . ' -xml ' . $xmlPath . ' ' . $this->pdfPath), $resultValue
         );
 
-        if ($resultValue != 0) {
+        if ($resultValue !== 0) {
             throw new RuntimeException('The FOP command failed with return value ' . $resultValue);
         }
     }

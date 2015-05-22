@@ -61,7 +61,7 @@ class Contract extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return ++$highestInvoiceNb;
+        return (int) ++$highestInvoiceNb;
     }
 
     /**
@@ -75,7 +75,7 @@ class Contract extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return ++$highestContractNb;
+        return (int) ++$highestContractNb;
     }
 
     /**

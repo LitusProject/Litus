@@ -47,7 +47,7 @@ class Url extends \Zend\Mvc\Controller\Plugin\Url
     /**
      * Generates a URL based on a route.
      *
-     * @param  string                     $route              RouteInterface name
+     * @param  string|null                $route              RouteInterface name
      * @param  array                      $params             Parameters to use in url generation, if any
      * @param  array|bool                 $options            RouteInterface-specific options to use in url generation, if any. If boolean, and no fourth argument, used as $reuseMatchedParams
      * @param  boolean                    $reuseMatchedParams Whether to reuse matched parameters

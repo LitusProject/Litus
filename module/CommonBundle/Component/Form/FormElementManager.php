@@ -80,7 +80,8 @@ class FormElementManager extends \Zend\Form\FormElementManager
     /**
      * Inject the factory to any element that implements FormFactoryAwareInterface
      *
-     * @param $element
+     * @param  object $element
+     * @return null
      */
     public function injectFactory($element)
     {
@@ -100,7 +101,8 @@ class FormElementManager extends \Zend\Form\FormElementManager
     /**
      * Inject the main Service Locator into the form element
      *
-     * @param object $element
+     * @param  object $element
+     * @return null
      */
     public function injectServiceLocator($element)
     {
@@ -112,7 +114,8 @@ class FormElementManager extends \Zend\Form\FormElementManager
     /**
      * Hydrate the element with the given data, if any.
      *
-     * @param object $element
+     * @param  object $element
+     * @return null
      */
     public function hydrateElement($element)
     {

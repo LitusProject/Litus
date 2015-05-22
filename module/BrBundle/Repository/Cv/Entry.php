@@ -96,7 +96,7 @@ class Entry extends EntityRepository
     }
 
     /**
-     * @param  Group               $gropu
+     * @param  Group               $group
      * @param  AcademicYear        $year
      * @return \Doctrine\ORM\Query
      */
