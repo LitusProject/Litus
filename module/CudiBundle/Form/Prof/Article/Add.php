@@ -33,7 +33,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
-        $types = Article::$POSSIBLE_TYPES;
+        $types = Article::$possibleTypes;
         unset($types['common']);
 
         $this->add(array(

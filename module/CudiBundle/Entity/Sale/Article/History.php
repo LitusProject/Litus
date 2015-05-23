@@ -53,8 +53,8 @@ class History
     private $precursor;
 
     /**
-     * @param Article $article   The new version of the article
-     * @param Article $precursor The old version of the article
+     * @param Article      $article   The new version of the article
+     * @param Article|null $precursor The old version of the article
      */
     public function __construct(Article $article, Article $precursor = null)
     {

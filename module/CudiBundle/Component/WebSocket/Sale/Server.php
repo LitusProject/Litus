@@ -149,8 +149,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Parse received binary
      *
-     * @param User   $user
-     * @param string $data
+     * @param  User   $user
+     * @param  string $data
+     * @return null
      */
     protected function gotBin(User $user, $data)
     {
@@ -159,9 +160,10 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Do action when user closed his socket
      *
-     * @param User    $user
-     * @param integer $statusCode
-     * @param string  $reason
+     * @param  User    $user
+     * @param  integer $statusCode
+     * @param  string  $reason
+     * @return null
      */
     protected function onClose(User $user, $statusCode, $reason)
     {
@@ -173,7 +175,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Do action when a new user has connected to this socket
      *
-     * @param User $user
+     * @param  User $user
+     * @return null
      */
     protected function onConnect(User $user)
     {
@@ -182,7 +185,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Send queue to one user
      *
-     * @param User $user
+     * @param  User $user
+     * @return null
      */
     private function sendQueue(User $user)
     {
@@ -206,6 +210,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
     /**
      * Send queue to all users
+     * @return null
      */
     private function sendQueueToAll()
     {
@@ -216,10 +221,12 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
     /**
      * Send queue to all users
+     * @param  int $id
+     * @return null
      */
     private function sendQueueItemToAll($id)
     {
-        if (null == $id) {
+        if (null === $id) {
             return;
         }
 
@@ -244,8 +251,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Parse action text
      *
-     * @param User  $user
-     * @param mixed $command
+     * @param  User  $user
+     * @param  mixed $command
+     * @return null
      */
     private function gotAction(User $user, $command)
     {
@@ -311,6 +319,11 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         }
     }
 
+    /**
+     * @param  User     $user
+     * @param  string   $universityIdentification
+     * @return int|null
+     */
     private function signIn(User $user, $universityIdentification)
     {
         $session = $this->entityManager
@@ -346,6 +359,11 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         }
     }
 
+    /**
+     * @param  User     $user
+     * @param  string   $universityIdentification
+     * @return int|null
+     */
     private function addToQueue(User $user, $universityIdentification)
     {
         $session = $this->entityManager
@@ -364,6 +382,12 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         }
     }
 
+    /**
+     * @param  User    $user
+     * @param  int     $id
+     * @param  boolean $buld
+     * @return null
+     */
     private function startCollecting(User $user, $id, $bulk = false)
     {
         $result = $this->queue->startCollecting($user, $id, $bulk);
@@ -385,26 +409,52 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         );
     }
 
+    /**
+     * @param  int        $id
+     * @param  array|null $articles
+     * @return null
+     */
     private function stopCollecting($id, $articles = null)
     {
         $this->queue->stopCollecting($id, $articles);
     }
 
+    /**
+     * @param  int  $id
+     * @return null
+     */
     private function cancelCollecting($id)
     {
         $this->queue->cancelCollecting($id);
     }
 
+    /**
+     * @param  User $user
+     * @param  int  $id
+     * @return null
+     */
     private function startSale(User $user, $id)
     {
         $this->sendText($user, $this->queue->startSale($user, $id));
     }
 
+    /**
+     * @param  int  $id
+     * @return null
+     */
     private function cancelSale($id)
     {
         $this->queue->cancelSale($id);
     }
 
+    /**
+     * @param  User   $user
+     * @param  int    $id
+     * @param  array  $articles
+     * @param  array  $discounts
+     * @param  string $payMethod
+     * @return null
+     */
     private function concludeSale(User $user, $id, $articles, $discounts, $payMethod)
     {
         $saleItems = $this->queue->concludeSale($id, $articles, $discounts, $payMethod);
@@ -425,16 +475,29 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         );
     }
 
+    /**
+     * @param  int  $id
+     * @return null
+     */
     private function hold($id)
     {
         $this->queue->setHold($id);
     }
 
+    /**
+     * @param  int  $id
+     * @return null
+     */
     private function unhold($id)
     {
         $this->queue->setUnhold($id);
     }
 
+    /**
+     * @param  int    $id
+     * @param  string $comment
+     * @return null
+     */
     private function saveComment($id, $comment)
     {
         $item = $this->entityManager
@@ -445,14 +508,23 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         $this->entityManager->flush();
     }
 
+    /**
+     * @param  User $user
+     * @param  int  $id
+     * @param  int  $articleId
+     * @return null
+     */
     private function addArticle(User $user, $id, $articleId)
     {
         $result = $this->queue->addArticle($id, $articleId);
-        if ($result) {
-            $this->sendText($user, $result);
-        }
+        $this->sendText($user, $result);
     }
 
+    /**
+     * @param  User $user
+     * @param  int  $id
+     * @return null
+     */
     private function undoSale(User $user, $id)
     {
         $this->queue->undoSale($id);

@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'required'   => true,
             'attributes' => array(
                 'id'      => 'form_type',
-                'options' => $this->form instanceof Doodle ? array('timeslot' => 'Time Slot') : Field::$POSSIBLE_TYPES,
+                'options' => $this->form instanceof Doodle ? array('timeslot' => 'Time Slot') : Field::$possibleTypes,
             ),
         ));
 

@@ -37,13 +37,13 @@ class Duplicate extends Add
 
         $this->remove('subject_form');
 
-        $this->get('article')
-            ->get('type')
+        /** @var \CommonBundle\Component\Form\Fieldset $articleFieldset */
+        $articleFieldset = $this->get('article');
+        $articleFieldset->get('type')
             ->setAttribute('disabled', true);
 
         if ($this->article->getType() == 'common') {
-            $this->get('article')
-                ->remove('type');
+            $articleFieldset->remove('type');
         }
 
         $this->remove('submit')

@@ -20,7 +20,7 @@ namespace CudiBundle\Controller\Admin\Article;
 
 use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Front as FrontGenerator,
-    CudiBundle\Entity\Article,
+    CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\File\File,
     CudiBundle\Entity\File\Mapping,
     CudiBundle\Entity\Sale\Article as SaleArticle,
@@ -167,7 +167,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_article_file',
                     array(
                         'action' => 'manage',
-                        'id' => $mapping->getArticleEntity()->getId(),
+                        'id' => $mapping->getArticle()->getId(),
                     )
                 );
 
@@ -179,7 +179,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             array(
                 'form' => $form,
                 'file' => $mapping->getFile(),
-                'article' => $mapping->getArticleEntity(),
+                'article' => $mapping->getArticle(),
             )
         );
     }
@@ -258,13 +258,13 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return Article|null
+     * @return InternalArticle|null
      */
     private function getArticleEntity()
     {
         $article = $this->getEntityById('CudiBundle\Entity\Article');
 
-        if (!($article instanceof Article)) {
+        if (!($article instanceof InternalArticle)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No article was found!'

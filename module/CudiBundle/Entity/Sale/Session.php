@@ -212,15 +212,11 @@ class Session
             return true;
         }
 
-        if ($this->getCloseDate() >= $this->getOpenDate()) {
-            return false;
-        }
-
-        return true;
+        return ($this->getCloseDate() < $this->getOpenDate());
     }
 
     /**
-     * @param  Organization $organization
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getTheoreticalRevenue(Organization $organization = null)
@@ -243,7 +239,7 @@ class Session
     }
 
     /**
-     * @param  Organization $organization
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getPurchasedAmount(Organization $organization = null)

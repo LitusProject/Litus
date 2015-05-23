@@ -120,6 +120,10 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
     private function individualSearch(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
@@ -272,6 +276,10 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @param  Session                  $session
+     * @return \Doctrine\ORM\Query|null
+     */
     private function sessionSearch(Session $session)
     {
         switch ($this->getParam('field')) {
@@ -371,6 +379,10 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
     private function articlesSearch(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
@@ -492,6 +504,11 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @param  SaleArticle              $article
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
     private function articleSearch(SaleArticle $article, AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
@@ -643,6 +660,11 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
+    /**
+     * @param  Supplier                 $supplier
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
     private function supplierSearch(Supplier $supplier, AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {

@@ -86,7 +86,7 @@ class Supplier
     /**
      * @var array The possible templates
      */
-    public static $POSSIBLE_TEMPLATES = array(
+    public static $possibleTemplates = array(
         'default' => 'Default',
     );
 
@@ -101,7 +101,7 @@ class Supplier
      */
     public static function isValidTemplate($template)
     {
-        return array_key_exists($template, self::$POSSIBLE_TEMPLATES);
+        return array_key_exists($template, self::$possibleTemplates);
     }
 
     /**
@@ -229,8 +229,8 @@ class Supplier
     }
 
     /**
-     * @param  AcademicYear $academicYear
-     * @param  Organization $organization
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getNumberSold(AcademicYear $academicYear, Organization $organization = null)
@@ -263,8 +263,8 @@ class Supplier
     }
 
     /**
-     * @param  AcademicYear $academicYear
-     * @param  Organization $organization
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getTotalRevenue(AcademicYear $academicYear, Organization $organization = null)
@@ -275,8 +275,8 @@ class Supplier
     }
 
     /**
-     * @param  AcademicYear $academicYear
-     * @param  Organization $organization
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getTotalPurchase(AcademicYear $academicYear, Organization $organization = null)

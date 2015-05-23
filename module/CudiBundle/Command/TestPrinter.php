@@ -50,11 +50,11 @@ EOT
      */
     protected function executeCommand()
     {
-        if (false === ($printer = $this->getPrinter())) {
+        if (!($printer = $this->getPrinter())) {
             return 1;
         }
 
-        if (false === ($ticket = $this->getTicket())) {
+        if (!($ticket = $this->getTicket())) {
             return 2;
         }
 
@@ -70,7 +70,7 @@ EOT
     }
 
     /**
-     * @return string|boolean
+     * @return string|null
      */
     private function getPrinter()
     {
@@ -92,11 +92,11 @@ EOT
             $this->writeln('    -> ' . $key . ':' . $printer);
         }
 
-        return false;
+        return null;
     }
 
     /**
-     * @return int|boolean
+     * @return int|null
      */
     private function getTicket()
     {
@@ -114,7 +114,7 @@ EOT
                 $this->writeln('    -> collect');
                 $this->writeln('    -> sale');
 
-                return false;
+                return null;
         }
     }
 

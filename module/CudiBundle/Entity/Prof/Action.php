@@ -109,11 +109,11 @@ class Action
     private $entityManager;
 
     /**
-     * @param Person  $person     The person executed this action
-     * @param string  $entity     The entity name
-     * @param integer $entityId   The entity id
-     * @param string  $action     The action type
-     * @param integer $previousId The previous entity id
+     * @param Person       $person     The person executed this action
+     * @param string       $entity     The entity name
+     * @param integer      $entityId   The entity id
+     * @param string       $action     The action type
+     * @param integer|null $previousId The previous entity id
      */
     public function __construct(Person $person, $entity, $entityId, $action, $previousId = null)
     {

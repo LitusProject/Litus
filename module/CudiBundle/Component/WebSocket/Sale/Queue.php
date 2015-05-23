@@ -103,9 +103,8 @@ class Queue
     }
 
     /**
-     * @param string $id The queue item id
-     *
-     * @return string
+     * @param  string      $id The queue item id
+     * @return string|null
      */
     public function getJsonQueueItem($id)
     {
@@ -356,7 +355,8 @@ class Queue
     }
 
     /**
-     * @param integer $id
+     * @param  int  $id
+     * @return null
      */
     public function cancelSale($id)
     {
@@ -400,7 +400,8 @@ class Queue
     }
 
     /**
-     * @param integer $id
+     * @param  int  $id
+     * @return null
      */
     public function setHold($id)
     {
@@ -417,7 +418,8 @@ class Queue
     }
 
     /**
-     * @param integer $id
+     * @param  int  $id
+     * @return null
      */
     public function setUnhold($id)
     {
@@ -434,7 +436,8 @@ class Queue
     }
 
     /**
-     * @param integer $id
+     * @param  int  $id
+     * @return string
      */
     public function addArticle($id, $articleId)
     {
@@ -531,7 +534,8 @@ class Queue
     }
 
     /**
-     * @param integer $id
+     * @param  int  $id
+     * @return null
      */
     public function undoSale($id)
     {

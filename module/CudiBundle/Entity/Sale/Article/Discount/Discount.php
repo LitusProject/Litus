@@ -103,7 +103,7 @@ class Discount
     /**
      * @var array The possible types of a discount
      */
-    public static $POSSIBLE_TYPES = array(
+    public static $possibleTypes = array(
         'member' => 'Member',
         'acco' => 'Acco',
     );
@@ -111,7 +111,7 @@ class Discount
     /**
      * @var array The possible methods of a discount
      */
-    public static $POSSIBLE_METHODS = array(
+    public static $possibleMethods = array(
         'percentage' => 'Percentage',
         'fixed' => 'Fixed',
         'override' => 'Override',
@@ -120,7 +120,7 @@ class Discount
     /**
      * @var array The possible methods of rounding
      */
-    public static $POSSIBLE_ROUNDINGS = array(
+    public static $possibleRoundings = array(
         'none' => array(
             'name' => 'None',
             'value' => '1',
@@ -224,7 +224,7 @@ class Discount
      */
     public static function isValidDiscountType($type)
     {
-        return array_key_exists($type, self::$POSSIBLE_TYPES);
+        return array_key_exists($type, self::$possibleTypes);
     }
 
     /**
@@ -233,7 +233,7 @@ class Discount
      */
     public static function isValidDiscountMethod($method)
     {
-        return array_key_exists($method, self::$POSSIBLE_METHODS);
+        return array_key_exists($method, self::$possibleMethods);
     }
 
     /**
@@ -242,7 +242,7 @@ class Discount
      */
     public static function isValidRoundingType($rounding)
     {
-        return array_key_exists($rounding, self::$POSSIBLE_ROUNDINGS);
+        return array_key_exists($rounding, self::$possibleRoundings);
     }
 
     /**
@@ -267,7 +267,8 @@ class Discount
     public function getValue()
     {
         if (!isset($this->value) && isset($this->template)) {
-            return $this->template->getValue();
+            $value = $this->template->getValue();
+            return isset($value) ? $value : 0;
         }
 
         return $this->value;
@@ -279,7 +280,8 @@ class Discount
     public function getMethod()
     {
         if (!isset($this->method) && isset($this->template)) {
-            return $this->template->getMethod();
+            $method = $this->template->getMethod();
+            return isset($method) ? $method : 'percentage';
         }
 
         return $this->method;
@@ -291,10 +293,11 @@ class Discount
     public function getType()
     {
         if (!isset($this->type) && isset($this->template)) {
-            return $this->template->getType();
+            $type = $this->template->getType();
+            return isset($type) ? $type : self::$possibleTypes['member'];
         }
 
-        return self::$POSSIBLE_TYPES[$this->type];
+        return self::$possibleTypes[$this->type];
     }
 
     /**
@@ -303,7 +306,8 @@ class Discount
     public function getRawType()
     {
         if (!isset($this->type) && isset($this->template)) {
-            return $this->template->getRawType();
+            $type = $this->template->getRawType();
+            return isset($type) ? $type : 'member';
         }
 
         return $this->type;
@@ -337,7 +341,7 @@ class Discount
         if (!isset($this->rounding) && isset($this->template)) {
             return $this->template->getRounding();
         } elseif (isset($this->rounding)) {
-            return self::$POSSIBLE_ROUNDINGS[$this->rounding]['name'];
+            return self::$possibleRoundings[$this->rounding]['name'];
         }
     }
 
@@ -374,7 +378,7 @@ class Discount
         }
 
         if ($this->rounding) {
-            $rounding = self::$POSSIBLE_ROUNDINGS[$this->rounding];
+            $rounding = self::$possibleRoundings[$this->rounding];
 
             if ($rounding['type'] == 'up') {
                 $value = ceil($value/$rounding['value'])*$rounding['value'];
@@ -383,7 +387,7 @@ class Discount
             }
         }
 
-        return $value;
+        return (int) $value;
     }
 
     /**

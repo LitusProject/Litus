@@ -56,9 +56,12 @@ class HasBought extends \CommonBundle\Component\Validator\AbstractValidator impl
     {
         $this->setValue($value);
 
+        /** @var \CommonBundle\Component\Form\Bootstrap\Element\TypeAhead $personField */
+        $personField = $this->form->get('person');
+
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($this->form->get('person')->get('id')->getValue());
+            ->findOneById($personField->get('id')->getValue());
 
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')

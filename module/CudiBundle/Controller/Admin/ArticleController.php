@@ -498,11 +498,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     private function search()
     {
         switch ($this->getParam('field')) {
-            case 'title' :
+            case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
                     ->findAllByTitleQuery($this->getParam('string'));
-            case 'author' :
+            case 'author':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
                     ->findAllByAuthorQuery($this->getParam('string'));

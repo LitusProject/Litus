@@ -218,7 +218,7 @@ class Internal extends \CudiBundle\Entity\Article
     }
 
     /**
-     * @param Color $frontPageColor
+     * @param Color|null $frontPageColor
      *
      * @return self
      */

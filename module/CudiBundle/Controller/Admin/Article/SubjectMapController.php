@@ -126,7 +126,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
         $mapping->setRemoved();
         $this->getEntityManager()->persist(new RemovedLog($this->getAuthentication()->getPersonObject(), $mapping));
 
-        $article = $mapping->getArticleEntity();
+        $article = $mapping->getArticle();
 
         if ($article instanceof InternalArticle) {
             $cachePath = $this->getEntityManager()

@@ -585,8 +585,8 @@ class Article
     }
 
     /**
-     * @param  AcademicYear $academicYear
-     * @param  Organization $organization
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getNumberSold(AcademicYear $academicYear, Organization $organization = null)
@@ -597,8 +597,8 @@ class Article
     }
 
     /**
-     * @param  AcademicYear $academicYear
-     * @param  Organization $organization
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getNumberSoldToMembers(AcademicYear $academicYear, Organization $organization = null)
@@ -609,9 +609,9 @@ class Article
     }
 
     /**
-     * @param  AcademicYear $academicYear
-     * @param  string       $discount
-     * @param  Organization $organization
+     * @param  AcademicYear      $academicYear
+     * @param  string            $discount
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getNumberSoldWithDiscount(AcademicYear $academicYear, $discount, Organization $organization = null)
@@ -622,8 +622,8 @@ class Article
     }
 
     /**
-     * @param  AcademicYear $academicYear
-     * @param  Organization $organization
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getNumberReturned(AcademicYear $academicYear, Organization $organization = null)
@@ -645,8 +645,8 @@ class Article
     }
 
     /**
-     * @param  AcademicYear $academicYear
-     * @param  Organization $organization
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getTotalRevenue(AcademicYear $academicYear, Organization $organization = null)

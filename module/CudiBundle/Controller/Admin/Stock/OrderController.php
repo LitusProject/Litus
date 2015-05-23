@@ -25,6 +25,7 @@ use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Entity\Stock\Order\Order,
     CudiBundle\Entity\Stock\Period,
     CudiBundle\Entity\Supplier,
+    DateTime,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -392,11 +393,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function exportAction()
     {
-        if (!($order = $this->getOrderEntity())) {
+        if (!($order = $this->getOrderEntity()) && !($data = $this->getParamDate())) {
             return new ViewModel();
         }
 
-        $order->setDeliveryDate(\DateTime::createFromFormat('d-m-Y', $this->getParam('date')));
+        $order->setDeliveryDate($date);
         $this->getEntityManager()->flush();
 
         $document = new OrderXmlGenerator($this->getEntityManager(), $order);
@@ -439,6 +440,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    /**
+     * @param  Period                   $period
+     * @return \Doctrine\ORM\Query|null
+     */
     private function search(Period $period)
     {
         switch ($this->getParam('field')) {
@@ -529,5 +534,17 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         }
 
         return $item;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    private function getParamDate()
+    {
+        $date = DateTime::createFromFormat('d-m-Y', $this->getParam('date'))
+
+        if ($date instanceof DateTime) {
+            return $date
+        }
     }
 }

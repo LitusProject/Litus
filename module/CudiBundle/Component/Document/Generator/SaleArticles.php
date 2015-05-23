@@ -48,7 +48,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        foreach (Discount::$POSSIBLE_TYPES as $key => $type) {
+        foreach (Discount::$possibleTypes as $key => $type) {
             foreach ($organizations as $organization) {
                 $headers[] = 'Sell Price (' . $type . ' Discounted ' . $organization->getName() . ')';
             }
@@ -87,7 +87,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
 
             $discounts = $article->getDiscounts();
 
-            foreach (Discount::$POSSIBLE_TYPES as $key => $type) {
+            foreach (Discount::$possibleTypes as $key => $type) {
                 foreach ($organizations as $organization) {
                     $foundDiscount = null;
 

@@ -509,6 +509,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel();
     }
 
+    /**
+     * @param  AcademicYear             $academicYear
+     * @param  int                      $semester
+     * @return \Doctrine\ORM\Query|null
+     */
     private function search(AcademicYear $academicYear, $semester)
     {
         switch ($this->getParam('field')) {
@@ -588,7 +593,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
      */
     private function getSemester()
     {
-        $semester = $this->getParam('semester');
+        $semester = (int) $this->getParam('semester');
 
         if ($semester == 1 || $semester == 2 || $semester == 3) {
             return $semester;

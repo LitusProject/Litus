@@ -142,7 +142,7 @@ class OpeningHour
     }
 
     /**
-     * @param  Language         $language
+     * @param  Language|null    $language
      * @param  boolean          $allowFallback
      * @return Translation|null
      */

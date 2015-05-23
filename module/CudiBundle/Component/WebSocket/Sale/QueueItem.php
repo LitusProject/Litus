@@ -262,8 +262,13 @@ class QueueItem
                     ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->getCurrentAcademicYear());
 
                 if (null === $registration) {
+                    $academic = $booking->getPerson();
+                    if (!($academic instanceof Academic)) {
+                        continue
+                    }
+
                     $registration = new Registration(
-                        $booking->getPerson(),
+                        $academic,
                         $this->getCurrentAcademicYear()
                     );
                     $this->entityManager->persist($registration);

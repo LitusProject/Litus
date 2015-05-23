@@ -41,14 +41,15 @@ class AddWithSubject extends Add
 
         parent::init();
 
-        $this->get('subject')
-            ->get('subject')
-            ->get('id')
+        /** @var \CommonBundle\Component\Form\Fieldset $subjectFieldset */
+        $subjectFieldset = $this->get('subject');
+        /** @var \CommonBundle\Component\Form\Bootstrap\Element\TypeAhead $subjectField */
+        $subjectField = $subjectFieldset->get('subject');
+
+        $subjectField->get('id')
             ->setAttribute('value', $this->subject->getId());
 
-        $this->get('subject')
-            ->get('subject')
-            ->get('value')
+        $subjectField->get('value')
             ->setAttribute('value', $this->subject->getCode() . ' - ' . $this->subject->getName())
             ->setAttribute('disabled', 'disabled');
     }

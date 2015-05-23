@@ -563,6 +563,11 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         }
     }
 
+    /**
+     * @param  AcademicYear             $academicYear
+     * @param  int                      $semester
+     * @return \Doctrine\ORM\Query|null
+     */
     private function search(AcademicYear $academicYear, $semester = 0)
     {
         switch ($this->getParam('field')) {
@@ -581,6 +586,10 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         }
     }
 
+    /**
+     * @param  Period                   $period
+     * @return array|null
+     */
     private function searchNotDelivered(Period $period)
     {
         switch ($this->getParam('field')) {
@@ -630,7 +639,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
      */
     private function getSemester()
     {
-        $semester = $this->getParam('semester');
+        $semester = (int) $this->getParam('semester');
 
         if ($semester == 1 || $semester == 2  || $semester == 3) {
             return $semester;

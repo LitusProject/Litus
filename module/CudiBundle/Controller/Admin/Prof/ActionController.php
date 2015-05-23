@@ -130,7 +130,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         $action->setEntityManager($this->getEntityManager());
 
         if ($action->getEntityName() == 'article') {
-            if ($action->getActionEntity() == 'add') {
+            if ($action->getAction() == 'add') {
                 $this->redirect()->toRoute(
                     'cudi_admin_prof_action',
                     array(
@@ -140,7 +140,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 );
 
                 return new ViewModel();
-            } elseif ($action->getActionEntity() == 'delete') {
+            } elseif ($action->getAction() == 'delete') {
                 $action->getEntity()->setIsHistory(true);
             } else {
                 $edited = $action->getEntity();
@@ -183,14 +183,14 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     ->setPreviousId($edited->getId());
             }
         } elseif ($action->getEntityName() == 'mapping') {
-            if ($action->getActionEntity() == 'add') {
+            if ($action->getAction() == 'add') {
                 $action->getEntity()->setIsProf(false);
                 $this->getEntityManager()->persist(new SubjectMapAddedLog($this->getAuthentication()->getPersonObject(), $action->getEntity()));
             } else {
                 $action->getEntity()->setRemoved();
             }
         } elseif ($action->getEntityName() == 'file') {
-            if ($action->getActionEntity() == 'add') {
+            if ($action->getAction() == 'add') {
                 $this->redirect()->toRoute(
                     'cudi_admin_prof_action',
                     array(

@@ -131,6 +131,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
         $form = $this->getForm('cudi_prof_article_add-with-subject', array(
             'subject' => $subject,
         ));
+        $formData = null;
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -237,7 +238,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $edited = true;
                     } elseif ($article->getType() != $duplicate->getType()) {
                         $edited = true;
-                    } elseif ($article instanceof Internal) {
+                    } elseif ($article instanceof Internal && $$duplicate instanceof Internal) {
                         if ($article->getBinding()->getId() != $duplicate->getBinding()->getId()) {
                             $edited = true;
                         } elseif ($article->isRectoVerso() !== $duplicate->isRectoVerso()) {

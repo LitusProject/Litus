@@ -98,7 +98,7 @@ abstract class Field
     /**
      * @var array The possible types of a field
      */
-    public static $POSSIBLE_TYPES = array(
+    public static $possibleTypes = array(
         'string' => 'String',
         'dropdown' => 'Dropdown',
         'checkbox' => 'Checkbox',

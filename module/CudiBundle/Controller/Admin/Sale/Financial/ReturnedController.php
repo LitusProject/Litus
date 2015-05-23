@@ -19,7 +19,7 @@
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Sale\Article as Sale,
+    CudiBundle\Entity\Sale\Article as SaleArticle,
     CudiBundle\Entity\Sale\Session,
     Zend\View\Model\ViewModel;
 
@@ -110,6 +110,10 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
     private function individualSearch(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
@@ -244,6 +248,10 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @param  Session                  $session
+     * @return \Doctrine\ORM\Query|null
+     */
     private function sessionSearch(Session $session)
     {
         switch ($this->getParam('field')) {
@@ -339,6 +347,10 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
     private function articlesSearch(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
@@ -450,6 +462,11 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
         );
     }
 
+    /**
+     * @param  SaleArticle              $article
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
     private function articleSearch(SaleArticle $article, AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {

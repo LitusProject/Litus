@@ -90,7 +90,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Template',
             'required'   => true,
             'attributes' => array(
-                'options' => Supplier::$POSSIBLE_TEMPLATES,
+                'options' => Supplier::$possibleTemplates,
             ),
         ));
 

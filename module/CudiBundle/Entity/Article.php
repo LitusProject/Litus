@@ -151,7 +151,7 @@ abstract class Article
     /**
      * @var array The possible types of an article
      */
-    public static $POSSIBLE_TYPES = array(
+    public static $possibleTypes = array(
         'common' => 'Common',
         'other' => 'Other',
         'exercises' => 'Exercises',
@@ -175,7 +175,7 @@ abstract class Article
      */
     public static function isValidArticleType($type)
     {
-        return array_key_exists($type, self::$POSSIBLE_TYPES);
+        return array_key_exists($type, self::$possibleTypes);
     }
 
     /**
@@ -378,7 +378,7 @@ abstract class Article
 
         $saleArticle = $this->getSaleArticle();
 
-        if ($saleArticle instanceof SaleArticle && $isHistory == true) {
+        if ($saleArticle instanceof SaleArticle && $isHistory === true) {
             $saleArticle->setIsHistory(true);
         }
 
