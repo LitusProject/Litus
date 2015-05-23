@@ -393,7 +393,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
     public function exportAction()
     {
-        if (!($order = $this->getOrderEntity()) && !($data = $this->getParamDate())) {
+        if (!($order = $this->getOrderEntity()) || !($date = $this->getParamDate())) {
             return new ViewModel();
         }
 

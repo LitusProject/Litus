@@ -150,8 +150,7 @@ class Queue
     }
 
     /**
-     * @param Session $session The sale session
-     *
+     * @param  Session $session The sale session
      * @return string
      */
     public function getJsonQueueList(Session $session)
@@ -176,9 +175,8 @@ class Queue
     }
 
     /**
-     * @param Session $session                  The sale session
-     * @param string  $universityIdentification
-     *
+     * @param  Session $session                  The sale session
+     * @param  string  $universityIdentification
      * @return string
      */
     public function addPerson(Session $session, $universityIdentification, $forced = false)
@@ -235,7 +233,8 @@ class Queue
     }
 
     /**
-     * @param User $user
+     * @param  User $user
+     * @return null
      */
     public function unlockByUser(User $user)
     {
@@ -256,8 +255,10 @@ class Queue
     }
 
     /**
-     * @param User    $user
-     * @param integer $id
+     * @param  User        $user
+     * @param  integer     $id
+     * @param  boolean     $bulk
+     * @return string|null
      */
     public function startCollecting(User $user, $id, $bulk = false)
     {
@@ -288,7 +289,9 @@ class Queue
     }
 
     /**
-     * @param integer $id
+     * @param  integer    $id
+     * @param  array|null $articles
+     * @return null
      */
     public function stopCollecting($id, $articles = null)
     {
@@ -312,7 +315,8 @@ class Queue
     }
 
     /**
-     * @param integer $id
+     * @param  integer $id
+     * @return null
      */
     public function cancelCollecting($id)
     {
@@ -326,6 +330,7 @@ class Queue
     }
 
     /**
+     * @param  User    $user
      * @param  integer $id
      * @return string
      */
@@ -436,7 +441,8 @@ class Queue
     }
 
     /**
-     * @param  int  $id
+     * @param  int    $id
+     * @param  int    $articleId
      * @return string
      */
     public function addArticle($id, $articleId)
@@ -599,8 +605,7 @@ class Queue
     /**
      * Return an array with the queue items in object
      *
-     * @param array $items
-     *
+     * @param  array $items
      * @return array
      */
     private function createJsonQueue($items)

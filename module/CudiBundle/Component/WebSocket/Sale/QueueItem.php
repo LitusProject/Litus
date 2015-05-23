@@ -20,6 +20,7 @@ namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
+    CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Sale\SaleItem,
@@ -332,8 +333,13 @@ class QueueItem
                     ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->getCurrentAcademicYear());
 
                 if (null === $registration) {
+                    $academic = $booking->getPerson();
+                    if (!($academic instanceof Academic)) {
+                        continue;
+                    }
+
                     $registration = new Registration(
-                        $booking->getPerson(),
+                        $academic,
                         $this->getCurrentAcademicYear()
                     );
                     $this->entityManager->persist($registration);

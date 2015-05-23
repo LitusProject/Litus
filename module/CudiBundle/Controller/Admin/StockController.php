@@ -587,7 +587,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  Period                   $period
+     * @param  Period     $period
      * @return array|null
      */
     private function searchNotDelivered(Period $period)

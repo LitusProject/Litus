@@ -221,7 +221,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
     /**
      * Send queue to all users
-     * @param  int $id
+     * @param  int  $id
      * @return null
      */
     private function sendQueueItemToAll($id)
@@ -391,7 +391,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     private function startCollecting(User $user, $id, $bulk = false)
     {
         $result = $this->queue->startCollecting($user, $id, $bulk);
-        if ($result) {
+        if ($result !== null) {
             $this->sendText($user, $result);
         }
 
