@@ -264,7 +264,7 @@ class QueueItem
                 if (null === $registration) {
                     $academic = $booking->getPerson();
                     if (!($academic instanceof Academic)) {
-                        continue
+                        continue;
                     }
 
                     $registration = new Registration(

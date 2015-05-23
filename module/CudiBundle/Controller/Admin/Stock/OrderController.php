@@ -541,10 +541,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
      */
     private function getParamDate()
     {
-        $date = DateTime::createFromFormat('d-m-Y', $this->getParam('date'))
+        $date = DateTime::createFromFormat('d-m-Y', $this->getParam('date'));
 
         if ($date instanceof DateTime) {
-            return $date
+            return $date;
         }
     }
 }

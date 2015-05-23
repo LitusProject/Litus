@@ -385,7 +385,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * @param  User    $user
      * @param  int     $id
-     * @param  boolean $buld
+     * @param  boolean $bulk
      * @return null
      */
     private function startCollecting(User $user, $id, $bulk = false)

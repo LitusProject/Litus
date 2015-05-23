@@ -739,8 +739,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  Period $period
-     * @param  string $type
+     * @param  Period                   $activePeriod
+     * @param  string                   $type
      * @return \Doctrine\ORM\Query|null
      */
     private function search(Period $activePeriod, $type)
