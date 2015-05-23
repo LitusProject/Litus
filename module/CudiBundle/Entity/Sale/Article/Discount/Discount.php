@@ -268,6 +268,7 @@ class Discount
     {
         if (!isset($this->value) && isset($this->template)) {
             $value = $this->template->getValue();
+
             return isset($value) ? $value : 0;
         }
 
@@ -281,6 +282,7 @@ class Discount
     {
         if (!isset($this->method) && isset($this->template)) {
             $method = $this->template->getMethod();
+
             return isset($method) ? $method : 'percentage';
         }
 
@@ -294,6 +296,7 @@ class Discount
     {
         if (!isset($this->type) && isset($this->template)) {
             $type = $this->template->getType();
+
             return isset($type) ? $type : self::$possibleTypes['member'];
         }
 
@@ -307,6 +310,7 @@ class Discount
     {
         if (!isset($this->type) && isset($this->template)) {
             $type = $this->template->getRawType();
+
             return isset($type) ? $type : 'member';
         }
 
