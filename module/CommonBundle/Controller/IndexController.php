@@ -53,7 +53,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return array
+     * @return array|null
      */
     private function getSportResults()
     {
@@ -110,7 +110,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return array
+     * @return array|null
      */
     private function getBookings()
     {
@@ -207,7 +207,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return array
+     * @return array|null
      */
     private function getPiwikInfo()
     {
@@ -233,7 +233,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return array
+     * @return array|null
      */
     private function getMyShifts()
     {
@@ -246,6 +246,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
     }
 
+    /**
+     * @return array
+     */
     private function getWiki()
     {
         return array(

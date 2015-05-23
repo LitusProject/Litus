@@ -340,10 +340,13 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
 
+        /** @var \SecretaryBundle\Form\Registration\Subject\Add $form */
+        $form = $this->getForm('secretary_registration_subject_add');
+
         return $this->doSubjectAction(
             $academic,
             $this->getCurrentAcademicYear(),
-            $this->getForm('secretary_registration_subject_add')
+            $form
         );
     }
 

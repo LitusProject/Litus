@@ -62,6 +62,9 @@ class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, \Common
         return parent::setName($name);
     }
 
+    /**
+     * @return string
+     */
     public function showAs()
     {
         if (null !== $this->getOption('showAs')) {

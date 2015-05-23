@@ -324,8 +324,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param Role      $role
-     * @param Unit|null $parent
+     * @param  Role      $role
+     * @param  Unit|null $parent
+     * @return boolean
      */
     private function findRoleWithParent(Role $role, Unit $parent = null)
     {
@@ -341,8 +342,9 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param Role      $role
-     * @param Unit|null $parent
+     * @param  Role      $role
+     * @param  Unit|null $parent
+     * @return boolean
      */
     private function findCoordinatorRoleWithParent(Role $role, Unit $parent = null)
     {

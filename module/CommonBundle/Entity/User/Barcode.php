@@ -104,7 +104,7 @@ abstract class Barcode
     abstract public function getBarcode();
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getType()
     {

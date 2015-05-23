@@ -175,12 +175,23 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
 
     public function setRequired($required = true)
     {
-        $this->get('street')->setRequired($required);
-        $this->get('number')->setRequired($required);
-        $this->get('mailbox')->setRequired(false);
-        $this->get('city')->setRequired($required);
+        /** @var \CommonBundle\Component\Form\Bootstrap\Element $street */
+        $street = $this->get('street');
+        /** @var \CommonBundle\Component\Form\Bootstrap\Element $number */
+        $number = $this->get('number');
+        /** @var \CommonBundle\Component\Form\Bootstrap\Element $mailbox */
+        $mailbox = $this->get('mailbox');
+        /** @var \CommonBundle\Component\Form\Bootstrap\Element $city */
+        $city = $this->get('city');
+        /** @var \CommonBundle\Component\Form\Fieldset $other */
+        $other = $this->get('other');
 
-        $this->get('other')->setRequired($required);
+        $street->setRequired($required);
+        $number->setRequired($required);
+        $mailbox->setRequired(false);
+        $city->setRequired($required);
+
+        $other->setRequired($required);
 
         return $this;
     }
@@ -234,11 +245,13 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
         if ($this->get('city')->getValue() !== 'other') {
             unset($specs['other']);
 
-            foreach ($specs['street'] as $city => $streetSpecification) {
-                if ('type' == $city) {
-                    continue;
+            if (is_array($specs['street'])) {
+                foreach ($specs['street'] as $city => $streetSpecification) {
+                    if ('type' == $city) {
+                        continue;
+                    }
+                    $specs['street'][$city]['required'] = ($city == $this->get('city')->getValue());
                 }
-                $specs['street'][$city]['required'] = ($city == $this->get('city')->getValue());
             }
         } else {
             unset($specs['street']);

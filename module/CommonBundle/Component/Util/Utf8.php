@@ -54,10 +54,7 @@ class Utf8
             if ($ascii < 128) {
                 // One-byte character
                 $result .= ($encodeTags) ? htmlentities($char) : $char;
-            } elseif ($ascii < 192) {
-                /** @ignore */
-                // Non-utf8 character or not a start byte
-            } elseif ($ascii < 224) {
+            } elseif ($ascii >= 192 && $ascii < 224) {
                 // Two-byte character
                 $ascii1 = ord($utf8[$i+1]);
                 $unicode = (15 & $ascii) * 64 + (63 & $ascii1);

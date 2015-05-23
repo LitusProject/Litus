@@ -103,7 +103,7 @@ class CashRegister
             $amount += $number->getAmount() * $number->getUnit()->getUnit();
         }
 
-        return $amount;
+        return (int) $amount;
     }
 
     /**

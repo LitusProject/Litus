@@ -30,10 +30,10 @@ use RuntimeException,
 class HydratorPluginManager extends \Zend\Stdlib\Hydrator\HydratorPluginManager
 {
     /**
-     * @param  string  $name
-     * @param  array   $options
-     * @param  boolean $usePeeringServiceManagers
-     * @return object
+     * @param  string       $name
+     * @param  array        $options
+     * @param  boolean      $usePeeringServiceManagers
+     * @return object|array
      */
     public function get($name, $options = array(), $usePeeringServiceManagers = true)
     {

@@ -140,7 +140,7 @@ class FormElementManager extends \Zend\Form\FormElementManager
      * @param  string       $name
      * @param  string|array $options
      * @param  bool         $usePeeringServiceManagers
-     * @return object
+     * @return object|array
      */
     public function get($name, $options = array(), $usePeeringServiceManagers = true)
     {

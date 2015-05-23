@@ -22,7 +22,7 @@ use CommonBundle\Entity\General\Location as LocationEntity;
 
 class Location extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $geo_keys = array(
+    private static $geoKeys = array(
         'latitude', 'longitude',
     );
 
@@ -41,7 +41,7 @@ class Location extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, array('name'));
 
-        $data['geographical'] = $this->stdExtract($object, self::$geo_keys);
+        $data['geographical'] = $this->stdExtract($object, self::$geoKeys);
 
         $data['address'] = $hydrator->extract($object->getAddress());
 
@@ -64,7 +64,7 @@ class Location extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         if (isset($data['geographical'])) {
-            $this->stdHydrate($data['geographical'], $object, self::$geo_keys);
+            $this->stdHydrate($data['geographical'], $object, self::$geoKeys);
         }
 
         return $this->stdHydrate($data, $object, self::$stdKeys);

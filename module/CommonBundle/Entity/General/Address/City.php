@@ -94,7 +94,7 @@ class City
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return \Doctrine\Common\Collection\ArrayCollection
      */
     public function getStreets()
     {

@@ -356,7 +356,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param  string $email
+     * @param  string|null $email
      * @return self
      */
     public function setEmail($email = null)
@@ -613,11 +613,7 @@ abstract class Person implements RoleAware
     public function isMember(AcademicYearEntity $academicYear)
     {
         if (null !== $this->getOrganizationStatus($academicYear)) {
-            if ($this->getOrganizationStatus($academicYear)->getStatus() == 'non_member') {
-                return false;
-            }
-
-            return true;
+            return !($this->getOrganizationStatus($academicYear)->getStatus() == 'non_member');
         }
 
         return false;

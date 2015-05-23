@@ -108,7 +108,7 @@ abstract class Server
                 } else {
                     $buffer = fread($socket, 2048);
 
-                    if (false == $buffer || strlen($buffer) == 0) {
+                    if (false === $buffer || strlen($buffer) === 0) {
                         $this->removeUserSocket($socket);
                     } else {
                         $user = $this->getUserBySocket($socket);
@@ -129,7 +129,8 @@ abstract class Server
     /**
      * Add a user socket to listen to
      *
-     * @param resource $socket
+     * @param  resource $socket
+     * @return null
      */
     private function addUserSocket($socket)
     {
@@ -143,7 +144,8 @@ abstract class Server
     /**
      * Add a authenticated socket
      *
-     * @param mixed $socket
+     * @param  resource $socket
+     * @return null
      */
     protected function addAuthenticated($socket)
     {
@@ -153,7 +155,8 @@ abstract class Server
     /**
      * Check a authenticated socket
      *
-     * @param mixed $socket
+     * @param  resource $socket
+     * @return boolean
      */
     protected function isAuthenticated($socket)
     {
@@ -163,7 +166,7 @@ abstract class Server
     /**
      * Get a user by his socket
      *
-     * @param  mixed $socket
+     * @param  resource $socket
      * @return User
      */
     public function getUserBySocket($socket)
@@ -178,7 +181,8 @@ abstract class Server
     /**
      * Remove a user socket
      *
-     * @param mixed $socket
+     * @param  resource $socket
+     * @return null
      */
     private function removeUserSocket($socket)
     {
@@ -209,7 +213,8 @@ abstract class Server
     /**
      * Remove a user
      *
-     * @param User $user
+     * @param  User $user
+     * @return null
      */
     protected function removeUser(User $user)
     {
@@ -219,8 +224,9 @@ abstract class Server
     /**
      * Process a frame send by a user to the master socket
      *
-     * @param User   $user
-     * @param string $data
+     * @param  User   $user
+     * @param  string $data
+     * @return null
      */
     private function processFrame(User $user, $data)
     {
@@ -250,8 +256,9 @@ abstract class Server
     /**
      * Handle the received control frames
      *
-     * @param User  $user
-     * @param Frame $frame
+     * @param  User  $user
+     * @param  Frame $frame
+     * @return null
      */
     private function handleControlFrame(User $user, Frame $frame)
     {
@@ -281,8 +288,9 @@ abstract class Server
     /**
      * Handle a received data frame
      *
-     * @param User  $user
-     * @param Frame $frame
+     * @param  User  $user
+     * @param  Frame $frame
+     * @return null
      */
     protected function handleDataFrame(User $user, Frame $frame)
     {
@@ -296,8 +304,9 @@ abstract class Server
     /**
      * Send text to a user socket
      *
-     * @param User   $user
-     * @param string $text
+     * @param  User   $user
+     * @param  string $text
+     * @return null
      */
     public function sendText($user, $text)
     {
@@ -325,7 +334,8 @@ abstract class Server
     /**
      * Send text to all user socket
      *
-     * @param string $text
+     * @param  string $text
+     * @return null
      */
     public function sendTextToAll($text)
     {
@@ -361,25 +371,28 @@ abstract class Server
     /**
      * Parse received text
      *
-     * @param User   $user
-     * @param string $data
+     * @param  User   $user
+     * @param  string $data
+     * @return null
      */
     abstract protected function gotText(User $user, $data);
 
     /**
      * Parse received binary
      *
-     * @param User   $user
-     * @param string $data
+     * @param  User   $user
+     * @param  string $data
+     * @return null
      */
     abstract protected function gotBin(User $user, $data);
 
     /**
      * Do action when user closed his socket
      *
-     * @param User    $user
-     * @param integer $statusCode
-     * @param string  $reason
+     * @param  User    $user
+     * @param  integer $statusCode
+     * @param  string  $reason
+     * @return null
      */
     protected function onClose(User $user, $statusCode, $reason)
     {
@@ -389,7 +402,8 @@ abstract class Server
     /**
      * Do action when a new user has connected to this socket
      *
-     * @param User $user
+     * @param  User $user
+     * @return null
      */
     abstract protected function onConnect(User $user);
 }

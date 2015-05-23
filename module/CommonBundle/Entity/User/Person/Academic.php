@@ -249,7 +249,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  DateTime $birthday
+     * @param  DateTime|null $birthday
      * @return self
      */
     public function setBirthday(DateTime $birthday = null)
