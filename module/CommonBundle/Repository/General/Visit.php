@@ -28,6 +28,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Visit extends EntityRepository
 {
+    /**
+     * @param  string              $controller
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByControllerQuery($controller)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -46,6 +50,10 @@ class Visit extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $name
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByUserQuery($name)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -77,6 +85,10 @@ class Visit extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $url
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByUrlQuery($url)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

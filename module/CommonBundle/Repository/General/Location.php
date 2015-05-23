@@ -28,6 +28,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Location extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();

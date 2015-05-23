@@ -30,6 +30,11 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class UnitMap extends EntityRepository
 {
+    /**
+     * @param  Unit                $unit
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByUnitAndAcademicYearQuery(Unit $unit, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

@@ -28,6 +28,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Language extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();

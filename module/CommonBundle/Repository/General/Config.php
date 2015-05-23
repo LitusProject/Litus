@@ -29,6 +29,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Config extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -40,6 +43,10 @@ class Config extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string $prefix
+     * @return array
+     */
     public function findAllByPrefix($prefix)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -66,7 +73,8 @@ class Config extends EntityRepository
     }
 
     /**
-     * @param string $key
+     * @param  string $key
+     * @return string
      */
     public function getConfigValue($key)
     {

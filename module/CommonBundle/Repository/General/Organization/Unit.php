@@ -28,6 +28,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Unit extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -42,6 +45,9 @@ class Unit extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveAndDisplayedQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -59,6 +65,9 @@ class Unit extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveAndNotDisplayedQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();

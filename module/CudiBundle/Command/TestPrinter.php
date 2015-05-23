@@ -22,6 +22,9 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class TestPrinter extends \CommonBundle\Component\Console\Command
 {
+    /**
+     * @return null
+     */
     protected function configure()
     {
         $this
@@ -42,6 +45,9 @@ EOT
         );
     }
 
+    /**
+     * @return int|null
+     */
     protected function executeCommand()
     {
         if (false === ($printer = $this->getPrinter())) {
@@ -55,11 +61,17 @@ EOT
         $this->send($printer, $ticket);
     }
 
+    /**
+     * @return string
+     */
     protected function getLogName()
     {
         return 'TestPrinter';
     }
 
+    /**
+     * @return string|boolean
+     */
     private function getPrinter()
     {
         $printers = unserialize(
@@ -83,6 +95,9 @@ EOT
         return false;
     }
 
+    /**
+     * @return int|boolean
+     */
     private function getTicket()
     {
         switch ($this->getArgument('ticket')) {
@@ -104,7 +119,9 @@ EOT
     }
 
     /**
-     * @param integer $ticket
+     * @param  string  $printer
+     * @param  integer $ticket
+     * @return null
      */
     private function send($printer, $ticket)
     {

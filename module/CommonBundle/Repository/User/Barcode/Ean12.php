@@ -26,6 +26,10 @@ namespace CommonBundle\Repository\User\Barcode;
  */
 class Ean12 extends \CommonBundle\Repository\User\Barcode
 {
+    /**
+     * @param  string|int                                   $barcode
+     * @return \CommonBundle\Entity\User\Barcode\Ean12|null
+     */
     public function findOneByBarcode($barcode)
     {
         if (!is_numeric($barcode)) {

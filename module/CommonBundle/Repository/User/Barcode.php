@@ -31,6 +31,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Barcode extends EntityRepository
 {
+    /**
+     * @param  string                                 $barcode
+     * @return \CommonBundle\Entity\User\Barcode|null
+     */
     public function findOneByBarcode($barcode)
     {
         $ean12Result = null;
@@ -70,6 +74,10 @@ class Barcode extends EntityRepository
         return null !== $ean12Result ? $ean12Result : $qrResult;
     }
 
+    /**
+     * @param  string $barcode
+     * @return array
+     */
     public function findAllByBarcode($barcode)
     {
         $ean12Result = array();
@@ -103,6 +111,12 @@ class Barcode extends EntityRepository
         return array_merge($qrResult, $ean12Result);
     }
 
+    /**
+     * @param  string       $barcode
+     * @param  AcademicYear $academicYear
+     * @param  Organization $organization
+     * @return array
+     */
     public function findAllByBarcodeAndOrganization($barcode, AcademicYear $academicYear, Organization $organization)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

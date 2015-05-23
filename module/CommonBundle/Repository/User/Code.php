@@ -29,6 +29,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Code extends EntityRepository
 {
+    /**
+     * @param  string                                $code
+     * @return \CommonBundle\Entity\User\Person|null
+     */
     public function findOnePersonByCode($code)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

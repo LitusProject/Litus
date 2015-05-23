@@ -31,6 +31,11 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class AcademicYearMap extends EntityRepository
 {
+    /**
+     * @param  Academic                                                           $academic
+     * @param  AcademicYear                                                       $academicYear
+     * @return \CommonBundle\Entity\User\Person\Organization\AcademicYearMap|null
+     */
     public function findOneByAcademicAndAcademicYear(Academic $academic, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -51,6 +56,11 @@ class AcademicYearMap extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @param  Organization|null   $organization
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearAndOrganizationQuery(AcademicYear $academicYear, Organization $organization = null)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

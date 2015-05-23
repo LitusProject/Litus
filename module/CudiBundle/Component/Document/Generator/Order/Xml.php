@@ -105,7 +105,7 @@ class Xml
             new Object(
                 'Attachment',
                 array(
-                    'AttachmentKey' => 'File' . $num++,
+                    'AttachmentKey' => 'File' . ($num++),
                     'FileName' => 'front_' . $item->getArticle()->getId() . '.pdf',
                 ),
                 null
@@ -119,7 +119,7 @@ class Xml
             $attachments[] = new Object(
                 'Attachment',
                 array(
-                    'AttachmentKey' => 'File' . $num++,
+                    'AttachmentKey' => 'File' . ($num++),
                     'FileName' => $mapping->getFile()->getName(),
                 ),
                 null

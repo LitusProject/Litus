@@ -29,6 +29,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Organization extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -40,6 +43,9 @@ class Organization extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \CommonBundle\Entity\General\Organization
+     */
     public function findOne()
     {
         if (count($this->findAll()) > 1) {

@@ -30,6 +30,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Session extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllExpiredQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -47,6 +50,10 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  PersonEntity        $person
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveByPersonQuery(PersonEntity $person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

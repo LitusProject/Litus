@@ -28,6 +28,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class AcademicYear extends EntityRepository
 {
+    /**
+     * @param  int                                            $id
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
     public function findOneById($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -44,6 +48,9 @@ class AcademicYear extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();

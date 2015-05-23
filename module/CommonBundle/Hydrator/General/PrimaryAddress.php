@@ -28,7 +28,7 @@ class PrimaryAddress extends \CommonBundle\Component\Hydrator\Hydrator
         'number', 'mailbox',
     );
 
-    private static $other_keys = array(
+    private static $otherKeys = array(
         'street', 'postal', 'city',
     );
 
@@ -57,7 +57,7 @@ class PrimaryAddress extends \CommonBundle\Component\Hydrator\Hydrator
             $data['street']['street_' . $city->getId()] = $street ? $street->getId() : 0;
         } else {
             $data['city'] = 'other';
-            $data['other'] = $this->stdExtract($object, self::$other_keys);
+            $data['other'] = $this->stdExtract($object, self::$otherKeys);
         }
 
         $data['country'] = $object->getCountry();
@@ -74,7 +74,7 @@ class PrimaryAddress extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setCountry('BE');
 
         if ($data['city'] === 'other') {
-            $this->stdHydrate($data['other'], $object, self::$other_keys);
+            $this->stdHydrate($data['other'], $object, self::$otherKeys);
         } else {
             $city = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Address\City')
