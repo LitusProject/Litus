@@ -30,6 +30,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class OpeningHour extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -45,6 +48,9 @@ class OpeningHour extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllOldQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -60,6 +66,9 @@ class OpeningHour extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findCurrentWeekQuery()
     {
         $start = new DateTime();
@@ -90,6 +99,10 @@ class OpeningHour extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  DateInterval        $interval
+     * @return \Doctrine\ORM\Query
+     */
     public function findCommingIntervalQuery(DateInterval $interval)
     {
         $start = new DateTime();
@@ -114,6 +127,10 @@ class OpeningHour extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $interval
+     * @return \Doctrine\ORM\Query
+     */
     public function findPeriodFromNowQuery($interval = 'P14D')
     {
         $start = new DateTime();
@@ -139,6 +156,9 @@ class OpeningHour extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour|null
+     */
     public function findCurrent()
     {
         $query = $this->getEntityManager()->createQueryBuilder();

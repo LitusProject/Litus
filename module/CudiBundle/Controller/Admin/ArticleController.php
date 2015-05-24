@@ -509,7 +509,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             case 'isbn':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
-                    ->findAllByISBNQuery($this->getParam('string'));
+                    ->findAllByIsbnQuery($this->getParam('string'));
             case 'publisher':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')

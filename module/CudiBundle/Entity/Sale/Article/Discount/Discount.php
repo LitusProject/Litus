@@ -262,56 +262,48 @@ class Discount
     }
 
     /**
-     * @return integer
+     * @return integer|null
      */
     public function getValue()
     {
         if (!isset($this->value) && isset($this->template)) {
-            $value = $this->template->getValue();
-
-            return isset($value) ? $value : 0;
+            return $this->template->getValue();
         }
 
         return $this->value;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMethod()
     {
         if (!isset($this->method) && isset($this->template)) {
-            $method = $this->template->getMethod();
-
-            return isset($method) ? $method : 'percentage';
+            return $this->template->getMethod();
         }
 
         return $this->method;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getType()
     {
         if (!isset($this->type) && isset($this->template)) {
-            $type = $this->template->getType();
-
-            return isset($type) ? $type : self::$possibleTypes['member'];
+            return $this->template->getType();
         }
 
         return self::$possibleTypes[$this->type];
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getRawType()
     {
         if (!isset($this->type) && isset($this->template)) {
-            $type = $this->template->getRawType();
-
-            return isset($type) ? $type : 'member';
+            return $this->template->getRawType();
         }
 
         return $this->type;

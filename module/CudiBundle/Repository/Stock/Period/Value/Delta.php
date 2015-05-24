@@ -30,6 +30,11 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Delta extends EntityRepository
 {
+    /**
+     * @param  Article $article
+     * @param  Period  $period
+     * @return int
+     */
     public function findTotalByArticleAndPeriod(Article $article, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -49,6 +54,11 @@ class Delta extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleAndPeriodQuery(Article $article, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

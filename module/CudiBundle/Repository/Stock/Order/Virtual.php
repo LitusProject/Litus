@@ -30,6 +30,11 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Virtual extends EntityRepository
 {
+    /**
+     * @param  Period  $period
+     * @param  Article $article
+     * @return int
+     */
     public function findNbByPeriodAndArticle(Period $period, Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -59,6 +64,11 @@ class Virtual extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Period              $period
+     * @param  Article             $article
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPeriodAndArticleQuery(Period $period, Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

@@ -31,6 +31,11 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Retour extends EntityRepository
 {
+    /**
+     * @param  Supplier            $supplier
+     * @param  PeriodEntity        $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySupplierAndPeriodQuery(Supplier $supplier, PeriodEntity $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -57,6 +62,11 @@ class Retour extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article      $article
+     * @param  PeriodEntity $period
+     * @return int
+     */
     public function findTotalByArticleAndPeriod(Article $article, PeriodEntity $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -82,6 +92,10 @@ class Retour extends EntityRepository
         return $resultSet ? $resultSet : 0;
     }
 
+    /**
+     * @param  PeriodEntity        $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPeriodQuery(PeriodEntity $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

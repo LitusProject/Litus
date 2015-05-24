@@ -34,6 +34,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Session extends EntityRepository
 {
+    /**
+     * @param  CashRegister                         $cashRegister
+     * @return \CudiBundle\Entity\Sale\Session|null
+     */
     public function findOneByCashRegister(CashRegister $cashRegister)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -53,6 +57,11 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
+     * @return array
+     */
     private function personsByAcademicYearAndOrganization(AcademicYear $academicYear, Organization $organization = null)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -78,6 +87,11 @@ class Session extends EntityRepository
         return $ids;
     }
 
+    /**
+     * @param  SessionEntity     $session
+     * @param  Organization|null $organization
+     * @return int
+     */
     public function getTheoreticalRevenue(SessionEntity $session, Organization $organization = null)
     {
         if ($organization !== null) {
@@ -141,11 +155,22 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
+     * @return int
+     */
     public function getTheoreticalRevenueByAcademicYear(AcademicYear $academicYear, Organization $organization = null)
     {
         return $this->getTheoreticalRevenueBetween($academicYear->getUniversityStartDate(), $academicYear->getUniversityEndDate(), $organization);
     }
 
+    /**
+     * @param  DateTime          $startDate
+     * @param  DateTime          $endDate
+     * @param  Organization|null $organization
+     * @return int
+     */
     public function getTheoreticalRevenueBetween(DateTime $startDate, DateTime $endDate, Organization $organization = null)
     {
         if ($organization !== null) {
@@ -225,6 +250,11 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  SessionEntity     $session
+     * @param  Organization|null $organization
+     * @return int
+     */
     public function getPurchasedAmountBySession(SessionEntity $session, Organization $organization = null)
     {
         if ($organization !== null) {
@@ -264,11 +294,22 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
+     * @return int
+     */
     public function getPurchasedAmountByAcademicYear(AcademicYear $academicYear, Organization $organization = null)
     {
         return $this->getPurchasedAmountBetween($academicYear->getUniversityStartDate(), $academicYear->getUniversityEndDate(), $organization);
     }
 
+    /**
+     * @param  DateTime          $startDate
+     * @param  DateTime          $endDate
+     * @param  Organization|null $organization
+     * @return int
+     */
     public function getPurchasedAmountBetween(DateTime $startDate, DateTime $endDate, Organization $organization = null)
     {
         if ($organization !== null) {
@@ -316,6 +357,9 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Session|null
+     */
     public function getLast()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -329,6 +373,10 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  DateTime                             $date
+     * @return \CudiBundle\Entity\Sale\Session|null
+     */
     public function findOnebyDate(DateTime $date)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -348,6 +396,9 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findOpenQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -362,11 +413,20 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         return $this->findAllBetweenQuery($academicYear->getUniversityStartDate(), $academicYear->getUniversityEndDate());
     }
 
+    /**
+     * @param  DateTime            $startDate
+     * @param  DateTime            $endDate
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBetweenQuery(DateTime $startDate, DateTime $endDate)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

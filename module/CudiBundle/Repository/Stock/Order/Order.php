@@ -35,6 +35,11 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Order extends EntityRepository
 {
+    /**
+     * @param  Supplier            $supplier
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySupplierAndPeriodQuery(Supplier $supplier, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -65,6 +70,10 @@ class Order extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Supplier                                  $supplier
+     * @return \CudiBundle\Entity\Stock\Order\Order|null
+     */
     public function findOneOpenBySupplier(Supplier $supplier)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -84,6 +93,12 @@ class Order extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article    $article
+     * @param  int        $number
+     * @param  Person     $person
+     * @return ItemEntity
+     */
     public function addNumberByArticle(Article $article, $number, Person $person)
     {
         $item = $this->getEntityManager()
@@ -106,6 +121,10 @@ class Order extends EntityRepository
         return $item;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -126,6 +145,11 @@ class Order extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $supplier
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySupplierAndAcademicYearQuery($supplier, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

@@ -29,6 +29,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Amount extends EntityRepository
 {
+    /**
+     * @param  Article                                                 $article
+     * @return \CudiBundle\Entity\Sale\Article\Restriction\Amount|null
+     */
     public function findOneByArticle(Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

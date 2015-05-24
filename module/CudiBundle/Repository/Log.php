@@ -28,6 +28,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Log extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findBookingLogsQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();

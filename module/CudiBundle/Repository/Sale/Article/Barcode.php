@@ -29,6 +29,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Barcode extends EntityRepository
 {
+    /**
+     * @param  int                                          $barcode
+     * @return \CudiBundle\Entity\Sale\Article\Barcode|null
+     */
     public function findOneByBarcode($barcode)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -52,6 +56,10 @@ class Barcode extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleQuery(Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

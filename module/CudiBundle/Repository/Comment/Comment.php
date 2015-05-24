@@ -29,6 +29,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Comment extends EntityRepository
 {
+    /**
+     * @param  Article             $article
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleQuery(Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -47,6 +51,10 @@ class Comment extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllExternalByArticleQuery(Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -66,6 +74,10 @@ class Comment extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllSiteByArticleQuery(Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

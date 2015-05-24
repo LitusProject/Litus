@@ -30,6 +30,11 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Mapping extends EntityRepository
 {
+    /**
+     * @param  Article                              $article
+     * @param  FileEntity                           $entity
+     * @return \CudiBundle\Entity\File\Mapping|null
+     */
     public function findOneByArticleAndFile(Article $article, FileEntity $file)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -50,6 +55,11 @@ class Mapping extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @param  boolean             $isProf
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllPrintableByArticleQuery(Article $article, $isProf = false)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -69,6 +79,11 @@ class Mapping extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @param  boolean             $isProf
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleQuery(Article $article, $isProf = false)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

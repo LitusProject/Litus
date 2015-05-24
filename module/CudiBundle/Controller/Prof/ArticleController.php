@@ -238,7 +238,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $edited = true;
                     } elseif ($article->getType() != $duplicate->getType()) {
                         $edited = true;
-                    } elseif ($article instanceof Internal && $$duplicate instanceof Internal) {
+                    } elseif ($article instanceof Internal && $duplicate instanceof Internal) {
                         if ($article->getBinding()->getId() != $duplicate->getBinding()->getId()) {
                             $edited = true;
                         } elseif ($article->isRectoVerso() !== $duplicate->isRectoVerso()) {

@@ -29,6 +29,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Bookable extends EntityRepository
 {
+    /**
+     * @param  DateTime            $date
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllAfterQuery(DateTime $date)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

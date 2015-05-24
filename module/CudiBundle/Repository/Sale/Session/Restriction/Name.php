@@ -29,6 +29,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Name extends EntityRepository
 {
+    /**
+     * @param  session                                               $session
+     * @return \CudiBundle\Entity\Sale\Session\Restriction\Name|null
+     */
     public function findOneBySessionAndType(Session $session)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

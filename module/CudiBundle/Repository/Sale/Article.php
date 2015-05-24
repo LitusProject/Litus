@@ -31,6 +31,11 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Article extends EntityRepository
 {
+    /**
+     * @param  AcademicYear        $academicYear
+     * @param  int                 $semester
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->getArticleIdsBySemester($academicYear, $semester);
@@ -51,6 +56,10 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear $academicYear
+     * @return array
+     */
     public function findAllByAcademicYearSortBarcode(AcademicYear $academicYear)
     {
         $articles = $this->getArticleIdsBySemester($academicYear);
@@ -78,6 +87,10 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity                        $article
+     * @return \CudiBundle\Entity\Sale\Article|null
+     */
     public function findOneByArticle(ArticleEntity $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -97,6 +110,10 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  int                                  $barcode
+     * @return \CudiBundle\Entity\Sale\Article|null
+     */
     public function findOneByBarcode($barcode)
     {
         $barcode = $this->getEntityManager()
@@ -110,6 +127,11 @@ class Article extends EntityRepository
         return null;
     }
 
+    /**
+     * @param  string              $type
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByTypeAndAcademicYearQuery($type, AcademicYear $academicYear)
     {
         $articles = $this->getArticleIdsBySemester($academicYear);
@@ -132,6 +154,12 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $title
+     * @param  AcademicYear        $academicYear
+     * @param  int                 $semester
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByTitleAndAcademicYearQuery($title, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->getArticleIdsBySemester($academicYear, $semester);
@@ -154,6 +182,12 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $author
+     * @param  AcademicYear        $academicYear
+     * @param  int                 $semester
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAuthorAndAcademicYearQuery($author, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->getArticleIdsBySemester($academicYear, $semester);
@@ -176,6 +210,11 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $string
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByTitleOrAuthorAndAcademicYearQuery($string, AcademicYear $academicYear)
     {
         $articles = $this->getArticleIdsBySemester($academicYear, 0);
@@ -201,6 +240,12 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $publisher
+     * @param  AcademicYear        $academicYear
+     * @param  int                 $semester
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPublisherAndAcademicYearQuery($publisher, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->getArticleIdsBySemester($academicYear, $semester);
@@ -223,6 +268,12 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  int                 $barcode
+     * @param  AcademicYear        $academicYear
+     * @param  int                 $semester
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByBarcodeAndAcademicYearQuery($barcode, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->getArticleIdsBySemester($academicYear, $semester);
@@ -264,6 +315,12 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  int                 $supplier
+     * @param  AcademicYear        $academicYear
+     * @param  int                 $semester
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySupplierStringAndAcademicYearQuery($supplier, AcademicYear $academicYear, $semester = 0)
     {
         $articles = $this->getArticleIdsBySemester($academicYear, $semester);
@@ -287,6 +344,10 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Supplier            $supplier
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySupplierQuery(Supplier $supplier)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -308,6 +369,11 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $title
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByTitleOrBarcodeAndAcademicYearQuery($title, AcademicYear $academicYear)
     {
         $articles = $this->getArticleIdsBySemester($academicYear);
@@ -335,6 +401,11 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear $academicYear
+     * @param  int          $semester
+     * @return array
+     */
     private function getArticleIdsBySemester(AcademicYear $academicYear, $semester = 0)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

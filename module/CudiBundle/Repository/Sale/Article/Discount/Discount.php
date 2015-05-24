@@ -30,6 +30,11 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Discount extends EntityRepository
 {
+    /**
+     * @param  Article                                                $article
+     * @param  string                                                 $type
+     * @return \CudiBundle\Entity\Sale\Article\Discount\Discount|null
+     */
     public function findOneByArticleAndType(Article $article, $type)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -54,6 +59,12 @@ class Discount extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article                                                $article
+     * @param  string                                                 $type
+     * @param  Organization|null                                      $organization
+     * @return \CudiBundle\Entity\Sale\Article\Discount\Discount|null
+     */
     public function findOneByArticleAndTypeAndOrganization(Article $article, $type, Organization $organization = null)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -87,6 +98,10 @@ class Discount extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleQuery(Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

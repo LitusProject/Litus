@@ -31,6 +31,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class SubjectMap extends EntityRepository
 {
+    /**
+     * @param  Article                                    $article
+     * @param  SubjectEntity                              $subject
+     * @param  AcademicYear                               $academicYear
+     * @param  boolean                                    $isProf
+     * @return \CudiBundle\Entity\Article\SubjectMap|null
+     */
     public function findOneByArticleAndSubjectAndAcademicYear(Article $article, SubjectEntity $subject, AcademicYear $academicYear, $isProf = false)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -55,6 +62,12 @@ class SubjectMap extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  SubjectEntity       $subject
+     * @param  AcademicYear        $academicYear
+     * @param  boolean             $isProf
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySubjectAndAcademicYearQuery(SubjectEntity $subject, AcademicYear $academicYear, $isProf = false)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -77,6 +90,12 @@ class SubjectMap extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @param  AcademicYear        $academicYear
+     * @param  boolean             $isProf
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleAndAcademicYearQuery(Article $article, AcademicYear $academicYear, $isProf = false)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -97,6 +116,11 @@ class SubjectMap extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @param  boolean             $isProf
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleQuery(Article $article, $isProf = false)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

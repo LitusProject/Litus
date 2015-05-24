@@ -30,6 +30,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Period extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -41,6 +44,9 @@ class Period extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Stock\Period|null
+     */
     public function findOneActive()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -56,6 +62,10 @@ class Period extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @return array
+     */
     private function findAllArticleIds(PeriodEntity $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -138,6 +148,11 @@ class Period extends EntityRepository
         return $articles;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  boolean      $notDelivered
+     * @return array
+     */
     public function findAllArticlesByPeriod(PeriodEntity $period, $notDelivered = false)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -166,6 +181,12 @@ class Period extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  string       $title
+     * @param  boolean      $notDelivered
+     * @return array
+     */
     public function findAllArticlesByPeriodAndTitle(PeriodEntity $period, $title, $notDelivered = false)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

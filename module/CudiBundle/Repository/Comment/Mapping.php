@@ -30,6 +30,11 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Mapping extends EntityRepository
 {
+    /**
+     * @param  Article                                 $article
+     * @param  CommentEntity                           $comment
+     * @return \CudiBundle\Entity\Comment\Mapping|null
+     */
     public function findOneByArticleAndComment(Article $article, CommentEntity $comment)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -50,6 +55,10 @@ class Mapping extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleQuery(Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
