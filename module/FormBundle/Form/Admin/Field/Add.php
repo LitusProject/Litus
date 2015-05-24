@@ -39,18 +39,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     protected $hydrator = 'FormBundle\Hydrator\Field';
 
     /**
-    * @var Form
-    */
+     * @var Form
+     */
     protected $form;
 
     /**
-    * @var Field
-    */
+     * @var Field
+     */
     protected $field;
 
     /**
-    * @var boolean
-    */
+     * @var boolean
+     */
     protected $repeat;
 
     public function init()
@@ -195,6 +195,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         }
     }
 
+    /**
+     * @param  FieldsetInterface $container
+     * @param  Language          $language
+     * @param  boolean           $isDefault
+     * @return null
+     */
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
         $container->add(array(
@@ -215,6 +221,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
     }
 
+    /**
+     * @return array
+     */
     protected function getVisibilityOptions()
     {
         $options = array('always' => 'Always');
@@ -263,9 +272,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     }
 
     /**
-    * @param  Form $form
-    * @return self
-    */
+     * @param  Form $form
+     * @return self
+     */
     public function setForm(Form $form)
     {
         $this->form = $form;
@@ -274,9 +283,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     }
 
     /**
-    * @param  Field|null $field
-    * @return self
-    */
+     * @param  Field|null $field
+     * @return self
+     */
     public function setField(Field $field = null)
     {
         $this->field = $field;
@@ -285,9 +294,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     }
 
     /**
-    * @param  boolean $repeat
-    * @return self
-    */
+     * @param  boolean $repeat
+     * @return self
+     */
     public function setRepeat($repeat)
     {
         $this->repeat = $repeat;
@@ -295,6 +304,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getInputFilterSpecification()
     {
         $type = $this->getType();

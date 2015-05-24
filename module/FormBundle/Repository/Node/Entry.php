@@ -199,7 +199,7 @@ class Entry extends EntityRepository
             $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()] = $entry;
         }
 
-        $endEntries = $this->findAllByFormQuery($group->getForms()[sizeof($group->getForms())-1]->getForm())->getResult();
+        $endEntries = $this->findAllByFormQuery($group->getForms()[sizeof($group->getForms()) - 1]->getForm())->getResult();
         $entries = array();
         foreach ($endEntries as $entry) {
             if ($entry->isDraft()) {
@@ -219,7 +219,7 @@ class Entry extends EntityRepository
             return array();
         }
 
-        $endEntries = $this->findAllByFormQuery($group->getForms()[sizeof($group->getForms())-1]->getForm())->getResult();
+        $endEntries = $this->findAllByFormQuery($group->getForms()[sizeof($group->getForms()) - 1]->getForm())->getResult();
         $tmpEntries = array();
         foreach ($endEntries as $entry) {
             $tmpEntries[($entry->isGuestEntry() ? 'guest_' : 'person_') . $entry->getPersonInfo()->getId()] = $entry;

@@ -45,8 +45,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $person;
 
     /**
-    * @var GuestInfoEntity
-    */
+     * @var GuestInfoEntity
+     */
     protected $guestInfo;
 
     /**
@@ -55,13 +55,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     protected $form;
 
     /**
-    * @var Language
-    */
+     * @var Language
+     */
     protected $language;
 
     /**
-    * @var EntryEntity
-    */
+     * @var EntryEntity
+     */
     protected $entry;
 
     /**
@@ -225,9 +225,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  GuestInfoEntity|null $guestInfo
-    * @return self
-    */
+     * @param  GuestInfoEntity|null $guestInfo
+     * @return self
+     */
     public function setGuestInfo(GuestInfoEntity $guestInfo = null)
     {
         $this->guestInfo = $guestInfo;
@@ -236,9 +236,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  FormEntity $form
-    * @return self
-    */
+     * @param  FormEntity $form
+     * @return self
+     */
     public function setForm(FormEntity $form)
     {
         $this->form = $form;
@@ -247,9 +247,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  Language $language
-    * @return self
-    */
+     * @param  Language $language
+     * @return self
+     */
     public function setLanguage(Language $language)
     {
         $this->language = $language;
@@ -258,9 +258,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  EntryEntity|null $entry
-    * @return self
-    */
+     * @param  EntryEntity|null $entry
+     * @return self
+     */
     public function setEntry(EntryEntity $entry = null)
     {
         $this->entry = $entry;
@@ -269,9 +269,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  boolean $isDraft
-    * @return self
-    */
+     * @param  boolean $isDraft
+     * @return self
+     */
     public function isDraft($isDraft)
     {
         $this->isDraft = $isDraft;

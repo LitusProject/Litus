@@ -70,11 +70,11 @@ class ViewerMap
     private $mail;
 
     /**
-    * @param Form         $form
-    * @param Person|null  $person
-    * @param boolean|null $edit
-    * @param boolean|null $mail
-    */
+     * @param Form         $form
+     * @param Person|null  $person
+     * @param boolean|null $edit
+     * @param boolean|null $mail
+     */
     public function __construct(Form $form, Person $person = null, $edit = null, $mail = null)
     {
         $this->person = $person;
@@ -108,9 +108,9 @@ class ViewerMap
     }
 
     /**
-    * @param  Person $person
-    * @return self
-    */
+     * @param  Person $person
+     * @return self
+     */
     public function setPerson(Person $person)
     {
         $this->person = $person;
@@ -127,9 +127,9 @@ class ViewerMap
     }
 
     /**
-    * @param  boolean $edit
-    * @return self
-    */
+     * @param  boolean $edit
+     * @return self
+     */
     public function setEdit($edit)
     {
         $this->edit = $edit;
@@ -146,9 +146,9 @@ class ViewerMap
     }
 
     /**
-    * @param  boolean $mail
-    * @return self
-    */
+     * @param  boolean $mail
+     * @return self
+     */
     public function setMail($mail)
     {
         $this->mail = $mail;
