@@ -32,7 +32,7 @@ class Mapping extends EntityRepository
 {
     /**
      * @param  Article                              $article
-     * @param  FileEntity                           $entity
+     * @param  FileEntity                           $file
      * @return \CudiBundle\Entity\File\Mapping|null
      */
     public function findOneByArticleAndFile(Article $article, FileEntity $file)

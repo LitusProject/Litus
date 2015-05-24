@@ -152,7 +152,7 @@ class Session extends EntityRepository
             $resultSet = 0;
         }
 
-        return $resultSet;
+        return (int) $resultSet;
     }
 
     /**
@@ -247,7 +247,7 @@ class Session extends EntityRepository
             $resultSet = 0;
         }
 
-        return $resultSet;
+        return (int) $resultSet;
     }
 
     /**

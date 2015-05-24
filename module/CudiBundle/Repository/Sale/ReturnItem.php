@@ -320,7 +320,7 @@ class ReturnItem extends EntityRepository
     }
 
     /**
-     * @param  Organization|null   $session
+     * @param  Organization|null   $organization
      * @param  SessionEntity       $session
      * @return \Doctrine\ORM\Query
      */

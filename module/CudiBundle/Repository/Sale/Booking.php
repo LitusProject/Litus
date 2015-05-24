@@ -836,10 +836,10 @@ class Booking extends EntityRepository
     }
 
     /**
-     * @param  ArticleEntity                        $article
-     * @param  Person                               $person
-     * @param  AcademicYear                         $academicYear
-     * @return \CudiBundle\Entity\Sale\Booking|null
+     * @param  ArticleEntity                               $article
+     * @param  Person                                      $person
+     * @param  AcademicYear                                $academicYear
+     * @return \Doctrine\Common\Collection\ArrayCollection
      */
     public function findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(ArticleEntity $article, Person $person, AcademicYear $academicYear)
     {
@@ -847,11 +847,11 @@ class Booking extends EntityRepository
     }
 
     /**
-     * @param  ArticleEntity                        $article
-     * @param  Person                               $person
-     * @param  DateTime                             $start
-     * @param  DateTime|null                        $end
-     * @return \CudiBundle\Entity\Sale\Booking|null
+     * @param  ArticleEntity                               $article
+     * @param  Person                                      $person
+     * @param  DateTime                                    $start
+     * @param  DateTime|null                               $end
+     * @return \Doctrine\Common\Collection\ArrayCollection
      */
     public function findAllSoldOrAssignedOrBookedByArticleAndPersonBetween(ArticleEntity $article, Person $person, DateTime $start, DateTime $end = null)
     {
@@ -1173,7 +1173,7 @@ class Booking extends EntityRepository
     }
 
     /**
-     * @param  Person             $person
+     * @param  ArticleEntity      $article
      * @param  TransportInterface $mailTransport
      * @return int
      */

@@ -30,7 +30,7 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
 class Action extends EntityRepository
 {
     /**
-     * @param  int                 $nbResults
+     * @param  int|null            $nbResults
      * @return \Doctrine\ORM\Query
      */
     public function findAllUncompletedQuery($nbResults = null)

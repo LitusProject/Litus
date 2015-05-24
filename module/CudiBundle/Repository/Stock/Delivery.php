@@ -34,7 +34,7 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
 class Delivery extends EntityRepository
 {
     /**
-     * @param  Suppplier           $supplier
+     * @param  Supplier            $supplier
      * @param  PeriodEntity        $period
      * @return \Doctrine\ORM\Query
      */

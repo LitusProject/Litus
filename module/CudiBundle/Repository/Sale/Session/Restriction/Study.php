@@ -30,7 +30,7 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
 class Study extends EntityRepository
 {
     /**
-     * @param  session                                                $session
+     * @param  Session                                                $session
      * @return \CudiBundle\Entity\Sale\Session\Restriction\Study|null
      */
     public function findOneBySessionAndType(Session $session)
