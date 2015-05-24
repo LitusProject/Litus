@@ -54,7 +54,7 @@ class Ics
      * @param TmpFile         $file
      * @param EntityManager   $entityManager
      * @param DocumentManager $documentManager
-     * @param string          $token
+     * @param string|null     $token
      */
     public function __construct(TmpFile $file, EntityManager $entityManager, DocumentManager $documentManager, $token = null)
     {

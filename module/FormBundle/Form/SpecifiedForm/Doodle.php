@@ -198,7 +198,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @param  Person $person
+     * @param  Person|null $person
      * @return self
      */
     public function setPerson(Person $person = null)
@@ -209,7 +209,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @param  GuestInfoEntity $guestInfo
+     * @param  GuestInfoEntity|null $guestInfo
      * @return self
      */
     public function setGuestInfo(GuestInfoEntity $guestInfo = null)

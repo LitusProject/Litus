@@ -214,7 +214,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @param  Person $person
+     * @param  Person|null $person
      * @return self
      */
     public function setPerson(Person $person = null)
@@ -225,7 +225,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  GuestInfoEntity $guestInfo
+    * @param  GuestInfoEntity|null $guestInfo
     * @return self
     */
     public function setGuestInfo(GuestInfoEntity $guestInfo = null)
@@ -258,7 +258,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  EntryEntity $entry
+    * @param  EntryEntity|null $entry
     * @return self
     */
     public function setEntry(EntryEntity $entry = null)

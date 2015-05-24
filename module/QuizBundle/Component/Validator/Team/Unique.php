@@ -65,7 +65,7 @@ class Unique extends \CommonBundle\Component\Validator\AbstractValidator
      * @param  array|null $context The context of the field that will be validated
      * @return boolean
      */
-    public function isValid($value)
+    public function isValid($value, $context = null)
     {
         $this->setValue($value);
 

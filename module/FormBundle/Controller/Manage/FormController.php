@@ -188,7 +188,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         ->findOneById($formData['person_form']['person']['id']);
                 }
 
-                $formEntry = new FormEntry($person, $formSpecification);
+                $formEntry = new FormEntry($formSpecification, $person);
                 if (null === $person) {
                     $formEntry->setGuestInfo(
                         new GuestInfo($this->getEntityManager(), $this->getRequest())
@@ -355,7 +355,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         ->findOneById($formData['person_form']['person']['id']);
                 }
 
-                $formEntry = new FormEntry($person, $formSpecification);
+                $formEntry = new FormEntry($formSpecification, $person);
                 if (null === $person) {
                     $formEntry->setGuestInfo(
                         new GuestInfo($this->getEntityManager(), $this->getRequest())

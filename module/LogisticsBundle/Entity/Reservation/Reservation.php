@@ -39,7 +39,7 @@ use CommonBundle\Entity\User\Person,
 abstract class Reservation
 {
     /**
-     * @var The reservation's unique identifier
+     * @var int The reservation's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -103,7 +103,7 @@ abstract class Reservation
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getId()
     {

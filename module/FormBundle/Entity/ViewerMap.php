@@ -70,10 +70,10 @@ class ViewerMap
     private $mail;
 
     /**
-    * @param Form    $form
-    * @param Person  $person
-    * @param boolean $edit
-    * @param boolean $mail
+    * @param Form         $form
+    * @param Person|null  $person
+    * @param boolean|null $edit
+    * @param boolean|null $mail
     */
     public function __construct(Form $form, Person $person = null, $edit = null, $mail = null)
     {

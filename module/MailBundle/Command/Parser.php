@@ -100,11 +100,9 @@ EOT
     {
         $this->lilo->sendLog(
             $str,
-            serialize(
-                array(
-                    'MailBundle',
-                    'parser.php',
-                )
+            array(
+                'MailBundle',
+                'parser.php',
             )
         );
     }

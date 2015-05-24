@@ -274,7 +274,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     }
 
     /**
-    * @param  Field $field
+    * @param  Field|null $field
     * @return self
     */
     public function setField(Field $field = null)
@@ -300,13 +300,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $type = $this->getType();
 
         if ($type == 'string') {
-            $this->get('string_form')->setRequired();
+            /** @var \FormBundle\Form\Admin\Field\Field\String $stringForm */
+            $stringForm = $this->get('string_form');
+            $$stringForm->setRequired();
         } elseif ($type == 'dropdown') {
-            $this->get('dropdown_form')->setRequired();
+            /** @var \FormBundle\Form\Admin\Field\Field\Dropdown $dropdownForm */
+            $dropdownForm = $this->get('dropdown_form');
+            $$dropdownForm->setRequired();
         } elseif ($type == 'file') {
-            $this->get('file_form')->setRequired();
+            /** @var \FormBundle\Form\Admin\Field\Field\File $fileForm */
+            $fileForm = $this->get('file_form');
+            $fileForm->setRequired();
         } elseif ($type == 'timeslot') {
-            $this->get('timeslot_form')->setRequired();
+            /** @var \FormBundle\Form\Admin\Field\Field\Timeslot $timeslotForm */
+            $timeslotForm = $this->get('timeslot_form');
+            $timeslotForm->setRequired();
         }
 
         $specs = parent::getInputFilterSpecification();
@@ -327,6 +335,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         return $specs;
     }
 
+    /**
+     * @return string|null
+     */
     private function getType()
     {
         if (null === $this->field) {

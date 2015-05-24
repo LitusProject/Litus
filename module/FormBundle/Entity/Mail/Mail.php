@@ -112,8 +112,8 @@ class Mail
     }
 
     /**
-     * @param  Language $language
-     * @param  boolean  $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getSubject(Language $language = null, $allowFallback = true)
@@ -128,8 +128,8 @@ class Mail
     }
 
     /**
-     * @param  Language $language
-     * @param  boolean  $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getContent(Language $language = null, $allowFallback = true)
@@ -144,7 +144,7 @@ class Mail
     }
 
     /**
-     * @param  Language                                 $language
+     * @param  Language|null                            $language
      * @param  boolean                                  $allowFallback
      * @return \FormBundle\Entity\Mail\Translation|null
      */

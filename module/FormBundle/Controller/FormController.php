@@ -209,7 +209,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     );
                 }
 
-                $this->redirectFormComplete($group, $progressBarInfo, $formSpecification, $isDraft);
+                $this->redirectFormComplete($formSpecification, $group, $progressBarInfo, $isDraft);
 
                 return new ViewModel();
             }
@@ -392,7 +392,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     'Your entry has been recorded.'
                 );
 
-                $this->redirectFormComplete($group, $progressBarInfo, $formSpecification);
+                $this->redirectFormComplete($formSpecification, $group, $progressBarInfo);
 
                 return new ViewModel();
             } else {
@@ -645,7 +645,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     );
                 }
 
-                $this->redirectFormComplete($group, $progressBarInfo, $formEntry->getForm(), $isDraft);
+                $this->redirectFormComplete($formEntry->getForm(), $group, $progressBarInfo, $isDraft);
 
                 return new ViewModel();
             }
@@ -895,13 +895,13 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
+     * @param  Form       $formSpecification
      * @param  Group|null $group
      * @param  array|null $progressBarInfo
-     * @param  Form       $formSpecification
      * @param  boolean    $draft
      * @return null
      */
-    private function redirectFormComplete(Group $group = null, $progressBarInfo = null, Form $formSpecification, $draft = false)
+    private function redirectFormComplete(Form $formSpecification, Group $group = null, $progressBarInfo = null, $draft = false)
     {
         if ($group && !$draft && isset($progressBarInfo['next_form'])) {
             if ($progressBarInfo['next_form'] == 0) {
