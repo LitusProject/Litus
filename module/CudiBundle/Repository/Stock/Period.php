@@ -218,6 +218,12 @@ class Period extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  int          $barcode
+     * @param  boolean      $notDelivered
+     * @return array
+     */
     public function findAllArticlesByPeriodAndBarcode(PeriodEntity $period, $barcode, $notDelivered = false)
     {
         if (!is_numeric($barcode)) {
@@ -250,6 +256,12 @@ class Period extends EntityRepository
         return $articles;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  string       $supplier
+     * @param  boolean      $notDelivered
+     * @return array
+     */
     public function findAllArticlesByPeriodAndSupplier(PeriodEntity $period, $supplier, $notDelivered = false)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -281,6 +293,11 @@ class Period extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbDelivered(PeriodEntity $period, Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -310,6 +327,11 @@ class Period extends EntityRepository
         return $delivered;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbOrdered(PeriodEntity $period, Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -345,6 +367,11 @@ class Period extends EntityRepository
         return 0;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbVirtualOrdered(PeriodEntity $period, Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -374,6 +401,11 @@ class Period extends EntityRepository
         return 0;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbSold(PeriodEntity $period, Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -403,6 +435,11 @@ class Period extends EntityRepository
         return 0;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbBooked(PeriodEntity $period, Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -433,6 +470,11 @@ class Period extends EntityRepository
         return 0;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbAssigned(PeriodEntity $period, Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -463,6 +505,10 @@ class Period extends EntityRepository
         return 0;
     }
 
+    /**
+     * @param  Article $article
+     * @return int
+     */
     public function getNbQueueOrder(Article $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -486,6 +532,11 @@ class Period extends EntityRepository
         return 0;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbRetoured(PeriodEntity $period, Article $article)
     {
         return $this->getEntityManager()

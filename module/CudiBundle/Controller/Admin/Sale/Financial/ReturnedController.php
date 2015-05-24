@@ -132,7 +132,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\ReturnItem')
-                    ->findAllByOrganizationAndAcademicYearQuery($organization, $academicYear);
+                    ->findallByAcademicYearAndOrganizationQuery($academicYear, $organization);
         }
     }
 
@@ -270,7 +270,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\ReturnItem')
-                    ->findAllByOrganizationAndSessionQuery($organization, $session);
+                    ->findAllBySessionAndOrganizationQuery($session, $organization);
         }
     }
 
@@ -481,7 +481,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
 
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\ReturnItem')
-                    ->findAllByOrganizationAndArticleQuery($organization, $article, $academicYear);
+                    ->findAllByOrganizationAndArticleQuery($article, $academicYear, $organization);
         }
     }
 

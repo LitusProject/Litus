@@ -716,11 +716,11 @@ class SaleItem extends EntityRepository
     }
 
     /**
-     * @param  Organization|null   $organization
      * @param  AcademicYear        $academicYear
+     * @param  Organization|null   $organization
      * @return \Doctrine\ORM\Query
      */
-    public function findAllByOrganizationAndAcademicYearQuery(Organization $organization = null, AcademicYear $academicYear)
+    public function findallByAcademicYearAndOrganizationQuery(AcademicYear $academicYear, Organization $organization = null)
     {
         $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
@@ -885,11 +885,11 @@ class SaleItem extends EntityRepository
     }
 
     /**
-     * @param  Organization|null   $organization
      * @param  SessionEntity       $session
+     * @param  Organization|null   $organization
      * @return \Doctrine\ORM\Query
      */
-    public function findAllByOrganizationAndSessionQuery(Organization $organization = null, SessionEntity $session)
+    public function findAllBySessionAndOrganizationQuery(SessionEntity $session, Organization $organization = null)
     {
         $ids = $this->personsByAcademicYearAndOrganization($session->getAcademicYear(), $organization);
 
@@ -1013,12 +1013,12 @@ class SaleItem extends EntityRepository
     }
 
     /**
-     * @param  Organization|null   $organization
      * @param  ArticleEntity       $article
      * @param  AcademicYear        $academicYear
+     * @param  Organization|null   $organization
      * @return \Doctrine\ORM\Query
      */
-    public function findAllByOrganizationAndArticleQuery(Organization $organization = null, ArticleEntity $article, AcademicYear $academicYear)
+    public function findAllByOrganizationAndArticleQuery(ArticleEntity $article, AcademicYear $academicYear, Organization $organization = null)
     {
         $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
@@ -1170,12 +1170,12 @@ class SaleItem extends EntityRepository
     }
 
     /**
-     * @param  Organization|null   $organization
      * @param  Supplier            $supplier
      * @param  AcademicYear        $academicYear
+     * @param  Organization|null   $organization
      * @return \Doctrine\ORM\Query
      */
-    public function findAllByOrganizationAndSupplierQuery(Organization $organization = null, Supplier $supplier, AcademicYear $academicYear)
+    public function findAllByOrganizationAndSupplierQuery(Supplier $supplier, AcademicYear $academicYear, Organization $organization = null)
     {
         $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 

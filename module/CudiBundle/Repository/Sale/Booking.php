@@ -836,10 +836,10 @@ class Booking extends EntityRepository
     }
 
     /**
-     * @param  ArticleEntity                               $article
-     * @param  Person                                      $person
-     * @param  AcademicYear                                $academicYear
-     * @return \Doctrine\Common\Collection\ArrayCollection
+     * @param  ArticleEntity $article
+     * @param  Person        $person
+     * @param  AcademicYear  $academicYear
+     * @return array
      */
     public function findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(ArticleEntity $article, Person $person, AcademicYear $academicYear)
     {
@@ -847,11 +847,11 @@ class Booking extends EntityRepository
     }
 
     /**
-     * @param  ArticleEntity                               $article
-     * @param  Person                                      $person
-     * @param  DateTime                                    $start
-     * @param  DateTime|null                               $end
-     * @return \Doctrine\Common\Collection\ArrayCollection
+     * @param  ArticleEntity $article
+     * @param  Person        $person
+     * @param  DateTime      $start
+     * @param  DateTime|null $end
+     * @return array
      */
     public function findAllSoldOrAssignedOrBookedByArticleAndPersonBetween(ArticleEntity $article, Person $person, DateTime $start, DateTime $end = null)
     {

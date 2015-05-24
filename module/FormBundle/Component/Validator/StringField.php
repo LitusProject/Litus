@@ -61,8 +61,8 @@ class StringField extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Returns true if a person exists for this value, but no driver exists for that person.
      *
-     * @param  string  $value   The value of the field that will be validated
-     * @param  array   $context The context of the field that will be validated
+     * @param  string     $value   The value of the field that will be validated
+     * @param  array|null $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
