@@ -181,7 +181,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $isDraft = null !== $this->getRequest()->getPost()->get('save_as_draft');
 
             if ($form->isValid() || $isDraft) {
-                $formEntry = new FormEntry($person, $formSpecification);
+                $formEntry = new FormEntry($formSpecification, $person);
                 if (null === $person) {
                     $formEntry->setGuestInfo(
                         new GuestInfo($this->getEntityManager(), $this->getRequest())
@@ -371,7 +371,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formEntry = new FormEntry($person, $formSpecification);
+                $formEntry = new FormEntry($formSpecification, $person);
                 if (null === $person) {
                     $formEntry->setGuestInfo(
                         new GuestInfo($this->getEntityManager(), $this->getRequest())
@@ -499,7 +499,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 if (null === $formEntry) {
-                    $formEntry = new FormEntry($person, $formSpecification);
+                    $formEntry = new FormEntry($formSpecification, $person);
                     if (null === $person) {
                         $formEntry->setGuestInfo(
                             new GuestInfo($this->getEntityManager(), $this->getRequest())

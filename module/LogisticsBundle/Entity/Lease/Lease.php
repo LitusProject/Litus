@@ -359,7 +359,7 @@ class Lease
             return 0;
         }
 
-        return $this->returnedPawn/100;
+        return (float) $this->returnedPawn/100;
     }
 
     /**
