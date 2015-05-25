@@ -88,7 +88,10 @@ class Edit extends Add
         $this->addSubmit('Save Reservation', 'btn btn-default');
     }
 
-    private function getFirstBusses()
+    /**
+     * @return array
+     */
+    protected function getFirstBusses()
     {
         $busses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
@@ -103,7 +106,10 @@ class Edit extends Add
         return $array;
     }
 
-    private function getSecondBusses()
+    /**
+     * @return array
+     */
+    protected function getSecondBusses()
     {
         $busses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')

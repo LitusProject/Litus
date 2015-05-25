@@ -93,21 +93,4 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
         return $news;
     }
-
-    public function getNews()
-    {
-        if (null === $this->getParam('name')) {
-            return;
-        }
-
-        $news = $this->getEntityManager()
-            ->getRepository('NewsBundle\Entity\Node\News')
-            ->findOneByName($this->getParam('name'));
-
-        if (null === $news) {
-            return;
-        }
-
-        return $news;
-    }
 }

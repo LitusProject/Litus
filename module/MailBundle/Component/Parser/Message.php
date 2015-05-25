@@ -203,6 +203,10 @@ class Message
         }
     }
 
+    /**
+     * @param  array $part
+     * @return array
+     */
     private function getPartHeaders($part)
     {
         $headers = array();

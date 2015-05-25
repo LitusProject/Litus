@@ -28,6 +28,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class ReservationCode extends EntityRepository
 {
+    /**
+     * @param  string  $code
+     * @return boolean
+     */
     public function codeExist($code)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -43,6 +47,10 @@ class ReservationCode extends EntityRepository
         return (empty($resultCode) ? false : true);
     }
 
+    /**
+     * @param  string                                      $code
+     * @return \PromBundle\Entity\Bus\ReservationCode|null
+     */
     public function getRegistrationCodeByCode($code)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -53,8 +61,9 @@ class ReservationCode extends EntityRepository
             )
             ->setParameter('code', $code)
             ->getQuery()
-            ->getResult();
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
 
-        return $resultCode[0];
+        return $resultCode;
     }
 }

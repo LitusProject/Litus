@@ -71,6 +71,7 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
             return new ViewModel();
         }
 
+        $bus = $passenger->getFirstBus();
         $passenger->setFirstBus(null);
         $passenger->setSecondBus(null);
 

@@ -74,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
         ));
 
-        foreach (Group::$ALL_MEMBERS as $i => $memberNb) {
+        foreach (Group::$allMembers as $i => $memberNb) {
             $this->generateMemberForm($memberNb, ($i < 2));
         }
 

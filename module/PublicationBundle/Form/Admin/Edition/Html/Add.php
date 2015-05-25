@@ -67,7 +67,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'PDF Version',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->getPDFEditions(),
+                'options' => $this->getPdfEditions(),
             ),
         ));
 
@@ -116,7 +116,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->addSubmit('Add', 'html_add');
     }
 
-    public function getPDFEditions()
+    public function getPdfEditions()
     {
         $pdfs = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\Edition\Pdf')

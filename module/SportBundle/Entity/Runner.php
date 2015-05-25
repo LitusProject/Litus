@@ -91,11 +91,11 @@ class Runner
     private $entityManager;
 
     /**
-     * @param string     $firstName
-     * @param string     $lastName
-     * @param Group      $group
-     * @param Department $department
-     * @param Academic   $academic
+     * @param string          $firstName
+     * @param string          $lastName
+     * @param Academic|null   $academic
+     * @param Group|null      $group
+     * @param Department|null $department
      */
     public function __construct($firstName, $lastName, Academic $academic = null, Group $group = null, Department $department = null)
     {

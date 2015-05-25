@@ -29,6 +29,11 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Lap extends EntityRepository
 {
+    /**
+     * @param  AcademicYear        $academicYear
+     * @param  int                 $nbResults
+     * @return \Doctrine\ORM\Query
+     */
     public function findPreviousQuery(AcademicYear $academicYear, $nbResults = 1)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -49,6 +54,10 @@ class Lap extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllPreviousLapsQuery(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -68,6 +77,10 @@ class Lap extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear                 $academicYear
+     * @return \SportBundle\Entity\Lap|null
+     */
     public function findCurrent(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -89,6 +102,11 @@ class Lap extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear $academicYear
+     * @param  int          $nbResults
+     * @return mixed
+     */
     public function findNext(AcademicYear $academicYear, $nbResults = 1)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -114,6 +132,10 @@ class Lap extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
     public function countAll(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -136,6 +158,10 @@ class Lap extends EntityRepository
         return $resultSet[0][1];
     }
 
+    /**
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
     public function countRunners(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -154,10 +180,14 @@ class Lap extends EntityRepository
         return $resultSet[0][1];
     }
 
+    /**
+     * @param  AcademicYear $academicYear
+     * @return mixed
+     */
     public function getRunnersAndCount(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('IDENTITY(l.runner) runner','COUNT(l.runner) lapCount')
+        $resultSet = $query->select('IDENTITY(l.runner) runner', 'COUNT(l.runner) lapCount')
             ->from('SportBundle\Entity\Lap', 'l')
             ->where(
                 $query->expr()->andX(

@@ -63,9 +63,9 @@ class AdminMap
     private $editAdmin;
 
     /**
-     * @param MailingList The list of the mapping
-     * @param Academic $academic  The academic of the mapping
-     * @param boolean  $editAdmin The flag whether the academic is allowed to edit the list of admins of the list too.
+     * @param MailingList   $list      The list of the mapping
+     * @param Academic|null $academic  The academic of the mapping
+     * @param boolean       $editAdmin The flag whether the academic is allowed to edit the list of admins of the list too.
      */
     public function __construct(MailingList $list, Academic $academic = null, $editAdmin = false)
     {

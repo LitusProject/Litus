@@ -43,7 +43,7 @@ class Zip
 
     /**
      * @param EntityManager $entityManager The entityManager
-     * @param arrays        $lists         The array containing the mailinglists
+     * @param array         $lists         The array containing the mailinglists
      */
     public function __construct(EntityManager $entityManager, array $lists)
     {

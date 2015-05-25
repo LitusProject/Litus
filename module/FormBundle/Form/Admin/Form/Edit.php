@@ -45,23 +45,30 @@ class Edit extends Add
             ->findOneByForm($this->form);
 
         if (null !== $group) {
-            $this->get('start_date')
-                ->setAttribute('disabled', 'disabled')
+            /** @var \CommonBundle\Component\Form\Admin\Element\DateTime $startDateField */
+            $startDateField = $this->get('start_date');
+            /** @var \CommonBundle\Component\Form\Admin\Element\DateTime $endDateField */
+            $endDateField = $this->get('end_date');
+            /** @var \CommonBundle\Component\Form\Admin\Element\Checkbox $activeField */
+            $activeField = $this->get('active');
+            /** @var \CommonBundle\Component\Form\Admin\Element\Text $maxField */
+            $maxField = $this->get('max');
+            /** @var \CommonBundle\Component\Form\Admin\Element\Checkbox $nonMemberField */
+            $nonMemberField = $this->get('non_member');
+            /** @var \CommonBundle\Component\Form\Admin\Element\Checkbox $editableByUser */
+            $editableByUser = $this->get('editable_by_user');
+
+            $startDateField->setAttribute('disabled', 'disabled')
                 ->setRequired(false);
-            $this->get('end_date')
-                ->setAttribute('disabled', 'disabled')
+            $endDateField->setAttribute('disabled', 'disabled')
                 ->setRequired(false);
-            $this->get('active')
-                ->setAttribute('disabled', 'disabled')
+            $activeField->setAttribute('disabled', 'disabled')
                 ->setRequired(false);
-            $this->get('max')
-                ->setAttribute('disabled', 'disabled')
+            $maxField->setAttribute('disabled', 'disabled')
                 ->setRequired(false);
-            $this->get('non_member')
-                ->setAttribute('disabled', 'disabled')
+            $nonMemberField->setAttribute('disabled', 'disabled')
                 ->setRequired(false);
-            $this->get('editable_by_user')
-                ->setAttribute('disabled', 'disabled')
+            $editableByUser->setAttribute('disabled', 'disabled')
                 ->setRequired(false);
         }
 

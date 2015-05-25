@@ -29,7 +29,7 @@ class Csv extends \CommonBundle\Component\Document\Generator\Csv
 {
     /**
      * @param EntityManager $entityManager
-     * @param Event         $event
+     * @param array         $buses
      */
     public function __construct(EntityManager $entityManager, $buses)
     {

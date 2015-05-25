@@ -43,7 +43,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * @var int Minimum runtime required (in seconds)
      */
-    private static $MIN_LAP_TIME = 60;
+    private static $minLapTime = 60;
 
     /**
      * @param EntityManager $entityManager
@@ -565,6 +565,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
 
     private function isValidLapTime(DateInterval $interval)
     {
-        return $this->convertDateIntervalToSeconds($interval) >= self::$MIN_LAP_TIME;
+        return $this->convertDateIntervalToSeconds($interval) >= self::$minLapTime;
     }
 }

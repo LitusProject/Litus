@@ -18,7 +18,8 @@
 
 namespace MailBundle\Command;
 
-use MailBundle\Component\Parser\Message as MessageParser,
+use CommonBundle\Component\Lilo\Client as LiloClient,
+    MailBundle\Component\Parser\Message as MessageParser,
     MailBundle\Document\Message,
     MailBundle\Document\Message\Attachment;
 
@@ -42,7 +43,7 @@ class Parser extends \CommonBundle\Component\Console\Command
     );
 
     /**
-     * @var \CommonBundle\Component\Lilo\Client|null
+     * @var LiloClient|null
      */
     private $lilo;
 
@@ -61,7 +62,10 @@ EOT
     protected function executeCommand()
     {
         if ($this->getServiceLocator()->has('lilo')) {
-            $this->lilo = $this->getServiceLocator()->get('lilo');
+            $lilo = $this->getServiceLocator()->get('lilo');
+            if ($lilo instanceof LiloClient) {
+                $this->lilo = $lilo;
+            }
         } else {
             $this->lilo = null;
         }

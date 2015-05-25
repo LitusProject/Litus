@@ -110,7 +110,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->addSubmit('Reserve Seats', 'btn btn-default');
     }
 
-    private function getFirstBusses()
+    /**
+     * @return array
+     */
+    protected function getFirstBusses()
     {
         $busses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
@@ -127,7 +130,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         return $array;
     }
 
-    private function getSecondBusses()
+    /**
+     * @return array
+     */
+    protected function getSecondBusses()
     {
         $busses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')

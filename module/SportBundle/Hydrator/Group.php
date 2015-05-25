@@ -39,7 +39,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
         );
 
         $groupMembers = array();
-        foreach (GroupEntity::$ALL_MEMBERS as $memberNb) {
+        foreach (GroupEntity::$allMembers as $memberNb) {
             $memberData = $data['user_' . $memberNb];
 
             $repositoryCheck = $this->getEntityManager()

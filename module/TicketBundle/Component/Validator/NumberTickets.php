@@ -81,6 +81,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
     {
         $this->setValue($value);
 
+        /** @var \CommonBundle\Component\Form\Fieldset $optionsForm */
         $optionsForm = $this->form->has('options_form') ? $this->form->get('options_form') : $this->form;
 
         $number = 0;

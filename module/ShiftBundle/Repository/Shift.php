@@ -36,6 +36,9 @@ use CalendarBundle\Entity\Node\Event,
  */
 class Shift extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -51,6 +54,10 @@ class Shift extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $name
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveByNameQuery($name)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -70,6 +77,9 @@ class Shift extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllOldQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -85,6 +95,10 @@ class Shift extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Event               $event
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveByEventQuery(Event $event)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -104,6 +118,10 @@ class Shift extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  UnitEntity          $unit
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveByUnitQuery(UnitEntity $unit)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -123,7 +141,12 @@ class Shift extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllActiveBetweenDatesQuery($startDate, $endDate)
+    /**
+     * @param  DateTime            $startDate
+     * @param  DateTime            $endDate
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllActiveBetweenDatesQuery(DateTime $startDate, DateTime $endDate)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
@@ -144,6 +167,10 @@ class Shift extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Person $person
+     * @return array
+     */
     public function findAllActiveByPerson(Person $person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -192,6 +219,11 @@ class Shift extends EntityRepository
         return array_values($shifts);
     }
 
+    /**
+     * @param  Person            $person
+     * @param  AcademicYear|null $academicYear
+     * @return array
+     */
     public function findAllByPerson(Person $person, AcademicYear $academicYear = null)
     {
         return array_merge(
@@ -200,6 +232,11 @@ class Shift extends EntityRepository
         );
     }
 
+    /**
+     * @param  Person            $person
+     * @param  AcademicYear|null $academicYear
+     * @return array
+     */
     public function countAllByPerson(Person $person, AcademicYear $academicYear = null)
     {
         return count(
@@ -210,6 +247,11 @@ class Shift extends EntityRepository
         );
     }
 
+    /**
+     * @param  Person              $person
+     * @param  AcademicYear|null   $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPersonAsReponsibleQuery(Person $person, AcademicYear $academicYear = null)
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
@@ -243,6 +285,11 @@ class Shift extends EntityRepository
         return $query->getQuery();
     }
 
+    /**
+     * @param  Person              $person
+     * @param  AcademicYear|null   $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPersonAsVolunteerQuery(Person $person, AcademicYear $academicYear = null)
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
@@ -276,6 +323,10 @@ class Shift extends EntityRepository
         return $query->getQuery();
     }
 
+    /**
+     * @param  int                            $id
+     * @return \ShiftBundle\Entity\Shift|null
+     */
     public function findOneByVolunteer($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -293,6 +344,10 @@ class Shift extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  int                            $id
+     * @return \ShiftBundle\Entity\Shift|null
+     */
     public function findOneByResponsible($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -310,6 +365,10 @@ class Shift extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  int                            $id
+     * @return \ShiftBundle\Entity\Shift|null
+     */
     public function findOneActiveByVolunteer($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -331,6 +390,10 @@ class Shift extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  int                            $id
+     * @return \ShiftBundle\Entity\Shift|null
+     */
     public function findOneActiveByResponsible($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

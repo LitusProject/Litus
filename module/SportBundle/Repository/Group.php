@@ -60,6 +60,10 @@ class Group extends EntityRepository
             ->getResult();
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

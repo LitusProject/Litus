@@ -87,7 +87,7 @@ class Link
     }
 
     /**
-     * @param  Page $parent
+     * @param  Page|null $parent
      * @return self
      */
     public function setParent(Page $parent = null)

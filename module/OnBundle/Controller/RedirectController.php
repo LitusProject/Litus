@@ -43,6 +43,9 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel();
     }
 
+    /**
+     * @return \OnBundle\Document\Slug|null
+     */
     private function getSlug()
     {
         return $this->getDocumentManager()

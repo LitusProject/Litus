@@ -710,11 +710,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        if (null !== $code || 'development' == getenv('APPLICATION_ENV')) {
-            return true;
-        }
-
-        return false;
+        return (null !== $code || 'development' == getenv('APPLICATION_ENV'));
     }
 
     /**

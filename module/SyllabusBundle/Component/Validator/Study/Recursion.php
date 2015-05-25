@@ -76,9 +76,12 @@ class Recursion extends \CommonBundle\Component\Validator\AbstractValidator impl
     {
         $this->setValue($value);
 
+        /** @var \CommonBundle\Component\Form\Fieldset $parentFieldset */
+        $parentFieldset = $this->form->get('parent');
+
         $parent = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findOneByKulId($this->form->get('parent')->get('id')->getValue());
+            ->findOneByKulId($parentFieldset->get('id')->getValue());
 
         if (null === $parent) {
             return true;

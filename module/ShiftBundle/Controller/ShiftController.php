@@ -472,7 +472,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $shiftsAsVolunteerCount++;
             foreach ($shift->getVolunteers() as $volunteer) {
                 if ($volunteer->getPerson() == $person && !($volunteer->isPayed())) {
-                    $unPayedShifts += 1;
+                    $unPayedShifts++;
                     $unPayedCoins += $shift->getReward();
                 }
             }

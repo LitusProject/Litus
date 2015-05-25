@@ -29,8 +29,9 @@ class Edit extends Add
     {
         parent::init();
 
-        $this->get('name')
-            ->setRequired();
+        /** @var \CommonBundle\Component\Form\Admin\Element\Text $nameField */
+        $nameField = $this->get('name');
+        $nameField->setRequired();
 
         $this->remove('submit');
         $this->addSubmit('Save', 'slug_edit');

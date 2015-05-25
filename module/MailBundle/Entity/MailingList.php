@@ -101,22 +101,14 @@ abstract class MailingList
 
             foreach ($this->adminRoles as $adminRole) {
                 if ($adminRole->getRole() == $role) {
-                    if ($editAdmin && !$adminRole->canEditAdmin()) {
-                        return false;
-                    }
-
-                    return true;
+                    return !($editAdmin && !$adminRole->canEditAdmin());
                 }
             }
         }
 
         foreach ($this->admins as $admin) {
             if ($admin->getAcademic() == $academic) {
-                if ($editAdmin && !$admin->canEditAdmin()) {
-                    return false;
-                }
-
-                return true;
+                return !($editAdmin && !$admin->canEditAdmin());
             }
         }
 

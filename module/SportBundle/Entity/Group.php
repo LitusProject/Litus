@@ -31,7 +31,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Group
 {
-    public static $ALL_MEMBERS = array('one', 'two', 'three', 'four', 'five');
+    public static $allMembers = array('one', 'two', 'three', 'four', 'five');
 
     /**
      * @var int The ID of this group

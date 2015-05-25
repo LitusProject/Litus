@@ -193,7 +193,7 @@ class Study
     }
 
     /**
-     * @param  Study $parent
+     * @param  Study|null $parent
      * @return self
      */
     public function setParent(Study $parent = null)

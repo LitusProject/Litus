@@ -31,6 +31,11 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Volunteer extends EntityRepository
 {
+    /**
+     * @param  AcademicYear        $academicYear
+     * @param  int                 $minimum
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByCountMinimumQuery(AcademicYear $academicYear, $minimum)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -59,6 +64,12 @@ class Volunteer extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @param  int                 $minimum
+     * @param  int                 $maximum
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByCountLimitsQuery(AcademicYear $academicYear, $minimum, $maximum)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -91,6 +102,10 @@ class Volunteer extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

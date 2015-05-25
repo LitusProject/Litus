@@ -50,12 +50,6 @@ class ReservationCode
      */
     private $used;
 
-    /**
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $email
-     * @param string $code
-     */
     public function __construct()
     {
         $this->code = $this->generateCode();

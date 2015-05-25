@@ -28,6 +28,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Bus extends EntityRepository
 {
+    /**
+     * @return \Doctrine\Common\Collection\ArrayCollection
+     */
     public function getGoBusses()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -44,6 +47,9 @@ class Bus extends EntityRepository
         return $resultArray;
     }
 
+    /**
+     * @return \Doctrine\Common\Collection\ArrayCollection
+     */
     public function getReturnBusses()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -60,6 +66,9 @@ class Bus extends EntityRepository
         return $resultArray;
     }
 
+    /**
+     * @return \Doctrine\Common\Collection\ArrayCollection
+     */
     public function findAllBuses()
     {
         $query = $this->getEntityManager()->createQueryBuilder();

@@ -351,7 +351,7 @@ class Lease
     }
 
     /**
-     * @return float
+     * @return float|integer
      */
     public function getReturnedPawn()
     {

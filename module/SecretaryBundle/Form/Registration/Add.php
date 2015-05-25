@@ -333,13 +333,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         if (null !== $this->metaData) {
             if ($this->metaData->becomeMember()) {
-                if ($this->get('organization_info')->has('organization')) {
-                    $this->get('organization_info')->get('organization')
+                /** @var \CommonBundle\Component\Form\Fieldset $organizationInfoFieldset */
+                $organizationInfoFieldset = $this->get('organization_info');
+                if ($organizationInfoFieldset->has('organization')) {
+                    $organizationInfoFieldset->get('organization')
                         ->setAttribute('disabled', true);
                 }
-                $this->get('organization_info')->get('become_member')
+                $organizationInfoFieldset->get('become_member')
                     ->setAttribute('disabled', true);
-                $this->get('organization_info')->get('conditions')
+                $organizationInfoFieldset->get('conditions')
                     ->setValue(true)
                     ->setAttribute('disabled', true);
                 $this->conditionsChecked = true;
