@@ -78,8 +78,9 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * @param string  $string the string to write
-     * @param boolean $raw    whether to output the string raw
+     * @param  string  $string the string to write
+     * @param  boolean $raw    whether to output the string raw
+     * @return null
      */
     public function write($string, $raw = false)
     {
@@ -93,8 +94,9 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * @param string  $string the string to write
-     * @param boolean $raw    whether to output the string raw
+     * @param  string  $string the string to write
+     * @param  boolean $raw    whether to output the string raw
+     * @return null
      */
     public function writeln($string, $raw = false)
     {

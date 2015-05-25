@@ -349,7 +349,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
             $this->bind($this->metaData);
         } elseif (null !== $this->academic) {
-            $this->get('academic')->populateValues(
+            /** @var \CommonBundle\Component\Form\Fieldset $academicFieldset */
+            $academicFieldset = $this->get('academic');
+            $academicFieldset->populateValues(
                 $this->getServiceLocator()
                     ->get('litus.hydratormanager')
                     ->get('CommonBundle\Hydrator\User\Person\Academic')

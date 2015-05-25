@@ -29,7 +29,7 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 class Bus extends EntityRepository
 {
     /**
-     * @return \Doctrine\Common\Collection\ArrayCollection
+     * @return array
      */
     public function getGoBusses()
     {
@@ -48,7 +48,7 @@ class Bus extends EntityRepository
     }
 
     /**
-     * @return \Doctrine\Common\Collection\ArrayCollection
+     * @return array
      */
     public function getReturnBusses()
     {
@@ -67,7 +67,7 @@ class Bus extends EntityRepository
     }
 
     /**
-     * @return \Doctrine\Common\Collection\ArrayCollection
+     * @return array
      */
     public function findAllBuses()
     {

@@ -161,7 +161,6 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
      * Parse action text
      *
-     * @param User   $user
      * @param string $command
      */
     private function gotAction($command)
@@ -329,7 +328,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      * @param  string      $state
      * @return object|null
      */
-    private function jsonLap(Lap $lap = null, $state)
+    private function jsonLap(Lap $lap = null, $state = '')
     {
         if (null === $lap) {
             return null;
@@ -362,6 +361,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $this->entityManager->flush();
     }
 
+    /**
+     * @return null
+     */
     private function startLap()
     {
         if (null !== $this->getCurrentLap()) {
@@ -395,6 +397,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             ->findNext($this->getAcademicYear());
     }
 
+    /**
+     * @return null|array
+     */
     private function getFastestLap()
     {
         $previousLaps = array_reverse(
@@ -419,14 +424,18 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         }
         if ($fastestLap !== null) {
             return array(
-            'time' => $fastestLap->getLapTime()->format('%i:%S'),
-            'runner' => $fastestLap->getRunner()->getAcademic()->getFullName(),
+                'time' => $fastestLap->getLapTime()->format('%i:%S'),
+                'runner' => $fastestLap->getRunner()->getAcademic()->getFullName(),
             );
         }
 
         return null;
     }
 
+    /**
+     * @param  int   $number
+     * @return array
+     */
     private function getMostFrequentRunners($number = 3)
     {
         $runners = $this->entityManager
@@ -454,11 +463,17 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         return $mostLaps;
     }
 
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
     private function getAcademicYear()
     {
         return AcademicYear::getUniversityYear($this->entityManager);
     }
 
+    /**
+     * @return array|null
+     */
     private function getOfficialResults()
     {
         $fileContents = @file_get_contents('data/cache/run-' . md5('run_result_page'));
@@ -512,6 +527,10 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         return null;
     }
 
+    /**
+     * @param  int        $number
+     * @return array|null
+     */
     private function getGroupsOfFriends($number = 5)
     {
         $groups = $this->entityManager
@@ -539,6 +558,9 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         return $returnArray;
     }
 
+    /**
+     * @return int
+     */
     private function getAverageLapTime()
     {
         $laps = $this->entityManager
@@ -558,11 +580,17 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         return floor($average / 60) . ':' . ($average % 60 < 10 ? '0' . $average % 60 : $average % 60);
     }
 
+    /**
+     * @return int
+     */
     private function convertDateIntervalToSeconds(DateInterval $interval)
     {
         return $interval->h*3600 + $interval->i*60 + $interval->s;
     }
 
+    /**
+     * @return boolean
+     */
     private function isValidLapTime(DateInterval $interval)
     {
         return $this->convertDateIntervalToSeconds($interval) >= self::$minLapTime;

@@ -74,11 +74,19 @@ EOT
         $this->parseMessage($mail);
     }
 
+    /**
+     * @return string
+     */
     protected function getLogName()
     {
         return 'MailParser';
     }
 
+    /**
+     * @param  string  $str
+     * @param  boolean $raw
+     * @return null
+     */
     public function write($str, $raw = false)
     {
         if (null !== $this->lilo) {
@@ -89,7 +97,9 @@ EOT
     }
 
     /**
-     * @param string $str
+     * @param  string  $str
+     * @param  boolean $raw
+     * @return null
      */
     public function writeln($str, $raw = false)
     {
@@ -100,6 +110,10 @@ EOT
         }
     }
 
+    /**
+     * @param  string $str
+     * @return null
+     */
     private function sendToLilo($str)
     {
         $this->lilo->sendLog(
@@ -111,6 +125,9 @@ EOT
         );
     }
 
+    /**
+     * @return null
+     */
     private function readMail()
     {
         $stdinStream = fopen('php://stdin', 'r');
@@ -142,6 +159,10 @@ EOT
         }
     }
 
+    /**
+     * @param  MessageParser $parser
+     * @return null
+     */
     private function storeMessage(MessageParser $parser)
     {
         $attachments = array();

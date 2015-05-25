@@ -106,10 +106,12 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
             return false;
         }
 
-        if ($this->options['person'] == null && is_numeric($this->form->get('person_form')->get('person')->getValue())) {
+        /** @var \CommonBundle\Component\Form\Fieldset $personFieldset */
+        $personFieldset = $this->form->get('person_form');
+        if ($this->options['person'] == null && is_numeric($personFieldset->get('person')->getValue())) {
             $person = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person')
-                ->findOneById($this->form->get('person_form')->get('person')->getValue());
+                ->findOneById($personFieldset->get('person')->getValue());
         } else {
             $person = $this->options['person'];
         }

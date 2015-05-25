@@ -350,7 +350,7 @@ class Study
                         ->activate($this->getEntityManager(), $this->mailTransport, true);
 
                     $image = $this->getProfImage($identification, $info['photo']);
-                    if ($image) {
+                    if (null !== $image) {
                         $prof->setPhotoPath($image);
                     }
 
@@ -372,7 +372,7 @@ class Study
             $map = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
                 ->findOneBySubjectAndProfAndAcademicYear($subject, $prof, $this->academicYear);
-            if (null == $map) {
+            if (null === $map) {
                 if (!isset($maps[$prof->getUniversityIdentification()])) {
                     $map = new SubjectProfMap($subject, $prof, $this->academicYear);
                     $this->getEntityManager()->persist($map);

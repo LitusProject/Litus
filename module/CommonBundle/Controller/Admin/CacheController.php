@@ -55,7 +55,7 @@ class CacheController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $cache = $this->getCache();
         if ($cache instanceof FlushableInterface) {
-            $this->getCache()->flush();
+            $cache->flush();
 
             $this->flashMessenger()->success(
                 'Success',

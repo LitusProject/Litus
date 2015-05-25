@@ -592,10 +592,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-     * @param  string                                 $type
-     * @param  Person                                 $person
-     * @param  int                                    $barcode
-     * @return \CommonBundle\Entity\User\Barcode|null
+     * @param  string                            $type
+     * @param  Person                            $person
+     * @param  int                               $barcode
+     * @return \CommonBundle\Entity\User\Barcode
      */
     private function createBarcode($type, Person $person, $barcode)
     {
@@ -610,7 +610,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             case 'qr':
                 return new Qr($person, $barcode);
             default:
-                return null;
+            throw new InvalidArgumentException('No barcode could be created');
         }
     }
 }

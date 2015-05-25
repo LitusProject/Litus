@@ -227,22 +227,22 @@ class Shift extends EntityRepository
     public function findAllByPerson(Person $person, AcademicYear $academicYear = null)
     {
         return array_merge(
-            $this->findAllByPersonAsReponsible($person, $academicYear),
-            $this->findAllByPersonAsVolunteer($person, $academicYear)
+            $this->findAllByPersonAsReponsibleQuery($person, $academicYear)->getResult(),
+            $this->findAllByPersonAsVolunteerQuery($person, $academicYear)->getResult()
         );
     }
 
     /**
      * @param  Person            $person
      * @param  AcademicYear|null $academicYear
-     * @return array
+     * @return int
      */
     public function countAllByPerson(Person $person, AcademicYear $academicYear = null)
     {
         return count(
             array_merge(
-                $this->findAllByPersonAsReponsible($person, $academicYear),
-                $this->findAllByPersonAsVolunteer($person, $academicYear)
+                $this->findAllByPersonAsReponsibleQuery($person, $academicYear)->getResult(),
+                $this->findAllByPersonAsVolunteerQuery($person, $academicYear)->getResult()
             )
         );
     }

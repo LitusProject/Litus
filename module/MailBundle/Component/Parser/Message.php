@@ -59,7 +59,7 @@ class Message
     /**
      * Retrieve the message's headers.
      *
-     * @return string
+     * @return array
      */
     public function getHeaders()
     {
