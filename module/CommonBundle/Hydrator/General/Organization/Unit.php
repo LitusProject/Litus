@@ -83,21 +83,29 @@ class Unit extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function rolesToArray(array $roles)
     {
-        return array_filter(array_map(function ($role) {
-            if ($role->getSystem()) {
-                return null;
-            }
+        return array_filter(
+            array_map(
+                function ($role) {
+                    if ($role->getSystem()) {
+                        return null;
+                    }
 
-            return $role->getName();
-        }, $roles));
+                    return $role->getName();
+                },
+                $roles
+            )
+        );
     }
 
     protected function arrayToRoles(array $roles)
     {
-        return array_map(function ($role) {
-            return $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Acl\Role')
-                ->findOneByName($role);
-        }, $roles);
+        return array_map(
+            function ($role) {
+                return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName($role);
+            },
+            $roles
+        );
     }
 }

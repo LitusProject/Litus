@@ -53,7 +53,8 @@ class PhotosZip
     /**
      * Generate an archive to download.
      *
-     * @param TmpFile $archive The file to write to
+     * @param  TmpFile $archive The file to write to
+     * @return null
      */
     public function generateArchive(TmpFile $archive)
     {
@@ -84,10 +85,12 @@ class PhotosZip
 
     /**
      * returns the extension of the given file. Based on the constant int output of exif_imagetype
+     * @param  string $fileName
+     * @return string
      */
     private function getExtension($fileName)
     {
-        $fileType = exif_imagetype ($fileName);
+        $fileType = exif_imagetype($fileName);
         $result = '';
 
         switch ($fileType) {

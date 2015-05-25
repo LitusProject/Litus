@@ -559,7 +559,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     }
 
     /**
-     * @return int
+     * @return string
      */
     private function getAverageLapTime()
     {

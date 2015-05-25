@@ -32,7 +32,8 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException('Cannot create a form');
         }
 
-        if (null !== $object->getId()) { // Check if this is a new form
+        if (null !== $object->getId()) {
+            // Check if this is a new form
             $group = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Group\Mapping')
                 ->findOneByForm($object);

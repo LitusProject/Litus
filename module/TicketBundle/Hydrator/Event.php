@@ -95,7 +95,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                             )
                         );
                     }
-                } else { // net ticket count =< old ticket count
+                } else {
+                    // net ticket count =< old ticket count
                     $tickets = $this->getEntityManager()
                         ->getRepository('TicketBundle\Entity\Ticket')
                         ->findAllEmptyByEvent($object);
@@ -110,7 +111,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                         $this->getEntityManager()->remove($ticket);
                     }
                 }
-            } else { // tickets weren't generated yet, but are now
+            } else {
+                // tickets weren't generated yet, but are now
                 for ($i = 0 ; $i < $data['number_of_tickets'] ; $i++) {
                     $this->getEntityManager()->persist(
                         new TicketEntity(
@@ -124,7 +126,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     );
                 }
             }
-        } elseif ($object->getId()) { // tickets are not generated (anymore)
+        } elseif ($object->getId()) {
+            // tickets are not generated (anymore)
             $tickets = $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Ticket')
                 ->findAllEmptyByEvent($object);

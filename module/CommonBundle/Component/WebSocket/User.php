@@ -25,12 +25,24 @@ namespace CommonBundle\Component\WebSocket;
  */
 class User
 {
+    /**
+     * @var resource
+     */
     private $socket;
 
+    /**
+     * @var boolean
+     */
     private $handshaked = false;
 
+    /**
+     * @var Frame
+     */
     private $buffer;
 
+    /**
+     * @var array
+     */
     private $extraData;
 
     /**
@@ -39,10 +51,11 @@ class User
     public function __construct($socket)
     {
         $this->socket = $socket;
+        $this->extraData = array();
     }
 
     /**
-     * @return mixed
+     * @return resource
      */
     public function getSocket()
     {

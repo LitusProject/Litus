@@ -126,7 +126,7 @@ EOT
     }
 
     /**
-     * @return null
+     * @return string
      */
     private function readMail()
     {
