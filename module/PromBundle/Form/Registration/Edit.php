@@ -18,19 +18,28 @@
 
 namespace PromBundle\Form\Registration;
 
+use PromBundle\Entity\Bus\Passenger;
+
 /**
  * 'Login' for new registration
  *
  * @author Mathijs Cuppens
+ * @author Kristof Marien <kristof.marien@litus.cc>
  */
 class Edit extends Add
 {
+    /**
+     * @var Passenger
+     */
+    private $passenger;
+
     public function init()
     {
         $this->add(array(
             'type'       => 'text',
             'name'       => 'first_name',
             'label'      => 'First Name',
+            'value'      => null !== $this->passenger ? $this->passenger->getFirstName() : '',
             'attributes' => array(
                 'disabled' => true,
             ),
@@ -40,6 +49,7 @@ class Edit extends Add
             'type'       => 'text',
             'name'       => 'last_name',
             'label'      => 'Last Name',
+            'value'      => null !== $this->passenger ? $this->passenger->getLastName() : '',
             'attributes' => array(
                 'disabled' => true,
             ),
@@ -49,6 +59,7 @@ class Edit extends Add
             'type'     => 'text',
             'name'     => 'email',
             'label'    => 'Email',
+            'value'      => null !== $this->passenger ? $this->passenger->getEmail() : '',
             'attributes' => array(
                 'disabled' => true,
             ),
@@ -58,6 +69,7 @@ class Edit extends Add
             'type'       => 'text',
             'name'       => 'ticket_code',
             'label'      => 'Ticket Code',
+            'value'      => null !== $this->passenger ? $this->passenger->getCode()->getCode() : '',
             'attributes' => array(
                 'disabled' => true,
             ),
@@ -68,9 +80,22 @@ class Edit extends Add
             'name'       => 'first_bus',
             'label'      => 'Go Bus',
             'required'   => true,
+            'value'      => null !== $this->passenger && null !== $this->passenger->getFirstBus() ? $this->passenger->getFirstBus()->getId() : 0,
             'attributes' => array(
                 'id'      => 'first_bus',
                 'options' => $this->getFirstBusses(),
+            ),
+            'options'  => array(
+                'input' => array(
+                    'validators' => array(
+                        array(
+                            'name' => 'prom_bus_selected',
+                        ),
+                        array(
+                            'name' => 'prom_bus_seats',
+                        ),
+                    ),
+                ),
             ),
         ));
 
@@ -79,9 +104,22 @@ class Edit extends Add
             'name'       => 'second_bus',
             'label'      => 'Return Bus',
             'required'   => true,
+            'value'      => null !== $this->passenger && null !== $this->passenger->getSecondBus() ? $this->passenger->getSecondBus()->getId() : 0,
             'attributes' => array(
                 'id'      => 'second_bus',
                 'options' => $this->getSecondBusses(),
+            ),
+            'options'  => array(
+                'input' => array(
+                    'validators' => array(
+                        array(
+                            'name' => 'prom_bus_selected',
+                        ),
+                        array(
+                            'name' => 'prom_bus_seats',
+                        ),
+                    ),
+                ),
             ),
         ));
 
@@ -122,5 +160,16 @@ class Edit extends Add
         }
 
         return $array;
+    }
+
+    /**
+     * @param  Passenger $passenger
+     * @return self
+     */
+    public function setPassenger(Passenger $passenger)
+    {
+        $this->passenger = $passenger;
+
+        return $this;
     }
 }

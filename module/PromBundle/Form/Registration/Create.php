@@ -44,6 +44,14 @@ class Create extends \CommonBundle\Component\Form\Bootstrap\Form
                             'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'prom_code_exists',
+                                ),
+                                array(
+                                    'name' => 'prom_code_used',
+                                ),
+                            ),
                         ),
                     ),
                 ),
