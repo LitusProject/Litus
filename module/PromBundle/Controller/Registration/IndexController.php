@@ -145,9 +145,6 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 
         $editForm = $this->getForm('prom_registration_edit', array('passenger' => $passenger));
 
-        $originalFirstBus = $passenger->getFirstBus();
-        $originalSecondBus = $passenger->getSecondBus();
-
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $editForm->setData($formData);
@@ -280,8 +277,8 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
     }
 
     /**
-     * @param  boolean         $checkUsed
-     * @return ReservationCode
+     * @param  boolean              $checkUsed
+     * @return ReservationCode|null
      */
     private function getReservationCodeEntity($checkUsed = true)
     {
