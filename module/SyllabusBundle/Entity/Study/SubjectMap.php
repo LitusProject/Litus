@@ -19,7 +19,9 @@
 namespace SyllabusBundle\Entity\Study;
 
 use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    SyllabusBundle\Entity\Study,
+    SyllabusBundle\Entity\Subject;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study\SubjectMap")
