@@ -22,7 +22,7 @@ use CudiBundle\Entity\Article,
     CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Prof\Action,
     SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\SubjectProfMap,
+    SyllabusBundle\Entity\Subject\ProfMap,
     Zend\View\Model\ViewModel;
 
 /**
@@ -183,7 +183,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 
         if (null !== $mapping) {
             $mappingProf = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+                ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
                 ->findOneBySubjectAndProfAndAcademicYear($mapping->getSubject(), $this->getAuthentication()->getPersonObject(), $academicYear);
         }
 
@@ -217,14 +217,14 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
         }
 
         $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findOneBySubjectIdAndProfAndAcademicYear(
                 $this->getParam('id', 0),
                 $this->getAuthentication()->getPersonObject(),
                 $academicYear
             );
 
-        if (!($mapping instanceof SubjectProfMap)) {
+        if (!($mapping instanceof ProfMap)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No subject was found!'

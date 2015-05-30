@@ -168,7 +168,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 }
 
                 $subjects = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
                     ->findAllByStudyAndAcademicYear($study, $academicYear);
 
                 foreach ($subjects as $subject) {

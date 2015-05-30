@@ -99,7 +99,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $this->getEntityManager()->persist(new StudyEnrollment($academic, $academicYear, $study));
 
                 $subjects = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
                     ->findAllByStudyAndAcademicYear($study, $academicYear);
 
                 foreach ($subjects as $subject) {
@@ -172,7 +172,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $studySubjects = array();
         foreach ($enrollments as $enrollment) {
             $subjects = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
                 ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $academicYear);
             $mappings[] = array(
                 'enrollment' => $enrollment,

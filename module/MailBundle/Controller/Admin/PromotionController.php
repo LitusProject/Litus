@@ -62,7 +62,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                                 ->findOneById($groupId);
 
                             $studies = $this->getEntityManager()
-                                ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+                                ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
                                 ->findAllByGroupAndAcademicYear($group, $academicYear);
 
                             foreach ($studies as $study) {

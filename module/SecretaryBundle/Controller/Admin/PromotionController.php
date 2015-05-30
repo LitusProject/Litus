@@ -246,7 +246,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         }
 
         $studyMappings = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+            ->getRepository('SyllabusBundle\Entity\Study\AcademicYearMap')
             ->findAllByAcademicYear($academicYear);
 
         $academics = array();

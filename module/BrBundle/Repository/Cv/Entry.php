@@ -65,7 +65,7 @@ class Entry extends EntityRepository
 
         $groupQuery = $this->getEntityManager()->createQueryBuilder();
         $groupQuery->select('g')
-            ->from('SyllabusBundle\Entity\StudyGroupMap', 'g')
+            ->from('SyllabusBundle\Entity\Group\StudyMap', 'g')
             ->innerJoin('g.group', 'd')
             ->where(
                 $groupQuery->expr()->andx(
@@ -104,7 +104,7 @@ class Entry extends EntityRepository
     {
         $subQuery = $this->getEntityManager()->createQueryBuilder();
         $subQuery->select('g')
-            ->from('SyllabusBundle\Entity\StudyGroupMap', 'g')
+            ->from('SyllabusBundle\Entity\Group\StudyMap', 'g')
             ->where(
                 $subQuery->expr()->andx(
                     $subQuery->expr()->eq('g.study', 's'),

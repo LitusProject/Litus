@@ -16,16 +16,16 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Entity;
+namespace SyllabusBundle\Entity\Group;
 
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\AcademicYearMap")
- * @ORM\Table(name="syllabus.studies_academic_years_map")
+ * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Group\StudyMap")
+ * @ORM\Table(name="syllabus.studies_group_map")
  */
-class AcademicYearMap
+class StudyMap
 {
     /**
      * @var integer The ID of the mapping
@@ -40,9 +40,17 @@ class AcademicYearMap
      * @var Study The study of the mapping
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
-     * @ORM\JoinColumn(name="study", referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $study;
+
+    /**
+     * @var Group The group of the mapping
+     *
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Group")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     */
+    private $group;
 
     /**
      * @var AcademicYear The year of the mapping
@@ -54,11 +62,13 @@ class AcademicYearMap
 
     /**
      * @param Study        $study
-     * @param AcademicYear $academicYear
+     * @param Group        $group
+     * @param AcademicYear $academicYear The year of the mapping
      */
-    public function __construct(Study $study, AcademicYear $academicYear)
+    public function __construct(Study $study, Group $group, AcademicYear $academicYear)
     {
         $this->study = $study;
+        $this->group = $group;
         $this->academicYear = $academicYear;
     }
 

@@ -20,7 +20,7 @@ namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Entity\StudySubjectMap,
+    SyllabusBundle\Entity\Study\SubjectMap,
     SyllabusBundle\Entity\Subject,
     Zend\View\Model\ViewModel;
 
@@ -43,7 +43,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
         if (!isset($subjects)) {
             $subjects = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
                 ->findAllByAcademicYear($academicYear);
         }
 
@@ -88,7 +88,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->persist($subject);
 
-                $map = new StudySubjectMap($study, $subject, $formData['mandatory'], $academicYear);
+                $map = new SubjectMap($study, $subject, $formData['mandatory'], $academicYear);
                 $this->getEntityManager()->persist($map);
 
                 $this->getEntityManager()->flush();
@@ -157,7 +157,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $profs = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
 
         $articles = $this->getEntityManager()
@@ -165,7 +165,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
 
         $studies = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+            ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
 
         $academicYears = $this->getEntityManager()
@@ -253,11 +253,11 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
                     ->findAllByNameAndAcademicYear($this->getParam('string'), $academicYear);
             case 'code':
                 return $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
                     ->findAllByCodeAndAcademicYear($this->getParam('string'), $academicYear);
         }
     }

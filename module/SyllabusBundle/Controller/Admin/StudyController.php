@@ -20,8 +20,8 @@ namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Entity\AcademicYearMap,
     SyllabusBundle\Entity\Study,
+    SyllabusBundle\Entity\Study\AcademicYearMap,
     Zend\View\Model\ViewModel;
 
 /**
@@ -43,7 +43,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         if (!isset($mappings)) {
             $mappings = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+                ->getRepository('SyllabusBundle\Entity\Study\AcademicYearMap')
                 ->findAllByAcademicYear($academicYear);
         }
 
@@ -132,7 +132,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         if (!isset($mappings)) {
             $mappings = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
                 ->findAllByStudyAndAcademicYear($study, $academicYear);
         }
 
@@ -302,7 +302,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+                    ->getRepository('SyllabusBundle\Entity\Study\AcademicYearMap')
                     ->findAllByTitleAndAcademicYear($this->getParam('string'), $academicYear);
         }
     }
@@ -317,11 +317,11 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
                     ->findAllByNameAndStudyAndAcademicYear($this->getParam('string'), $study, $academicYear);
             case 'code':
                 return $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
                     ->findAllByCodeAndStudyAndAcademicYear($this->getParam('string'), $study, $academicYear);
         }
     }
@@ -331,7 +331,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getAcademicYearMapEntity()
     {
-        $map = $this->getEntityById('SyllabusBundle\Entity\AcademicYearMap');
+        $map = $this->getEntityById('SyllabusBundle\Entity\Study\AcademicYearMap');
 
         if (!($map instanceof AcademicYearMap)) {
             $this->flashMessenger()->error(

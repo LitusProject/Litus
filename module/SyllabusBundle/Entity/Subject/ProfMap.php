@@ -16,16 +16,17 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Entity;
+namespace SyllabusBundle\Entity\Subject;
 
 use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\StudyGroupMap")
- * @ORM\Table(name="syllabus.studies_group_map")
+ * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Subject\ProfMap")
+ * @ORM\Table(name="syllabus.subjects_profs_map")
  */
-class StudyGroupMap
+class ProfMap
 {
     /**
      * @var integer The ID of the mapping
@@ -37,20 +38,20 @@ class StudyGroupMap
     private $id;
 
     /**
-     * @var Study The study of the mapping
+     * @var Academic The prof of the mapping
      *
-     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
-    private $study;
+    private $prof;
 
     /**
-     * @var Group The group of the mapping
+     * @var Subject The subject of the mapping
      *
-     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Group")
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
-    private $group;
+    private $subject;
 
     /**
      * @var AcademicYear The year of the mapping
@@ -61,14 +62,14 @@ class StudyGroupMap
     private $academicYear;
 
     /**
-     * @param Study        $study
-     * @param Group        $group
+     * @param Subject      $subject
+     * @param Academic     $prof
      * @param AcademicYear $academicYear The year of the mapping
      */
-    public function __construct(Study $study, Group $group, AcademicYear $academicYear)
+    public function __construct(Subject $subject, Academic $prof, AcademicYear $academicYear)
     {
-        $this->study = $study;
-        $this->group = $group;
+        $this->subject = $subject;
+        $this->prof = $prof;
         $this->academicYear = $academicYear;
     }
 
@@ -81,11 +82,19 @@ class StudyGroupMap
     }
 
     /**
-     * @return Study
+     * @return Subject
      */
-    public function getStudy()
+    public function getSubject()
     {
-        return $this->study;
+        return $this->subject;
+    }
+
+    /**
+     * @return Academic
+     */
+    public function getProf()
+    {
+        return $this->prof;
     }
 
     /**

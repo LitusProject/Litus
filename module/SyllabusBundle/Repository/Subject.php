@@ -35,7 +35,7 @@ class Subject extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
             ->innerJoin('m.subject', 's')
             ->where(
                 $query->expr()->andX(

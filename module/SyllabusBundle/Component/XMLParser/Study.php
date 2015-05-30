@@ -22,11 +22,11 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     Doctrine\ORM\EntityManager,
-    SyllabusBundle\Entity\AcademicYearMap,
     SyllabusBundle\Entity\Study as StudyEntity,
-    SyllabusBundle\Entity\StudySubjectMap,
+    SyllabusBundle\Entity\Study\AcademicYearMap,
+    SyllabusBundle\Entity\Study\SubjectMap,
     SyllabusBundle\Entity\Subject as SubjectEntity,
-    SyllabusBundle\Entity\SubjectProfMap,
+    SyllabusBundle\Entity\Subject\ProfMap,
     Zend\Http\Client as HttpClient,
     Zend\Mail\Transport\TransportInterface,
     finfo;
@@ -295,11 +295,11 @@ class Study
 
                         if (is_array($activeStudies[$phaseNumber])) {
                             foreach ($activeStudies[$phaseNumber] as $activeStudy) {
-                                $map = new StudySubjectMap($activeStudy, $subject, $mandatory, $this->academicYear);
+                                $map = new SubjectMap($activeStudy, $subject, $mandatory, $this->academicYear);
                                 $this->getEntityManager()->persist($map);
                             }
                         } else {
-                            $map = new StudySubjectMap($activeStudies[$phaseNumber], $subject, $mandatory, $this->academicYear);
+                            $map = new SubjectMap($activeStudies[$phaseNumber], $subject, $mandatory, $this->academicYear);
                             $this->getEntityManager()->persist($map);
                         }
                     }
@@ -370,11 +370,11 @@ class Study
             }
 
             $map = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+                ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
                 ->findOneBySubjectAndProfAndAcademicYear($subject, $prof, $this->academicYear);
             if (null === $map) {
                 if (!isset($maps[$prof->getUniversityIdentification()])) {
-                    $map = new SubjectProfMap($subject, $prof, $this->academicYear);
+                    $map = new ProfMap($subject, $prof, $this->academicYear);
                     $this->getEntityManager()->persist($map);
                     $maps[$prof->getUniversityIdentification()] = $map;
                 }
@@ -388,7 +388,7 @@ class Study
     private function cleanUpAcademicYear()
     {
         $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+            ->getRepository('SyllabusBundle\Entity\Study\AcademicYearMap')
             ->findByAcademicYear($this->academicYear);
 
         foreach ($mapping as $map) {
@@ -396,7 +396,7 @@ class Study
         }
 
         $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+            ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
             ->findByAcademicYear($this->academicYear);
 
         foreach ($mapping as $map) {
@@ -404,7 +404,7 @@ class Study
         }
 
         $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findByAcademicYear($this->academicYear);
 
         foreach ($mapping as $map) {

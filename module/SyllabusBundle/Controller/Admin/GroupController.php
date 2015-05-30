@@ -23,7 +23,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     SyllabusBundle\Component\Document\Generator\Group as CsvGenerator,
     SyllabusBundle\Entity\Group,
-    SyllabusBundle\Entity\StudyGroupMap,
+    SyllabusBundle\Entity\Group\StudyMap,
     Zend\View\Model\ViewModel;
 
 /**
@@ -190,10 +190,10 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                             ->findOneById($studyId);
 
                         $map = $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+                            ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
                             ->findOneByStudyGroupAndAcademicYear($study, $group, $academicYear);
                         if (null === $map) {
-                            $this->getEntityManager()->persist(new StudyGroupMap($study, $group, $academicYear));
+                            $this->getEntityManager()->persist(new StudyMap($study, $group, $academicYear));
                         }
                     }
                 } else {
@@ -224,7 +224,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $studies = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+            ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
             ->findAllByGroupAndAcademicYear($group, $academicYear);
 
         $academicYears = $this->getEntityManager()
@@ -264,7 +264,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getStudyGroupMapEntity())) {
+        if (!($mapping = $this->getStudyMapEntity())) {
             return new ViewModel();
         }
 
@@ -334,13 +334,13 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return StudyGroupMap|null
+     * @return StudyMap|null
      */
-    private function getStudyGroupMapEntity()
+    private function getStudyMapEntity()
     {
-        $map = $this->getEntityById('SyllabusBundle\Entity\StudyGroupMap');
+        $map = $this->getEntityById('SyllabusBundle\Entity\Group\StudyMap');
 
-        if (!($map instanceof StudyGroupMap)) {
+        if (!($map instanceof StudyMap)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No study group map was found!'

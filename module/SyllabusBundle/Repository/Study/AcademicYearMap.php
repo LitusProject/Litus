@@ -16,7 +16,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Repository;
+namespace SyllabusBundle\Repository\Study;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear;
@@ -33,7 +33,7 @@ class AcademicYearMap extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('SyllabusBundle\Entity\AcademicYearMap', 'm')
+            ->from('SyllabusBundle\Entity\Study\AcademicYearMap', 'm')
             ->where(
                 $query->expr()->eq('m.academicYear', ':academicYear')
             )
@@ -58,7 +58,7 @@ class AcademicYearMap extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
-            ->from('SyllabusBundle\Entity\AcademicYearMap', 'm')
+            ->from('SyllabusBundle\Entity\Study\AcademicYearMap', 'm')
             ->innerJoin('m.study', 's')
             ->where(
                 $query->expr()->eq('m.academicYear', ':academicYear')

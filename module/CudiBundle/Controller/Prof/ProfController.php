@@ -19,7 +19,7 @@
 namespace CudiBundle\Controller\Prof;
 
 use SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\SubjectProfMap,
+    SyllabusBundle\Entity\Subject\ProfMap,
     Zend\View\Model\ViewModel;
 
 /**
@@ -52,11 +52,11 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
                     ->findOneById($formData['prof']['id']);
 
                 $mapping = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+                    ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
                     ->findOneBySubjectAndProfAndAcademicYear($subject, $docent, $academicYear);
 
                 if (null === $mapping) {
-                    $mapping = new SubjectProfMap($subject, $docent, $academicYear);
+                    $mapping = new ProfMap($subject, $docent, $academicYear);
                     $this->getEntityManager()->persist($mapping);
                     $this->getEntityManager()->flush();
                 }
@@ -91,7 +91,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getSubjectProfMapEntity())) {
+        if (!($mapping = $this->getProfMapEntity())) {
             return new ViewModel();
         }
 
@@ -149,14 +149,14 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         }
 
         $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findOneBySubjectIdAndProfAndAcademicYear(
                 $this->getParam('id', 0),
                 $this->getAuthentication()->getPersonObject(),
                 $academicYear
             );
 
-        if (!($mapping instanceof SubjectProfMap)) {
+        if (!($mapping instanceof ProfMap)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No subject was found!'
@@ -177,23 +177,23 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @return SubjectProfMap|null
+     * @return ProfMap|null
      */
-    private function getSubjectProfMapEntity()
+    private function getProfMapEntity()
     {
         if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
         }
 
         $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findOneBySubjectIdAndProfAndAcademicYear(
                 $this->getParam('id', 0),
                 $this->getAuthentication()->getPersonObject(),
                 $academicYear
             );
 
-        if (!($mapping instanceof SubjectProfMap)) {
+        if (!($mapping instanceof ProfMap)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No subject was found!'

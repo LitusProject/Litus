@@ -19,7 +19,7 @@
 namespace SyllabusBundle\Form\Admin\Subject\Study;
 
 use CommonBundle\Entity\General\AcademicYear,
-    SyllabusBundle\Entity\StudySubjectMap,
+    SyllabusBundle\Entity\Study\SubjectMap,
     SyllabusBundle\Entity\Subject;
 
 /**
@@ -29,10 +29,10 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'SyllabusBundle\Hydrator\StudySubjectMap';
+    protected $hydrator = 'SyllabusBundle\Hydrator\Study\SubjectMap';
 
     /**
-     * @var StudySubjectMap|null
+     * @var SubjectMap|null
      */
     protected $mapping = null;
 
@@ -102,10 +102,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param  StudySubjectMap $map
+     * @param  SubjectMap $map
      * @return self
      */
-    public function setMapping(StudySubjectMap $map)
+    public function setMapping(SubjectMap $map)
     {
         $this->mapping = $map;
 

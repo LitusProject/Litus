@@ -16,19 +16,19 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Entity;
+namespace SyllabusBundle\Entity\Subject;
 
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\StudySubjectMap")
- * @ORM\Table(name="syllabus.studies_subjects_map")
+ * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Subject\StudentEnrollment")
+ * @ORM\Table(name="syllabus.student_enrollment")
  */
-class StudySubjectMap
+class StudentEnrollment
 {
     /**
-     * @var integer The ID of the mapping
+     * @var integer The ID of the enrollment
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -37,30 +37,15 @@ class StudySubjectMap
     private $id;
 
     /**
-     * @var Study The study of the mapping
+     * @var Subject The subject of the enrollment
      *
-     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
-     * @ORM\JoinColumn(referencedColumnName="id")
-     */
-    private $study;
-
-    /**
-     * @var Subject The subject of the mapping
-     *
-     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Subject", inversedBy="enrollments")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $subject;
 
     /**
-     * @var boolean Flag whether the subject is mandatory
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $mandatory;
-
-    /**
-     * @var AcademicYear The year of the mapping
+     * @var AcademicYear The year of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
      * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
@@ -68,17 +53,22 @@ class StudySubjectMap
     private $academicYear;
 
     /**
-     * @param Study        $study
-     * @param Subject      $subject
-     * @param boolean      $mandatory
-     * @param AcademicYear $academicYear The year of the mapping
+     * @var integer The number of students of the enrollment
+     *
+     * @ORM\Column(type="integer")
      */
-    public function __construct(Study $study, Subject $subject, $mandatory, AcademicYear $academicYear)
+    private $number;
+
+    /**
+     * @param Subject      $subject
+     * @param AcademicYear $academicYear The year of the mapping
+     * @param integer      $academicYear The number of students of the enrollment
+     */
+    public function __construct(Subject $subject, AcademicYear $academicYear, $number)
     {
-        $this->study = $study;
         $this->subject = $subject;
-        $this->mandatory = $mandatory;
         $this->academicYear = $academicYear;
+        $this->number = $number;
     }
 
     /**
@@ -90,14 +80,6 @@ class StudySubjectMap
     }
 
     /**
-     * @return Study
-     */
-    public function getStudy()
-    {
-        return $this->study;
-    }
-
-    /**
      * @return Subject
      */
     public function getSubject()
@@ -106,29 +88,29 @@ class StudySubjectMap
     }
 
     /**
-     * @return boolean
-     */
-    public function isMandatory()
-    {
-        return $this->mandatory;
-    }
-
-    /**
-     * @param  boolean $mandatory
-     * @return self
-     */
-    public function setMandatory($mandatory)
-    {
-        $this->mandatory = $mandatory;
-
-        return $this;
-    }
-
-    /**
      * @return AcademicYear
      */
     public function getAcademicYear()
     {
         return $this->academicYear;
+    }
+
+    /**
+     * @param  integer $number
+     * @return self
+     */
+    public function setNumber($number)
+    {
+        $this->number = $number;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getNumber()
+    {
+        return $this->number;
     }
 }

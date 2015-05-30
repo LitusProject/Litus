@@ -20,7 +20,7 @@ namespace SyllabusBundle\Controller\Admin\Subject;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Entity\StudySubjectMap,
+    SyllabusBundle\Entity\Study\SubjectMap,
     SyllabusBundle\Entity\Subject,
     Zend\View\Model\ViewModel;
 
@@ -60,7 +60,7 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
                     ->findOneById($formData['study']['id']);
 
                 $mapping = $form->hydrateObject(
-                    new StudySubjectMap($study, $subject, false, $academicYear)
+                    new SubjectMap($study, $subject, false, $academicYear)
                 );
                 $this->getEntityManager()->persist($mapping);
 
@@ -98,7 +98,7 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($mapping = $this->getStudySubjectMapEntity())) {
+        if (!($mapping = $this->getSubjectMapEntity())) {
             return new ViewModel();
         }
 
@@ -144,7 +144,7 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getStudySubjectMapEntity())) {
+        if (!($mapping = $this->getSubjectMapEntity())) {
             return new ViewModel();
         }
 
@@ -185,13 +185,13 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return StudySubjectMap|null
+     * @return SubjectMap|null
      */
-    private function getStudySubjectMapEntity()
+    private function getSubjectMapEntity()
     {
-        $map = $this->getEntityById('SyllabusBundle\Entity\StudySubjectMap');
+        $map = $this->getEntityById('SyllabusBundle\Entity\Study\SubjectMap');
 
-        if (!($map instanceof StudySubjectMap)) {
+        if (!($map instanceof SubjectMap)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No subject mapping was found!'

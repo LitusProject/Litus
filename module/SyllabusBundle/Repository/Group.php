@@ -61,7 +61,7 @@ class Group extends EntityRepository
     public function findNbStudentsByGroupAndAcademicYear(GroupEntity $group, AcademicYear $academicYear)
     {
         $studies = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+            ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
             ->findAllByGroupAndAcademicYear($group, $academicYear);
 
         $ids = array(0);

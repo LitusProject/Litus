@@ -21,7 +21,7 @@ namespace SyllabusBundle\Controller\Admin;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\SubjectProfMap,
+    SyllabusBundle\Entity\Subject\ProfMap,
     Zend\View\Model\ViewModel;
 
 /**
@@ -58,11 +58,11 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     ->findOneById($formData['prof']['id']);
 
                 $mapping = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+                    ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
                     ->findOneBySubjectAndProfAndAcademicYear($subject, $docent, $academicYear);
 
                 if (null === $mapping) {
-                    $mapping = new SubjectProfMap($subject, $docent, $academicYear);
+                    $mapping = new ProfMap($subject, $docent, $academicYear);
                     $this->getEntityManager()->persist($mapping);
                     $this->getEntityManager()->flush();
                 }
@@ -97,7 +97,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->getSubjectProfMapEntity())) {
+        if (!($mapping = $this->getProfMapEntity())) {
             return new ViewModel();
         }
 
@@ -164,13 +164,13 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return SubjectProfMap|null
+     * @return ProfMap|null
      */
-    private function getSubjectProfMapEntity()
+    private function getProfMapEntity()
     {
-        $map = $this->getEntityById('SyllabusBundle\Entity\SubjectProfMap');
+        $map = $this->getEntityById('SyllabusBundle\Entity\Subject\ProfMap');
 
-        if (!($map instanceof SubjectProfMap)) {
+        if (!($map instanceof ProfMap)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No prof map was found!'

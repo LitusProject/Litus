@@ -292,7 +292,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
             }
 
             $studies = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+                ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
                 ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear(false));
 
             foreach ($studies as $study) {

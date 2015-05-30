@@ -16,17 +16,16 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Entity;
+namespace SyllabusBundle\Entity\Study;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\SubjectProfMap")
- * @ORM\Table(name="syllabus.subjects_profs_map")
+ * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study\AcademicYearMap")
+ * @ORM\Table(name="syllabus.studies_academic_years_map")
  */
-class SubjectProfMap
+class AcademicYearMap
 {
     /**
      * @var integer The ID of the mapping
@@ -38,20 +37,12 @@ class SubjectProfMap
     private $id;
 
     /**
-     * @var Academic The prof of the mapping
+     * @var Study The study of the mapping
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
+     * @ORM\JoinColumn(name="study", referencedColumnName="id")
      */
-    private $prof;
-
-    /**
-     * @var Subject The subject of the mapping
-     *
-     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Subject")
-     * @ORM\JoinColumn(referencedColumnName="id")
-     */
-    private $subject;
+    private $study;
 
     /**
      * @var AcademicYear The year of the mapping
@@ -62,14 +53,12 @@ class SubjectProfMap
     private $academicYear;
 
     /**
-     * @param Subject      $subject
-     * @param Academic     $prof
-     * @param AcademicYear $academicYear The year of the mapping
+     * @param Study        $study
+     * @param AcademicYear $academicYear
      */
-    public function __construct(Subject $subject, Academic $prof, AcademicYear $academicYear)
+    public function __construct(Study $study, AcademicYear $academicYear)
     {
-        $this->subject = $subject;
-        $this->prof = $prof;
+        $this->study = $study;
         $this->academicYear = $academicYear;
     }
 
@@ -82,19 +71,11 @@ class SubjectProfMap
     }
 
     /**
-     * @return Subject
+     * @return Study
      */
-    public function getSubject()
+    public function getStudy()
     {
-        return $this->subject;
-    }
-
-    /**
-     * @return Academic
-     */
-    public function getProf()
-    {
-        return $this->prof;
+        return $this->study;
     }
 
     /**

@@ -57,7 +57,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $mappings[] = array(
                 'enrollment' => $enrollment,
                 'subjects' => $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
                     ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear()),
             );
         }
