@@ -76,20 +76,41 @@ class Group extends \CommonBundle\Component\Document\Generator\Csv
                     'academicFirstName'               => $ac->getFirstName(),
                     'academicLastName'                => $ac->getLastName(),
                     'academicEmail'                   => $ac->getEmail(),
-                    'academicPrimaryAddressStreet'    => $primaryAddress ? $primaryAddress->getStreet() : '',
-                    'academicPrimaryAddressNumber'    => $primaryAddress ? $primaryAddress->getNumber() : '',
-                    'academicPrimaryAddressMailbox'   => $primaryAddress ? $primaryAddress->getMailbox() : '',
-                    'academicPrimaryAddressPostal'    => $primaryAddress ? $primaryAddress->getPostal() : '',
-                    'academicPrimaryAddressCity'      => $primaryAddress ? $primaryAddress->getCity() : '',
-                    'academicPrimaryAddressCountry'   => $primaryAddress ? $primaryAddress->getCountry() : '',
-                    'academicSecondaryAddressStreet'  => $secondaryAddress ? $secondaryAddress->getStreet() : '',
-                    'academicSecondaryAddressNumber'  => $secondaryAddress ? $secondaryAddress->getNumber() : '',
-                    'academicSecondaryAddressMailbox' => $secondaryAddress ? $secondaryAddress->getMailbox() : '',
-                    'academicSecondaryAddressPostal'  => $secondaryAddress ? $secondaryAddress->getPostal() : '',
-                    'academicSecondaryAddressCity'    => $secondaryAddress ? $secondaryAddress->getCity() : '',
-                    'academicSecondaryAddressCountry' => $secondaryAddress ? $secondaryAddress->getCountry() : '',
-                    'study'                           => $study->getFullTitle(),
                 );
+
+                if (null !== $primaryAddress) {
+                    $result[$ac->getId()]['academicPrimaryAddressStreet'] = $primaryAddress->getStreet();
+                    $result[$ac->getId()]['academicPrimaryAddressNumber'] = $primaryAddress->getNumber();
+                    $result[$ac->getId()]['academicPrimaryAddressMailbox'] = $primaryAddress->getMailbox();
+                    $result[$ac->getId()]['academicPrimaryAddressPostal'] = $primaryAddress->getPostal();
+                    $result[$ac->getId()]['academicPrimaryAddressCity'] = $primaryAddress->getCity();
+                    $result[$ac->getId()]['academicPrimaryAddressCountry'] = $primaryAddress->getCountry();
+                } else {
+                    $result[$ac->getId()]['academicPrimaryAddressStreet'] = '';
+                    $result[$ac->getId()]['academicPrimaryAddressNumber'] = '';
+                    $result[$ac->getId()]['academicPrimaryAddressMailbox'] = '';
+                    $result[$ac->getId()]['academicPrimaryAddressPostal'] = '';
+                    $result[$ac->getId()]['academicPrimaryAddressCity'] = '';
+                    $result[$ac->getId()]['academicPrimaryAddressCountry'] = '';
+                }
+
+                if (null !== $secondaryAddress) {
+                    $result[$ac->getId()]['academicSecondaryAddressStreet'] = $secondaryAddress->getStreet();
+                    $result[$ac->getId()]['academicSecondaryAddressNumber'] = $secondaryAddress->getNumber();
+                    $result[$ac->getId()]['academicSecondaryAddressMailbox'] = $secondaryAddress->getMailbox();
+                    $result[$ac->getId()]['academicSecondaryAddressPostal'] = $secondaryAddress->getPostal();
+                    $result[$ac->getId()]['academicSecondaryAddressCity'] = $secondaryAddress->getCity();
+                    $result[$ac->getId()]['academicSecondaryAddressCountry'] = $secondaryAddress->getCountry();
+                } else {
+                    $result[$ac->getId()]['academicSecondaryAddressStreet'] = '';
+                    $result[$ac->getId()]['academicSecondaryAddressNumber'] = '';
+                    $result[$ac->getId()]['academicSecondaryAddressMailbox'] = '';
+                    $result[$ac->getId()]['academicSecondaryAddressPostal'] = '';
+                    $result[$ac->getId()]['academicSecondaryAddressCity'] = '';
+                    $result[$ac->getId()]['academicSecondaryAddressCountry'] = '';
+                }
+
+                $result[$ac->getId()]['study'] = $study->getFullTitle();
             }
         }
 

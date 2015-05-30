@@ -64,11 +64,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                 TicketBook::book(
                     $event,
-                    $person,
-                    null,
                     $numbers,
                     false,
-                    $this->getEntityManager()
+                    $this->getEntityManager(),
+                    $person,
+                    null
                 );
 
                 $this->getEntityManager()->flush();

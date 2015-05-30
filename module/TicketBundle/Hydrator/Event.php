@@ -38,7 +38,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new EventEntity();
         }
 
-        $enableOptions = isset($data['enable_options']) && $data['enable_options'] || sizeof($object->getOptions()) > 0;
+        $enableOptions = (isset($data['enable_options']) && $data['enable_options']) || sizeof($object->getOptions()) > 0;
 
         $calendarEvent = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
@@ -46,8 +46,12 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
         $closeDate = self::loadDateTime($data['bookings_close_date']);
 
-        $priceMembers = $enableOptions ? 0 : $data['prices']['price_members'];
-        $priceNonMembers = $enableOptions ? 0 : ($data['only_members'] ? 0 : $data['prices']['price_non_members']);
+        $priceMembers = 0;
+        $priceNonMembers = 0;
+        if ($enableOptions) {
+            $priceMembers = $data['prices']['price_members'];
+            $priceNonMembers = $data['only_members'] ? 0 : $data['prices']['price_non_members'];
+        }
 
         $generateTickets = $data['generate_tickets'];
 
@@ -63,13 +67,13 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                         ->findOneById($optionData['option_id']);
                     $option->setName($optionData['option'])
                         ->setPriceMembers($optionData['price_members'])
-                        ->setPriceNonMembers($data['only_members'] ? 0 : $optionData['price_non_members']);
+                        ->setPriceNonMembers($priceNonMembers);
                 } else {
                     $option = new Option(
                         $object,
                         $optionData['option'],
                         $optionData['price_members'],
-                        $data['only_members'] ? 0 : $optionData['price_non_members']
+                        $priceNonMembers
                     );
                     $this->getEntityManager()->persist($option);
                 }

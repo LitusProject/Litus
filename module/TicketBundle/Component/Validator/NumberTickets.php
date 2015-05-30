@@ -116,7 +116,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
             $person = $this->options['person'];
         }
 
-        if (null == $person && !$this->form->get('is_guest')->getValue()) {
+        if (null === $person && !$this->form->get('is_guest')->getValue()) {
             $this->error(self::NOT_VALID);
 
             return false;
