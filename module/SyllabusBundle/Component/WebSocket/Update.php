@@ -48,6 +48,11 @@ class Update extends \CommonBundle\Component\WebSocket\Server
     private $status = 'done';
 
     /**
+     * @var StudyParser
+     */
+    private $parser;
+
+    /**
      * @param EntityManager      $entityManager
      * @param TransportInterface $mailTransport
      */
@@ -61,6 +66,9 @@ class Update extends \CommonBundle\Component\WebSocket\Server
 
         $this->entityManager = $entityManager;
         $this->mailTransport = $mailTransport;
+        $this->parser = new StudyParser($this->entityManager, $this->mailTransport, array($this, 'callback'));
+        $this->parser->update();
+        exit;
     }
 
     /**
@@ -127,7 +135,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
         if ($command->command == 'update' && 'done' == $this->status) {
             $this->entityManager->clear();
             $this->status = 'updating';
-            new StudyParser($this->entityManager, $this->mailTransport, array($this, 'callback'));
+            $this->parser->update();
             $this->callback('done');
             $this->status = 'done';
         }
@@ -158,6 +166,10 @@ class Update extends \CommonBundle\Component\WebSocket\Server
      */
     public function callback($type, $extra = null)
     {
+        if ('development' == getenv('APPLICATION_ENV')) {
+            echo 'Callback: ' . $type . ' (' . $extra . ')' . PHP_EOL;
+        }
+
         $this->sendTextToAll(
             json_encode(
                 (object) array(

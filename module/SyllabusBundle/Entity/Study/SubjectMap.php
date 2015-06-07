@@ -39,12 +39,12 @@ class SubjectMap
     private $id;
 
     /**
-     * @var Study The study of the mapping
+     * @var ModuleGroup The module group of the mapping
      *
-     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study\ModuleGroup")
      * @ORM\JoinColumn(referencedColumnName="id")
      */
-    private $study;
+    private $moduleGroup;
 
     /**
      * @var Subject The subject of the mapping
@@ -70,14 +70,14 @@ class SubjectMap
     private $academicYear;
 
     /**
-     * @param Study        $study
+     * @param ModuleGroup  $study
      * @param Subject      $subject
      * @param boolean      $mandatory
      * @param AcademicYear $academicYear The year of the mapping
      */
-    public function __construct(Study $study, Subject $subject, $mandatory, AcademicYear $academicYear)
+    public function __construct(ModuleGroup $moduleGroup, Subject $subject, $mandatory, AcademicYear $academicYear)
     {
-        $this->study = $study;
+        $this->moduleGroup = $moduleGroup;
         $this->subject = $subject;
         $this->mandatory = $mandatory;
         $this->academicYear = $academicYear;
@@ -92,11 +92,11 @@ class SubjectMap
     }
 
     /**
-     * @return Study
+     * @return ModuleGroup
      */
-    public function getStudy()
+    public function getModuleGroup()
     {
-        return $this->study;
+        return $this->moduleGroup;
     }
 
     /**

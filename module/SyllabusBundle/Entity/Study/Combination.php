@@ -39,7 +39,7 @@ use Doctrine\Common\Collections\ArrayCollection,
     /**
      * @var integer The id of the external database
      *
-     * @ORM\Column(type="integer", name="external_id", nullable=true)
+     * @ORM\Column(type="bigint", name="external_id", nullable=true)
      */
     private $externalId;
 
@@ -62,7 +62,7 @@ use Doctrine\Common\Collections\ArrayCollection,
      *
      * @ORM\ManyToMany(targetEntity="SyllabusBundle\Entity\Study\ModuleGroup")
      * @ORM\JoinTable(
-     *     name="syllabus.study_combination_map",
+     *     name="syllabus.combination_module_group_map",
      *     joinColumns={@ORM\JoinColumn(name="combination", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="module_group", referencedColumnName="id")}
      * )

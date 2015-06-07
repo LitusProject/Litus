@@ -16,7 +16,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Repository;
+namespace SyllabusBundle\Repository\Study;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear,

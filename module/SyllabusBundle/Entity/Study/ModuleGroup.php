@@ -38,7 +38,7 @@ use Doctrine\ORM\Mapping as ORM;
      /**
       * @var integer The id of the external database
       *
-      * @ORM\Column(type="integer", name="external_id", nullable=true)
+      * @ORM\Column(type="bigint", name="external_id", nullable=true)
       */
      private $externalId;
 
@@ -111,7 +111,7 @@ use Doctrine\ORM\Mapping as ORM;
       */
      public function setExternalId($externalId)
      {
-         $this->$externalId = $externalId;
+         $this->externalId = $externalId;
 
          return $this;
      }
@@ -169,6 +169,44 @@ use Doctrine\ORM\Mapping as ORM;
      public function setLanguage($language)
      {
          $this->language = $language;
+
+         return $this;
+     }
+
+     /**
+      * @return boolean
+      */
+     public function isMandatory()
+     {
+         return $this->mandatory;
+     }
+
+     /**
+      * @param  boolean $mandatory
+      * @return self
+      */
+     public function setIsMandatory($mandatory)
+     {
+         $this->mandatory = $mandatory;
+
+         return $this;
+     }
+
+     /**
+      * @return ModuleGroup
+      */
+     public function getParent()
+     {
+         return $this->parent;
+     }
+
+     /**
+      * @param  ModuleGroup $parent
+      * @return self
+      */
+     public function setParent(ModuleGroup $parent)
+     {
+         $this->parent = $parent;
 
          return $this;
      }
