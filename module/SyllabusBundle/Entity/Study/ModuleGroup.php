@@ -18,7 +18,8 @@
 
 namespace SyllabusBundle\Entity\Study;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study\ModuleGroup")
@@ -87,6 +88,7 @@ use Doctrine\ORM\Mapping as ORM;
 
      public function __construct()
      {
+         $this->children = new ArrayCollection();
      }
 
      /**
@@ -209,5 +211,13 @@ use Doctrine\ORM\Mapping as ORM;
          $this->parent = $parent;
 
          return $this;
+     }
+
+     /**
+      * @return ArrayCollection
+      */
+     public function getChildren()
+     {
+         return $this->children;
      }
  }

@@ -31,43 +31,4 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class StudyMap extends EntityRepository
 {
-    public function findAllByGroupAndAcademicYearQuery(GroupEntity $group, AcademicYear $academicYear)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('m')
-            ->from('SyllabusBundle\Entity\Group\StudyMap', 'm')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('m.group', ':group'),
-                    $query->expr()->eq('m.academicYear', ':academicYear')
-                )
-            )
-            ->setParameter('group', $group)
-            ->setParameter('academicYear', $academicYear)
-            ->getQuery();
-
-        return $resultSet;
-    }
-
-    public function findOneByStudyGroupAndAcademicYear(StudyEntity $study, GroupEntity $group, AcademicYear $academicYear)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('m')
-            ->from('SyllabusBundle\Entity\Group\StudyMap', 'm')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('m.group', ':group'),
-                    $query->expr()->eq('m.academicYear', ':academicYear'),
-                    $query->expr()->eq('m.study', ':study')
-                )
-            )
-            ->setParameter('group', $group)
-            ->setParameter('academicYear', $academicYear)
-            ->setParameter('study', $study)
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
-
-        return $resultSet;
-    }
 }

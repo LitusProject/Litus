@@ -18,7 +18,8 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Study
@@ -28,11 +29,45 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Study extends EntityRepository
 {
-    public function findAllQuery()
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Study', 's')
+            ->innerJoin('s.combination', 'c')
+            ->where(
+                $query->expr()->eq('s.academicYear', ':academicYear')
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->orderBy('c.phase', 'ASC')
+            ->addOrderBy('c.title', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByTitleAndAcademicYearQuery($title, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Study', 's')
+            ->innerJoin('s.combination', 'c')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.academicYear', ':academicYear'),
+                    $query->expr()->like($query->expr()->lower('c.title'), ':title')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('title', '%' . strtolower($title) . '%' )
             ->getQuery();
 
         return $resultSet;

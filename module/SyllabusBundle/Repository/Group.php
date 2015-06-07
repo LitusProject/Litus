@@ -18,9 +18,7 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    SyllabusBundle\Entity\Group as GroupEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Group
@@ -30,62 +28,4 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Group extends EntityRepository
 {
-    public function findAllQuery()
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('g')
-            ->from('SyllabusBundle\Entity\Group', 'g')
-            ->where(
-                $query->expr()->eq('g.removed', 'false')
-            )
-            ->getQuery();
-
-        return $resultSet;
-    }
-
-    public function findAllCvBookQuery()
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('g')
-            ->from('SyllabusBundle\Entity\Group', 'g')
-            ->where(
-                $query->expr()->eq('g.cvBook', 'true'),
-                $query->expr()->eq('g.removed', 'false')
-            )
-            ->orderBy('g.name', 'ASC')
-            ->getQuery();
-
-        return $resultSet;
-    }
-
-    public function findNbStudentsByGroupAndAcademicYear(GroupEntity $group, AcademicYear $academicYear)
-    {
-        $studies = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
-            ->findAllByGroupAndAcademicYear($group, $academicYear);
-
-        $ids = array(0);
-        foreach ($studies as $study) {
-            $ids[] = $study->getStudy()->getId();
-        }
-
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select($query->expr()->count('e'))
-            ->from('SecretaryBundle\Entity\Syllabus\StudyEnrollment', 'e')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->in('e.study', $ids),
-                    $query->expr()->eq('e.academicYear', ':academicYear')
-                )
-            )
-            ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        if ($resultSet) {
-            return $resultSet;
-        }
-
-        return 0;
-    }
 }

@@ -48,16 +48,16 @@
                     <th width="70px">Actions</th>
                 </tr>
 
-                {% for mapping in paginator %}
-                    <tr class="item item-{{ mapping.getId() }}">
-                        <td>{{ mapping.getStudy().getFullTitle() }}</td>
-                        <td>{{ mapping.getStudy().getPhase() }}</td>
+                {% for study in paginator %}
+                    <tr class="item item-{{ study.getId() }}">
+                        <td>{{ study.getCombination().getTitle() }}</td>
+                        <td>{{ study.getCombination().getPhase() }}</td>
                         <td class="actions">
                             {% if hasAccess('syllabus_admin_study', 'delete') %}
-                                <a href="#" data-title="{{ mapping.getStudy().getTitle() }}" data-id="{{ mapping.getId() }}" data-url="{{ url('syllabus_admin_study', {'action': 'delete', 'id': mapping.getId()}) }}" class="delete">Delete</a>
+                                <a href="#" data-title="{{ study.getCombination().getTitle() }}" data-id="{{ study.getId() }}" data-url="{{ url('syllabus_admin_study', {'action': 'delete', 'id': study.getId()}) }}" class="delete">Delete</a>
                             {% endif %}
                             {% if hasAccess('syllabus_admin_study', 'edit') %}
-                                <a href="{{ url('syllabus_admin_study', {'action': 'edit', 'id': mapping.getStudy().getId(), 'academicyear': currentAcademicYear.getCode()}) }}" class="view">View</a>
+                                <a href="{{ url('syllabus_admin_study', {'action': 'edit', 'id': study.getId()}) }}" class="view">View</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="removeMapping" tabindex="-1">
+    <div class="modal fade" id="removeStudy" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -109,7 +109,7 @@
                 display: function (data) {
                     $('#study_search table').find('tr.item').remove();
                     $(data).each(function () {
-                        $('#study_search table').append(row = $('<tr>', {class: 'item item-' + this.mappingId}));
+                        $('#study_search table').append(row = $('<tr>', {class: 'item item-' + this.studyId}));
                         row.append('<td>' + this.title + '</td>')
                             .append('<td>' + this.phase + '</td>')
                             .append(
@@ -117,11 +117,11 @@
                             );
 
                             {% if hasAccess('syllabus_admin_study', 'delete') %}
-                                actions.append('<a href="#" data-title="' + this.title + '" data-id="' + this.mappingId + '" data-url="{{ url('syllabus_admin_study', {'action': 'delete'}) }}' + this.mappingId + '" class="delete">Delete</a>');
+                                actions.append('<a href="#" data-title="' + this.title + '" data-id="' + this.studyId + '" data-url="{{ url('syllabus_admin_study', {'action': 'delete'}) }}' + this.studyId + '" class="delete">Delete</a>');
                             {% endif %}
 
                             {% if hasAccess('syllabus_admin_study', 'edit') %}
-                                actions.append('<a href="{{ url('syllabus_admin_study') }}edit/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>');
+                                actions.append('<a href="{{ url('syllabus_admin_study') }}edit/' + this.id + '" class="view">View</a>');
                             {% endif %}
                     });
                     $('.item .delete').unbind('click').click(openRemoveModal);
@@ -138,28 +138,28 @@
             var $this = $(this);
 
             e.preventDefault();
-            var removeMapping = $('#removeMapping');
-            removeMapping.find('.title').html($(this).data('title'));
+            var removeStudy = $('#removeStudy');
+            removeStudy.find('.title').html($(this).data('title'));
             var id = $this.data('id');
-            removeMapping.find('.delete').unbind('click').click(function () {
+            removeStudy.find('.delete').unbind('click').click(function () {
                 $.post($this.data('url'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.study_removed_success').removeClass('hide');
                         $('.item-' + id).remove();
-                        removeMapping.modal('hide');
+                        removeStudy.modal('hide');
                     } else {
                         errorRemove();
                     }
                 }, 'json').error(errorRemove);
             });
-            removeMapping.modal();
+            removeStudy.modal();
         }
 
         function errorRemove() {
             $('.flashmessage').addClass('hide');
             $('.study_removed_error').removeClass('hide');
-            $('#removeMapping').modal('hide');
+            $('#removeStudy').modal('hide');
         }
     </script>
 {% endblock %}

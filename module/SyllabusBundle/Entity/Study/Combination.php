@@ -71,6 +71,7 @@ use Doctrine\Common\Collections\ArrayCollection,
 
      public function __construct()
      {
+         $this->moduleGroups = new ArrayCollection();
      }
 
     /**
@@ -139,7 +140,7 @@ use Doctrine\Common\Collections\ArrayCollection,
     }
 
     /**
-     * @return array
+     * @return ArrayCollection
      */
     public function getModuleGroups()
     {
@@ -177,5 +178,17 @@ use Doctrine\Common\Collections\ArrayCollection,
         $this->moduleGroups->add($moduleGroup);
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLanguage()
+    {
+        foreach ($this->moduleGroups as $group) {
+            return $group->getLanguage();
+        }
+
+        return '';
     }
  }

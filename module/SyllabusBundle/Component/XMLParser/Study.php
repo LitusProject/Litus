@@ -136,11 +136,13 @@ class Study
     {
         $combinations = array();
 
+        $mainTitle = (string) $xml->titel;
+
         foreach ($xml->fases->children() as $phase) {
             $phaseNumber = (int) $phase->attributes()->code;
             if (sizeof($phase->toegestane_combinaties->children()) == 0) {
-                $externalId = (int) $xml->attributes()->id;
-                $combination = $this->createCombination($phaseNumber, $externalId, (string) $xml->titel);
+                $externalId = $phaseNumber . ((int) $xml->attributes()->id);
+                $combination = $this->createCombination($phaseNumber, $externalId, $mainTitle);
 
                 $combinations['_' . $externalId] = array(
                     'entity' => $combination,
@@ -148,8 +150,17 @@ class Study
                 );
             } else {
                 foreach ($phase->toegestane_combinaties->children() as $data) {
-                    $externalId = (int) $data->attributes()->id;
-                    $combination = $this->createCombination($phaseNumber, $externalId, (string) $data->titel);
+                    $externalId = $phaseNumber . ((int) $data->attributes()->id);
+                    $title = (string) $data->titel;
+                    $title = str_replace(array('Hoofdrichting', 'Nevenrichting', 'Minor', 'Major'), '', $title);
+                    $title = preg_replace('/\(\s*Afstudeerrichting[^)]+\)/i', '', $title);
+                    $titleParts = explode('+', $title);
+                    $title = '';
+                    foreach ($titleParts as $part) {
+                        $title .= ucfirst(trim($part)) . ' + ';
+                    }
+                    $title = trim($title, " \t\n\r\0\x0B+");
+                    $combination = $this->createCombination($phaseNumber, $externalId, $mainTitle . ' - ' . $title);
 
                     $combinations['_' . $externalId] = array(
                         'entity' => $combination,
@@ -174,8 +185,6 @@ class Study
      */
     private function createCombination($phase, $id, $title)
     {
-        $id = $phase . $id;
-
         $combination = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study\Combination')
             ->findOneByExternalId($id);
@@ -450,8 +459,17 @@ class Study
         foreach ($combinations as $combination) {
             $groups = array();
 
-            foreach ($combination['groups'] as $id) {
-                $groups[] = $moduleGroups['_' . $combination['entity']->getPhase() . $id];
+            if (sizeof($combination['groups']) == 0) {
+                foreach ($moduleGroups as $group) {
+                    if ($group->getPhase() == $combination['entity']->getPhase() && null === $group->getParent()) {
+                        $groups[] = $group;
+                        break;
+                    }
+                }
+            } else {
+                foreach ($combination['groups'] as $id) {
+                    $groups[] = $moduleGroups['_' . $combination['entity']->getPhase() . $id];
+                }
             }
 
             $combination['entity']->setModuleGroups($groups);

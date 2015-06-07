@@ -10,9 +10,9 @@
     <div id="controller_action">
         <h1>Study</h1>
 
-        <p>Title: <b>{{ study.getFullTitle() }}</b></p>
-        <p>Phase: <b>{{ study.getPhase() }}</b></p>
-        <p>Language: <b>{{ study.getLanguage() }}</b></p>
+        <p>Title: <b>{{ study.getCombination().getTitle() }}</b></p>
+        <p>Phase: <b>{{ study.getCombination().getPhase() }}</b></p>
+        <p>Language: <b>{{ study.getCombination().getLanguage() }}</b></p>
         <br />
 
         {% if hasAccess('syllabus_admin_study', 'edit') %}
