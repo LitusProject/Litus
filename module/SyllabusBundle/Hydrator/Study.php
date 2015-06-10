@@ -18,11 +18,12 @@
 
 namespace SyllabusBundle\Hydrator;
 
-use SyllabusBundle\Entity\Study as StudyEntity;
+use SyllabusBundle\Entity\Study as StudyEntity,
+    SyllabusBundle\Entity\Study\Combination as CombinationEntity;
 
 class Study extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('kul_id', 'title', 'phase', 'language');
+    private static $stdKeys = array();
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -30,11 +31,32 @@ class Study extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new StudyEntity();
         }
 
-        $object->setParent(
-            $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\Study')
-                ->findOneById($data['parent']['id'])
-        );
+        $combination = $object->getCombination();
+        if (null === $combination) {
+            $combination = new CombinationEntity();
+            $object->setCombination($combination);
+        }
+
+        $combination->setTitle($data['title'])
+            ->setExternalId($data['external_id'])
+            ->setPhase($data['phase']);
+
+        $groups = array();
+        foreach ($data['module_groups'] as $groupData) {
+            if ($groupData['module_group']['value'] == '') {
+                continue;
+            }
+
+            $group = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
+                ->findOneById($groupData['module_group']['id']);
+
+            if (null !== $group) {
+                $groups[] = $group;
+            }
+        }
+
+        $combination->setModuleGroups($groups);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -47,8 +69,20 @@ class Study extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        $data['parent']['id'] = $object->getParent() ? $object->getParent()->getId() : '';
-        $data['parent']['value'] = $object->getParent() ? $object->getParent()->getFullTitle() : '';
+        $data['title'] = $object->getCombination()->getTitle();
+        $data['external_id'] = $object->getCombination()->getExternalId();
+        $data['phase'] = $object->getCombination()->getPhase();
+
+        $data['module_groups'] = array();
+
+        foreach ($object->getCombination()->getModuleGroups() as $group) {
+            $data['module_groups'][] = array(
+                'module_group' => array(
+                    'id' => $group->getId(),
+                    'value' => 'Phase ' . $group->getPhase() . ' - ' . $group->getTitle(),
+                ),
+            );
+        }
 
         return $data;
     }

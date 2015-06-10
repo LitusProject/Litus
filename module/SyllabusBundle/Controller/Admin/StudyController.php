@@ -81,8 +81,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->getEntityManager()->persist($study);
 
-                $map = new AcademicYearMap($study, $academicYear);
-                $this->getEntityManager()->persist($map);
+                $study->setAcademicYear($academicYear);
 
                 $this->getEntityManager()->flush();
 
@@ -133,7 +132,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         $form = $this->getForm('syllabus_study_edit', array('study' => $study));
 
-        if ($this->getRequest()->isPost() && $this->hasAccess()->toResourceAction('syllabus_admin_study', 'edit')) {
+        if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
@@ -195,7 +194,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $studies = $this->search($academicYear)->getResult();
+        $studies = $this->search($academicYear)
+            ->getResult();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -227,11 +227,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->getAcademicYearEntity())) {
-            return new ViewModel();
-        }
-
-        $subjects = $this->searchSubject($study, $academicYear);
+        $subjects = $this->searchSubject($study)
+            ->getResult();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -248,7 +245,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             $item->semester = $subject->getSubject()->getSemester();
             $item->credits = $subject->getSubject()->getCredits();
             $item->mandatory = $subject->isMandatory();
-            $item->students = $subject->getSubject()->getNbEnrollment($academicYear);
+            $item->students = $subject->getSubject()->getNbEnrollment($study->getAcademicYear());
             $result[] = $item;
         }
 
@@ -301,21 +298,20 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  Study              $study
-     * @param  AcademicYearEntity $academicYear
-     * @return array|null
+     * @param  Study                    $study
+     * @return \Doctrine\ORM\Query|null
      */
-    private function searchSubject(Study $study, AcademicYearEntity $academicYear)
+    private function searchSubject(Study $study)
     {
         switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
-                    ->findAllByNameAndStudyAndAcademicYear($this->getParam('string'), $study, $academicYear);
+                    ->findAllByNameAndStudyQuery($this->getParam('string'), $study);
             case 'code':
                 return $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
-                    ->findAllByCodeAndStudyAndAcademicYear($this->getParam('string'), $study, $academicYear);
+                    ->findAllByCodeAndStudyQuery($this->getParam('string'), $study);
         }
     }
 

@@ -39,11 +39,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'     => 'text',
-            'name'     => 'kul_id',
-            'label'    => 'KU Leuven Id',
-            'required' => true,
-            'options'  => array(
+            'type'       => 'text',
+            'name'       => 'title',
+            'label'      => 'Title',
+            'required'   => true,
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'external_id',
+            'label'      => 'External Id',
+            'required'   => true,
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -51,9 +65,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         array('name' => 'int'),
                         array(
-                            'name' => 'syllabus_study_kul_id',
+                            'name' => 'syllabus_study_external_id',
                             'options' => array(
-                                'study' => $this->study,
+                                'exclude' => $this->study,
                             ),
                         ),
                     ),
@@ -62,71 +76,32 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'text',
-            'name'     => 'title',
-            'label'    => 'Title',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'phase',
-            'label'    => 'Phase',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'language',
-            'label'    => 'Language',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
-
-        $validators = array(
-            array('name' => 'syllabus_typeahead_study'),
-        );
-
-        if (null !== $this->study) {
-            $validators[] = array(
-                'name' => 'syllabus_study_recursion',
-                'options' => array(
-                    'study' => $this->study,
-                ),
-            );
-        }
-
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'parent',
-            'label'      => 'Parent',
+            'type'       => 'text',
+            'name'       => 'phase',
+            'label'      => 'Phase',
             'required'   => true,
-            'attributes' => array(
-                'style'        => 'width: 400px',
-            ),
             'options'    => array(
                 'input' => array(
-                    'validators' => $validators,
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'int'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'collection',
+            'name'       => 'module_groups',
+            'label'      => 'Module Groups',
+            'options'    => array(
+                'count'                  => 0,
+                'should_create_template' => true,
+                'allow_add'              => true,
+                'target_element'         => array(
+                    'type' => 'syllabus_study_module-group',
                 ),
             ),
         ));

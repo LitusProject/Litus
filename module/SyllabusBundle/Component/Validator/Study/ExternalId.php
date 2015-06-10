@@ -23,7 +23,7 @@ namespace SyllabusBundle\Component\Validator\Study;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class KulId extends \CommonBundle\Component\Validator\AbstractValidator
+class ExternalId extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -37,7 +37,7 @@ class KulId extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The study id already exists',
+        self::NOT_VALID => 'The study already exists',
     );
 
     /**
@@ -68,11 +68,11 @@ class KulId extends \CommonBundle\Component\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $study = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Study')
-            ->findOneByKulId($value);
+        $combination = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study\Combination')
+            ->findOneByExternalId($value);
 
-        if (null === $study || ($this->options['exclude'] !== null && $study->getId() == $this->options['exclude']->getId())) {
+        if (null === $combination || ($this->options['exclude'] !== null && $combination->getId() == $this->options['exclude']->getCombination()->getId())) {
             return true;
         }
 

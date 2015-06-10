@@ -28,4 +28,21 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class ModuleGroup extends EntityRepository
 {
+    /**
+     * @param  string              $title
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByTitleTypeaheadQuery($title)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\Study\ModuleGroup', 'm')
+            ->where(
+                $query->expr()->like($query->expr()->lower('m.title'), ':title')
+            )
+            ->setParameter('title', '%' . strtolower($title) . '%')
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

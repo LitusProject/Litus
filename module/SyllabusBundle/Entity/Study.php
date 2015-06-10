@@ -40,7 +40,7 @@ class Study
     /**
      * @var Combination The combination of module groups
      *
-     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study\Combination")
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study\Combination", cascade={"persist"})
      * @ORM\JoinColumn(name="combination", referencedColumnName="id")
      */
     private $combination;

@@ -36,7 +36,7 @@ class SubjectMap extends EntityRepository
     public function findAllByStudyQuery(StudyEntity $study)
     {
         $moduleGroups = $this->getModuleGroupIds($study->getCombination()->getModuleGroups()->toArray());
-        var_dump($moduleGroups);
+
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
@@ -47,6 +47,62 @@ class SubjectMap extends EntityRepository
                     $query->expr()->eq('m.academicYear', ':academicYear')
                 )
             )
+            ->setParameter('academicYear', $study->getAcademicYear())
+            ->orderBy('s.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  string      $name
+     * @param  StudyEntity $study
+     * @return Query
+     */
+    public function findAllByNameAndStudyQuery($name, StudyEntity $study)
+    {
+        $moduleGroups = $this->getModuleGroupIds($study->getCombination()->getModuleGroups()->toArray());
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
+            ->innerJoin('m.subject', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('s.name'), ':name'),
+                    $query->expr()->in('m.moduleGroup', $moduleGroups),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->setParameter('academicYear', $study->getAcademicYear())
+            ->orderBy('s.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  string      $code
+     * @param  StudyEntity $study
+     * @return Query
+     */
+    public function findAllByCodeAndStudyQuery($code, StudyEntity $study)
+    {
+        $moduleGroups = $this->getModuleGroupIds($study->getCombination()->getModuleGroups()->toArray());
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
+            ->innerJoin('m.subject', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('s.code'), ':code'),
+                    $query->expr()->in('m.moduleGroup', $moduleGroups),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('code', '%' . strtolower($code) . '%')
             ->setParameter('academicYear', $study->getAcademicYear())
             ->orderBy('s.name', 'ASC')
             ->getQuery();

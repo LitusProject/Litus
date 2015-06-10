@@ -79,19 +79,14 @@
 
 {% block content_script %}
     <script type="text/javascript">
+        var currentCount = 0;
         $(document).ready(function () {
-            $('#studySearch').typeaheadRemote(
-                {
-                    source: '{{ url('syllabus_admin_study_typeahead', {'academicyear': currentAcademicYear.getCode()})}}',
-                    items: 30,
-                }
-            ).change(function (e) {
-                if ($(this).data('value')) {
-                    $('#parentId').val($(this).data('value').id);
-                } else {
-                    $('#parentId').val('');
-                }
-            });
+            while ($('input[name="module_groups[' + (currentCount) + '][module_group][value]"]').length) {
+                currentCount++;
+                enableTypeahead(currentCount);
+            }
+
+            addModuleGroup();
 
             {% if hasAccess('syllabus_admin_subject', 'search') %}
             $.searchDatabase({
@@ -99,8 +94,8 @@
                 searchDiv: $('#subject_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('syllabus_admin_study', {'action': 'edit', 'id': study.getId(), 'academicyear': currentAcademicYear.getCode()}) }}',
-                url: '{{ url('syllabus_admin_study', {'action': 'searchSubject', 'id': study.getId(), 'academicyear': currentAcademicYear.getCode()}) }}',
+                searchPage: '{{ url('syllabus_admin_study', {'action': 'edit', 'id': study.getId()}) }}',
+                url: '{{ url('syllabus_admin_study', {'action': 'searchSubject', 'id': study.getId()}) }}',
                 display: function (data) {
                     $('#subject_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -124,5 +119,40 @@
             });
             {% endif %}
         });
+
+        function triggerKeyUp() {
+            if ($(this).val().length > 0) {
+                $(this).unbind('keyup');
+                addModuleGroup();
+            }
+        }
+
+        function addModuleGroup() {
+            var template = $('#data-template-module_groups').data('template');
+            template = template.replace(/__index__/g, currentCount);
+            currentCount++;
+
+            $('form > fieldset#module_groups').append(template);
+            $('input[name="module_groups[' + (currentCount - 1) + '][module_group]"]').keyup(triggerKeyUp);
+
+            enableTypeahead(currentCount);
+        }
+
+        function enableTypeahead(i) {
+            $('#module_groups\\[' + (i - 1) + '\\]\\[module_group\\]').typeaheadRemote(
+                {
+                    source: '{{ url('syllabus_admin_study_module_group_typeahead')}}',
+                    items: 30,
+                }
+            ).change(function (e) {
+                var field = $(this).closest('.row').parent().find('input[type=hidden]');
+                if ($(this).data('value')) {
+                    field.val($(this).data('value').id);
+                    addModuleGroup();
+                } else {
+                    field.val('');
+                }
+            });
+        }
     </script>
 {% endblock %}
