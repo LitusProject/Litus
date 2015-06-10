@@ -98,6 +98,23 @@ return array(
                 ),
             ),
         ),
+        'syllabus_admin_study_module_group' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/syllabus/study/module_group[/:action[/:id][/:field/:string][/page/:page]][/]',
+                'constraints' => array(
+                    'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'           => '[0-9]*',
+                    'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
+                    'page'         => '[0-9]+',
+                ),
+                'defaults' => array(
+                    'controller' => 'syllabus_admin_study_module_group',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'syllabus_admin_study_module_group_typeahead' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(

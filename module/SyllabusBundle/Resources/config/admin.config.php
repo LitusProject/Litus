@@ -33,6 +33,10 @@ return array(
                     'action' => 'manage',
                     'title'  => 'Studies',
                 ),
+                'syllabus_admin_study_module_group' => array(
+                    'action' => 'manage',
+                    'title'  => 'Module Groups',
+                ),
                 'syllabus_admin_subject'  => array(
                     'action' => 'manage',
                     'title'  => 'Subjects',

@@ -47,7 +47,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $paginator = $this->paginator()->createFromQuery(
-        $studies,
+            $studies,
             $this->getParam('page')
         );
 

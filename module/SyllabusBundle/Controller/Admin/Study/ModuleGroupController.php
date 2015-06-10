@@ -30,6 +30,31 @@ use CommonBundle\Component\Util\AcademicYear,
  */
 class ModuleGroupController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
+    public function manageAction()
+    {
+        if (null !== $this->getParam('field')) {
+            $moduleGroups = $this->search();
+        }
+
+        if (!isset($studies)) {
+            $moduleGroups = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
+                ->findAllQuery();
+        }
+
+        $paginator = $this->paginator()->createFromQuery(
+            $moduleGroups,
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
     public function typeaheadAction()
     {
         $moduleGroups = $this->getEntityManager()
@@ -51,5 +76,46 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
                 'result' => $result,
             )
         );
+    }
+
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $moduleGroups = $this->search()
+            ->getResult();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($moduleGroups, $numResults);
+
+        $result = array();
+        foreach ($moduleGroups as $moduleGroup) {
+            $item = (object) array();
+            $item->id = $moduleGroup->getId();
+            $item->title = $moduleGroup->getTitle();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function search()
+    {
+        switch ($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
+                    ->findAllByTitleQuery($this->getParam('string'));
+        }
     }
 }

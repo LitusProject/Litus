@@ -51,6 +51,13 @@ return array(
             '@bootstrap_js_modal',
             '@common_remote_typeahead',
         ),
+        'syllabus_admin_study_module_group' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'syllabus_admin_subject' => array(
             '@common_jquery',
             '@admin_css',
