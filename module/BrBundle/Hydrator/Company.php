@@ -32,7 +32,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website', 'sector');
+    private static $stdKeys = array('name', 'vat_number', 'phone_number', 'website');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -46,6 +46,8 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setAddress(
             $hydrator->hydrate($data['address'], $object->getAddress())
         );
+
+        $object->setSector($data['sector']);
 
         $years = array();
         $archiveYears = array();
@@ -96,7 +98,9 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$stdKeys);
+        $data = $this->stdExtract($object, self::$stdKeys);        
+
+        $data['sector'] = $object->getSectorCode();
 
         $data['cvbook'] = array();
         foreach ($object->getCvBookYears() as $year) {

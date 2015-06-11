@@ -31,13 +31,15 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'description', 'benefits', 'profile', 'contact', 'city', 'sector');
+    private static $stdKeys = array('name', 'description', 'benefits', 'profile', 'contact', 'city');
 
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
             throw new InvalidObjectException('Cannot create a job');
         }
+
+        $object->setSector($data['sector']);
 
         $object->setStartDate(self::loadDateTime($data['start_date']))
             ->setEndDate(self::loadDateTime($data['end_date']));
@@ -53,6 +55,7 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
+        $data['sector'] = $object->getSectorCode();
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
 
