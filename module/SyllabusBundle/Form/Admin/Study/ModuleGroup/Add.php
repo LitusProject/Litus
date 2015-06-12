@@ -16,23 +16,23 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Form\Admin\Study;
+namespace SyllabusBundle\Form\Admin\Study\ModuleGroup;
 
-use SyllabusBundle\Entity\Study;
+use SyllabusBundle\Entity\Study\ModuleGroup;
 
 /**
- * Add Study
+ * Add ModuleGroup
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'SyllabusBundle\Hydrator\Study';
+    protected $hydrator = 'SyllabusBundle\Hydrator\Study\ModuleGroup';
 
     /**
-     * @var Study|null
+     * @var ModuleGroup|null
      */
-    protected $study = null;
+    protected $moduleGroup = null;
 
     public function init()
     {
@@ -68,9 +68,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         array('name' => 'int'),
                         array(
-                            'name' => 'syllabus_study_external_id',
+                            'name' => 'syllabus_study_module-group_external_id',
                             'options' => array(
-                                'exclude' => $this->study,
+                                'exclude' => $this->moduleGroup,
                             ),
                         ),
                     ),
@@ -96,15 +96,44 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'collection',
-            'name'       => 'module_groups',
-            'label'      => 'Module Groups',
+            'type'       => 'text',
+            'name'       => 'language',
+            'label'      => 'Language',
+            'required'   => true,
             'options'    => array(
-                'count'                  => 0,
-                'should_create_template' => true,
-                'allow_add'              => true,
-                'target_element'         => array(
-                    'type' => 'syllabus_study_module-group',
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'checkbox',
+            'name'       => 'mandatory',
+            'label'      => 'Mandatory',
+        ));
+
+        $this->add(array(
+            'type'       => 'typeahead',
+            'name'       => 'parent',
+            'label'      => 'Parent',
+            'required'   => false,
+            'attributes' => array(
+                'id'    => 'parent',
+                'style' => 'width: 400px;',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'syllabus_typeahead_study_module-group',
+                        ),
+                    ),
                 ),
             ),
         ));
@@ -113,12 +142,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param  Study $study
+     * @param  ModuleGroup $moduleGroup
      * @return self
      */
-    public function setStudy(Study $study)
+    public function setModuleGroup(ModuleGroup $moduleGroup)
     {
-        $this->study = $study;
+        $this->moduleGroup = $moduleGroup;
 
         return $this;
     }

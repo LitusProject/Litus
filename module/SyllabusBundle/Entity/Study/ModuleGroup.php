@@ -187,7 +187,7 @@ use Doctrine\Common\Collections\ArrayCollection,
       * @param  boolean $mandatory
       * @return self
       */
-     public function setIsMandatory($mandatory)
+     public function setMandatory($mandatory)
      {
          $this->mandatory = $mandatory;
 
@@ -203,10 +203,10 @@ use Doctrine\Common\Collections\ArrayCollection,
      }
 
      /**
-      * @param  ModuleGroup $parent
+      * @param  ModuleGroup|null $parent
       * @return self
       */
-     public function setParent(ModuleGroup $parent)
+     public function setParent(ModuleGroup $parent = null)
      {
          $this->parent = $parent;
 

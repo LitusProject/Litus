@@ -18,9 +18,7 @@
 
 namespace SyllabusBundle\Controller\Admin\Study;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Entity\Study,
+use SyllabusBundle\Entity\Study\ModuleGroup,
     Zend\View\Model\ViewModel;
 
 /**
@@ -51,6 +49,78 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function addAction()
+    {
+        $form = $this->getForm('syllabus_study_module-group_add');
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $moduleGroup = $form->hydrateObject();
+
+                $this->getEntityManager()->persist($moduleGroup);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The module group was successfully added!'
+                );
+
+                $this->redirect()->toRoute(
+                    'syllabus_admin_study_module_group',
+                    array(
+                        'action' => 'edit',
+                        'id' => $moduleGroup->getId(),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function editAction()
+    {
+        if (!($moduleGroup = $this->getModuleGroupEntity())) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('syllabus_study_module-group_edit', array('moduleGroup' => $moduleGroup));
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The module group was successfully updated!'
+                );
+
+                $this->redirect()->toRoute(
+                    'syllabus_admin_study_module_group',
+                    array(
+                        'action' => 'edit',
+                        'id' => $moduleGroup->getId(),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
             )
         );
     }
@@ -117,5 +187,31 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
                     ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
                     ->findAllByTitleQuery($this->getParam('string'));
         }
+    }
+
+    /**
+     * @return ModuleGroup|null
+     */
+    private function getModuleGroupEntity()
+    {
+        $moduleGroup = $this->getEntityById('SyllabusBundle\Entity\Study\ModuleGroup');
+
+        if (!($moduleGroup instanceof ModuleGroup)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No module group was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'syllabus_admin_study_module_group',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $moduleGroup;
     }
 }

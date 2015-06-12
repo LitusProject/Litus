@@ -65,7 +65,7 @@ class TypeAhead extends Fieldset
 
     public function getValue()
     {
-        //return $this->get('id')->getValue();
+        return $this->get('id')->getValue();
     }
 
     public function setLabel($label)

@@ -34,17 +34,20 @@ class ModuleGroup extends Fieldset
         $this->setLabel('Module Group');
 
         $this->add(array(
-            'type'     => 'typeahead',
-            'name'     => 'module_group',
-            'required' => false,
-            'options'  => array(
+            'type'       => 'typeahead',
+            'name'       => 'module_group',
+            'required'   => false,
+            'attributes' => array(
+                'style' => 'width: 400px;',
+            ),
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'syllabus_typeahead_module_group',
+                            'name' => 'syllabus_typeahead_study_module-group',
                         ),
                     ),
                 ),
