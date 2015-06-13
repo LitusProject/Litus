@@ -56,8 +56,11 @@
                             {% if hasAccess('syllabus_admin_study', 'delete') %}
                                 <a href="#" data-title="{{ study.getCombination().getTitle() }}" data-id="{{ study.getId() }}" data-url="{{ url('syllabus_admin_study', {'action': 'delete', 'id': study.getId()}) }}" class="delete">Delete</a>
                             {% endif %}
+                            {% if hasAccess('syllabus_admin_study', 'view') %}
+                                <a href="{{ url('syllabus_admin_study', {'action': 'view', 'id': study.getId()}) }}" class="view">View</a>
+                            {% endif %}
                             {% if hasAccess('syllabus_admin_study', 'edit') %}
-                                <a href="{{ url('syllabus_admin_study', {'action': 'edit', 'id': study.getId()}) }}" class="view">View</a>
+                                <a href="{{ url('syllabus_admin_study', {'action': 'edit', 'id': study.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -120,8 +123,12 @@
                                 actions.append('<a href="#" data-title="' + this.title + '" data-id="' + this.studyId + '" data-url="{{ url('syllabus_admin_study', {'action': 'delete'}) }}' + this.studyId + '" class="delete">Delete</a>');
                             {% endif %}
 
+                            {% if hasAccess('syllabus_admin_study', 'view') %}
+                                actions.append('<a href="{{ url('syllabus_admin_study') }}view/' + this.id + '" class="view">View</a>');
+                            {% endif %}
+
                             {% if hasAccess('syllabus_admin_study', 'edit') %}
-                                actions.append('<a href="{{ url('syllabus_admin_study') }}edit/' + this.id + '" class="view">View</a>');
+                                actions.append('<a href="{{ url('syllabus_admin_study') }}edit/' + this.id + '" class="edit">Edit</a>');
                             {% endif %}
                     });
                     $('.item .delete').unbind('click').click(openRemoveModal);

@@ -114,6 +114,36 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function viewAction()
+    {
+        if (!($study = $this->getStudyEntity())) {
+            return new ViewModel();
+        }
+
+        if (null !== $this->getParam('field')) {
+            $mappings = $this->searchSubject($study);
+        }
+
+        if (!isset($mappings)) {
+            $mappings = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+                ->findAllByStudy($study);
+        }
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        return new ViewModel(
+            array(
+                'study' => $study,
+                'mappings' => $mappings,
+                'currentAcademicYear' => $study->getAcademicYear(),
+                'academicYears' => $academicYears,
+            )
+        );
+    }
+
     public function editAction()
     {
         if (!($study = $this->getStudyEntity())) {

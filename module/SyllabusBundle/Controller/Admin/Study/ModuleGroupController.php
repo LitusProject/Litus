@@ -18,7 +18,9 @@
 
 namespace SyllabusBundle\Controller\Admin\Study;
 
-use SyllabusBundle\Entity\Study\ModuleGroup,
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    SyllabusBundle\Entity\Study\ModuleGroup,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,6 +32,10 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 {
     public function manageAction()
     {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
+            return new ViewModel();
+        }
+
         if (null !== $this->getParam('field')) {
             $moduleGroups = $this->search();
         }
@@ -45,8 +51,14 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
             $this->getParam('page')
         );
 
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
         return new ViewModel(
             array(
+                'academicYears' => $academicYears,
+                'currentAcademicYear' => $academicYear,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
@@ -55,6 +67,10 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
     public function addAction()
     {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
+            return new ViewModel();
+        }
+
         $form = $this->getForm('syllabus_study_module-group_add');
 
         if ($this->getRequest()->isPost()) {
@@ -82,9 +98,49 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
             }
         }
 
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
         return new ViewModel(
             array(
+                'academicYears' => $academicYears,
+                'currentAcademicYear' => $academicYear,
                 'form' => $form,
+            )
+        );
+    }
+
+    public function viewAction()
+    {
+        if (!($moduleGroup = $this->getModuleGroupEntity())) {
+            return new ViewModel();
+        }
+
+        if (!($academicYear = $this->getAcademicYearEntity())) {
+            return new ViewModel();
+        }
+
+        if (null !== $this->getParam('field')) {
+            $mappings = $this->searchSubject($moduleGroup, $academicYear);
+        }
+
+        if (!isset($mappings)) {
+            $mappings = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+                ->findAllByModuleGroupAndAcademicYear($moduleGroup, $academicYear);
+        }
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        return new ViewModel(
+            array(
+                'academicYears' => $academicYears,
+                'currentAcademicYear' => $academicYear,
+                'moduleGroup' => $moduleGroup,
+                'mappings' => $mappings,
             )
         );
     }
@@ -93,6 +149,20 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
     {
         if (!($moduleGroup = $this->getModuleGroupEntity())) {
             return new ViewModel();
+        }
+
+        if (!($academicYear = $this->getAcademicYearEntity())) {
+            return new ViewModel();
+        }
+
+        if (null !== $this->getParam('field')) {
+            $mappings = $this->searchSubject($moduleGroup, $academicYear);
+        }
+
+        if (!isset($mappings)) {
+            $mappings = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+                ->findAllByModuleGroupAndAcademicYear($moduleGroup, $academicYear);
         }
 
         $form = $this->getForm('syllabus_study_module-group_edit', array('moduleGroup' => $moduleGroup));
@@ -118,8 +188,16 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
             }
         }
 
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
         return new ViewModel(
             array(
+                'academicYears' => $academicYears,
+                'currentAcademicYear' => $academicYear,
+                'moduleGroup' => $moduleGroup,
+                'mappings' => $mappings,
                 'form' => $form,
             )
         );
@@ -166,6 +244,50 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
             $item = (object) array();
             $item->id = $moduleGroup->getId();
             $item->title = $moduleGroup->getTitle();
+            $item->phase = $moduleGroup->getPhase();
+            $item->externalId = $moduleGroup->getExternalId();
+            $item->mandatory = $moduleGroup->isMandatory() ? 'Yes' : 'No';
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    public function searchSubjectAction()
+    {
+        $this->initAjax();
+
+        if (!($moduleGroup = $this->getModuleGroupEntity())) {
+            return new ViewModel();
+        }
+
+        if (!($academicYear = $this->getAcademicYearEntity())) {
+            return new ViewModel();
+        }
+
+        $subjects = $this->searchSubject($moduleGroup, $academicYear)
+            ->getResult();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($subjects, $numResults);
+
+        $result = array();
+        foreach ($subjects as $subject) {
+            $item = (object) array();
+            $item->id = $subject->getSubject()->getId();
+            $item->name = $subject->getSubject()->getName();
+            $item->code = $subject->getSubject()->getCode();
+            $item->semester = $subject->getSubject()->getSemester();
+            $item->credits = $subject->getSubject()->getCredits();
+            $item->mandatory = $subject->isMandatory();
+            $item->students = $subject->getSubject()->getNbEnrollment($academicYear);
             $result[] = $item;
         }
 
@@ -186,6 +308,25 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
                 return $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
                     ->findAllByTitleQuery($this->getParam('string'));
+        }
+    }
+
+    /**
+     * @param  ModuleGroup              $moduleGroup
+     * @param  AcademicYearEntity       $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function searchSubject(ModuleGroup $moduleGroup, AcademicYearEntity $academicYear)
+    {
+        switch ($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+                    ->findAllByNameAndModuleGroupAndAcademicYearQuery($this->getParam('string'), $moduleGroup, $academicYear);
+            case 'code':
+                return $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+                    ->findAllByCodeAndModuleGroupAndAcademicYearQuery($this->getParam('string'), $moduleGroup, $academicYear);
         }
     }
 
@@ -213,5 +354,35 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
         }
 
         return $moduleGroup;
+    }
+
+    /**
+     * @return AcademicYearEntity|null
+     */
+    private function getAcademicYearEntity()
+    {
+        $date = null;
+        if (null !== $this->getParam('academicyear')) {
+            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
+        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
+
+        if (!($academicYear instanceof AcademicYearEntity)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'syllabus_admin_study',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $academicYear;
     }
 }

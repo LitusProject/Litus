@@ -19,7 +19,9 @@
 namespace SyllabusBundle\Repository\Study;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    SyllabusBundle\Entity\Study as StudyEntity;
+    CommonBundle\Entity\General\AcademicYear,
+    SyllabusBundle\Entity\Study as StudyEntity,
+    SyllabusBundle\Entity\Study\ModuleGroup as ModuleGroupEntity;
 
 /**
  * StudySubjectMap
@@ -48,6 +50,32 @@ class SubjectMap extends EntityRepository
                 )
             )
             ->setParameter('academicYear', $study->getAcademicYear())
+            ->orderBy('s.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  ModuleGroupEntity $moduleGroup
+     * @param  AcademicYear      $academicYear
+     * @return Query
+     */
+    public function findAllByModuleGroupAndAcademicYearQuery(ModuleGroupEntity $moduleGroup, AcademicYear $academicYear)
+    {
+        $moduleGroups = $this->getModuleGroupIds(array($moduleGroup));
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
+            ->innerJoin('m.subject', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('m.moduleGroup', $moduleGroups),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
             ->orderBy('s.name', 'ASC')
             ->getQuery();
 
@@ -104,6 +132,64 @@ class SubjectMap extends EntityRepository
             )
             ->setParameter('code', '%' . strtolower($code) . '%')
             ->setParameter('academicYear', $study->getAcademicYear())
+            ->orderBy('s.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  string            $name
+     * @param  ModuleGroupEntity $moduleGroup
+     * @param  AcademicYear      $academicYear
+     * @return Query
+     */
+    public function findAllByNameAndModuleGroupAndAcademicYearQuery($name, ModuleGroupEntity $moduleGroup, AcademicYear $academicYear)
+    {
+        $moduleGroups = $this->getModuleGroupIds(array($moduleGroup));
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
+            ->innerJoin('m.subject', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('s.name'), ':name'),
+                    $query->expr()->in('m.moduleGroup', $moduleGroups),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->setParameter('academicYear', $academicYear)
+            ->orderBy('s.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  string            $code
+     * @param  ModuleGroupEntity $study
+     * @param  AcademicYear      $academicYear
+     * @return Query
+     */
+    public function findAllByCodeAndModuleGroupAndAcademicYearQuery($code, ModuleGroupEntity $study, AcademicYear $academicYear)
+    {
+        $moduleGroups = $this->getModuleGroupIds(array($moduleGroup));
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
+            ->innerJoin('m.subject', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('s.code'), ':code'),
+                    $query->expr()->in('m.moduleGroup', $moduleGroups),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('code', '%' . strtolower($code) . '%')
+            ->setParameter('academicYear', $academicYear)
             ->orderBy('s.name', 'ASC')
             ->getQuery();
 

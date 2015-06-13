@@ -1,1 +1,28 @@
-{% extends 'syllabus/admin/study/module-group/add.twig' %}
+{% extends 'syllabus/admin/study/module-group/view.twig' %}
+
+{% block form %}
+    {% import 'admin/partials/form.twig' as forms %}
+    {{ forms.renderForm(form) }}
+    <br style="clear:both" />
+{% endblock %}
+
+{% block content_script %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#parent').typeaheadRemote(
+                {
+                    source: '{{ url('syllabus_admin_study_module_group_typeahead')}}',
+                    items: 30,
+                }
+            ).change(function (e) {
+                var field = $(this).closest('.row').parent().find('input[type=hidden]');
+                if ($(this).data('value')) {
+                    field.val($(this).data('value').id);
+                } else {
+                    field.val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}

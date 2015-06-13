@@ -5,6 +5,8 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
+    {% include 'syllabus/admin/study/module-group/partials/years.twig' %}
+
     <div id="controller_action">
         <div id="module_group_search" style="display:none;">
             <div style="padding:4px;text-align:right">
@@ -19,6 +21,7 @@
             <table class="full_width manage">
                 <tr>
                     <th>Name</th>
+                    <th width="70px">Phase</th>
                     <th width="70px">Actions</th>
                 </tr>
             </table>
@@ -28,16 +31,21 @@
             <table class="full_width manage">
                 <tr>
                     <th>Name</th>
+                    <th width="70px">Phase</th>
                     <th width="70px">Actions</th>
                 </tr>
 
                 {% for module_group in paginator %}
                     <tr class="item item-{{ module_group.getId() }}">
                         <td>{{ module_group.getTitle() }}</td>
+                        <td>{{ module_group.getPhase() }}</td>
                         <td class="actions">
-                            {% if hasAccess('syllabus_admin_study_module_group', 'edit') %}
-                                <a href="{{ url('syllabus_admin_study_module_group', {'action': 'edit', 'id': module_group.getId()}) }}" class="view">View</a>
+                            {% if hasAccess('syllabus_admin_study_module_group', 'view') %}
+                                <a href="{{ url('syllabus_admin_study_module_group', {'action': 'view', 'id': module_group.getId()}) }}" class="view">View</a>
                             {% endif %}
+                                {% if hasAccess('syllabus_admin_study_module_group', 'edit') %}
+                                    <a href="{{ url('syllabus_admin_study_module_group', {'action': 'edit', 'id': module_group.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
@@ -64,12 +72,17 @@
                     $(data).each(function () {
                         $('#module_group_search table').append(row = $('<tr>', {class: 'item item-' + this.studyId}));
                         row.append('<td>' + this.title + '</td>')
+                            .append('<td>' + this.phase + '</td>')
                             .append(
                                 actions = $('<td>', {'class': 'actions'})
                             );
 
+                            {% if hasAccess('syllabus_admin_study_module_group', 'view') %}
+                                actions.append('<a href="{{ url('syllabus_admin_study_module_group') }}view/' + this.id + '" class="view">View</a>');
+                            {% endif %}
+
                             {% if hasAccess('syllabus_admin_study_module_group', 'edit') %}
-                                actions.append('<a href="{{ url('syllabus_admin_study_module_group') }}edit/' + this.id + '" class="view">View</a>');
+                                actions.append('<a href="{{ url('syllabus_admin_study_module_group') }}edit/' + this.id + '" class="edit">Edit</a>');
                             {% endif %}
                     });
                     $('#module_group_search table').change();
