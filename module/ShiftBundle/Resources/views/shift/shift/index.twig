@@ -78,7 +78,6 @@
 
                 {% do form.prepare() %}
                 {{ form().openTag(eventSearchForm)|raw }}
-                    {{ formElement(eventSearchForm.get('csrf'))|raw }}
                     <div class="form-group">
                         <div class="input-group">
                             {{ formElement(eventSearchForm.get('event'))|raw }}

@@ -98,7 +98,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$stdKeys);        
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['sector'] = $object->getSectorCode();
 
