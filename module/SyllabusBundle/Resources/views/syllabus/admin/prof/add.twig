@@ -19,6 +19,22 @@
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
+
+    <aside>
+        {% if hasAccess('syllabus_admin_subject', 'view') %}
+            <div class="sidebox">
+                <div class="title">View Subject</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view this subject!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url("syllabus_admin_subject", {"action": "view", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; View Subject</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 {% endblock %}
 
 {% block content_script %}

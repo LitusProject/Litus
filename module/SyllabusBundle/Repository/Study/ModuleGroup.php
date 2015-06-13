@@ -46,25 +46,6 @@ class ModuleGroup extends EntityRepository
      * @param  string              $title
      * @return \Doctrine\ORM\Query
      */
-    public function findAllByTitleTypeaheadQuery($title)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('m')
-            ->from('SyllabusBundle\Entity\Study\ModuleGroup', 'm')
-            ->where(
-                $query->expr()->like($query->expr()->lower('m.title'), ':title')
-            )
-            ->setParameter('title', '%' . strtolower($title) . '%')
-            ->orderBy('m.title')
-            ->getQuery();
-
-        return $resultSet;
-    }
-
-    /**
-     * @param  string              $title
-     * @return \Doctrine\ORM\Query
-     */
     public function findAllByTitleQuery($title)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

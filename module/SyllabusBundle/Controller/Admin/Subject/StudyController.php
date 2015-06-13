@@ -29,7 +29,7 @@ use CommonBundle\Component\Util\AcademicYear,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class StudyController extends \CudiBundle\Component\Controller\ActionController
+class StudyController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function addAction()
     {

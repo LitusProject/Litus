@@ -20,8 +20,10 @@ namespace SyllabusBundle\Repository\Study;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\Query,
     SyllabusBundle\Entity\Study as StudyEntity,
-    SyllabusBundle\Entity\Study\ModuleGroup as ModuleGroupEntity;
+    SyllabusBundle\Entity\Study\ModuleGroup as ModuleGroupEntity,
+    SyllabusBundle\Entity\Subject as SubjectEntity;
 
 /**
  * StudySubjectMap
@@ -215,5 +217,28 @@ class SubjectMap extends EntityRepository
         }
 
         return array_unique($ids);
+    }
+
+    /**
+     * @param  SubjectEntity       $subject
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllBySubjectAndAcademicYearQuery(SubjectEntity $subject, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->in('m.subject', ':subject'),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('subject', $subject)
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery();
+
+        return $resultSet;
     }
 }

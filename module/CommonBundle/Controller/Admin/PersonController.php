@@ -34,7 +34,9 @@ class PersonController extends \CommonBundle\Component\Controller\ActionControll
 
         $persons = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
-            ->findAllByNameTypeahead($this->getParam('string'));
+            ->findAllByNameQuery($this->getParam('string'))
+            ->setMaxResults(20)
+            ->getResult();
 
         $result = array();
         foreach ($persons as $person) {

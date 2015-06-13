@@ -224,14 +224,13 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $studies = $this->search($academicYear)
-            ->getResult();
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($studies, $numResults);
+        $studies = $this->search($academicYear)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach ($studies as $study) {
@@ -257,14 +256,13 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $subjects = $this->searchSubject($study)
-            ->getResult();
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($subjects, $numResults);
+        $subjects = $this->searchSubject($study)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach ($subjects as $subject) {
@@ -294,9 +292,9 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findAllByTitleAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
-
-        array_splice($studies, 20);
+            ->findAllByTitleAndAcademicYearQuery($this->getParam('string'), $academicYear)
+            ->setMaxResults(20)
+            ->getResult();
 
         $result = array();
         foreach ($studies as $study) {

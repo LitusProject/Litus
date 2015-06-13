@@ -30,7 +30,7 @@ use CommonBundle\Component\Util\AcademicYear,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class CommentController extends \CudiBundle\Component\Controller\ActionController
+class CommentController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
@@ -90,7 +90,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'syllabus_admin_subject_comment',
                     array(
-                        'action' => 'manage',
+                        'action' => 'subject',
                         'id' => $subject->getId(),
                     )
                 );
@@ -119,10 +119,8 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
             ->findAllByComment($comment);
 
         $form = $this->getForm('syllabus_subject_reply_add');
-        $markAsReadForm = $this->getForm(
-            'syllabus_subject_comment_mark-as-read',
-            array('comment' => $comment)
-        );
+
+        $markAsReadForm = $this->getForm('syllabus_subject_comment_mark-as-read', array('comment' => $comment));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -266,7 +264,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return AcademicYearEntity|null
      */
-    private function getAcademicYearEntity()
+    protected function getAcademicYearEntity()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {

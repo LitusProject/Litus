@@ -75,7 +75,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'syllabus_admin_subject',
                     array(
-                        'action' => 'edit',
+                        'action' => 'view',
                         'id' => $subject->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
@@ -113,14 +113,11 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
     public function typeaheadAction()
     {
-        $docents = array_merge(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findAllByName($this->getParam('string')),
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findAllByUniversityIdentification($this->getParam('string'))
-        );
+        $docents = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findAllByNameQuery($this->getParam('string'))
+            ->setMaxResults(20)
+            ->getResult();
 
         $result = array();
         foreach ($docents as $docent) {

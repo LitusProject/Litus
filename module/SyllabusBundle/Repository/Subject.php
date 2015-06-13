@@ -28,4 +28,55 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Subject extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Subject', 's')
+            ->orderBy('s.name')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  string              $name
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByNameQuery($name)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Subject', 's')
+            ->where(
+                $query->expr()->like($query->expr()->lower('s.name'), ':name')
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->orderBy('s.name')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  string              $code
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByCodeQuery($code)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Subject', 's')
+            ->where(
+                $query->expr()->like($query->expr()->lower('s.code'), ':code')
+            )
+            ->setParameter('code', '%' . strtolower($code) . '%')
+            ->orderBy('s.code')
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

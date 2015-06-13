@@ -207,7 +207,7 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
     {
         $moduleGroups = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
-            ->findAllByTitleTypeaheadQuery($this->getParam('string'))
+            ->findAllByTitleQuery($this->getParam('string'))
             ->setMaxResults(20)
             ->getResult();
 
@@ -230,14 +230,13 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
-        $moduleGroups = $this->search()
-            ->getResult();
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($moduleGroups, $numResults);
+        $moduleGroups = $this->search()
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach ($moduleGroups as $moduleGroup) {
@@ -269,14 +268,13 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
         }
 
-        $subjects = $this->searchSubject($moduleGroup, $academicYear)
-            ->getResult();
-
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        array_splice($subjects, $numResults);
+        $subjects = $this->searchSubject($moduleGroup, $academicYear)
+            ->setMaxResults($numResults)
+            ->getResult();
 
         $result = array();
         foreach ($subjects as $subject) {
