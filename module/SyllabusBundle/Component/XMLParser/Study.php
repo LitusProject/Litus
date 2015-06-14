@@ -280,7 +280,7 @@ class Study
                 ->findOneByCode($code);
 
             if (null === $subject) {
-                if (isset($this->subjects[$code])) {
+                if (isset($this->subjectCache[$code])) {
                     $subject = $this->subjectCache[$code];
                 } else {
                     $subject = new Subject();
@@ -543,7 +543,7 @@ class Study
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('syllabus.department_ids')
-            );
+        );
 
         $this->callback('load_xml', substr($url, strrpos($url, '/') + 1));
 

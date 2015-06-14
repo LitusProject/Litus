@@ -26,7 +26,7 @@ use CommonBundle\Component\Form\Form,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Study extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
+class ModuleGroup extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
 
@@ -87,12 +87,12 @@ class Study extends \CommonBundle\Component\Validator\AbstractValidator implemen
         $this->setValue($value);
 
         $study = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Study')
-            ->findOneById(self::getFormValue($this->form, array('study', 'id')));
+            ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
+            ->findOneById(self::getFormValue($this->form, array('module_group', 'id')));
 
         $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-            ->findOneByStudySubjectAndAcademicYear($study, $this->options['subject'], $this->options['academic_year']);
+            ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+            ->findOneByModuleGroupSubjectAndAcademicYear($study, $this->options['subject'], $this->options['academic_year']);
 
         if (null === $mapping) {
             return true;

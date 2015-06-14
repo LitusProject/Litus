@@ -172,7 +172,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findAllParentsByAcademicYear($academicYear);
+            ->findAllByAcademicYear($academicYear);
 
         $form = $this->getForm('syllabus_group_study_add', array('studies' => $studies));
 
@@ -183,6 +183,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 $formData = $form->getData();
 
                 $studyIds = $formData['studies'];
+
                 if ($studyIds) {
                     foreach ($studyIds as $studyId) {
                         $study = $this->getEntityManager()
@@ -192,6 +193,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                         $map = $this->getEntityManager()
                             ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
                             ->findOneByStudyGroupAndAcademicYear($study, $group, $academicYear);
+
                         if (null === $map) {
                             $this->getEntityManager()->persist(new StudyMap($study, $group, $academicYear));
                         }

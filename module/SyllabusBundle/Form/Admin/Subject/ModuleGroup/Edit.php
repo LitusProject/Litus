@@ -16,7 +16,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Form\Admin\Subject\Study;
+namespace SyllabusBundle\Form\Admin\Subject\ModuleGroup;
 
 use LogicException;
 
@@ -30,12 +30,12 @@ class Edit extends Add
     public function init()
     {
         if (null === $this->mapping) {
-            throw new LogicException('Cannot edit null subject-study map');
+            throw new LogicException('Cannot edit null subject - module group map');
         }
 
         parent::init();
 
-        $this->remove('study')
+        $this->remove('module_group')
             ->remove('submit');
 
         $this->addSubmit('Save', 'edit');

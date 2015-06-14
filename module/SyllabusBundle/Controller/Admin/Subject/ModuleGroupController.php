@@ -25,11 +25,11 @@ use CommonBundle\Component\Util\AcademicYear,
     Zend\View\Model\ViewModel;
 
 /**
- * StudyController
+ * ModuleGroupController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class StudyController extends \CommonBundle\Component\Controller\ActionController\AdminController
+class ModuleGroupController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function addAction()
     {
@@ -42,7 +42,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $form = $this->getForm(
-            'syllabus_subject_study_add',
+            'syllabus_subject_module-group_add',
             array(
                 'subject'       => $subject,
                 'academic_year' => $academicYear,
@@ -55,12 +55,12 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                $study = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\Study')
-                    ->findOneById($formData['study']['id']);
+                $moduleGroup = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
+                    ->findOneById($formData['module_group']['id']);
 
                 $mapping = $form->hydrateObject(
-                    new SubjectMap($study, $subject, false, $academicYear)
+                    new SubjectMap($moduleGroup, $subject, false, $academicYear)
                 );
                 $this->getEntityManager()->persist($mapping);
 
@@ -68,13 +68,13 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
                 $this->flashMessenger()->success(
                     'SUCCESS',
-                    'The study mapping was successfully added!'
+                    'The module group mapping was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
                     'syllabus_admin_subject',
                     array(
-                        'action' => 'edit',
+                        'action' => 'view',
                         'id' => $subject->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
@@ -102,7 +102,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = $this->getForm('syllabus_subject_study_edit', array('mapping' => $mapping));
+        $form = $this->getForm('syllabus_subject_module-group_edit', array('mapping' => $mapping));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -118,7 +118,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'syllabus_admin_subject',
                     array(
-                        'action' => 'edit',
+                        'action' => 'view',
                         'id' => $mapping->getSubject()->getId(),
                         'academicyear' => $mapping->getAcademicYear()->getCode(),
                     )

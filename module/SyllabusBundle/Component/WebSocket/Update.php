@@ -67,8 +67,6 @@ class Update extends \CommonBundle\Component\WebSocket\Server
         $this->entityManager = $entityManager;
         $this->mailTransport = $mailTransport;
         $this->parser = new StudyParser($this->entityManager, $this->mailTransport, array($this, 'callback'));
-        $this->parser->update();
-        exit;
     }
 
     /**

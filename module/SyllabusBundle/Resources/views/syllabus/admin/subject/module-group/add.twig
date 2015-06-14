@@ -41,16 +41,16 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#study').typeaheadRemote(
+            $('#module_group').typeaheadRemote(
                 {
-                    source: '{{ url('syllabus_admin_study_typeahead', {'academicyear': currentAcademicYear.getCode()})}}',
+                    source: '{{ url('syllabus_admin_study_module_group_typeahead')}}',
                     items: 30,
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('[name="study[id]"]').val($(this).data('value').id);
+                    $('[name="module_group[id]"]').val($(this).data('value').id);
                 } else {
-                    $('[name="study[id]"]').val('');
+                    $('[name="module_group[id]"]').val('');
                 }
             });
         });

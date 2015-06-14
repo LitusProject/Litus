@@ -42,7 +42,7 @@
         $(document).ready(function () {
             $('#prof').typeaheadRemote(
                 {
-                    source: '{{ url("syllabus_admin_prof_typeahead")}}',
+                    source: '{{ url("syllabus_admin_subject_prof_typeahead")}}',
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {

@@ -40,7 +40,7 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
             $moduleGroups = $this->search();
         }
 
-        if (!isset($studies)) {
+        if (!isset($moduleGroups)) {
             $moduleGroups = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
                 ->findAllQuery();

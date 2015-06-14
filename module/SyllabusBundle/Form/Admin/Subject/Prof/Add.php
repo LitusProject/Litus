@@ -16,7 +16,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Form\Admin\Prof;
+namespace SyllabusBundle\Form\Admin\Subject\Prof;
 
 /**
  * Add Prof

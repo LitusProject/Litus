@@ -35,9 +35,9 @@
             </tr>
             {% for mapping in studies %}
                 <tr class="item item-{{ mapping.getId() }}">
-                    <td>{{ mapping.getStudy().getFullTitle() }}&mdash;Phase {{ mapping.getStudy().getPhase() }}</td>
+                    <td>{{ mapping.getStudy().getCombination().getTitle() }}&mdash;Phase {{ mapping.getStudy().getCombination().getPhase() }}</td>
                     <td>
-                        <a href="#" data-id="{{ mapping.getId() }}" data-study="{{ mapping.getStudy().getFullTitle() }}" class="delete">Delete</a>
+                        <a href="#" data-id="{{ mapping.getId() }}" data-study="{{ mapping.getStudy().getCombination().getTitle() }}" class="delete">Delete</a>
                     </td>
                 </tr>
             {% endfor %}

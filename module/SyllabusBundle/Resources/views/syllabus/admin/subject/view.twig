@@ -55,7 +55,7 @@
                         <td>{{ mapping.getProf().getUniversityIdentification() }}</td>
                         <td>{{ mapping.getProf().getFullName() }}</td>
                         <td class="actions">
-                            {% if hasAccess('syllabus_admin_prof', 'delete') %}
+                            {% if hasAccess('syllabus_admin_subject_prof', 'delete') %}
                                 <a href="#" data-id="{{ mapping.getId() }}" data-docent="{{ mapping.getProf().getFullName() }}" data-subject="{{ subject.getName() }}" class="deleteProf delete">Delete</a>
                             {% endif %}
                         </td>
@@ -103,14 +103,14 @@
                         <td>{{ mapping.getModuleGroup().getTitle() }}</td>
                         <td>{% if mapping.isMandatory() %}yes{% else %}no{% endif %}</td>
                         <td class="actions">
-                            {% if hasAccess('syllabus_admin_subject_study', 'edit') %}
-                                <a href="{{ url('syllabus_admin_subject_study', {"action": "edit", "id": mapping.getId()}) }}" class="edit">Edit</a>
+                            {% if hasAccess('syllabus_admin_subject_module_group', 'edit') %}
+                                <a href="{{ url('syllabus_admin_subject_module_group', {"action": "edit", "id": mapping.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
-                            {% if hasAccess('syllabus_admin_subject_study', 'view') %}
-                                <a href="{{ url('syllabus_admin_subject_study', {"action": "view", "id": mapping.getId()}) }}" class="view">View</a>
+                            {% if hasAccess('syllabus_admin_study_module_group', 'view') %}
+                                <a href="{{ url('syllabus_admin_study_module_group', {"action": "view", "id": mapping.getModuleGroup().getId()}) }}" class="view">View</a>
                             {% endif %}
-                            {% if hasAccess('syllabus_admin_subject_study', 'delete') %}
-                                <a href="#" data-title="{{ mapping.getModuleGroup().getTitle() }}" data-id="{{ mapping.getId() }}" data-url="{{ url('syllabus_admin_subject_study', {'action': 'delete', 'id': mapping.getId()}) }}" class="deleteStudy delete">Delete</a>
+                            {% if hasAccess('syllabus_admin_subject_module_group', 'delete') %}
+                                <a href="#" data-title="{{ mapping.getModuleGroup().getTitle() }}" data-id="{{ mapping.getId() }}" data-url="{{ url('syllabus_admin_subject_module_group', {'action': 'delete', 'id': mapping.getId()}) }}" class="deleteStudy delete">Delete</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -133,7 +133,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('syllabus_admin_prof', 'add') %}
+        {% if hasAccess('syllabus_admin_subject_prof', 'add') %}
             <div class="sidebox">
                 <div class="title">Add Docent</div>
                 <div class="content">
@@ -141,7 +141,7 @@
                         <i>Please hit the link below to add a docent to this subject!</i>
                     </p>
                     <p>
-                        <a href="{{ url("syllabus_admin_prof", {"action": "add", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Docent</a>
+                        <a href="{{ url("syllabus_admin_subject_prof", {"action": "add", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Docent</a>
                     </p>
                 </div>
             </div>
@@ -159,7 +159,7 @@
                 </div>
             </div>
         {% endif %}
-        {% if hasAccess('syllabus_admin_subject_study', 'add') %}
+        {% if hasAccess('syllabus_admin_subject_module_group', 'add') %}
             <div class="sidebox">
                 <div class="title">Add Module Group</div>
                 <div class="content">
@@ -167,7 +167,7 @@
                         <i>Please hit the link below to add a module group to this subject!</i>
                     </p>
                     <p>
-                        <a href="{{ url("syllabus_admin_subject_study", {"action": "add", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Module Group</a>
+                        <a href="{{ url("syllabus_admin_subject_module_group", {"action": "add", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; Add Module Group</a>
                     </p>
                 </div>
             </div>
@@ -238,7 +238,7 @@
             removeProf.find('.docentName').html($(this).data('docent'));
             var id = $this.data('id');
             removeProf.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('syllabus_admin_prof', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('syllabus_admin_subject_prof', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.prof_removed_success').removeClass('hide');
@@ -266,7 +266,7 @@
             removeStudy.find('.studyName').html($(this).data('title'));
             var id = $this.data('id');
             removeStudy.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('syllabus_admin_subject_study', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('syllabus_admin_subject_module_group', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.study_removed_success').removeClass('hide');

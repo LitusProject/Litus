@@ -56,7 +56,7 @@ class Group extends \CommonBundle\Component\Document\Generator\Csv
         );
 
         $mappings = $entityManager
-            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+            ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
             ->findAllByGroupAndAcademicYear($group, $academicYear);
 
         $result = array();

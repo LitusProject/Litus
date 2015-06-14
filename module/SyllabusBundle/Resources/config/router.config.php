@@ -147,17 +147,17 @@ return array(
                 ),
             ),
         ),
-        'syllabus_admin_subject_study' => array(
+        'syllabus_admin_subject_module_group' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/syllabus/subject/study[/:action[/:id][/:academicyear]][/]',
+                'route' => '/admin/syllabus/subject/module_group[/:action[/:id][/:academicyear]][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'           => '[0-9]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
                 'defaults' => array(
-                    'controller' => 'syllabus_admin_subject_study',
+                    'controller' => 'syllabus_admin_subject_module_group',
                 ),
             ),
         ),
@@ -191,22 +191,22 @@ return array(
                 ),
             ),
         ),
-        'syllabus_admin_prof' => array(
+        'syllabus_admin_subject_prof' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/syllabus/prof[/:action[/:id]][/:academicyear][/]',
+                'route' => '/admin/syllabus/subject/prof[/:action[/:id]][/:academicyear][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'           => '[0-9]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
                 'defaults' => array(
-                    'controller' => 'syllabus_admin_prof',
+                    'controller' => 'syllabus_admin_subject_prof',
                     'action'     => 'manage',
                 ),
             ),
         ),
-        'syllabus_admin_prof_typeahead' => array(
+        'syllabus_admin_subject_prof_typeahead' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
                 'route' => '/admin/syllabus/prof/typeahead[/:string][/]',
@@ -214,7 +214,7 @@ return array(
                     'string'  => '[%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults' => array(
-                    'controller' => 'syllabus_admin_prof',
+                    'controller' => 'syllabus_admin_subject_prof',
                     'action'     => 'typeahead',
                 ),
             ),
@@ -236,15 +236,15 @@ return array(
     ),
 
     'controllers' => array(
-        'syllabus_admin_update'             => 'SyllabusBundle\Controller\Admin\UpdateController',
-        'syllabus_admin_academic'           => 'SyllabusBundle\Controller\Admin\AcademicController',
-        'syllabus_admin_group'              => 'SyllabusBundle\Controller\Admin\GroupController',
-        'syllabus_admin_study'              => 'SyllabusBundle\Controller\Admin\StudyController',
-        'syllabus_admin_study_module_group' => 'SyllabusBundle\Controller\Admin\Study\ModuleGroupController',
-        'syllabus_admin_subject'            => 'SyllabusBundle\Controller\Admin\SubjectController',
-        'syllabus_admin_subject_comment'    => 'SyllabusBundle\Controller\Admin\Subject\CommentController',
-        'syllabus_admin_subject_study'      => 'SyllabusBundle\Controller\Admin\Subject\StudyController',
-        'syllabus_admin_prof'               => 'SyllabusBundle\Controller\Admin\ProfController',
-        'syllabus_subject'                  => 'SyllabusBundle\Controller\SubjectController',
+        'syllabus_admin_update'               => 'SyllabusBundle\Controller\Admin\UpdateController',
+        'syllabus_admin_academic'             => 'SyllabusBundle\Controller\Admin\AcademicController',
+        'syllabus_admin_group'                => 'SyllabusBundle\Controller\Admin\GroupController',
+        'syllabus_admin_study'                => 'SyllabusBundle\Controller\Admin\StudyController',
+        'syllabus_admin_study_module_group'   => 'SyllabusBundle\Controller\Admin\Study\ModuleGroupController',
+        'syllabus_admin_subject'              => 'SyllabusBundle\Controller\Admin\SubjectController',
+        'syllabus_admin_subject_comment'      => 'SyllabusBundle\Controller\Admin\Subject\CommentController',
+        'syllabus_admin_subject_module_group' => 'SyllabusBundle\Controller\Admin\Subject\ModuleGroupController',
+        'syllabus_admin_subject_prof'         => 'SyllabusBundle\Controller\Admin\Subject\ProfController',
+        'syllabus_subject'                    => 'SyllabusBundle\Controller\SubjectController',
     ),
 );

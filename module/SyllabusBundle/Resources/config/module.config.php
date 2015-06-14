@@ -34,7 +34,7 @@ return Config::create(
                 'syllabus_study_recursion'                => 'SyllabusBundle\Component\Validator\Study\Recursion',
                 'syllabus_study_module-group_external_id' => 'SyllabusBundle\Component\Validator\Study\ModuleGroup\ExternalId',
                 'syllabus_subject_code'                   => 'SyllabusBundle\Component\Validator\Subject\Code',
-                'syllabus_subject_study'                  => 'SyllabusBundle\Component\Validator\Subject\Study',
+                'syllabus_subject_module-group'           => 'SyllabusBundle\Component\Validator\Subject\ModuleGroup',
                 'syllabus_typeahead_study'                => 'SyllabusBundle\Component\Validator\Typeahead\Study',
                 'syllabus_typeahead_subject'              => 'SyllabusBundle\Component\Validator\Typeahead\Subject',
                 'syllabus_typeahead_study_module-group'   => 'SyllabusBundle\Component\Validator\Typeahead\ModuleGroup',

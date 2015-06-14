@@ -16,14 +16,14 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Form\Admin\Subject\Study;
+namespace SyllabusBundle\Form\Admin\Subject\ModuleGroup;
 
 use CommonBundle\Entity\General\AcademicYear,
     SyllabusBundle\Entity\Study\SubjectMap,
     SyllabusBundle\Entity\Subject;
 
 /**
- * Add Study to Subject
+ * Add ModuleGroup to Subject
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
@@ -49,7 +49,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function init()
     {
         if (null === $this->subject) {
-            throw new LogicException('No subject was given to add a study to');
+            throw new LogicException('No subject was given to add a module group to');
         }
         if (null === $this->academicYear) {
             throw new LogicException('No academic year was given');
@@ -59,23 +59,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(array(
             'type'       => 'typeahead',
-            'name'       => 'study',
-            'label'      => 'Study',
+            'name'       => 'module_group',
+            'label'      => 'Module Group',
             'required'   => true,
             'attributes' => array(
-                'style'        => 'width: 400px;',
+                'id'    => 'module_group',
+                'style' => 'width: 400px;',
             ),
             'options'    => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'syllabus_subject_study',
+                            'name' => 'syllabus_subject_module-group',
                             'options' => array(
                                 'subject' => $this->subject,
                                 'academic_year' => $this->academicYear,
                             ),
                         ),
-                        array('name' => 'syllabus_typeahead_study'),
+                        array(
+                            'name' => 'syllabus_typeahead_study_module-group',
+                        ),
                     ),
                 ),
             ),

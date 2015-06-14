@@ -16,7 +16,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Controller\Admin;
+namespace SyllabusBundle\Controller\Admin\Subject;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
@@ -45,7 +45,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $form = $this->getForm('syllabus_prof_add');
+        $form = $this->getForm('syllabus_subject_prof_add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
