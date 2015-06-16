@@ -46,12 +46,12 @@
                 <th width="70px">Action</th>
             </tr>
             {% for study in studies %}
-                <tr class="studyItem studyItem-{{ study.getId() }}" title="{{ study.getStudy().getCombination().getTitle() }}">
-                    <td>{{ study.getStudy().getCombination().getTitle() }}</td>
-                    <td>{{ study.getStudy().getCombination().getPhase() }}</td>
+                <tr class="studyItem studyItem-{{ study.getId() }}" title="{{ study.getStudy().getTitle() }}">
+                    <td>{{ study.getStudy().getTitle() }}</td>
+                    <td>{{ study.getStudy().getPhase() }}</td>
                     <td>
                         {% if hasAccess('syllabus_admin_academic', 'deleteStudy') %}
-                            <a href="#" data-id="{{ study.getId() }}" data-study="{{ study.getStudy().getCombination().getTitle() }}" class="delete">Delete</a></li>
+                            <a href="#" data-id="{{ study.getId() }}" data-study="{{ study.getStudy().getTitle() }}" class="delete">Delete</a></li>
                         {% endif %}
                     </td>
                 </tr>

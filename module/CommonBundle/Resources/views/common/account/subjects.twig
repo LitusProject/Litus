@@ -26,7 +26,7 @@
         {{ translate('Choose Your Subjects') }}
     </h2>
     {% for mapping in mappings %}
-        <h3>{{ mapping.enrollment.getStudy().getFullTitle() }}<small>&mdash;{{ translate('Phase') }} {{ mapping.enrollment.getStudy().getPhase() }}</small></h3>
+        <h3>{{ mapping.enrollment.getStudy().getTitle() }}<small>&mdash;{{ translate('Phase') }} {{ mapping.enrollment.getStudy().getPhase() }}</small></h3>
         {% for subject in mapping.subjects %}
             <div class="checkbox">
                 <label>

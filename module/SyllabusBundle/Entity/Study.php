@@ -102,4 +102,40 @@ class Study
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        if (null !== $this->combination) {
+            return $this->combination->getTitle();
+        }
+
+        return '';
+    }
+
+    /**
+     * @return int
+     */
+    public function getPhase()
+    {
+        if (null !== $this->combination) {
+            return $this->combination->getPhase();
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLanguage()
+    {
+        if (null !== $this->combination) {
+            return $this->combination->getLanguage();
+        }
+
+        return '';
+    }
 }

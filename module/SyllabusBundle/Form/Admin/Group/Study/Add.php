@@ -63,7 +63,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $studyNames = array();
         foreach ($this->studies as $study) {
-            $studyNames[$study->getId()] = 'Phase ' . $study->getCombination()->getPhase() . ' - ' . $study->getCombination()->getTitle();
+            $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getTitle();
         }
 
         return $studyNames;

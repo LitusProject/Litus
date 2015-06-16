@@ -50,11 +50,11 @@
 
                 {% for study in paginator %}
                     <tr class="item item-{{ study.getId() }}">
-                        <td>{{ study.getCombination().getTitle() }}</td>
-                        <td>{{ study.getCombination().getPhase() }}</td>
+                        <td>{{ study.getTitle() }}</td>
+                        <td>{{ study.getPhase() }}</td>
                         <td class="actions">
                             {% if hasAccess('syllabus_admin_study', 'delete') %}
-                                <a href="#" data-title="{{ study.getCombination().getTitle() }}" data-id="{{ study.getId() }}" data-url="{{ url('syllabus_admin_study', {'action': 'delete', 'id': study.getId()}) }}" class="delete">Delete</a>
+                                <a href="#" data-title="{{ study.getTitle() }}" data-id="{{ study.getId() }}" data-url="{{ url('syllabus_admin_study', {'action': 'delete', 'id': study.getId()}) }}" class="delete">Delete</a>
                             {% endif %}
                             {% if hasAccess('syllabus_admin_study', 'view') %}
                                 <a href="{{ url('syllabus_admin_study', {'action': 'view', 'id': study.getId()}) }}" class="view">View</a>

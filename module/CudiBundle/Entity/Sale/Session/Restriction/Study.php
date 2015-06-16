@@ -88,7 +88,7 @@ class Study extends Restriction
     {
         $value = '';
         foreach ($this->studies as $study) {
-            $value .= 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle() . ' ; ';
+            $value .= 'Phase ' . $study->getPhase() . ' - ' . $study->getTitle() . ' ; ';
         }
 
         return $value;
@@ -109,9 +109,6 @@ class Study extends Restriction
             ->findAllByAcademicAndAcademicYear($person, $academicYear);
 
         $allowedStudies = $this->studies->toArray();
-        foreach ($this->studies as $study) {
-            $allowedStudies = array_merge($allowedStudies, $study->getAllChildren());
-        }
 
         foreach ($studies as $study) {
             foreach ($allowedStudies as $allowedStudy) {

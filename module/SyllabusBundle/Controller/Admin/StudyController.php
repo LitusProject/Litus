@@ -236,8 +236,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         foreach ($studies as $study) {
             $item = (object) array();
             $item->id = $study->getId();
-            $item->title = $study->getCombination()->getTitle();
-            $item->phase = $study->getCombination()->getPhase();
+            $item->title = $study->getTitle();
+            $item->phase = $study->getPhase();
             $result[] = $item;
         }
 
@@ -300,7 +300,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
         foreach ($studies as $study) {
             $item = (object) array();
             $item->id = $study->getId();
-            $item->value = 'Phase ' . $study->getCombination()->getPhase() . '&mdash;' . $study->getCombination()->getTitle();
+            $item->value = 'Phase ' . $study->getPhase() . '&mdash;' . $study->getTitle();
             $result[] = $item;
         }
 

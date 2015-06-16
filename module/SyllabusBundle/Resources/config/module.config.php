@@ -31,7 +31,6 @@ return Config::create(
             'invokables' => array(
                 'syllabus_group_name'                     => 'SyllabusBundle\Component\Validator\Group\Name',
                 'syllabus_study_external_id'              => 'SyllabusBundle\Component\Validator\Study\ExternalId',
-                'syllabus_study_recursion'                => 'SyllabusBundle\Component\Validator\Study\Recursion',
                 'syllabus_study_module-group_external_id' => 'SyllabusBundle\Component\Validator\Study\ModuleGroup\ExternalId',
                 'syllabus_subject_code'                   => 'SyllabusBundle\Component\Validator\Subject\Code',
                 'syllabus_subject_module-group'           => 'SyllabusBundle\Component\Validator\Subject\ModuleGroup',

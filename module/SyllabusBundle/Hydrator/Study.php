@@ -69,9 +69,9 @@ class Study extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        $data['title'] = $object->getCombination()->getTitle();
+        $data['title'] = $object->getTitle();
         $data['external_id'] = $object->getCombination()->getExternalId();
-        $data['phase'] = $object->getCombination()->getPhase();
+        $data['phase'] = $object->getPhase();
 
         $data['module_groups'] = array();
 

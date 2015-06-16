@@ -65,14 +65,13 @@ class StudyEnrollment
     private $study;
 
     /**
-     * @param Academic     $academic
-     * @param AcademicYear $academicYear
-     * @param Study        $study
+     * @param Academic $academic
+     * @param Study    $study
      */
-    public function __construct(Academic $academic, AcademicYear $academicYear, Study $study)
+    public function __construct(Academic $academic, Study $study)
     {
         $this->academic = $academic;
-        $this->academicYear = $academicYear;
+        $this->academicYear = $study->getAcademicYear();
         $this->study = $study;
     }
 

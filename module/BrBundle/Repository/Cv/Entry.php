@@ -133,10 +133,9 @@ class Entry extends EntityRepository
 
     /**
      * @param  Study               $study
-     * @param  AcademicYear        $year
      * @return \Doctrine\ORM\Query
      */
-    public function findAllByStudyAndAcademicYearQuery(Study $study, AcademicYear $year)
+    public function findAllByStudyQuery(Study $study)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e')
@@ -148,7 +147,7 @@ class Entry extends EntityRepository
                 )
             )
             ->setParameter('study', $study)
-            ->setParameter('year', $year)
+            ->setParameter('year', $study->getAcademicYear())
             ->orderBy('e.lastName', 'ASC')
             ->addOrderBy('e.firstName', 'ASC')
             ->getQuery();

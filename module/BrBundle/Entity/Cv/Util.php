@@ -56,7 +56,7 @@ class Util
         foreach ($cvStudies as $study) {
             $entries = $entityManager
                 ->getRepository('BrBundle\Entity\Cv\Entry')
-                ->findAllByStudyAndAcademicYear($study, $academicYear);
+                ->findAllByStudy($study);
 
             if (count($entries) > 0) {
                 $result[] = array(

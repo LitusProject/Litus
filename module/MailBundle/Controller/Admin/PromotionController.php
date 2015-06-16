@@ -67,18 +67,9 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
 
                             foreach ($studies as $study) {
                                 if ($study->getStudy()->getPhase() == 2) {
-                                    $children = $study->getStudy()->getAllChildren();
-
-                                    foreach ($children as $child) {
-                                        $enrollments = array_merge($enrollments, $this->getEntityManager()
-                                            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                                            ->findAllByStudyAndAcademicYear($child, $academicYear)
-                                        );
-                                    }
-
                                     $enrollments = array_merge($enrollments, $this->getEntityManager()
                                         ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                                        ->findAllByStudyAndAcademicYear($study->getStudy(), $academicYear)
+                                        ->findAllByStudy($study->getStudy())
                                     );
                                 }
                             }

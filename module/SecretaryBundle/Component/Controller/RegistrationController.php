@@ -41,7 +41,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     {
         $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findAllParentsByAcademicYear($academicYear);
+            ->findAllByAcademicYear($academicYear);
 
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
@@ -96,11 +96,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
                     ->findOneById($id);
-                $this->getEntityManager()->persist(new StudyEnrollment($academic, $academicYear, $study));
+                $this->getEntityManager()->persist(new StudyEnrollment($academic, $study));
 
                 $subjects = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
-                    ->findAllByStudyAndAcademicYear($study, $academicYear);
+                    ->findAllByStudy($study);
 
                 foreach ($subjects as $subject) {
                     if ($subject->isMandatory()) {
@@ -173,7 +173,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         foreach ($enrollments as $enrollment) {
             $subjects = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
-                ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $academicYear);
+                ->findAllByStudy($enrollment->getStudy());
             $mappings[] = array(
                 'enrollment' => $enrollment,
                 'subjects' => $subjects,

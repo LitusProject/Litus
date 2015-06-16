@@ -161,10 +161,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 $enrollment = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                    ->findOneByAcademicAndAcademicYearAndStudy($academic, $academicYear, $study);
+                    ->findOneByAcademicAndStudy($academic, $study);
 
                 if (null === $enrollment) {
-                    $this->getEntityManager()->persist(new StudyEnrollment($academic, $academicYear, $study));
+                    $this->getEntityManager()->persist(new StudyEnrollment($academic, $study));
                 }
 
                 $mappings = $this->getEntityManager()
