@@ -159,6 +159,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                     array(
                         'action' => 'members',
                         'id' => $unit->getId(),
+                        'academicyear' => $academicYear,
                     )
                 );
 
