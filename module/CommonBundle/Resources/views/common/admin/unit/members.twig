@@ -3,6 +3,8 @@
 {% block content %}
     {% include 'common/admin/unit/partials/navigation.twig' %}
 
+    {% include 'common/admin/unit/partials/member-years.twig' %}
+
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div class="flashmessage success_message full_width member_removed_success hide">
@@ -21,7 +23,7 @@
     <div id="controller_action">
         <h1>Unit</h1>
         <p>Name: <b>{{ unit.getName() }}</b></p>
-
+        <p>Year: <b>{{ activeAcademicYear.getCode() }}</b></p>
         <h1>Members</h1>
 
         {% import 'admin/partials/form.twig' as forms %}

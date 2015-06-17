@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Entity\Acl\Role,
+use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Organization\Unit,
     CommonBundle\Entity\User\Person\Organization\UnitMap,
     Zend\View\Model\ViewModel;
@@ -32,21 +33,33 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CommonBundle\Entity\General\Organization\Unit',
-            $this->getParam('page'),
-            array(
-                'active' => true,
-            ),
-            array(
-                'name' => 'ASC',
-            )
-        );
+        if (!($academicYear = $this->getAcademicYearEntity())) {
+            return new ViewModel();
+        }
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $units = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Organization\Unit')->findAll();
+
+        $unitsWithMembers = array();
+        foreach ($units as $key => $unit) {
+            $members = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+            ->findBy(array('unit' => $unit, 'academicYear' => $academicYear));
+            if (isset($members[0])) {
+                array_push($unitsWithMembers, $unit);
+                unset($units[$key]);
+            }
+        }
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(false),
+                'unitsWithMembers' => $unitsWithMembers,
+                'emptyUnits' => $units,
+                'activeAcademicYear' => $academicYear,
+                'academicYears' => $academicYears,
             )
         );
     }
@@ -94,6 +107,14 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
+        if (!($academicYear = $this->getAcademicYearEntity())) {
+            return new ViewModel();
+        }
+
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
         $form = $this->getForm('common_unit_member');
 
         if ($this->getRequest()->isPost()) {
@@ -112,7 +133,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                         array(
                             'unit' => $unit,
                             'academic' => $academic,
-                            'academicYear' => $this->getCurrentAcademicYear(),
+                            'academicYear' => $academicYear,
                         )
                     );
 
@@ -122,7 +143,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                         'This academic already is a member of this unit!'
                     );
                 } else {
-                    $member = new UnitMap($academic, $this->getCurrentAcademicYear(), $unit, $formData['coordinator']);
+                    $member = new UnitMap($academic, $academicYear, $unit, $formData['coordinator']);
 
                     $this->getEntityManager()->persist($member);
                     $this->getEntityManager()->flush();
@@ -147,13 +168,15 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
         $members = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-            ->findBy(array('unit' => $unit, 'academicYear' => $this->getCurrentAcademicYear()));
+            ->findBy(array('unit' => $unit, 'academicYear' => $academicYear));
 
         return new ViewModel(
             array(
                 'unit' => $unit,
                 'form' => $form,
                 'members' => $members,
+                'activeAcademicYear' => $academicYear,
+                'academicYears' => $academicYears,
             )
         );
     }
@@ -357,5 +380,40 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $this->findCoordinatorRoleWithParent($role, $parent->getParent());
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
+    private function getAcademicYearEntity()
+    {
+        if (null === $this->getParam('academicyear')) {
+            return $this->getCurrentAcademicYear();
+        }
+
+        $start = AcademicYear::getDateTime($this->getParam('academicyear'));
+        $start->setTime(0, 0);
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($start);
+
+        if (null === $academicYear) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'secretary_admin_registration',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $academicYear;
     }
 }
