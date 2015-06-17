@@ -31,6 +31,22 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
 class Group extends EntityRepository
 {
     /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('g')
+            ->from('SyllabusBundle\Entity\Group', 'g')
+            ->where(
+                $query->expr()->eq('g.removed', 'false')
+            )
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
      * @param  GroupEntity  $group
      * @param  AcademicYear $academicYear
      * @return int
@@ -64,5 +80,25 @@ class Group extends EntityRepository
         }
 
         return 0;
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllCvBookQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('g')
+            ->from('SyllabusBundle\Entity\Group', 'g')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('g.cvBook', 'true'),
+                    $query->expr()->eq('g.removed', 'false')
+                )
+            )
+            ->orderBy('g.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
     }
 }

@@ -70,7 +70,7 @@ class SubjectMap
     private $academicYear;
 
     /**
-     * @param ModuleGroup  $study
+     * @param ModuleGroup  $moduleGroup
      * @param Subject      $subject
      * @param boolean      $mandatory
      * @param AcademicYear $academicYear The year of the mapping

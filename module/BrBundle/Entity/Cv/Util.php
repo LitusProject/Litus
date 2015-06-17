@@ -51,7 +51,7 @@ class Util
 
         $cvStudies = $entityManager
             ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findAllUngroupedStudies();
+            ->findAllUngroupedStudies($academicYear);
 
         foreach ($cvStudies as $study) {
             $entries = $entityManager
@@ -61,7 +61,7 @@ class Util
             if (count($entries) > 0) {
                 $result[] = array(
                     'id' => 'study-' . $study->getId(),
-                    'name' => $study->getFullTitle(),
+                    'name' => $study->getTitle(),
                     'entries' => $entries,
                 );
             }

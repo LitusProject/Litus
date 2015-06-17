@@ -530,9 +530,6 @@ class Study
      */
     private function getUrls()
     {
-        return array(
-            'http://onderwijsaanbod.kuleuven.be/opleidingen/n/xml/SC_51016934.xml',
-        );
         $url = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('syllabus.root_xml');

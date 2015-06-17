@@ -72,7 +72,7 @@ use Doctrine\Common\Collections\ArrayCollection,
      private $mandatory;
 
      /**
-      * @var Study The parent module group of the module group
+      * @var ModuleGroup The parent module group of the module group
       *
       * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study\ModuleGroup", inversedBy="children")
       * @ORM\JoinColumn(name="parent", referencedColumnName="id")
@@ -195,7 +195,7 @@ use Doctrine\Common\Collections\ArrayCollection,
      }
 
      /**
-      * @return ModuleGroup
+      * @return ModuleGroup|null
       */
      public function getParent()
      {

@@ -52,9 +52,10 @@ class Entry extends EntityRepository
     }
 
     /**
+     * @param  AcademicYear        $year
      * @return \Doctrine\ORM\Query
      */
-    public function findAllUngroupedStudiesQuery()
+    public function findAllUngroupedStudiesQuery(AcademicYear $academicYear)
     {
         $subQuery = $this->getEntityManager()->createQueryBuilder();
         $subQuery->select('e')
@@ -68,7 +69,7 @@ class Entry extends EntityRepository
             ->from('SyllabusBundle\Entity\Group\StudyMap', 'g')
             ->innerJoin('g.group', 'd')
             ->where(
-                $groupQuery->expr()->andx(
+                $groupQuery->expr()->andX(
                     $groupQuery->expr()->eq('g.study', 's'),
                     $groupQuery->expr()->eq('d.cvBook', 'true')
                 )
@@ -77,8 +78,9 @@ class Entry extends EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Study', 's')
+            ->innerJoin('s.combination', 'c')
             ->where(
-                $query->expr()->andx(
+                $query->expr()->andX(
                     $query->expr()->exists(
                         $subQuery->getDql()
                     ),
@@ -86,10 +88,12 @@ class Entry extends EntityRepository
                         $query->expr()->exists(
                             $groupQuery->getDql()
                         )
-                    )
+                    ),
+                    $query->expr()->eq('s.academicYear', ':academicYear')
                 )
             )
-            ->orderBy('s.title', 'ASC')
+            ->setParameter('academicYear', $academicYear)
+            ->orderBy('c.title', 'ASC')
             ->getQuery();
 
         return $resultSet;
@@ -106,7 +110,7 @@ class Entry extends EntityRepository
         $subQuery->select('g')
             ->from('SyllabusBundle\Entity\Group\StudyMap', 'g')
             ->where(
-                $subQuery->expr()->andx(
+                $subQuery->expr()->andX(
                     $subQuery->expr()->eq('g.study', 's'),
                     $subQuery->expr()->eq('g.group', ':group')
                 )
@@ -117,7 +121,7 @@ class Entry extends EntityRepository
             ->from('BrBundle\Entity\Cv\Entry', 'e')
             ->innerJoin('e.study', 's')
             ->where(
-                $query->expr()->andx(
+                $query->expr()->andX(
                     $query->expr()->exists($subQuery->getDql()),
                     $query->expr()->eq('e.year', ':year')
                 )
@@ -141,7 +145,7 @@ class Entry extends EntityRepository
         $resultSet = $query->select('e')
             ->from('BrBundle\Entity\Cv\Entry', 'e')
             ->where(
-                $query->expr()->andx(
+                $query->expr()->andX(
                     $query->expr()->eq('e.study', ':study'),
                     $query->expr()->eq('e.year', ':year')
                 )

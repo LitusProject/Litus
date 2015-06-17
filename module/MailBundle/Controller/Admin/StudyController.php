@@ -264,8 +264,6 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
             return array(array(), array(), array());
         }
 
-        $currentYear = $this->getCurrentAcademicYear(false);
-
         $enrollments = array();
         $extraMembers = array();
         $excludedMembers = array();
