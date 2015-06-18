@@ -32,10 +32,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
 class Entry extends EntityRepository
 {
     /**
-     * @param  AcademicYear        $year
+     * @param  AcademicYear        $academicYear
      * @return \Doctrine\ORM\Query
      */
-    public function findAllByAcademicYearQuery(AcademicYear $year)
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e')
@@ -43,7 +43,7 @@ class Entry extends EntityRepository
             ->where(
                 $query->expr()->eq('e.year', ':year')
             )
-            ->setParameter('year', $year)
+            ->setParameter('year', $academicYear)
             ->orderBy('e.lastName', 'ASC')
             ->addOrderBy('e.firstName', 'ASC')
             ->getQuery();
@@ -52,7 +52,7 @@ class Entry extends EntityRepository
     }
 
     /**
-     * @param  AcademicYear        $year
+     * @param  AcademicYear        $academicYear
      * @return \Doctrine\ORM\Query
      */
     public function findAllUngroupedStudiesQuery(AcademicYear $academicYear)
@@ -101,10 +101,10 @@ class Entry extends EntityRepository
 
     /**
      * @param  Group               $group
-     * @param  AcademicYear        $year
+     * @param  AcademicYear        $academicYear
      * @return \Doctrine\ORM\Query
      */
-    public function findAllByGroupAndAcademicYearQuery(Group $group, AcademicYear $year)
+    public function findAllByGroupAndAcademicYearQuery(Group $group, AcademicYear $academicYear)
     {
         $subQuery = $this->getEntityManager()->createQueryBuilder();
         $subQuery->select('g')
@@ -127,7 +127,7 @@ class Entry extends EntityRepository
                 )
             )
             ->setParameter('group', $group)
-            ->setParameter('year', $year)
+            ->setParameter('year', $academicYear)
             ->orderBy('e.lastName', 'ASC')
             ->addOrderBy('e.firstName', 'ASC')
             ->getQuery();
