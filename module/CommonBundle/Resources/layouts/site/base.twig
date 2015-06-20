@@ -5,7 +5,7 @@
     {% do headLink({'rel': 'shortcut icon', 'href': '/img/favicon.ico'}) %}
 
     {{ headMeta() }}
-    {{ headTitle(translate('Vlaamse Technische Kring'), 'PREPEND') }}
+    {{ headTitle(translate('Student IT'), 'PREPEND') }}
 
     {{ headLink() }}
 
@@ -194,7 +194,7 @@
         <div class="container">
             <a class="site-link" href="{{ url('common_index') }}">
                 <img class="site-logo" src="/_site/img/logo.png" />
-                <h1 class="site-name">{{ translate('Vlaamse Technische Kring') }}</h1>
+                <h1 class="site-name">{{ translate('Student IT') }}</h1>
             </a>
 
             {% if banners|length > 0 %}
@@ -236,14 +236,14 @@
 
     <hr>
     <footer>
-        <p>&copy; {{ 'now'|date('Y') }} {{ translate('Vlaamse Technische Kring vzw') }}</p>
+        <p>&copy; {{ 'now'|date('Y') }} {{ translate('Student IT vzw') }}</p>
     </footer>
 
     {% if showCookieBanner %}
         <div class="cookie-banner">
             <div class="container">
                 {% autoescape false %}
-                    <p>{{ translate('VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.')|replace({'%url%': url('common_privacy')}) }}</p>
+                    <p>{{ translate('Student IT uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.')|replace({'%url%': url('common_privacy')}) }}</p>
                     <button type="button" class="btn btn-default cookie-permission">{{ translate('Continue') }}</button>
                 {% endautoescape %}
             </div>

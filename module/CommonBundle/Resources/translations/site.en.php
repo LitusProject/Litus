@@ -17,12 +17,12 @@
  */
 
 return array(
-    'Vlaamse Technische Kring' => 'Vlaamse Technische Kring',
-    'VTK' => 'VTK',
-    'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
+    'Student IT' => 'Student IT',
+    'Student IT' => 'Student IT',
+    'Student IT vzw' => 'Student IT vzw',
 
     'Welcome' => 'Welcome',
-    'Welcome on the website of Vlaamse Technische Kring, the student organization of the Faculty of Engineering at the KU Leuven.' => 'Welcome on the website of Vlaamse Technische Kring, the student organization of the Faculty of Engineering at the KU Leuven.',
+    'Welcome on the website of Student IT, a demo organization.' => 'Welcome on the website of Student IT, a demo organization.',
 
     'Dutch' => 'Nederlands',
     'English' => 'English',
@@ -111,7 +111,7 @@ return array(
     'The selected file is too large.' => 'The selected file is too large.',
     'An error occurred while uploading your profile image.' => 'An error occurred while uploading your profile image.',
 
-    'VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.' => 'VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.',
+    'Student IT uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.' => 'Student IT uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.',
     'Privacy Policy' => 'Privacy Policy',
 
     'Wiki' => 'Exam wiki',

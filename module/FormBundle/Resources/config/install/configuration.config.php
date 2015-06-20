@@ -36,7 +36,7 @@ Your subscription was successful. Your unique subscription id is %id%. Below is 
 #guest_login_text#You can view and edit (if allowed) your subscription here:#guest_login_text#%guest_login%
 
 With best regards,
-VTK',
+Student IT',
                 ),
                 'nl' => array(
                     'content' => 'Beste %first_name% %last_name%,
@@ -48,7 +48,7 @@ Uw inschrijving was succesvol. Uw unieke inschrijving id is %id%. Hieronder is e
 #guest_login_text#Je kan je inschrijving hier bekijken en bewerken (indien toegestaan):#guest_login_text#%guest_login%
 
 Met vriendelijke groeten,
-VTK',
+Student IT',
                 ),
             )
         ),
@@ -66,7 +66,7 @@ Your subscription was successful. Your unique subscription id is %id%. Below is 
 %entry_summary%
 
 With best regards,
-VTK',
+Student IT',
                 ),
                 'nl' => array(
                     'content' => 'Beste %first_name% %last_name%,
@@ -76,7 +76,7 @@ Uw inschrijving was succesvol. Uw unieke inschrijving id is %id%. Hieronder is e
 %entry_summary%
 
 Met vriendelijke groeten,
-VTK',
+Student IT',
                 ),
             )
         ),

@@ -35,7 +35,7 @@ return array(
     ),
     array(
         'key'         => 'shift.mail_name',
-        'value'       => 'VTK IT',
+        'value'       => 'Student IT',
         'description' => 'The name of the mail address from which shift notifications are sent',
     ),
     array(

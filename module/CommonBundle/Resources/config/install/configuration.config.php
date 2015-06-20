@@ -32,7 +32,7 @@ return array(
         'value'       => serialize(
             array(
                 'en' => array(
-                    'subject' => 'VTK Account Deactivated',
+                    'subject' => 'Student IT Account Deactivated',
                     'content' => 'Dear {{ name }},
 
 Your account has been deactivated.
@@ -40,10 +40,10 @@ Click here to activate it again: http://litus/account/activate/code/{{ code }}
 
 Kind regards,
 
-VTK',
+Student IT',
                 ),
                 'nl' => array(
-                    'subject' => 'VTK Account Gedeactiveerd',
+                    'subject' => 'Student IT Account Gedeactiveerd',
                     'content' => 'Beste {{ name }},
 
 Uw account werd gedeactiveerd.
@@ -51,7 +51,7 @@ Klik hier om deze opnieuw te activeren: http://litus/account/activate/code/{{ co
 
 Met vriendelijke groeten,
 
-VTK',
+Student IT',
                 ),
             )
         ),
@@ -62,7 +62,7 @@ VTK',
         'value'       => serialize(
             array(
                 'en' => array(
-                    'subject' => 'VTK Account Activated',
+                    'subject' => 'Student IT Account Activated',
                     'content' => 'Dear {{ name }},
 
 An account was created for you with username {{ username }}.
@@ -70,10 +70,10 @@ Click here to activate it: http://litus/account/activate/code/{{ code }}
 
 Kind regards,
 
-VTK',
+Student IT',
                 ),
                 'nl' => array(
-                    'subject' => 'VTK Account Geactiveerd',
+                    'subject' => 'Student IT Account Geactiveerd',
                     'content' => 'Beste {{ name }},
 
 Een account werd voor u aangemaakt met gebruikersnaam{{ username }}.
@@ -81,7 +81,7 @@ Klik hier om deze te activeren: http://litus/account/activate/code/{{ code }}
 
 Met vriendelijke groeten,
 
-VTK',
+Student IT',
                 ),
             )
         ),
@@ -94,17 +94,17 @@ VTK',
     ),
     array(
         'key'         => 'system_mail_name',
-        'value'       => 'VTK',
+        'value'       => 'Student IT',
         'description' => 'The system mail name',
     ),
     array(
         'key'         => 'organization_short_name',
-        'value'       => 'VTK',
+        'value'       => 'Student IT',
         'description' => 'The short name of this organization',
     ),
     array(
         'key'         => 'organization_name',
-        'value'       => 'Vlaamse Technische Kring',
+        'value'       => 'Student IT',
         'description' => 'The full name of this organization',
     ),
     array(
@@ -309,24 +309,24 @@ Disallow: /admin/*
             array(
                 'nl' => '## Verantwoordelijke voor de verwerking
 
-VTK vzw hecht zeer veel belang aan de bescherming van de persoonsgegevens van de bezoekers van de website en in het bijzonder van haar studenten. We doen dan ook onze uiterste best om deze gegevens te beschermen en in overeenstemming te zijn met de relevante wetgeving.
+Student IT vzw hecht zeer veel belang aan de bescherming van de persoonsgegevens van de bezoekers van de website en in het bijzonder van haar studenten. We doen dan ook onze uiterste best om deze gegevens te beschermen en in overeenstemming te zijn met de relevante wetgeving.
 
-Voor vragen omtrent de verwerking van uw persoonsgegevens kan u zich altijd wenden tot VTK vzw:
+Voor vragen omtrent de verwerking van uw persoonsgegevens kan u zich altijd wenden tot Student IT vzw:
 
-    VTK vzw t.a.v. VTK IT
-    Studentenwijk Arenberg 6/0
-    3001 Heverlee
-    it@vtk.be
+    Student IT
+    Frederik Lintsstraat 131
+    3000 Leuven
+    info@studentit.be
 
-Om uw gegevens te bekijken en desgevallend te corrigeren kan u altijd aanmelden op de VTK-website. Mocht u geen login hebben of problemen ondervinden dan kan u altijd contact opnemen met ons op de hierboven vermelde coördinaten.
+Om uw gegevens te bekijken en desgevallend te corrigeren kan u altijd aanmelden op de Student IT-website. Mocht u geen login hebben of problemen ondervinden dan kan u altijd contact opnemen met ons op de hierboven vermelde coördinaten.
 
-Indien u dit wenst, kan u steeds uw persoonlijke gegevens laten verwijderen uit onze database. Wanneer u dit doet, worden alle velden in onze database die u kunnen identificeren, leeg gemaakt. Indien u dit niet doet, houdt VTK deze bij totdat de vereniging ontbonden wordt.
+Indien u dit wenst, kan u steeds uw persoonlijke gegevens laten verwijderen uit onze database. Wanneer u dit doet, worden alle velden in onze database die u kunnen identificeren, leeg gemaakt. Indien u dit niet doet, houdt Student IT deze bij totdat de vereniging ontbonden wordt.
 
 ## Verwerkte gegevens
 
 ### CV-boek
 
-Teneinde aan laatstejaarsstudenten de mogelijkheid te bieden zich kenbaar te maken aan de bedrijfswereld, houdt VTK een online CV-boek bij. Uw gegevens worden enkel met uw uitdrukkelijke toelating opgenomen in dit bestand.
+Teneinde aan laatstejaarsstudenten de mogelijkheid te bieden zich kenbaar te maken aan de bedrijfswereld, houdt Student IT een online CV-boek bij. Uw gegevens worden enkel met uw uitdrukkelijke toelating opgenomen in dit bestand.
 
 U kan deze gegevens online inkijken en aanpassen. Schrapping uit het online CV-boek is altijd mogelijk. Hiervoor kan u contact opnemen met [br@vtk.be](br@vtk.be).
 
@@ -354,7 +354,7 @@ Deze gegevens worden voor volgende doeleinden gebruikt:
 * online diensten (bv. wiki en mailing lists);
 * zendingen van bedrijven (zowel per post als via e-mail).
 
-Bij zendingen door bedrijven worden uw gegevens nooit doorgegeven. VTK vzw doet zelf alle zendingen in opdracht van het bedrijf. U kan altijd uw toestemming intrekken om zendingen van bedrijven te ontvangen ([br@vtk.be](br@vtk.be)).
+Bij zendingen door bedrijven worden uw gegevens nooit doorgegeven. Student IT vzw doet zelf alle zendingen in opdracht van het bedrijf. U kan altijd uw toestemming intrekken om zendingen van bedrijven te ontvangen ([br@vtk.be](br@vtk.be)).
 
 Deze gegevens worden verkregen via volgende wegen:
 
@@ -363,37 +363,37 @@ Deze gegevens worden verkregen via volgende wegen:
 
 Deze gegevens worden aan volgende derden doorgegeven:
 
-* VTK Ondersteuning vzw (Studentenwijk Arenberg 6/1, 3001 Heverlee).
+* Student IT Ondersteuning vzw (Studentenwijk Arenberg 6/1, 3001 Heverlee).
 
 U kan deze gegevens op iedere moment kosteloos wijzigen of verwijderen.
 
 ## Cookies
 
-VTK gebruikt cookies om het gebruik van de website te analyseren.
+Student IT gebruikt cookies om het gebruik van de website te analyseren.
 
 Via uw browserinstellingen kunt u de installatie van cookies weigeren. Op de volgende website vindt u voor de meest gebruikte browsers de werkwijze om cookies te weigeren: [www.aboutcookies.org](www.aboutcookies.org).
 
 U kan ook op elk moment de reeds geïnstalleerde cookies verwijderen van uw computer of mobiel apparaat.',
                 'en' => '## Responsible for processing
 
-VTK vzw values the protection of personal information of the visitors of our website and her students in particular. We therefore do our utmost to protect this information and to be in accordance with the relevant legislation.
+Student IT vzw values the protection of personal information of the visitors of our website and her students in particular. We therefore do our utmost to protect this information and to be in accordance with the relevant legislation.
 
-For question about the processing of your personal information, you may address VTK vzw:
+For question about the processing of your personal information, you may address Student IT vzw:
 
-    VTK vzw attn VTK IT
-    Studentenwijk Arenberg 6/0
-    3001 Heverlee
-    it@vtk.be
+    Student IT
+    Frederik Lintsstraat 131
+    3000 Leuven
+    info@studentit.be
 
-To view your information, and if necessary to correct it, you can always sign in on the VTK-website. If you don\'t have a login or experience problems, you may address us at the coordinates listed above.
+To view your information, and if necessary to correct it, you can always sign in on the Student IT-website. If you don\'t have a login or experience problems, you may address us at the coordinates listed above.
 
-If you wish, you can always have your personal information removed from our database. When you do this, all fields in our database that can identify you, will be emptied. If you do not, VTK keeps these up until the organization is dissolved.
+If you wish, you can always have your personal information removed from our database. When you do this, all fields in our database that can identify you, will be emptied. If you do not, Student IT keeps these up until the organization is dissolved.
 
 ## Processed data
 
 ### CV-book
 
-In order to give last year students the opportunity to make themselves known to the business world, VTK keeps an online CV book. Your information will only be included with after your explicit consent.
+In order to give last year students the opportunity to make themselves known to the business world, Student IT keeps an online CV book. Your information will only be included with after your explicit consent.
 
 You can view and edit this information online. Removal from the online CV book is possible anytime. You can contact [br@vtk.be](br@vtk.be) to have this done.
 
@@ -421,7 +421,7 @@ These data are used for the following purposes:
 * online services (bv. wiki and mailing lists);
 * consignments of companies (both by mail and e-mail).
 
-Your personal information will never be forwarded in mailings to companies. VTK vzw makes all the mailings commissioned by any company. You can always withdraw your consent to receive company mailings ([br@vtk.be](br@vtk.be)).
+Your personal information will never be forwarded in mailings to companies. Student IT vzw makes all the mailings commissioned by any company. You can always withdraw your consent to receive company mailings ([br@vtk.be](br@vtk.be)).
 
 This information is obtained from the following sources:
 
@@ -430,13 +430,13 @@ This information is obtained from the following sources:
 
 These information will be passed to the following third parties:
 
-* VTK Ondersteuning vzw (Studentenwijk Arenberg 6/1, 3001 Heverlee).
+* Student IT Ondersteuning vzw (Studentenwijk Arenberg 6/1, 3001 Heverlee).
 
 You can modify or remove this information free of charge at any moment.
 
 ## Cookies
 
-VTK uses cookies to analyse the usage of the website.
+Student IT uses cookies to analyse the usage of the website.
 
 You can refuse the installation of cookies by changing your browser settings. You can find the procedure to refuse cookies for the most common browsers on the following website: [www.aboutcookies.org](www.aboutcookies.org).
 
