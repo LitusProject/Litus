@@ -75,7 +75,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
 
         $key = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.queue_socket_key');
+            ->getConfigValue('syllabus.update_socket_key');
 
         if (!isset($command->key) || $command->key != $key) {
             $this->removeUser($user);
