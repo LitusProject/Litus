@@ -42,7 +42,7 @@ class StudyMap
      * @var Study The study of the mapping
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
-     * @ORM\JoinColumn(referencedColumnName="id")
+     * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $study;
 

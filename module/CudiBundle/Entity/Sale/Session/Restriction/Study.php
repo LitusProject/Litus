@@ -39,7 +39,7 @@ class Study extends Restriction
      * @ORM\ManyToMany(targetEntity="SyllabusBundle\Entity\Study")
      * @ORM\JoinTable(name="cudi.sales_session_restrictions_study_map",
      *      joinColumns={@ORM\JoinColumn(name="restriction", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="study", referencedColumnName="id")}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="study", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     private $studies;

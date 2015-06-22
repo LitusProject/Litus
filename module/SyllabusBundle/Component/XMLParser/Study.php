@@ -240,7 +240,7 @@ class Study
                     ->setTitle(html_entity_decode(trim($group->titel)))
                     ->setPhase($phase)
                     ->setLanguage(trim($language))
-                    ->setIsMandatory($group->attributes()->verplicht == 'True');
+                    ->setMandatory($group->attributes()->verplicht == 'True');
 
                 if ((int) $group->attributes()->niveau > 1) {
                     if (!isset($parents[$phase])) {
@@ -489,12 +489,12 @@ class Study
      */
     private function cleanUpAcademicYear()
     {
-        $mapping = $this->getEntityManager()
+        $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findByAcademicYear($this->academicYear);
 
-        foreach ($mapping as $map) {
-            $this->getEntityManager()->remove($map);
+        foreach ($studies as $study) {
+            $this->getEntityManager()->remove($study);
         }
 
         $mapping = $this->getEntityManager()
