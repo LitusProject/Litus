@@ -28,12 +28,12 @@ return array(
         'description' => 'The public address for the websocket of the syllabus update',
     ),
     array(
-        'key'         => 'syllabus.queue_socket_key',
+        'key'         => 'syllabus.update_socket_key',
         'value'       => md5(uniqid(rand(), true)),
         'description' => 'The key used for the websocket of the queue',
     ),
     array(
-        'key'         => 'syllabus.queue_socket_enabled',
+        'key'         => 'syllabus.update_socket_enabled',
         'value'       => '1',
         'description' => 'Whether the queue socket is enabled',
     ),
