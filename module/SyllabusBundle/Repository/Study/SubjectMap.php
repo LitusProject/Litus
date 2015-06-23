@@ -43,7 +43,7 @@ class SubjectMap extends EntityRepository
         $moduleGroups = $this->getModuleGroupIds($study->getCombination()->getModuleGroups()->toArray());
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('m')
+        $resultSet = $query->select('m', 's')
             ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
             ->innerJoin('m.subject', 's')
             ->where(
@@ -69,7 +69,7 @@ class SubjectMap extends EntityRepository
         $moduleGroups = $this->getModuleGroupIds(array($moduleGroup));
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('m')
+        $resultSet = $query->select('m', 's')
             ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
             ->innerJoin('m.subject', 's')
             ->where(
@@ -95,7 +95,7 @@ class SubjectMap extends EntityRepository
         $moduleGroups = $this->getModuleGroupIds($study->getCombination()->getModuleGroups()->toArray());
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('m')
+        $resultSet = $query->select('m', 's')
             ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
             ->innerJoin('m.subject', 's')
             ->where(
@@ -123,7 +123,7 @@ class SubjectMap extends EntityRepository
         $moduleGroups = $this->getModuleGroupIds($study->getCombination()->getModuleGroups()->toArray());
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('m')
+        $resultSet = $query->select('m', 's')
             ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
             ->innerJoin('m.subject', 's')
             ->where(
@@ -152,7 +152,7 @@ class SubjectMap extends EntityRepository
         $moduleGroups = $this->getModuleGroupIds(array($moduleGroup));
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('m')
+        $resultSet = $query->select('m', 's')
             ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
             ->innerJoin('m.subject', 's')
             ->where(
@@ -181,7 +181,7 @@ class SubjectMap extends EntityRepository
         $moduleGroups = $this->getModuleGroupIds(array($moduleGroup));
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('m')
+        $resultSet = $query->select('m', 's')
             ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
             ->innerJoin('m.subject', 's')
             ->where(
@@ -279,7 +279,7 @@ class SubjectMap extends EntityRepository
     public function findAllByNameQuery($name, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('m')
+        $resultSet = $query->select('m', 's')
             ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
             ->innerJoin('m.subject', 's')
             ->where(

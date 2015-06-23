@@ -36,7 +36,7 @@ class Study extends EntityRepository
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('s')
+        $resultSet = $query->select('s', 'c')
             ->from('SyllabusBundle\Entity\Study', 's')
             ->innerJoin('s.combination', 'c')
             ->where(
@@ -57,7 +57,7 @@ class Study extends EntityRepository
     public function findAllByTitleAndAcademicYearQuery($title, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('s')
+        $resultSet = $query->select('s', 'c')
             ->from('SyllabusBundle\Entity\Study', 's')
             ->innerJoin('s.combination', 'c')
             ->where(

@@ -243,10 +243,11 @@ class Study
                     ->setMandatory($group->attributes()->verplicht == 'True');
 
                 if ((int) $group->attributes()->niveau > 1) {
-                    if (!isset($parents[$phase])) {
+                    if (isset($parents[$phase])) {
+                        $moduleGroup->setParent($parents[$phase]);
+                    } elseif (sizeof($group->opleidingsonderdelen->children()) > 0) {
                         throw new RuntimeException('Module group ' . $externalId . ' has no parents.');
                     }
-                    $moduleGroup->setParent($parents[$phase]);
                 }
 
                 $currentParents[$phase] = $moduleGroup;
