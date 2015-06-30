@@ -19,26 +19,38 @@
 namespace CommonBundle\Form\Admin\Unit;
 
 /**
- * The form used to add a member to a unit.
+ * The form used to add an external member to a unit.
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Member extends \CommonBundle\Component\Form\Admin\Form
+class External extends \CommonBundle\Component\Form\Admin\Form
 {
     public function init()
     {
         parent::init();
 
         $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'person',
-            'label'      => 'Name',
+            'type'       => 'text',
+            'name'       => 'first_name',
+            'label'      => 'First Name',
             'required'   => true,
             'options'    => array(
                 'input' => array(
-                    'validators' => array(
-                        array('name' => 'typeahead_person'),
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'text',
+            'name'       => 'last_name',
+            'label'      => 'Last Name',
+            'required'   => true,
+            'options'    => array(
+                'input' => array(
+                    'filters' => array(
+                        array('name' => 'StringTrim'),
                     ),
                 ),
             ),
@@ -50,6 +62,12 @@ class Member extends \CommonBundle\Component\Form\Admin\Form
             'label' => 'Coordinator',
         ));
 
-        $this->addSubmit('Add', 'unit_member_add');
+        $this->add(array(
+            'type' => 'hidden',
+            'name' => 'mapType',
+            'value' => 'external',
+        ));
+
+        $this->addSubmit('Add', 'unit_external_add');
     }
 }

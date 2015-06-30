@@ -22,6 +22,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Organization\Unit,
     CommonBundle\Entity\User\Person\Organization\UnitMap\Academic as UnitMapAcademic,
+    CommonBundle\Entity\User\Person\Organization\UnitMap\External as UnitMapExternal,
     Zend\View\Model\ViewModel;
 
 /**
@@ -115,14 +116,16 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $form = $this->getForm('common_unit_member');
+        $academicForm = $this->getForm('common_unit_academic');
+        $externalForm = $this->getForm('common_unit_external');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()->getPost());
+            $formData = $this->getRequest()->getPost();
+            $academicForm->setData($formData);
+            $externalForm->setData($formData);
+            print_r($formData);
 
-            if ($form->isValid()) {
-                $formData = $form->getData();
-
+            if ($formData['mapType'] == 'academic' && $academicForm->isValid()) {
                 $academic = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findOneById($formData['person']['id']);
@@ -164,6 +167,27 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 );
 
                 return new ViewModel();
+            } elseif ($formData['mapType'] == 'external' && $externalForm->isValid()) {
+                $member = new UnitMapExternal($formData['first_name'], $formData['last_name'], '' , $academicYear, $unit, $formData['coordinator']);
+
+                $this->getEntityManager()->persist($member);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The member was succesfully added!'
+                );
+
+                $this->redirect()->toRoute(
+                    'common_admin_unit',
+                    array(
+                        'action' => 'members',
+                        'id' => $unit->getId(),
+                        'academicyear' => $academicYear->getCode(),
+                    )
+                );
+
+                return new ViewModel();
             }
         }
 
@@ -174,7 +198,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'unit' => $unit,
-                'form' => $form,
+                'academicForm' => $academicForm,
+                'externalForm' => $externalForm,
                 'members' => $members,
                 'activeAcademicYear' => $academicYear,
                 'academicYears' => $academicYears,
