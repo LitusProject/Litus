@@ -21,7 +21,7 @@ namespace CommonBundle\Controller\Admin;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Organization\Unit,
-    CommonBundle\Entity\User\Person\Organization\UnitMap,
+    CommonBundle\Entity\User\Person\Organization\UnitMap\Academic as UnitMapAcademic,
     Zend\View\Model\ViewModel;
 
 /**
@@ -128,7 +128,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                     ->findOneById($formData['person']['id']);
 
                 $repositoryCheck = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                    ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap\Academic')
                     ->findOneBy(
                         array(
                             'unit' => $unit,
@@ -143,7 +143,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                         'This academic already is a member of this unit!'
                     );
                 } else {
-                    $member = new UnitMap($academic, $academicYear, $unit, $formData['coordinator']);
+                    $member = new UnitMapAcademic($academic, $academicYear, $unit, $formData['coordinator']);
 
                     $this->getEntityManager()->persist($member);
                     $this->getEntityManager()->flush();
@@ -159,7 +159,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                     array(
                         'action' => 'members',
                         'id' => $unit->getId(),
-                        'academicyear' => $academicYear,
+                        'academicyear' => $academicYear->getCode(),
                     )
                 );
 
@@ -328,7 +328,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $unitMap = $this->getEntityById('CommonBundle\Entity\User\Person\Organization\UnitMap');
 
-        if (!($unitMap instanceof UnitMap)) {
+        if (!($unitMap instanceof UnitMapAcademic or $unitMap instanceof UnitMapExternal)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No unit map was found!'

@@ -39,11 +39,11 @@
             </tr>
             {% for member in members %}
                 <tr class="item item-{{ member.getId() }}">
-                    <td>{{ member.getAcademic().getFullName() }}</td>
+                    <td>{{ member.getFullName() }}</td>
                     <td>{% if member.isCoordinator() %}&times;{% endif %}</td>
                     <td>
                         {% if hasAccess('common_admin_unit', 'deleteMember') %}
-                            <a href="#" data-id="{{ member.getId() }}" data-name="{{ member.getAcademic().getFullName() }}" class="delete">Delete</a>
+                            <a href="#" data-id="{{ member.getId() }}" data-name="{{ member.getFullName() }}" class="delete">Delete</a>
                         {% endif %}
                     </td>
                 </tr>

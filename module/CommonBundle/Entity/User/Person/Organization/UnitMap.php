@@ -27,12 +27,15 @@ use CommonBundle\Entity\General\AcademicYear,
  * Specifying the mapping between organization and academic.
  *
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person\Organization\UnitMap")
- * @ORM\Table(
- *     name="users.people_organizations_unit_map",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="academics_units_map_unique", columns={"academic", "academic_year", "unit"})}
- * )
+ * @ORM\Table(name="users.people_organizations_unit_map")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "academic"="CommonBundle\Entity\User\Person\Organization\UnitMap\Academic",
+ *      "external"="CommonBundle\Entity\User\Person\Organization\UnitMap\External"
+ * })
  */
-class UnitMap
+abstract class UnitMap
 {
     /**
      * @var int The ID of this academic year map
@@ -42,14 +45,6 @@ class UnitMap
      * @ORM\Column(type="bigint")
      */
     private $id;
-
-    /**
-     * @var Academic The person
-     *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", inversedBy="organizationMap")
-     * @ORM\JoinColumn(name="academic", referencedColumnName="id")
-     */
-    private $academic;
 
     /**
      * @var AcademicYear The academic year
@@ -80,9 +75,8 @@ class UnitMap
      * @param Unit         $unit         The unit
      * @param boolean      $coordinator  Whether or not the academic is the coordinator
      */
-    public function __construct(Academic $academic, AcademicYear $academicYear, Unit $unit, $coordinator)
+    public function __construct(AcademicYear $academicYear, Unit $unit, $coordinator)
     {
-        $this->academic = $academic;
         $this->academicYear = $academicYear;
         $this->unit = $unit;
         $this->coordinator = $coordinator;
@@ -94,14 +88,6 @@ class UnitMap
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return Academic
-     */
-    public function getAcademic()
-    {
-        return $this->academic;
     }
 
     /**
@@ -127,4 +113,27 @@ class UnitMap
     {
         return $this->coordinator;
     }
+
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->getFirstName() . ' ' . $this->getLastName();
+    }
+
+    /**
+     * @return string
+     */
+    abstract public function getFirstName();
+
+    /**
+     * @return string
+     */
+    abstract public function getLastName();
+
+    /**
+     * @return string
+     */
+    abstract public function getPhotoPath();
 }

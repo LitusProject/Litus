@@ -65,11 +65,11 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
                 ->findAllByUnitAndAcademicYear($unit, $academicYear);
 
             foreach ($members as $member) {
-                if (!isset($extra[$member->getAcademic()->getId()])) {
-                    $extra[$member->getAcademic()->getId()] = array();
+                if (!isset($extra[$member->getId()])) {
+                    $extra[$member->getId()] = array();
                 }
 
-                $extra[$member->getAcademic()->getId()][] = $unit;
+                $extra[$member->getId()][] = $unit;
             }
         }
 
