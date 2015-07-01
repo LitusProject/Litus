@@ -22,13 +22,16 @@ use Zend\Form\FormInterface;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @method string getName()
+ * @method mixed getOption(string $option)
+ * @property array options
  */
 trait ElementTrait
 {
     /**
      * @var boolean
      */
-    private $_required = false;
+    private $required = false;
 
     /**
      * Specifies whether this element is a required field.
@@ -50,7 +53,7 @@ trait ElementTrait
         }
         $this->setLabelAttributes($labelAttributes);
 
-        $this->_required = $flag;
+        $this->required = $flag;
 
         return $this;
     }
@@ -60,7 +63,7 @@ trait ElementTrait
      */
     public function isRequired()
     {
-        return $this->_required;
+        return $this->required;
     }
 
     /**
@@ -140,8 +143,9 @@ trait ElementTrait
     // The following methods are required by the trait
 
     /**
-     * @param string     $name
-     * @param mixed|null $value
+     * @param  string     $name
+     * @param  mixed|null $value
+     * @return self
      */
     abstract public function setAttribute($name, $value);
 
@@ -163,7 +167,8 @@ trait ElementTrait
     abstract public function getLabelAttributes();
 
     /**
-     * @param array $attributes
+     * @param  array $attributes
+     * @return self
      */
     abstract public function setLabelAttributes(array $attributes);
 }

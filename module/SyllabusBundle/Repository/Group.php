@@ -32,7 +32,7 @@ class Group extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('g')
             ->from('SyllabusBundle\Entity\Group', 'g')
             ->where(
@@ -45,7 +45,7 @@ class Group extends EntityRepository
 
     public function findAllCvBookQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('g')
             ->from('SyllabusBundle\Entity\Group', 'g')
             ->where(
@@ -60,7 +60,7 @@ class Group extends EntityRepository
 
     public function findNbStudentsByGroupAndAcademicYear(GroupEntity $group, AcademicYear $academicYear)
     {
-        $studies = $this->_em
+        $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
             ->findAllByGroupAndAcademicYear($group, $academicYear);
 
@@ -69,7 +69,7 @@ class Group extends EntityRepository
             $ids[] = $study->getStudy()->getId();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select($query->expr()->count('e'))
             ->from('SecretaryBundle\Entity\Syllabus\StudyEnrollment', 'e')
             ->where(

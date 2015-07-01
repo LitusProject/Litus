@@ -19,7 +19,7 @@
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
 use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Sale\Article,
+    CudiBundle\Entity\Sale\Article as SaleArticle,
     CudiBundle\Entity\Sale\SaleItem\External as ExternalItem,
     CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem,
     CudiBundle\Entity\Sale\Session,
@@ -35,9 +35,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 {
     public function individualAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
         if (null !== $this->getParam('field')) {
-            $records = $this->_individualSearch($academicYear);
+            $records = $this->individualSearch($academicYear);
         }
 
         if (!isset($records)) {
@@ -78,13 +78,13 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $records = $this->_individualSearch($academicYear)
+        $records = $this->individualSearch($academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -120,7 +120,11 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function _individualSearch(AcademicYear $academicYear)
+    /**
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function individualSearch(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'article':
@@ -138,7 +142,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                    ->findAllByOrganizationAndAcademicYearQuery($organization, $academicYear);
+                    ->findallByAcademicYearAndOrganizationQuery($academicYear, $organization);
             case 'discount':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
@@ -152,7 +156,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function sessionsAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -181,7 +185,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function sessionAction()
     {
-        if (!($session = $this->_getSession())) {
+        if (!($session = $this->getSessionEntity())) {
             return new ViewModel();
         }
 
@@ -196,7 +200,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->findAll();
 
         if (null !== $this->getParam('field')) {
-            $records = $this->_sessionSearch($session);
+            $records = $this->sessionSearch($session);
         }
 
         if (!isset($records)) {
@@ -229,7 +233,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($session = $this->_getSession())) {
+        if (!($session = $this->getSessionEntity())) {
             return new ViewModel();
         }
 
@@ -237,7 +241,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $records = $this->_sessionSearch($session)
+        $records = $this->sessionSearch($session)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -272,7 +276,11 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function _sessionSearch(Session $session)
+    /**
+     * @param  Session                  $session
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function sessionSearch(Session $session)
     {
         switch ($this->getParam('field')) {
             case 'article':
@@ -290,7 +298,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                    ->findAllByOrganizationAndSessionQuery($organization, $session);
+                    ->findAllBySessionAndOrganizationQuery($session, $organization);
             case 'discount':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
@@ -300,9 +308,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function articlesAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
         if (null !== $this->getParam('field')) {
-            $records = $this->_articlesSearch($academicYear);
+            $records = $this->articlesSearch($academicYear);
         }
 
         if (!isset($records)) {
@@ -338,13 +346,13 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $articles = $this->_articlesSearch($academicYear)
+        $articles = $this->articlesSearch($academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -371,7 +379,11 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function _articlesSearch(AcademicYear $academicYear)
+    /**
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function articlesSearch(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'title':
@@ -395,11 +407,11 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function articleAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -410,13 +422,13 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->findAll();
 
         if (null !== $this->getParam('field')) {
-            $records = $this->_articleSearch($article, $this->getAcademicYear());
+            $records = $this->articleSearch($article, $this->getAcademicYearEntity());
         }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                ->findAllByArticleEntityQuery($article, $this->getAcademicYear());
+                ->findAllByArticleEntityQuery($article, $this->getAcademicYearEntity());
         }
 
         $paginator = $this->paginator()->createFromQuery(
@@ -447,17 +459,17 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $records = $this->_articleSearch($article, $academicYear)
+        $records = $this->articleSearch($article, $academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -492,7 +504,12 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function _articleSearch(Article $article, AcademicYear $academicYear)
+    /**
+     * @param  SaleArticle              $article
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function articleSearch(SaleArticle $article, AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'person':
@@ -506,7 +523,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                    ->findAllByOrganizationAndArticleQuery($organization, $article, $academicYear);
+                    ->findAllByOrganizationAndArticleQuery($article, $academicYear, $organization);
             case 'discount':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
@@ -516,7 +533,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function suppliersAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -545,11 +562,11 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
     public function supplierAction()
     {
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplierEntity())) {
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -560,13 +577,13 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             ->findAll();
 
         if (null !== $this->getParam('field')) {
-            $records = $this->_supplierSearch($supplier, $this->getAcademicYear());
+            $records = $this->supplierSearch($supplier, $this->getAcademicYearEntity());
         }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                ->findAllBySupplierEntityQuery($supplier, $this->getAcademicYear());
+                ->findAllBySupplierEntityQuery($supplier, $this->getAcademicYearEntity());
         }
 
         $paginator = $this->paginator()->createFromQuery(
@@ -597,17 +614,17 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplierEntity())) {
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $records = $this->_supplierSearch($supplier, $academicYear)
+        $records = $this->supplierSearch($supplier, $academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -643,7 +660,12 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function _supplierSearch(Supplier $supplier, AcademicYear $academicYear)
+    /**
+     * @param  Supplier                 $supplier
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function supplierSearch(Supplier $supplier, AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'article':
@@ -661,7 +683,7 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                    ->findAllByOrganizationAndSupplierQuery($organization, $supplier, $academicYear);
+                    ->findAllByOrganizationAndSupplierQuery($supplier, $academicYear, $organization);
             case 'discount':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\SaleItem')
@@ -670,34 +692,16 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return Session
+     * @return Session|null
      */
-    private function _getSession()
+    private function getSessionEntity()
     {
-        if (null === $this->getParam('id')) {
+        $session = $this->getEntityById('CudiBundle\Entity\Sale\Session');
+
+        if (!($session instanceof Session)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the session!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_sold',
-                array(
-                    'action' => 'sessions',
-                )
-            );
-
-            return;
-        }
-
-        $session = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Session')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $session) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No session with the given ID was found!'
+                'No session was found!'
             );
 
             $this->redirect()->toRoute(
@@ -715,32 +719,17 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         return $session;
     }
 
-    private function _getArticle()
+    /**
+     * @return SaleArticle|null
+     */
+    private function getSaleArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
+
+        if (!($article instanceof SaleArticle)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_sold',
-                array(
-                    'action' => 'articles',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -758,32 +747,17 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
         return $article;
     }
 
-    private function _getSupplier()
+    /**
+     * @return Supplier|null
+     */
+    private function getSupplierEntity()
     {
-        if (null === $this->getParam('id')) {
+        $supplier = $this->getEntityById('CudiBundle\Entity\Supplier');
+
+        if (!($supplier instanceof Supplier)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the supplier!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_sold',
-                array(
-                    'action' => 'suppliers',
-                )
-            );
-
-            return;
-        }
-
-        $supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $supplier) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No supplier with the given ID was found!'
+                'No supplier was found!'
             );
 
             $this->redirect()->toRoute(

@@ -31,7 +31,7 @@ class Driver extends EntityRepository
 {
     public function findOneById($id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('d')
             ->from('LogisticsBundle\Entity\Driver', 'd')
             ->where(
@@ -50,7 +50,7 @@ class Driver extends EntityRepository
 
     public function findAllByYearQuery(AcademicYear $year)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('d')
             ->from('LogisticsBundle\Entity\Driver', 'd')
             ->innerJoin('d.years', 'y')
@@ -68,7 +68,7 @@ class Driver extends EntityRepository
 
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('d')
             ->from('LogisticsBundle\Entity\Driver', 'd')
             ->innerJoin('d.person', 'p')

@@ -32,7 +32,7 @@ class External extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var MailingList
      */
-    private $_list;
+    private $list;
 
     public function init()
     {
@@ -105,7 +105,7 @@ class External extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setList(MailingList $list)
     {
-        $this->_list = $list;
+        $this->list = $list;
 
         return $this;
     }
@@ -115,6 +115,6 @@ class External extends \CommonBundle\Component\Form\Admin\Form
      */
     public function getList()
     {
-        return $this->_list;
+        return $this->list;
     }
 }

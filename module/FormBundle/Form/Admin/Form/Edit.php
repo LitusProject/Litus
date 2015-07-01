@@ -18,7 +18,6 @@
 
 namespace FormBundle\Form\Admin\Form;
 
-
 use FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Form\Doodle;
 
@@ -33,7 +32,7 @@ class Edit extends Add
     /**
      * @var Form
      */
-    private $_form;
+    private $form;
 
     public function init()
     {
@@ -43,31 +42,38 @@ class Edit extends Add
 
         $group = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
-            ->findOneByForm($this->_form);
+            ->findOneByForm($this->form);
 
         if (null !== $group) {
-            $this->get('start_date')
-                ->setAttribute('disabled', 'disabled')
+            /** @var \CommonBundle\Component\Form\Admin\Element\DateTime $startDateField */
+            $startDateField = $this->get('start_date');
+            /** @var \CommonBundle\Component\Form\Admin\Element\DateTime $endDateField */
+            $endDateField = $this->get('end_date');
+            /** @var \CommonBundle\Component\Form\Admin\Element\Checkbox $activeField */
+            $activeField = $this->get('active');
+            /** @var \CommonBundle\Component\Form\Admin\Element\Text $maxField */
+            $maxField = $this->get('max');
+            /** @var \CommonBundle\Component\Form\Admin\Element\Checkbox $nonMemberField */
+            $nonMemberField = $this->get('non_member');
+            /** @var \CommonBundle\Component\Form\Admin\Element\Checkbox $editableByUser */
+            $editableByUser = $this->get('editable_by_user');
+
+            $startDateField->setAttribute('disabled', 'disabled')
                 ->setRequired(false);
-            $this->get('end_date')
-                ->setAttribute('disabled', 'disabled')
+            $endDateField->setAttribute('disabled', 'disabled')
                 ->setRequired(false);
-            $this->get('active')
-                ->setAttribute('disabled', 'disabled')
+            $activeField->setAttribute('disabled', 'disabled')
                 ->setRequired(false);
-            $this->get('max')
-                ->setAttribute('disabled', 'disabled')
+            $maxField->setAttribute('disabled', 'disabled')
                 ->setRequired(false);
-            $this->get('non_member')
-                ->setAttribute('disabled', 'disabled')
+            $nonMemberField->setAttribute('disabled', 'disabled')
                 ->setRequired(false);
-            $this->get('editable_by_user')
-                ->setAttribute('disabled', 'disabled')
+            $editableByUser->setAttribute('disabled', 'disabled')
                 ->setRequired(false);
         }
 
         $this->remove('type');
-        if ($this->_form instanceof Doodle) {
+        if ($this->form instanceof Doodle) {
             $this->remove('max');
         } else {
             $this->remove('names_visible_for_others');
@@ -78,14 +84,14 @@ class Edit extends Add
         $this->remove('submit');
         $this->addSubmit('Save', 'form_edit');
 
-        if (null !== $this->_form) {
-            $this->bind($this->_form);
+        if (null !== $this->form) {
+            $this->bind($this->form);
         }
     }
 
     public function setForm(Form $form)
     {
-        $this->_form = $form;
+        $this->form = $form;
 
         return $this;
     }

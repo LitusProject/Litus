@@ -23,6 +23,9 @@ namespace CommonBundle\Command;
  */
 class AclCleanup extends \CommonBundle\Component\Console\Command
 {
+    /**
+     * @return null
+     */
     protected function configure()
     {
         $this
@@ -35,11 +38,14 @@ EOT
         );
     }
 
+    /**
+     * @return null
+     */
     protected function executeCommand()
     {
         $removedEntities = false;
 
-        $allActions = $this->_getAllActions();
+        $allActions = $this->getAllActions();
 
         $currentActions = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Acl\Action')
@@ -105,12 +111,18 @@ EOT
         }
     }
 
+    /**
+     * @return string
+     */
     protected function getLogName()
     {
         return 'AclCleanup';
     }
 
-    private function _getModules()
+    /**
+     * @return array
+     */
+    private function getModules()
     {
         $config = $this->getServiceLocator()
             ->get('Config');
@@ -119,23 +131,35 @@ EOT
         // CommonBundle has to be first
         return array_merge(
             array('CommonBundle'),
-            array_filter(array_keys($config), function ($v) { return $v != 'CommonBundle'; })
+            array_filter(
+                array_keys($config),
+                function ($v) {
+                    return $v != 'CommonBundle';
+                }
+            )
         );
     }
 
-    private function _getAllActions()
+    /**
+     * @return array
+     */
+    private function getAllActions()
     {
         $acl = array();
-        $modules = $this->_getModules();
+        $modules = $this->getModules();
 
         foreach ($modules as $module) {
-            $acl = array_merge($acl, $this->_getAclConfiguration($module));
+            $acl = array_merge($acl, $this->getAclConfiguration($module));
         }
 
         return $acl;
     }
 
-    private function _getAclConfiguration($module)
+    /**
+     * @param  string $module
+     * @return array
+     */
+    private function getAclConfiguration($module)
     {
         $configuration = $this->getServiceLocator()->get('Config');
         $configuration = $configuration['litus']['install'];

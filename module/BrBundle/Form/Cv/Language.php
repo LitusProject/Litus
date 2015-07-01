@@ -18,7 +18,6 @@
 
 namespace BrBundle\Form\Cv;
 
-
 use BrBundle\Entity\Cv\Language as CvLanguage,
     CommonBundle\Component\Form\Fieldset;
 
@@ -57,7 +56,7 @@ class Language extends Fieldset
             'label'      => 'Oral Skills',
             'required'   => true,
             'attributes' => array(
-                'options' => CvLanguage::$ORAL_SKILLS,
+                'options' => CvLanguage::$oralSkills,
             ),
         ));
 
@@ -67,7 +66,7 @@ class Language extends Fieldset
             'label'      => 'Written Skills',
             'required'   => true,
             'attributes' => array(
-                'options' => CvLanguage::$WRITTEN_SKILLS,
+                'options' => CvLanguage::$writtenSkills,
             ),
         ));
     }

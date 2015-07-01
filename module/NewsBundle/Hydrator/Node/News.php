@@ -18,7 +18,6 @@
 
 namespace NewsBundle\Hydrator\Node;
 
-
 use NewsBundle\Entity\Node\News as NewsEntity,
     NewsBundle\Entity\Node\Translation as TranslationEntity;
 
@@ -33,7 +32,7 @@ class News extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new NewsEntity($this->getPerson());
+            $object = new NewsEntity($this->getPersonEntity());
         }
 
         $endDate = self::loadDateTime($data['end_date']);

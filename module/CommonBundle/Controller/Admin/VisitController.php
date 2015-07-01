@@ -29,7 +29,7 @@ class VisitController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field') && ($visits = $this->_search())) {
+        if (null !== $this->getParam('field') && ($visits = $this->search())) {
             $paginator = $this->paginator()->createFromQuery(
                 $visits,
                 $this->getParam('page')
@@ -63,7 +63,7 @@ class VisitController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $visits = $this->_search()
+        $visits = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -92,7 +92,7 @@ class VisitController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return Query|null
      */
-    private function _search()
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'controller':

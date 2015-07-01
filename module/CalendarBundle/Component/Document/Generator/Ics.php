@@ -18,11 +18,6 @@
 
 namespace CalendarBundle\Component\Document\Generator;
 
-
-
-
-
-
 use CalendarBundle\Entity\Node\Event,
     CommonBundle\Component\Controller\Plugin\Url,
     CommonBundle\Component\Util\File\TmpFile as TmpFile,
@@ -40,27 +35,27 @@ class Ics
     /**
      * @var EntityManager The EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @var Language The language
      */
-    private $_language;
+    private $language;
 
     /**
      * @var string The base url
      */
-    private $_serverName;
+    private $serverName;
 
     /**
      * @var string
      */
-    private $_suffix;
+    private $suffix;
 
     /**
      * @var Url
      */
-    private $_url;
+    private $url;
 
     /**
      * @param TmpFile       $file
@@ -71,17 +66,17 @@ class Ics
      */
     public function __construct(TmpFile $file, EntityManager $entityManager, Language $language, Request $request, Url $url)
     {
-        $this->_entityManager = $entityManager;
-        $this->_language = $language;
-        $this->_serverName = (('on' === $request->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . $request->getServer('HTTP_HOST');
-        $this->_url = $url;
+        $this->entityManager = $entityManager;
+        $this->language = $language;
+        $this->serverName = (('on' === $request->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . $request->getServer('HTTP_HOST');
+        $this->url = $url;
 
-        $this->_suffix = $entityManager
+        $this->suffix = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('calendar.icalendar_uid_suffix');
 
-        $file->appendContent($this->_getHeader());
-        $file->appendContent($this->_getReservations());
+        $file->appendContent($this->getHeader());
+        $file->appendContent($this->getReservations());
 
         $file->appendContent('END:VCALENDAR');
     }
@@ -89,11 +84,11 @@ class Ics
     /**
      * @return string
      */
-    private function _getHeader()
+    private function getHeader()
     {
         $result = 'BEGIN:VCALENDAR' . PHP_EOL;
         $result .= 'VERSION:2.0' . PHP_EOL;
-        $result .= 'X-WR-CALNAME:' . $this->_entityManager
+        $result .= 'X-WR-CALNAME:' . $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_short_name') . ' Calendar' . PHP_EOL;
         $result .= 'PRODID:-//lituscal//NONSGML v1.0//EN' . PHP_EOL;
@@ -122,15 +117,15 @@ class Ics
         return $result;
     }
 
-    private function _getReservations()
+    private function getReservations()
     {
         $result = '';
-        $events = $this->_entityManager
+        $events = $this->entityManager
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllActive(0);
 
         foreach ($events as $event) {
-            $result .= $this->_getEvent($event);
+            $result .= $this->getEvent($event);
         }
 
         return $result;
@@ -140,17 +135,17 @@ class Ics
      * @param  Event  $event
      * @return string
      */
-    private function _getEvent(Event $event)
+    private function getEvent(Event $event)
     {
         $result = 'BEGIN:VEVENT' . PHP_EOL;
-        $result .= 'SUMMARY:' . $event->getTitle($this->_language) . PHP_EOL;
+        $result .= 'SUMMARY:' . $event->getTitle($this->language) . PHP_EOL;
         $result .= 'DTSTART:' . $event->getStartDate()->format('Ymd\THis') . PHP_EOL;
         if (null !== $event->getEndDate()) {
             $result .= 'DTEND:' . $event->getEndDate()->format('Ymd\THis') . PHP_EOL;
         }
         $result .= 'TRANSP:OPAQUE' . PHP_EOL;
-        $result .= 'LOCATION:' . $event->getLocation($this->_language) . PHP_EOL;
-        $result .= 'URL:' . $this->_serverName . $this->_url->fromRoute(
+        $result .= 'LOCATION:' . $event->getLocation($this->language) . PHP_EOL;
+        $result .= 'URL:' . $this->serverName . $this->url->fromRoute(
                 'calendar',
                 array(
                     'action' => 'view',
@@ -158,7 +153,7 @@ class Ics
                 )
             ) . PHP_EOL;
         $result .= 'CLASS:PUBLIC' . PHP_EOL;
-        $result .= 'UID:' . $event->getId() . '@' . $this->_suffix . PHP_EOL;
+        $result .= 'UID:' . $event->getId() . '@' . $this->suffix . PHP_EOL;
         $result .= 'END:VEVENT' . PHP_EOL;
 
         return $result;

@@ -31,39 +31,39 @@ class Message
     /**
      * @var resource The MailParse resource
      */
-    private $_mailParse;
+    private $mailParse;
 
     /**
      * @var string The message string that should be parsed
      */
-    private $_message = '';
+    private $message = '';
 
     /**
      * @var array The different parts of the message
      */
-    private $_parts = array();
+    private $parts = array();
 
     /**
      * @param string $message The message string that should be parsed
      */
     public function __construct($message)
     {
-        $this->_message = $message;
+        $this->message = $message;
 
-        $this->_mailParse = mailparse_msg_create();
-        mailparse_msg_parse($this->_mailParse, $message);
+        $this->mailParse = mailparse_msg_create();
+        mailparse_msg_parse($this->mailParse, $message);
 
-        $this->_parse();
+        $this->parse();
     }
 
     /**
      * Retrieve the message's headers.
      *
-     * @return string
+     * @return array
      */
     public function getHeaders()
     {
-        return $this->_getPartHeaders($this->_parts[1]);
+        return $this->getPartHeaders($this->parts[1]);
     }
 
     /**
@@ -74,7 +74,7 @@ class Message
      */
     public function getHeader($name)
     {
-        $headers = $this->_getPartHeaders($this->_parts[1]);
+        $headers = $this->getPartHeaders($this->parts[1]);
 
         $header = '';
         if (isset($headers[$name])) {
@@ -107,16 +107,16 @@ class Message
         );
 
         $body = array();
-        foreach ($this->_parts as $part) {
-            if (in_array($this->_getPartContentType($part), $bodyTypes)) {
-                $headers = $this->_getPartHeaders($part);
-                $content = $this->_decode(
-                    $this->_getPartBody($part),
+        foreach ($this->parts as $part) {
+            if (in_array($this->getPartContentType($part), $bodyTypes)) {
+                $headers = $this->getPartHeaders($part);
+                $content = $this->decode(
+                    $this->getPartBody($part),
                     array_key_exists('content-transfer-encoding', $headers) ? $headers['content-transfer-encoding'] : ''
                 );
 
                 $body[] = array(
-                    'type' => array_search($this->_getPartContentType($part), $bodyTypes),
+                    'type' => array_search($this->getPartContentType($part), $bodyTypes),
                     'content' => $content,
                 );
             }
@@ -142,37 +142,37 @@ class Message
         );
 
         $attachments = array();
-        foreach ($this->_parts as $part) {
-            $contentDisposition = $this->_getPartContentDisposition($part);
+        foreach ($this->parts as $part) {
+            $contentDisposition = $this->getPartContentDisposition($part);
 
             $attachment = null;
             if (in_array($contentDisposition, $contentDispositions) && isset($part['disposition-filename'])) {
-                $attachmentData = $this->_decode(
-                    $this->_getPartBody($part),
+                $attachmentData = $this->decode(
+                    $this->getPartBody($part),
                     (array_key_exists('content-transfer-encoding', $part['headers']) ? $part['headers']['content-transfer-encoding'] : '')
                 );
 
                 $attachment = new Attachment(
                     $part['disposition-filename'],
-                    $this->_getPartContentType($part),
+                    $this->getPartContentType($part),
                     $attachmentData
                 );
             } else {
                 foreach ($headers as $header) {
-                    if (isset($this->_getPartHeaders($part)[$header])) {
-                        $attachmentData = $this->_decode(
-                            $this->_getPartBody($part),
+                    if (isset($this->getPartHeaders($part)[$header])) {
+                        $attachmentData = $this->decode(
+                            $this->getPartBody($part),
                             (array_key_exists('content-transfer-encoding', $part['headers']) ? $part['headers']['content-transfer-encoding'] : '')
                         );
 
-                        $filename = $this->_getPartHeaders($part)[$header];
+                        $filename = $this->getPartHeaders($part)[$header];
                         if (substr($filename, 0, 1) == '<' && substr($filename, -1) == '>') {
                             $filename = substr($filename, 1, (strlen($filename) - 2));
                         }
 
                         $attachment = new Attachment(
                             $filename,
-                            $this->_getPartContentType($part),
+                            $this->getPartContentType($part),
                             $attachmentData
                         );
                     }
@@ -192,18 +192,22 @@ class Message
      *
      * @return void
      */
-    private function _parse()
+    private function parse()
     {
-        $structure = mailparse_msg_get_structure($this->_mailParse);
+        $structure = mailparse_msg_get_structure($this->mailParse);
 
-        $this->_parts = array();
+        $this->parts = array();
         foreach ($structure as $nbPart) {
-            $part = mailparse_msg_get_part($this->_mailParse, $nbPart);
-            $this->_parts[$nbPart] = mailparse_msg_get_part_data($part);
+            $part = mailparse_msg_get_part($this->mailParse, $nbPart);
+            $this->parts[$nbPart] = mailparse_msg_get_part_data($part);
         }
     }
 
-    private function _getPartHeaders($part)
+    /**
+     * @param  array $part
+     * @return array
+     */
+    private function getPartHeaders($part)
     {
         $headers = array();
         if (isset($part['headers'])) {
@@ -219,7 +223,7 @@ class Message
      * @param  array  $part The part we want to query
      * @return string
      */
-    private function _getPartContentType($part)
+    private function getPartContentType($part)
     {
         $contentType = '';
         if (isset($part['content-type'])) {
@@ -238,7 +242,7 @@ class Message
      * @param  array  $part The part we want to query
      * @return string
      */
-    private function _getPartContentDisposition($part)
+    private function getPartContentDisposition($part)
     {
         $contentDisposition = '';
         if (isset($part['content-disposition'])) {
@@ -254,10 +258,10 @@ class Message
      * @param  array  $part The part we want to query
      * @return string
      */
-    private function _getPartBody($part)
+    private function getPartBody($part)
     {
         return substr(
-            $this->_message,
+            $this->message,
             $part['starting-pos-body'],
             ($part['ending-pos-body'] - $part['starting-pos-body'])
         );
@@ -270,7 +274,7 @@ class Message
      * @param  string $encodingType  The encoding type
      * @return string
      */
-    private function _decode($encodedString, $encodingType)
+    private function decode($encodedString, $encodingType)
     {
         if (strtolower($encodingType) == 'base64') {
             return base64_decode($encodedString);

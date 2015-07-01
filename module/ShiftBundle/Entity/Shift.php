@@ -18,18 +18,6 @@
 
 namespace ShiftBundle\Entity;
 
-
-
-
-
-
-
-
-
-
-
-
-
 use CalendarBundle\Entity\Node\Event,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Location,
@@ -390,11 +378,7 @@ class Shift
             }
         }
 
-        if ($this->countResponsibles() >= $this->getNbResponsibles()) {
-            return false;
-        }
-
-        return true;
+        return !($this->countResponsibles() >= $this->getNbResponsibles());
     }
 
     /**
@@ -647,11 +631,7 @@ class Shift
 
         $getStartDate = clone $this->getStartDate();
 
-        if ($getStartDate->sub($signoutTreshold) < $now) {
-            return false;
-        }
-
-        return true;
+        return !($getStartDate->sub($signoutTreshold) < $now);
     }
 
     /**
@@ -698,7 +678,7 @@ class Shift
     /**
      * Indicates whether the given person can edit this shift and its subscriptions.
      *
-     * @param  Person  $person The person to check.
+     * @param  Person|null $person The person to check.
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)

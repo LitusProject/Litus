@@ -33,7 +33,7 @@ class SubjectEnrollment extends EntityRepository
 {
     public function findAllByAcademicAndAcademicYearQuery(Academic $academic, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SecretaryBundle\Entity\Syllabus\SubjectEnrollment', 's')
             ->where(
@@ -51,7 +51,7 @@ class SubjectEnrollment extends EntityRepository
 
     public function findOneByAcademicAndAcademicYearAndSubject(Academic $academic, AcademicYear $academicYear, Subject $subject)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SecretaryBundle\Entity\Syllabus\SubjectEnrollment', 's')
             ->where(

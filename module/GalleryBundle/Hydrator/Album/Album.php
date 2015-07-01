@@ -18,13 +18,12 @@
 
 namespace GalleryBundle\Hydrator\Album;
 
-
 use GalleryBundle\Entity\Album\Album as AlbumEntity,
     GalleryBundle\Entity\Album\Translation;
 
 class Album extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('watermark');
+    private static $stdKeys = array('watermark');
 
     protected function doExtract($object = null)
     {
@@ -32,7 +31,7 @@ class Album extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['date'] = $object->getDate()->format('d/m/Y');
 
@@ -49,7 +48,7 @@ class Album extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new AlbumEntity($this->getPerson());
+            $object = new AlbumEntity($this->getPersonEntity());
         }
 
         if (isset($data['date'])) {
@@ -77,6 +76,6 @@ class Album extends \CommonBundle\Component\Hydrator\Hydrator
             }
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

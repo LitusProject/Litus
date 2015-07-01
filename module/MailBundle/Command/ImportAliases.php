@@ -57,7 +57,7 @@ EOT
         $pwd = getenv('PWD');
 
         foreach ($files as $file) {
-            $this->_loadFile($pwd . '/' . $file);
+            $this->loadFile($pwd . '/' . $file);
         }
 
         if ($this->getOption('flush')) {
@@ -75,7 +75,7 @@ EOT
     /**
      * @param string $file
      */
-    private function _loadFile($file)
+    private function loadFile($file)
     {
         foreach (file($file) as $line) {
             $parts = explode(':', trim($line));

@@ -31,9 +31,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Retour extends EntityRepository
 {
+    /**
+     * @param  Supplier            $supplier
+     * @param  PeriodEntity        $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySupplierAndPeriodQuery(Supplier $supplier, PeriodEntity $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('r')
             ->from('CudiBundle\Entity\Stock\Retour', 'r')
             ->innerJoin('r.article', 'a')
@@ -57,9 +62,14 @@ class Retour extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article      $article
+     * @param  PeriodEntity $period
+     * @return int
+     */
     public function findTotalByArticleAndPeriod(Article $article, PeriodEntity $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('SUM(r.number)')
             ->from('CudiBundle\Entity\Stock\Retour', 'r')
             ->where(
@@ -82,9 +92,13 @@ class Retour extends EntityRepository
         return $resultSet ? $resultSet : 0;
     }
 
+    /**
+     * @param  PeriodEntity        $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPeriodQuery(PeriodEntity $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('r')
             ->from('CudiBundle\Entity\Stock\Retour', 'r')
             ->where(

@@ -18,9 +18,6 @@
 
 namespace CudiBundle\Entity\Article;
 
-
-
-
 use CudiBundle\Entity\Article\Option\Binding,
     CudiBundle\Entity\Article\Option\Color,
     Doctrine\ORM\EntityManager,
@@ -221,7 +218,7 @@ class Internal extends \CudiBundle\Entity\Article
     }
 
     /**
-     * @param Color $frontPageColor
+     * @param Color|null $frontPageColor
      *
      * @return self
      */

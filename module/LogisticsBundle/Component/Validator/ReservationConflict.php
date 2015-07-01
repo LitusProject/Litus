@@ -72,8 +72,8 @@ class ReservationConflict extends \CommonBundle\Component\Validator\AbstractVali
     /**
      * Returns true if and only if no other reservation exists for the resource that conflicts with the new one.
      *
-     * @param  mixed   $value
-     * @param  array   $context
+     * @param  string     $value   The value of the field that will be validated
+     * @param  array|null $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)

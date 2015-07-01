@@ -31,7 +31,7 @@ class Reply extends EntityRepository
 {
     public function findLastQuery($nb = 10)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SyllabusBundle\Entity\Subject\Reply', 'r')
             ->innerJoin('r.comment', 'c')
@@ -47,7 +47,7 @@ class Reply extends EntityRepository
 
     public function findAllByCommentQuery(CommentEntity $comment)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SyllabusBundle\Entity\Subject\Reply', 'r')
             ->where(
@@ -62,7 +62,7 @@ class Reply extends EntityRepository
 
     public function findLastByComment(CommentEntity $comment)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SyllabusBundle\Entity\Subject\Reply', 'r')
             ->where(

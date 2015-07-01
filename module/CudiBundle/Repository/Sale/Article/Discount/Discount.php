@@ -30,9 +30,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Discount extends EntityRepository
 {
+    /**
+     * @param  Article                                                $article
+     * @param  string                                                 $type
+     * @return \CudiBundle\Entity\Sale\Article\Discount\Discount|null
+     */
     public function findOneByArticleAndType(Article $article, $type)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('d')
             ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
             ->leftJoin('d.template', 't')
@@ -54,9 +59,15 @@ class Discount extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article                                                $article
+     * @param  string                                                 $type
+     * @param  Organization|null                                      $organization
+     * @return \CudiBundle\Entity\Sale\Article\Discount\Discount|null
+     */
     public function findOneByArticleAndTypeAndOrganization(Article $article, $type, Organization $organization = null)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('d')
             ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
             ->leftJoin('d.template', 't')
@@ -87,9 +98,13 @@ class Discount extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleQuery(Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('d')
             ->from('CudiBundle\Entity\Sale\Article\Discount\Discount', 'd')
             ->innerJoin('d.article', 'a')

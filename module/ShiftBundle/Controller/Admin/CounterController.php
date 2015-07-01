@@ -19,6 +19,7 @@
 namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\User\Person,
     DateTime,
     Zend\View\Model\ViewModel;
 
@@ -32,7 +33,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function indexAction()
     {
-        $academicYear = $this->_getAcademicYear();
+        $academicYear = $this->getAcademicYear();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -48,7 +49,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
     public function unitsAction()
     {
-        $academicYear = $this->_getAcademicYear();
+        $academicYear = $this->getAcademicYear();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -56,7 +57,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
         $shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findByAcademicYear($this->_getAcademicYear());
+            ->findByAcademicYear($this->getAcademicYear());
 
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
@@ -113,17 +114,17 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
     public function viewAction()
     {
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
         $asResponsible = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllByPersonAsReponsible($person, $this->_getAcademicYear());
+            ->findAllByPersonAsReponsible($person, $this->getAcademicYear());
 
         $asVolunteer = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
-            ->findAllByPersonAsVolunteer($person, $this->_getAcademicYear());
+            ->findAllByPersonAsVolunteer($person, $this->getAcademicYear());
 
         $payed = array();
         foreach ($asVolunteer as $shift) {
@@ -227,7 +228,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        $academicYear = $this->_getAcademicYear();
+        $academicYear = $this->getAcademicYear();
 
         $people = null;
         switch ($this->getParam('field')) {
@@ -320,7 +321,10 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _getAcademicYear()
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
+    private function getAcademicYear()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {
@@ -347,32 +351,17 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return $academicYear;
     }
 
-    private function _getPerson()
+    /**
+     * @return Person|null
+     */
+    private function getPersonEntity()
     {
-        if (null === $this->getParam('id')) {
+        $person = $this->getEntityById('CommonBundle\Entity\User\Person');
+
+        if (!($person instanceof Person)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the person!'
-            );
-
-            $this->redirect()->toRoute(
-                'shift_admin_shift_counter',
-                array(
-                    'action' => 'index',
-                )
-            );
-
-            return;
-        }
-
-        $person = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $person) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No person with the given ID was found!'
+                'No person was found!'
             );
 
             $this->redirect()->toRoute(

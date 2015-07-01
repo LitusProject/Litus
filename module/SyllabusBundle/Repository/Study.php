@@ -32,7 +32,7 @@ class Study extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Study', 's')
             ->getQuery();
@@ -46,7 +46,7 @@ class Study extends EntityRepository
             return null;
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Study', 's')
             ->where(
@@ -72,7 +72,7 @@ class Study extends EntityRepository
             return null;
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Study', 's')
             ->where(
@@ -95,7 +95,7 @@ class Study extends EntityRepository
 
     public function findAllParentsByAcademicYearQuery(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\AcademicYearMap', 'm')
             ->where(
@@ -113,7 +113,7 @@ class Study extends EntityRepository
             }
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Study', 's')
             ->where(
@@ -135,7 +135,7 @@ class Study extends EntityRepository
             return array();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\AcademicYearMap', 'm')
             ->where(
@@ -164,7 +164,7 @@ class Study extends EntityRepository
             return null;
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Study', 's')
             ->where(

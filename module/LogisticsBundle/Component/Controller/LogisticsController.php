@@ -50,7 +50,7 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
         $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_url');
-        $result->shibbolethUrl = $this->_getShibbolethUrl();
+        $result->shibbolethUrl = $this->getShibbolethUrl();
 
         $e->setResult($result);
 
@@ -79,7 +79,7 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
      *
      * @return string
      */
-    private function _getShibbolethUrl()
+    private function getShibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

@@ -18,9 +18,6 @@
 
 namespace BrBundle\Entity\User\Status;
 
-
-
-
 use BrBundle\Entity\User\Person\Corporate as CorporatePerson,
     CommonBundle\Component\Util\AcademicYear,
     Doctrine\ORM\Mapping as ORM,
@@ -38,7 +35,7 @@ class Corporate
      * @static
      * @var array All the possible status values allowed
      */
-    private static $_possibleStatuses = array(
+    private static $possibleStatuses = array(
         'correspondence', 'signatory',
     );
 
@@ -149,7 +146,7 @@ class Corporate
      */
     public static function isValidStatus($status)
     {
-        return in_array($status, self::$_possibleStatuses);
+        return in_array($status, self::$possibleStatuses);
     }
 
     /**

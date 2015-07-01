@@ -31,7 +31,8 @@ class EntriesOnlyEntry extends Entry
     }
 
     /**
-     * @param Node $node
+     * @param  Node $node
+     * @return null
      */
     public function addNodeToList(Node $node)
     {

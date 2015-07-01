@@ -22,7 +22,7 @@ use LogisticsBundle\Entity\Lease\Item as ItemEntity;
 
 class Item extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('name', 'barcode', 'additional_info');
+    private static $stdKeys = array('name', 'barcode', 'additional_info');
 
     protected function doExtract($object = null)
     {
@@ -30,7 +30,7 @@ class Item extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        return $this->stdExtract($object, self::$std_keys);
+        return $this->stdExtract($object, self::$stdKeys);
     }
 
     protected function doHydrate(array $data, $object = null)
@@ -39,6 +39,6 @@ class Item extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new ItemEntity();
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

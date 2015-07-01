@@ -29,9 +29,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Person extends EntityRepository
 {
+    /**
+     * @param  string              $name
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByNameQuery($name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person', 'p')
             ->where(
@@ -58,9 +62,13 @@ class Person extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Role                $role
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByRoleQuery(Role $role)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person', 'p')
             ->innerJoin('p.roles', 'r')
@@ -73,9 +81,13 @@ class Person extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $username
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByUsernameQuery($username)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person', 'p')
             ->where(
@@ -87,9 +99,13 @@ class Person extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string                                $username
+     * @return \CommonBundle\Entity\User\Person|null
+     */
     public function findOneByUsername($username)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person', 'p')
             ->where(
@@ -104,7 +120,7 @@ class Person extends EntityRepository
             return $resultSet;
         }
 
-        $barcode = $this->_em
+        $barcode = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findOneByBarcode($username);
 
@@ -115,9 +131,13 @@ class Person extends EntityRepository
         return null;
     }
 
+    /**
+     * @param  string              $name
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByNameTypeaheadQuery($name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person', 'p')
             ->where(

@@ -18,7 +18,6 @@
 
 namespace QuizBundle\Entity;
 
-
 use Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
@@ -31,7 +30,7 @@ use Doctrine\Common\Collections\ArrayCollection,
 class Team
 {
     /**
-     * @var The entry's unique identifier
+     * @var int The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue

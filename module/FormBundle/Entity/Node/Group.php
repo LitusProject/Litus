@@ -18,11 +18,6 @@
 
 namespace FormBundle\Entity\Node;
 
-
-
-
-
-
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     DateTime,
@@ -56,7 +51,7 @@ class Group extends \CommonBundle\Entity\Node
     /**
      * @var EntityManager
      */
-    protected $_entityManager;
+    protected $entityManager;
 
     /**
      * @param  DateTime $startDate
@@ -299,7 +294,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }
@@ -341,7 +336,7 @@ class Group extends \CommonBundle\Entity\Node
             return false;
         }
 
-        $this->forms[0]->getForm()->setEntityManager($this->_entityManager);
+        $this->forms[0]->getForm()->setEntityManager($this->entityManager);
 
         return $this->forms[0]->getForm()->canBeViewedBy($person);
     }

@@ -41,7 +41,8 @@ class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, \Common
     use \Zend\ServiceManager\ServiceLocatorAwareTrait;
 
     /**
-     * @param string $name
+     * @param string|null $name
+     * @param array       $options
      */
     public function __construct($name = null, $options = array())
     {
@@ -61,6 +62,9 @@ class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, \Common
         return parent::setName($name);
     }
 
+    /**
+     * @return string
+     */
     public function showAs()
     {
         if (null !== $this->getOption('showAs')) {

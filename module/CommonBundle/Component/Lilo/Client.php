@@ -37,42 +37,42 @@ class Client
     /**
      * @var Authentication The authentication instance
      */
-    private $_authentication;
+    private $authentication;
 
     /**
      * @var Connection The connection to the Lilo server
      */
-    private $_connection;
+    private $connection;
 
     /**
      * @var RequestInterface The request to the page
      */
-    private $_request;
+    private $request;
 
     /**
      * Constructs a new Lilo client.
      *
-     * @param Connection          $connection     The connection to the Lilo server
-     * @param Authentication|null $authentication The authentication instance
-     * @param RequestInterface    $request        The request to the page
+     * @param Connection            $connection     The connection to the Lilo server
+     * @param Authentication|null   $authentication The authentication instance
+     * @param RequestInterface|null $request        The request to the page
      */
-    public function __construct(Connection $connection, Authentication $authentication = null, RequestInterface $request)
+    public function __construct(Connection $connection, Authentication $authentication = null, RequestInterface $request = null)
     {
-        $this->_authentication = $authentication;
-        $this->_connection = $connection;
-        $this->_request = $request;
+        $this->authentication = $authentication;
+        $this->connection = $connection;
+        $this->request = $request;
     }
 
     /**
      * Sends a log message to the server.
      *
      * @param  string $message The message that should be sent
-     * @param  string $tags    The tags associated with the message
+     * @param  array  $tags    The tags associated with the message
      * @return void
      */
     public function sendLog($message, array $tags = array())
     {
-        $this->_connection->send(
+        $this->connection->send(
             new LogData($message, $tags)
         );
     }
@@ -85,8 +85,8 @@ class Client
      */
     public function sendException(Exception $exception)
     {
-        $this->_connection->send(
-            new ExceptionData($exception, $this->_authentication, $this->_request)
+        $this->connection->send(
+            new ExceptionData($exception, $this->authentication, $this->request)
         );
     }
 

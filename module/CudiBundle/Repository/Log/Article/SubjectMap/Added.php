@@ -29,9 +29,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Added extends EntityRepository
 {
+    /**
+     * @param  DateTime            $date
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllAfterQuery(DateTime $date)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('CudiBundle\Entity\Log\Article\SubjectMap\Added', 'l')
             ->where(

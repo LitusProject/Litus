@@ -18,12 +18,6 @@
 
 namespace LogisticsBundle\Controller;
 
-
-
-
-
-
-
 use CommonBundle\Component\Util\File\TmpFile as TmpFile,
     DateTime,
     LogisticsBundle\Component\Document\Generator\Ics as IcsGenerator,
@@ -143,7 +137,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getVanReservationEntity())) {
             return $this->notFoundAction();
         }
 
@@ -220,7 +214,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getVanReservationEntity())) {
             return $this->notFoundAction();
         }
 
@@ -236,7 +230,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
     public function moveAction()
     {
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getVanReservationEntity())) {
             return $this->notFoundAction();
         }
 
@@ -263,7 +257,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $this->initAjax();
 
-        $reservations = $this->_getReservations();
+        $reservations = $this->getReservations();
 
         if (null === $reservations) {
             return $this->notFoundAction();
@@ -334,7 +328,10 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         );
     }
 
-    private function _getReservations()
+    /**
+     * @return array
+     */
+    private function getReservations()
     {
         if (null === $this->getParam('start') || null === $this->getParam('end')) {
             return;
@@ -358,19 +355,13 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
     }
 
     /**
-     * @return VanReservation
+     * @return VanReservation|null
      */
-    private function _getReservation()
+    private function getVanReservationEntity()
     {
-        if (null === $this->getParam('id')) {
-            return;
-        }
+        $reservation = $this->getEntityById('LogisticsBundle\Entity\Reservation\VanReservation');
 
-        $reservation = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
-            ->findOneById($this->getParam('id'));
-
-        if (null == $reservation) {
+        if (!($reservation instanceof VanReservation)) {
             return;
         }
 

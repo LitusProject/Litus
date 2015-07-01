@@ -58,7 +58,14 @@ class Unique extends \CommonBundle\Component\Validator\AbstractValidator
         parent::__construct($options);
     }
 
-    public function isValid($value)
+    /**
+     * Returns true if this team is unique
+     *
+     * @param  string     $value   The value of the field that will be validated
+     * @param  array|null $context The context of the field that will be validated
+     * @return boolean
+     */
+    public function isValid($value, $context = null)
     {
         $this->setValue($value);
 

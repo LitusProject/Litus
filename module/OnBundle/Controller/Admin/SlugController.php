@@ -18,7 +18,6 @@
 
 namespace OnBundle\Controller\Admin;
 
-
 use OnBundle\Document\Slug,
     Zend\View\Model\ViewModel;
 
@@ -83,7 +82,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($slug = $this->_getSlug())) {
+        if (!($slug = $this->getSlugEntity())) {
             return new ViewModel();
         }
 
@@ -123,7 +122,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($slug = $this->_getSlug())) {
+        if (!($slug = $this->getSlugEntity())) {
             return new ViewModel();
         }
 
@@ -139,34 +138,18 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return Slug
+     * @return Slug|null
      */
-    private function _getSlug()
+    private function getSlugEntity()
     {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the slug!'
-            );
-
-            $this->redirect()->toRoute(
-                'on_admin_slug',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
         $slug = $this->getDocumentManager()
             ->getRepository('OnBundle\Document\Slug')
-            ->findOneById($this->getParam('id'));
+            ->findOneById($this->getParam('id', 0));
 
-        if (null === $slug) {
+        if (!($slug instanceof Slug)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No slug with the given ID was found!'
+                'No slug was found!'
             );
 
             $this->redirect()->toRoute(

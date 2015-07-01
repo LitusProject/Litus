@@ -18,7 +18,6 @@
 
 namespace SyllabusBundle\Entity;
 
-
 use Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
@@ -194,7 +193,7 @@ class Study
     }
 
     /**
-     * @param  Study $parent
+     * @param  Study|null $parent
      * @return self
      */
     public function setParent(Study $parent = null)

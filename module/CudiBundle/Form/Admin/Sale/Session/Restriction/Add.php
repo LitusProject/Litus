@@ -18,9 +18,6 @@
 
 namespace CudiBundle\Form\Admin\Sale\Session\Restriction;
 
-
-
-
 use CommonBundle\Component\Util\AcademicYear,
     CudiBundle\Entity\Sale\Session,
     CudiBundle\Entity\Sale\Session\Restriction,
@@ -131,7 +128,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required'   => true,
             'attributes' => array(
                 'class'   => 'restriction_value restriction_value_year',
-                'options' => YearRestriction::$POSSIBLE_YEARS,
+                'options' => YearRestriction::$possibleYears,
             ),
         ));
 
@@ -142,7 +139,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required'   => true,
             'attributes' => array(
                 'class'   => 'restriction_value restriction_value_year',
-                'options' => YearRestriction::$POSSIBLE_YEARS,
+                'options' => YearRestriction::$possibleYears,
             ),
             'options'    => array(
                 'input' => array(

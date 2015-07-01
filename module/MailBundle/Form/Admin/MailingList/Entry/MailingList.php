@@ -18,7 +18,6 @@
 
 namespace MailBundle\Form\Admin\MailingList\Entry;
 
-
 use CommonBundle\Entity\User\Person,
     MailBundle\Entity\MailingList as MailingListEntity;
 
@@ -34,12 +33,12 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var Person The authenticated person
      */
-    protected $_person = null;
+    protected $person = null;
 
     /**
      * @var MailingListEntity The current list
      */
-    protected $_list = null;
+    protected $list = null;
 
     public function init()
     {
@@ -51,7 +50,7 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'List',
             'required'   => true,
             'options'    => array(
-                'options' => $this->_createEntriesArray(),
+                'options' => $this->createEntriesArray(),
                 'input' => array(
                     'validators' => array(
                         array(
@@ -75,7 +74,7 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
         ));
     }
 
-    private function _createEntriesArray()
+    private function createEntriesArray()
     {
         $editor = false;
         foreach ($this->getPerson()->getFlattenedRoles() as $role) {
@@ -128,7 +127,7 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setList(MailingListEntity $list)
     {
-        $this->_list = $list;
+        $this->list = $list;
 
         return $this;
     }
@@ -138,7 +137,7 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
      */
     public function getList()
     {
-        return $this->_list;
+        return $this->list;
     }
 
     /**
@@ -147,7 +146,7 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setPerson(Person $person)
     {
-        $this->_person = $person;
+        $this->person = $person;
 
         return $this;
     }
@@ -157,6 +156,6 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
      */
     public function getPerson()
     {
-        return $this->_person;
+        return $this->person;
     }
 }

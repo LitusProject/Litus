@@ -19,6 +19,7 @@
 namespace FormBundle\Controller;
 
 use DateTime,
+    FormBundle\Entity\Node\Group,
     FormBundle\Entity\Node\GuestInfo,
     Zend\View\Model\ViewModel;
 
@@ -31,7 +32,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function viewAction()
     {
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return $this->notFoundAction();
         }
 
@@ -59,9 +60,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         $startForm = $group->getForms()[0]->getForm();
 
         foreach ($group->getForms() as $form) {
-            $person = $this->getAuthentication()->getPersonObject();
-
-            if (null !== $person) {
+            if ($this->getAuthentication()->isAuthenticated()) {
+                $person = $this->getAuthentication()->getPersonObject();
                 $entries[$form->getForm()->getId()] = array(
                     'entry' => current(
                         $this->getEntityManager()
@@ -76,10 +76,10 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($entries[$form->getForm()->getId()]['entry']) {
                     $startForm = $form->getForm();
                 }
-            } elseif ($this->_isCookieSet()) {
+            } elseif ($this->isCookieSet()) {
                 $guestInfo = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\GuestInfo')
-                    ->findOneBySessionId($this->_getCookie());
+                    ->findOneBySessionId($this->getCookie());
 
                 $guestInfo->renew($this->getRequest());
 
@@ -110,17 +110,14 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function _getGroup()
+    /**
+     * @return Group|null
+     */
+    private function getGroupEntity()
     {
-        if (null === $this->getParam('id')) {
-            return;
-        }
+        $group = $this->getEntityById('FormBundle\Entity\Node\Group');
 
-        $group = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $group) {
+        if (!($group instanceof Group)) {
             return;
         }
 
@@ -130,7 +127,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return boolean
      */
-    private function _isCookieSet()
+    private function isCookieSet()
     {
         /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');
@@ -141,7 +138,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return string
      */
-    private function _getCookie()
+    private function getCookie()
     {
         /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');

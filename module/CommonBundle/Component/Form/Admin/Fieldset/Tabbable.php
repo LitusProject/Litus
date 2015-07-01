@@ -18,10 +18,6 @@
 
 namespace CommonBundle\Component\Form\Admin\Fieldset;
 
-
-
-
-
 use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language,
     Locale,
@@ -152,9 +148,10 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset
     }
 
     /**
-     * @param FieldsetInterface $container The tab
-     * @param Language          $language  The language of the tab
-     * @param boolean           $isDefault Whether the language is the default langauge
+     * @param  FieldsetInterface $container The tab
+     * @param  Language          $language  The language of the tab
+     * @param  boolean           $isDefault Whether the language is the default langauge
+     * @return null
      */
     abstract protected function addTab(FieldsetInterface $container, Language $language, $isDefault);
 

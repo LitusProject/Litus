@@ -18,9 +18,6 @@
 
 namespace CommonBundle\Component\Form;
 
-
-
-
 use Zend\Filter\FilterChain,
     Zend\ServiceManager\Config,
     Zend\ServiceManager\ServiceLocatorInterface,
@@ -56,11 +53,15 @@ class FactoryFactory implements \Zend\ServiceManager\FactoryInterface
             new FormElementManager($config, $this->isAdmin, $serviceManager)
         );
 
+        /** @var \Zend\Filter\FilterPluginManager $filterManager */
+        $filterManager = $serviceManager->get('FilterManager');
         $filterChain = new FilterChain();
-        $filterChain->setPluginManager($serviceManager->get('FilterManager'));
+        $filterChain->setPluginManager($filterManager);
 
+        /** @var \Zend\Validator\ValidatorPluginManager $validatorManager */
+        $validatorManager = $serviceManager->get('ValidatorManager');
         $validatorChain = new ValidatorChain();
-        $validatorChain->setPluginManager($serviceManager->get('ValidatorManager'));
+        $validatorChain->setPluginManager($validatorManager);
 
         $factory->getInputFilterFactory()
             ->setDefaultFilterChain($filterChain)

@@ -54,9 +54,9 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         $result = parent::onDispatch($e);
 
-        $result->menu = $this->_buildMenu();
+        $result->menu = $this->buildMenu();
 
-        $result->shibbolethUrl = $this->_getShibbolethUrl();
+        $result->shibbolethUrl = $this->getShibbolethUrl();
 
         $result->banners = $this->getEntityManager()
             ->getRepository('BannerBundle\Entity\Node\Banner')
@@ -105,7 +105,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
      *
      * @return array
      */
-    private function _buildMenu()
+    private function buildMenu()
     {
         $categories = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Category')
@@ -199,7 +199,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
      * @param  Page  $page The page
      * @return array
      */
-    protected function _buildSubmenu(Page $page)
+    protected function buildSubmenu(Page $page)
     {
         $pages = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Node\Page')
@@ -291,7 +291,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
      *
      * @return string
      */
-    protected function _getShibbolethUrl()
+    protected function getShibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

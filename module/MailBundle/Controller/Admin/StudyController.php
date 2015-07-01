@@ -18,10 +18,6 @@
 
 namespace MailBundle\Controller\Admin;
 
-
-
-
-
 use Zend\Mail\Message,
     Zend\Mime\Message as MimeMessage,
     Zend\Mime\Mime,
@@ -50,7 +46,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                $addresses = $this->_getAddresses($formData['studies'], $formData['groups'], $formData['bcc']);
+                $addresses = $this->getAddresses($formData['studies'], $formData['groups'], $formData['bcc']);
 
                 if ('' == $formData['select_message']['stored_message']) {
                     $body = $formData['compose_message']['message'];
@@ -193,10 +189,16 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
         );
     }
 
-    private function _getAddresses($studyIds, $groupIds, $bcc)
+    /**
+     * @param  array $studyIds
+     * @param  array $groupIds
+     * @param  array $bcc
+     * @return array
+     */
+    private function getAddresses($studyIds, $groupIds, $bcc)
     {
-        $studyEnrollments = $this->_getStudyEnrollments($studyIds);
-        list($groupEnrollments, $extraMembers, $excludedMembers) = $this->_getGroupEnrollments($groupIds);
+        $studyEnrollments = $this->getStudyEnrollments($studyIds);
+        list($groupEnrollments, $extraMembers, $excludedMembers) = $this->getGroupEnrollments($groupIds);
 
         $enrollments = array_merge($studyEnrollments, $groupEnrollments);
 
@@ -223,7 +225,11 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
         return $addresses;
     }
 
-    private function _getStudyEnrollments($studyIds)
+    /**
+     * @param  array $studyIds
+     * @return array
+     */
+    private function getStudyEnrollments($studyIds)
     {
         if (empty($studyIds)) {
             return array();
@@ -254,7 +260,11 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
         return $enrollments;
     }
 
-    private function _getGroupEnrollments($groupIds)
+    /**
+     * @param  array $groupIds
+     * @return array
+     */
+    private function getGroupEnrollments($groupIds)
     {
         if (empty($groupIds)) {
             return array(array(), array(), array());

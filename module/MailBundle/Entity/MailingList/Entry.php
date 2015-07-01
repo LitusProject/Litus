@@ -37,7 +37,7 @@ use Doctrine\ORM\Mapping as ORM,
 abstract class Entry
 {
     /**
-     * @var The entry's unique identifier
+     * @var int The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue

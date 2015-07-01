@@ -18,11 +18,6 @@
 
 namespace CommonBundle\Entity\User\Person;
 
-
-
-
-
-
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
@@ -254,7 +249,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  DateTime $birthday
+     * @param  DateTime|null $birthday
      * @return self
      */
     public function setBirthday(DateTime $birthday = null)

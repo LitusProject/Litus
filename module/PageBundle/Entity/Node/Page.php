@@ -18,13 +18,6 @@
 
 namespace PageBundle\Entity\Node;
 
-
-
-
-
-
-
-
 use CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -142,7 +135,7 @@ class Page extends \CommonBundle\Entity\Node
      * @param  Category $category
      * @return self
      */
-    public function setCategory(Category$category)
+    public function setCategory(Category $category)
     {
         $this->category = $category;
 
@@ -287,7 +280,7 @@ class Page extends \CommonBundle\Entity\Node
     /**
      * Checks whether or not the given user can edit the page.
      *
-     * @param  Person  $person The person that should be checked
+     * @param  Person|null $person The person that should be checked
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)

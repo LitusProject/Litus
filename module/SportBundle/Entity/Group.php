@@ -18,9 +18,6 @@
 
 namespace SportBundle\Entity;
 
-
-
-
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
@@ -34,7 +31,7 @@ use CommonBundle\Entity\General\AcademicYear,
  */
 class Group
 {
-    public static $ALL_MEMBERS = array('one', 'two', 'three', 'four', 'five');
+    public static $allMembers = array('one', 'two', 'three', 'four', 'five');
 
     /**
      * @var int The ID of this group
@@ -78,7 +75,7 @@ class Group
     /**
      * @var EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @param AcademicYear $academicYear
@@ -157,7 +154,7 @@ class Group
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }
@@ -172,14 +169,14 @@ class Group
     {
         $points = 0;
         foreach ($this->getMembers() as $member) {
-            $member->setEntityManager($this->_entityManager);
+            $member->setEntityManager($this->entityManager);
 
             foreach ($member->getLaps($academicYear) as $lap) {
                 if (null === $lap->getEndTime()) {
                     continue;
                 }
 
-                $lap->setEntityManager($this->_entityManager);
+                $lap->setEntityManager($this->entityManager);
 
                 $startTime = $lap->getStartTime()->format('H');
                 $endTime = $lap->getEndTime()->format('H');

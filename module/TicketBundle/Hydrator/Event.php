@@ -18,8 +18,6 @@
 
 namespace TicketBundle\Hydrator;
 
-
-
 use TicketBundle\Entity\Event as EventEntity,
     TicketBundle\Entity\Option,
     TicketBundle\Entity\Ticket as TicketEntity;
@@ -29,7 +27,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[]
      */
-    private static $std_keys = array(
+    private static $stdKeys = array(
         'active', 'bookable_praesidium', 'bookable', 'number_of_tickets',
         'limit_per_person', 'only_members',
     );
@@ -40,7 +38,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new EventEntity();
         }
 
-        $enableOptions = isset($data['enable_options']) && $data['enable_options'] || sizeof($object->getOptions()) > 0;
+        $enableOptions = (isset($data['enable_options']) && $data['enable_options']) || sizeof($object->getOptions()) > 0;
 
         $calendarEvent = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
@@ -48,8 +46,12 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
         $closeDate = self::loadDateTime($data['bookings_close_date']);
 
-        $priceMembers = $enableOptions ? 0 : $data['prices']['price_members'];
-        $priceNonMembers = $enableOptions ? 0 : ($data['only_members'] ? 0 : $data['prices']['price_non_members']);
+        $priceMembers = 0;
+        $priceNonMembers = 0;
+        if ($enableOptions) {
+            $priceMembers = $data['prices']['price_members'];
+            $priceNonMembers = $data['only_members'] ? 0 : $data['prices']['price_non_members'];
+        }
 
         $generateTickets = $data['generate_tickets'];
 
@@ -65,13 +67,13 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                         ->findOneById($optionData['option_id']);
                     $option->setName($optionData['option'])
                         ->setPriceMembers($optionData['price_members'])
-                        ->setPriceNonMembers($data['only_members'] ? 0 : $optionData['price_non_members']);
+                        ->setPriceNonMembers($priceNonMembers);
                 } else {
                     $option = new Option(
                         $object,
                         $optionData['option'],
                         $optionData['price_members'],
-                        $data['only_members'] ? 0 : $optionData['price_non_members']
+                        $priceNonMembers
                     );
                     $this->getEntityManager()->persist($option);
                 }
@@ -97,7 +99,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                             )
                         );
                     }
-                } else { // net ticket count =< old ticket count
+                } else {
+                    // net ticket count =< old ticket count
                     $tickets = $this->getEntityManager()
                         ->getRepository('TicketBundle\Entity\Ticket')
                         ->findAllEmptyByEvent($object);
@@ -112,8 +115,9 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                         $this->getEntityManager()->remove($ticket);
                     }
                 }
-            } else { // tickets weren't generated yet, but are now
-                for ($i = 0; $i < $data['number_of_tickets']; $i++) {
+            } else {
+                // tickets weren't generated yet, but are now
+                for ($i = 0 ; $i < $data['number_of_tickets'] ; $i++) {
                     $this->getEntityManager()->persist(
                         new TicketEntity(
                             $object,
@@ -126,7 +130,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     );
                 }
             }
-        } elseif ($object->getId()) { // tickets are not generated (anymore)
+        } elseif ($object->getId()) {
+            // tickets are not generated (anymore)
             $tickets = $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Ticket')
                 ->findAllEmptyByEvent($object);
@@ -142,7 +147,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->setPriceNonMembers($priceNonMembers)
             ->setAllowRemove($data['allow_remove']);
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -151,7 +156,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['event'] = $object->getActivity()->getId();
         $data['bookings_close_date'] = $object->getBookingsCloseDate() ? $object->getBookingsCloseDate()->format('d/m/Y H:i') : '';

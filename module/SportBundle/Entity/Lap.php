@@ -81,7 +81,7 @@ class Lap
     /**
      * @var EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @param AcademicYear $academicYear
@@ -164,7 +164,7 @@ class Lap
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }
@@ -210,12 +210,12 @@ class Lap
     public function getPoints()
     {
         $pointsCriteria = unserialize(
-            $this->_entityManager
+            $this->entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('sport.points_criteria')
         );
 
-        $seconds = $this->_convertDateIntervalToSeconds($this->getLapTime());
+        $seconds = $this->convertDateIntervalToSeconds($this->getLapTime());
 
         foreach ($pointsCriteria as $i => $pointsCriterium) {
             if (isset($pointsCriteria[$i+1])) {
@@ -238,7 +238,7 @@ class Lap
      * @param  DateInterval $interval The interval that should be converted
      * @return integer
      */
-    private function _convertDateIntervalToSeconds(DateInterval $interval)
+    private function convertDateIntervalToSeconds(DateInterval $interval)
     {
         return $interval->h*3600 + $interval->i*60 + $interval->s;
     }

@@ -18,10 +18,6 @@
 
 namespace BrBundle\Controller\Corporate;
 
-
-
-
-
 use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Job,
     BrBundle\Entity\Company\Request\RequestVacancy,
@@ -38,7 +34,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 {
     public function overviewAction()
     {
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -66,7 +62,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
     {
         $form = $this->getForm('br_corporate_job_add');
 
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -113,11 +109,11 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function editAction()
     {
-        if (!($oldJob = $this->_getJob())) {
+        if (!($oldJob = $this->getVacancyEntity())) {
             return new ViewModel();
         }
 
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -167,11 +163,11 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function deleteAction()
     {
-        if (!($vacancy = $this->_getVacancy())) {
+        if (!($vacancy = $this->getVacancyEntity())) {
             return new ViewModel();
         }
 
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -187,89 +183,25 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         );
     }
 
-    private function _getVacancy()
+    /**
+     * @return Job|null
+     */
+    private function getVacancyEntity()
     {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the vacancy!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_corporate_vacancy',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        $vacancy = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Job')
-            ->findOneActiveByTypeAndId('vacancy', $this->getParam('id'));
-
-        if (null === $vacancy) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No vacancy with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_corporate_vacancy',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        return $vacancy;
-    }
-
-    private function _getSectors()
-    {
-        $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
-    }
-
-    private function _getJob()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the job!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_company',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
         $job = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findOneById($this->getParam('id'));
+            ->findOneActiveByTypeAndId('vacancy', $this->getParam('id', 0));
 
-        if (null === $job) {
+        if (!($job instanceof Job)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No job with the given ID was found!'
+                'No job was found!'
             );
 
             $this->redirect()->toRoute(
-                'br_admin_company',
+                'br_career_internship',
                 array(
-                    'action' => 'manage',
+                    'action' => 'overview',
                 )
             );
 
@@ -280,26 +212,15 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
     }
 
     /**
-     * @return Corporate
+     * @return array
      */
-    private function _getPerson()
+    private function getSectors()
     {
-        $person = $this->getAuthentication()->getPersonObject();
-
-        if ($person === null || !($person instanceof Corporate)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login to view the CV book.'
-            );
-
-            $this->redirect()->toRoute(
-                'br_corporate_index',
-                array(
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
+        $sectorArray = array();
+        foreach (Company::$possibleSectors as $key => $sector) {
+            $sectorArray[$key] = $sector;
         }
 
-        return $person;
+        return $sectorArray;
     }
 }

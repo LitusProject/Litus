@@ -30,7 +30,7 @@ class Url extends \Zend\View\Helper\Url
     /**
      * @var Language
      */
-    private $_language;
+    private $language;
 
     /**
      * @param  Language $language
@@ -38,7 +38,7 @@ class Url extends \Zend\View\Helper\Url
      */
     public function setLanguage(Language $language)
     {
-        $this->_language = $language;
+        $this->language = $language;
 
         return $this;
     }
@@ -47,7 +47,7 @@ class Url extends \Zend\View\Helper\Url
      * Generates an url given the name of a route.
      *
      * @see    Zend\Mvc\Router\RouteInterface::assemble()
-     * @param  string                     $name               Name of the route
+     * @param  string|null                $name               Name of the route
      * @param  array                      $params             Parameters for the link
      * @param  array                      $options            Options for the route
      * @param  boolean                    $reuseMatchedParams Whether to reuse matched parameters
@@ -58,8 +58,8 @@ class Url extends \Zend\View\Helper\Url
      */
     public function __invoke($name = null, $params = array(), $options = array(), $reuseMatchedParams = false)
     {
-        if (!isset($params['language']) && $this->_language) {
-            $params['language'] = $this->_language->getAbbrev();
+        if (!isset($params['language']) && $this->language) {
+            $params['language'] = $this->language->getAbbrev();
         }
 
         return parent::__invoke($name, $params, $options, $reuseMatchedParams);

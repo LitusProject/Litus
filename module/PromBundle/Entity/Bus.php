@@ -85,7 +85,6 @@ class Bus
      */
     public function __construct()
     {
-        $this->seats = new ArrayCollection();
     }
 
     /**
@@ -97,7 +96,7 @@ class Bus
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDirection()
     {
@@ -172,9 +171,9 @@ class Bus
     public function removePassenger(Passenger $passenger)
     {
         if ($this->getDirection() == 'Go') {
-            $this->firstBusSeats->remove($passenger);
+            $this->firstBusSeats->removeElement($passenger);
         } else {
-            $this->secondBusSeats->remove($passenger);
+            $this->secondBusSeats->removeElement($passenger);
         }
 
         return $this;

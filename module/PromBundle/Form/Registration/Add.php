@@ -18,13 +18,21 @@
 
 namespace PromBundle\Form\Registration;
 
+use PromBundle\Entity\Bus\ReservationCode;
+
 /**
  * add new registration
  *
  * @author Mathijs Cuppens
+ * @author Kristof Marien <kristof.marien@litus.cc>
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
+    /**
+     * @var ReservationCode
+     */
+    private $code;
+
     public function init()
     {
         parent::init();
@@ -70,7 +78,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'validators' => array(
                         array(
                             'name' => 'EmailAddress',
-                         ),
+                        ),
+                        array(
+                            'name' => 'prom_passenger_exists',
+                        ),
                     ),
                 ),
             ),
@@ -80,6 +91,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'type'       => 'text',
             'name'       => 'ticket_code',
             'label'      => 'Ticket Code',
+            'value'      => $this->code !== null ? $this->code->getCode() : '',
             'attributes' => array(
                 'disabled' => true,
             ),
@@ -94,6 +106,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'id'      => 'first_bus',
                 'options' => $this->getFirstBusses(),
             ),
+            'options'  => array(
+                'input' => array(
+                    'validators' => array(
+                        array(
+                            'name' => 'prom_bus_selected',
+                        ),
+                    ),
+                ),
+            ),
         ));
 
         $this->add(array(
@@ -105,12 +126,24 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'id'      => 'second_bus',
                 'options' => $this->getSecondBusses(),
             ),
+            'options'  => array(
+                'input' => array(
+                    'validators' => array(
+                        array(
+                            'name' => 'prom_bus_selected',
+                        ),
+                    ),
+                ),
+            ),
         ));
 
         $this->addSubmit('Reserve Seats', 'btn btn-default');
     }
 
-    private function getFirstBusses()
+    /**
+     * @return array
+     */
+    protected function getFirstBusses()
     {
         $busses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
@@ -127,7 +160,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         return $array;
     }
 
-    private function getSecondBusses()
+    /**
+     * @return array
+     */
+    protected function getSecondBusses()
     {
         $busses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
@@ -142,5 +178,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         return $array;
+    }
+
+    /**
+     * @param  ReservationCode $code
+     * @return self
+     */
+    public function setCode(ReservationCode $code)
+    {
+        $this->code = $code;
+
+        return $this;
     }
 }

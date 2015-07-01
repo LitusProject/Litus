@@ -18,12 +18,9 @@
 
 namespace MailBundle\Controller\Admin;
 
-
-
-
-
-
-use MailBundle\Entity\MailingList\AdminMap as ListAdmin,
+use CommonBundle\Entity\User\Person\Academic,
+    MailBundle\Entity\MailingList,
+    MailBundle\Entity\MailingList\AdminMap as ListAdmin,
     MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole,
     MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry,
     MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry,
@@ -124,11 +121,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function entriesAction()
     {
-        if (!($list = $this->_getList())) {
+        if (!($list = $this->getMailingListEntity())) {
             return new ViewModel();
         }
 
-        if (!$this->_checkAccess($list, false)) {
+        if (!$this->checkAccess($list, false)) {
             return new ViewModel();
         }
 
@@ -195,11 +192,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function adminsAction()
     {
-        if (!($list = $this->_getList())) {
+        if (!($list = $this->getMailingListEntity())) {
             return new ViewModel();
         }
 
-        if (!$this->_checkAccess($list, true)) {
+        if (!$this->checkAccess($list, true)) {
             return new ViewModel();
         }
 
@@ -283,11 +280,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($list = $this->_getList())) {
+        if (!($list = $this->getMailingListEntity())) {
             return new ViewModel();
         }
 
-        if (!$this->_checkAccess($list, false)) {
+        if (!$this->checkAccess($list, false)) {
             return new ViewModel();
         }
 
@@ -305,11 +302,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($entry = $this->_getEntry())) {
+        if (!($entry = $this->getMailingListEntryEntity())) {
             return new ViewModel();
         }
 
-        if (!$this->_checkAccess($entry->getList(), false)) {
+        if (!$this->checkAccess($entry->getList(), false)) {
             return new ViewModel();
         }
 
@@ -325,7 +322,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
     public function deleteAllEntriesAction()
     {
-        if (!($list = $this->_getList())) {
+        if (!($list = $this->getMailingListEntity())) {
             return new ViewModel();
         }
 
@@ -359,11 +356,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($admin = $this->_getAdmin())) {
+        if (!($admin = $this->getAdminMapEntity())) {
             return new ViewModel();
         }
 
-        if (!$this->_checkAccess($admin->getList(), true)) {
+        if (!$this->checkAccess($admin->getList(), true)) {
             return new ViewModel();
         }
 
@@ -381,11 +378,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $this->initAjax();
 
-        if (!($adminRole = $this->_getAdminRole())) {
+        if (!($adminRole = $this->getAdminRoleMapEntity())) {
             return new ViewModel();
         }
 
-        if (!$this->_checkAccess($adminRole->getList(), true)) {
+        if (!$this->checkAccess($adminRole->getList(), true)) {
             return new ViewModel();
         }
 
@@ -407,7 +404,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $lists = $this->_search()
+        $lists = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -429,7 +426,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     /**
     * @return \Doctrine\ORM\Query|null
     */
-    private function _search()
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'name':
@@ -439,32 +436,17 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         }
     }
 
-    private function _getList()
+    /**
+     * @return MailingList|null
+     */
+    private function getMailingListEntity()
     {
-        if (null === $this->getParam('id')) {
+        $list = $this->getEntityById('MailBundle\Entity\MailingList');
+
+        if (!($list instanceof MailingList)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the list!'
-            );
-
-            $this->redirect()->toRoute(
-                'mail_admin_list',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $list = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\MailingList')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $list) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No list with the given ID was found!'
+                'No mailing list was found!'
             );
 
             $this->redirect()->toRoute(
@@ -480,32 +462,17 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         return $list;
     }
 
-    private function _getEntry()
+    /**
+     * @return MailingListEntry|null
+     */
+    private function getMailingListEntryEntity()
     {
-        if (null === $this->getParam('id')) {
+        $entry = $this->getEntityById('MailBundle\Entity\MailingList\Entry');
+
+        if (!($entry instanceof MailingListEntry)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the entry!'
-            );
-
-            $this->redirect()->toRoute(
-                'mail_admin_list',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $entry = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\MailingList\Entry')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $entry) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No entry with the given ID was found!'
+                'No mailing list entry was found!'
             );
 
             $this->redirect()->toRoute(
@@ -521,12 +488,17 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         return $entry;
     }
 
-    private function _getAdmin()
+    /**
+     * @return ListAdmin|null
+     */
+    private function getAdminMapEntity()
     {
-        if (null === $this->getParam('id')) {
+        $entry = $this->getEntityById('MailBundle\Entity\MailingList\AdminMap');
+
+        if (!($entry instanceof ListAdmin)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the admin!'
+                'No admin map was found!'
             );
 
             $this->redirect()->toRoute(
@@ -539,76 +511,48 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             return;
         }
 
-        $admin = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\MailingList\AdminMap')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $admin) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No admin with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'mail_admin_list',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $admin;
-    }
-
-    private function _getAdminRole()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the admin role!'
-            );
-
-            $this->redirect()->toRoute(
-                'mail_admin_list',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $adminRole = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\MailingList\AdminRoleMap')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $adminRole) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No admin role with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'mail_admin_list',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $adminRole;
+        return $entry;
     }
 
     /**
-     * @param boolean $adminEdit
+     * @return ListAdminRole|null
      */
-    private function _checkAccess($list, $adminEdit)
+    private function getAdminRoleMapEntity()
+    {
+        $entry = $this->getEntityById('MailBundle\Entity\MailingList\AdminRoleMap');
+
+        if (!($entry instanceof ListAdminRole)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No admin role map was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'mail_admin_list',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $entry;
+    }
+
+    /**
+     * @param  MailingList $list
+     * @param  boolean     $adminEdit
+     * @return boolean
+     */
+    private function checkAccess(MailingList $list, $adminEdit)
     {
         $person = $this->getAuthentication()->getPersonObject();
+
+        if (!($person instanceof Academic)) {
+            return false;
+        }
+
         if (!$list->canBeEditedBy($person, $adminEdit)) {
             $this->flashMessenger()->error(
                 'Error',

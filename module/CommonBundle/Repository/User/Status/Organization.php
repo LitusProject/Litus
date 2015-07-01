@@ -29,9 +29,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Organization extends EntityRepository
 {
+    /**
+     * @param  string              $status
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByStatusQuery($status, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CommonBundle\Entity\User\Status\Organization', 's')
             ->where(

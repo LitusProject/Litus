@@ -18,11 +18,6 @@
 
 namespace MailBundle\Controller\Admin;
 
-
-
-
-
-
 use CommonBundle\Entity\General\AcademicYear,
     Zend\Mail\Message,
     Zend\Mime\Message as MimeMessage,
@@ -66,7 +61,7 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
 
                 $mail->addTo($formData['from']);
 
-                $volunteers = $this->_getVolunteers($formData['minimum_rank'], $academicYear);
+                $volunteers = $this->getVolunteers($formData['minimum_rank'], $academicYear);
 
                 foreach ($volunteers as $volunteer) {
                     $mail->addBcc($volunteer->getEmail(), $volunteer->getFullName());
@@ -99,7 +94,12 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
         );
     }
 
-    private function _getVolunteers($minRank, AcademicYear $academicYear)
+    /**
+     * @param  string       $minRank
+     * @param  AcademicYear $academicYear
+     * @return array
+     */
+    private function getVolunteers($minRank, AcademicYear $academicYear)
     {
         $rankingCriteria = unserialize(
             $this->getEntityManager()

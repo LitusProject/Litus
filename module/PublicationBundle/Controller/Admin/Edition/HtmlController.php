@@ -18,10 +18,6 @@
 
 namespace PublicationBundle\Controller\Admin\Edition;
 
-
-
-
-
 use DateTime,
     PublicationBundle\Entity\Edition\Html as HtmlEdition,
     PublicationBundle\Entity\Publication,
@@ -37,7 +33,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($publication = $this->_getPublication())) {
+        if (!($publication = $this->getPublicationEntity())) {
             return new ViewModel();
         }
 
@@ -59,7 +55,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($publication = $this->_getPublication())) {
+        if (!($publication = $this->getPublicationEntity())) {
             return new ViewModel();
         }
 
@@ -86,7 +82,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
     public function uploadAction()
     {
-        if (!($publication = $this->_getPublication())) {
+        if (!($publication = $this->getPublicationEntity())) {
             return new ViewModel();
         }
 
@@ -98,7 +94,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             $this->getRequest()->getFiles()->toArray()
         ));
 
-        $date = self::_loadDate($formData['date']);
+        $date = self::loadDate($formData['date']);
 
         if ($form->isValid() && $date) {
             $formData = $form->getData();
@@ -206,7 +202,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($edition = $this->_getEdition())) {
+        if (!($edition = $this->getHtmlEditionEntity())) {
             return new ViewModel();
         }
 
@@ -216,7 +212,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         $filePath = 'public' . $publicFilePath;
 
         if (file_exists($filePath . $edition->getFileName())) {
-            $this->_rrmdir($filePath . $edition->getFileName());
+            $this->rrmdir($filePath . $edition->getFileName());
         }
         $this->getEntityManager()->remove($edition);
         $this->getEntityManager()->flush();
@@ -228,32 +224,17 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getEdition()
+    /**
+     * @return HtmlEdition|null
+     */
+    private function getHtmlEditionEntity()
     {
-        if (null === $this->getParam('id')) {
+        $edition = $this->getEntityById('PublicationBundle\Entity\Edition\Html');
+
+        if (!($edition instanceof HtmlEdition)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the edition!'
-            );
-
-            $this->redirect()->toRoute(
-                'publication_admin_publication',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $edition = $this->getEntityManager()
-            ->getRepository('PublicationBundle\Entity\Edition\Html')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $edition) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No edition with the given ID was found!'
+                'No edition was found!'
             );
 
             $this->redirect()->toRoute(
@@ -269,32 +250,19 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         return $edition;
     }
 
-    private function _getPublication()
+    /**
+     * @return Publication|null
+     */
+    private function getPublicationEntity()
     {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the publication!'
-            );
-
-            $this->redirect()->toRoute(
-                'publication_admin_publication',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
         $publication = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\Publication')
             ->findOneActiveById($this->getParam('id'));
 
-        if (null === $publication) {
+        if (!($publication instanceof Publication)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No publication with the given ID was found!'
+                'No publication was found!'
             );
 
             $this->redirect()->toRoute(
@@ -313,11 +281,11 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @param string $dir
      */
-    private function _rrmdir($dir)
+    private function rrmdir($dir)
     {
         foreach (glob($dir . '/*') as $file) {
             if (is_dir($file)) {
-                $this->_rrmdir($file);
+                $this->rrmdir($file);
             } else {
                 unlink($file);
             }
@@ -329,7 +297,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
      * @param  string        $date
      * @return DateTime|null
      */
-    private static function _loadDate($date)
+    private static function loadDate($date)
     {
         return DateTime::createFromFormat('d#m#Y', $date) ?: null;
     }

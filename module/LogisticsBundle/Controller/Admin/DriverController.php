@@ -18,7 +18,6 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-
 use LogisticsBundle\Entity\Driver,
     Zend\View\Model\ViewModel;
 
@@ -84,7 +83,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
 
     public function editAction()
     {
-        if (!($driver = $this->_getDriver())) {
+        if (!($driver = $this->getDriverEntity())) {
             return new ViewModel();
         }
 
@@ -124,7 +123,7 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($driver = $this->_getDriver())) {
+        if (!($driver = $this->getDriverEntity())) {
             return new ViewModel();
         }
 
@@ -139,34 +138,16 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @return Driver
+     * @return Driver|null
      */
-    private function _getDriver()
+    private function getDriverEntity()
     {
-        if (null === $this->getParam('id')) {
+        $driver = $this->getEntityById('LogisticsBundle\Entity\Driver');
+
+        if (!($driver instanceof Driver)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the driver!'
-            );
-
-            $this->redirect()->toRoute(
-                'logistics_admin_driver',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $driver = $this->getEntityManager()
-        ->getRepository('LogisticsBundle\Entity\Driver')
-        ->findOneById($this->getParam('id'));
-
-        if (null === $driver) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No driver with the given ID was found!'
+                'No driver was found!'
             );
 
             $this->redirect()->toRoute(

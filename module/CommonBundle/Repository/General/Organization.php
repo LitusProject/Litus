@@ -18,7 +18,6 @@
 
 namespace CommonBundle\Repository\General;
 
-
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     RuntimeException;
 
@@ -30,9 +29,12 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Organization extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('CommonBundle\Entity\General\Organization', 'o')
             ->orderBy('o.name', 'ASC')
@@ -41,6 +43,9 @@ class Organization extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \CommonBundle\Entity\General\Organization
+     */
     public function findOne()
     {
         if (count($this->findAll()) > 1) {

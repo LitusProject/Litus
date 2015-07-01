@@ -18,10 +18,6 @@
 
 namespace CalendarBundle\Component\Validator;
 
-
-
-
-
 use CalendarBundle\Entity\Node\Event,
     CommonBundle\Component\Form\Form,
     CommonBundle\Component\Util\Url,
@@ -45,7 +41,7 @@ class Name extends \CommonBundle\Component\Validator\AbstractValidator implement
     /**
      * @var Form
      */
-    private $_form;
+    private $form;
 
     /**
      * @var array The error messages
@@ -73,15 +69,15 @@ class Name extends \CommonBundle\Component\Validator\AbstractValidator implement
     /**
      * Returns true if no matching record is found in the database.
      *
-     * @param  string  $value   The value of the field that will be validated
-     * @param  array   $context The context of the field that will be validated
+     * @param  string     $value   The value of the field that will be validated
+     * @param  array|null $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
     {
         $this->setValue($value);
 
-        $date = DateTime::createFromFormat('d#m#Y H#i', $this->_form->get('start_date')->getValue());
+        $date = DateTime::createFromFormat('d#m#Y H#i', $this->form->get('start_date')->getValue());
 
         if ($date) {
             $title = $date->format('Ymd') . '_' . Url::createSlug($value);
@@ -106,7 +102,7 @@ class Name extends \CommonBundle\Component\Validator\AbstractValidator implement
      */
     public function setForm(Form $form)
     {
-        $this->_form = $form;
+        $this->form = $form;
 
         return $this;
     }

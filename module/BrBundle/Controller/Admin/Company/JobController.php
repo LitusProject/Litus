@@ -18,8 +18,8 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-
-use BrBundle\Entity\Company\Job,
+use BrBundle\Entity\Company,
+    BrBundle\Entity\Company\Job,
     Zend\View\Model\ViewModel;
 
 /**
@@ -31,7 +31,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function manageAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompanyEntity())) {
             return new ViewModel();
         }
 
@@ -57,7 +57,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 
     public function addAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompanyEntity())) {
             return new ViewModel();
         }
 
@@ -105,7 +105,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($job = $this->_getJob())) {
+        if (!($job = $this->getJobEntity())) {
             return new ViewModel();
         }
 
@@ -147,7 +147,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($job = $this->_getJob())) {
+        if (!($job = $this->getJobEntity())) {
             return new ViewModel();
         }
 
@@ -162,34 +162,16 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
     }
 
     /**
-     * @return \BrBundle\Entity\Company
+     * @return Company|null
      */
-    private function _getCompany()
+    private function getCompanyEntity()
     {
-        if (null === $this->getParam('id')) {
+        $company = $this->getEntityById('BrBundle\Entity\Company');
+
+        if (!($company instanceof Company)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the company!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_company',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $company = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $company) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No company with the given ID was found!'
+                'No company was found!'
             );
 
             $this->redirect()->toRoute(
@@ -206,34 +188,16 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
     }
 
     /**
-     * @return Job
+     * @return Job|null
      */
-    private function _getJob()
+    private function getJobEntity()
     {
-        if (null === $this->getParam('id')) {
+        $job = $this->getEntityById('BrBundle\Entity\Company\Job');
+
+        if (!($job instanceof Job)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the job!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_company',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $job = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Job')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $job) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No job with the given ID was found!'
+                'No job was found!'
             );
 
             $this->redirect()->toRoute(

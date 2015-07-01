@@ -28,9 +28,12 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Bus extends EntityRepository
 {
+    /**
+     * @return array
+     */
     public function getGoBusses()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultArray = $query->select('b')
             ->from('PromBundle\Entity\Bus', 'b')
             ->where(
@@ -44,9 +47,12 @@ class Bus extends EntityRepository
         return $resultArray;
     }
 
+    /**
+     * @return array
+     */
     public function getReturnBusses()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultArray = $query->select('b')
             ->from('PromBundle\Entity\Bus', 'b')
             ->where(
@@ -60,9 +66,12 @@ class Bus extends EntityRepository
         return $resultArray;
     }
 
+    /**
+     * @return array
+     */
     public function findAllBuses()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultArray = $query->select('b')
             ->from('PromBundle\Entity\Bus', 'b')
             ->orderBy('b.departureTime', 'ASC')

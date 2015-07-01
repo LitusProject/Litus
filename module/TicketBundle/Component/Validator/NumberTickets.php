@@ -18,7 +18,6 @@
 
 namespace TicketBundle\Component\Validator;
 
-
 use CommonBundle\Component\Form\Form,
     CommonBundle\Component\Validator\FormAwareInterface;
 
@@ -41,7 +40,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
     /**
      * @var Form
      */
-    private $_form;
+    private $form;
 
     /**
      * Error messages
@@ -74,15 +73,16 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
     /**
      * Returns true if these does not exceed max
      *
-     * @param  string  $value   The value of the field that will be validated
-     * @param  array   $context The context of the field that will be validated
+     * @param  string     $value   The value of the field that will be validated
+     * @param  array|null $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
     {
         $this->setValue($value);
 
-        $optionsForm = $this->_form->has('options_form') ? $this->_form->get('options_form') : $this->_form;
+        /** @var \CommonBundle\Component\Form\Fieldset $optionsForm */
+        $optionsForm = $this->form->has('options_form') ? $this->form->get('options_form') : $this->form;
 
         $number = 0;
         if (empty($this->options['event']->getOptions())) {
@@ -106,15 +106,17 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
             return false;
         }
 
-        if ($this->options['person'] == null && is_numeric($this->_form->get('person_form')->get('person')->getValue())) {
+        /** @var \CommonBundle\Component\Form\Fieldset $personFieldset */
+        $personFieldset = $this->form->get('person_form');
+        if ($this->options['person'] == null && is_numeric($personFieldset->get('person')->getValue())) {
             $person = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person')
-                ->findOneById($this->_form->get('person_form')->get('person')->getValue());
+                ->findOneById($personFieldset->get('person')->getValue());
         } else {
             $person = $this->options['person'];
         }
 
-        if (null == $person && !$this->_form->get('is_guest')->getValue()) {
+        if (null === $person && !$this->form->get('is_guest')->getValue()) {
             $this->error(self::NOT_VALID);
 
             return false;
@@ -147,7 +149,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
      */
     public function setForm(Form $form)
     {
-        $this->_form = $form;
+        $this->form = $form;
 
         return $this;
     }

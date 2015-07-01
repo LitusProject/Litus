@@ -18,12 +18,6 @@
 
 namespace NewsBundle\Entity\Node;
 
-
-
-
-
-
-
 use CommonBundle\Component\Util\Url,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -80,7 +74,7 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  DateTime $endDate
+     * @param  DateTime|null $endDate
      * @return self
      */
     public function setEndDate(DateTime $endDate = null)

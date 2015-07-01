@@ -31,7 +31,7 @@ class Promotion extends EntityRepository
 {
     public function findAllByName($name, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSetAcademic = $query->select('a')
             ->from('SecretaryBundle\Entity\Promotion\Academic', 'a')
             ->innerJoin('a.academic', 'p')
@@ -61,7 +61,7 @@ class Promotion extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSetExternal = $query->select('e')
             ->from('SecretaryBundle\Entity\Promotion\External', 'e')
             ->where(
@@ -106,7 +106,7 @@ class Promotion extends EntityRepository
 
     public function findAllByEmail($email, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSetAcademic = $query->select('a')
             ->from('SecretaryBundle\Entity\Promotion\Academic', 'a')
             ->innerJoin('a.academic', 'p')
@@ -121,7 +121,7 @@ class Promotion extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSetExternal = $query->select('e')
             ->from('SecretaryBundle\Entity\Promotion\External', 'e')
             ->where(
@@ -151,7 +151,7 @@ class Promotion extends EntityRepository
 
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('SecretaryBundle\Entity\Promotion', 'p')
             ->where(

@@ -18,10 +18,6 @@
 
 namespace FormBundle\Entity;
 
-
-
-
-
 use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
@@ -47,7 +43,7 @@ use CommonBundle\Entity\General\Language,
 abstract class Field
 {
     /**
-     * @var The reservation's unique identifier
+     * @var int The reservation's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -102,7 +98,7 @@ abstract class Field
     /**
      * @var array The possible types of a field
      */
-    public static $POSSIBLE_TYPES = array(
+    public static $possibleTypes = array(
         'string' => 'String',
         'dropdown' => 'Dropdown',
         'checkbox' => 'Checkbox',
@@ -119,7 +115,7 @@ abstract class Field
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -175,7 +171,7 @@ abstract class Field
     }
 
     /**
-     * @param Field $visibityDecisionField
+     * @param Field|null $visibityDecisionField
      *
      * @return self
      */
@@ -187,7 +183,7 @@ abstract class Field
     }
 
     /**
-     * @return Field
+     * @return Field|null
      */
     public function getVisibilityDecissionField()
     {
@@ -257,9 +253,13 @@ abstract class Field
     }
 
     /**
-     * @param string $value
+     * @param  string $value
+     * @return string
      */
     abstract public function getValueString(Language $language, $value);
 
+    /**
+     * @return string
+     */
     abstract public function getType();
 }

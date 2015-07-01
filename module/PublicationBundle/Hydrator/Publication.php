@@ -22,7 +22,7 @@ use PublicationBundle\Entity\Publication as PublicationEntity;
 
 class Publication extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('title');
+    private static $stdKeys = array('title');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -30,7 +30,7 @@ class Publication extends \CommonBundle\Component\Hydrator\Hydrator
             return new PublicationEntity($data['title']);
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -39,6 +39,6 @@ class Publication extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        return $this->stdExtract($object, self::$std_keys);
+        return $this->stdExtract($object, self::$stdKeys);
     }
 }

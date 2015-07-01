@@ -18,10 +18,6 @@
 
 namespace CommonBundle\Component\Console;
 
-
-
-
-
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
     Exception,
     Symfony\Component\Console\Input\InputInterface as Input,
@@ -55,7 +51,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
             return $this->executeCommand();
         } catch (Exception $e) {
             if ('production' == getenv('APPLICATION_ENV')) {
-                $this->getService('lilo')
+                $this->getServiceLocator()->get('lilo')
                     ->sendException($e);
             }
 
@@ -82,8 +78,9 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * @param string  $string the string to write
-     * @param boolean $raw    whether to output the string raw
+     * @param  string  $string the string to write
+     * @param  boolean $raw    whether to output the string raw
+     * @return null
      */
     public function write($string, $raw = false)
     {
@@ -97,8 +94,9 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * @param string  $string the string to write
-     * @param boolean $raw    whether to output the string raw
+     * @param  string  $string the string to write
+     * @param  boolean $raw    whether to output the string raw
+     * @return null
      */
     public function writeln($string, $raw = false)
     {

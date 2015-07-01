@@ -36,7 +36,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * @var \BrBundle\Entity\Invoice
      */
-    private $_invoice;
+    private $invoide;
 
     /**
      * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
@@ -54,7 +54,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                 ->getConfigValue('br.file_path') . '/contracts/'
                 . $invoice->getOrder()->getContract()->getId() . '/invoice.pdf'
         );
-        $this->_invoice = $invoice;
+        $this->invoide = $invoice;
     }
 
     protected function generateXml(TmpFile $file)
@@ -66,35 +66,35 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $totalExclusive = 0;
         $totalVat = 0;
 
-        $invoiceDate = $this->_invoice->getCreationTime()->format('j/m/Y');
-        $dueDate = $this->_invoice->getExpirationTime($this->getEntityManager())->format('j/m/Y');
-        $clientVat = $this->_VATFormat($this->_invoice->getOrder()->getCompany()->getVatNumber());
+        $invoiceDate = $this->invoide->getCreationTime()->format('j/m/Y');
+        $dueDate = $this->invoide->getExpirationTime($this->getEntityManager())->format('j/m/Y');
+        $clientVat = $this->vatFormat($this->invoide->getOrder()->getCompany()->getVatNumber());
         $reference = '/'; // TODO? (this was here already)
 
-        $invoiceNb = $this->_invoice->getInvoiceNumber($this->getEntityManager());
+        $invoiceNb = $this->invoide->getInvoiceNumber($this->getEntityManager());
 
         $unionName = $configs->getConfigValue('br.organization_name');
         $unionAddressArray = unserialize($configs->getConfigValue('organization_address_array'));
         $logo = $configs->getConfigValue('organization_logo');
         $unionVat = $configs->getConfigValue('br.vat_number');
 
-        if ('' == $this->_invoice->getVATContext()) {
+        if ('' == $this->invoide->getVatContext()) {
             $vatTypeExplanation = '';
         } else {
-            $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation') . ' ' . $this->_invoice->getVATContext();
+            $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation') . ' ' . $this->invoide->getVatContext();
         }
 
         $subEntries = unserialize($configs->getConfigValue('br.invoice_below_entries'))['nl'];
 
         $vatTypes = unserialize($configs->getConfigValue('br.vat_types'));
 
-        $company = $this->_invoice->getOrder()->getCompany();
-        $companyContactPerson = $this->_invoice->getOrder()->getContact()->getFullName();
+        $company = $this->invoide->getOrder()->getCompany();
+        $companyContactPerson = $this->invoide->getOrder()->getContact()->getFullName();
         $companyName = $company->getName();
 
         $count = 0;
         $entries = array();
-        foreach ($this->_invoice->getEntries() as $entry) {
+        foreach ($this->invoide->getEntries() as $entry) {
             $product = $entry->getOrderEntry()->getProduct();
             $price = $product->getPrice() / 100;
 
@@ -127,9 +127,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $entries[] = new XmlObject('empty_line');
         $entries[] = new XmlObject('empty_line');
 
-        $discount = $this->_invoice->getOrder()->getContract()->getDiscount();
+        $discount = $this->invoide->getOrder()->getContract()->getDiscount();
         if (0 != $discount) {
-            if ('' == $this->_invoice->getOrder()->getContract()->getDiscountContext()) {
+            if ('' == $this->invoide->getOrder()->getContract()->getDiscountContext()) {
                 $entries[] = new XmlObject('entry', null,
                 array(
                     new XmlObject('description', null, 'Korting'),
@@ -141,7 +141,8 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             } else {
                 $entries[] = new XmlObject('entry', null,
                     array(
-                        new XmlObject('description', null, $this->_invoice->getOrder()->getContract()->getDiscountContext()),
+
+                        new XmlObject('description', null,$this->invoide->getOrder()->getContract()->getDiscountContext()),
                         new XmlObject('price', null, XmlObject::fromString('- <euro/>' . number_format($discount, 2))),
                         new XmlObject('amount', null, ' '),
                         new XmlObject('vat_type', null, ' '),
@@ -276,7 +277,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
      * @param  string $vat
      * @return string
      */
-    private function _VATFormat($vat)
+    private function vatFormat($vat)
     {
         return substr_replace(substr_replace(substr_replace($vat, ' ', 2, 0), '.', 7, 0), '.', 11, 0);
     }

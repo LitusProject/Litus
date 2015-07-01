@@ -128,7 +128,7 @@ class QueueItem
     /**
      * @var array The possible states of a queue item
      */
-    private static $POSSIBLE_STATUSES = array(
+    private static $possibleStatuses = array(
         'signed_in' => 'Signed In',
         'collecting' => 'Collecting',
         'collected' => 'Collected',
@@ -141,7 +141,7 @@ class QueueItem
     /**
      * @var array The possible pay methods of a queue item
      */
-    public static $POSSIBLE_PAY_METHODS = array(
+    public static $possiblePayMethods = array(
         'cash' => 'Cash',
         'bank' => 'Bank Device',
     );
@@ -169,7 +169,7 @@ class QueueItem
      */
     public static function isValidQueueStatus($status)
     {
-        return array_key_exists($status, self::$POSSIBLE_STATUSES);
+        return array_key_exists($status, self::$possibleStatuses);
     }
 
     /**
@@ -178,7 +178,7 @@ class QueueItem
      */
     public static function isValidPayMethod($payMethod)
     {
-        return array_key_exists($payMethod, self::$POSSIBLE_PAY_METHODS);
+        return array_key_exists($payMethod, self::$possiblePayMethods);
     }
 
     /**
@@ -246,7 +246,7 @@ class QueueItem
      */
     public function getStatusReadable()
     {
-        return self::$POSSIBLE_STATUSES[$this->status];
+        return self::$possibleStatuses[$this->status];
     }
 
     /**
@@ -339,7 +339,7 @@ class QueueItem
             return '';
         }
 
-        return self::$POSSIBLE_PAY_METHODS[$this->payMethod];
+        return self::$possiblePayMethods[$this->payMethod];
     }
 
     /**

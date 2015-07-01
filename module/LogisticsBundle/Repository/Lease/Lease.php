@@ -37,7 +37,7 @@ class Lease extends EntityRepository
      */
     public function findUnreturnedByItemQuery(ItemEntity $item)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('LogisticsBundle\Entity\Lease\Lease', 'l')
             ->where(
@@ -59,7 +59,7 @@ class Lease extends EntityRepository
      */
     public function findAllUnreturnedQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('LogisticsBundle\Entity\Lease\Lease', 'l')
             ->where(
@@ -72,7 +72,7 @@ class Lease extends EntityRepository
 
     public function findByItemQuery(ItemEntity $item)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('LogisticsBundle\Entity\Lease\Lease', 'l')
             ->where(

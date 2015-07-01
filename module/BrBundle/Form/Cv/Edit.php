@@ -30,7 +30,7 @@ class Edit extends Add
     /**
      * @var CvEntry
      */
-    private $_entry;
+    private $entry;
 
     public function init()
     {
@@ -40,8 +40,8 @@ class Edit extends Add
 
         $this->addSubmit('Save Changes');
 
-        if (null !== $this->_entry) {
-            $this->bind($this->_entry);
+        if (null !== $this->entry) {
+            $this->bind($this->entry);
         }
     }
 
@@ -51,7 +51,7 @@ class Edit extends Add
      */
     public function setEntry(CvEntry $entry)
     {
-        $this->_entry = $entry;
+        $this->entry = $entry;
 
         return $this;
     }

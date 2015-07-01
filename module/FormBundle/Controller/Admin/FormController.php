@@ -18,11 +18,9 @@
 
 namespace FormBundle\Controller\Admin;
 
-
-
-
-use FormBundle\Entity\Node\Form\Doodle,
-    FormBundle\Entity\Node\Form\Form,
+use FormBundle\Entity\Node\Form,
+    FormBundle\Entity\Node\Form\Doodle,
+    FormBundle\Entity\Node\Form\Form as RegularForm,
     FormBundle\Entity\ViewerMap,
     Zend\View\Model\ViewModel;
 
@@ -92,7 +90,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 if ($formData['type'] == 'doodle') {
                     $formEntity = new Doodle($this->getAuthentication()->getPersonObject());
                 } else {
-                    $formEntity = new Form($this->getAuthentication()->getPersonObject());
+                    $formEntity = new RegularForm($this->getAuthentication()->getPersonObject());
                 }
 
                 $formEntity = $form->hydrateObject($formEntity);
@@ -131,7 +129,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($formSpecification = $this->_getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -196,7 +194,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($form = $this->_getForm())) {
+        if (!($form = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -221,7 +219,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->findAllByForm($form);
 
         foreach ($fields as $field) {
-            $this->_deleteField($field);
+            $this->deleteField($field);
         }
 
         $entries = $this->getEntityManager()
@@ -253,7 +251,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _deleteField($field)
+    private function deleteField($field)
     {
         $entries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Entry')
@@ -266,32 +264,17 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $this->getEntityManager()->remove($field);
     }
 
-    private function _getForm()
+    /**
+     * @return Form|null
+     */
+    private function getFormEntity()
     {
-        if (null === $this->getParam('id')) {
+        $form = $this->getEntityById('FormBundle\Entity\Node\Form');
+
+        if (!($form instanceof Form)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the form!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_admin_form',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $form = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Form')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $form) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No form with the given ID was found!'
+                'No form was found!'
             );
 
             $this->redirect()->toRoute(

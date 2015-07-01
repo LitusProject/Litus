@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Entity\Sale\Article\Discount;
 
-
-
 use CommonBundle\Entity\General\Organization,
     CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\Mapping as ORM;
@@ -159,7 +157,7 @@ class Template
      */
     public function getType()
     {
-        return Discount::$POSSIBLE_TYPES[$this->type];
+        return Discount::$possibleTypes[$this->type];
     }
 
     /**
@@ -205,7 +203,7 @@ class Template
      */
     public function getRounding()
     {
-        return Discount::$POSSIBLE_ROUNDINGS[$this->rounding]['name'];
+        return Discount::$possibleRoundings[$this->rounding]['name'];
     }
 
     /**

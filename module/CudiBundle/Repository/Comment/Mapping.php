@@ -30,9 +30,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Mapping extends EntityRepository
 {
+    /**
+     * @param  Article                                 $article
+     * @param  CommentEntity                           $comment
+     * @return \CudiBundle\Entity\Comment\Mapping|null
+     */
     public function findOneByArticleAndComment(Article $article, CommentEntity $comment)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\Comment\Mapping', 'm')
             ->where(
@@ -50,9 +55,13 @@ class Mapping extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleQuery(Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\Comment\Mapping', 'm')
             ->where(

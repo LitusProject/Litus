@@ -18,7 +18,9 @@
 
 namespace BrBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use BrBundle\Entity\Collaborator,
+    BrBundle\Entity\Company,
+    Zend\View\Model\ViewModel;
 
 /**
  * OverviewController
@@ -29,7 +31,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function personAction()
     {
-        list($array, $totals) = $this->_getPersonOverview();
+        list($array, $totals) = $this->getPersonOverview();
 
         return new ViewModel(
             array(
@@ -41,7 +43,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
     public function companyAction()
     {
-        list($array, $totals) = $this->_getCompanyOverview();
+        list($array, $totals) = $this->getCompanyOverview();
 
         return new ViewModel(
             array(
@@ -53,7 +55,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
     public function personviewAction()
     {
-        if (!($person = $this->_getAuthor())) {
+        if (!($person = $this->getCollaboratorEntity())) {
             return new ViewModel();
         }
 
@@ -75,7 +77,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
     public function companyviewAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompanyEntity())) {
             return new ViewModel();
         }
 
@@ -95,7 +97,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    private function _getCompanyOverview()
+    /**
+     * @return array
+     */
+    private function getCompanyOverview()
     {
         $companyNmbr = 0;
         $totalContracted = 0;
@@ -116,7 +121,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 ->getRepository('BrBundle\Entity\Contract')
                 ->findAllNewOrSignedByCompany($company);
 
-            $companyNmbr = $companyNmbr + 1;
+            $companyNmbr++;
 
             $contracted = 0;
             $signed = 0;
@@ -152,7 +157,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         return [$collection, $totals];
     }
 
-    private function _getPersonOverview()
+    /**
+     * @return array
+     */
+    private function getPersonOverview()
     {
         $contractNmbr = 0;
         $totalContracted = 0;
@@ -178,7 +186,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             $paid = 0;
 
             foreach ($contracts as $contract) {
-                $contractNmbr = $contractNmbr + 1;
+                $contractNmbr++;
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
                 $value = $contract->getOrder()->getTotalCost();
                 $contracted = $contracted + $value;
@@ -214,12 +222,17 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         return [$collection, $totals];
     }
 
-    private function _getAuthor()
+    /**
+     * @return Collaborator|null
+     */
+    private function getCollaboratorEntity()
     {
-        if (null === $this->getParam('id')) {
+        $collaborator = $this->getEntityById('BrBundle\Entity\Collaborator');
+
+        if (!($collaborator instanceof Collaborator)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the author!'
+                'No collaborator was found!'
             );
 
             $this->redirect()->toRoute(
@@ -232,59 +245,24 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             return;
         }
 
-        $person = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Collaborator')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $person) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No person with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_overview',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $person;
+        return $collaborator;
     }
 
-    private function _getCompany()
+    /**
+     * @return Company|null
+     */
+    private function getCompanyEntity()
     {
-        if (null === $this->getParam('id')) {
+        $company = $this->getEntityById('BrBundle\Entity\Company');
+
+        if (!($company instanceof Company)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the company!'
+                'No company was found!'
             );
 
             $this->redirect()->toRoute(
-                'br_admin_overview',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $company = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $company) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No company with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_overview',
+                'br_admin_company',
                 array(
                     'action' => 'manage',
                 )

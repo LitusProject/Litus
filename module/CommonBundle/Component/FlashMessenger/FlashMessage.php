@@ -28,17 +28,17 @@ class FlashMessage
     /**
      * @var string The FlashMessage's type
      */
-    private $_type = '';
+    private $type = '';
 
     /**
      * @var string The FlashMessage's title
      */
-    private $_title = '';
+    private $title = '';
 
     /**
      * @var string The FlasMessage's message
      */
-    private $_message = '';
+    private $message = '';
 
     /**
      * @param string $type    The FlashMessage's type
@@ -47,9 +47,9 @@ class FlashMessage
      */
     public function __construct($type, $title, $message)
     {
-        $this->_type = $type;
-        $this->_title = $title;
-        $this->_message = $message;
+        $this->type = $type;
+        $this->title = $title;
+        $this->message = $message;
     }
 
     /**
@@ -57,7 +57,7 @@ class FlashMessage
      */
     public function getType()
     {
-        return $this->_type;
+        return $this->type;
     }
 
     /**
@@ -65,7 +65,7 @@ class FlashMessage
      */
     public function getTitle()
     {
-        return $this->_title;
+        return $this->title;
     }
 
     /**
@@ -73,6 +73,6 @@ class FlashMessage
      */
     public function getMessage()
     {
-        return $this->_message;
+        return $this->message;
     }
 }

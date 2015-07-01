@@ -18,11 +18,6 @@
 
 namespace SyllabusBundle\Entity\Subject;
 
-
-
-
-
-
 use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -101,7 +96,7 @@ class Comment
     /**
      * @var array The possible types of a comment
      */
-    private static $POSSIBLE_TYPES = array(
+    private static $possibleTypes = array(
         'external', 'internal',
     );
 
@@ -133,7 +128,7 @@ class Comment
      */
     public static function isValidCommentType($type)
     {
-        return in_array($type, self::$POSSIBLE_TYPES);
+        return in_array($type, self::$possibleTypes);
     }
 
     /**

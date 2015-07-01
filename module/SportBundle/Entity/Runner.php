@@ -88,14 +88,14 @@ class Runner
     /**
      * @var EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
-     * @param string     $firstName
-     * @param string     $lastName
-     * @param Group      $group
-     * @param Department $department
-     * @param Academic   $academic
+     * @param string          $firstName
+     * @param string          $lastName
+     * @param Academic|null   $academic
+     * @param Group|null      $group
+     * @param Department|null $department
      */
     public function __construct($firstName, $lastName, Academic $academic = null, Group $group = null, Department $department = null)
     {
@@ -226,7 +226,7 @@ class Runner
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }
@@ -247,7 +247,7 @@ class Runner
      */
     public function getLaps(AcademicYear $academicYear)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('SportBundle\Entity\Lap')
             ->findBy(
                 array(
@@ -270,7 +270,7 @@ class Runner
     {
         $points = 0;
         foreach ($this->getLaps($academicYear) as $lap) {
-            $lap->setEntityManager($this->_entityManager);
+            $lap->setEntityManager($this->entityManager);
             $points += $lap->getPoints();
         }
 

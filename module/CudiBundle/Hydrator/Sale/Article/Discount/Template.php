@@ -22,7 +22,7 @@ use CudiBundle\Entity\Sale\Article\Discount\Template as TemplateEntity;
 
 class Template extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array(
+    private static $stdKeys = array(
         'name', 'method', 'rounding', 'type',
     );
 
@@ -32,7 +32,7 @@ class Template extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
         $data['organization'] = null === $object->getOrganization()
             ? '0'
             : $object->getOrganization()->getId();
@@ -57,6 +57,6 @@ class Template extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setOrganization($organization);
 
-        return $this->stdHydrate($data, $object, array(self::$std_keys, array('apply_once', 'value')));
+        return $this->stdHydrate($data, $object, array(self::$stdKeys, array('apply_once', 'value')));
     }
 }

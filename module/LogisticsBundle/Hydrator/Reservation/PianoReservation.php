@@ -18,13 +18,12 @@
 
 namespace LogisticsBundle\Hydrator\Reservation;
 
-
 use CommonBundle\Entity\User\Person\Academic,
     LogisticsBundle\Entity\Reservation\PianoReservation as PianoReservationEntity;
 
 class PianoReservation extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('confirmed', 'additional_info');
+    private static $stdKeys = array('confirmed', 'additional_info');
 
     protected function doExtract($object = null)
     {
@@ -32,7 +31,7 @@ class PianoReservation extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $player = $object->getPlayer();
         $data['player']['id'] = $player->getId();
@@ -53,7 +52,7 @@ class PianoReservation extends \CommonBundle\Component\Hydrator\Hydrator
 
             $object = new PianoReservationEntity(
                 $resource,
-                $this->getAuthentication()->getPersonObject()
+                $this->getPersonEntity()
             );
         }
 
@@ -71,6 +70,6 @@ class PianoReservation extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setEndDate(self::loadDateTime($data['end_date']));
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

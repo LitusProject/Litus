@@ -31,7 +31,7 @@ class Album extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('GalleryBundle\Entity\Album\Album', 'a')
             ->orderBy('a.dateActivity', 'DESC')
@@ -42,7 +42,7 @@ class Album extends EntityRepository
 
     public function findAllFromToQuery(DateTime $start, DateTime $end)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('GalleryBundle\Entity\Album\Album', 'a')
             ->where(

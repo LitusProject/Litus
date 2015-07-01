@@ -18,10 +18,6 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
-
-
-
-
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     SyllabusBundle\Entity\StudySubjectMap,
@@ -37,12 +33,12 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
         if (null !== $this->getParam('field')) {
-            $subjects = $this->_search($academicYear);
+            $subjects = $this->search($academicYear);
         }
 
         if (!isset($subjects)) {
@@ -72,7 +68,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -128,11 +124,11 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($subject = $this->_getSubject())) {
+        if (!($subject = $this->getSubjectEntity())) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -193,11 +189,11 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
-        $subjects = $this->_search($academicYear);
+        $subjects = $this->search($academicYear);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -225,7 +221,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return;
         }
 
@@ -248,7 +244,11 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _search(AcademicYearEntity $academicYear)
+    /**
+     * @param  AcademicYearEntity $academicYear
+     * @return array|null
+     */
+    private function search(AcademicYearEntity $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'name':
@@ -263,14 +263,16 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @return Subject
+     * @return Subject|null
      */
-    private function _getSubject()
+    private function getSubjectEntity()
     {
-        if (null === $this->getParam('id')) {
+        $subject = $this->getEntityById('SyllabusBundle\Entity\Subject');
+
+        if (!($subject instanceof Subject)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the subject!'
+                'No subject was found!'
             );
 
             $this->redirect()->toRoute(
@@ -283,30 +285,13 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             return;
         }
 
-        $study = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Subject')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $study) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No subject with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'syllabus_admin_study',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $study;
+        return $subject;
     }
 
-    private function _getAcademicYear()
+    /**
+     * @return AcademicYearEntity|null
+     */
+    private function getAcademicYearEntity()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {
@@ -314,14 +299,14 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
-        if (null === $academicYear) {
+        if (!($academicYear instanceof AcademicYearEntity)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No academic year was found!'
             );
 
             $this->redirect()->toRoute(
-                'syllabus_admin_study',
+                'syllabus_admin_subject',
                 array(
                     'action' => 'manage',
                 )

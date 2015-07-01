@@ -18,8 +18,6 @@
 
 namespace PageBundle\Hydrator\Node;
 
-
-
 use Locale,
     PageBundle\Entity\Node\Page as PageEntity,
     PageBundle\Entity\Node\Translation as TranslationEntity;
@@ -34,7 +32,7 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        $newPage = new PageEntity($this->getPerson());
+        $newPage = new PageEntity($this->getPersonEntity());
 
         if (null !== $object && null !== $object->getName()) {
             $object->close();

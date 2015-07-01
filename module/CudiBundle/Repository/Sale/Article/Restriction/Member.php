@@ -29,9 +29,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Member extends EntityRepository
 {
+    /**
+     * @param  Article                                                 $article
+     * @return \CudiBundle\Entity\Sale\Article\Restriction\Member|null
+     */
     public function findOneByArticle(Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('CudiBundle\Entity\Sale\Article\Restriction\Member', 'r')
             ->where(

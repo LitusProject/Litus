@@ -18,10 +18,6 @@
 
 namespace CudiBundle\Entity\Sale;
 
-
-
-
-
 use CudiBundle\Entity\Sale\Article\Discount\Discount,
     DateTime,
     Doctrine\ORM\EntityManager,
@@ -114,7 +110,7 @@ class SaleItem
      * @param integer            $number
      * @param integer            $price
      * @param QueueItem|null     $queueItem
-     * @param string             $discountType
+     * @param string|null        $discountType
      * @param EntityManager|null $entityManager
      */
     public function __construct(Article $article, $number, $price, QueueItem $queueItem = null, $discountType = null, EntityManager $entityManager = null)
@@ -252,8 +248,8 @@ class SaleItem
      */
     public function getDiscountType()
     {
-        if (isset(Discount::$POSSIBLE_TYPES[$this->discountType])) {
-            return Discount::$POSSIBLE_TYPES[$this->discountType];
+        if (isset(Discount::$possibleTypes[$this->discountType])) {
+            return Discount::$possibleTypes[$this->discountType];
         }
     }
 

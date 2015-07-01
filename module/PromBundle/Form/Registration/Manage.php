@@ -47,7 +47,10 @@ class Manage extends \CommonBundle\Component\Form\Bootstrap\Form
                             'validators' => array(
                                 array(
                                     'name' => 'EmailAddress',
-                                 ),
+                                ),
+                                array(
+                                    'name' => 'prom_code_email',
+                                ),
                             ),
                         ),
                     ),
@@ -61,6 +64,11 @@ class Manage extends \CommonBundle\Component\Form\Bootstrap\Form
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'prom_code_exists',
+                                ),
                             ),
                         ),
                     ),

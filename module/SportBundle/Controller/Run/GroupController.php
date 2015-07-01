@@ -18,7 +18,6 @@
 
 namespace SportBundle\Controller\Run;
 
-
 use SportBundle\Entity\Group,
     Zend\View\Model\ViewModel;
 
@@ -35,7 +34,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
-            foreach (Group::$ALL_MEMBERS as $memberNb) {
+            foreach (Group::$allMembers as $memberNb) {
                 $memberData = $formData['user_' . $memberNb];
 
                 if (

@@ -18,7 +18,6 @@
 
 namespace CudiBundle\Component\Validator\Sale;
 
-
 use CommonBundle\Component\Form\Form,
     CommonBundle\Component\Validator\FormAwareInterface;
 
@@ -34,7 +33,7 @@ class HasBought extends \CommonBundle\Component\Validator\AbstractValidator impl
     /**
      * @var Form
      */
-    private $_form;
+    private $form;
 
     /**
      * Error messages
@@ -49,17 +48,20 @@ class HasBought extends \CommonBundle\Component\Validator\AbstractValidator impl
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field is valid.
      *
-     * @param  string  $value   The value of the field that will be validated
-     * @param  array   $context The context of the field that will be validated
+     * @param  string     $value   The value of the field that will be validated
+     * @param  array|null $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
     {
         $this->setValue($value);
 
+        /** @var \CommonBundle\Component\Form\Bootstrap\Element\TypeAhead $personField */
+        $personField = $this->form->get('person');
+
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($this->_form->get('person')->get('id')->getValue());
+            ->findOneById($personField->get('id')->getValue());
 
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -84,7 +86,7 @@ class HasBought extends \CommonBundle\Component\Validator\AbstractValidator impl
      */
     public function setForm(Form $form)
     {
-        $this->_form = $form;
+        $this->form = $form;
 
         return $this;
     }

@@ -32,7 +32,7 @@ class Comment extends EntityRepository
 {
     public function findLast($nb = 10)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('SyllabusBundle\Entity\Subject\Comment', 'c')
             ->where(
@@ -48,7 +48,7 @@ class Comment extends EntityRepository
 
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s.id')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
             ->innerJoin('m.subject', 's')
@@ -64,7 +64,7 @@ class Comment extends EntityRepository
             $ids[$item['id']] = $item['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('SyllabusBundle\Entity\Subject\Comment', 'c')
             ->where(
@@ -78,18 +78,18 @@ class Comment extends EntityRepository
 
     public function findRecentConversationsByPersonAndAcademicYear(Person $person, AcademicYear $academicYear)
     {
-        $subjects = $this->_em
+        $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findAllByProfAndAcademicYear($person, $academicYear);
 
         $comments = array();
         foreach ($subjects as $subject) {
-            $commentsOfSubject = $this->_em
+            $commentsOfSubject = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Subject\Comment')
                 ->findBySubject($subject->getSubject());
 
             foreach ($commentsOfSubject as $comment) {
-                $reply = $this->_em
+                $reply = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Subject\Reply')
                     ->findLastByComment($comment);
 

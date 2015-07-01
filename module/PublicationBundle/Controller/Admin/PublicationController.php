@@ -18,7 +18,6 @@
 
 namespace PublicationBundle\Controller\Admin;
 
-
 use PublicationBundle\Entity\Publication,
     Zend\View\Model\ViewModel;
 
@@ -85,7 +84,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 
     public function editAction()
     {
-        if (!($publication = $this->_getPublication())) {
+        if (!($publication = $this->getPublicationEntity())) {
             return new ViewModel();
         }
 
@@ -124,7 +123,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
-        if (!($publication = $this->_getPublication())) {
+        if (!($publication = $this->getPublicationEntity())) {
             return new ViewModel();
         }
 
@@ -139,34 +138,18 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
     }
 
     /**
-     * @return Publication
+     * @return Publication|null
      */
-    private function _getPublication()
+    private function getPublicationEntity()
     {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the publication!'
-            );
-
-            $this->redirect()->toRoute(
-                'publication_admin_publication',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
         $publication = $this->getEntityManager()
             ->getRepository('PublicationBundle\Entity\Publication')
             ->findOneActiveById($this->getParam('id'));
 
-        if (null === $publication) {
+        if (!($publication instanceof Publication)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No publication with the given ID was found!'
+                'No publication was found!'
             );
 
             $this->redirect()->toRoute(

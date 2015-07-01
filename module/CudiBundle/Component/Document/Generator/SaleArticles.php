@@ -18,8 +18,6 @@
 
 namespace CudiBundle\Component\Document\Generator;
 
-
-
 use CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Sale\Article\Discount\Discount,
     Doctrine\ORM\EntityManager;
@@ -50,7 +48,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        foreach (Discount::$POSSIBLE_TYPES as $key => $type) {
+        foreach (Discount::$possibleTypes as $key => $type) {
             foreach ($organizations as $organization) {
                 $headers[] = 'Sell Price (' . $type . ' Discounted ' . $organization->getName() . ')';
             }
@@ -58,7 +56,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
 
         parent::__construct(
             $headers,
-            $this->_getData($entityManager, $academicYear, $semester)
+            $this->getData($entityManager, $academicYear, $semester)
         );
     }
 
@@ -67,7 +65,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
      * @param AcademicYear  $academicYear
      * @param int           $semester
      */
-    private function _getData(EntityManager $entityManager, AcademicYear $academicYear, $semester)
+    private function getData(EntityManager $entityManager, AcademicYear $academicYear, $semester)
     {
         $articles = $entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -89,7 +87,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
 
             $discounts = $article->getDiscounts();
 
-            foreach (Discount::$POSSIBLE_TYPES as $key => $type) {
+            foreach (Discount::$possibleTypes as $key => $type) {
                 foreach ($organizations as $organization) {
                     $foundDiscount = null;
 

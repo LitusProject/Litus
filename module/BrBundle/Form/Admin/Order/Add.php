@@ -18,8 +18,6 @@
 
 namespace BrBundle\Form\Admin\Order;
 
-
-
 use BrBundle\Entity\Company,
     BrBundle\Entity\Product\Order,
     CommonBundle\Entity\General\AcademicYear;
@@ -42,12 +40,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var Order
      */
-    protected $_order;
+    protected $order;
 
     /**
      * @var AcademicYear The current academic year
      */
-    protected $_currentYear;
+    protected $currentYear;
 
     public function init()
     {
@@ -74,7 +72,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'attributes' => array(
                 'id'      => 'company',
-                'options' => $this->_getCompanyArray(),
+                'options' => $this->getCompanyArray(),
             ),
         ));
 
@@ -91,7 +89,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'class'   => 'company_contact',
                     'id'      => 'company_contact_' . $company->getId(),
-                    'options' => $this->_getContactArray($company),
+                    'options' => $this->getContactArray($company),
                 ),
                 'options'  => array(
                     'input' => array(
@@ -137,7 +135,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'    => 'Tax Free',
         ));
 
-        $products = $this->_getProducts();
+        $products = $this->getProducts();
 
         foreach ($products as $product) {
             if (!$product->isOld()) {
@@ -173,8 +171,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Add Products', 'product_add');
 
-        if (null !== $this->_order) {
-            $this->bind($this->_order);
+        if (null !== $this->order) {
+            $this->bind($this->order);
         }
     }
 
@@ -184,7 +182,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setOrder(Order $order)
     {
-        $this->_order = $order;
+        $this->order = $order;
 
         return $this;
     }
@@ -195,12 +193,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setCurrentYear(AcademicYear $currentYear)
     {
-        $this->_currentYear = $currentYear;
+        $this->currentYear = $currentYear;
 
         return $this;
     }
 
-    private function _getCompanyArray()
+    /**
+     * @return array
+     */
+    private function getCompanyArray()
     {
         $companies = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
@@ -216,7 +217,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $companyArray;
     }
 
-    private function _getContactArray(Company $company)
+    /**
+     * @return array
+     */
+    private function getContactArray(Company $company)
     {
         $contacts = $company->getContacts();
 
@@ -230,13 +234,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $contactArray;
     }
 
-    private function _getProducts()
+    /**
+     * @return array
+     */
+    private function getProducts()
     {
         return $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Product')
-            ->findByAcademicYear($this->_currentYear);
+            ->findByAcademicYear($this->currentYear);
     }
 
+    /**
+     * @return array
+     */
     public function getInputFilterSpecification()
     {
         $specs = parent::getInputFilterSpecification();

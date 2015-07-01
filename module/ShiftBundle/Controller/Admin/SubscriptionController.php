@@ -18,10 +18,6 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-
-
-
-
 use ShiftBundle\Entity\Shift,
     ShiftBundle\Entity\Shift\Responsible,
     ShiftBundle\Entity\Shift\Volunteer,
@@ -37,7 +33,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 {
     public function manageAction()
     {
-        if (!($shift = $this->_getShift())) {
+        if (!($shift = $this->getShiftEntity())) {
             return new ViewModel();
         }
 
@@ -98,7 +94,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        if (!($subscription = $this->_getSubscription())) {
+        if (!($subscription = $this->getSubscriptionEntity())) {
             return new ViewModel();
         }
 
@@ -164,7 +160,10 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    private function _getSubscription()
+    /**
+     * @return mixed
+     */
+    private function getSubscriptionEntity()
     {
         $type = $this->getParam('type');
 
@@ -193,23 +192,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 return;
         }
 
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the subscription!'
-            );
-
-            $this->redirect()->toRoute(
-                'shift_admin_shift',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $subscription = $repository->findOneById($this->getParam('id'));
+        $subscription = $repository->findOneById($this->getParam('id', 0));
 
         if (null === $subscription) {
             $this->flashMessenger()->error(
@@ -231,34 +214,16 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-     * @return Shift
+     * @return Shift|null
      */
-    private function _getShift()
+    private function getShiftEntity()
     {
-        if (null === $this->getParam('id')) {
+        $shift = $this->getEntityById('ShiftBundle\Entity\Shift');
+
+        if (!($shift instanceof Shift)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the shift!'
-            );
-
-            $this->redirect()->toRoute(
-                'shift_admin_shift',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $shift = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Shift')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $shift) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No shift with the given ID was found!'
+                'No shift was found!'
             );
 
             $this->redirect()->toRoute(

@@ -18,10 +18,9 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
-
-
-
 use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    CommonBundle\Entity\User\Person\Academic,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
     Zend\View\Model\ViewModel;
@@ -36,7 +35,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     public function manageAction()
     {
         if (null !== $this->getParam('field')) {
-            $academics = $this->_search();
+            $academics = $this->search();
 
             $paginator = $this->paginator()->createFromArray(
                 $academics,
@@ -67,11 +66,11 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -102,7 +101,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($study = $this->_getStudyEnrollment())) {
+        if (!($study = $this->getStudyEnrollmentEntity())) {
             return new ViewModel();
         }
 
@@ -120,7 +119,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($subject = $this->_getSubjectEnrollment())) {
+        if (!($subject = $this->getSubjectEnrollmentEntity())) {
             return new ViewModel();
         }
 
@@ -136,11 +135,11 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addStudyAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -221,11 +220,11 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function addSubjectAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -292,7 +291,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        $academics = $this->_search();
+        $academics = $this->search();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -323,7 +322,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    private function _search()
+    /**
+     * @return array
+     */
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'name':
@@ -335,34 +337,21 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findAllByUniversityIdentification($this->getParam('string'));
         }
+
+        return array();
     }
 
-    private function _getAcademic()
+    /**
+     * @return Academic|null
+     */
+    private function getAcademicEntity()
     {
-        if (null === $this->getParam('id')) {
+        $academic = $this->getEntityById('CommonBundle\Entity\User\Person\Academic');
+
+        if (!($academic instanceof Academic)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the academic!'
-            );
-
-            $this->redirect()->toRoute(
-                'syllabus_admin_academic',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $academic = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $academic) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No academic with the given ID was found!'
+                'No academic was found!'
             );
 
             $this->redirect()->toRoute(
@@ -378,12 +367,17 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         return $academic;
     }
 
-    private function _getStudyEnrollment()
+    /**
+     * @return StudyEnrollment|null
+     */
+    private function getStudyEnrollmentEntity()
     {
-        if (null === $this->getParam('id')) {
+        $enrollment = $this->getEntityById('SecretaryBundle\Entity\Syllabus\StudyEnrollment');
+
+        if (!($enrollment instanceof StudyEnrollment)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the study!'
+                'No study enrollment was found!'
             );
 
             $this->redirect()->toRoute(
@@ -396,35 +390,20 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             return;
         }
 
-        $study = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $study) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No study with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'syllabus_admin_academic',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $study;
+        return $enrollment;
     }
 
-    private function _getSubjectEnrollment()
+    /**
+     * @return SubjectEnrollment|null
+     */
+    private function getSubjectEnrollmentEntity()
     {
-        if (null === $this->getParam('id')) {
+        $enrollment = $this->getEntityById('SecretaryBundle\Entity\Syllabus\SubjectEnrollment');
+
+        if (!($enrollment instanceof SubjectEnrollment)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the subject!'
+                'No study enrollment was found!'
             );
 
             $this->redirect()->toRoute(
@@ -437,45 +416,28 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             return;
         }
 
-        $subject = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $subject) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No study with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'syllabus_admin_academic',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $subject;
+        return $enrollment;
     }
 
-    private function _getAcademicYear()
+    /**
+     * @return AcademicYearEntity|null
+     */
+    private function getAcademicYearEntity()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
-        $academicYear = AcademicYear::getUniversityYear($this->getEntityManager(), $date);
+        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
-        if (null === $academicYear) {
+        if (!($academicYear instanceof AcademicYearEntity)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No academic year was found!'
             );
 
             $this->redirect()->toRoute(
-                'syllabus_admin_study',
+                'syllabus_admin_academic',
                 array(
                     'action' => 'manage',
                 )

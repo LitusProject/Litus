@@ -18,8 +18,6 @@
 
 namespace CalendarBundle\Hydrator\Node;
 
-
-
 use CalendarBundle\Entity\Node\Event as EventEntity,
     CalendarBundle\Entity\Node\Translation as TranslationEntity,
     CommonBundle\Component\Hydrator\Exception\InvalidDateException;
@@ -35,7 +33,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new EventEntity($this->getPerson());
+            $object = new EventEntity($this->getPersonEntity());
         }
 
         $startDate = self::loadDateTime($data['start_date']);

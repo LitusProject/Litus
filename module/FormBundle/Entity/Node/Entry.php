@@ -18,10 +18,6 @@
 
 namespace FormBundle\Entity\Node;
 
-
-
-
-
 use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -91,11 +87,11 @@ class Entry
     private $fieldEntries;
 
     /**
-     * @param Person|null $person
      * @param Form        $form
+     * @param Person|null $person
      * @param boolean     $draft
      */
-    public function __construct(Person $person = null, Form $form, $draft = false)
+    public function __construct(Form $form, Person $person = null, $draft = false)
     {
         $this->creationTime = new DateTime();
         $this->creationPerson = $person;

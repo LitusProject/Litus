@@ -18,12 +18,6 @@
 
 namespace BrBundle\Entity\Cv;
 
-
-
-
-
-
-
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Address,
     CommonBundle\Entity\User\Person\Academic,
@@ -698,7 +692,7 @@ class Entry
     /**
      * Retrieves the languages of this entry.
      *
-     * @return ArrayCollection
+     * @return array
      */
     public function getLanguages()
     {

@@ -18,10 +18,6 @@
 
 namespace CommonBundle\Controller\Admin;
 
-
-
-
-
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Entity\Acl\Action,
     CommonBundle\Entity\Acl\Role,
@@ -68,7 +64,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
                 $this->getEntityManager()->flush();
 
-                $this->_updateCache();
+                $this->updateCache();
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -95,7 +91,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function membersAction()
     {
-        if (!($role = $this->_getRole())) {
+        if (!($role = $this->getRoleEntity())) {
             return new ViewModel();
         }
 
@@ -113,7 +109,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($role = $this->_getRole())) {
+        if (!($role = $this->getRoleEntity())) {
             return new ViewModel();
         }
 
@@ -125,7 +121,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $this->getEntityManager()->flush();
 
-                $this->_updateCache();
+                $this->updateCache();
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -154,7 +150,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($role = $this->_getRole())) {
+        if (!($role = $this->getRoleEntity())) {
             return new ViewModel();
         }
 
@@ -169,7 +165,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         $this->getEntityManager()->flush();
 
-        $this->_updateCache();
+        $this->updateCache();
 
         return new ViewModel(
             array(
@@ -182,11 +178,11 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($role = $this->_getRole())) {
+        if (!($role = $this->getRoleEntity())) {
             return new ViewModel();
         }
 
-        if (!($member = $this->_getMember())) {
+        if (!($member = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -208,7 +204,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         foreach ($roles as $role) {
             foreach ($role->getActions() as $action) {
-                if ($this->_findActionWithParents($action, $role->getParents())) {
+                if ($this->findActionWithParents($action, $role->getParents())) {
                     $role->removeAction($action);
                 }
             }
@@ -216,7 +212,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         $this->getEntityManager()->flush();
 
-        $this->_updateCache();
+        $this->updateCache();
 
         $this->flashMessenger()->success(
             'Success',
@@ -236,32 +232,14 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Role|null
      */
-    private function _getRole()
+    private function getRoleEntity()
     {
-        if (null === $this->getParam('name')) {
+        $role = $this->getEntityById('CommonBundle\Entity\Acl\Role', 'name', 'name');
+
+        if (!($role instanceof Role)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No name was given to identify the role!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_admin_role',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $role = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\Acl\Role')
-            ->findOneByName($this->getParam('name'));
-
-        if (null === $role) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No role with the given name was found!'
+                'No role was found!'
             );
 
             $this->redirect()->toRoute(
@@ -280,12 +258,14 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Person|null
      */
-    private function _getMember()
+    private function getPersonEntity()
     {
-        if (null === $this->getParam('id')) {
+        $person = $this->getEntityById('CommonBundle\Entity\User\Person');
+
+        if (!($person instanceof Person)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the member!'
+                'No person was found!'
             );
 
             $this->redirect()->toRoute(
@@ -298,33 +278,13 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $member = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $member) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No member with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_admin_role',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $member;
+        return $person;
     }
 
     /**
      * @return null
      */
-    private function _updateCache()
+    private function updateCache()
     {
         if (null !== $this->getCache() && $this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
             $this->getCache()->replaceItem(
@@ -341,14 +301,14 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
      * @param  array   $parents
      * @return boolean
      */
-    private function _findActionWithParents(Action $action, array $parents)
+    private function findActionWithParents(Action $action, array $parents)
     {
         foreach ($parents as $parent) {
             if (in_array($action, $parent->getActions())) {
                 return true;
             }
 
-            if ($this->_findActionWithParents($action, $parent->getParents())) {
+            if ($this->findActionWithParents($action, $parent->getParents())) {
                 return true;
             }
         }

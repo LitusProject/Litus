@@ -22,7 +22,7 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 class Comment extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('text', 'type');
+    private static $stdKeys = array('text', 'type');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -30,7 +30,7 @@ class Comment extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException();
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)

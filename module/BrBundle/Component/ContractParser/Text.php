@@ -37,7 +37,8 @@ class Text extends EntryItem
     }
 
     /**
-     * @param string $text
+     * @param  string $text
+     * @return null
      */
     public function append($text)
     {
@@ -53,7 +54,8 @@ class Text extends EntryItem
     }
 
     /**
-     * @param NodeVisitor $nodeVisitor
+     * @param  NodeVisitor $nodeVisitor
+     * @return null
      */
     public function visitNode(NodeVisitor $nodeVisitor)
     {

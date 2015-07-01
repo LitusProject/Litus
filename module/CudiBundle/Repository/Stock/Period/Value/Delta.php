@@ -30,9 +30,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Delta extends EntityRepository
 {
+    /**
+     * @param  Article $article
+     * @param  Period  $period
+     * @return int
+     */
     public function findTotalByArticleAndPeriod(Article $article, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('SUM(v.value)')
             ->from('CudiBundle\Entity\Stock\Period\Value\Delta', 'v')
             ->where(
@@ -49,9 +54,14 @@ class Delta extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleAndPeriodQuery(Article $article, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('CudiBundle\Entity\Stock\Period\Value\Delta', 'v')
             ->where(

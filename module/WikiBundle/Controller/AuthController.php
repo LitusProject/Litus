@@ -18,9 +18,6 @@
 
 namespace WikiBundle\Controller;
 
-
-
-
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Authentication\Authentication,
     Exception,
@@ -185,6 +182,9 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
         return new ViewModel();
     }
 
+    /**
+     * @return \Zend\Http\Response|null
+     */
     protected function redirectAfterAuthentication()
     {
         if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->isExternallyAuthenticated()) {

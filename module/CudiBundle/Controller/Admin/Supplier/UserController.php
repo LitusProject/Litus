@@ -18,7 +18,9 @@
 
 namespace CudiBundle\Controller\Admin\Supplier;
 
-use Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Supplier,
+    CudiBundle\Entity\User\Person\Supplier as SupplierPerson,
+    Zend\View\Model\ViewModel;
 
 /**
  * UserController
@@ -29,7 +31,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplierEntity())) {
             return new ViewModel();
         }
 
@@ -56,7 +58,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplierEntity())) {
             return new ViewModel();
         }
 
@@ -106,7 +108,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($user = $this->_getUser())) {
+        if (!($user = $this->getSupplierPersonEntity())) {
             return new ViewModel();
         }
 
@@ -147,7 +149,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($user = $this->_getUser())) {
+        if (!($user = $this->getSupplierPersonEntity())) {
             return new ViewModel();
         }
 
@@ -162,34 +164,16 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return \CudiBundle\Entity\Supplier|null
+     * @return Supplier|null
      */
-    private function _getSupplier()
+    private function getSupplierEntity()
     {
-        if (null === $this->getParam('id')) {
+        $supplier = $this->getEntityById('CudiBundle\Entity\Supplier');
+
+        if (!($supplier instanceof Supplier)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the supplier!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_supplier',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $supplier) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No supplier with the given ID was found!'
+                'No supplier was found!'
             );
 
             $this->redirect()->toRoute(
@@ -206,14 +190,16 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return \CudiBundle\Entity\User\Person\Supplier|null
+     * @return SupplierPerson|null
      */
-    private function _getUser()
+    private function getSupplierPersonEntity()
     {
-        if (null === $this->getParam('id')) {
+        $person = $this->getEntityById('CudiBundle\Entity\User\Person\Supplier');
+
+        if (!($person instanceof SupplierPerson)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the supplier!'
+                'No person was found!'
             );
 
             $this->redirect()->toRoute(
@@ -226,26 +212,6 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
             return;
         }
 
-        $supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\User\Person\Supplier')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $supplier) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No supplier with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_supplier',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $supplier;
+        return $person;
     }
 }

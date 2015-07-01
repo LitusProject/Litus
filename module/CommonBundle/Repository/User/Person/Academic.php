@@ -28,9 +28,13 @@ use CommonBundle\Entity\General\AcademicYear;
  */
 class Academic extends \CommonBundle\Repository\User\Person
 {
+    /**
+     * @param  int                                            $id
+     * @return \CommonBundle\Entity\User\Person\Academic|null
+     */
     public function findOneById($id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person\Academic', 'p')
             ->where(
@@ -44,9 +48,13 @@ class Academic extends \CommonBundle\Repository\User\Person
         return $resultSet;
     }
 
+    /**
+     * @param  string              $username
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByUsernameQuery($username)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person\Academic', 'p')
             ->where(
@@ -58,9 +66,13 @@ class Academic extends \CommonBundle\Repository\User\Person
         return $resultSet;
     }
 
+    /**
+     * @param  string              $name
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByNameQuery($name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person\Academic', 'p')
             ->where(
@@ -90,9 +102,13 @@ class Academic extends \CommonBundle\Repository\User\Person
         return $resultSet;
     }
 
+    /**
+     * @param  string              $universityIdentification
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByUniversityIdentificationQuery($universityIdentification)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person\Academic', 'p')
             ->where(
@@ -107,9 +123,13 @@ class Academic extends \CommonBundle\Repository\User\Person
         return $resultSet;
     }
 
+    /**
+     * @param  string              $barcode
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByBarcodeQuery($barcode)
     {
-        $barcodes = $this->_em
+        $barcodes = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findAllByBarcode($barcode);
 
@@ -118,7 +138,7 @@ class Academic extends \CommonBundle\Repository\User\Person
             $ids[] = $barcode->getId();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person\Academic', 'p')
             ->where(
@@ -132,9 +152,13 @@ class Academic extends \CommonBundle\Repository\User\Person
         return $resultSet;
     }
 
+    /**
+     * @param  string                                $username
+     * @return \CommonBundle\Entity\User\Person|null
+     */
     public function findOneByUsername($username)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person\Academic', 'p')
             ->where(
@@ -155,7 +179,7 @@ class Academic extends \CommonBundle\Repository\User\Person
             return $resultSet;
         }
 
-        $barcode = $this->_em
+        $barcode = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findOneByBarcode($username);
 
@@ -166,9 +190,13 @@ class Academic extends \CommonBundle\Repository\User\Person
         return null;
     }
 
+    /**
+     * @param  string              $name
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByNameTypeaheadQuery($name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CommonBundle\Entity\User\Person\Academic', 'p')
             ->where(
@@ -200,9 +228,13 @@ class Academic extends \CommonBundle\Repository\User\Person
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear $academicYear
+     * @return array
+     */
     public function findAllMembers(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CommonBundle\Entity\User\Status\Organization', 's')
             ->innerJoin('s.person', 'p')

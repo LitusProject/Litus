@@ -152,11 +152,22 @@ class Add extends \CommonBundle\Component\Form\Fieldset
 
     public function setRequired($required = true)
     {
-        $this->get('street')->setRequired($required);
-        $this->get('number')->setRequired($required);
-        $this->get('mailbox')->setRequired(false);
-        $this->get('postal')->setRequired($required);
-        $this->get('city')->setRequired($required);
+        /** @var \CommonBundle\Component\Form\Bootstrap\Element $street */
+        $street = $this->get('street');
+        /** @var \CommonBundle\Component\Form\Bootstrap\Element $number */
+        $number = $this->get('number');
+        /** @var \CommonBundle\Component\Form\Bootstrap\Element $mailbox */
+        $mailbox = $this->get('mailbox');
+        /** @var \CommonBundle\Component\Form\Bootstrap\Element $postal */
+        $postal = $this->get('postal');
+        /** @var \CommonBundle\Component\Form\Bootstrap\Element $city */
+        $city = $this->get('city');
+
+        $street->setRequired($required);
+        $number->setRequired($required);
+        $mailbox->setRequired(false);
+        $postal->setRequired($required);
+        $city->setRequired($required);
 
         return $this;
     }

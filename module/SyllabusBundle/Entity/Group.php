@@ -18,8 +18,6 @@
 
 namespace SyllabusBundle\Entity;
 
-
-
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -77,7 +75,7 @@ class Group
     /**
      * @var EntityManager The EntityManager instance
      */
-    protected $_entityManager = null;
+    protected $entityManager;
 
     public function __construct()
     {
@@ -184,7 +182,7 @@ class Group
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }
@@ -195,7 +193,7 @@ class Group
      */
     public function getNbStudents(AcademicYear $academicYear)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findNbStudentsByGroupAndAcademicYear($this, $academicYear);
     }

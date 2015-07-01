@@ -18,7 +18,6 @@
 
 namespace SyllabusBundle\Component\Validator\Study;
 
-
 use CommonBundle\Component\Form\Form,
     CommonBundle\Component\Validator\FormAwareInterface;
 
@@ -38,7 +37,7 @@ class Recursion extends \CommonBundle\Component\Validator\AbstractValidator impl
     /**
     * @var Form The form to validate
     */
-    private $_form;
+    private $form;
 
     /**
      * Error messages
@@ -69,17 +68,20 @@ class Recursion extends \CommonBundle\Component\Validator\AbstractValidator impl
      * Returns true if and only if a field name has been set, the field name is available in the
      * context, and the value of that field is valid.
      *
-     * @param  string  $value   The value of the field that will be validated
-     * @param  array   $context The context of the field that will be validated
+     * @param  string     $value   The value of the field that will be validated
+     * @param  array|null $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
     {
         $this->setValue($value);
 
+        /** @var \CommonBundle\Component\Form\Fieldset $parentFieldset */
+        $parentFieldset = $this->form->get('parent');
+
         $parent = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findOneByKulId($this->_form->get('parent')->get('id')->getValue());
+            ->findOneByKulId($parentFieldset->get('id')->getValue());
 
         if (null === $parent) {
             return true;
@@ -107,6 +109,6 @@ class Recursion extends \CommonBundle\Component\Validator\AbstractValidator impl
      */
     public function setForm(Form $form)
     {
-        $this->_form = $form;
+        $this->form = $form;
     }
 }

@@ -18,9 +18,8 @@
 
 namespace MailBundle\Command;
 
-
-
-use MailBundle\Component\Parser\Message as MessageParser,
+use CommonBundle\Component\Lilo\Client as LiloClient,
+    MailBundle\Component\Parser\Message as MessageParser,
     MailBundle\Document\Message,
     MailBundle\Document\Message\Attachment;
 
@@ -44,9 +43,9 @@ class Parser extends \CommonBundle\Component\Console\Command
     );
 
     /**
-     * @var \CommonBundle\Component\Lilo\Client|null
+     * @var LiloClient|null
      */
-    private $_lilo;
+    private $lilo;
 
     protected function configure()
     {
@@ -63,55 +62,73 @@ EOT
     protected function executeCommand()
     {
         if ($this->getServiceLocator()->has('lilo')) {
-            $this->_lilo = $this->getServiceLocator()->get('lilo');
+            $lilo = $this->getServiceLocator()->get('lilo');
+            if ($lilo instanceof LiloClient) {
+                $this->lilo = $lilo;
+            }
         } else {
-            $this->_lilo = null;
+            $this->lilo = null;
         }
 
-        $mail = $this->_readMail();
-        $this->_parseMessage($mail);
+        $mail = $this->readMail();
+        $this->parseMessage($mail);
     }
 
+    /**
+     * @return string
+     */
     protected function getLogName()
     {
         return 'MailParser';
     }
 
+    /**
+     * @param  string  $str
+     * @param  boolean $raw
+     * @return null
+     */
     public function write($str, $raw = false)
     {
-        if (null !== $this->_lilo) {
-            $this->_sendToLilo($str);
+        if (null !== $this->lilo) {
+            $this->sendToLilo($str);
         } else {
             return parent::write($str, $raw);
         }
     }
 
     /**
-     * @param string $str
+     * @param  string  $str
+     * @param  boolean $raw
+     * @return null
      */
     public function writeln($str, $raw = false)
     {
-        if (null !== $this->_lilo) {
-            $this->_sendToLilo($str);
+        if (null !== $this->lilo) {
+            $this->sendToLilo($str);
         } else {
             return parent::writeln($str, $raw);
         }
     }
 
-    private function _sendToLilo($str)
+    /**
+     * @param  string $str
+     * @return null
+     */
+    private function sendToLilo($str)
     {
-        $this->_lilo->sendLog(
+        $this->lilo->sendLog(
             $str,
-            serialize(
-                array(
-                    'MailBundle',
-                    'parser.php',
-                )
+            array(
+                'MailBundle',
+                'parser.php',
             )
         );
     }
 
-    private function _readMail()
+    /**
+     * @return string
+     */
+    private function readMail()
     {
         $stdinStream = fopen('php://stdin', 'r');
         $message = '';
@@ -127,14 +144,14 @@ EOT
     /**
      * @param string $message
      */
-    private function _parseMessage($message)
+    private function parseMessage($message)
     {
         $parser = new MessageParser($message);
         $command = substr($parser->getSubject(), 2, 3);
 
         switch ($command) {
             case self::COMMAND_STORE:
-                $this->_storeMessage($parser);
+                $this->storeMessage($parser);
                 break;
             default:
                 $this->writeln('Invalid command specified in the subject line (' . $command . ')');
@@ -142,7 +159,11 @@ EOT
         }
     }
 
-    private function _storeMessage(MessageParser $parser)
+    /**
+     * @param  MessageParser $parser
+     * @return null
+     */
+    private function storeMessage(MessageParser $parser)
     {
         $attachments = array();
         foreach ($parser->getAttachments() as $attachment) {

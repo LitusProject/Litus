@@ -18,13 +18,12 @@
 
 namespace FormBundle\Hydrator\Node;
 
-
 use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
     FormBundle\Entity\Node\Group\Mapping as MappingEntity;
 
 class Group extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('active', 'max', 'editable_by_user', 'non_member');
+    private static $stdKeys = array('active', 'max', 'editable_by_user', 'non_member');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -81,7 +80,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');

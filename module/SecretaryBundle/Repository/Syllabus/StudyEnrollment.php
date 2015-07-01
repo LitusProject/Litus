@@ -33,7 +33,7 @@ class StudyEnrollment extends EntityRepository
 {
     public function findAllByStudyAndAcademicYearQuery(Study $study, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SecretaryBundle\Entity\Syllabus\StudyEnrollment', 's')
             ->where(
@@ -51,7 +51,7 @@ class StudyEnrollment extends EntityRepository
 
     public function findAllByAcademicAndAcademicYearQuery(Academic $academic, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SecretaryBundle\Entity\Syllabus\StudyEnrollment', 's')
             ->where(
@@ -69,7 +69,7 @@ class StudyEnrollment extends EntityRepository
 
     public function findOneByAcademicAndAcademicYearAndStudy(Academic $academic, AcademicYear $academicYear, Study $study)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SecretaryBundle\Entity\Syllabus\StudyEnrollment', 's')
             ->where(

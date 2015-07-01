@@ -18,11 +18,6 @@
 
 namespace CudiBundle\Entity\Sale\Session\OpeningHour;
 
-
-
-
-
-
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     DateTime,
@@ -147,7 +142,7 @@ class OpeningHour
     }
 
     /**
-     * @param  Language         $language
+     * @param  Language|null    $language
      * @param  boolean          $allowFallback
      * @return Translation|null
      */

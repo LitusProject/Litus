@@ -18,9 +18,6 @@
 
 namespace CommonBundle\Controller\Admin;
 
-
-
-
 use CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Organization\Unit,
     CommonBundle\Entity\User\Person\Organization\UnitMap,
@@ -93,7 +90,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function membersAction()
     {
-        if (!($unit = $this->_getUnit())) {
+        if (!($unit = $this->getUnitEntity())) {
             return new ViewModel();
         }
 
@@ -163,7 +160,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($unit = $this->_getUnit())) {
+        if (!($unit = $this->getUnitEntity())) {
             return new ViewModel();
         }
 
@@ -202,7 +199,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($unit = $this->_getUnit())) {
+        if (!($unit = $this->getUnitEntity())) {
             return new ViewModel();
         }
 
@@ -223,11 +220,11 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($member = $this->_getMember())) {
+        if (!($unitMap = $this->getUnitMapEntity())) {
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($member);
+        $this->getEntityManager()->remove($unitMap);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -245,13 +242,13 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
         foreach ($units as $unit) {
             foreach ($unit->getRoles() as $role) {
-                if ($this->_findRoleWithParent($role, $unit->getParent())) {
+                if ($this->findRoleWithParent($role, $unit->getParent())) {
                     $unit->removeRole($role);
                 }
             }
 
             foreach ($unit->getCoordinatorRoles() as $coordinatorRole) {
-                if ($this->_findCoordinatorRoleWithParent($coordinatorRole, $unit->getParent())) {
+                if ($this->findCoordinatorRoleWithParent($coordinatorRole, $unit->getParent())) {
                     $unit->removeCoordinatorRole($coordinatorRole);
                 }
             }
@@ -277,32 +274,14 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return Unit|null
      */
-    private function _getUnit()
+    private function getUnitEntity()
     {
-        if (null === $this->getParam('id')) {
+        $unit = $this->getEntityById('CommonBundle\Entity\General\Organization\Unit');
+
+        if (!($unit instanceof Unit)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the unit!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_admin_unit',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $unit = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $unit) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No unit with the given ID was found!'
+                'No unit was found!'
             );
 
             $this->redirect()->toRoute(
@@ -321,12 +300,14 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return UnitMap|null
      */
-    private function _getMember()
+    private function getUnitMapEntity()
     {
-        if (null === $this->getParam('id')) {
+        $unitMap = $this->getEntityById('CommonBundle\Entity\User\Person\Organization\UnitMap');
+
+        if (!($unitMap instanceof UnitMap)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the member!'
+                'No unit map was found!'
             );
 
             $this->redirect()->toRoute(
@@ -339,34 +320,15 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $member = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $member) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No member with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_admin_unit',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $member;
+        return $unitMap;
     }
 
     /**
-     * @param Role      $role
-     * @param Unit|null $parent
+     * @param  Role      $role
+     * @param  Unit|null $parent
+     * @return boolean
      */
-    private function _findRoleWithParent(Role $role, Unit $parent = null)
+    private function findRoleWithParent(Role $role, Unit $parent = null)
     {
         if (null === $parent) {
             return false;
@@ -376,14 +338,15 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             return true;
         }
 
-        return $this->_findRoleWithParent($role, $parent->getParent());
+        return $this->findRoleWithParent($role, $parent->getParent());
     }
 
     /**
-     * @param Role      $role
-     * @param Unit|null $parent
+     * @param  Role      $role
+     * @param  Unit|null $parent
+     * @return boolean
      */
-    private function _findCoordinatorRoleWithParent(Role $role, Unit $parent = null)
+    private function findCoordinatorRoleWithParent(Role $role, Unit $parent = null)
     {
         if (null === $parent) {
             return false;
@@ -393,6 +356,6 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             return true;
         }
 
-        return $this->_findCoordinatorRoleWithParent($role, $parent->getParent());
+        return $this->findCoordinatorRoleWithParent($role, $parent->getParent());
     }
 }

@@ -19,6 +19,7 @@
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
 use CommonBundle\Entity\General\AcademicYear,
+    CudiBundle\Entity\Sale\Article as SaleArticle,
     CudiBundle\Entity\Supplier,
     Zend\View\Model\ViewModel;
 
@@ -31,9 +32,9 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 {
     public function individualAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
         if (null !== $this->getParam('field')) {
-            $records = $this->_individualSearch($academicYear);
+            $records = $this->individualSearch($academicYear);
         }
 
         if (!isset($records)) {
@@ -65,13 +66,13 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $deliveries = $this->_individualSearch($academicYear)
+        $deliveries = $this->individualSearch($academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -95,7 +96,11 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _individualSearch(AcademicYear $academicYear)
+    /**
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function individualSearch(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'article':
@@ -111,9 +116,9 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function articlesAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
         if (null !== $this->getParam('field')) {
-            $records = $this->_articlesSearch($academicYear);
+            $records = $this->articlesSearch($academicYear);
         }
 
         if (!isset($records)) {
@@ -149,13 +154,13 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $articles = $this->_articlesSearch($academicYear)
+        $articles = $this->articlesSearch($academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -182,7 +187,11 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _articlesSearch(AcademicYear $academicYear)
+    /**
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function articlesSearch(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'title':
@@ -206,11 +215,11 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function articleAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -219,7 +228,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Delivery')
-                ->findAllByArticleEntityQuery($article, $this->getAcademicYear()),
+                ->findAllByArticleEntityQuery($article, $this->getAcademicYearEntity()),
             $this->getParam('page')
         );
 
@@ -236,7 +245,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function suppliersAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -265,24 +274,24 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
     public function supplierAction()
     {
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplierEntity())) {
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
         if (null !== $this->getParam('field')) {
-            $records = $this->_supplierSearch($supplier, $this->getAcademicYear());
+            $records = $this->supplierSearch($supplier, $this->getAcademicYearEntity());
         }
 
         if (!isset($records)) {
             $records = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Delivery')
-                ->findAllBySupplierEntityQuery($supplier, $this->getAcademicYear());
+                ->findAllBySupplierEntityQuery($supplier, $this->getAcademicYearEntity());
         }
 
         $paginator = $this->paginator()->createFromQuery(
@@ -305,17 +314,17 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($supplier = $this->_getSupplier())) {
+        if (!($supplier = $this->getSupplierEntity())) {
             return new ViewModel();
         }
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $deliveries = $this->_supplierSearch($supplier, $academicYear)
+        $deliveries = $this->supplierSearch($supplier, $academicYear)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -338,7 +347,12 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _supplierSearch(Supplier $supplier, AcademicYear $academicYear)
+    /**
+     * @param  Supplier                 $supplier
+     * @param  AcademicYear             $academicYear
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function supplierSearch(Supplier $supplier, AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'article':
@@ -348,32 +362,17 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         }
     }
 
-    private function _getArticle()
+    /**
+     * @return SaleArticle|null
+     */
+    private function getSaleArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
+
+        if (!($article instanceof SaleArticle)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_delivered',
-                array(
-                    'action' => 'articles',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -391,32 +390,17 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
         return $article;
     }
 
-    private function _getSupplier()
+    /**
+     * @return Supplier|null
+     */
+    private function getSupplierEntity()
     {
-        if (null === $this->getParam('id')) {
+        $supplier = $this->getEntityById('CudiBundle\Entity\Supplier');
+
+        if (!($supplier instanceof Supplier)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the supplier!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_financial_delivered',
-                array(
-                    'action' => 'suppliers',
-                )
-            );
-
-            return;
-        }
-
-        $supplier = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Supplier')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $supplier) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No supplier with the given ID was found!'
+                'No supplier was found!'
             );
 
             $this->redirect()->toRoute(

@@ -18,7 +18,11 @@
 
 namespace QuizBundle\Controller;
 
-use QuizBundle\Entity\Point,
+use CommonBundle\Entity\User\Person,
+    QuizBundle\Entity\Point,
+    QuizBundle\Entity\Quiz,
+    QuizBundle\Entity\Round,
+    QuizBundle\Entity\Team,
     Zend\View\Model\ViewModel;
 
 /**
@@ -32,7 +36,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($quiz = $this->_getQuiz())) {
+        if (!($quiz = $this->getQuizEntity())) {
             return new ViewModel();
         }
 
@@ -67,7 +71,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($team = $this->_getTeam()) || !($round = $this->_getRound())) {
+        if (!($team = $this->getTeamEntity()) || !($round = $this->getRoundEntity())) {
             return new ViewModel();
         }
 
@@ -111,7 +115,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($quiz = $this->_getQuiz())) {
+        if (!($quiz = $this->getQuizEntity())) {
             return new ViewModel();
         }
 
@@ -162,14 +166,14 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return null|\QuizBundle\Entity\Quiz
+     * @return Person|null
      */
-    private function _getQuiz()
+    private function getPersonEntity()
     {
-        if ($this->getParam('quizid') === null) {
+        if (!$this->getAuthentication()->isAuthenticated()) {
             $this->flashMessenger()->error(
                 'Error',
-                'No id was given to identify the quiz!'
+                'No user was authenticated!'
             );
 
             $this->redirect()->toRoute(
@@ -182,30 +186,24 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             return;
         }
 
-        $quiz = $this->getEntityManager()
-            ->getRepository('QuizBundle\Entity\Quiz')
-            ->findOneById($this->getParam('quizid'));
+        return $this->getAuthentication()->getPersonObject();
+    }
 
-        if ($quiz === null) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No quiz with the given id was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'quiz_admin_quiz',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
+    /**
+     * @return Quiz|null
+     */
+    private function getQuizEntity()
+    {
+        if (!($person = $this->getPersonEntity())) {
             return;
         }
 
-        if (!$quiz->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
+        $quiz = $this->getEntityById('QuizBundle\Entity\Quiz', 'quizid');
+
+        if (!($quiz instanceof Quiz) || !$quiz->canBeEditedBy($person)) {
             $this->flashMessenger()->error(
                 'Error',
-                'You do not have the permissions to modify this quiz!'
+                'No quiz was found!'
             );
 
             $this->redirect()->toRoute(
@@ -222,50 +220,20 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return null|\QuizBundle\Entity\Round
+     * @return Round|null
      */
-    private function _getRound()
+    private function getRoundEntity()
     {
-        if ($this->getParam('roundid') === null) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No id was given to identify the round!'
-            );
-
-            $this->redirect()->toRoute(
-                'quiz_quiz',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
+        if (!($person = $this->getPersonEntity())) {
             return;
         }
 
-        $round = $this->getEntityManager()
-            ->getRepository('QuizBundle\Entity\Round')
-            ->findOneById($this->getParam('roundid'));
+        $round = $this->getEntityById('QuizBundle\Entity\Round', 'roundid');
 
-        if ($round === null) {
+        if (!($round instanceof Round) || !$round->getQuiz()->canBeEditedBy($person)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No round with the given id was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'quiz_quiz',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        if (!$round->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->error(
-                'Error',
-                'You do not have the permissions to modify this quiz!'
+                'No round was found!'
             );
 
             $this->redirect()->toRoute(
@@ -282,50 +250,20 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return null|\QuizBundle\Entity\Team
+     * @return Team|null
      */
-    private function _getTeam()
+    private function getTeamEntity()
     {
-        if ($this->getParam('teamid') === null) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No id was given to identify the team!'
-            );
-
-            $this->redirect()->toRoute(
-                'quiz_quiz',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
+        if (!($person = $this->getPersonEntity())) {
             return;
         }
 
-        $team = $this->getEntityManager()
-            ->getRepository('QuizBundle\Entity\Team')
-            ->findOneById($this->getParam('teamid'));
+        $team = $this->getEntityById('QuizBundle\Entity\Team', 'teamid');
 
-        if ($team === null) {
+        if (!($team instanceof Team) || !$team->getQuiz()->canBeEditedBy($person)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No team with the given id was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'quiz_quiz',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        if (!$team->getQuiz()->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->error(
-                'Error',
-                'You do not have the permissions to modify this quiz!'
+                'No team was found!'
             );
 
             $this->redirect()->toRoute(

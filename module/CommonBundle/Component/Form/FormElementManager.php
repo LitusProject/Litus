@@ -18,12 +18,6 @@
 
 namespace CommonBundle\Component\Form;
 
-
-
-
-
-
-
 use CommonBundle\Component\Util\String as StringUtil,
     RuntimeException,
     Zend\Form\FormFactoryAwareInterface,
@@ -86,7 +80,8 @@ class FormElementManager extends \Zend\Form\FormElementManager
     /**
      * Inject the factory to any element that implements FormFactoryAwareInterface
      *
-     * @param $element
+     * @param  object $element
+     * @return null
      */
     public function injectFactory($element)
     {
@@ -106,7 +101,8 @@ class FormElementManager extends \Zend\Form\FormElementManager
     /**
      * Inject the main Service Locator into the form element
      *
-     * @param object $element
+     * @param  object $element
+     * @return null
      */
     public function injectServiceLocator($element)
     {
@@ -118,7 +114,8 @@ class FormElementManager extends \Zend\Form\FormElementManager
     /**
      * Hydrate the element with the given data, if any.
      *
-     * @param object $element
+     * @param  object $element
+     * @return null
      */
     public function hydrateElement($element)
     {
@@ -143,7 +140,7 @@ class FormElementManager extends \Zend\Form\FormElementManager
      * @param  string       $name
      * @param  string|array $options
      * @param  bool         $usePeeringServiceManagers
-     * @return object
+     * @return object|array
      */
     public function get($name, $options = array(), $usePeeringServiceManagers = true)
     {

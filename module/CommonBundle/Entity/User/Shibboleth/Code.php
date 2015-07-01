@@ -82,11 +82,11 @@ class Code
     private $redirect;
 
     /**
-     * @param string $universityIdentification
-     * @param string $code
-     * @param string $info
-     * @param int    $expirationTime
-     * @param string $redirect
+     * @param string      $universityIdentification
+     * @param string      $code
+     * @param string      $info
+     * @param int         $expirationTime
+     * @param string|null $redirect
      */
     public function __construct($universityIdentification, $code, $info, $expirationTime = 300, $redirect = null)
     {

@@ -18,12 +18,6 @@
 
 namespace FormBundle\Form\SpecifiedForm;
 
-
-
-
-
-
-
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     FormBundle\Component\Exception\UnsupportedTypeException,
@@ -44,51 +38,51 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     /**
      * @var Person
      */
-    protected $_person;
+    protected $person;
 
     /**
      * @var GuestInfoEntity
      */
-    protected $_guestInfo;
+    protected $guestInfo;
 
     /**
      * @var DoodleEntity
      */
-     protected $_form;
+    protected $form;
 
     /**
      * @var Language
      */
-    protected $_language;
+    protected $language;
 
     /**
      * @var EntryEntity
      */
-    protected $_entry;
+    protected $entry;
 
     /**
      * @var boolean
      */
-    protected $_forceEdit;
+    protected $forceEdit;
 
     /**
      * @var array
      */
-    protected $_occupiedSlots;
+    protected $occupiedSlots;
 
     public function init()
     {
         parent::init();
 
-        $editable = $this->_form->canBeSavedBy($this->_person) || $this->_forceEdit;
+        $editable = $this->form->canBeSavedBy($this->person) || $this->forceEdit;
 
-        if (null === $this->_person) {
+        if (null === $this->person) {
             $this->add(array(
                 'type'     => 'text',
                 'name'     => 'first_name',
                 'label'    => 'First Name',
                 'required' => true,
-                'value'    => $this->_guestInfo ? $this->_guestInfo->getFirstName() : '',
+                'value'    => $this->guestInfo ? $this->guestInfo->getFirstName() : '',
                 'options'  => array(
                     'input' => array(
                         'filter' => array(
@@ -103,7 +97,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                 'name'     => 'last_name',
                 'label'    => 'Last Name',
                 'required' => true,
-                'value'    => $this->_guestInfo ? $this->_guestInfo->getLastName() : '',
+                'value'    => $this->guestInfo ? $this->guestInfo->getLastName() : '',
                 'options'  => array(
                     'input' => array(
                         'filter' => array(
@@ -118,7 +112,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                 'name'     => 'email',
                 'label'    => 'Email',
                 'required' => true,
-                'value'    => $this->_guestInfo ? $this->_guestInfo->getEmail() : '',
+                'value'    => $this->guestInfo ? $this->guestInfo->getEmail() : '',
                 'options'  => array(
                     'input' => array(
                         'filter' => array(
@@ -138,7 +132,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $fields = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Field')
-            ->findAllByForm($this->_form);
+            ->findAllByForm($this->form);
 
         foreach ($fields as $fieldSpecification) {
             if ($fieldSpecification instanceof TimeSlotFieldEntity) {
@@ -157,7 +151,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                             'name' => 'form_timeslot',
                             'options' => array(
                                 'timeslot' => $fieldSpecification,
-                                'person' => $this->_person,
+                                'person' => $this->person,
                             ),
                         ),
                     );
@@ -166,7 +160,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                 $validators[] = array(
                     'name' => 'form_max_timeslots',
                     'options' => array(
-                        'form' => $this->_form,
+                        'form' => $this->form,
                     ),
                 );
 
@@ -195,32 +189,32 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         if ($editable) {
-            $this->addSubmit($this->_form->getSubmitText($this->_language));
+            $this->addSubmit($this->form->getSubmitText($this->language));
         }
 
-        if (null !== $this->_entry) {
-            $this->bind($this->_entry);
+        if (null !== $this->entry) {
+            $this->bind($this->entry);
         }
     }
 
     /**
-     * @param  Person $person
+     * @param  Person|null $person
      * @return self
      */
     public function setPerson(Person $person = null)
     {
-        $this->_person = $person;
+        $this->person = $person;
 
         return $this;
     }
 
     /**
-     * @param  GuestInfoEntity $guestInfo
+     * @param  GuestInfoEntity|null $guestInfo
      * @return self
      */
     public function setGuestInfo(GuestInfoEntity $guestInfo = null)
     {
-        $this->_guestInfo = $guestInfo;
+        $this->guestInfo = $guestInfo;
 
         return $this;
     }
@@ -231,7 +225,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     public function setForm(DoodleEntity $form)
     {
-        $this->_form = $form;
+        $this->form = $form;
 
         return $this;
     }
@@ -242,7 +236,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     public function setLanguage(Language $language)
     {
-        $this->_language = $language;
+        $this->language = $language;
 
         return $this;
     }
@@ -253,7 +247,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     public function setEntry(EntryEntity $entry = null)
     {
-        $this->_entry = $entry;
+        $this->entry = $entry;
 
         return $this;
     }
@@ -264,33 +258,33 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     */
     public function setForceEdit($forceEdit)
     {
-        $this->_forceEdit = $forceEdit;
+        $this->forceEdit = $forceEdit;
 
         return $this;
     }
 
     public function getOccupiedSlots()
     {
-        if (null !== $this->_occupiedSlots) {
-            return $this->_occupiedSlots;
+        if (null !== $this->occupiedSlots) {
+            return $this->occupiedSlots;
         }
 
         $formEntries = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findAllByForm($this->_form);
+            ->findAllByForm($this->form);
 
-        $this->_occupiedSlots = array();
+        $this->occupiedSlots = array();
         foreach ($formEntries as $formEntry) {
-            if ((null !== $this->_person && $formEntry->getCreationPerson() == $this->_person) ||
-                (null !== $this->_guestInfo && $formEntry->getGuestInfo() == $this->_guestInfo)) {
+            if ((null !== $this->person && $formEntry->getCreationPerson() == $this->person) ||
+                (null !== $this->guestInfo && $formEntry->getGuestInfo() == $this->guestInfo)) {
                 continue;
             }
 
             foreach ($formEntry->getFieldEntries() as $fieldEntry) {
-                $this->_occupiedSlots[$fieldEntry->getField()->getId()] = $formEntry->getPersonInfo()->getFullName();
+                $this->occupiedSlots[$fieldEntry->getField()->getId()] = $formEntry->getPersonInfo()->getFullName();
             }
         }
 
-        return $this->_occupiedSlots;
+        return $this->occupiedSlots;
     }
 }

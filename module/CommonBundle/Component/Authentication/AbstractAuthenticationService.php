@@ -36,37 +36,37 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     /**
      * @var string The namespace the storage handlers will use
      */
-    private $_namespace = '';
+    private $namespace = '';
 
     /**
      * @var string The name of the cookie
      */
-    private $_cookie = '';
+    private $cookie = '';
 
     /**
      * @var int The duration of the authentication
      */
-    protected $_duration = -1;
+    protected $duration = -1;
 
     /**
      * @var Action The action that should be taken after authentication
      */
-    protected $_action;
+    protected $action;
 
     /**
      * @var Request The request
      */
-    protected $_request;
+    protected $request;
 
     /**
      * @var Cookie The received cookies
      */
-    private $_cookies;
+    private $cookies;
 
     /**
      * @var Response The HTTP response
      */
-    private $_response;
+    private $response;
 
     /**
      * @param StorageInterface $storage      The persistent storage handler
@@ -79,10 +79,10 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     {
         parent::__construct($storage);
 
-        $this->_namespace = $namespace;
-        $this->_duration = $duration;
-        $this->_cookie = $namespace . '_' . $cookieSuffix;
-        $this->_action = $action;
+        $this->namespace = $namespace;
+        $this->duration = $duration;
+        $this->cookie = $namespace . '_' . $cookieSuffix;
+        $this->action = $action;
     }
 
     /**
@@ -92,7 +92,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     public function setAction(Action $action)
     {
-        $this->_action = $action;
+        $this->action = $action;
 
         return $this;
     }
@@ -103,8 +103,8 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     public function setRequest(Request $request)
     {
-        $this->_cookies = $request->getCookie() ? $request->getCookie() : null;
-        $this->_request = $request;
+        $this->cookies = $request->getCookie() ? $request->getCookie() : null;
+        $this->request = $request;
 
         return $this;
     }
@@ -115,7 +115,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     public function setResponse(Response $response)
     {
-        $this->_response = $response;
+        $this->response = $response;
 
         return $this;
     }
@@ -127,7 +127,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      */
     public function isExternallyVisible()
     {
-        return $this->_hasCookie();
+        return $this->hasCookie();
     }
 
     /**
@@ -135,9 +135,9 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      *
      * @return string
      */
-    protected function _getCookie()
+    protected function getCookie()
     {
-        return $this->_cookies[$this->_cookie];
+        return $this->cookies[$this->cookie];
     }
 
     /**
@@ -145,28 +145,28 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      *
      * @return bool
      */
-    protected function _hasCookie()
+    protected function hasCookie()
     {
-        return isset($this->_cookies[$this->_cookie]);
+        return isset($this->cookies[$this->cookie]);
     }
 
     /**
      * Clear the authentication cookie.
      */
-    protected function _clearCookie()
+    protected function clearCookie()
     {
-        if (isset($this->_cookies[$this->_cookie])) {
-            unset($this->_cookies[$this->_cookie]);
+        if (isset($this->cookies[$this->cookie])) {
+            unset($this->cookies[$this->cookie]);
         }
 
-        $this->_response->getHeaders()->addHeader(
+        $this->response->getHeaders()->addHeader(
             (new SetCookie())
-                ->setName($this->_cookie)
+                ->setName($this->cookie)
                 ->setValue('deleted')
                 ->setExpires(0)
                 ->setMaxAge(0)
                 ->setPath('/')
-                ->setDomain(str_replace(array('www.', ','), '', $this->_request->getServer()->get('SERVER_NAME')))
+                ->setDomain(str_replace(array('www.', ','), '', $this->request->getServer()->get('SERVER_NAME')))
         );
     }
 
@@ -175,19 +175,19 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      *
      * @param string $value The cookie's value
      */
-    protected function _setCookie($value)
+    protected function setCookie($value)
     {
-        $this->_clearCookie();
+        $this->clearCookie();
 
-        $this->_cookies[$this->_cookie] = $value;
-        $this->_response->getHeaders()->addHeader(
+        $this->cookies[$this->cookie] = $value;
+        $this->response->getHeaders()->addHeader(
             (new SetCookie())
-                ->setName($this->_cookie)
+                ->setName($this->cookie)
                 ->setValue($value)
-                ->setExpires(time() + $this->_duration)
-                ->setMaxAge($this->_duration)
+                ->setExpires(time() + $this->duration)
+                ->setMaxAge($this->duration)
                 ->setPath('/')
-                ->setDomain(str_replace(array('www.', ','), '', $this->_request->getServer()->get('SERVER_NAME')))
+                ->setDomain(str_replace(array('www.', ','), '', $this->request->getServer()->get('SERVER_NAME')))
         );
     }
 

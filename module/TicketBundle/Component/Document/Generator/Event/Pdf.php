@@ -35,7 +35,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * @var Event
      */
-    private $_event;
+    private $event;
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
@@ -54,7 +54,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             $file->getFilename()
         );
 
-        $this->_event = $event;
+        $this->event = $event;
     }
 
     /**
@@ -73,7 +73,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
 
         $tickets = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
-            ->findAllActiveByEvent($this->_event);
+            ->findAllActiveByEvent($this->event);
 
         $list = array();
 
@@ -129,7 +129,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             new Object(
                 'event',
                 array(
-                    'name' => $this->_event->getActivity()->getTitle(),
+                    'name' => $this->event->getActivity()->getTitle(),
                     'date' => $now->format('d F Y'),
                 ),
                 array(

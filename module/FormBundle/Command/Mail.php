@@ -65,7 +65,7 @@ EOT
             ->findAllForReminderMail($start, $end);
 
         foreach ($timeSlots as $timeSlot) {
-            $this->_sendMailForTimeSlot($timeSlot);
+            $this->sendMailForTimeSlot($timeSlot);
         }
     }
 
@@ -74,7 +74,7 @@ EOT
         return 'FormMail';
     }
 
-    private function _sendMailForTimeSlot(TimeSlot $timeSlot)
+    private function sendMailForTimeSlot(TimeSlot $timeSlot)
     {
         $form = $timeSlot->getForm();
 

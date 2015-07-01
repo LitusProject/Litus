@@ -17,8 +17,6 @@
  */
 namespace LogisticsBundle\Controller\Admin;
 
-
-
 use CommonBundle\Component\Controller\ActionController\AdminController,
     LogisticsBundle\Entity\Lease\Item,
     Zend\View\Model\ViewModel;
@@ -84,7 +82,7 @@ class LeaseController extends AdminController
 
     public function editAction()
     {
-        if (!($item = $this->_getItem())) {
+        if (!($item = $this->getItemEntity())) {
             return new ViewModel();
         }
 
@@ -121,7 +119,7 @@ class LeaseController extends AdminController
     {
         $this->initAjax();
 
-        if (!($item = $this->_getItem())) {
+        if (!($item = $this->getItemEntity())) {
             return new ViewModel();
         }
 
@@ -157,34 +155,16 @@ class LeaseController extends AdminController
     }
 
     /**
-     * @return Item
+     * @return Item|null
      */
-    private function _getItem()
+    private function getItemEntity()
     {
-        if ($this->getParam('id') === null) {
+        $item = $this->getEntityById('LogisticsBundle\Entity\Lease\Item');
+
+        if (!($item instanceof Item)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No id was given to identify the item!'
-            );
-
-            $this->redirect()->toRoute(
-                'logistics_admin_lease',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $item = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Lease\Item')
-            ->findOneById($this->getParam('id'));
-
-        if ($item === null) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No item with the given id was found!'
+                'No item was found!'
             );
 
             $this->redirect()->toRoute(

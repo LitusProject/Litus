@@ -18,9 +18,6 @@
 
 namespace MailBundle\Controller\Admin;
 
-
-
-
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
     CommonBundle\Entity\User\Status\University as UniversityStatus,
     Zend\Mail\Message,
@@ -45,17 +42,17 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
 
     public function sendAction()
     {
-        if (!($type = $this->_getType())) {
+        if (!($type = $this->getType())) {
             return new ViewModel();
         }
 
         if ('organization' == $type) {
-            if (!($status = $this->_getOrganizationStatus())) {
+            if (!($status = $this->getOrganizationStatus())) {
                 return new ViewModel();
             }
             $statuses = OrganizationStatus::$possibleStatuses;
         } else {
-            if (!($status = $this->_getUniversityStatus())) {
+            if (!($status = $this->getUniversityStatus())) {
                 return new ViewModel();
             }
             $statuses = UniversityStatus::$possibleStatuses;
@@ -151,36 +148,23 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
         );
     }
 
-    private function _getType()
+    /**
+     * @return string|null
+     */
+    private function getType()
     {
-        if (null === $this->getParam('type')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No university status given to send a mail to!'
-            );
-
-            $this->redirect()->toRoute(
-                'mail_admin_group',
-                array(
-                    'action' => 'groups',
-                )
-            );
-
-            return;
-        };
-
-        $type = $this->getParam('type');
+        $type = $this->getParam('type', '');
 
         if ('organization' != $type && 'university' != $type) {
             $this->flashMessenger()->error(
                 'Error',
-                'No university status given to send a mail to!'
+                'No type was found!'
             );
 
             $this->redirect()->toRoute(
                 'mail_admin_group',
                 array(
-                    'action' => 'groups',
+                    'action' => 'manage',
                 )
             );
 
@@ -190,30 +174,17 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
         return $type;
     }
 
-    private function _getUniversityStatus()
+    /**
+     * @return string|null
+     */
+    private function getUniversityStatus()
     {
-        if (null === $this->getParam('group')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No university status given to send a mail to!'
-            );
-
-            $this->redirect()->toRoute(
-                'mail_admin_group',
-                array(
-                    'action' => 'groups',
-                )
-            );
-
-            return;
-        };
-
-        $status = $this->getParam('group');
+        $status = $this->getParam('group', '');
 
         if (!array_key_exists($status, UniversityStatus::$possibleStatuses)) {
             $this->flashMessenger()->error(
                 'Error',
-                'The given university status was not valid!'
+                'No university status was found!'
             );
 
             $this->redirect()->toRoute(
@@ -229,30 +200,17 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
         return $status;
     }
 
-    private function _getOrganizationStatus()
+    /**
+     * @return string|null
+     */
+    private function getOrganizationStatus()
     {
-        if (null === $this->getParam('group')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No organization status given to send a mail to!'
-            );
-
-            $this->redirect()->toRoute(
-                'mail_admin_group',
-                array(
-                    'action' => 'groups',
-                )
-            );
-
-            return;
-        };
-
-        $status = $this->getParam('group');
+        $status = $this->getParam('group', '');
 
         if (!array_key_exists($status, OrganizationStatus::$possibleStatuses)) {
             $this->flashMessenger()->error(
                 'Error',
-                'The given organization status was not valid!'
+                'No organization status was found!'
             );
 
             $this->redirect()->toRoute(

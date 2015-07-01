@@ -18,9 +18,6 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-
-
-
 use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Logo,
     Imagick,
@@ -35,7 +32,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompanyEntity())) {
             return new ViewModel();
         }
 
@@ -112,7 +109,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompanyEntity())) {
             return new ViewModel();
         }
 
@@ -165,7 +162,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($logo = $this->_getLogo())) {
+        if (!($logo = $this->getLogoEntity())) {
             return new ViewModel();
         }
 
@@ -188,34 +185,16 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return Company
+     * @return Company|null
      */
-    private function _getCompany()
+    private function getCompanyEntity()
     {
-        if (null === $this->getParam('id')) {
+        $company = $this->getEntityById('BrBundle\Entity\Company');
+
+        if (!($company instanceof Company)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the company!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_company',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $company = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $company) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No company with the given ID was found!'
+                'No company was found!'
             );
 
             $this->redirect()->toRoute(
@@ -232,34 +211,16 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return Logo
+     * @return Logo|null
      */
-    private function _getLogo()
+    private function getLogoEntity()
     {
-        if (null === $this->getParam('id')) {
+        $logo = $this->getEntityById('BrBundle\Entity\Company\Logo');
+
+        if (!($logo instanceof Logo)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the logo!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_company',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $logo = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Logo')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $logo) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No logo with the given ID was found!'
+                'No logo was found!'
             );
 
             $this->redirect()->toRoute(

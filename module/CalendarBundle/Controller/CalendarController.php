@@ -18,13 +18,6 @@
 
 namespace CalendarBundle\Controller;
 
-
-
-
-
-
-
-
 use CalendarBundle\Component\Document\Generator\Ics as IcsGenerator,
     CalendarBundle\Entity\Node\Event,
     CommonBundle\Component\Util\File\TmpFile,
@@ -52,7 +45,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function viewAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return $this->notFoundAction();
         }
 
@@ -75,7 +68,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function posterAction()
     {
-        if (!($event = $this->_getEventByPoster())) {
+        if (!($event = $this->getEventEntityByPoster())) {
             return $this->notFoundAction();
         }
 
@@ -224,17 +217,11 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Event|null
      */
-    public function _getEvent()
+    private function getEventEntity()
     {
-        if (null === $this->getParam('name')) {
-            return;
-        }
+        $event = $this->getEntityById('CalendarBundle\Entity\Node\Event', 'name', 'name');
 
-        $event = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findOneByName($this->getParam('name'));
-
-        if (null === $event) {
+        if (!($event instanceof Event)) {
             return;
         }
 
@@ -244,17 +231,11 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Event|null
      */
-    private function _getEventByPoster()
+    private function getEventEntityByPoster()
     {
-        if (null === $this->getParam('name')) {
-            return;
-        }
+        $event = $this->getEntityById('CalendarBundle\Entity\Node\Event', 'name', 'poster');
 
-        $event = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findOneByPoster($this->getParam('name'));
-
-        if (null === $event) {
+        if (!($event instanceof Event)) {
             return;
         }
 

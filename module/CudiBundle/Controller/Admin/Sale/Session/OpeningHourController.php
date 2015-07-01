@@ -18,7 +18,6 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Session;
 
-
 use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
     Zend\View\Model\ViewModel;
 
@@ -102,7 +101,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
 
     public function editAction()
     {
-        if (!($openingHour = $this->_getOpeningHour())) {
+        if (!($openingHour = $this->getOpeningHourEntity())) {
             return new ViewModel();
         }
 
@@ -141,7 +140,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($openingHour = $this->_getOpeningHour())) {
+        if (!($openingHour = $this->getOpeningHourEntity())) {
             return new ViewModel();
         }
 
@@ -155,32 +154,17 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
         );
     }
 
-    private function _getOpeningHour()
+    /**
+     * @return OpeningHour|null
+     */
+    private function getOpeningHourEntity()
     {
-        if (null === $this->getParam('id')) {
+        $openingHour = $this->getEntityById('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour');
+
+        if (!($openingHour instanceof OpeningHour)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the opening hour!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_session_openinghour',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $openingHour = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $openingHour) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No opening hour with the given ID was found!'
+                'No opening hour was found!'
             );
 
             $this->redirect()->toRoute(

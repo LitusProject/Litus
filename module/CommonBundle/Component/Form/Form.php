@@ -57,6 +57,9 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
             ->setAttribute('novalidate', true);
     }
 
+    /**
+     * @return \Zend\Stdlib\Hydrator\HydratorInterface
+     */
     public function getHydrator()
     {
         if (null === $this->hydrator) {
@@ -82,6 +85,9 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
             ->findOneByAbbrev($this->getSessionStorage()->language);
     }
 
+    /**
+     * @return string
+     */
     public function showAs()
     {
         return 'div';
@@ -90,10 +96,10 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     /**
      * Adds a submit button to the form.
      *
-     * @param  string $value
-     * @param  string $class
-     * @param  string $name
-     * @param  array  $attributes
+     * @param  string      $value
+     * @param  string|null $class
+     * @param  string      $name
+     * @param  array       $attributes
      * @return self
      */
     public function addSubmit($value, $class = null, $name = 'submit', $attributes = array())
@@ -104,7 +110,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
             'value'      => $value,
         );
 
-        if ($class) {
+        if (null !== $class) {
             $attributes['class'] = $class;
         }
 

@@ -18,11 +18,9 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-
-
-
-
 use CommonBundle\Component\Controller\Exception\RuntimeException,
+    CudiBundle\Entity\Sale\Article as SaleArticle,
+    CudiBundle\Entity\Sale\Article\Restriction,
     CudiBundle\Entity\Sale\Article\Restriction\Amount as AmountRestriction,
     CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction,
     CudiBundle\Entity\Sale\Article\Restriction\Study as StudyRestriction,
@@ -37,7 +35,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 {
     public function manageAction()
     {
-        if (!($article = $this->_getSaleArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -109,7 +107,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($restriction = $this->_getRestriction())) {
+        if (!($restriction = $this->getRestrictionEntity())) {
             return new ViewModel();
         }
 
@@ -124,34 +122,16 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article|null
+     * @return SaleArticle|null
      */
-    private function _getSaleArticle()
+    private function getSaleArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
+
+        if (!($article instanceof SaleArticle)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -168,34 +148,16 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article\Restriction|null
+     * @return Restriction|null
      */
-    private function _getRestriction()
+    private function getRestrictionEntity()
     {
-        if (null === $this->getParam('id')) {
+        $restriction = $this->getEntityById('CudiBundle\Entity\Sale\Article\Restriction');
+
+        if (!($restriction instanceof Restriction)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the restriction!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $restriction = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article\Restriction')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $restriction) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No restriction with the given ID was found!'
+                'No restriction was found!'
             );
 
             $this->redirect()->toRoute(

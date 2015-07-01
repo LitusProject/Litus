@@ -45,9 +45,9 @@ class Form extends BaseForm
      * @param  Language $language
      * @return string
      */
-    protected function _getSummary(Entry $entry, Language $language)
+    protected function getSummary(Entry $entry, Language $language)
     {
-        $fieldEntries = $this->_entityManager
+        $fieldEntries = $this->entityManager
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByFormEntry($entry);
 

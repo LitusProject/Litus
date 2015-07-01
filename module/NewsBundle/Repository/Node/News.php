@@ -18,7 +18,6 @@
 
 namespace NewsBundle\Repository\Node;
 
-
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     DateTime;
 
@@ -32,7 +31,7 @@ class News extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('NewsBundle\Entity\Node\News', 'n')
             ->orderBy('n.creationTime', 'DESC')
@@ -43,7 +42,7 @@ class News extends EntityRepository
 
     public function findAllSiteQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('NewsBundle\Entity\Node\News', 'n')
             ->where(
@@ -61,7 +60,7 @@ class News extends EntityRepository
 
     public function findApiQuery(DateTime $maxAge)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('NewsBundle\Entity\Node\News', 'n')
             ->where(
@@ -83,7 +82,7 @@ class News extends EntityRepository
 
     public function findNbSiteQuery($nbResults, DateTime $maxAge)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('NewsBundle\Entity\Node\News', 'n')
             ->where(

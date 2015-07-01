@@ -44,8 +44,9 @@ class Edit extends Add
             null !== $academic->getOrganizationStatus($academicYear)
             && 'praesidium' == $academic->getOrganizationStatus($academicYear)->getStatus()
         ) {
-            $this->get('organization_info')
-                ->get('become_member')
+            /** @var \CommonBundle\Component\Form\Fieldset $organizationInfoFieldset */
+            $organizationInfoFieldset = $this->get('organization_info');
+            $organizationInfoFieldset->get('become_member')
                 ->setValue(false)
                 ->setAttribute('disabled', true);
         }

@@ -18,7 +18,6 @@
 
 namespace ShiftBundle\Form\Shift\Search;
 
-
 use CommonBundle\Entity\General\Language,
     LogicException;
 
@@ -59,6 +58,8 @@ class Event extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
             ),
         ));
+
+        $this->remove('csrf');
     }
 
     /**

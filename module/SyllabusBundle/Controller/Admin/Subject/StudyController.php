@@ -18,10 +18,10 @@
 
 namespace SyllabusBundle\Controller\Admin\Subject;
 
-
-
 use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     SyllabusBundle\Entity\StudySubjectMap,
+    SyllabusBundle\Entity\Subject,
     Zend\View\Model\ViewModel;
 
 /**
@@ -33,11 +33,11 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
 {
     public function addAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
-        if (!($subject = $this->_getSubject())) {
+        if (!($subject = $this->getSubjectEntity())) {
             return new ViewModel();
         }
 
@@ -98,7 +98,7 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($mapping = $this->_getMapping())) {
+        if (!($mapping = $this->getStudySubjectMapEntity())) {
             return new ViewModel();
         }
 
@@ -144,7 +144,7 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping())) {
+        if (!($mapping = $this->getStudySubjectMapEntity())) {
             return new ViewModel();
         }
 
@@ -158,32 +158,17 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getSubject()
+    /**
+     * @return Subject|null
+     */
+    private function getSubjectEntity()
     {
-        if (null === $this->getParam('id')) {
+        $subject = $this->getEntityById('SyllabusBundle\Entity\Subject');
+
+        if (!($subject instanceof Subject)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the subject!'
-            );
-
-            $this->redirect()->toRoute(
-                'syllabus_admin_subject',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $subject = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Subject')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $subject) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No subject with the given ID was found!'
+                'No subject was found!'
             );
 
             $this->redirect()->toRoute(
@@ -200,14 +185,16 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return StudySubjectMap
+     * @return StudySubjectMap|null
      */
-    private function _getMapping()
+    private function getStudySubjectMapEntity()
     {
-        if (null === $this->getParam('id')) {
+        $map = $this->getEntityById('SyllabusBundle\Entity\StudySubjectMap');
+
+        if (!($map instanceof StudySubjectMap)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the mapping!'
+                'No subject mapping was found!'
             );
 
             $this->redirect()->toRoute(
@@ -220,30 +207,13 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
             return;
         }
 
-        $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $mapping) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No mapping with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'syllabus_admin_subject',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $mapping;
+        return $map;
     }
 
-    private function _getAcademicYear()
+    /**
+     * @return AcademicYearEntity|null
+     */
+    private function getAcademicYearEntity()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {
@@ -251,14 +221,14 @@ class StudyController extends \CudiBundle\Component\Controller\ActionController
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
-        if (null === $academicYear) {
+        if (!($academicYear instanceof AcademicYearEntity)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No academic year was found!'
             );
 
             $this->redirect()->toRoute(
-                'syllabus_admin_subject',
+                'syllabus_admin_subject_comment',
                 array(
                     'action' => 'manage',
                 )

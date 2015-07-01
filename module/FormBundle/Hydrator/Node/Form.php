@@ -18,15 +18,13 @@
 
 namespace FormBundle\Hydrator\Node;
 
-
-
 use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
     FormBundle\Entity\Node\Form\Doodle as DoodleEntity,
     FormBundle\Entity\Node\Translation\Form as TranslationEntity;
 
 class Form extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('active', 'max', 'multiple', 'editable_by_user', 'send_guest_login_mail', 'non_member');
+    private static $stdKeys = array('active', 'max', 'multiple', 'editable_by_user', 'send_guest_login_mail', 'non_member');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -34,7 +32,8 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException('Cannot create a form');
         }
 
-        if (null !== $object->getId()) { // Check if this is a new form
+        if (null !== $object->getId()) {
+            // Check if this is a new form
             $group = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Group\Mapping')
                 ->findOneByForm($object);
@@ -59,13 +58,15 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setMultiple($data['multiple']);
 
+        /** @var \FormBundle\Hydrator\Mail\Mail $hydrator */
+        $hydrator = $this->getHydrator('FormBundle\Hydrator\Mail\Mail');
+
         if ($object instanceof DoodleEntity) {
             $object->setNamesVisibleForOthers($data['names_visible_for_others']);
 
             if ($data['reminder_mail']) {
                 $object->setReminderMail(
-                    $this->getHydrator('FormBundle\Hydrator\Mail\Mail')
-                        ->hydrate($data['reminder_mail_form'], $object->getReminderMail())
+                    $hydrator->hydrate($data['reminder_mail_form'], $object->getReminderMail())
                 );
             } else {
                 $object->setReminderMail(null);
@@ -74,8 +75,7 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
 
         if ($data['mail']) {
             $object->setMail(
-                $this->getHydrator('FormBundle\Hydrator\Mail\Mail')
-                    ->hydrate($data['mail_form'], $object->getMail())
+                $hydrator->hydrate($data['mail_form'], $object->getMail())
             );
         } else {
             $object->setMail(null);
@@ -144,7 +144,7 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
             return $data;
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['tab_content'] = array();
         foreach ($this->getLanguages() as $language) {
@@ -160,9 +160,11 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
         $data['mail'] = $object->hasMail();
 
+        /** @var \FormBundle\Hydrator\Mail\Mail $hydrator */
+        $hydrator = $this->getHydrator('FormBundle\Hydrator\Mail\Mail');
+
         if ($object->hasMail()) {
-            $data['mail_form'] = $this->getHydrator('FormBundle\Hydrator\Mail\Mail')
-                ->extract($object->getMail());
+            $data['mail_form'] = $hydrator->extract($object->getMail());
         }
 
         if ($object instanceof DoodleEntity) {
@@ -170,8 +172,7 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
             $data['reminder_mail'] = $object->hasReminderMail();
 
             if ($object->hasReminderMail()) {
-                $data['reminder_mail_form'] = $this->getHydrator('FormBundle\Hydrator\Mail\Mail')
-                    ->extract($object->getReminderMail());
+                $data['reminder_mail_form'] = $hydrator->extract($object->getReminderMail());
             }
         }
 

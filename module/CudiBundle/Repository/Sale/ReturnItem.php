@@ -32,6 +32,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class ReturnItem extends EntityRepository
 {
+    /**
+     * @param  SessionEntity $session
+     * @return int
+     */
     public function findNumberBySession(SessionEntity $session)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -51,10 +55,16 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity     $article
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
+     * @return int
+     */
     public function findNumberByArticleAndAcademicYear(ArticleEntity $article, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+            $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('COUNT(i.id)')
@@ -100,6 +110,10 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -120,6 +134,11 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $article
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleAndAcademicYearQuery($article, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -146,6 +165,11 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $name
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPersonAndAcademicYearQuery($name, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -187,9 +211,14 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByOrganizationAndAcademicYearQuery(Organization $organization = null, AcademicYear $academicYear)
+    /**
+     * @param  AcademicYear        $academicYear
+     * @param  Organization|null   $organization
+     * @return \Doctrine\ORM\Query
+     */
+    public function findallByAcademicYearAndOrganizationQuery(AcademicYear $academicYear, Organization $organization = null)
     {
-        $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+        $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -204,6 +233,10 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  SessionEntity       $session
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySessionQuery(SessionEntity $session)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -219,6 +252,11 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $article
+     * @param  SessionEntity       $session
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleAndSessionQuery($article, SessionEntity $session)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -240,6 +278,11 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $name
+     * @param  SessionEntity       $session
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPersonAndSessionQuery($name, SessionEntity $session)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -276,9 +319,14 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByOrganizationAndSessionQuery(Organization $organization = null, SessionEntity $session)
+    /**
+     * @param  SessionEntity       $session
+     * @param  Organization|null   $organization
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllBySessionAndOrganizationQuery(SessionEntity $session, Organization $organization = null)
     {
-        $ids = $this->_personsByAcademicYearAndOrganization($session->getAcademicYear(), $organization);
+        $ids = $this->personsByAcademicYearAndOrganization($session->getAcademicYear(), $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -297,6 +345,11 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity       $article
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleEntityQuery(ArticleEntity $article, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -321,6 +374,12 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $name
+     * @param  ArticleEntity       $article
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPersonAndArticleQuery($name, ArticleEntity $article, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -364,9 +423,15 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByOrganizationAndArticleQuery(Organization $organization = null, ArticleEntity $article, AcademicYear $academicYear)
+    /**
+     * @param  ArticleEntity       $article
+     * @param  AcademicYear        $academicYear
+     * @param  Organization|null   $organization
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByOrganizationAndArticleQuery(ArticleEntity $article, AcademicYear $academicYear, Organization $organization = null)
     {
-        $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+        $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
@@ -385,7 +450,12 @@ class ReturnItem extends EntityRepository
         return $resultSet;
     }
 
-    private function _personsByAcademicYearAndOrganization(AcademicYear $academicYear, Organization $organization = null)
+    /**
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
+     * @return array
+     */
+    private function personsByAcademicYearAndOrganization(AcademicYear $academicYear, Organization $organization = null)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p.id')

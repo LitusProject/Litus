@@ -35,9 +35,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Order extends EntityRepository
 {
+    /**
+     * @param  Supplier            $supplier
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySupplierAndPeriodQuery(Supplier $supplier, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('o')
             ->from('CudiBundle\Entity\Stock\Order\Order', 'o')
             ->where(
@@ -65,9 +70,13 @@ class Order extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Supplier                                  $supplier
+     * @return \CudiBundle\Entity\Stock\Order\Order|null
+     */
     public function findOneOpenBySupplier(Supplier $supplier)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('CudiBundle\Entity\Stock\Order\Order', 'o')
             ->where(
@@ -84,9 +93,15 @@ class Order extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article    $article
+     * @param  int        $number
+     * @param  Person     $person
+     * @return ItemEntity
+     */
     public function addNumberByArticle(Article $article, $number, Person $person)
     {
-        $item = $this->_em
+        $item = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Order\Item')
             ->findOneOpenByArticle($article);
 
@@ -96,16 +111,20 @@ class Order extends EntityRepository
             $order = $this->findOneOpenBySupplier($article->getSupplier());
             if (null === $order) {
                 $order = new OrderEntity($article->getSupplier(), $person);
-                $this->_em->persist($order);
+                $this->getEntityManager()->persist($order);
             }
 
             $item = new ItemEntity($article, $order, $number);
-            $this->_em->persist($item);
+            $this->getEntityManager()->persist($item);
         }
 
         return $item;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -126,6 +145,11 @@ class Order extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $supplier
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySupplierAndAcademicYearQuery($supplier, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

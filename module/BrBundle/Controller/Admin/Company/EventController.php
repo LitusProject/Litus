@@ -18,9 +18,8 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-
-
-use BrBundle\Entity\Company\Event,
+use BrBundle\Entity\Company,
+    BrBundle\Entity\Company\Event,
     Imagick,
     Zend\View\Model\ViewModel;
 
@@ -33,7 +32,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompanyEntity())) {
             return new ViewModel();
         }
 
@@ -55,7 +54,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompanyEntity())) {
             return new ViewModel();
         }
 
@@ -104,7 +103,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -146,7 +145,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -162,7 +161,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editPosterAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -209,7 +208,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function uploadAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -263,34 +262,16 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return BrBundle\Entity\Company|null
+     * @return Company|null
      */
-    private function _getCompany()
+    private function getCompanyEntity()
     {
-        if (null === $this->getParam('id')) {
+        $company = $this->getEntityById('BrBundle\Entity\Company');
+
+        if (!($company instanceof Company)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the company!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_company',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $company = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $company) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No company with the given ID was found!'
+                'No company was found!'
             );
 
             $this->redirect()->toRoute(
@@ -307,34 +288,16 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \BrBundle\Entity\Company\Event|null
+     * @return Event|null
      */
-    private function _getEvent()
+    private function getEventEntity()
     {
-        if (null === $this->getParam('id')) {
+        $event = $this->getEntityById('BrBundle\Entity\Company\Event');
+
+        if (!($event instanceof Event)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the event!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_company',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $event = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Event')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $event) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No event with the given ID was found!'
+                'No event was found!'
             );
 
             $this->redirect()->toRoute(

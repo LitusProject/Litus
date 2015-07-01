@@ -18,9 +18,6 @@
 
 namespace CommonBundle\Command;
 
-
-
-
 use CommonBundle\Entity\User\Person\Academic,
     DateTime,
     Symfony\Component\Console\Input\InputArgument,
@@ -45,7 +42,7 @@ EOT
 
     protected function executeCommand()
     {
-        $this->_destroyAccount($this->getArgument('id'));
+        $this->destroy($this->getArgument('id'));
     }
 
     protected function getLogName()
@@ -53,7 +50,7 @@ EOT
         return 'DestroyAccount';
     }
 
-    private function _destroyAccount($id)
+    private function destroy($id)
     {
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')

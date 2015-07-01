@@ -30,9 +30,12 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Period extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CudiBundle\Entity\Stock\Period', 'p')
             ->orderBy('p.startDate', 'DESC')
@@ -41,9 +44,12 @@ class Period extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Stock\Period|null
+     */
     public function findOneActive()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('CudiBundle\Entity\Stock\Period', 'p')
             ->where(
@@ -56,9 +62,13 @@ class Period extends EntityRepository
         return $resultSet;
     }
 
-    private function _findAllArticleIds(PeriodEntity $period)
+    /**
+     * @param  PeriodEntity $period
+     * @return array
+     */
+    private function findAllArticleIds(PeriodEntity $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('a.id')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
@@ -87,7 +97,7 @@ class Period extends EntityRepository
             $articles[$item['id']] = $item['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('a.id')
             ->from('CudiBundle\Entity\Stock\Delivery', 'd')
             ->innerJoin('d.article', 'a')
@@ -111,7 +121,7 @@ class Period extends EntityRepository
             $articles[$item['id']] = $item['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('a.id')
             ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->innerJoin('i.article', 'a')
@@ -138,14 +148,19 @@ class Period extends EntityRepository
         return $articles;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  boolean      $notDelivered
+     * @return array
+     */
     public function findAllArticlesByPeriod(PeriodEntity $period, $notDelivered = false)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
-                $query->expr()->in('a.id', $this->_findAllArticleIds($period))
+                $query->expr()->in('a.id', $this->findAllArticleIds($period))
             )
             ->orderBy('m.title', 'ASC')
             ->getQuery()
@@ -166,15 +181,21 @@ class Period extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  string       $title
+     * @param  boolean      $notDelivered
+     * @return array
+     */
     public function findAllArticlesByPeriodAndTitle(PeriodEntity $period, $title, $notDelivered = false)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->in('a.id', $this->_findAllArticleIds($period)),
+                    $query->expr()->in('a.id', $this->findAllArticleIds($period)),
                     $query->expr()->like($query->expr()->lower('m.title'), ':title')
                 )
             )
@@ -197,13 +218,19 @@ class Period extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  int          $barcode
+     * @param  boolean      $notDelivered
+     * @return array
+     */
     public function findAllArticlesByPeriodAndBarcode(PeriodEntity $period, $barcode, $notDelivered = false)
     {
         if (!is_numeric($barcode)) {
             return array();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('b')
             ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
             ->innerJoin('b.article', 'a')
@@ -211,7 +238,7 @@ class Period extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->like($query->expr()->concat('b.barcode', '\'\''), ':barcode'),
-                    $query->expr()->in('a.id', $this->_findAllArticleIds($period))
+                    $query->expr()->in('a.id', $this->findAllArticleIds($period))
                 )
             )
             ->setParameter('barcode', '%' . $barcode . '%')
@@ -229,15 +256,21 @@ class Period extends EntityRepository
         return $articles;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  string       $supplier
+     * @param  boolean      $notDelivered
+     * @return array
+     */
     public function findAllArticlesByPeriodAndSupplier(PeriodEntity $period, $supplier, $notDelivered = false)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Sale\Article', 'a')
             ->innerJoin('a.supplier', 's')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->in('a.id', $this->_findAllArticleIds($period)),
+                    $query->expr()->in('a.id', $this->findAllArticleIds($period)),
                     $query->expr()->like($query->expr()->lower('s.name'), ':supplier')
                 )
             )
@@ -260,9 +293,14 @@ class Period extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbDelivered(PeriodEntity $period, Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('SUM(d.number)')
             ->from('CudiBundle\Entity\Stock\Delivery', 'd')
             ->where(
@@ -289,9 +327,14 @@ class Period extends EntityRepository
         return $delivered;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbOrdered(PeriodEntity $period, Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('SUM(i.number)')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
@@ -324,9 +367,14 @@ class Period extends EntityRepository
         return 0;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbVirtualOrdered(PeriodEntity $period, Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('SUM(i.number)')
             ->from('CudiBundle\Entity\Stock\Order\Virtual', 'i')
             ->where(
@@ -353,9 +401,14 @@ class Period extends EntityRepository
         return 0;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbSold(PeriodEntity $period, Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('SUM(i.number)')
             ->from('CudiBundle\Entity\Sale\SaleItem', 'i')
             ->where(
@@ -382,9 +435,14 @@ class Period extends EntityRepository
         return 0;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbBooked(PeriodEntity $period, Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('SUM(b.number)')
             ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
@@ -412,9 +470,14 @@ class Period extends EntityRepository
         return 0;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbAssigned(PeriodEntity $period, Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('SUM(b.number)')
             ->from('CudiBundle\Entity\Sale\Booking', 'b')
             ->where(
@@ -442,9 +505,13 @@ class Period extends EntityRepository
         return 0;
     }
 
+    /**
+     * @param  Article $article
+     * @return int
+     */
     public function getNbQueueOrder(Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('SUM(i.number)')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
@@ -465,9 +532,14 @@ class Period extends EntityRepository
         return 0;
     }
 
+    /**
+     * @param  PeriodEntity $period
+     * @param  Article      $article
+     * @return int
+     */
     public function getNbRetoured(PeriodEntity $period, Article $article)
     {
-        return $this->_em
+        return $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Retour')
             ->findTotalByArticleAndPeriod($article, $period);
     }

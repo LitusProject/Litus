@@ -36,7 +36,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * @var Article
      */
-    private $_article;
+    private $article;
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
@@ -54,7 +54,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             $filePath . '/article/front.xsl',
             $file->getFilename()
         );
-        $this->_article = $article;
+        $this->article = $article;
     }
 
     /**
@@ -64,7 +64,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
      */
     public function generate()
     {
-        $mainArticle = $this->_article->getMainArticle();
+        $mainArticle = $this->article->getMainArticle();
         if (!($mainArticle instanceof InternalArticle)) {
             return;
         }
@@ -78,11 +78,11 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
         }
 
         if (null !== $mainArticle->getFrontPage() && file_exists($cachePath . '/' . $mainArticle->getFrontPage())) {
-            copy($cachePath . '/' . $mainArticle->getFrontPage(), $this->_pdfPath);
+            copy($cachePath . '/' . $mainArticle->getFrontPage(), $this->pdfPath);
             clearstatcache();
         } else {
             $this->generateXml(
-                $this->_xmlFile
+                $this->xmlFile
             );
 
             $this->generatePdf();
@@ -93,7 +93,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
 
             $mainArticle->setFrontPage($fileName);
             $this->getEntityManager()->flush();
-            copy($this->_pdfPath, $cachePath . '/' . $fileName);
+            copy($this->pdfPath, $cachePath . '/' . $fileName);
         }
     }
 
@@ -104,7 +104,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
      */
     protected function generateXml(TmpFile $tmpFile)
     {
-        $mainArticle = $this->_article->getMainArticle();
+        $mainArticle = $this->article->getMainArticle();
         if (!($mainArticle instanceof InternalArticle)) {
             return;
         }
@@ -123,7 +123,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             ->getRepository('CommonBundle\Entity\General\Address')
             ->findOneById($configuration->getConfigValue('cudi.billing_address'));
 
-        $academicYear = $this->_getCurrentAcademicYear();
+        $academicYear = $this->getCurrentAcademicYear();
 
         $subjects = array();
         $mappings = $this->getEntityManager()
@@ -258,12 +258,12 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                     new Object(
                         'price',
                         null,
-                        (string) number_format($this->_article->getSellPrice()/100, 2)
+                        (string) number_format($this->article->getSellPrice()/100, 2)
                     ),
                     new Object(
                         'barcode',
                         null,
-                        substr((string) str_pad($this->_article->getBarcode(), 12, '0', STR_PAD_LEFT), 0, 12)
+                        substr((string) str_pad($this->article->getBarcode(), 12, '0', STR_PAD_LEFT), 0, 12)
                     ),
                 )
             )
@@ -275,7 +275,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
      *
      * @return \CommonBundle\Entity\General\AcademicYear
      */
-    private function _getCurrentAcademicYear()
+    private function getCurrentAcademicYear()
     {
         return AcademicYear::getOrganizationYear($this->getEntityManager());
     }

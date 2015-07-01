@@ -29,9 +29,13 @@ use BrBundle\Entity\Invoice,
  */
 class InvoiceHistory extends EntityRepository
 {
+    /**
+     * @param  Invoice             $invoice
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllInvoiceVersions(Invoice $invoice)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('h')
             ->from('BrBundle\Entity\Invoice\InvoiceHistory', 'h')
             ->where(

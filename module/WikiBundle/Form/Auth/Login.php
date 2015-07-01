@@ -28,7 +28,7 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
     /**
      * @var string
      */
-    private $_username;
+    private $username;
 
     public function init()
     {
@@ -36,12 +36,12 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->setAttribute('id', 'login');
 
-        if (null !== $this->_username) {
+        if (null !== $this->username) {
             $this->add(array(
                 'type'       => 'text',
                 'name'       => 'username_visible',
                 'label'      => 'Username',
-                'value'      => $this->_username,
+                'value'      => $this->username,
                 'attributes' => array(
                     'disabled' => 'disabled',
                 ),
@@ -57,7 +57,7 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
             $this->add(array(
                 'type'  => 'hidden',
                 'name'  => 'username',
-                'value' => $this->_username,
+                'value' => $this->username,
             ));
         } else {
             $this->add(array(
@@ -114,7 +114,7 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     public function setUsername($username)
     {
-        $this->_username = $username;
+        $this->username = $username;
 
         return $this;
     }

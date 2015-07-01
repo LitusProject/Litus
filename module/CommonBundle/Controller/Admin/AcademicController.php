@@ -18,8 +18,6 @@
 
 namespace CommonBundle\Controller\Admin;
 
-
-
 use CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\Query,
     Zend\View\Model\ViewModel;
@@ -33,7 +31,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field') && ($academics = $this->_search())) {
+        if (null !== $this->getParam('field') && ($academics = $this->search())) {
             $paginator = $this->paginator()->createFromQuery(
                 $academics,
                 $this->getParam('page')
@@ -107,7 +105,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -145,7 +143,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function activateAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -177,7 +175,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -234,7 +232,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $academics = $this->_search()
+        $academics = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -264,7 +262,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Query|null
      */
-    private function _search()
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'username':
@@ -285,32 +283,14 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * @return Academic|null
      */
-    private function _getAcademic()
+    private function getAcademicEntity()
     {
-        if (null === $this->getParam('id')) {
+        $academic = $this->getEntityById('CommonBundle\Entity\User\Person\Academic');
+
+        if (!($academic instanceof Academic)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the academic!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_admin_academic',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $academic = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $academic) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No academic with the given ID was found!'
+                'No academic was found!'
             );
 
             $this->redirect()->toRoute(

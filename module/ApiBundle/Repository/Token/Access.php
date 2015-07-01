@@ -28,6 +28,9 @@ use DateTime;
  */
 class Access extends \ApiBundle\Repository\Token
 {
+    /**
+     * @return mixed
+     */
     public function findOneActiveByCode($code)
     {
         $query = $this->createQueryBuilder();

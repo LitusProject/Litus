@@ -30,7 +30,7 @@ class Quiz extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
 
         $resultSet = $query->select('q')
             ->from('QuizBundle\Entity\Quiz', 'q')

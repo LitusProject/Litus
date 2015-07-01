@@ -29,9 +29,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Action extends EntityRepository
 {
+    /**
+     * @param  int|null            $nbResults
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllUncompletedQuery($nbResults = null)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -47,9 +51,12 @@ class Action extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllCompletedQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -61,9 +68,12 @@ class Action extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllRefusedQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -75,9 +85,13 @@ class Action extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Person              $person
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPersonQuery(Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -90,9 +104,15 @@ class Action extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $entity
+     * @param  string              $action
+     * @param  Person              $person
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByEntityAndActionAndPersonQuery($entity, $action, Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -111,9 +131,16 @@ class Action extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $entity
+     * @param  int                 $entityId
+     * @param  string              $action
+     * @param  Person              $person
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByEntityAndEntityIdAndActionAndPersonQuery($entity, $entityId, $action, Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -134,9 +161,15 @@ class Action extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $entity
+     * @param  int                 $entityId
+     * @param  Person              $person
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByEntityAndEntityIdAndPersonQuery($entity, $entityId, Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -155,9 +188,15 @@ class Action extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $entity
+     * @param  int                 $previousId
+     * @param  string              $action
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByEntityAndPreviousIdAndActionQuery($entity, $previousId, $action)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -176,9 +215,15 @@ class Action extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $entity
+     * @param  int                 $entityId
+     * @param  string              $action
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByEntityAndEntityIdAndActionQuery($entity, $entityId, $action)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(
@@ -197,9 +242,14 @@ class Action extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $entity
+     * @param  string              $action
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByEntityAndActionQuery($entity, $action)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Prof\Action', 'a')
             ->where(

@@ -18,7 +18,6 @@
 
 namespace BrBundle\Form\Admin\Company\Job;
 
-
 use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Job;
 
@@ -89,7 +88,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'       => 'sector',
             'label'      => 'Sector',
             'attributes' => array(
-                'options' => $this->_getSectors(),
+                'options' => $this->getSectors(),
             ),
         ));
 
@@ -175,7 +174,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->addSubmit('Add', 'company_add');
     }
 
-    private function _getSectors()
+    private function getSectors()
     {
         $sectorArray = array();
         foreach (Company::$possibleSectors as $key => $sector) {

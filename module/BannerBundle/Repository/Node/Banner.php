@@ -29,9 +29,12 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Banner extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('BannerBundle\Entity\Node\Banner', 'n')
             ->orderBy('n.creationTime', 'DESC')
@@ -40,11 +43,14 @@ class Banner extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveQuery()
     {
         $now = new DateTime();
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('BannerBundle\Entity\Node\Banner', 'n')
             ->where(

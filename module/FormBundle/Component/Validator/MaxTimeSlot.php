@@ -60,8 +60,8 @@ class MaxTimeSlot extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Returns true if and only if the end date is after the start date
      *
-     * @param  mixed   $value
-     * @param  array   $context
+     * @param  string     $value   The value of the field that will be validated
+     * @param  array|null $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)

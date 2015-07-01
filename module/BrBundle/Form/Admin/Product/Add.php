@@ -99,7 +99,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'    => 'VAT Type',
             'required' => true,
             'attributes' => array(
-                'options' => $this->_getVatTypes(),
+                'options' => $this->getVatTypes(),
             ),
         ));
 
@@ -120,7 +120,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'type'     => 'textarea',
             'name'     => 'contract_text',
             'label'    => 'Contract Text',
-            'value'    => $this->_getContractText(),
+            'value'    => $this->getContractText(),
             'options'  => array(
                 'input' => array(
                     'filters'  => array(
@@ -139,7 +139,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'    => 'Event',
             'attributes' => array(
                 'id'      => 'event',
-                'options' => $this->_createEventsArray(),
+                'options' => $this->createEventsArray(),
             ),
         ));
 
@@ -167,6 +167,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
     }
 
+    /**
+     * @param  Product $product
+     * @return self
+     */
     public function setProduct(Product $product)
     {
         $this->product = $product;
@@ -174,7 +178,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $this;
     }
 
-    private function _getVatTypes()
+    /**
+     * @return array
+     */
+    private function getVatTypes()
     {
         $types = unserialize(
             $this->getEntityManager()
@@ -190,7 +197,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $typesArray;
     }
 
-    private function _createEventsArray()
+    /**
+     * @return array
+     */
+    private function createEventsArray()
     {
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
@@ -215,7 +225,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $eventsArray;
     }
 
-    private function _getContractText()
+    /**
+     * @return string
+     */
+    private function getContractText()
     {
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

@@ -43,6 +43,35 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
+     * Returns the language that is currently requested.
+     *
+     * @return \CommonBundle\Entity\General\Language
+     */
+    protected function getLanguage()
+    {
+        if (null !== $this->language) {
+            return $this->language;
+        }
+
+        $language = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findOneByAbbrev('en');
+
+        if (null === $language) {
+            $language = new Language(
+                'en', 'English'
+            );
+
+            $this->getEntityManager()->persist($language);
+            $this->getEntityManager()->flush();
+        }
+
+        $this->language = $language;
+
+        return $language;
+    }
+
+    /**
      * We need to be able to specify all required authentication information,
      * which depends on the part of the site that is currently being used.
      *

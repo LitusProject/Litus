@@ -50,7 +50,7 @@ class WikiController extends \CommonBundle\Component\Controller\ActionController
      *
      * @return string
      */
-    protected function _getShibbolethUrl()
+    protected function getShibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

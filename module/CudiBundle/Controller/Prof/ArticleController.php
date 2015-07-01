@@ -18,14 +18,12 @@
 
 namespace CudiBundle\Controller\Prof;
 
-
-
-
-
 use CudiBundle\Entity\Article,
     CudiBundle\Entity\Article\Internal,
     CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Prof\Action,
+    SyllabusBundle\Entity\Subject,
+    SyllabusBundle\Entity\SubjectProfMap,
     Zend\View\Model\ViewModel;
 
 /**
@@ -126,13 +124,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
         }
 
-        if (!($subject = $this->_getSubject())) {
+        if (!($subject = $this->getSubjectEntity())) {
             return new ViewModel();
         }
 
         $form = $this->getForm('cudi_prof_article_add-with-subject', array(
             'subject' => $subject,
         ));
+        $formData = null;
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -203,7 +202,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function editAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -239,7 +238,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $edited = true;
                     } elseif ($article->getType() != $duplicate->getType()) {
                         $edited = true;
-                    } elseif ($article instanceof Internal) {
+                    } elseif ($article instanceof Internal && $duplicate instanceof Internal) {
                         if ($article->getBinding()->getId() != $duplicate->getBinding()->getId()) {
                             $edited = true;
                         } elseif ($article->isRectoVerso() !== $duplicate->isRectoVerso()) {
@@ -293,7 +292,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
     public function deleteAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -332,37 +331,21 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
+     * @param  int|null     $id
      * @return Article|null
      */
-    private function _getArticle($id = null)
+    private function getArticleEntity($id = null)
     {
-        $id = $id == null ? $this->getParam('id') : $id;
-
-        if (null === $id) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_prof_article',
-                array(
-                    'action' => 'manage',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
-            return;
-        }
+        $id = $id === null ? $this->getParam('id', 0) : $id;
 
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
 
-        if (null === $article) {
+        if (!($article instanceof Article)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -380,47 +363,30 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Subject|null
+     * @return Subject|null
      */
-    private function _getSubject()
+    private function getSubjectEntity()
     {
         if (!($academicYear = $this->getCurrentAcademicYear())) {
-            return;
-        }
-
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the subject!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_prof_subject',
-                array(
-                    'action' => 'manage',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
             return;
         }
 
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
             ->findOneBySubjectIdAndProfAndAcademicYear(
-                $this->getParam('id'),
+                $this->getParam('id', 0),
                 $this->getAuthentication()->getPersonObject(),
                 $academicYear
             );
 
-        if (null === $mapping) {
+        if (!($mapping instanceof SubjectProfMap)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No subject with the given ID was found!'
+                'No subject was found!'
             );
 
             $this->redirect()->toRoute(
-                'cudi_prof_subject',
+                'cudi_prof_article',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),

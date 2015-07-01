@@ -39,7 +39,7 @@ class Passenger
     private $id;
 
     /**
-     * @var Subject The subject of the enrollment
+     * @var Bus The first bus, going to the prom
      *
      * @ORM\ManyToOne(targetEntity="PromBundle\Entity\Bus", inversedBy="firstBusSeats")
      * @ORM\JoinColumn(referencedColumnName="id")
@@ -47,7 +47,7 @@ class Passenger
     private $firstBus;
 
     /**
-     * @var Subject The subject of the enrollment
+     * @var Bus The second bus, returning from the prom
      *
      * @ORM\ManyToOne(targetEntity="PromBundle\Entity\Bus", inversedBy="secondBusSeats")
      * @ORM\JoinColumn(referencedColumnName="id")
@@ -84,14 +84,14 @@ class Passenger
     private $code;
 
     /**
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $email
-     * @param string $code
-     * @param Bus    $firstBus
-     * @param Bus    $secondBus
+     * @param string          $firstName
+     * @param string          $lastName
+     * @param string          $email
+     * @param ReservationCode $code
+     * @param Bus             $firstBus
+     * @param Bus             $secondBus
      */
-    public function __construct($firstName, $lastName, $email,ReservationCode $code, $firstBus, $secondBus)
+    public function __construct($firstName, $lastName, $email, ReservationCode $code, $firstBus, $secondBus)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -102,7 +102,7 @@ class Passenger
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -110,7 +110,7 @@ class Passenger
     }
 
     /**
-     * @return PromBundle\Entity\Bus
+     * @return Bus|null
      */
     public function getFirstBus()
     {
@@ -118,7 +118,7 @@ class Passenger
     }
 
     /**
-     * @param PromBundle\Entity\Bus
+     * @param Bus|null
      */
     public function setFirstBus(Bus $bus = null)
     {
@@ -126,7 +126,7 @@ class Passenger
     }
 
     /**
-     * @return PromBundle\Entity\Bus
+     * @return Bus|null
      */
     public function getSecondBus()
     {
@@ -134,7 +134,7 @@ class Passenger
     }
 
     /**
-     * @param PromBundle\Entity\Bus
+     * @param Bus|null
      */
     public function setSecondBus(Bus $bus = null)
     {
@@ -142,7 +142,7 @@ class Passenger
     }
 
     /**
-     * @return string firstName
+     * @return string
      */
     public function getFirstName()
     {
@@ -150,7 +150,7 @@ class Passenger
     }
 
     /**
-     * @return string lastName
+     * @return string
      */
     public function getLastName()
     {
@@ -166,7 +166,7 @@ class Passenger
     }
 
     /**
-     * @return string email
+     * @return string
      */
     public function getEmail()
     {
@@ -174,7 +174,7 @@ class Passenger
     }
 
     /**
-     * @return string code
+     * @return ReservationCode
      */
     public function getCode()
     {

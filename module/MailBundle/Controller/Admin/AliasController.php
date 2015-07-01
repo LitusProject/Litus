@@ -18,7 +18,8 @@
 
 namespace MailBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use MailBundle\Entity\Alias,
+    Zend\View\Model\ViewModel;
 
 class AliasController extends \MailBundle\Component\Controller\AdminController
 {
@@ -82,7 +83,7 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
     {
         $this->initAjax();
 
-        if (!($alias = $this->_getAlias())) {
+        if (!($alias = $this->getAliasEntity())) {
             return new ViewModel();
         }
 
@@ -104,7 +105,7 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $aliases = $this->_search()
+        $aliases = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -127,7 +128,7 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
     /**
      * @return \Doctrine\ORM\Query|null
      */
-    private function _search()
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'alias':
@@ -137,32 +138,17 @@ class AliasController extends \MailBundle\Component\Controller\AdminController
         }
     }
 
-    private function _getAlias()
+    /**
+     * @return Alias|null
+     */
+    private function getAliasEntity()
     {
-        if (null === $this->getParam('id')) {
+        $alias = $this->getEntityById('MailBundle\Entity\Alias');
+
+        if (!($alias instanceof Alias)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the alias!'
-            );
-
-            $this->redirect()->toRoute(
-                'mail_admin_alias',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $alias = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\Alias')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $alias) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No alias with the given ID was found!'
+                'No alias was found!'
             );
 
             $this->redirect()->toRoute(

@@ -18,13 +18,9 @@
 
 namespace CudiBundle\Entity\Sale\Article\Restriction;
 
-
-
-
-
-
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person,
+    CommonBundle\Entity\User\Person\Academic,
     CudiBundle\Entity\Sale\Article,
     CudiBundle\Entity\Sale\Article\Restriction,
     Doctrine\ORM\EntityManager,
@@ -90,7 +86,10 @@ class Member extends Restriction
                 ->getConfigValue('secretary.membership_article')
         );
 
-        $organization = $person->getOrganization($academicYear);
+        $organization = null;
+        if ($person instanceof Academic) {
+            $organization = $person->getOrganization($academicYear);
+        }
 
         $membershipBooked = false;
         if (null !== $organization && isset($membershipArticle[$organization->getId()])) {

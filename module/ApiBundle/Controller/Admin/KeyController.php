@@ -18,7 +18,6 @@
 
 namespace ApiBundle\Controller\Admin;
 
-
 use ApiBundle\Entity\Key,
     Zend\View\Model\ViewModel;
 
@@ -85,7 +84,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
 
     public function editAction()
     {
-        if (!($key = $this->_getKey())) {
+        if (!($key = $this->getKeyEntity())) {
             return new ViewModel();
         }
 
@@ -124,7 +123,7 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
     {
         $this->initAjax();
 
-        if (!($key = $this->_getKey())) {
+        if (!($key = $this->getKeyEntity())) {
             return new ViewModel();
         }
 
@@ -144,32 +143,14 @@ class KeyController extends \CommonBundle\Component\Controller\ActionController\
     /**
      * @return Key|null
      */
-    private function _getKey()
+    private function getKeyEntity()
     {
-        if (null === $this->getParam('id')) {
+        $key = $this->getEntityById('ApiBundle\Entity\Key');
+
+        if (!($key instanceof Key)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the key!'
-            );
-
-            $this->redirect()->toRoute(
-                'api_admin_key',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $key = $this->getEntityManager()
-            ->getRepository('ApiBundle\Entity\Key')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $key) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No key with the given ID was found!'
+                'No key was found!'
             );
 
             $this->redirect()->toRoute(

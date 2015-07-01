@@ -56,7 +56,7 @@ EOT
                 ->getConfigValue('secretary.membership_article')
         );
 
-        $this->_updateArticles($period, $articles, $membership);
+        $this->updateArticles($period, $articles, $membership);
 
         if ($this->getOption('flush')) {
             $this->write('Flushing entity manager...');
@@ -70,7 +70,7 @@ EOT
         return 'RecalculateStock';
     }
 
-    private function _updateArticles(StockPeriod $period, array $articles, array $membershipArticles)
+    private function updateArticles(StockPeriod $period, array $articles, array $membershipArticles)
     {
         $em = $this->getEntityManager();
         $startRepository = $em->getRepository('CudiBundle\Entity\Stock\Period\Value\Start');

@@ -30,7 +30,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return $this->notFoundAction();
         }
 
@@ -53,7 +53,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _getAcademicYear()
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
+    private function getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
             $start = AcademicYear::getStartOfAcademicYear();

@@ -49,7 +49,8 @@ class Entry implements Node
     }
 
     /**
-     * @param integer $indent
+     * @param  integer $indent
+     * @return null
      */
     public function setIndent($indent)
     {
@@ -65,7 +66,8 @@ class Entry implements Node
     }
 
     /**
-     * @param string $text
+     * @param  string $text
+     * @return null
      */
     public function parse($text)
     {
@@ -80,8 +82,9 @@ class Entry implements Node
     }
 
     /**
-     * @param integer $indent
-     * @param string  $text
+     * @param  integer $indent
+     * @param  string  $text
+     * @return null
      */
     public function handleLine($indent, $text)
     {
@@ -103,7 +106,8 @@ class Entry implements Node
     }
 
     /**
-     * @param string $textWithSymbol
+     * @param  string $textWithSymbol
+     * @return null
      */
     protected function parseEntry($textWithSymbol)
     {
@@ -113,7 +117,8 @@ class Entry implements Node
     }
 
     /**
-     * @param string $text
+     * @param  string $text
+     * @return null
      */
     protected function parseText($text)
     {
@@ -121,7 +126,8 @@ class Entry implements Node
     }
 
     /**
-     * @param string $line
+     * @param  string $line
+     * @return int
      */
     protected function nbSpacesLeadingLine($line)
     {
@@ -136,7 +142,8 @@ class Entry implements Node
     }
 
     /**
-     * @param NodeVisitor $nodeVisitor
+     * @param  NodeVisitor $nodeVisitor
+     * @return null
      */
     public function visitNode(NodeVisitor $nodeVisitor)
     {
@@ -144,7 +151,8 @@ class Entry implements Node
     }
 
     /**
-     * @param Node $node
+     * @param  Node $node
+     * @return null
      */
     public function addNodeToList(Node $node)
     {

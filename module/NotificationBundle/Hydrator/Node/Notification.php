@@ -18,8 +18,6 @@
 
 namespace NotificationBundle\Hydrator\Node;
 
-
-
 use CommonBundle\Component\Hydrator\Exception\InvalidDateException,
     NotificationBundle\Entity\Node\Notification as NotificationEntity,
     NotificationBundle\Entity\Node\Translation as TranslationEntity;
@@ -35,12 +33,12 @@ class Notification extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $std_keys = array('active');
+    private static $stdKeys = array('active');
 
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new NotificationEntity($this->getPerson());
+            $object = new NotificationEntity($this->getPersonEntity());
         }
 
         $startDate = self::loadDateTime($data['start_date']);
@@ -73,7 +71,7 @@ class Notification extends \CommonBundle\Component\Hydrator\Hydrator
             }
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -82,7 +80,7 @@ class Notification extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         if (null !== $object->getEndDate()) {

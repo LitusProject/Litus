@@ -18,9 +18,6 @@
 
 namespace LogisticsBundle\Form\PianoReservation;
 
-
-
-
 use DateInterval,
     DateTime,
     IntlDateFormatter,
@@ -36,15 +33,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     /**
      * @var array List of all possible slots
      */
-    private $_weeks;
+    private $weeks;
 
     public function init()
     {
         parent::init();
 
-        $this->_weeks = $this->getTimeSlots();
+        $this->weeks = $this->getTimeSlots();
 
-        foreach ($this->_weeks as $key => $week) {
+        foreach ($this->weeks as $key => $week) {
             $this->add(array(
                 'type'       => 'fieldset',
                 'name'       => 'week_' . $key,
@@ -237,7 +234,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function getWeeks()
     {
-        return $this->_weeks;
+        return $this->weeks;
     }
 
     public function getInputFilterSpecification()

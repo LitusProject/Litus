@@ -18,7 +18,6 @@
 
 namespace CommonBundle\Entity\General\Bank;
 
-
 use Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
@@ -104,7 +103,7 @@ class CashRegister
             $amount += $number->getAmount() * $number->getUnit()->getUnit();
         }
 
-        return $amount;
+        return (int) $amount;
     }
 
     /**

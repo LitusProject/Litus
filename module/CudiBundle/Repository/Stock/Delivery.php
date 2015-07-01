@@ -33,9 +33,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Delivery extends EntityRepository
 {
+    /**
+     * @param  Supplier            $supplier
+     * @param  PeriodEntity        $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySupplierAndPeriodQuery(Supplier $supplier, PeriodEntity $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('o')
             ->from('CudiBundle\Entity\Stock\Delivery', 'o')
             ->innerJoin('o.article', 'a')
@@ -59,9 +64,13 @@ class Delivery extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  PeriodEntity        $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPeriodQuery(PeriodEntity $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('o')
             ->from('CudiBundle\Entity\Stock\Delivery', 'o')
             ->where(
@@ -82,6 +91,11 @@ class Delivery extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article      $article
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
     public function findNumberByArticleAndAcademicYear(Article $article, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -107,6 +121,11 @@ class Delivery extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Supplier     $supplier
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
     public function findNumberBySupplier(Supplier $supplier, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -133,11 +152,20 @@ class Delivery extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
     public function getDeliveredAmountByAcademicYear(AcademicYear $academicYear)
     {
         return $this->getDeliveredAmountBetween($academicYear->getStartDate(), $academicYear->getEndDate());
     }
 
+    /**
+     * @param  DateTime $startDate
+     * @param  DateTime $endDate
+     * @return int
+     */
     public function getDeliveredAmountBetween(DateTime $startDate, DateTime $endDate)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -162,11 +190,20 @@ class Delivery extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
     public function getNumberByAcademicYear(AcademicYear $academicYear)
     {
         return $this->getNumberBetween($academicYear->getStartDate(), $academicYear->getEndDate());
     }
 
+    /**
+     * @param  DateTime $startDate
+     * @param  DateTime $endDate
+     * @return int
+     */
     public function getNumberBetween(DateTime $startDate, DateTime $endDate)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -190,6 +227,10 @@ class Delivery extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -209,6 +250,11 @@ class Delivery extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $article
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleAndAcademicYearQuery($article, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -232,6 +278,11 @@ class Delivery extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $supplier
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySupplierAndAcademicYearQuery($supplier, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -255,6 +306,11 @@ class Delivery extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleEntityQuery(Article $article, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -276,6 +332,11 @@ class Delivery extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Supplier            $supplier
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySupplierEntityQuery(Supplier $supplier, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -298,6 +359,12 @@ class Delivery extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $title
+     * @param  Supplier            $supplier
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleTitleAndSupplierAndAcademicYearQuery($title, Supplier $supplier, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

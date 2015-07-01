@@ -18,15 +18,6 @@
 
 namespace BrBundle\Entity\Product;
 
-
-
-
-
-
-
-
-
-
 use BrBundle\Entity\Collaborator,
     BrBundle\Entity\Company,
     BrBundle\Entity\Contract,
@@ -131,7 +122,7 @@ class Order
     /**
      * @var EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @param Collaborator $creationPerson
@@ -308,7 +299,7 @@ class Order
             }
         }
 
-        return ($cost / 100) - $this->getContract()->getDiscount();
+        return (double) (($cost / 100) - $this->getContract()->getDiscount());
     }
 
     /**
@@ -317,7 +308,7 @@ class Order
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }

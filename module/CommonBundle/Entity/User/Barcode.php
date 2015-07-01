@@ -18,9 +18,6 @@
 
 namespace CommonBundle\Entity\User;
 
-
-
-
 use CommonBundle\Entity\User\Barcode\Ean12,
     CommonBundle\Entity\User\Barcode\Qr,
     DateTime,
@@ -106,7 +103,7 @@ abstract class Barcode
     abstract public function getBarcode();
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getType()
     {

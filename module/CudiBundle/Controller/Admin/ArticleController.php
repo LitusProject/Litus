@@ -18,18 +18,13 @@
 
 namespace CudiBundle\Controller\Admin;
 
-
-
-
-
-
-
 use CudiBundle\Entity\Article\External,
     CudiBundle\Entity\Article\History,
     CudiBundle\Entity\Article\Internal,
     CudiBundle\Entity\Article\SubjectMap,
     CudiBundle\Entity\Comment\Mapping as CommentMapping,
     CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog,
+    Cudibundle\Entity\Article,
     Zend\View\Model\ViewModel;
 
 /**
@@ -41,10 +36,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         if (null !== $this->getParam('field')) {
-            $articles = $this->_search();
+            $articles = $this->search();
         }
 
         if (!isset($articles)) {
@@ -74,7 +69,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     public function addAction()
     {
         $form = $this->getForm('cudi_article_add');
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -134,7 +129,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -190,7 +185,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -206,7 +201,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -224,7 +219,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function searchAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $this->initAjax();
 
@@ -232,7 +227,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $articles = $this->_search()
+        $articles = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -261,9 +256,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function duplicateAction()
     {
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -316,7 +311,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function convertToExternalAction()
     {
-        if (!($previous = $this->_getArticle())) {
+        if (!($previous = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -399,7 +394,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function convertToInternalAction()
     {
-        if (!($previous = $this->_getArticle())) {
+        if (!($previous = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -497,21 +492,24 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel();
     }
 
-    private function _search()
+    /**
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function search()
     {
         switch ($this->getParam('field')) {
-            case 'title' :
+            case 'title':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
                     ->findAllByTitleQuery($this->getParam('string'));
-            case 'author' :
+            case 'author':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
                     ->findAllByAuthorQuery($this->getParam('string'));
             case 'isbn':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
-                    ->findAllByISBNQuery($this->getParam('string'));
+                    ->findAllByIsbnQuery($this->getParam('string'));
             case 'publisher':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
@@ -519,43 +517,25 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             case 'subject':
                 return $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article')
-                    ->findAllBySubjectQuery($this->getParam('string'), $this->getAcademicYear());
+                    ->findAllBySubjectQuery($this->getParam('string'), $this->getAcademicYearEntity());
         }
     }
 
     /**
-     * @return \CudiBundle\Entity\Article|null
+     * @return Article|null
      */
-    private function _getArticle()
+    private function getArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Article');
+
+        if (!($article instanceof Article)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
-                'cudi_admin_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_article',
+                'cudi_admin_stock',
                 array(
                     'action' => 'manage',
                 )

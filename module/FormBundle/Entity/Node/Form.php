@@ -18,14 +18,6 @@
 
 namespace FormBundle\Entity\Node;
 
-
-
-
-
-
-
-
-
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     DateTime,
@@ -132,7 +124,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     /**
      * @var EntityManager
      */
-    protected $_entityManager;
+    protected $entityManager;
 
     /**
      * @param Person $person
@@ -446,7 +438,7 @@ abstract class Form extends \CommonBundle\Entity\Node
             return false;
         }
 
-        $result = $this->_entityManager
+        $result = $this->entityManager
             ->getRepository('FormBundle\Entity\ViewerMap')
             ->findOneByPersonAndForm($person, $this);
 
@@ -504,7 +496,7 @@ abstract class Form extends \CommonBundle\Entity\Node
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }
@@ -527,7 +519,7 @@ abstract class Form extends \CommonBundle\Entity\Node
         $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
         $body = str_replace('%last_name%', $entry->getPersonInfo()->getLastName(), $body);
 
-        $body = str_replace('%entry_summary%', $this->_getSummary($entry, $language), $body);
+        $body = str_replace('%entry_summary%', $this->getSummary($entry, $language), $body);
 
         if ($this->isSendGuestLoginMail() && $entry->isGuestEntry()) {
             $body = str_replace('#guest_login_text#', '', $body);
@@ -544,5 +536,5 @@ abstract class Form extends \CommonBundle\Entity\Node
      * @param  Language $language
      * @return string
      */
-    abstract protected function _getSummary(Entry $entry, Language $language);
+    abstract protected function getSummary(Entry $entry, Language $language);
 }

@@ -34,21 +34,21 @@ class Zip
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    private $entityManager = null;
 
     /**
      * @var array The array containing the mailinglists
      */
-    private $_lists;
+    private $lists;
 
     /**
      * @param EntityManager $entityManager The entityManager
-     * @param arrays        $lists         The array containing the mailinglists
+     * @param array         $lists         The array containing the mailinglists
      */
     public function __construct(EntityManager $entityManager, array $lists)
     {
-        $this->_entityManager = $entityManager;
-        $this->_lists = $lists;
+        $this->entityManager = $entityManager;
+        $this->lists = $lists;
     }
 
     /**
@@ -65,8 +65,8 @@ class Zip
         $zip->addFromString('GENERATED', $now->format('YmdHi') . PHP_EOL);
         $zip->close();
 
-        foreach ($this->_lists as $list) {
-            $entries = $this->_entityManager
+        foreach ($this->lists as $list) {
+            $entries = $this->entityManager
                 ->getRepository('MailBundle\Entity\MailingList\Entry')
                 ->findByList($list);
 

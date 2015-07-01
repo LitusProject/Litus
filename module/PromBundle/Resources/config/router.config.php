@@ -69,7 +69,7 @@ return array(
                 'route' => '/prom/registration[/:action[/:code]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'code'      => '[a-zA-Z0-9_-]*',
+                    'code'    => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'prom_registration_index',

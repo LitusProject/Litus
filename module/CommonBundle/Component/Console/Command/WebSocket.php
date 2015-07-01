@@ -23,7 +23,7 @@ abstract class WebSocket extends \CommonBundle\Component\Console\Command
     protected function configure()
     {
         $name = strtolower($this->getCommandName());
-        $module = $this->_getModuleName();
+        $module = $this->getModuleName();
 
         $this
             ->setName($module . ':' . $name . '-socket')
@@ -92,7 +92,7 @@ EOT
     /**
      * @return string the name of the bundle of this websocket.
      */
-    private function _getModuleName()
+    private function getModuleName()
     {
         $calledClass = get_called_class();
         $module = substr($calledClass, 0, strpos($calledClass, '\\', 1));

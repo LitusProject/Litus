@@ -18,9 +18,6 @@
 
 namespace SyllabusBundle\Repository;
 
-
-
-
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
@@ -36,7 +33,7 @@ class Subject extends EntityRepository
 {
     public function findAllByNameAndAcademicYearTypeAhead($name, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
             ->innerJoin('m.subject', 's')
@@ -67,9 +64,10 @@ class Subject extends EntityRepository
     {
         $years = array();
 
-        $academicYear = AcademicYearUtil::getUniversityYear($this->_em);
+        $academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager());
 
-        $studies = $this->_em->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+        $studies = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($person, $academicYear);
 
         foreach ($studies as $studyMap) {

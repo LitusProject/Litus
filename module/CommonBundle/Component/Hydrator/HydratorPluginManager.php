@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Component\Hydrator;
 
-
 use RuntimeException,
-    Zend\ServiceManager\ServiceLocatorAwareInterface;
+    Zend\ServiceManager\ServiceLocatorAwareInterface,
+    Zend\Stdlib\Hydrator\HydratorInterface;
 
 /**
  * Manager for our hydrators
@@ -29,6 +29,12 @@ use RuntimeException,
  */
 class HydratorPluginManager extends \Zend\Stdlib\Hydrator\HydratorPluginManager
 {
+    /**
+     * @param  string       $name
+     * @param  array        $options
+     * @param  boolean      $usePeeringServiceManagers
+     * @return object|array
+     */
     public function get($name, $options = array(), $usePeeringServiceManagers = true)
     {
         if ($this->has($name)) {

@@ -45,7 +45,7 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'searchType',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->_createSearchTypeArray(),
+                'options' => $this->createSearchTypeArray(),
             ),
         ));
 
@@ -54,7 +54,7 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'sector',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->_createSectorArray(),
+                'options' => $this->createSectorArray(),
             ),
         ));
 
@@ -62,12 +62,12 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->get('submit')->setAttribute('class', 'btn btn-default');
     }
 
-    private function _createSearchTypeArray()
+    private function createSearchTypeArray()
     {
         return self::$possibleSearchTypes;
     }
 
-    private function _createSectorArray()
+    private function createSectorArray()
     {
         $sectorArray = array('all' => 'All');
         foreach (Company::$possibleSectors as $key => $sector) {

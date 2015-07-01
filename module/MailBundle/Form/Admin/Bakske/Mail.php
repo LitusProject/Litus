@@ -18,7 +18,6 @@
 
 namespace MailBundle\Form\Admin\Bakske;
 
-
 use CommonBundle\Entity\General\AcademicYear,
     RuntimeException;
 
@@ -32,7 +31,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var AcademicYear
      */
-    private $_academicYear;
+    private $academicYear;
 
     public function init()
     {
@@ -44,7 +43,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Edition',
             'required'   => true,
             'options'    => array(
-                'options' => $this->_createEditionsArray(),
+                'options' => $this->createEditionsArray(),
             ),
         ));
 
@@ -74,7 +73,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $this->addSubmit('Send', 'mail');
     }
 
-    private function _createEditionsArray()
+    private function createEditionsArray()
     {
         $publicationId = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -106,7 +105,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setAcademicYear(AcademicYear $academicYear)
     {
-        $this->_academicYear = $academicYear;
+        $this->academicYear = $academicYear;
 
         return $this;
     }
@@ -116,6 +115,6 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
      */
     public function getAcademicYear()
     {
-        return $this->_academicYear;
+        return $this->academicYear;
     }
 }

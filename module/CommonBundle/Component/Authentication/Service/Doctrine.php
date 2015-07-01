@@ -36,12 +36,12 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    private $entityManager = null;
 
     /**
      * @var string The name of the entity that holds the sessions
      */
-    private $_entityName = '';
+    private $entityName = '';
 
     /**
      * @param  EntityManager                      $entityManager The EntityManager instance
@@ -58,14 +58,14 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     ) {
         parent::__construct($storage, $namespace, $cookieSuffix, $expire, $action);
 
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         if ('\\' == substr($entityName, 0, 1)) {
             throw new Exception\InvalidArgumentException(
                 'The entity name cannot have a leading backslash'
             );
         }
-        $this->_entityName = $entityName;
+        $this->entityName = $entityName;
     }
 
     /**
@@ -75,59 +75,59 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
      * @param boolean                                                      $rememberMe Remember this authentication session
      * @param boolean                                                      $shibboleth Whether or not this is sessions initiated by Shibboleth
      *
-     * @return Result
+     * @return Result|null
      */
     public function authenticate(DoctrineAdapter $adapter = null, $rememberMe = false, $shibboleth = false)
     {
         $result = null;
-        if (null == $this->_request) {
+        if (null == $this->request) {
             return;
         }
 
-        $server = $this->_request->getServer();
+        $server = $this->request->getServer();
 
         if ('' == $this->getIdentity() && null !== $adapter) {
             $adapterResult = $adapter->authenticate();
 
             if ($adapterResult->isValid()) {
-                $sessionEntity = $this->_entityName;
+                $sessionEntity = $this->entityName;
                 $newSession = new $sessionEntity(
                     $adapterResult->getPersonObject(),
                     $server->get('HTTP_USER_AGENT'),
                     $server->get('HTTP_X_FORWARDED_FOR', $server->get('REMOTE_ADDR')),
                     $shibboleth,
-                    $this->_duration
+                    $this->duration
                 );
-                $this->_entityManager->persist($newSession);
+                $this->entityManager->persist($newSession);
 
                 $adapterResult->setSessionObject($newSession);
 
                 $this->getStorage()->write($newSession->getId());
                 if ($rememberMe) {
-                    $this->_setCookie($newSession->getId());
+                    $this->setCookie($newSession->getId());
                 } else {
-                    $this->_clearCookie();
+                    $this->clearCookie();
                 }
 
                 $result = $adapterResult;
 
-                if (isset($this->_action)) {
-                    $this->_action->succeededAction($result);
+                if (isset($this->action)) {
+                    $this->action->succeededAction($result);
                 }
             } else {
                 $result = $adapterResult;
-                if (isset($this->_action)) {
-                    $this->_action->failedAction($adapterResult);
+                if (isset($this->action)) {
+                    $this->action->failedAction($adapterResult);
                 }
             }
         } else {
-            $session = $this->_entityManager->getRepository($this->_entityName)->findOneById(
+            $session = $this->entityManager->getRepository($this->entityName)->findOneById(
                 $this->getIdentity()
             );
 
             if (null !== $session) {
                 $sessionValidation = $session->validate(
-                    $this->_entityManager,
+                    $this->entityManager,
                     $server->get('HTTP_USER_AGENT'),
                     $server->get('HTTP_X_FORWARDED_FOR', $server->get('REMOTE_ADDR'))
                 );
@@ -135,10 +135,10 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
                 if (true !== $sessionValidation) {
                     $this->getStorage()->write($sessionValidation);
 
-                    if ($this->_hasCookie() || $rememberMe) {
-                        $this->_setCookie($sessionValidation);
+                    if ($this->hasCookie() || $rememberMe) {
+                        $this->setCookie($sessionValidation);
                     } else {
-                        $this->_clearCookie();
+                        $this->clearCookie();
                     }
                 }
 
@@ -158,7 +158,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
             }
         }
 
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
 
         return $result;
     }
@@ -184,17 +184,17 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
             return;
         }
 
-        $session = $this->_entityManager->getRepository($this->_entityName)->findOneById(
+        $session = $this->entityManager->getRepository($this->entityName)->findOneById(
             $this->getIdentity()
         );
 
         if (null !== $session) {
             $session->deactivate();
-            $this->_entityManager->flush();
+            $this->entityManager->flush();
         }
 
         $this->getStorage()->clear();
-        $this->_clearCookie();
+        $this->clearCookie();
 
         return $session;
     }
@@ -207,8 +207,8 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     public function hasIdentity()
     {
         if ($this->getStorage()->isEmpty() || $this->getStorage()->read() == '') {
-            if ($this->_hasCookie()) {
-                $this->getStorage()->write($this->_getCookie());
+            if ($this->hasCookie()) {
+                $this->getStorage()->write($this->getCookie());
             }
         }
 

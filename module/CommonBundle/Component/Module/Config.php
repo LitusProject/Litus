@@ -116,7 +116,7 @@ class Config
      * @param  string $file      the file to load
      * @return mixed
      */
-    private static function _load($directory, $file)
+    private static function load($directory, $file)
     {
         $file = $directory . '/' . $file;
         if (file_exists($file)) {
@@ -126,7 +126,7 @@ class Config
         }
     }
 
-    private static function _createTranslationConfig(array $settings)
+    private static function createTranslationConfig(array $settings)
     {
         if (!array_key_exists('translation_files', $settings)) {
             return array();
@@ -145,7 +145,7 @@ class Config
         return $translationFiles;
     }
 
-    private static function _createDoctrineConfig(array $settings)
+    private static function createDoctrineConfig(array $settings)
     {
         $doctrine = array();
         $directory = $settings['directory'];
@@ -182,7 +182,7 @@ class Config
         return $doctrine;
     }
 
-    private static function _createViewManagerConfig(array $settings)
+    private static function createViewManagerConfig(array $settings)
     {
         // include view by default
         $hasView = !array_key_exists('has_views', $settings) || $settings['has_views'];
@@ -210,10 +210,10 @@ class Config
         );
     }
 
-    private static function _createAsseticConfig(array $settings)
+    private static function createAsseticConfig(array $settings)
     {
         $directory = $settings['directory'];
-        $asseticConfig = self::_load($directory, 'assetic.config.php');
+        $asseticConfig = self::load($directory, 'assetic.config.php');
 
         $result = array();
 
@@ -237,7 +237,7 @@ class Config
         return $result;
     }
 
-    private static function _createInstallConfig(array $settings)
+    private static function createInstallConfig(array $settings)
     {
         $directory = $settings['directory'] . '/install';
         $namespace = $settings['namespace'];
@@ -271,7 +271,7 @@ class Config
         $directory = $settings['directory'];
         $module = $settings['namespace'];
 
-        $routerConfig = self::_load($directory, 'router.config.php');
+        $routerConfig = self::load($directory, 'router.config.php');
 
         return array_merge_recursive(array(
             'router' => array(
@@ -282,11 +282,11 @@ class Config
             ),
 
             'translator' => array(
-                'translation_file_patterns' => self::_createTranslationConfig($settings),
+                'translation_file_patterns' => self::createTranslationConfig($settings),
             ),
 
             'doctrine' => array(
-                'driver' => self::_createDoctrineConfig($settings),
+                'driver' => self::createDoctrineConfig($settings),
             ),
 
             'service_manager' => array(
@@ -295,14 +295,14 @@ class Config
                 ),
             ),
 
-            'assetic_configuration' => self::_createAsseticConfig($settings),
+            'assetic_configuration' => self::createAsseticConfig($settings),
 
-            'view_manager' => self::_createViewManagerConfig($settings),
+            'view_manager' => self::createViewManagerConfig($settings),
 
             'litus' => array(
-                'admin'   => self::_load($directory, 'admin.config.php'),
-                'install' => self::_createInstallConfig($settings),
-                'console' => self::_load($directory, 'console.config.php'),
+                'admin'   => self::load($directory, 'admin.config.php'),
+                'install' => self::createInstallConfig($settings),
+                'console' => self::load($directory, 'console.config.php'),
             ),
         ), $override);
     }

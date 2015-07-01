@@ -28,9 +28,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Request extends EntityRepository
 {
+    /**
+     * @param  int                              $id
+     * @return \BrBundle\Entity\Company\Request
+     */
     public function findRequestById($id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('r')
             ->from('BrBundle\Entity\Company\Request', 'r')
             ->where(

@@ -29,7 +29,7 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function indexAction()
     {
-        if (!($slug = $this->_getSlug())) {
+        if (!($slug = $this->getSlug())) {
             return $this->notFoundAction();
         }
 
@@ -43,14 +43,13 @@ class RedirectController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel();
     }
 
-    private function _getSlug()
+    /**
+     * @return \OnBundle\Document\Slug|null
+     */
+    private function getSlug()
     {
-        if (null === $this->getParam('name')) {
-            return null;
-        }
-
         return $this->getDocumentManager()
             ->getRepository('OnBundle\Document\Slug')
-            ->findOneByName(strtolower($this->getParam('name')));
+            ->findOneByName(strtolower($this->getParam('name', '')));
     }
 }

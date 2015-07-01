@@ -18,17 +18,6 @@
 
 namespace CommonBundle\Entity\User;
 
-
-
-
-
-
-
-
-
-
-
-
 use CommonBundle\Component\Acl\RoleAware,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
@@ -293,7 +282,7 @@ abstract class Person implements RoleAware
      */
     public function getFlattenedRoles()
     {
-        return $this->_flattenRolesInheritance(
+        return $this->flattenRolesInheritance(
             $this->getRoles()
         );
     }
@@ -367,7 +356,7 @@ abstract class Person implements RoleAware
     }
 
     /**
-     * @param  string $email
+     * @param  string|null $email
      * @return self
      */
     public function setEmail($email = null)
@@ -624,11 +613,7 @@ abstract class Person implements RoleAware
     public function isMember(AcademicYearEntity $academicYear)
     {
         if (null !== $this->getOrganizationStatus($academicYear)) {
-            if ($this->getOrganizationStatus($academicYear)->getStatus() == 'non_member') {
-                return false;
-            }
-
-            return true;
+            return !($this->getOrganizationStatus($academicYear)->getStatus() == 'non_member');
         }
 
         return false;
@@ -720,13 +705,13 @@ abstract class Person implements RoleAware
      * @param  array $return           The one-dimensional return array
      * @return array
      */
-    private function _flattenRolesInheritance(array $inheritanceRoles, array $return = array())
+    private function flattenRolesInheritance(array $inheritanceRoles, array $return = array())
     {
         foreach ($inheritanceRoles as $role) {
             if (!in_array($role, $return)) {
                 $return[] = $role;
             }
-            $return = $this->_flattenRolesInheritance($role->getParents(), $return);
+            $return = $this->flattenRolesInheritance($role->getParents(), $return);
         }
 
         return $return;

@@ -18,11 +18,6 @@
 
 namespace BrBundle\Entity;
 
-
-
-
-
-
 use BrBundle\Entity\Contract\ContractEntry,
     BrBundle\Entity\Product\Order,
     DateTime,
@@ -400,7 +395,7 @@ class Contract
             throw new InvalidArgumentException('Invalid invoice number: ' . $invoiceNb);
         }
 
-        $this->invoiceNb = $invoiceNb;
+        $this->invoiceNb = (int) $invoiceNb;
 
         return $this;
     }
@@ -427,7 +422,7 @@ class Contract
             throw new InvalidArgumentException('Invalid contract number: ' . $contractNb);
         }
 
-        $this->contractNb = $contractNb;
+        $this->contractNb = (int) $contractNb;
 
         return $this;
     }

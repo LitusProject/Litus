@@ -18,7 +18,9 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use Zend\Cache\Storage\Adapter\MemcachedOptions,
+    Zend\Cache\Storage\FlushableInterface,
+    Zend\View\Model\ViewModel;
 
 /**
  * CacheController
@@ -29,17 +31,17 @@ class CacheController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (getenv('APPLICATION_ENV') != 'development') {
-            $paginator = $this->paginator()->createFromArray(
-                $this->getCache()->getOptions()->getResourceManager()->getResource($this->getCache()->getOptions()->getResourceId())->getAllKeys(),
-                $this->getParam('page')
-            );
-        } else {
-            $paginator = $this->paginator()->createFromArray(
-                array(),
-                $this->getParam('page')
-            );
+        $options = $this->getCache()->getOptions();
+        $keys = array();
+
+        if ($options instanceof MemcachedOptions) {
+            $keys = $options->getResourceManager()->getResource($options->getResourceId())->getAllKeys();
         }
+
+        $paginator = $this->paginator()->createFromArray(
+            $keys,
+            $this->getParam('page')
+        );
 
         return new ViewModel(
             array(
@@ -51,12 +53,20 @@ class CacheController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function flushAction()
     {
-        $this->getCache()->flush();
+        $cache = $this->getCache();
+        if ($cache instanceof FlushableInterface) {
+            $cache->flush();
 
-        $this->flashMessenger()->success(
-            'Success',
-            'The cache was successfully cleared!'
-        );
+            $this->flashMessenger()->success(
+                'Success',
+                'The cache was successfully cleared!'
+            );
+        } else {
+            $this->flashMessenger()->success(
+                'Success',
+                'Failed to clear the cache!'
+            );
+        }
 
         $this->redirect()->toRoute(
             'common_admin_cache',

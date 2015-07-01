@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-
-use CudiBundle\Entity\Sale\Article\Barcode,
+use CudiBundle\Entity\Sale\Article as SaleArticle,
+    CudiBundle\Entity\Sale\Article\Barcode,
     Zend\View\Model\ViewModel;
 
 /**
@@ -31,7 +31,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($article = $this->_getSaleArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -85,7 +85,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($barcode = $this->_getBarcode()) || $barcode->isMain()) {
+        if (!($barcode = $this->getBarcodeEntity()) || $barcode->isMain()) {
             return new ViewModel();
         }
 
@@ -100,34 +100,16 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article|null
+     * @return SaleArticle|null
      */
-    private function _getSaleArticle()
+    private function getSaleArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
+
+        if (!($article instanceof SaleArticle)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -143,32 +125,17 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
         return $article;
     }
 
-    private function _getBarcode()
+    /**
+     * @return Barcode|null
+     */
+    private function getBarcodeEntity()
     {
-        if (null === $this->getParam('id')) {
+        $barcode = $this->getEntityById('CudiBundle\Entity\Sale\Article\Barcode');
+
+        if (!($barcode instanceof Barcode)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the barcode!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $barcode = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article\Barcode')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $barcode) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No barcode with the given ID was found!'
+                'No barcode was found!'
             );
 
             $this->redirect()->toRoute(

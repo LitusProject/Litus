@@ -31,7 +31,7 @@ class External extends EntityRepository
 {
     public function findOneByEmailAndAcademicYear($email, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('SecretaryBundle\Entity\Promotion\External', 'e')
             ->where(

@@ -28,9 +28,12 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Language extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('CommonBundle\Entity\General\Language', 'l')
             ->orderBy('l.name', 'ASC')

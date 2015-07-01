@@ -18,11 +18,6 @@
 
 namespace CudiBundle\Entity\Sale;
 
-
-
-
-
-
 use CommonBundle\Entity\User\Person,
     DateInterval,
     DateTime,
@@ -120,7 +115,7 @@ class Booking
     /**
      * @var string[] The possible states of a booking
      */
-    private static $POSSIBLE_STATUSES = array(
+    private static $possibleStatuses = array(
         'booked', 'assigned', 'sold', 'expired', 'canceled', 'returned',
     );
 
@@ -152,7 +147,7 @@ class Booking
      */
     public static function isValidBookingStatus($status)
     {
-        return in_array($status, self::$POSSIBLE_STATUSES);
+        return in_array($status, self::$possibleStatuses);
     }
 
     /**

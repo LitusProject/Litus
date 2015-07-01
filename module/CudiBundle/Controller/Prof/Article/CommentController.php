@@ -18,10 +18,9 @@
 
 namespace CudiBundle\Controller\Prof\Article;
 
-
-
 use CudiBundle\Entity\Article,
     CudiBundle\Entity\Comment\Comment,
+    CudiBundle\Entity\Comment\Mapping,
     Zend\View\Model\ViewModel;
 
 /**
@@ -33,7 +32,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -91,7 +90,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getCommentMapping())) {
+        if (!($mapping = $this->getCommentMappingEntity())) {
             return new ViewModel();
         }
 
@@ -112,37 +111,21 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @return Article
+     * @param  int|null     $id
+     * @return Article|null
      */
-    private function _getArticle($id = null)
+    private function getArticleEntity($id = null)
     {
-        $id = $id == null ? $this->getParam('id') : $id;
-
-        if (null === $id) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_prof_article',
-                array(
-                    'action' => 'manage',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
-            return;
-        }
+        $id = $id === null ? $this->getParam('id', 0) : $id;
 
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
             ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
 
-        if (null === $article) {
+        if (!($article instanceof Article)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -159,33 +142,17 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
         return $article;
     }
 
-    private function _getCommentMapping()
+    /**
+     * @return Mapping|null
+     */
+    private function getCommentMappingEntity()
     {
-        if (null === $this->getParam('id')) {
+        $mapping = $this->getEntityById('CudiBundle\Entity\Comment\Mapping');
+
+        if (!($mapping instanceof Mapping) || null === $this->getArticleEntity($mapping->getArticle()->getId())) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the comment!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_prof_article',
-                array(
-                    'action' => 'manage',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
-            return;
-        }
-
-        $mapping = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Comment\Mapping')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $mapping || null === $this->_getArticle($mapping->getArticle()->getId())) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No comment with the given ID was found!'
+                'No mapping was found!'
             );
 
             $this->redirect()->toRoute(

@@ -18,7 +18,6 @@
 
 namespace BrBundle\Hydrator;
 
-
 use BrBundle\Entity\Contract\ContractEntry as ContractEntryEntity,
     CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
@@ -33,7 +32,7 @@ class Contract extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $std_keys = array('title', 'invoice_nb');
+    private static $stdKeys = array('title', 'invoice_nb');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -56,7 +55,7 @@ class Contract extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setVersion($newVersionNb);
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -65,7 +64,7 @@ class Contract extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         foreach ($object->getEntries() as $entry) {
             $data['entry_' . $entry->getId()] = $entry->getContractText();

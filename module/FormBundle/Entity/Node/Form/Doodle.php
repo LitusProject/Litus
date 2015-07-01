@@ -18,11 +18,6 @@
 
 namespace FormBundle\Entity\Node\Form;
 
-
-
-
-
-
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM,
@@ -63,7 +58,7 @@ class Doodle extends BaseForm
             return true;
         }
 
-        $formEntry = $this->_entityManager
+        $formEntry = $this->entityManager
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findOneByFormAndPerson($this, $person);
 
@@ -155,7 +150,7 @@ class Doodle extends BaseForm
         $body = str_replace('%first_name%', $entry->getPersonInfo()->getFirstName(), $body);
         $body = str_replace('%last_name%', $entry->getPersonInfo()->getLastName(), $body);
 
-        $body = str_replace('%entry_summary%', $this->_getSummary($entry, $language), $body);
+        $body = str_replace('%entry_summary%', $this->getSummary($entry, $language), $body);
 
         return $body;
     }
@@ -165,9 +160,9 @@ class Doodle extends BaseForm
      * @param  Language $language
      * @return string
      */
-    protected function _getSummary(Entry $entry, Language $language)
+    protected function getSummary(Entry $entry, Language $language)
     {
-        $fieldEntries = $this->_entityManager
+        $fieldEntries = $this->entityManager
             ->getRepository('FormBundle\Entity\Entry')
             ->findAllByFormEntry($entry);
 

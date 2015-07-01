@@ -18,12 +18,6 @@
 
 namespace BrBundle\Entity;
 
-
-
-
-
-
-
 use BrBundle\Entity\Product\Order,
     DateInterval,
     DateTime,
@@ -96,7 +90,7 @@ class Invoice
      *
      * @ORM\Column(type="string")
      */
-    private $VATcontext;
+    private $vatContext;
 
     /**
      * Creates a new invoice
@@ -108,7 +102,7 @@ class Invoice
         $this->setOrder($order);
         $this->creationTime = new DateTime();
         $this->setVersion(0);
-        $this->setVATContext();
+        $this->setVatContext();
 
         $this->invoiceEntries = new ArrayCollection();
     }
@@ -122,16 +116,16 @@ class Invoice
         return $this->creationTime->format('Y') . $brNumber . str_pad($this->order->getContract()->getInvoiceNb(), 3, '0', STR_PAD_LEFT);
     }
 
-    public function setVATContext($text = '')
+    public function setVatContext($text = '')
     {
-        $this->VATcontext = $text;
+        $this->vatContext = $text;
 
         return $this;
     }
 
-    public function getVATContext()
+    public function getVatContext()
     {
-        return $this->VATcontext;
+        return $this->vatContext;
     }
 
     /**
@@ -165,11 +159,7 @@ class Invoice
      */
     public function isPayed()
     {
-        if (null === $this->paidTime) {
-            return false;
-        }
-
-        return true;
+        return (null !== $this->paidTime);
     }
 
     /**

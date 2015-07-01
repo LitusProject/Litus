@@ -18,11 +18,9 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Session;
 
-
-
-
-
 use CommonBundle\Component\Controller\Exception\RuntimeException,
+    CudiBundle\Entity\Sale\Session,
+    CudiBundle\Entity\Sale\Session\Restriction,
     CudiBundle\Entity\Sale\Session\Restriction\Name as NameRestriction,
     CudiBundle\Entity\Sale\Session\Restriction\Study as StudyRestriction,
     CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction,
@@ -37,7 +35,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 {
     public function manageAction()
     {
-        if (!($session = $this->_getSession())) {
+        if (!($session = $this->getSessionEntity())) {
             return new ViewModel();
         }
 
@@ -107,7 +105,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($restriction = $this->_getRestriction())) {
+        if (!($restriction = $this->getRestrictionEntity())) {
             return new ViewModel();
         }
 
@@ -122,34 +120,16 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Session|null
+     * @return Session|null
      */
-    private function _getSession()
+    private function getSessionEntity()
     {
-        if (null === $this->getParam('id')) {
+        $session = $this->getEntityById('CudiBundle\Entity\Sale\Session');
+
+        if (!($session instanceof Session)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the session!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_session',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $session = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Session')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $session) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No session with the given ID was found!'
+                'No session was found!'
             );
 
             $this->redirect()->toRoute(
@@ -166,34 +146,16 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Session\Restriction|null
+     * @return Restriction|null
      */
-    private function _getRestriction()
+    private function getRestrictionEntity()
     {
-        if (null === $this->getParam('id')) {
+        $restriction = $this->getEntityById('CudiBundle\Entity\Sale\Session\Restriction');
+
+        if (!($restriction instanceof Restriction)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the restriction!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_session',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $restriction = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Session\Restriction')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $restriction) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No restriction with the given ID was found!'
+                'No restriction was found!'
             );
 
             $this->redirect()->toRoute(

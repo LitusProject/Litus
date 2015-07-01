@@ -18,12 +18,6 @@
 
 namespace ApiBundle\Controller;
 
-
-
-
-
-
-
 use ApiBundle\Document\Code\Authorization as AuthorizationCode,
     ApiBundle\Document\Token\Access as AccessToken,
     ApiBundle\Document\Token\Refresh as RefreshToken,
@@ -102,7 +96,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
         return new ViewModel(
             array(
                 'form' => $form,
-                'shibbolethUrl' => $this->_getShibbolethUrl($this->getRequest()->getQuery('redirect_uri')),
+                'shibbolethUrl' => $this->getShibbolethUrl($this->getRequest()->getQuery('redirect_uri')),
             )
         );
     }
@@ -191,7 +185,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 ->findOneByCode($this->getRequest()->getPost('code'));
 
             if (null === $authorizationCode) {
-                return $this->error(500, 'This authorization code does not exist');
+                return $this->error(404, 'This authorization code does not exist');
             }
 
             if ($authorizationCode->hasExpired()) {
@@ -263,7 +257,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 ->findOneByCode($this->getRequest()->getPost('refresh_token'));
 
             if (null === $refreshToken) {
-                return $this->error(500, 'This refresh token does not exist');
+                return $this->error(404, 'This refresh token does not exist');
             }
 
             if ($refreshToken->hasExpired()) {
@@ -333,7 +327,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
      *
      * @return string
      */
-    protected function _getShibbolethUrl($redirect = '')
+    protected function getShibbolethUrl($redirect = '')
     {
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

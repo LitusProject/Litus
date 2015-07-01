@@ -18,9 +18,6 @@
 
 namespace PageBundle\Controller\Admin;
 
-
-
-
 use PageBundle\Entity\Node\Page,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Validator\File\IsImage as IsImageValidator,
@@ -37,7 +34,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     public function manageAction()
     {
         if (null !== $this->getParam('field')) {
-            $pages = $this->_search();
+            $pages = $this->search();
         }
 
         if (!isset($pages)) {
@@ -110,7 +107,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($page = $this->_getPage())) {
+        if (!($page = $this->getPageEntity())) {
             return new ViewModel();
         }
 
@@ -163,7 +160,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($page = $this->_getPage())) {
+        if (!($page = $this->getPageEntity())) {
             return new ViewModel();
         }
 
@@ -227,7 +224,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        $pages = $this->_search();
+        $pages = $this->search();
 
         foreach ($pages as $key => $page) {
             if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
@@ -259,7 +256,10 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _search()
+    /**
+     * @return array
+     */
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'title':
@@ -267,50 +267,21 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('PageBundle\Entity\Node\Page')
                     ->findAllByTitle($this->getParam('string'));
         }
+
+        return array();
     }
 
-    private function _getPage()
+    /**
+     * @return Page|null
+     */
+    private function getPageEntity()
     {
-        if (null === $this->getParam('id')) {
+        $page = $this->getEntityById('PageBundle\Entity\Node\Page');
+
+        if (!($page instanceof Page) || !$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the page!'
-            );
-
-            $this->redirect()->toRoute(
-                'page_admin_page',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $page = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Node\Page')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $page) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No page with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'page_admin_page',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
-            $this->flashMessenger()->error(
-                'Error',
-                'You do not have the permissions to modify this page!'
+                'No page was found!'
             );
 
             $this->redirect()->toRoute(

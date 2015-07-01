@@ -18,8 +18,6 @@
 
 namespace CalendarBundle\Form\Admin\Event;
 
-
-
 use CalendarBundle\Entity\Node\Event as EventEntity,
     CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language;
@@ -36,7 +34,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     /**
      * @var \CalendarBundle\Entity\Node\Event
      */
-    private $_event;
+    private $event;
 
     public function init()
     {
@@ -151,7 +149,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
      */
     public function setEvent(EventEntity $event)
     {
-        $this->_event = $event;
+        $this->event = $event;
 
         return $this;
     }
@@ -161,6 +159,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
      */
     public function getEvent()
     {
-        return $this->_event;
+        return $this->event;
     }
 }

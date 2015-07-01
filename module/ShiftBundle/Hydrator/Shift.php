@@ -18,13 +18,12 @@
 
 namespace ShiftBundle\Hydrator;
 
-
 use CommonBundle\Entity\User\Person\Academic,
     ShiftBundle\Entity\Shift as ShiftEntity;
 
 class Shift extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array(
+    private static $stdKeys = array(
         'nb_responsibles',
         'nb_volunteers',
         'name',
@@ -41,7 +40,7 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
 
         $manager = $object->getManager();
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
@@ -53,12 +52,12 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
                 ? ''
                 : $object->getEvent()->getId();
         $data['location'] = $object->getLocation()->getId();
-        $data['edit_roles'] = $this->_createRolesPopulationArray($object->getEditRoles());
+        $data['edit_roles'] = $this->createRolesPopulationArray($object->getEditRoles());
 
         return $data;
     }
 
-    private function _createRolesPopulationArray(array $roles)
+    private function createRolesPopulationArray(array $roles)
     {
         $rolesArray = array();
         foreach ($roles as $role) {
@@ -76,7 +75,7 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
     {
         if (null === $object) {
             $object = new ShiftEntity(
-                $this->getPerson(),
+                $this->getPersonEntity(),
                 $this->getCurrentAcademicYear(true)
             );
         }
@@ -123,6 +122,6 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setEvent(null);
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

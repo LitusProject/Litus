@@ -18,7 +18,8 @@
 
 namespace FormBundle\Controller\Manage;
 
-use Zend\View\Model\ViewModel;
+use FormBundle\Entity\Node\Group,
+    Zend\View\Model\ViewModel;
 
 /**
  * GroupController
@@ -29,13 +30,13 @@ class GroupController extends \FormBundle\Component\Controller\FormController
 {
     public function indexAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
         $groups = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
-            ->findAllGroupsByPerson($this->getAuthentication()->getPersonObject());
+            ->findAllGroupsByPerson($person);
 
         return new ViewModel(
             array(
@@ -46,11 +47,11 @@ class GroupController extends \FormBundle\Component\Controller\FormController
 
     public function viewAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
 
@@ -87,38 +88,23 @@ class GroupController extends \FormBundle\Component\Controller\FormController
         );
     }
 
-    private function _getGroup()
+    /**
+     * @return Group|null
+     */
+    private function getGroupEntity()
     {
-        if (null === $this->getParam('id')) {
+        $group = $this->getEntityById('FormBundle\Entity\Node\Group');
+
+        if (!($group instanceof Group)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the group!'
+                'No group was found!'
             );
 
             $this->redirect()->toRoute(
                 'form_manage_group',
                 array(
-                    'action' => 'index',
-                )
-            );
-
-            return;
-        }
-
-        $group = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Group')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $group) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No group with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_manage_group',
-                array(
-                    'action' => 'index',
+                    'action' => 'manage',
                 )
             );
 
@@ -128,5 +114,17 @@ class GroupController extends \FormBundle\Component\Controller\FormController
         $group->setEntityManager($this->getEntityManager());
 
         return $group;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\User\Person|null
+     */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return null;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
     }
 }

@@ -18,7 +18,9 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-use Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company,
+    BrBundle\Entity\User\Person\Corporate,
+    Zend\View\Model\ViewModel;
 
 /**
  * ContactController
@@ -30,7 +32,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompanyEntity())) {
             return;
         }
 
@@ -57,7 +59,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function addAction()
     {
-        if (!($company = $this->_getCompany())) {
+        if (!($company = $this->getCompanyEntity())) {
             return;
         }
 
@@ -107,7 +109,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($user = $this->_getUser())) {
+        if (!($user = $this->getCorporateEntity())) {
             return;
         }
 
@@ -147,7 +149,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
     public function activateAction()
     {
-        if (!($user = $this->_getUser())) {
+        if (!($user = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -181,7 +183,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($user = $this->_getUser())) {
+        if (!($user = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -196,34 +198,16 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return \BrBundle\Entity\Company
+     * @return Company|null
      */
-    private function _getCompany()
+    private function getCompanyEntity()
     {
-        if (null === $this->getParam('id')) {
+        $company = $this->getEntityById('BrBundle\Entity\Company');
+
+        if (!($company instanceof Company)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the company!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_company',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $company = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $company) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No company with the given ID was found!'
+                'No company was found!'
             );
 
             $this->redirect()->toRoute(
@@ -240,34 +224,16 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person\Corporate
+     * @return Corporate|null
      */
-    private function _getUser()
+    private function getCorporateEntity()
     {
-        if (null === $this->getParam('id')) {
+        $corporate = $this->getEntityById('BrBundle\Entity\User\Person\Corporate');
+
+        if (!($corporate instanceof Corporate)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the corporate user!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_company',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $corporate = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\User\Person\Corporate')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $corporate) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No corporate user with the given ID was found!'
+                'No corporate was found!'
             );
 
             $this->redirect()->toRoute(

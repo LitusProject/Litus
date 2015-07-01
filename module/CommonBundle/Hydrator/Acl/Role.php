@@ -18,7 +18,6 @@
 
 namespace CommonBundle\Hydrator\Acl;
 
-
 use CommonBundle\Entity\Acl\Action as ActionEntity,
     CommonBundle\Entity\Acl\Role as RoleEntity;
 
@@ -60,9 +59,12 @@ class Role extends \CommonBundle\Component\Hydrator\Hydrator
      */
     protected function rolesToArray(array $roles)
     {
-        return array_map(function ($role) {
-            return $role->getName();
-        }, $roles);
+        return array_map(
+            function ($role) {
+                return $role->getName();
+            },
+            $roles
+        );
     }
 
     /**
@@ -71,11 +73,14 @@ class Role extends \CommonBundle\Component\Hydrator\Hydrator
      */
     protected function arrayToRoles(array $roles)
     {
-        return array_map(function ($role) {
-            return $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Acl\Role')
-                ->findOneByName($role);
-        }, $roles);
+        return array_map(
+            function ($role) {
+                return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName($role);
+            },
+            $roles
+        );
     }
 
     /**
@@ -84,9 +89,12 @@ class Role extends \CommonBundle\Component\Hydrator\Hydrator
      */
     protected function actionsToArray(array $actions)
     {
-        return array_map(function ($action) {
-            return $action->getId();
-        }, $actions);
+        return array_map(
+            function ($action) {
+                return $action->getId();
+            },
+            $actions
+        );
     }
 
     /**
@@ -95,10 +103,13 @@ class Role extends \CommonBundle\Component\Hydrator\Hydrator
      */
     protected function arrayToActions(array $actions)
     {
-        return array_map(function ($action) {
-            return $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Acl\Action')
-                ->findOneById($action);
-        }, $actions);
+        return array_map(
+            function ($action) {
+                return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Action')
+                    ->findOneById($action);
+            },
+            $actions
+        );
     }
 }

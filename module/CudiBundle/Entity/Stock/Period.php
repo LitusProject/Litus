@@ -64,7 +64,7 @@ class Period
     /**
      * @var EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @param Person $person The person who created the period
@@ -134,7 +134,7 @@ class Period
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }
@@ -146,7 +146,7 @@ class Period
      */
     public function getNbDelivered(Article $article)
     {
-        $value = $this->_entityManager
+        $value = $this->entityManager
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->getNbDelivered($this, $article);
 
@@ -160,7 +160,7 @@ class Period
      */
     public function getNbOrdered(Article $article)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->getNbOrdered($this, $article);
     }
@@ -172,7 +172,7 @@ class Period
      */
     public function getNbVirtualOrdered(Article $article)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->getNbVirtualOrdered($this, $article);
     }
@@ -184,7 +184,7 @@ class Period
      */
     public function getNbSold(Article $article)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->getNbSold($this, $article);
     }
@@ -196,7 +196,7 @@ class Period
      */
     public function getNbBooked(Article $article)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->getNbBooked($this, $article);
     }
@@ -208,7 +208,7 @@ class Period
      */
     public function getNbAssigned(Article $article)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->getNbAssigned($this, $article);
     }
@@ -220,7 +220,7 @@ class Period
      */
     public function getNbRetoured(Article $article)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->getNbRetoured($this, $article);
     }
@@ -232,7 +232,7 @@ class Period
      */
     public function getNbQueueOrder(Article $article)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->getNbQueueOrder($article);
     }

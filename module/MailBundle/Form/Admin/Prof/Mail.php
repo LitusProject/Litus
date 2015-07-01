@@ -28,17 +28,17 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var string
      */
-    private $_subject;
+    private $subject;
 
     /**
      * @var string
      */
-    private $_message;
+    private $message;
 
     /**
      * @var int
      */
-    private $_semester;
+    private $semester;
 
     public function init()
     {
@@ -104,7 +104,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setSubject($subject)
     {
-        $this->_subject = $subject;
+        $this->subject = $subject;
 
         return $this;
     }
@@ -114,7 +114,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
      */
     public function getSubject()
     {
-        return $this->_subject;
+        return $this->subject;
     }
 
     /**
@@ -123,7 +123,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setMessage($message)
     {
-        $this->_message = $message;
+        $this->message = $message;
 
         return $this;
     }
@@ -133,7 +133,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
      */
     public function getMessage()
     {
-        return $this->_message;
+        return $this->message;
     }
 
     /**
@@ -142,7 +142,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setSemester($semester)
     {
-        $this->_semester = $semester;
+        $this->semester = $semester;
 
         return $this;
     }
@@ -152,6 +152,6 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
      */
     public function getSemester()
     {
-        return $this->_semester;
+        return $this->semester;
     }
 }

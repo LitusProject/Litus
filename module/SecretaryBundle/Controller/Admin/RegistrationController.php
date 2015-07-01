@@ -18,17 +18,6 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
-
-
-
-
-
-
-
-
-
-
-
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Barcode\Ean12,
     CommonBundle\Entity\User\Barcode\Qr,
@@ -51,7 +40,9 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 {
     public function manageAction()
     {
-        $academicYear = $this->_getAcademicYear();
+        if (!($academicYear = $this->getAcademicYearEntity())) {
+            return new ViewModel();
+        }
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -79,14 +70,14 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'activeAcademicYear' => $academicYear,
                 'academicYears' => $academicYears,
                 'organizations' => $organizations,
-                'currentOrganization' => $this->_getOrganization(),
+                'currentOrganization' => $this->getOrganizationEntity(),
             )
         );
     }
 
     public function barcodeAction()
     {
-        if (!($registration = $this->_getRegistration())) {
+        if (!($registration = $this->getRegistrationEntity())) {
             return new ViewModel();
         }
 
@@ -109,7 +100,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     if ($registration->getAcademic()->getBarcode()->getBarcode() != $formData['barcode']) {
                         $this->getEntityManager()->remove($registration->getAcademic()->getBarcode());
                         $this->getEntityManager()->persist(
-                            $this->_createBarcode(
+                            $this->createBarcode(
                                 $formData['type'],
                                 $registration->getAcademic(),
                                 $formData['barcode']
@@ -118,7 +109,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     }
                 } else {
                     $this->getEntityManager()->persist(
-                        $this->_createBarcode(
+                        $this->createBarcode(
                             $formData['type'],
                             $registration->getAcademic(),
                             $formData['barcode']
@@ -151,14 +142,16 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'academicYears' => $academicYears,
                 'form' => $form,
                 'organizations' => $organizations,
-                'currentOrganization' => $this->_getOrganization(),
+                'currentOrganization' => $this->getOrganizationEntity(),
             )
         );
     }
 
     public function addAction()
     {
-        $academicYear = $this->_getAcademicYear();
+        if (!($academicYear = $this->getAcademicYearEntity())) {
+            return new ViewModel();
+        }
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -268,14 +261,14 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'activeAcademicYear' => $academicYear,
                 'academicYears' => $academicYears,
                 'organizations' => $organizations,
-                'currentOrganization' => $this->_getOrganization(),
+                'currentOrganization' => $this->getOrganizationEntity(),
             )
         );
     }
 
     public function editAction()
     {
-        if (!($registration = $this->_getRegistration())) {
+        if (!($registration = $this->getRegistrationEntity())) {
             return new ViewModel();
         }
 
@@ -345,7 +338,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 }
 
                 if ($formData['cancel']) {
-                    $this->_cancelRegistration($registration);
+                    $this->cancelRegistration($registration);
                 }
 
                 $this->getEntityManager()->flush();
@@ -374,7 +367,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 'academicYears' => $academicYears,
                 'form' => $form,
                 'organizations' => $organizations,
-                'currentOrganization' => $this->_getOrganization(),
+                'currentOrganization' => $this->getOrganizationEntity(),
             )
         );
     }
@@ -383,7 +376,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        if (!($registration = $this->_getRegistration())) {
+        if (!($registration = $this->getRegistrationEntity())) {
             return new ViewModel();
         }
 
@@ -403,7 +396,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 )
             );
         } else {
-            $this->_cancelRegistration($registration);
+            $this->cancelRegistration($registration);
             $this->getEntityManager()->flush();
 
             return new ViewModel(
@@ -416,8 +409,13 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     public function searchAction()
     {
-        $academicYear = $this->_getAcademicYear();
-        $organization = $this->_getOrganization();
+        if (!($academicYear = $this->getAcademicYearEntity())) {
+            return new ViewModel();
+        }
+
+        if (!($organization = $this->getOrganizationEntity())) {
+            return new ViewModel();
+        }
 
         $this->initAjax();
 
@@ -484,7 +482,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    private function _getAcademicYear()
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
+    private function getAcademicYearEntity()
     {
         if (null === $this->getParam('academicyear')) {
             return $this->getCurrentAcademicYear();
@@ -516,32 +517,17 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         return $academicYear;
     }
 
-    private function _getRegistration()
+    /**
+     * @return Registration|null
+     */
+    private function getRegistrationEntity()
     {
-        if (null === $this->getParam('id')) {
+        $registration = $this->getEntityById('SecretaryBundle\Entity\Registration');
+
+        if (!($registration instanceof Registration)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the registration!'
-            );
-
-            $this->redirect()->toRoute(
-                'secretary_admin_registration',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $registration = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Registration')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $registration) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No registration with the given ID was found!'
+                'No registration was found!'
             );
 
             $this->redirect()->toRoute(
@@ -557,20 +543,22 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         return $registration;
     }
 
-    private function _getOrganization()
+    /**
+     * @return \CommonBundle\Entity\General\Organization|null
+     */
+    private function getOrganizationEntity()
     {
-        if (null === $this->getParam('organization')) {
-            return;
-        }
-
         $organization = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization')
-            ->findOneById($this->getParam('organization'));
+            ->findOneById($this->getParam('organization', 0));
 
         return $organization;
     }
 
-    private function _cancelRegistration(Registration $registration)
+    /**
+     * @param Registration $registration
+     */
+    private function cancelRegistration(Registration $registration)
     {
         $academic = $registration->getAcademic();
         $organizationStatus = $academic->getOrganizationStatus($registration->getAcademicYear());
@@ -603,7 +591,13 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         RegistrationArticles::cancel($this->getEntityManager(), $academic, $registration->getAcademicYear());
     }
 
-    private function _createBarcode($type, Person $person, $barcode)
+    /**
+     * @param  string                            $type
+     * @param  Person                            $person
+     * @param  int                               $barcode
+     * @return \CommonBundle\Entity\User\Barcode
+     */
+    private function createBarcode($type, Person $person, $barcode)
     {
         switch ($type) {
             case 'ean12':
@@ -616,7 +610,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             case 'qr':
                 return new Qr($person, $barcode);
             default:
-                return null;
+            throw new InvalidArgumentException('No barcode could be created');
         }
     }
 }

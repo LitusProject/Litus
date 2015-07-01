@@ -18,15 +18,6 @@
 
 namespace FormBundle\Form\SpecifiedForm;
 
-
-
-
-
-
-
-
-
-
 use CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
     FormBundle\Component\Exception\UnsupportedTypeException,
@@ -51,46 +42,46 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     /**
      * @var Person
      */
-    protected $_person;
+    protected $person;
 
     /**
-    * @var GuestInfoEntity
-    */
-    protected $_guestInfo;
+     * @var GuestInfoEntity
+     */
+    protected $guestInfo;
 
     /**
      * @var FormEntity
      */
-    protected $_form;
+    protected $form;
 
     /**
-    * @var Language
-    */
-    protected $_language;
+     * @var Language
+     */
+    protected $language;
 
     /**
-    * @var EntryEntity
-    */
-    protected $_entry;
+     * @var EntryEntity
+     */
+    protected $entry;
 
     /**
      * @var boolean
      */
-    protected $_isDraft;
+    protected $isDraft;
 
     public function init()
     {
-        if (!($this->_form instanceof FormEntity)) {
+        if (!($this->form instanceof FormEntity)) {
             return;
         }
 
-        if (null === $this->_person) {
+        if (null === $this->person) {
             $this->add(array(
                 'type'     => 'text',
                 'name'     => 'first_name',
                 'label'    => 'First Name',
                 'required' => true,
-                'value'    => $this->_guestInfo ? $this->_guestInfo->getFirstName() : '',
+                'value'    => $this->guestInfo ? $this->guestInfo->getFirstName() : '',
                 'options'  => array(
                     'input' => array(
                         'filter' => array(
@@ -105,7 +96,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'name'     => 'last_name',
                 'label'    => 'Last Name',
                 'required' => true,
-                'value'    => $this->_guestInfo ? $this->_guestInfo->getLastName() : '',
+                'value'    => $this->guestInfo ? $this->guestInfo->getLastName() : '',
                 'options'  => array(
                     'input' => array(
                         'filter' => array(
@@ -120,7 +111,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'name'     => 'email',
                 'label'    => 'Email',
                 'required' => true,
-                'value'    => $this->_guestInfo ? $this->_guestInfo->getEmail() : '',
+                'value'    => $this->guestInfo ? $this->guestInfo->getEmail() : '',
                 'options'  => array(
                     'input' => array(
                         'filter' => array(
@@ -138,12 +129,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $fields = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\Field')
-            ->findAllByForm($this->_form);
+            ->findAllByForm($this->form);
 
         foreach ($fields as $fieldSpecification) {
             $specification = array(
                 'name'       => 'field-' . $fieldSpecification->getId(),
-                'label'      => $fieldSpecification->getLabel($this->_language),
+                'label'      => $fieldSpecification->getLabel($this->language),
                 'required'   => $fieldSpecification->isRequired(),
                 'attributes' => array(
                     'id' => 'field-' . $fieldSpecification->getId(),
@@ -179,7 +170,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 }
             } elseif ($fieldSpecification instanceof DropdownFieldEntity) {
                 $specification['type'] = 'select';
-                $specification['attributes']['options'] = $fieldSpecification->getOptionsArray($this->_language);
+                $specification['attributes']['options'] = $fieldSpecification->getOptionsArray($this->language);
             } elseif ($fieldSpecification instanceof CheckboxFieldEntity) {
                 $specification['type'] = 'checkbox';
             } elseif ($fieldSpecification instanceof FileFieldEntity) {
@@ -203,16 +194,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             $this->add($specification);
         }
 
-        if ($this->_form->isEditableByUser() && !$this->_isDraft) {
+        if ($this->form->isEditableByUser() && !$this->isDraft) {
             $this->addSubmit('Save as Draft', 'btn-info', 'save_as_draft');
         }
 
-        $this->addSubmit($this->_form->getSubmitText($this->_language));
+        $this->addSubmit($this->form->getSubmitText($this->language));
 
-        if (null !== $this->_entry) {
-            $this->bind($this->_entry);
+        if (null !== $this->entry) {
+            $this->bind($this->entry);
 
-            foreach ($this->_entry->getFieldEntries() as $fieldEntry) {
+            foreach ($this->entry->getFieldEntries() as $fieldEntry) {
                 if ($fieldEntry->getField() instanceof FileFieldEntity) {
                     $this->get('field-' . $fieldEntry->getField()->getId())
                         ->setAttribute('data-file', $fieldEntry->getValue())
@@ -223,67 +214,67 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @param  Person $person
+     * @param  Person|null $person
      * @return self
      */
     public function setPerson(Person $person = null)
     {
-        $this->_person = $person;
+        $this->person = $person;
 
         return $this;
     }
 
     /**
-    * @param  GuestInfoEntity $guestInfo
-    * @return self
-    */
+     * @param  GuestInfoEntity|null $guestInfo
+     * @return self
+     */
     public function setGuestInfo(GuestInfoEntity $guestInfo = null)
     {
-        $this->_guestInfo = $guestInfo;
+        $this->guestInfo = $guestInfo;
 
         return $this;
     }
 
     /**
-    * @param  FormEntity $form
-    * @return self
-    */
+     * @param  FormEntity $form
+     * @return self
+     */
     public function setForm(FormEntity $form)
     {
-        $this->_form = $form;
+        $this->form = $form;
 
         return $this;
     }
 
     /**
-    * @param  Language $language
-    * @return self
-    */
+     * @param  Language $language
+     * @return self
+     */
     public function setLanguage(Language $language)
     {
-        $this->_language = $language;
+        $this->language = $language;
 
         return $this;
     }
 
     /**
-    * @param  EntryEntity $entry
-    * @return self
-    */
+     * @param  EntryEntity|null $entry
+     * @return self
+     */
     public function setEntry(EntryEntity $entry = null)
     {
-        $this->_entry = $entry;
+        $this->entry = $entry;
 
         return $this;
     }
 
     /**
-    * @param  boolean $isDraft
-    * @return self
-    */
+     * @param  boolean $isDraft
+     * @return self
+     */
     public function isDraft($isDraft)
     {
-        $this->_isDraft = $isDraft;
+        $this->isDraft = $isDraft;
 
         return $this;
     }

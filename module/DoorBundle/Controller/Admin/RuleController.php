@@ -18,9 +18,6 @@
 
 namespace DoorBundle\Controller\Admin;
 
-
-
-
 use DateInterval,
     DateTime,
     DoorBundle\Document\Rule,
@@ -45,7 +42,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'logGraph' => $this->_getLogGraph(),
+                'logGraph' => $this->getLogGraph(),
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'entityManager' => $this->getEntityManager(),
@@ -91,7 +88,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($rule = $this->_getRule())) {
+        if (!($rule = $this->getRuleEntity())) {
             return new ViewModel();
         }
 
@@ -148,7 +145,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($rule = $this->_getRule())) {
+        if (!($rule = $this->getRuleEntity())) {
             return new ViewModel();
         }
 
@@ -164,34 +161,16 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return Rule
+     * @return Rule|null
      */
-    private function _getRule()
+    private function getRuleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $rule = $this->getEntityById('DoorBundle\Document\Rule');
+
+        if (!($rule instanceof Rule)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the rule!'
-            );
-
-            $this->redirect()->toRoute(
-                'door_admin_rule',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $rule = $this->getDocumentManager()
-            ->getRepository('DoorBundle\Document\Rule')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $rule) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No door with the given ID was found!'
+                'No rule was found!'
             );
 
             $this->redirect()->toRoute(
@@ -207,7 +186,10 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         return $rule;
     }
 
-    private function _getLogGraph()
+    /**
+     * @return array
+     */
+    private function getLogGraph()
     {
         if (null !== $this->getCache()) {
             if ($this->getCache()->hasItem('CommonBundle_Controller_RuleController_LogGraph')) {
@@ -219,16 +201,19 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
             $this->getCache()->setItem(
                 'CommonBundle_Controller_RuleController_LogGraph',
-                $this->_getLogGraphData()
+                $this->getLogGraphData()
             );
 
             return $this->getCache()->getItem('CommonBundle_Controller_RuleController_LogGraph');
         }
 
-        return $this->_getLogGraphData();
+        return $this->getLogGraphData();
     }
 
-    private function _getLogGraphData()
+    /**
+     * @return array
+     */
+    private function getLogGraphData()
     {
         $now = new DateTime();
 

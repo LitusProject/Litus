@@ -18,10 +18,9 @@
 
 namespace SyllabusBundle\Controller\Admin\Subject;
 
-
-
-
 use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
+    SyllabusBundle\Entity\Subject,
     SyllabusBundle\Entity\Subject\Comment,
     SyllabusBundle\Entity\Subject\Reply,
     Zend\View\Model\ViewModel;
@@ -35,7 +34,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -62,7 +61,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function subjectAction()
     {
-        if (!($subject = $this->_getSubject())) {
+        if (!($subject = $this->getSubjectEntity())) {
             return new ViewModel();
         }
 
@@ -111,7 +110,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function replyAction()
     {
-        if (!($comment = $this->_getComment())) {
+        if (!($comment = $this->getCommentEntity())) {
             return new ViewModel();
         }
 
@@ -198,7 +197,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($comment = $this->_getComment())) {
+        if (!($comment = $this->getCommentEntity())) {
             return new ViewModel();
         }
 
@@ -213,36 +212,16 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \SyllabusBundle\Entity\Subject|null
+     * @return Subject|null
      */
-    private function _getSubject($id = null)
+    private function getSubjectEntity()
     {
-        $id = $id == null ? $this->getParam('id') : $id;
+        $subject = $this->getEntityById('SyllabusBundle\Entity\Subject');
 
-        if (null === $id) {
+        if (!($subject instanceof Subject)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the subject!'
-            );
-
-            $this->redirect()->toRoute(
-                'syllabus_admin_study',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $subject = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Subject')
-            ->findOneById($id);
-
-        if (null === $subject) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No subject with the given ID was found!'
+                'No subject was found!'
             );
 
             $this->redirect()->toRoute(
@@ -261,32 +240,14 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return Comment|null
      */
-    private function _getComment()
+    private function getCommentEntity()
     {
-        if (null === $this->getParam('id')) {
+        $comment = $this->getEntityById('SyllabusBundle\Entity\Subject\Comment');
+
+        if (!($comment instanceof Comment)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the comment!'
-            );
-
-            $this->redirect()->toRoute(
-                'syllabus_admin_study',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $comment = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Subject\Comment')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $comment) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No comment with the given ID was found!'
+                'No comment was found!'
             );
 
             $this->redirect()->toRoute(
@@ -303,9 +264,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear|null
+     * @return AcademicYearEntity|null
      */
-    private function _getAcademicYear()
+    private function getAcademicYearEntity()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {
@@ -313,7 +274,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
-        if (null === $academicYear) {
+        if (!($academicYear instanceof AcademicYearEntity)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No academic year was found!'

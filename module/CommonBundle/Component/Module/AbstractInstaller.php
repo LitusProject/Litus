@@ -18,16 +18,6 @@
 
 namespace CommonBundle\Component\Module;
 
-
-
-
-
-
-
-
-
-
-
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Console\Command,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
@@ -150,6 +140,9 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
         return $this;
     }
 
+    /**
+     * @return array
+     */
     private function getConfiguration()
     {
         $configuration = $this->getServiceLocator()->get('Config');

@@ -31,6 +31,9 @@ use ApiBundle\Document\Code\Authorization as AuthorizationCode,
  */
 class Token extends DocumentRepository
 {
+    /**
+     * @return array
+     */
     public function findAllActiveByAuthorizationCode(AuthorizationCode $authorizationCode)
     {
         $query = $this->createQueryBuilder();

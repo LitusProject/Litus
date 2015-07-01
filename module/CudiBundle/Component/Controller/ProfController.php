@@ -18,7 +18,6 @@
 
 namespace CudiBundle\Component\Controller;
 
-
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
     Zend\Mvc\MvcEvent;
 
@@ -40,7 +39,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     {
         $result = parent::onDispatch($e);
 
-        $result->shibbolethUrl = $this->_getShibbolethUrl();
+        $result->shibbolethUrl = $this->getShibbolethUrl();
         $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_url');
@@ -50,6 +49,9 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         return $result;
     }
 
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
     protected function findCurrentAcademicYear()
     {
         return $this->getCurrentAcademicYear(true);
@@ -78,7 +80,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
      * @return string
      * @throws ShibbolethUrlException
      */
-    private function _getShibbolethUrl()
+    private function getShibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

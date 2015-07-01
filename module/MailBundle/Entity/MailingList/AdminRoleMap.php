@@ -18,8 +18,6 @@
 
 namespace MailBundle\Entity\MailingList;
 
-
-
 use CommonBundle\Entity\Acl\Role,
     Doctrine\ORM\Mapping as ORM,
     MailBundle\Entity\MailingList;
@@ -65,9 +63,9 @@ class AdminRoleMap
     private $editAdmin;
 
     /**
-     * @param MailingList The list of the mapping
-     * @param Role    $role      The role of the mapping
-     * @param boolean $editAdmin The flag whether the members of the role are allowed to edit the list of admins of the list too.
+     * @param MailingList  $list      The list of the mapping
+     * @param Role|null    $role      The role of the mapping
+     * @param boolean|null $editAdmin The flag whether the members of the role are allowed to edit the list of admins of the list too.
      */
     public function __construct(MailingList $list, Role $role = null, $editAdmin = null)
     {

@@ -81,7 +81,12 @@ EOT
         // CommonBundle has to be first
         return array_merge(
             array('CommonBundle'),
-            array_filter(array_keys($config), function ($v) { return $v != 'CommonBundle'; })
+            array_filter(
+                array_keys($config),
+                function ($v) {
+                    return $v != 'CommonBundle';
+                }
+            )
         );
     }
 

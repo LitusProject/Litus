@@ -31,7 +31,7 @@ class Edition extends EntityRepository
 {
     public function findAllYearsByPublicationQuery(PublicationEntity $publication)
     {
-        $subQuery = $this->_em->createQueryBuilder();
+        $subQuery = $this->getEntityManager()->createQueryBuilder();
         $subQuery->select('e')
             ->from('PublicationBundle\Entity\Edition', 'e')
             ->where(
@@ -41,7 +41,7 @@ class Edition extends EntityRepository
                 )
             );
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('y')
             ->from('CommonBundle\Entity\General\AcademicYear', 'y')
             ->where(

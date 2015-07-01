@@ -18,12 +18,6 @@
 
 namespace CudiBundle\Entity\Sale\Article\Discount;
 
-
-
-
-
-
-
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person,
@@ -109,7 +103,7 @@ class Discount
     /**
      * @var array The possible types of a discount
      */
-    public static $POSSIBLE_TYPES = array(
+    public static $possibleTypes = array(
         'member' => 'Member',
         'acco' => 'Acco',
     );
@@ -117,7 +111,7 @@ class Discount
     /**
      * @var array The possible methods of a discount
      */
-    public static $POSSIBLE_METHODS = array(
+    public static $possibleMethods = array(
         'percentage' => 'Percentage',
         'fixed' => 'Fixed',
         'override' => 'Override',
@@ -126,7 +120,7 @@ class Discount
     /**
      * @var array The possible methods of rounding
      */
-    public static $POSSIBLE_ROUNDINGS = array(
+    public static $possibleRoundings = array(
         'none' => array(
             'name' => 'None',
             'value' => '1',
@@ -230,7 +224,7 @@ class Discount
      */
     public static function isValidDiscountType($type)
     {
-        return array_key_exists($type, self::$POSSIBLE_TYPES);
+        return array_key_exists($type, self::$possibleTypes);
     }
 
     /**
@@ -239,7 +233,7 @@ class Discount
      */
     public static function isValidDiscountMethod($method)
     {
-        return array_key_exists($method, self::$POSSIBLE_METHODS);
+        return array_key_exists($method, self::$possibleMethods);
     }
 
     /**
@@ -248,7 +242,7 @@ class Discount
      */
     public static function isValidRoundingType($rounding)
     {
-        return array_key_exists($rounding, self::$POSSIBLE_ROUNDINGS);
+        return array_key_exists($rounding, self::$possibleRoundings);
     }
 
     /**
@@ -268,7 +262,7 @@ class Discount
     }
 
     /**
-     * @return integer
+     * @return integer|null
      */
     public function getValue()
     {
@@ -280,7 +274,7 @@ class Discount
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMethod()
     {
@@ -292,7 +286,7 @@ class Discount
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getType()
     {
@@ -300,11 +294,11 @@ class Discount
             return $this->template->getType();
         }
 
-        return self::$POSSIBLE_TYPES[$this->type];
+        return self::$possibleTypes[$this->type];
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getRawType()
     {
@@ -343,7 +337,7 @@ class Discount
         if (!isset($this->rounding) && isset($this->template)) {
             return $this->template->getRounding();
         } elseif (isset($this->rounding)) {
-            return self::$POSSIBLE_ROUNDINGS[$this->rounding]['name'];
+            return self::$possibleRoundings[$this->rounding]['name'];
         }
     }
 
@@ -380,7 +374,7 @@ class Discount
         }
 
         if ($this->rounding) {
-            $rounding = self::$POSSIBLE_ROUNDINGS[$this->rounding];
+            $rounding = self::$possibleRoundings[$this->rounding];
 
             if ($rounding['type'] == 'up') {
                 $value = ceil($value/$rounding['value'])*$rounding['value'];
@@ -389,7 +383,7 @@ class Discount
             }
         }
 
-        return $value;
+        return (int) $value;
     }
 
     /**

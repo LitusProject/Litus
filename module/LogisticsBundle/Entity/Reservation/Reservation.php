@@ -18,8 +18,6 @@
 
 namespace LogisticsBundle\Entity\Reservation;
 
-
-
 use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
@@ -38,10 +36,10 @@ use CommonBundle\Entity\User\Person,
  *      "piano"="LogisticsBundle\Entity\Reservation\PianoReservation"
  * })
  */
-class Reservation
+abstract class Reservation
 {
     /**
-     * @var The reservation's unique identifier
+     * @var int The reservation's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -105,7 +103,7 @@ class Reservation
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getId()
     {

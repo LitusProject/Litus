@@ -18,9 +18,6 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-
-
-
 use CommonBundle\Component\Util\NamedPriorityQueue,
     CommonBundle\Entity\General\Language,
     Zend\Mvc\MvcEvent,
@@ -67,7 +64,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $result->servedBy = ucfirst(getenv('SERVED_BY'));
         }
 
-        $result->menu = $this->_getMenu();
+        $result->menu = $this->getMenu();
 
         $e->setResult($result);
 
@@ -82,8 +79,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
     protected function initLocalization()
     {
         $language = $this->getLanguage();
+        $translator = $this->getTranslator()->getTranslator();
 
-        $this->getTranslator()->setCache($this->getCache())
+        $translator->setCache($this->getCache())
             ->setLocale($language->getAbbrev());
 
         AbstractValidator::setDefaultTranslator($this->getTranslator());
@@ -96,8 +94,8 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function getLanguage()
     {
-        if (null !== $this->_language) {
-            return $this->_language;
+        if (null !== $this->language) {
+            return $this->language;
         }
 
         $language = $this->getEntityManager()
@@ -113,7 +111,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getEntityManager()->flush();
         }
 
-        $this->_language = $language;
+        $this->language = $language;
 
         return $language;
     }
@@ -135,12 +133,21 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear
+     */
     public function findCurrentAcademicYear()
     {
         return $this->getCurrentAcademicYear(true);
     }
 
-    private function _addToMenu($controller, $settings, &$menu)
+    /**
+     * @param  string            $controller
+     * @param  string|array      $settings
+     * @param  \SplPriorityQueue $menu
+     * @return boolean
+     */
+    private function addToMenu($controller, $settings, \SplPriorityQueue &$menu)
     {
         if (!is_array($settings)) {
             $settings = array('title' => $settings);
@@ -165,7 +172,10 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         return false;
     }
 
-    private function _getMenu()
+    /**
+     * @return array
+     */
+    private function getMenu()
     {
         $config = $this->getServiceLocator()->get('Config');
         $config = $config['litus']['admin'];
@@ -178,7 +188,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $newSubmenu = new NamedPriorityQueue();
 
             foreach ($submenu as $controller => $settings) {
-                $this->_addToMenu($controller, $settings, $newSubmenu);
+                $this->addToMenu($controller, $settings, $newSubmenu);
             }
 
             if (count($newSubmenu)) {
@@ -199,7 +209,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             $newSubmenuItems = new NamedPriorityQueue();
 
             foreach ($submenu['items'] as $controller => $settings) {
-                $this->_addToMenu($controller, $settings, $newSubmenuItems);
+                $this->addToMenu($controller, $settings, $newSubmenuItems);
 
                 if ($currentController === $controller) {
                     $active = true;

@@ -32,7 +32,7 @@ class StaticMap extends \Zend\View\Helper\AbstractHelper
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager = null;
+    private $entityManager;
 
     /**
      * @param  EntityManager $entityManager The EntityManager instance
@@ -40,7 +40,7 @@ class StaticMap extends \Zend\View\Helper\AbstractHelper
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }
@@ -53,11 +53,11 @@ class StaticMap extends \Zend\View\Helper\AbstractHelper
      */
     public function __invoke(Location $location, $size, $color)
     {
-        if (null === $this->_entityManager) {
+        if (null === $this->entityManager) {
             throw new Exception\RuntimeException('No EntityManager instance was provided');
         }
 
-        $staticMapsUrl = $this->_entityManager
+        $staticMapsUrl = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.static_maps_api_url');
 

@@ -18,7 +18,8 @@
 
 namespace PromBundle\Repository\Bus;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    PromBundle\Entity\Bus;
 
 /**
  * Passenger
@@ -28,13 +29,17 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Passenger extends EntityRepository
 {
+    /**
+     * @param  string              $code
+     * @return \Doctrine\ORM\Query
+     */
     public function findPassengerByCodeQuery($code)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PromBundle\Entity\Bus\Passenger', 'p')
             ->where(
-                    $query->expr()->eq('p.code', ':code')
+                $query->expr()->eq('p.code', ':code')
             )
             ->setParameter('code', $code)
             ->getQuery();
@@ -42,13 +47,17 @@ class Passenger extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $email
+     * @return \Doctrine\ORM\Query
+     */
     public function findPassengerByEmailQuery($email)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PromBundle\Entity\Bus\Passenger', 'p')
             ->where(
-                    $query->expr()->eq('p.email', ':email')
+                $query->expr()->eq('p.email', ':email')
             )
             ->setParameter('email', $email)
             ->getQuery();
@@ -56,13 +65,17 @@ class Passenger extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllPassengersByBusQuery($bus)
+    /**
+     * @param  Bus                 $bus
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllPassengersByBusQuery(Bus $bus)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PromBundle\Entity\Bus\Passenger', 'p')
             ->where(
-                    $query->expr()->eq('p.firstBus', ':bus')
+                $query->expr()->eq('p.firstBus', ':bus')
             )
             ->setParameter('bus', $bus)
             ->orderBy('p.firstName','ASC')

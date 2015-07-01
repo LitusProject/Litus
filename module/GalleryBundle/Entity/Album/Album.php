@@ -18,12 +18,6 @@
 
 namespace GalleryBundle\Entity\Album;
 
-
-
-
-
-
-
 use CommonBundle\Component\Util\Url as UrlUtil,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\User\Person,
@@ -181,13 +175,14 @@ class Album
      */
     public function removeTranslation(Translation $translation)
     {
-        $this->translations->remove($translation);
+        $this->translations->removeElement($translation);
 
         return $this;
     }
 
     /**
-     * @param  Language         $language
+     * @param  Language|null    $language
+     * @param  boolean          $allowFallback
      * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
@@ -210,8 +205,8 @@ class Album
     }
 
     /**
-     * @param Language $language
-     *
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return string
      */
     public function getTitle(Language $language = null, $allowFallback = true)

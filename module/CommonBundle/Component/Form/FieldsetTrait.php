@@ -18,19 +18,28 @@
 
 namespace CommonBundle\Component\Form;
 
-
 use Zend\InputFilter\InputFilterProviderInterface,
     Zend\InputFilter\InputProviderInterface;
 
+/**
+ * @method self setElementRequired(boolean $required)
+ * @property array elements
+ * @property array fieldsets
+ */
 trait FieldsetTrait
 {
+    /**
+     * @return array
+     */
     public function getInputFilterSpecification()
     {
         $spec = array(
             'type' => 'inputfilter',
         );
 
-        foreach ($this->byName as $name => $elementOrFieldset) {
+        $elements = array_merge($this->elements, $this->fieldsets);
+
+        foreach ($elements as $name => $elementOrFieldset) {
             if ($elementOrFieldset instanceof InputFilterProviderInterface) {
                 $spec[$name] = $elementOrFieldset->getInputFilterSpecification();
             } elseif ($elementOrFieldset instanceof InputProviderInterface) {
@@ -41,9 +50,13 @@ trait FieldsetTrait
         return $spec;
     }
 
+    /**
+     * @param  boolean $required
+     * @return self
+     */
     public function setRequired($required = true)
     {
-        foreach ($this->byName as $elementOrFieldset) {
+        foreach ($this->elements as $elementOrFieldset) {
             if ($elementOrFieldset instanceof ElementInterface) {
                 $elementOrFieldset->setRequired($required);
             }

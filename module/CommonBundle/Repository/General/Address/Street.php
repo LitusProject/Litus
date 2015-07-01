@@ -29,9 +29,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Street extends EntityRepository
 {
+    /**
+     * @param  CityEntity                                  $city
+     * @param  string                                      $name
+     * @return \CommonBundle\Entity\General\Address\Street
+     */
     public function findOneByCityAndName(CityEntity $city, $name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CommonBundle\Entity\General\Address\Street', 's')
             ->where(

@@ -32,7 +32,7 @@ class Entry extends EntityRepository
 {
     public function findAllByFieldQuery(FieldEntity $field)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Entry', 'n')
             ->where(
@@ -46,7 +46,7 @@ class Entry extends EntityRepository
 
     public function findAllByFormEntryQuery(FormEntryEntity $formEntry)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Entry', 'n')
             ->innerJoin('n.field', 'f')
@@ -62,7 +62,7 @@ class Entry extends EntityRepository
 
     public function findOneByFormEntryAndField(FormEntryEntity $formEntry, FieldEntity $field)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Entry', 'n')
             ->where(

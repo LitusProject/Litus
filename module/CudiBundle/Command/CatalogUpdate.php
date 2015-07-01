@@ -18,10 +18,6 @@
 
 namespace CudiBundle\Command;
 
-
-
-
-
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
     DateInterval,
@@ -51,17 +47,17 @@ EOT
         $date = new DateTime();
         $date->sub(new DateInterval('P1D'));
 
-        $academicYear = $this->_getCurrentAcademicYear();
+        $academicYear = $this->getCurrentAcademicYear();
         $subjects = array();
 
-        $this->_findAllBookable($subjects, $date, $academicYear);
-        $this->_findAllUnbookable($subjects, $date, $academicYear);
-        $this->_findAllAdded($subjects, $date);
-        $this->_findAllRemoved($subjects, $date);
+        $this->findAllBookable($subjects, $date, $academicYear);
+        $this->findAllUnbookable($subjects, $date, $academicYear);
+        $this->findAllAdded($subjects, $date);
+        $this->findAllRemoved($subjects, $date);
 
         $this->writeln('A total of <comment>' . count($subjects) . '</comment> subjects is affected.');
 
-        $this->_notifySubscribers($subjects, $academicYear);
+        $this->notifySubscribers($subjects, $academicYear);
     }
 
     protected function getLogName()
@@ -69,7 +65,7 @@ EOT
         return 'CatalogUpdate';
     }
 
-    private function _findAllBookable(array $subjects, DateTime $date, AcademicYear $academicYear)
+    private function findAllBookable(array $subjects, DateTime $date, AcademicYear $academicYear)
     {
         $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\Sale\Bookable')
             ->findAllAfter($date);
@@ -99,9 +95,10 @@ EOT
         }
     }
 
-    private function _findAllUnbookable(array $subjects, DateTime $date, AcademicYear $academicYear)
+    private function findAllUnbookable(array $subjects, DateTime $date, AcademicYear $academicYear)
     {
-        $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\Sale\Unbookable')
+        $logs = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Log\Article\Sale\Unbookable')
             ->findAllAfter($date);
         $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Unbookable.');
 
@@ -129,9 +126,10 @@ EOT
         }
     }
 
-    private function _findAllAdded(array $subjects, DateTime $date)
+    private function findAllAdded(array $subjects, DateTime $date)
     {
-        $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Added')
+        $logs = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Added')
             ->findAllAfter($date);
         $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Added articles.');
 
@@ -154,9 +152,10 @@ EOT
         }
     }
 
-    private function _findAllRemoved(array $subjects, DateTime $date)
+    private function findAllRemoved(array $subjects, DateTime $date)
     {
-        $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Removed')
+        $logs = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Removed')
             ->findAllAfter($date);
         $this->writeln('Found <comment>' . count($logs) . '</comment> log entries for Removed articles.');
 
@@ -179,7 +178,7 @@ EOT
         }
     }
 
-    private function _notifySubscribers(array $subjects, AcademicYear $academicYear)
+    private function notifySubscribers(array $subjects, AcademicYear $academicYear)
     {
         $subscribers = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article\Notification\Subscription')
@@ -287,7 +286,13 @@ EOT
         }
     }
 
-    private function _getCurrentAcademicYear()
+    /**
+     * Get the current academic year.
+     *
+     * @param  boolean|null $organization
+     * @return AcademicYear
+     */
+    public function getCurrentAcademicYear($organization = null)
     {
         $startAcademicYear = AcademicYearUtil::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
