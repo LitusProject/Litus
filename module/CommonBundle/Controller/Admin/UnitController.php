@@ -23,6 +23,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\Organization\Unit,
     CommonBundle\Entity\User\Person\Organization\UnitMap\Academic as UnitMapAcademic,
     CommonBundle\Entity\User\Person\Organization\UnitMap\External as UnitMapExternal,
+    Imagick,
     Zend\View\Model\ViewModel;
 
 /**
@@ -119,11 +120,17 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         $academicForm = $this->getForm('common_unit_academic');
         $externalForm = $this->getForm('common_unit_external');
 
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.profile_path');
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $academicForm->setData($formData);
-            $externalForm->setData($formData);
-            print_r($formData);
+            $externalForm->setData(array_merge_recursive(
+                $formData->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            ));
 
             if ($formData['mapType'] == 'academic' && $academicForm->isValid()) {
                 $academic = $this->getEntityManager()
@@ -168,7 +175,18 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
                 return new ViewModel();
             } elseif ($formData['mapType'] == 'external' && $externalForm->isValid()) {
-                $member = new UnitMapExternal($formData['first_name'], $formData['last_name'], '' , $academicYear, $unit, $formData['coordinator']);
+                $formData = $externalForm->getData();
+
+                $image = new Imagick($formData['picture']['tmp_name']);
+                $image->thumbnailImage(180, 135, true);
+
+                do {
+                    $fileName = sha1(uniqid());
+                } while (file_exists($filePath . $fileName));
+
+                $image->writeImage('public/' . $filePath . '/' . $fileName);
+
+                $member = new UnitMapExternal($formData['first_name'], $formData['last_name'], '/' . $fileName , $academicYear, $unit, $formData['coordinator']);
 
                 $this->getEntityManager()->persist($member);
                 $this->getEntityManager()->flush();

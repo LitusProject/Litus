@@ -24,6 +24,8 @@ namespace CommonBundle\Form\Admin\Unit;
  */
 class External extends \CommonBundle\Component\Form\Admin\Form
 {
+    const FILESIZE = '10MB';
+
     public function init()
     {
         parent::init();
@@ -60,6 +62,31 @@ class External extends \CommonBundle\Component\Form\Admin\Form
             'type'  => 'checkbox',
             'name'  => 'coordinator',
             'label' => 'Coordinator',
+        ));
+
+        $this->add(array(
+            'type'       => 'file',
+            'name'       => 'picture',
+            'label'      => 'Picture',
+            'required'   => true,
+            'attributes' => array(
+                'data-help' => 'The picture must be an image of max ' . self::FILESIZE . '.',
+            ),
+            'options'    => array(
+                'input' => array(
+                    'validators' => array(
+                        array(
+                            'name' => 'fileisimage',
+                        ),
+                        array(
+                            'name' => 'filesize',
+                            'options' => array(
+                                'max' => self::FILESIZE,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         ));
 
         $this->add(array(
