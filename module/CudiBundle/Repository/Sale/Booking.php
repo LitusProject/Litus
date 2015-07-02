@@ -1291,15 +1291,10 @@ class Booking extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        $extendTime = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.reservation_extend_time');
-
         $number = 0;
         foreach ($bookings as $booking) {
             if ($booking->getExpirationDate()) {
-                $date = clone $booking->getExpirationDate();
-                $booking->setExpirationDate($date->add(new DateInterval($extendTime)));
+                $booking->setExpirationDate($date);
                 $number++;
             }
         }

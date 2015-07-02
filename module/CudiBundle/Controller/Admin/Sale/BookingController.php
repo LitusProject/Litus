@@ -559,7 +559,6 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     public function extendAllAction()
     {
         $date = DateTime::createFromFormat('d#m#Y H:i', $this->getParam('date') . ' 0:00');
-        $date->add(new DateInterval('P1D'));
 
         $number = 0;
         if ($date) {
