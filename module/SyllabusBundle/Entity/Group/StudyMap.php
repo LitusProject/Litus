@@ -55,14 +55,6 @@ class StudyMap
     private $group;
 
     /**
-     * @var AcademicYear The year of the mapping
-     *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
-     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
-     */
-    private $academicYear;
-
-    /**
      * @param Study $study
      * @param Group $group
      */
@@ -70,7 +62,6 @@ class StudyMap
     {
         $this->study = $study;
         $this->group = $group;
-        $this->academicYear = $study->getAcademicYear();
     }
 
     /**
@@ -87,13 +78,5 @@ class StudyMap
     public function getStudy()
     {
         return $this->study;
-    }
-
-    /**
-     * @return AcademicYear
-     */
-    public function getAcademicYear()
-    {
-        return $this->academicYear;
     }
 }

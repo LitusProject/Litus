@@ -34,12 +34,13 @@ class StudyMap extends EntityRepository
     public function findAllByGroupAndAcademicYearQuery(GroupEntity $group, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('m')
+        $resultSet = $query->select('m', 's')
             ->from('SyllabusBundle\Entity\Group\StudyMap', 'm')
+            ->innerJoin('m.study', 's')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.group', ':group'),
-                    $query->expr()->eq('m.academicYear', ':academicYear')
+                    $query->expr()->eq('s.academicYear', ':academicYear')
                 )
             )
             ->setParameter('group', $group)
@@ -57,12 +58,10 @@ class StudyMap extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.group', ':group'),
-                    $query->expr()->eq('m.academicYear', ':academicYear'),
                     $query->expr()->eq('m.study', ':study')
                 )
             )
             ->setParameter('group', $group)
-            ->setParameter('academicYear', $study->getAcademicYear())
             ->setParameter('study', $study)
             ->setMaxResults(1)
             ->getQuery()

@@ -192,7 +192,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
                         $map = $this->getEntityManager()
                             ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
-                            ->findOneByStudyGroup($study, $group); // TODO
+                            ->findOneByStudyGroup($study, $group);
 
                         if (null === $map) {
                             $this->getEntityManager()->persist(new StudyMap($study, $group));
