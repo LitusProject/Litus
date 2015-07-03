@@ -63,15 +63,14 @@ class StudyMap
     private $academicYear;
 
     /**
-     * @param Study        $study
-     * @param Group        $group
-     * @param AcademicYear $academicYear The year of the mapping
+     * @param Study $study
+     * @param Group $group
      */
-    public function __construct(Study $study, Group $group, AcademicYear $academicYear)
+    public function __construct(Study $study, Group $group)
     {
         $this->study = $study;
         $this->group = $group;
-        $this->academicYear = $academicYear;
+        $this->academicYear = $study->getAcademicYear();
     }
 
     /**

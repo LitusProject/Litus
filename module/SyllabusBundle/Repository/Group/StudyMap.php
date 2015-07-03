@@ -49,7 +49,7 @@ class StudyMap extends EntityRepository
         return $resultSet;
     }
 
-    public function findOneByStudyGroupAndAcademicYear(StudyEntity $study, GroupEntity $group, AcademicYear $academicYear)
+    public function findOneByStudyGroup(StudyEntity $study, GroupEntity $group)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
@@ -62,7 +62,7 @@ class StudyMap extends EntityRepository
                 )
             )
             ->setParameter('group', $group)
-            ->setParameter('academicYear', $academicYear)
+            ->setParameter('academicYear', $study->getAcademicYear())
             ->setParameter('study', $study)
             ->setMaxResults(1)
             ->getQuery()

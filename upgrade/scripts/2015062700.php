@@ -16,6 +16,8 @@
  * @license http://litus.cc/LICENSE
  */
 
+ini_set('memory_limit','500M');
+
 include 'init_autoloader.php';
 $app = Zend\Mvc\Application::init(include 'config/application.config.php');
 $entityManager = $app->getServiceManager()->get('doctrineormentitymanager');
@@ -93,23 +95,23 @@ if (!file_exists($dumpFileName)) {
 
 // Clear these tables (or columns)
 echo ' -> Clear all tables that will be updated' . PHP_EOL;
-pg_query($connection, 'DROP TABLE IF EXISTS syllabus.studies_academic_years_map');
-pg_query($connection, 'DROP TABLE IF EXISTS syllabus.studies_group_map');
-pg_query($connection, 'DROP TABLE IF EXISTS syllabus.studies_subjects_map');
-pg_query($connection, 'DELETE FROM users.study_enrollment');
-pg_query($connection, 'DELETE FROM cudi.sales_articles_restrictions_study_map');
-pg_query($connection, 'DELETE FROM cudi.sales_session_restrictions_study_map');
-pg_query($connection, 'UPDATE br.cv_entries SET study = NULL');
-pg_query($connection, 'DELETE FROM syllabus.studies');
+// pg_query($connection, 'DROP TABLE IF EXISTS syllabus.studies_academic_years_map');
+// pg_query($connection, 'DROP TABLE IF EXISTS syllabus.studies_group_map');
+// pg_query($connection, 'DROP TABLE IF EXISTS syllabus.studies_subjects_map');
+// pg_query($connection, 'DELETE FROM users.study_enrollment');
+// pg_query($connection, 'DELETE FROM cudi.sales_articles_restrictions_study_map');
+// pg_query($connection, 'DELETE FROM cudi.sales_session_restrictions_study_map');
+// pg_query($connection, 'UPDATE br.cv_entries SET study = NULL');
+// pg_query($connection, 'DELETE FROM syllabus.studies');
 
 // Build the new syllabus structure
 echo ' -> Build new syllabus structure' . PHP_EOL;
-exec('./bin/litus.sh orm:schema-tool:update --force', $output, $returnValue);
-
-if ($returnValue !== 0) {
-    echo ' Failed to update database, please try it manualy. This script can be run again afterwards.' . PHP_EOL;
-    exit(1);
-}
+// exec('./bin/litus.sh orm:schema-tool:update --force', $output, $returnValue);
+//
+// if ($returnValue !== 0) {
+//     echo ' Failed to update database, please try it manualy. This script can be run again afterwards.' . PHP_EOL;
+//     exit(1);
+// }
 
 echo ' -> Migrate studies' . PHP_EOL;
 function createStudyFullTitle($data)
@@ -127,6 +129,8 @@ $addedModuleGroups = array();
 foreach ($usedStudies as $id) {
     $studyData = $studies['_' . $id];
     $key = createStudyFullTitle($studyData) . '_' . $studyData['phase'];
+
+    echo '   -> Add \'' . $key . '\'' . PHP_EOL;
 
     if (isset($addedModuleGroups[$key])) {
         $moduleGroup = $addedModuleGroups[$key];
@@ -149,18 +153,83 @@ foreach ($usedStudies as $id) {
         ->setModuleGroups(array($moduleGroup));
     $entityManager->persist($combination);
 
+    $newStudiesAcademicYearsMap = array();
     foreach ($studiesAcademicYearsMap as $map) {
         if ($map['study'] == $id) {
             $academicYear = $entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
                 ->findOneById($map['academic_year']);
             break;
+        } else {
+            $newStudiesAcademicYearsMap[] = $map;
         }
     }
+    $studiesAcademicYearsMap = $newStudiesAcademicYearsMap;
 
     $study = new \SyllabusBundle\Entity\Study();
     $study->setCombination($combination)
         ->setAcademicYear($academicYear);
     $entityManager->persist($study);
+
+    $newStudiesGroupMap = array();
+    foreach ($studiesGroupMap as $map) {
+        if ($map['study_id'] == $id) {
+            $group = $entityManager->getRepository('SyllabusBundle\Entity\Group')
+                ->findOneById($map['group_id']);
+
+            $studyMap = new \SyllabusBundle\Entity\Group\StudyMap($study, $group);
+
+            $entityManager->persist($studyMap);
+        } else {
+            $newStudiesGroupMap[] = $map;
+        }
+    }
+    $studiesGroupMap = $newStudiesGroupMap;
+
+    $newStudiesSubjectsMap = array();
+    foreach ($studiesSubjectsMap as $map) {
+        if ($map['study_id'] == $id) {
+            $subject = $entityManager->getRepository('SyllabusBundle\Entity\Subject')
+                ->findOneById($map['subject_id']);
+
+            $academicYear = $entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
+                ->findOneById($map['academic_year']);
+
+            $subjectMap = new \SyllabusBundle\Entity\Study\SubjectMap($moduleGroup, $subject, $map['mandatory'] == 't', $academicYear);
+
+            $entityManager->persist($subjectMap);
+        } else {
+            $newStudiesSubjectsMap[] = $map;
+        }
+    }
+    $studiesSubjectsMap = $newStudiesSubjectsMap;
+
+    $newStudyEnrollment = array();
+    foreach ($studyEnrollment as $map) {
+        if ($map['study'] == $id) {
+            $academic = $entityManager->getRepository('CommonBundle\Entity\User\Person\Academic')
+                ->findOneById($map['academic']);
+
+            $entrollment = new \SecretaryBundle\Entity\Syllabus\StudyEnrollment($academic, $study);
+
+            $entityManager->persist($entrollment);
+        } else {
+            $newStudyEnrollment[] = $map;
+        }
+    }
+    $studyEnrollment = $newStudyEnrollment;
+
+    $newCvEntries = array();
+    foreach ($cvEntries as $map) {
+        if ($map['study'] == $id) {
+            $entry = $entityManager->getRepository('BrBundle\Entity\Cv\Entry')
+                ->findOneById($map['id']);
+
+            $entry->setStudy($study);
+        } else {
+            $newCvEntries[] = $map;
+        }
+    }
+    $cvEntries = $newCvEntries;
 }
 
 $entityManager->flush();
