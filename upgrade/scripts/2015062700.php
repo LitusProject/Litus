@@ -39,18 +39,6 @@ if (!file_exists($dumpFileName)) {
     while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
         $studies['_' . $row['id']] = $row;
     }
-    $result = pg_query($connection, 'SELECT * FROM syllabus.studies_academic_years_map');
-    while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-        $studiesAcademicYearsMap[] = $row;
-    }
-    $result = pg_query($connection, 'SELECT id, study_id, group_id, academic_year FROM syllabus.studies_group_map');
-    while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-        $studiesGroupMap[] = $row;
-    }
-    $result = pg_query($connection, 'SELECT * FROM syllabus.studies_subjects_map');
-    while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-        $studiesSubjectsMap[] = $row;
-    }
     $result = pg_query($connection, 'SELECT * FROM users.study_enrollment');
     while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
         $usedStudies[] = $row['study'];
@@ -63,6 +51,25 @@ if (!file_exists($dumpFileName)) {
     }
 
     $usedStudies = array_unique($usedStudies);
+
+    $result = pg_query($connection, 'SELECT * FROM syllabus.studies_academic_years_map');
+    while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+        if (in_array($row['study'], $usedStudies)) {
+            $studiesAcademicYearsMap[] = $row;
+        }
+    }
+    $result = pg_query($connection, 'SELECT * FROM syllabus.studies_group_map');
+    while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+        if (in_array($row['study_id'], $usedStudies)) {
+            $studiesGroupMap[] = $row;
+        }
+    }
+    $result = pg_query($connection, 'SELECT * FROM syllabus.studies_subjects_map');
+    while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+        if (in_array($row['study_id'], $usedStudies)) {
+            $studiesSubjectsMap[] = $row;
+        }
+    }
 
     $dump = serialize(
         array(
@@ -95,23 +102,23 @@ if (!file_exists($dumpFileName)) {
 
 // Clear these tables (or columns)
 echo ' -> Clear all tables that will be updated' . PHP_EOL;
-// pg_query($connection, 'DROP TABLE IF EXISTS syllabus.studies_academic_years_map');
-// pg_query($connection, 'DROP TABLE IF EXISTS syllabus.studies_group_map');
-// pg_query($connection, 'DROP TABLE IF EXISTS syllabus.studies_subjects_map');
-// pg_query($connection, 'DELETE FROM users.study_enrollment');
-// pg_query($connection, 'DELETE FROM cudi.sales_articles_restrictions_study_map');
-// pg_query($connection, 'DELETE FROM cudi.sales_session_restrictions_study_map');
-// pg_query($connection, 'UPDATE br.cv_entries SET study = NULL');
-// pg_query($connection, 'DELETE FROM syllabus.studies');
+pg_query($connection, 'DROP TABLE IF EXISTS syllabus.studies_academic_years_map');
+pg_query($connection, 'DROP TABLE IF EXISTS syllabus.studies_group_map');
+pg_query($connection, 'DROP TABLE IF EXISTS syllabus.studies_subjects_map');
+pg_query($connection, 'DELETE FROM users.study_enrollment');
+pg_query($connection, 'DELETE FROM cudi.sales_articles_restrictions_study_map');
+pg_query($connection, 'DELETE FROM cudi.sales_session_restrictions_study_map');
+pg_query($connection, 'UPDATE br.cv_entries SET study = NULL');
+pg_query($connection, 'DELETE FROM syllabus.studies');
 
 // Build the new syllabus structure
 echo ' -> Build new syllabus structure' . PHP_EOL;
-// exec('./bin/litus.sh orm:schema-tool:update --force', $output, $returnValue);
-//
-// if ($returnValue !== 0) {
-//     echo ' Failed to update database, please try it manualy. This script can be run again afterwards.' . PHP_EOL;
-//     exit(1);
-// }
+exec('./bin/litus.sh orm:schema-tool:update --force', $output, $returnValue);
+
+if ($returnValue !== 0) {
+    echo ' Failed to update database, please try it manualy. This script can be run again afterwards.' . PHP_EOL;
+    exit(1);
+}
 
 echo ' -> Migrate studies' . PHP_EOL;
 function createStudyFullTitle($data)
