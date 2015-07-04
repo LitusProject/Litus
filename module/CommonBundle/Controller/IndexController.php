@@ -54,7 +54,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return array|null
      */
-    private function _getBookings()
+    private function getBookings()
     {
         $bookings = null;
         if ($this->getAuthentication()->isAuthenticated()) {
