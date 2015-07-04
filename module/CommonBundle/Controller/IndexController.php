@@ -45,8 +45,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'cudi' => $this->getCudiInfo(),
                 'newsItems' => $this->getNewsItems(),
                 'notifications' => $notifications,
-                'piwik' => $this->_getPiwikInfo(),
-                'myShifts' => $this->_getMyShifts(),
+                'piwik' => $this->getPiwikInfo(),
+                'myShifts' => $this->getMyShifts(),
             )
         );
     }
