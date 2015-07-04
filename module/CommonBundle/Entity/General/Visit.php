@@ -99,7 +99,7 @@ class Visit
     public function __construct($browser, $url, $requestMethod, $controller, $action, Person $user = null)
     {
         $this->timestamp = new DateTime();
-        $this->browser = $browser;
+        $this->browser = $browser === null ? '' : substr($browser, 0, 255);
         $this->url = $url;
         $this->requestMethod = $requestMethod;
         $this->controller = $controller;
