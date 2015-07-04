@@ -60,7 +60,7 @@ class Language
      * @var Entry The cv entry where this language belongs to.
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Cv\Entry", cascade={"persist"})
-     * @ORM\JoinColumn(name="entry", referencedColumnName="id")
+     * @ORM\JoinColumn(name="entry", referencedColumnName="id", onDelete="CASCADE")
      */
     private $entry;
 

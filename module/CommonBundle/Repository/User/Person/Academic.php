@@ -91,7 +91,8 @@ class Academic extends \CommonBundle\Repository\User\Person
                                 $query->expr()->lower('p.firstName')
                             ),
                             ':name'
-                        )
+                        ),
+                        $query->expr()->like('p.universityIdentification', ':name')
                     ),
                     $query->expr()->eq('p.canLogin', 'true')
                 )
@@ -188,44 +189,6 @@ class Academic extends \CommonBundle\Repository\User\Person
         }
 
         return null;
-    }
-
-    /**
-     * @param  string              $name
-     * @return \Doctrine\ORM\Query
-     */
-    public function findAllByNameTypeaheadQuery($name)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p')
-            ->from('CommonBundle\Entity\User\Person\Academic', 'p')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->orX(
-                        $query->expr()->like(
-                            $query->expr()->concat(
-                                $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
-                                $query->expr()->lower('p.lastName')
-                            ),
-                            ':name'
-                        ),
-                        $query->expr()->like(
-                            $query->expr()->concat(
-                                $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
-                                $query->expr()->lower('p.firstName')
-                            ),
-                            ':name'
-                        ),
-                        $query->expr()->like('p.universityIdentification', ':name')
-                    ),
-                    $query->expr()->eq('p.canLogin', 'true')
-                )
-            )
-            ->setParameter('name', '%' . strtolower($name) . '%')
-            ->setMaxResults(20)
-            ->getQuery();
-
-        return $resultSet;
     }
 
     /**

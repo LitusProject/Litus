@@ -20,9 +20,9 @@ namespace CudiBundle\Controller\Prof;
 
 use CudiBundle\Entity\Article,
     DateInterval,
-    SyllabusBundle\Entity\StudentEnrollment,
     SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\SubjectProfMap,
+    SyllabusBundle\Entity\Subject\ProfMap,
+    SyllabusBundle\Entity\Subject\StudentEnrollment,
     Zend\View\Model\ViewModel;
 
 /**
@@ -39,7 +39,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         }
 
         $subjects = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findAllByProfAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
 
         return new ViewModel(
@@ -89,7 +89,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         }
 
         $profMappings = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findAllBySubjectAndAcademicYear($subject, $academicYear);
 
         $enrollment = $subject->getEnrollment($academicYear);
@@ -149,7 +149,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         }
 
         $subjects = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findAllByNameAndProfAndAcademicYearTypeAhead($this->getParam('string'), $this->getAuthentication()->getPersonObject(), $academicYear);
 
         $result = array();
@@ -212,14 +212,14 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         }
 
         $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findOneBySubjectIdAndProfAndAcademicYear(
                 $this->getParam('id', 0),
                 $this->getAuthentication()->getPersonObject(),
                 $academicYear
             );
 
-        if (!($mapping instanceof SubjectProfMap)) {
+        if (!($mapping instanceof ProfMap)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No subject was found!'

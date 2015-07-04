@@ -58,6 +58,19 @@
     </div>
 
     <aside>
+        {% if hasAccess('br_admin_company', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Edit Company</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the company!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('br_admin_company', {"action": "edit", "id": company.getId() }) }}">&rarr; Edit Company</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
         {% if hasAccess('br_admin_company_user', 'add') %}
             <div class="sidebox">
                 <div class="title">Add User</div>

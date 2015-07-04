@@ -50,7 +50,7 @@ class Comment extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s.id')
-            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
             ->innerJoin('m.subject', 's')
             ->where(
                 $query->expr()->eq('m.academicYear', ':academicYear')
@@ -79,7 +79,7 @@ class Comment extends EntityRepository
     public function findRecentConversationsByPersonAndAcademicYear(Person $person, AcademicYear $academicYear)
     {
         $subjects = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findAllByProfAndAcademicYear($person, $academicYear);
 
         $comments = array();

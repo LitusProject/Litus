@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Form\Prof\Subject;
 
-use SyllabusBundle\Entity\StudentEnrollment;
+use SyllabusBundle\Entity\Subject\StudentEnrollment;
 
 /**
  * Update student enrollment

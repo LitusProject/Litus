@@ -171,7 +171,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                         'start_master'          => (string) $cv->getMasterStart(),
                         'end_master'            => (string) $cv->getMasterEnd(),
                         'percentage_master'     => (string) ($cv->getGrade() / 100),
-                        'title_master'          => $cv->getStudy()->getFullTitle(),
+                        'title_master'          => $cv->getStudy()->getTitle(),
                         'start_bach'            => (string) $cv->getBachelorStart(),
                         'end_bach'              => (string) $cv->getBachelorEnd(),
                         'percentage_bach'       => (string) ($cv->getPriorGrade() / 100),

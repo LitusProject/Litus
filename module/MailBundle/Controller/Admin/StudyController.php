@@ -147,6 +147,10 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                 $i = 0;
                 if (!$formData['test']) {
                     foreach ($addresses as $address) {
+                        if ('' == $address) {
+                            continue;
+                        }
+
                         $i++;
                         $mail->addBcc($address);
 
@@ -235,8 +239,6 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
             return array();
         }
 
-        $currentYear = $this->getCurrentAcademicYear(false);
-
         $enrollments = array();
 
         foreach ($studyIds as $studyId) {
@@ -244,17 +246,9 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                 ->getRepository('SyllabusBundle\Entity\Study')
                 ->findOneById($studyId);
 
-            $children = $study->getAllChildren();
-
-            foreach ($children as $child) {
-                $enrollments = array_merge($enrollments, $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                    ->findAllByStudyAndAcademicYear($child, $currentYear));
-            }
-
             $enrollments = array_merge($enrollments, $this->getEntityManager()
                 ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                ->findAllByStudyAndAcademicYear($study, $currentYear));
+                ->findAllByStudy($study));
         }
 
         return $enrollments;
@@ -269,8 +263,6 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
         if (empty($groupIds)) {
             return array(array(), array(), array());
         }
-
-        $currentYear = $this->getCurrentAcademicYear(false);
 
         $enrollments = array();
         $extraMembers = array();
@@ -292,22 +284,13 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
             }
 
             $studies = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+                ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
                 ->findAllByGroupAndAcademicYear($group, $this->getCurrentAcademicYear(false));
 
             foreach ($studies as $study) {
-                $children = $study->getStudy()->getAllChildren();
-
-                foreach ($children as $child) {
-                    $enrollments = array_merge($enrollments, $this->getEntityManager()
-                        ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                        ->findAllByStudyAndAcademicYear($child, $currentYear)
-                    );
-                }
-
                 $enrollments = array_merge($enrollments, $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                    ->findAllByStudyAndAcademicYear($study->getStudy(), $currentYear)
+                    ->findAllByStudy($study->getStudy())
                 );
             }
         }

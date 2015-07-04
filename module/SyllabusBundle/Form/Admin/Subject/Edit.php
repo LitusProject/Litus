@@ -35,9 +35,7 @@ class Edit extends Add
 
         parent::init();
 
-        $this->remove('study')
-            ->remove('mandatory')
-            ->remove('submit');
+        $this->remove('submit');
 
         $this->addSubmit('Save', 'edit');
 

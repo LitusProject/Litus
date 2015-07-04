@@ -18,10 +18,7 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Subject
@@ -31,54 +28,55 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Subject extends EntityRepository
 {
-    public function findAllByNameAndAcademicYearTypeAhead($name, AcademicYear $academicYear)
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('m')
-            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
-            ->innerJoin('m.subject', 's')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->orX(
-                        $query->expr()->like($query->expr()->lower('s.name'), ':name'),
-                        $query->expr()->like($query->expr()->lower('s.code'), ':name')
-                    ),
-                    $query->expr()->eq('m.academicYear', ':academicYear')
-                )
-            )
-            ->setParameter('academicYear', $academicYear->getId())
-            ->setParameter('name', strtolower(trim($name)) . '%')
-            ->setMaxResults(20)
-            ->getQuery()
-            ->getResult();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Subject', 's')
+            ->orderBy('s.name')
+            ->getQuery();
 
-        $subjects = array();
-        foreach ($resultSet as $map) {
-            $subjects[$map->getSubject()->getId()] = $map->getSubject();
-        }
-
-        return $subjects;
+        return $resultSet;
     }
 
-    public function getYearsByPerson(Person $person)
+    /**
+     * @param  string              $name
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByNameQuery($name)
     {
-        $years = array();
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Subject', 's')
+            ->where(
+                $query->expr()->like($query->expr()->lower('s.name'), ':name')
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->orderBy('s.name')
+            ->getQuery();
 
-        $academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager());
+        return $resultSet;
+    }
 
-        $studies = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-            ->findAllByAcademicAndAcademicYear($person, $academicYear);
+    /**
+     * @param  string              $code
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByCodeQuery($code)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Subject', 's')
+            ->where(
+                $query->expr()->like($query->expr()->lower('s.code'), ':code')
+            )
+            ->setParameter('code', '%' . strtolower($code) . '%')
+            ->orderBy('s.code')
+            ->getQuery();
 
-        foreach ($studies as $studyMap) {
-            $year = $studyMap->getStudy()->getPhase();
-            if (strpos(strtolower($studyMap->getStudy()->getFullTitle()), 'master') !== false) {
-                $years[$year+3] = $year+3;
-            } elseif (strpos(strtolower($studyMap->getStudy()->getFullTitle()), 'bachelor') !== false) {
-                $years[$year] = $year;
-            }
-        }
-
-        return $years;
+        return $resultSet;
     }
 }

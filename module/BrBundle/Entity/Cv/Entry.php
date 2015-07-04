@@ -127,7 +127,7 @@ class Entry
      * @var Study The study of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
-     * @ORM\JoinColumn(name="study", referencedColumnName="id")
+     * @ORM\JoinColumn(name="study", referencedColumnName="id", onDelete="CASCADE")
      */
     private $study;
 

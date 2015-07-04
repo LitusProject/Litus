@@ -19,8 +19,8 @@
 namespace CudiBundle\Controller\Prof\Subject;
 
 use SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\SubjectProfMap,
     SyllabusBundle\Entity\Subject\Comment,
+    SyllabusBundle\Entity\Subject\ProfMap,
     SyllabusBundle\Entity\Subject\Reply,
     Zend\View\Model\ViewModel;
 
@@ -166,14 +166,14 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
         }
 
         $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findOneBySubjectIdAndProfAndAcademicYear(
                 $id,
                 $this->getAuthentication()->getPersonObject(),
                 $academicYear
             );
 
-        if (!($mapping instanceof SubjectProfMap)) {
+        if (!($mapping instanceof ProfMap)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No subject was found!'

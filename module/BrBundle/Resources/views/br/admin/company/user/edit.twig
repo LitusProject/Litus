@@ -23,19 +23,32 @@
 
     </div>
 
-    {% if hasAccess('br_admin_company_user', 'activate') %}
-        <aside>
+    <aside>
+        {% if hasAccess('br_admin_company', 'edit') %}
             <div class="sidebox">
-                <div class="title">Send Activation</div>
+                <div class="title">Edit Company</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to send an activation code to the person!</i>
+                        <i>Please hit the link below to edit the company!</i>
                     </p>
                     <p>
-                        <a href="{{ url('br_admin_company_user', {"action": "activate", "id": user.getId()}) }}">&rarr; Send Activation</a>
+                        <a href="{{ url('br_admin_company', {"action": "edit", "id": user.getCompany().getId() }) }}">&rarr; Edit Company</a>
                     </p>
                 </div>
             </div>
-        </aside>
-    {% endif %}
+        {% endif %}
+        {% if hasAccess('br_admin_company_user', 'activate') %}
+        <div class="sidebox">
+            <div class="title">Send Activation</div>
+            <div class="content">
+                <p>
+                    <i>Please hit the link below to send an activation code to the person!</i>
+                </p>
+                <p>
+                    <a href="{{ url('br_admin_company_user', {"action": "activate", "id": user.getId()}) }}">&rarr; Send Activation</a>
+                </p>
+            </div>
+        </div>
+        {% endif %}
+    </aside>
 {% endblock %}

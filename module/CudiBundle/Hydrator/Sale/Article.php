@@ -32,7 +32,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$stdKeys);
+        $data = $this->stdExtract($object, $stdKeys);
 
         $data['can_expire'] = $object->canExpire();
 
@@ -55,7 +55,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException('Cannot create a sale article');
         }
 
-        $this->stdHydrate($data, $object, self::$stdKeys);
+        $this->stdHydrate($data, $object, $stdKeys);
 
         $supplier = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Supplier')

@@ -111,7 +111,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
                 $entry->getEmail(),
                 $addressString,
                 $entry->getPhoneNumber(),
-                $entry->getStudy()->getFullTitle(),
+                $entry->getStudy()->getTitle(),
             );
         }
 

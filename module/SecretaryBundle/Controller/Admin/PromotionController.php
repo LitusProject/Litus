@@ -246,7 +246,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         }
 
         $studyMappings = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+            ->getRepository('SyllabusBundle\Entity\Study\AcademicYearMap')
             ->findAllByAcademicYear($academicYear);
 
         $academics = array();
@@ -258,7 +258,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
             $enrollments = $this->getEntityManager()
                 ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                ->findAllByStudyAndAcademicYear($mapping->getStudy(), $academicYear);
+                ->findAllByStudy($mapping->getStudy());
 
             foreach ($enrollments as $enrollment) {
                 $academics[$enrollment->getAcademic()->getId()] = $enrollment->getAcademic();

@@ -39,7 +39,7 @@ class Study extends Restriction
      * @ORM\ManyToMany(targetEntity="SyllabusBundle\Entity\Study")
      * @ORM\JoinTable(name="cudi.sales_session_restrictions_study_map",
      *      joinColumns={@ORM\JoinColumn(name="restriction", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="study", referencedColumnName="id")}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="study", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     private $studies;
@@ -88,7 +88,7 @@ class Study extends Restriction
     {
         $value = '';
         foreach ($this->studies as $study) {
-            $value .= 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle() . ' ; ';
+            $value .= 'Phase ' . $study->getPhase() . ' - ' . $study->getTitle() . ' ; ';
         }
 
         return $value;
@@ -109,9 +109,6 @@ class Study extends Restriction
             ->findAllByAcademicAndAcademicYear($person, $academicYear);
 
         $allowedStudies = $this->studies->toArray();
-        foreach ($this->studies as $study) {
-            $allowedStudies = array_merge($allowedStudies, $study->getAllChildren());
-        }
 
         foreach ($studies as $study) {
             foreach ($allowedStudies as $allowedStudy) {
