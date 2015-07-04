@@ -1,0 +1,14 @@
+<header id="controller_header">
+    <div class="title"><span class="study">Module Groups</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('syllabus_admin_study_module_group', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('syllabus_admin_study_module_group', {'action': 'add'}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('syllabus_admin_study_module_group', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url('syllabus_admin_study_module_group') }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

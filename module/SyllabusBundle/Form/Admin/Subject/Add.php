@@ -61,11 +61,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'text',
-            'name'     => 'name',
-            'label'    => 'Name',
-            'required' => true,
-            'options'  => array(
+            'type'       => 'text',
+            'name'       => 'name',
+            'label'      => 'Name',
+            'required'   => true,
+            'attributes' => array(
+                'style' => 'width: 400px;',
+            ),
+            'options'    => array(
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
@@ -103,29 +106,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                 ),
             ),
-        ));
-
-        $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'study',
-            'label'      => 'Study',
-            'required'   => true,
-            'attributes' => array(
-                'style'        => 'width: 400px',
-            ),
-            'options'    => array(
-                'input' => array(
-                    'validators' => array(
-                        array('name' => 'syllabus_typeahead_study'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'mandatory',
-            'label' => 'Mandatory',
         ));
 
         $this->addSubmit('Add', 'add');

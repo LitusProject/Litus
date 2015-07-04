@@ -18,7 +18,8 @@
 
 namespace FormBundle\Controller\Admin;
 
-use FormBundle\Entity\ViewerMap,
+use FormBundle\Entity\Node\Form,
+    FormBundle\Entity\ViewerMap,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,7 +31,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($formSpecification = $this->_getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -69,7 +70,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
 
     public function addAction()
     {
-        if (!($formSpecification = $this->_getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -174,7 +175,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($viewer = $this->_getViewer())) {
+        if (!($viewer = $this->getViewerMapEntity())) {
             return new ViewModel();
         }
 
@@ -226,14 +227,16 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @return \FormBundle\Entity\Node\Form|null
+     * @return Form|null
      */
-    private function _getForm()
+    private function getFormEntity()
     {
-        if (null === $this->getParam('id')) {
+        $form = $this->getEntityById('FormBundle\Entity\Node\Form');
+
+        if (!($form instanceof Form)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the form!'
+                'No form was found!'
             );
 
             $this->redirect()->toRoute(
@@ -246,58 +249,20 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             return;
         }
 
-        $formSpecification = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Form')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $formSpecification) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No form with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_admin_form',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $formSpecification;
+        return $form;
     }
 
     /**
-     * @return \FormBundle\Entity\ViewerMap|null
+     * @return ViewerMap|null
      */
-    private function _getViewer()
+    private function getViewerMapEntity()
     {
-        if (null === $this->getParam('id')) {
+        $viewer = $this->getEntityById('FormBundle\Entity\ViewerMap');
+
+        if (!($viewer instanceof ViewerMap)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the viewer!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_admin_form',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $viewer = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\ViewerMap')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $viewer) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No viewer with the given ID was found!'
+                'No viewer was found!'
             );
 
             $this->redirect()->toRoute(

@@ -40,40 +40,31 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 {
     public function indexAction()
     {
-        if (null === $this->getAuthentication()->getPersonObject()) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
         $metaData = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
-            ->findOneByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+            ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $studies = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-            ->findAllByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $mappings = array();
         foreach ($studies as $enrollment) {
             $mappings[] = array(
                 'enrollment' => $enrollment,
                 'subjects' => $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                    ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear()),
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+                    ->findAllByStudy($enrollment->getStudy()),
             );
         }
 
         $subjects = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
-            ->findAllByAcademicAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+            ->findAllByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
         $subjectIds = array();
         foreach ($subjects as $enrollment) {
@@ -107,18 +98,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function editAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-
-        if (!($academic instanceof Academic)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -138,7 +118,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_other_organization');
 
-        $termsAndConditions = $this->_getTermsAndConditions();
+        $termsAndConditions = $this->getTermsAndConditions();
 
         if (null !== $metaData) {
             $form = $this->getForm('common_account_edit', array(
@@ -217,7 +197,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 }
 
                 if (null !== $selectedOrganization) {
-                    $this->_setOrganization(
+                    $this->setOrganization(
                         $academic,
                         $this->getCurrentAcademicYear(),
                         $selectedOrganization
@@ -281,7 +261,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     'Your data was succesfully updated!'
                 );
 
-                $this->_doRedirect();
+                $this->doRedirect();
 
                 return new ViewModel();
             }
@@ -300,21 +280,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function studiesAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
-        return $this->_studiesAction(
+        return $this->doStudiesAction(
             $academic,
             $this->getCurrentAcademicYear()
         );
@@ -322,23 +292,13 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function saveStudiesAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
         $this->initAjax();
 
-        return $this->_saveStudiesAction(
+        return $this->doSaveStudiesAction(
             $academic,
             $this->getCurrentAcademicYear(),
             $this->getRequest()->getPost()->toArray()
@@ -347,46 +307,29 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function subjectsAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
-        return $this->_subjectAction(
+        /** @var \SecretaryBundle\Form\Registration\Subject\Add $form */
+        $form = $this->getForm('secretary_registration_subject_add');
+
+        return $this->doSubjectAction(
             $academic,
             $this->getCurrentAcademicYear(),
-            $this->getForm('secretary_registration_subject_add')
+            $form
         );
     }
 
     public function saveSubjectsAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
         $this->initAjax();
 
-        return $this->_saveSubjectAction(
+        return $this->doSaveSubjectAction(
             $academic,
             $this->getCurrentAcademicYear(),
             $this->getRequest()->getPost()->toArray()
@@ -395,7 +338,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function activateAction()
     {
-        if (!($user = $this->_getUser())) {
+        if (!($user = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -439,17 +382,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function passbookAction()
     {
-        $academic = $this->getAuthentication()->getPersonObject();
-        if (!($academic instanceof Academic)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login first!'
-            );
-
-            $this->redirect()->toRoute(
-                'common_index'
-            );
-
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel();
         }
 
@@ -480,6 +413,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function uploadProfileImageAction()
     {
+        if (!($academic = $this->getAcademicEntity())) {
+            return new ViewModel();
+        }
+
         $form = $this->getForm('common_account_profile');
 
         if ($this->getRequest()->isPost()) {
@@ -488,7 +425,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $this->getRequest()->getFiles()->toArray()
             ));
 
-            $academic = $this->getAuthentication()->getPersonObject();
             $filePath = 'public' . $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('common.profile_path');
@@ -553,14 +489,29 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     }
 
     /**
-     * @return Person|null
+     * @return Academic|null
      */
-    private function _getUser()
+    private function getAcademicEntity()
     {
-        if (null === $this->getParam('code')) {
+        if (!$this->getAuthentication()->isAuthenticated()) {
             $this->flashMessenger()->error(
                 'Error',
-                'No code was given to identify the user!'
+                'Please login first!'
+            );
+
+            $this->redirect()->toRoute(
+                'common_index'
+            );
+
+            return null;
+        }
+
+        $academic = $this->getAuthentication()->getPersonObject();
+
+        if (!($academic instanceof Academic)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Please login first!'
             );
 
             $this->redirect()->toRoute(
@@ -570,14 +521,22 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return;
         }
 
-        $user = $this->getEntityManager()
+        return $academic;
+    }
+
+    /**
+     * @return Person|null
+     */
+    private function getPersonEntity()
+    {
+        $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Code')
             ->findOnePersonByCode($this->getParam('code'));
 
-        if (null === $user) {
+        if (!($person instanceof Person)) {
             $this->flashMessenger()->error(
                 'Error',
-                'The given code is not valid!'
+                'No person was found!'
             );
 
             $this->redirect()->toRoute(
@@ -587,13 +546,13 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return;
         }
 
-        return $user;
+        return $person;
     }
 
     /**
      * @return null
      */
-    private function _doRedirect()
+    private function doRedirect()
     {
         if (null === $this->getParam('return')) {
             $this->redirect()->toRoute(

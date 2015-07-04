@@ -30,9 +30,14 @@ use BrBundle\Entity\Company as CompanyEntity,
  */
 class Job extends EntityRepository
 {
+    /**
+     * @param  string                       $type
+     * @param  int                          $id
+     * @return \BrBundle\Entity\Company\Job
+     */
     public function findOneActiveByTypeAndId($type, $id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -54,9 +59,13 @@ class Job extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  CompanyEntity       $company
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByCompanyQuery(CompanyEntity $company)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->where(
@@ -69,9 +78,13 @@ class Job extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $type
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveByTypeQuery($type)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -91,9 +104,13 @@ class Job extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $type
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveByTypeByJobNameQuery($type)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -112,9 +129,13 @@ class Job extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $type
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveByTypeByDateQuery($type)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -133,9 +154,14 @@ class Job extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $type
+     * @param  string              $sector
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveByTypeAndSectorByDateQuery($type, $sector)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -156,9 +182,14 @@ class Job extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $type
+     * @param  string              $sector
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveByTypeAndSectorQuery($type, $sector)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -180,9 +211,14 @@ class Job extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $type
+     * @param  string              $sector
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveByTypeAndSectorByJobNameQuery($type, $sector)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v, c')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->innerJoin('v.company', 'c')
@@ -203,9 +239,14 @@ class Job extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  CompanyEntity       $company
+     * @param  string              $type
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveByCompanyAndTypeQuery(CompanyEntity $company, $type)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->where(

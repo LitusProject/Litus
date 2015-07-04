@@ -30,9 +30,13 @@ use BrBundle\Entity\Company as CompanyEntity,
  */
 class Event extends EntityRepository
 {
+    /**
+     * @param  CompanyEntity       $company
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByCompanyQuery(CompanyEntity $company)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e, c')
             ->from('BrBundle\Entity\Company\Event', 'e')
             ->innerJoin('e.event', 'c')
@@ -46,9 +50,14 @@ class Event extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  DateTime            $date
+     * @param  CompanyEntity       $company
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllFutureByCompanyQuery(DateTime $date, CompanyEntity $company)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e, c')
             ->from('BrBundle\Entity\Company\Event', 'e')
             ->innerJoin('e.event', 'c')
@@ -69,9 +78,13 @@ class Event extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  DateTime            $date
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllFutureQuery(DateTime $date)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e, ev')
             ->from('BrBundle\Entity\Company\Event', 'e')
             ->innerJoin('e.event', 'ev')
@@ -92,9 +105,14 @@ class Event extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  DateTime            $date
+     * @param  string              $string
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllFutureBySearchQuery(DateTime $date, $string)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e, ev')
             ->from('BrBundle\Entity\Company\Event', 'e')
             ->innerJoin('e.event', 'ev')
@@ -117,9 +135,13 @@ class Event extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  int                            $id
+     * @return \BrBundle\Entity\Company\Event
+     */
     public function findOneActiveById($id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('BrBundle\Entity\Company\Event', 'e')
             ->innerJoin('e.event', 'ev')

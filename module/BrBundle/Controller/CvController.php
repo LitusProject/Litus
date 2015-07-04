@@ -18,12 +18,6 @@
 
 namespace BrBundle\Controller;
 
-
-
-
-
-
-
 use BrBundle\Entity\Cv\Entry as CvEntry,
     CommonBundle\Component\FlashMessenger\FlashMessage,
     CommonBundle\Entity\User\Person\Academic,
@@ -38,9 +32,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 {
     public function cvAction()
     {
-        $person = $this->getAuthentication()->getPersonObject();
-
-        if (null === $person) {
+        if (!$this->getAuthentication()->isAuthenticated()) {
             return new ViewModel(
                 array(
                     'messages' => array(
@@ -50,6 +42,8 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
+        $person = $this->getAuthentication()->getPersonObject();
+
         if (!($person instanceof Academic)) {
             return new ViewModel(
                 array(
@@ -58,9 +52,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                     ),
                 )
             );
-        }
-
-        if ($this->getLanguage()->getName() == 'English') {
+        } elseif ($this->getLanguage()->getName() == 'English') {
             $this->redirect()->toRoute(
                 'br_cv_index',
                 array(
@@ -70,7 +62,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
-        $message = $this->_getBadAccountMessage($person);
+        $message = $this->getBadAccountMessage($person);
         if ($message !== null) {
             return new ViewModel(
                 array(
@@ -156,9 +148,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
     public function editAction()
     {
-        $person = $this->getAuthentication()->getPersonObject();
-
-        if (null === $person) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             return new ViewModel(
                 array(
                     'messages' => array(
@@ -167,6 +157,8 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
                 )
             );
         }
+
+        $person = $this->getAuthentication()->getPersonObject();
 
         if (!($person instanceof Academic)) {
             return new ViewModel(
@@ -178,7 +170,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
-        $message = $this->_getBadAccountMessage($person);
+        $message = $this->getBadAccountMessage($person);
         if ($message !== null) {
             return new ViewModel(
                 array(
@@ -260,7 +252,11 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         return new ViewModel();
     }
 
-    private function _getBadAccountMessage(Academic $person)
+    /**
+     * @param  Academic          $person
+     * @return FlashMessage|null
+     */
+    private function getBadAccountMessage(Academic $person)
     {
         $content = '';
 

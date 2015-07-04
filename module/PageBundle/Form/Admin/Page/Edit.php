@@ -32,8 +32,9 @@ class Edit extends Add
             ->findAll();
 
         foreach ($categories as $category) {
-            $this->get('parent_' . $category->getId())
-                ->setValueOptions($this->createPagesArray($category, $this->getPage()->getCategory()->getId() == $category->getId() ? $this->getPage()->getTitle() : ''));
+            /** @var \CommonBundle\Component\Form\Admin\Element\Select $parentField */
+            $parentField = $this->get('parent_' . $category->getId());
+            $parentField->setValueOptions($this->createPagesArray($category, $this->getPage()->getCategory()->getId() == $category->getId() ? $this->getPage()->getTitle() : ''));
         }
 
         $this->remove('submit');

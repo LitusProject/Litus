@@ -146,12 +146,12 @@ abstract class Article
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @var array The possible types of an article
      */
-    public static $POSSIBLE_TYPES = array(
+    public static $possibleTypes = array(
         'common' => 'Common',
         'other' => 'Other',
         'exercises' => 'Exercises',
@@ -175,7 +175,7 @@ abstract class Article
      */
     public static function isValidArticleType($type)
     {
-        return array_key_exists($type, self::$POSSIBLE_TYPES);
+        return array_key_exists($type, self::$possibleTypes);
     }
 
     /**
@@ -378,7 +378,7 @@ abstract class Article
 
         $saleArticle = $this->getSaleArticle();
 
-        if ($saleArticle instanceof SaleArticle && $isHistory == true) {
+        if ($saleArticle instanceof SaleArticle && $isHistory === true) {
             $saleArticle->setIsHistory(true);
         }
 
@@ -497,11 +497,11 @@ abstract class Article
      */
     public function getSaleArticle()
     {
-        if (null == $this->_entityManager) {
+        if (null == $this->entityManager) {
             return null;
         }
 
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')
             ->findOneByArticle($this);
     }
@@ -513,7 +513,7 @@ abstract class Article
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }

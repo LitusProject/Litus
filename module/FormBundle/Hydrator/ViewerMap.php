@@ -22,7 +22,7 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 class ViewerMap extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('edit', 'mail');
+    private static $stdKeys = array('edit', 'mail');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -30,7 +30,7 @@ class ViewerMap extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException('Cannot create a viewer map');
         }
 
-        $object = $this->stdHydrate($data, $object, self::$std_keys);
+        $object = $this->stdHydrate($data, $object, self::$stdKeys);
 
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')

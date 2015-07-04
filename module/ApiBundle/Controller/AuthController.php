@@ -33,8 +33,8 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (null === ($person = $this->_getPerson())) {
-            return $this->error(500, 'The person was not found');
+        if (!($person = $this->getPersonEntity())) {
+            return $this->error(404, 'The person was not found');
         }
 
         $result = array(
@@ -71,7 +71,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
     /**
      * @return Person|null
      */
-    private function _getPerson()
+    private function getPersonEntity()
     {
         if (null !== $this->getAccessToken()) {
             return $this->getAccessToken()->getPerson($this->getEntityManager());

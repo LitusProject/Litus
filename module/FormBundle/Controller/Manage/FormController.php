@@ -23,7 +23,9 @@ use CommonBundle\Component\Util\File\TmpFile,
     FormBundle\Component\Document\Generator\Doodle as DoodleGenerator,
     FormBundle\Component\Document\Generator\Form as FormGenerator,
     FormBundle\Component\Document\Generator\Zip as ZipGenerator,
+    FormBundle\Entity\Field,
     FormBundle\Entity\Node\Entry as FormEntry,
+    FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\GuestInfo,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -37,7 +39,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 {
     public function indexAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
@@ -59,11 +61,11 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function viewAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
-        if (!($form = $this->_getForm())) {
+        if (!($form = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -121,11 +123,11 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function addAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
-        if (!($formSpecification = $this->_getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -186,7 +188,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         ->findOneById($formData['person_form']['person']['id']);
                 }
 
-                $formEntry = new FormEntry($person, $formSpecification);
+                $formEntry = new FormEntry($formSpecification, $person);
                 if (null === $person) {
                     $formEntry->setGuestInfo(
                         new GuestInfo($this->getEntityManager(), $this->getRequest())
@@ -223,11 +225,11 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function editAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
-        if (!($formEntry = $this->_getEntry())) {
+        if (!($formEntry = $this->getEntryEntity())) {
             return new ViewModel();
         }
 
@@ -315,7 +317,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function doodleAddAction()
     {
-        if (!($formSpecification = $this->_getForm())) {
+        if (!($formSpecification = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -353,7 +355,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                         ->findOneById($formData['person_form']['person']['id']);
                 }
 
-                $formEntry = new FormEntry($person, $formSpecification);
+                $formEntry = new FormEntry($formSpecification, $person);
                 if (null === $person) {
                     $formEntry->setGuestInfo(
                         new GuestInfo($this->getEntityManager(), $this->getRequest())
@@ -390,11 +392,11 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function doodleAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
-        if (!($formEntry = $this->_getEntry())) {
+        if (!($formEntry = $this->getEntryEntity())) {
             return new ViewModel();
         }
 
@@ -486,11 +488,11 @@ class FormController extends \FormBundle\Component\Controller\FormController
     {
         $this->initAjax();
 
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
-        if (!($formEntry = $this->_getEntry())) {
+        if (!($formEntry = $this->getEntryEntity())) {
             return new ViewModel();
         }
 
@@ -530,11 +532,11 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function downloadAction()
     {
-        if (!($person = $this->getAuthentication()->getPersonObject())) {
+        if (!($person = $this->getPersonEntity())) {
             return new ViewModel();
         }
 
-        if (!($form = $this->_getForm())) {
+        if (!($form = $this->getFormEntity())) {
             return new ViewModel();
         }
 
@@ -614,7 +616,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
     public function downloadFilesAction()
     {
-        if (!($field = $this->_getField()) || $field->getType() != 'file') {
+        if (!($field = $this->getFieldEntity()) || $field->getType() != 'file') {
             return new ViewModel();
         }
 
@@ -640,81 +642,51 @@ class FormController extends \FormBundle\Component\Controller\FormController
         );
     }
 
-    private function _getForm()
+    /**
+     * @return Form|null
+     */
+    private function getFormEntity()
     {
-        if (null === $this->getParam('id')) {
+        $form = $this->getEntityById('FormBundle\Entity\Node\Form');
+
+        if (!($form instanceof Form)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the form!'
+                'No form was found!'
             );
 
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action' => 'index',
+                    'action' => 'manage',
                 )
             );
 
             return;
         }
 
-        $formSpecification = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Form')
-            ->findOneById($this->getParam('id'));
+        $form->setEntityManager($this->getEntityManager());
 
-        if (null === $formSpecification) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No form with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_manage',
-                array(
-                    'action' => 'index',
-                )
-            );
-
-            return;
-        }
-
-        $formSpecification->setEntityManager($this->getEntityManager());
-
-        return $formSpecification;
+        return $form;
     }
 
-    private function _getEntry()
+    /**
+     * @return FormEntry|null
+     */
+    private function getEntryEntity()
     {
-        if (null === $this->getParam('id')) {
+        $entry = $this->getEntityById('FormBundle\Entity\Node\Entry');
+
+        if (!($entry instanceof FormEntry)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the entry!'
+                'No entry was found!'
             );
 
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action' => 'index',
-                )
-            );
-
-            return;
-        }
-
-        $entry = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Node\Entry')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $entry) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No entry with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_manage',
-                array(
-                    'action' => 'index',
+                    'action' => 'manage',
                 )
             );
 
@@ -724,38 +696,23 @@ class FormController extends \FormBundle\Component\Controller\FormController
         return $entry;
     }
 
-    private function _getField()
+    /**
+     * @return Field|null
+     */
+    private function getFieldEntity()
     {
-        if (null === $this->getParam('id')) {
+        $field = $this->getEntityById('FormBundle\Entity\Field');
+
+        if (!($field instanceof Field)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the field!'
+                'No field was found!'
             );
 
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action' => 'index',
-                )
-            );
-
-            return;
-        }
-
-        $field = $this->getEntityManager()
-            ->getRepository('FormBundle\Entity\Field')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $field) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No field with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'form_manage',
-                array(
-                    'action' => 'index',
+                    'action' => 'manage',
                 )
             );
 
@@ -763,5 +720,17 @@ class FormController extends \FormBundle\Component\Controller\FormController
         }
 
         return $field;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\User\Person|null
+     */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return null;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
     }
 }

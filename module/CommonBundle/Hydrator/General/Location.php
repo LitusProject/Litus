@@ -22,27 +22,28 @@ use CommonBundle\Entity\General\Location as LocationEntity;
 
 class Location extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $geo_keys = array(
+    private static $geoKeys = array(
         'latitude', 'longitude',
     );
 
-    private static $std_keys = array('name');
+    private static $stdKeys = array('name');
 
     protected function doExtract($object = null)
     {
+        /** @var \CommonBundle\Hydrator\General\Address $hydrator */
+        $hydrator = $this->getHydrator('CommonBundle\Hydrator\General\Address');
+
         if (null === $object) {
             return array(
-                'address' => $this->getHydrator('CommonBundle\Hydrator\General\Address')
-                        ->extract(null),
+                'address' => $hydrator->extract(null),
             );
         }
 
         $data = $this->stdExtract($object, array('name'));
 
-        $data['geographical'] = $this->stdExtract($object, self::$geo_keys);
+        $data['geographical'] = $this->stdExtract($object, self::$geoKeys);
 
-        $data['address'] = $this->getHydrator('CommonBundle\Hydrator\General\Address')
-            ->extract($object->getAddress());
+        $data['address'] = $hydrator->extract($object->getAddress());
 
         return $data;
     }
@@ -53,17 +54,19 @@ class Location extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new LocationEntity();
         }
 
+        /** @var \CommonBundle\Hydrator\General\Address $hydrator */
+        $hydrator = $this->getHydrator('CommonBundle\Hydrator\General\Address');
+
         if (isset($data['address'])) {
             $object->setAddress(
-                $this->getHydrator('CommonBundle\Hydrator\General\Address')
-                    ->hydrate($data['address'], $object->getAddress())
+                $hydrator->hydrate($data['address'], $object->getAddress())
             );
         }
 
         if (isset($data['geographical'])) {
-            $this->stdHydrate($data['geographical'], $object, self::$geo_keys);
+            $this->stdHydrate($data['geographical'], $object, self::$geoKeys);
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

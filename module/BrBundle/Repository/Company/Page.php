@@ -29,9 +29,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Page extends EntityRepository
 {
+    /**
+     * @param  string                        $slug
+     * @param  AcademicYear                  $academicYear
+     * @return \BrBundle\Entity\Company\Page
+     */
     public function findOneActiveBySlug($slug, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('BrBundle\Entity\Company\Page', 'p')
             ->innerJoin('p.years', 'y')
@@ -52,9 +57,13 @@ class Page extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveQuery(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('BrBundle\Entity\Company\Page', 'p')
             ->innerJoin('p.years', 'y')
@@ -71,9 +80,14 @@ class Page extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @param  string              $string
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveBySearchQuery(AcademicYear $academicYear, $string)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p, c')
             ->from('BrBundle\Entity\Company\Page', 'p')
             ->innerJoin('p.years', 'y')

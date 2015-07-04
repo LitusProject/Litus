@@ -18,7 +18,8 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CudiBundle\Entity\Sale\Article\Discount\Discount,
+use CudiBundle\Entity\Sale\Article as SaleArticle,
+    CudiBundle\Entity\Sale\Article\Discount\Discount,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,7 +31,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($article = $this->_getSaleArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -116,7 +117,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($discount = $this->_getDiscount())) {
+        if (!($discount = $this->getDiscountEntity())) {
             return new ViewModel();
         }
 
@@ -131,34 +132,16 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @return \CudiBundle\Entity\Sale\Article|null
+     * @return SaleArticle|null
      */
-    private function _getSaleArticle()
+    private function getSaleArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
+
+        if (!($article instanceof SaleArticle)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -174,32 +157,17 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
         return $article;
     }
 
-    private function _getDiscount()
+    /**
+     * @return Discount|null
+     */
+    private function getDiscountEntity()
     {
-        if (null === $this->getParam('id')) {
+        $discount = $this->getEntityById('CudiBundle\Entity\Sale\Article\Discount\Discount');
+
+        if (!($discount instanceof Discount)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the discount!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $discount = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article\Discount\Discount')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $discount) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No discount with the given ID was found!'
+                'No discount was found!'
             );
 
             $this->redirect()->toRoute(

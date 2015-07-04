@@ -51,7 +51,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_url');
-        $result->shibbolethUrl = $this->_getShibbolethUrl();
+        $result->shibbolethUrl = $this->getShibbolethUrl();
 
         $e->setResult($result);
 
@@ -81,7 +81,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
      * @return string
      * @throws ShibbolethUrlException
      */
-    private function _getShibbolethUrl()
+    private function getShibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

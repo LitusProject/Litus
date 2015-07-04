@@ -35,22 +35,22 @@ abstract class Pdf
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @var string The path to the document's XSL file
      */
-    protected $_xslPath;
+    protected $xslPath;
 
     /**
      * @var TmpFile A tempory file which holds the generated XML structure
      */
-    protected $_xmlFile;
+    protected $xmlFile;
 
     /**
      * @var string The
      */
-    protected $_pdfPath;
+    protected $pdfPath;
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
@@ -67,12 +67,12 @@ abstract class Pdf
             throw new InvalidArgumentException('Invalid PDF');
         }
 
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
-        $this->_xslPath = $xslPath;
-        $this->_pdfPath = $pdfPath;
+        $this->xslPath = $xslPath;
+        $this->pdfPath = $pdfPath;
 
-        $this->_xmlFile = new TmpFile();
+        $this->xmlFile = new TmpFile();
     }
 
     /**
@@ -82,7 +82,7 @@ abstract class Pdf
      */
     public function getConfigRepository()
     {
-        return $this->_entityManager->getRepository('CommonBundle\Entity\General\Config');
+        return $this->entityManager->getRepository('CommonBundle\Entity\General\Config');
     }
 
     /**
@@ -104,7 +104,7 @@ abstract class Pdf
     public function generate()
     {
         $this->generateXml(
-            $this->_xmlFile
+            $this->xmlFile
         );
 
         $this->generatePdf();
@@ -126,9 +126,9 @@ abstract class Pdf
      */
     protected function generatePdf()
     {
-        $xmlPath = $this->_xmlFile->getFilename();
+        $xmlPath = $this->xmlFile->getFilename();
 
-        $pdfDir = dirname($this->_pdfPath);
+        $pdfDir = dirname($this->pdfPath);
 
         if (!file_exists($pdfDir)) {
             if (!mkdir($pdfDir, 0770)) {
@@ -143,10 +143,10 @@ abstract class Pdf
             ->getConfigValue('fop_command');
 
         system(
-            escapeshellcmd($fopCommand . ' -q -xsl ' . $this->_xslPath . ' -xml ' . $xmlPath . ' ' . $this->_pdfPath), $resultValue
+            escapeshellcmd($fopCommand . ' -q -xsl ' . $this->xslPath . ' -xml ' . $xmlPath . ' ' . $this->pdfPath), $resultValue
         );
 
-        if ($resultValue != 0) {
+        if ($resultValue !== 0) {
             throw new RuntimeException('The FOP command failed with return value ' . $resultValue);
         }
     }
@@ -156,6 +156,6 @@ abstract class Pdf
      */
     public function getEntityManager()
     {
-        return $this->_entityManager;
+        return $this->entityManager;
     }
 }

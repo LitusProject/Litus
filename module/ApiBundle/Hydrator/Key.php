@@ -30,7 +30,7 @@ class Key extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $std_keys = array('host', 'check_host');
+    private static $stdKeys = array('host', 'check_host');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -63,7 +63,7 @@ class Key extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setRoles($roles);
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -72,7 +72,7 @@ class Key extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, array(self::$std_keys, 'code'));
+        $data = $this->stdExtract($object, array(self::$stdKeys, 'code'));
 
         $roles = array();
         foreach ($object->getRoles() as $role) {

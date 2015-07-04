@@ -86,14 +86,14 @@ class Supplier
     /**
      * @var array The possible templates
      */
-    public static $POSSIBLE_TEMPLATES = array(
+    public static $possibleTemplates = array(
         'default' => 'Default',
     );
 
     /**
      * @var EntityManager The EntityManager instance
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @param  string  $template
@@ -101,7 +101,7 @@ class Supplier
      */
     public static function isValidTemplate($template)
     {
-        return array_key_exists($template, self::$POSSIBLE_TEMPLATES);
+        return array_key_exists($template, self::$possibleTemplates);
     }
 
     /**
@@ -223,19 +223,19 @@ class Supplier
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }
 
     /**
-     * @param  AcademicYear $academicYear
-     * @param  Organization $organization
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getNumberSold(AcademicYear $academicYear, Organization $organization = null)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\SaleItem')
             ->findNumberBySupplier($this, $academicYear, $organization);
     }
@@ -246,7 +246,7 @@ class Supplier
      */
     public function getNumberDelivered(AcademicYear $academicYear)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Stock\Delivery')
             ->findNumberBySupplier($this, $academicYear);
     }
@@ -257,31 +257,31 @@ class Supplier
      */
     public function getNumberOrdered(AcademicYear $academicYear)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Stock\Order\Item')
             ->findNumberBySupplier($this, $academicYear);
     }
 
     /**
-     * @param  AcademicYear $academicYear
-     * @param  Organization $organization
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getTotalRevenue(AcademicYear $academicYear, Organization $organization = null)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\SaleItem')
             ->findTotalRevenueBySupplier($this, $academicYear, $organization);
     }
 
     /**
-     * @param  AcademicYear $academicYear
-     * @param  Organization $organization
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getTotalPurchase(AcademicYear $academicYear, Organization $organization = null)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\SaleItem')
             ->findTotalPurchaseBySupplier($this, $academicYear, $organization);
     }

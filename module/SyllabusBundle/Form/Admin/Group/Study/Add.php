@@ -28,7 +28,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var array All possible studies
      */
-    private $_studies;
+    private $studies;
 
     public function init()
     {
@@ -42,7 +42,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'multiple' => true,
                 'style'    => 'max-width: 100%;',
-                'options'  => $this->_getStudyNames(),
+                'options'  => $this->getStudyNames(),
             ),
             'options'    => array(
                 'input' => array(
@@ -59,11 +59,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @return array
      */
-    private function _getStudyNames()
+    private function getStudyNames()
     {
         $studyNames = array();
-        foreach ($this->_studies as $study) {
-            $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
+        foreach ($this->studies as $study) {
+            $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getTitle();
         }
 
         return $studyNames;
@@ -75,7 +75,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setStudies(array $studies)
     {
-        $this->_studies = $studies;
+        $this->studies = $studies;
 
         return $this;
     }

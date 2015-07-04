@@ -95,7 +95,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($session = $this->_getSession())) {
+        if (!($session = $this->getSessionEntity())) {
             return new ViewModel();
         }
 
@@ -152,7 +152,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editRegisterAction()
     {
-        if (!($cashRegister = $this->_getCashRegister())) {
+        if (!($cashRegister = $this->getCashRegisterEntity())) {
             return new ViewModel();
         }
 
@@ -197,7 +197,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function closeAction()
     {
-        if (!($session = $this->_getSession())) {
+        if (!($session = $this->getSessionEntity())) {
             return new ViewModel();
         }
 
@@ -255,7 +255,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function queueItemsAction()
     {
-        if (!($session = $this->_getSession())) {
+        if (!($session = $this->getSessionEntity())) {
             return new ViewModel();
         }
 
@@ -283,34 +283,16 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Session
+     * @return Session|null
      */
-    private function _getSession()
+    private function getSessionEntity()
     {
-        if (null === $this->getParam('id')) {
+        $session = $this->getEntityById('CudiBundle\Entity\Sale\Session');
+
+        if (!($session instanceof Session)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the session!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_session',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $session = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Session')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $session) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No session with the given ID was found!'
+                'No session was found!'
             );
 
             $this->redirect()->toRoute(
@@ -327,34 +309,16 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return CashRegister
+     * @return CashRegister|null
      */
-    private function _getCashRegister()
+    private function getCashRegisterEntity()
     {
-        if (null === $this->getParam('id')) {
+        $cashRegister = $this->getEntityById('CommonBundle\Entity\General\Bank\CashRegister');
+
+        if (!($cashRegister instanceof CashRegister)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the cash register!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_session',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $cashRegister = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Bank\CashRegister')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $cashRegister) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No cash register with the given ID was found!'
+                'No cash register was found!'
             );
 
             $this->redirect()->toRoute(

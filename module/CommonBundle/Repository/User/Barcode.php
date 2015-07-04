@@ -31,6 +31,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Barcode extends EntityRepository
 {
+    /**
+     * @param  string                                 $barcode
+     * @return \CommonBundle\Entity\User\Barcode|null
+     */
     public function findOneByBarcode($barcode)
     {
         $ean12Result = null;
@@ -40,7 +44,7 @@ class Barcode extends EntityRepository
                 $eanBarcode = floor($barcode / 10);
             }
 
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $ean12Result = $query->select('b')
                 ->from('CommonBundle\Entity\User\Barcode\Ean12', 'b')
                 ->where(
@@ -52,7 +56,7 @@ class Barcode extends EntityRepository
                 ->getOneOrNullResult();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $qrResult = $query->select('b')
             ->from('CommonBundle\Entity\User\Barcode\Qr', 'b')
             ->where(
@@ -70,6 +74,10 @@ class Barcode extends EntityRepository
         return null !== $ean12Result ? $ean12Result : $qrResult;
     }
 
+    /**
+     * @param  string $barcode
+     * @return array
+     */
     public function findAllByBarcode($barcode)
     {
         $ean12Result = array();
@@ -79,7 +87,7 @@ class Barcode extends EntityRepository
                 $eanBarcode = floor($barcode / 10);
             }
 
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $ean12Result = $query->select('b')
                 ->from('CommonBundle\Entity\User\Barcode\Ean12', 'b')
                 ->where(
@@ -90,7 +98,7 @@ class Barcode extends EntityRepository
                 ->getResult();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $qrResult = $query->select('b')
             ->from('CommonBundle\Entity\User\Barcode\Qr', 'b')
             ->where(
@@ -103,9 +111,15 @@ class Barcode extends EntityRepository
         return array_merge($qrResult, $ean12Result);
     }
 
+    /**
+     * @param  string       $barcode
+     * @param  AcademicYear $academicYear
+     * @param  Organization $organization
+     * @return array
+     */
     public function findAllByBarcodeAndOrganization($barcode, AcademicYear $academicYear, Organization $organization)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a.id')
             ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
             ->innerJoin('m.academic', 'a')
@@ -123,7 +137,7 @@ class Barcode extends EntityRepository
         $ids = array(0);
 
         foreach ($resultSet as $result) {
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('a.id')
                 ->from('CommonBundle\Entity\User\Person\Organization\AcademicYearMap', 'm')
                 ->innerJoin('m.academic', 'a')
@@ -150,7 +164,7 @@ class Barcode extends EntityRepository
                 $eanBarcode = floor($barcode / 10);
             }
 
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $ean12Result = $query->select('b')
                 ->from('CommonBundle\Entity\User\Barcode\Ean12', 'b')
                 ->where(
@@ -164,7 +178,7 @@ class Barcode extends EntityRepository
                 ->getResult();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $qrResult = $query->select('b')
             ->from('CommonBundle\Entity\User\Barcode\Qr', 'b')
             ->where(

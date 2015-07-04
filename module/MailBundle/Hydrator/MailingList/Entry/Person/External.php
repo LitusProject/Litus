@@ -31,7 +31,7 @@ class External extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $std_keys = array('email_address', 'first_name', 'last_name');
+    private static $stdKeys = array('email_address', 'first_name', 'last_name');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -39,7 +39,7 @@ class External extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException();
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)

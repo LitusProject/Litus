@@ -18,7 +18,8 @@
 
 namespace MailBundle\Controller\Admin;
 
-use Zend\View\Model\ViewModel;
+use MailBundle\Document\Message,
+    Zend\View\Model\ViewModel;
 
 /**
  * MessageController
@@ -48,7 +49,7 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
 
     public function editAction()
     {
-        if (!($message = $this->_getMessage())) {
+        if (!($message = $this->getMessageEntity())) {
             return new ViewModel();
         }
 
@@ -88,7 +89,7 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
     {
         $this->initAjax();
 
-        if (!($message = $this->_getMessage())) {
+        if (!($message = $this->getMessageEntity())) {
             return new ViewModel();
         }
 
@@ -104,34 +105,18 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
     }
 
     /**
-     * @return \MailBundle\Document\Message|null
+     * @return Message|null
      */
-    private function _getMessage()
+    private function getMessageEntity()
     {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the message!'
-            );
-
-            $this->redirect()->toRoute(
-                'mail_admin_message',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
         $message = $this->getDocumentManager()
             ->getRepository('MailBundle\Document\Message')
-            ->findOneById($this->getParam('id'));
+            ->findOneById($this->getParam('id', 0));
 
-        if (null === $message) {
+        if (!($message instanceof Message)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No message with the given ID was found!'
+                'No message was found!'
             );
 
             $this->redirect()->toRoute(

@@ -26,5 +26,17 @@ return Config::create(
         'directory'         => __DIR__,
         'translation_files' => array('prom'),
         'has_layouts'       => true,
+    ),
+    array(
+        'validators' => array(
+            'invokables' => array(
+                'prom_code_exists'      => 'PromBundle\Component\Validator\CodeExists',
+                'prom_code_used'        => 'PromBundle\Component\Validator\CodeUsed',
+                'prom_code_email'       => 'PromBundle\Component\Validator\CodeEmail',
+                'prom_passenger_exists' => 'PromBundle\Component\Validator\PassengerExists',
+                'prom_bus_selected'     => 'PromBundle\Component\Validator\BusSelected',
+                'prom_bus_seats'        => 'PromBundle\Component\Validator\BusSeats',
+            ),
+        ),
     )
 );

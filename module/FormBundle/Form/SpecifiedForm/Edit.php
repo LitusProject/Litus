@@ -32,14 +32,14 @@ class Edit extends Add
         parent::init();
 
         $this->remove('submit');
-        $this->addSubmit($this->_form->getUpdateText($this->_language));
+        $this->addSubmit($this->form->getUpdateText($this->language));
     }
 
     public function getInputFilterSpecification()
     {
         $specs = parent::getInputFilterSpecification();
 
-        foreach ($this->_form->getFields() as $fieldSpecification) {
+        foreach ($this->form->getFields() as $fieldSpecification) {
             if ($fieldSpecification instanceof FileFieldEntity) {
                 $specs['field-' . $fieldSpecification->getId()]['required'] = false;
             }

@@ -29,9 +29,12 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Config extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('CommonBundle\Entity\General\Config', 'c')
             ->orderBy('c.key', 'ASC')
@@ -40,9 +43,13 @@ class Config extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string $prefix
+     * @return array
+     */
     public function findAllByPrefix($prefix)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $configs = $query->select('c')
             ->from('CommonBundle\Entity\General\Config', 'c')
             ->where(
@@ -66,7 +73,8 @@ class Config extends EntityRepository
     }
 
     /**
-     * @param string $key
+     * @param  string $key
+     * @return string
      */
     public function getConfigValue($key)
     {

@@ -29,9 +29,13 @@ use BrBundle\Entity\Company as CompanyEntity,
  */
 class Logo extends EntityRepository
 {
+    /**
+     * @param  CompanyEntity       $company
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByCompanyQuery(CompanyEntity $company)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('BrBundle\Entity\Company\Logo', 'l')
             ->where(
@@ -43,9 +47,14 @@ class Logo extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string                        $type
+     * @param  CompanyEntity                 $company
+     * @return \BrBundle\Entity\Company\Logo
+     */
     public function findOneByTypeAndCompany($type, CompanyEntity $company)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('BrBundle\Entity\Company\Logo', 'l')
             ->where(
@@ -63,9 +72,13 @@ class Logo extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $type
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByTypeQuery($type)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('BrBundle\Entity\Company\Logo', 'l')
             ->where(

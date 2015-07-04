@@ -33,7 +33,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 {
     public function overviewAction()
     {
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -59,7 +59,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function addAction()
     {
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -108,11 +108,11 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function editAction()
     {
-        if (!($oldJob = $this->_getInternship())) {
+        if (!($oldJob = $this->getInternshipEntity())) {
             return new ViewModel();
         }
 
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -162,11 +162,11 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
     public function deleteAction()
     {
-        if (!($internship = $this->_getInternship())) {
+        if (!($internship = $this->getInternshipEntity())) {
             return new ViewModel();
         }
 
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -182,36 +182,23 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         );
     }
 
-    private function _getInternship()
+    /**
+     * @return Job|null
+     */
+    private function getInternshipEntity()
     {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the internship!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_corporate_internship',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        $internship = $this->getEntityManager()
+        $job = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findOneActiveByTypeAndId('internship', $this->getParam('id'));
+            ->findOneActiveByTypeAndId('internship', $this->getParam('id', 0));
 
-        if (null === $internship) {
+        if (!($job instanceof Job)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No internship with the given ID was found!'
+                'No job was found!'
             );
 
             $this->redirect()->toRoute(
-                'br_corporate_internship',
+                'br_career_internship',
                 array(
                     'action' => 'overview',
                 )
@@ -220,10 +207,13 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             return;
         }
 
-        return $internship;
+        return $job;
     }
 
-    private function _getSectors()
+    /**
+     * @return array
+     */
+    private function getSectors()
     {
         $sectorArray = array();
         foreach (Company::$possibleSectors as $key => $sector) {
@@ -231,29 +221,5 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         }
 
         return $sectorArray;
-    }
-
-    /**
-     * @return Corporate
-     */
-    private function _getPerson()
-    {
-        $person = $this->getAuthentication()->getPersonObject();
-
-        if ($person === null || !($person instanceof Corporate)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login to view the CV book.'
-            );
-
-            $this->redirect()->toRoute(
-                'br_corporate_index',
-                array(
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-        }
-
-        return $person;
     }
 }

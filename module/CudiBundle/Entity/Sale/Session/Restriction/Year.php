@@ -33,7 +33,7 @@ class Year extends Restriction
     /**
      * @var array The possible years of a restriction
      */
-    public static $POSSIBLE_YEARS = array(
+    public static $possibleYears = array(
         '1' => '1st Bachelor',
         '2' => '2nd Bachelor',
         '3' => '3th Bachelor',
@@ -95,7 +95,7 @@ class Year extends Restriction
      */
     public function getReadableValue()
     {
-        return self::$POSSIBLE_YEARS[$this->startValue] . ' - ' . self::$POSSIBLE_YEARS[$this->endValue];
+        return self::$possibleYears[$this->startValue] . ' - ' . self::$possibleYears[$this->endValue];
     }
 
     /**

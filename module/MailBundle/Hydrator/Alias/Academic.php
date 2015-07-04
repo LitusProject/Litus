@@ -31,7 +31,7 @@ class Academic extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $std_keys = array('alias');
+    private static $stdKeys = array('alias');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -52,7 +52,7 @@ class Academic extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['person']['id'] = $object->getAcademic()->getId();
         $data['person']['value'] = $object->getAcademic()->getFullName() . ' - ' . $object->getAcademic()->getUniversityIdentification();

@@ -22,7 +22,7 @@ use CommonBundle\Entity\General\Organization\Unit as UnitEntity;
 
 class Unit extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('name', 'mail', 'displayed');
+    private static $stdKeys = array('name', 'mail', 'displayed');
 
     protected function doExtract($object = null)
     {
@@ -30,7 +30,7 @@ class Unit extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['organization'] = $object->getOrganization()->getId();
 
@@ -78,26 +78,34 @@ class Unit extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setCoordinatorRoles($this->arrayToRoles($data['coordinator_roles']));
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function rolesToArray(array $roles)
     {
-        return array_filter(array_map(function ($role) {
-            if ($role->getSystem()) {
-                return null;
-            }
+        return array_filter(
+            array_map(
+                function ($role) {
+                    if ($role->getSystem()) {
+                        return null;
+                    }
 
-            return $role->getName();
-        }, $roles));
+                    return $role->getName();
+                },
+                $roles
+            )
+        );
     }
 
     protected function arrayToRoles(array $roles)
     {
-        return array_map(function ($role) {
-            return $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\Acl\Role')
-                ->findOneByName($role);
-        }, $roles);
+        return array_map(
+            function ($role) {
+                return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\Acl\Role')
+                    ->findOneByName($role);
+            },
+            $roles
+        );
     }
 }

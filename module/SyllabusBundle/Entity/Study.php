@@ -18,8 +18,9 @@
 
 namespace SyllabusBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\Mapping as ORM,
+    SyllabusBundle\Entity\Study\Combination;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study")
@@ -37,51 +38,23 @@ class Study
     private $id;
 
     /**
-     * @var integer The id of the KU Leuven
+     * @var Combination The combination of module groups
      *
-     * @ORM\Column(type="integer", name="kul_id", nullable=true)
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study\Combination", cascade={"persist"})
+     * @ORM\JoinColumn(name="combination", referencedColumnName="id")
      */
-    private $kulId;
+    private $combination;
 
     /**
-     * @var string The title of the study
+     * @var AcademicYear The year of the mapping
      *
-     * @ORM\Column(type="string", length=300)
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
      */
-    private $title;
-
-    /**
-     * @var integer The phase number of the study
-     *
-     * @ORM\Column(type="smallint")
-     */
-    private $phase;
-
-    /**
-     * @var string The language of the study
-     *
-     * @ORM\Column(type="string", length=2)
-     */
-    private $language;
-
-    /**
-     * @var Study The parent study of the study
-     *
-     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study", inversedBy="children")
-     * @ORM\JoinColumn(name="parent", referencedColumnName="id")
-     */
-    private $parent;
-
-    /**
-     * @var ArrayCollection The children studies of the study
-     *
-     * @ORM\OneToMany(targetEntity="SyllabusBundle\Entity\Study", mappedBy="parent")
-     */
-    private $children;
+    private $academicYear;
 
     public function __construct()
     {
-        $this->children = new ArrayCollection();
     }
 
     /**
@@ -93,20 +66,39 @@ class Study
     }
 
     /**
-     * @return integer
+     * @return Combination
      */
-    public function getKulId()
+    public function getCombination()
     {
-        return $this->kulId;
+        return $this->combination;
     }
 
     /**
-     * @param  integer $kulId
+     * @param  Combination $combination
      * @return self
      */
-    public function setKulId($kulId)
+    public function setCombination(Combination $combination)
     {
-        $this->kulId = $kulId;
+        $this->combination = $combination;
+
+        return $this;
+    }
+
+    /**
+     * @return AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
+    }
+
+    /**
+     * @param  AcademicYear $academicYear
+     * @return self
+     */
+    public function setAcademicYear(AcademicYear $academicYear)
+    {
+        $this->academicYear = $academicYear;
 
         return $this;
     }
@@ -116,53 +108,23 @@ class Study
      */
     public function getTitle()
     {
-        return $this->title;
-    }
-
-    /**
-     * @param  string $title
-     * @return self
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFullTitle()
-    {
-        if (null == $this->parent) {
-            return $this->title;
-        } else {
-            if (null == $this->parent->getParent()) {
-                return $this->parent->getFullTitle() . ': ' . $this->title;
-            } else {
-                return $this->parent->getFullTitle() . ' - ' . $this->title;
-            }
+        if (null !== $this->combination) {
+            return $this->combination->getTitle();
         }
+
+        return '';
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getPhase()
     {
-        return $this->phase;
-    }
+        if (null !== $this->combination) {
+            return $this->combination->getPhase();
+        }
 
-    /**
-     * @param  integer $phase
-     * @return self
-     */
-    public function setPhase($phase)
-    {
-        $this->phase = $phase;
-
-        return $this;
+        return 0;
     }
 
     /**
@@ -170,70 +132,10 @@ class Study
      */
     public function getLanguage()
     {
-        return $this->language;
-    }
-
-    /**
-     * @param  string $language
-     * @return self
-     */
-    public function setLanguage($language)
-    {
-        $this->language = $language;
-
-        return $this;
-    }
-
-    /**
-     * @return Study
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
-     * @param  Study $parent
-     * @return self
-     */
-    public function setParent(Study $parent = null)
-    {
-        $this->parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getParents()
-    {
-        if ($this->parent) {
-            return array_merge(array($this->parent), $this->parent->getParents());
+        if (null !== $this->combination) {
+            return $this->combination->getLanguage();
         }
 
-        return array();
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getChildren()
-    {
-        return $this->children;
-    }
-
-    public function getAllChildren()
-    {
-        $directChildren = $this->getChildren()->toArray();
-
-        $result = array();
-        foreach ($directChildren as $child) {
-            $result = array_merge($result, $child->getAllChildren());
-        }
-
-        $result = array_merge($result, $directChildren);
-
-        return $result;
+        return '';
     }
 }

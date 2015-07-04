@@ -36,12 +36,12 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function manageAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
         if (null !== $this->getParam('field')) {
-            $tickets = $this->_search($event);
+            $tickets = $this->search($event);
         }
 
         if (!isset($tickets)) {
@@ -66,7 +66,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function exportAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -93,7 +93,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
     public function printAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -122,11 +122,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
-        $tickets = $this->_search($event);
+        $tickets = $this->search($event);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -155,7 +155,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         );
     }
 
-    private function _search(Event $event)
+    /**
+     * @param  Event      $event
+     * @return array|null
+     */
+    private function search(Event $event)
     {
         switch ($this->getParam('field')) {
             case 'person':
@@ -173,32 +177,17 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
     }
 
-    private function _getEvent()
+    /**
+     * @return Event|null
+     */
+    private function getEventEntity()
     {
-        if (null === $this->getParam('id')) {
+        $event = $this->getEntityById('TicketBundle\Entity\Event');
+
+        if (!($event instanceof Event)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the event!'
-            );
-
-            $this->redirect()->toRoute(
-                'ticket_admin_event',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $event = $this->getEntityManager()
-            ->getRepository('TicketBundle\Entity\Event')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $event) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No event with the given ID was found!'
+                'No event was found!'
             );
 
             $this->redirect()->toRoute(
@@ -212,46 +201,5 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         return $event;
-    }
-
-    private function _getTicket()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the ticket!'
-            );
-
-            $this->redirect()->toRoute(
-                'ticket_admin_event',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $ticket = $this->getEntityManager()
-            ->getRepository('TicketBundle\Entity\Ticket')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $ticket) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ticket with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'ticket_admin_event',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $ticket;
     }
 }

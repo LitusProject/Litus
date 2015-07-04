@@ -42,7 +42,7 @@
                     <td class="driverdata">
                         {% if hasAccess('logistics_admin_van_reservation', 'edit') and null == reservation.getDriver().getPerson() and isDriverLoggedIn %}
                             None: <i><a href="#" class="assignme" data-id="{{ reservation.getId() }}">Assign Me</a></i>
-                        {% elseif hasAccess('logistics_admin_van_reservation', 'edit') and currentUser.getUserName() != "" and currentUser.getUsername() == reservation.getDriver().getPerson().getUsername() %}
+                        {% elseif hasAccess('logistics_admin_van_reservation', 'edit') and authenticatedPerson.getUserName() != "" and authenticatedPerson.getUsername() == reservation.getDriver().getPerson().getUsername() %}
                             {{ reservation.getDriver().getPerson().getFullName() }} - <i><a href="#" class="unassignme" data-id="{{ reservation.getId() }}">Unassign Me</a></i>
                         {% else %}
                             {{ reservation.getDriver().getPerson().getFullName() }}

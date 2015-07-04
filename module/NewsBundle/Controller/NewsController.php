@@ -20,6 +20,7 @@ namespace NewsBundle\Controller;
 
 use CommonBundle\Component\Util\File\TmpFile as TmpFile,
     NewsBundle\Component\Document\Generator\Feed as FeedGenerator,
+    NewsBundle\Entity\Node\News,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -49,7 +50,7 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
 
     public function viewAction()
     {
-        if (!($news = $this->_getNews())) {
+        if (!($news = $this->getNewsEntity())) {
             return $this->notFoundAction();
         }
 
@@ -79,17 +80,14 @@ class NewsController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    public function _getNews()
+    /**
+     * @return News|null
+     */
+    private function getNewsEntity()
     {
-        if (null === $this->getParam('name')) {
-            return;
-        }
+        $news = $this->getEntityById('NewsBundle\Entity\Node\News', 'name', 'name');
 
-        $news = $this->getEntityManager()
-            ->getRepository('NewsBundle\Entity\Node\News')
-            ->findOneByName($this->getParam('name'));
-
-        if (null === $news) {
+        if (!($news instanceof News)) {
             return;
         }
 

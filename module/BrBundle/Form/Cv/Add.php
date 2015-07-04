@@ -33,18 +33,18 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     /**
      * @var Academic
      */
-    protected $_academic;
+    protected $academic;
 
     /**
      * @var AcademicYear
      */
-    protected $_academicYear;
+    protected $academicYear;
 
     public function init()
     {
         parent::init();
 
-        list($currentYear, $allYears) = $this->_getYears();
+        list($currentYear, $allYears) = $this->getYears();
 
         $this->add(array(
             'type'     => 'fieldset',
@@ -104,7 +104,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Primary Degree',
                     'required'   => true,
                     'attributes' => array(
-                        'options' => $this->_getStudyMap(),
+                        'options' => $this->getStudyMap(),
                     ),
                 ),
                 array(
@@ -580,21 +580,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->addSubmit('Add');
     }
 
-    private function _getStudyMap()
+    private function getStudyMap()
     {
         $studyMap = array();
         $studies = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-            ->findAllByAcademicAndAcademicYear($this->_academic, $this->_academicYear);
+            ->findAllByAcademicAndAcademicYear($this->academic, $this->academicYear);
 
         foreach ($studies as $study) {
-            $studyMap[$study->getStudy()->getId()] = $study->getStudy()->getFullTitle();
+            $studyMap[$study->getStudy()->getId()] = $study->getStudy()->getTitle();
         }
 
         return $studyMap;
     }
 
-    private function _getYears()
+    private function getYears()
     {
         $currentYear = date('Y');
         $years = array();
@@ -612,7 +612,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     public function setAcademic(Academic $academic)
     {
-        $this->_academic = $academic;
+        $this->academic = $academic;
 
         return $this;
     }
@@ -623,7 +623,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     public function setAcademicYear(AcademicYear $academicYear)
     {
-        $this->_academicYear = $academicYear;
+        $this->academicYear = $academicYear;
 
         return $this;
     }

@@ -25,7 +25,7 @@ use BrBundle\Component\ContractParser\Parser as BulletParser,
     CommonBundle\Component\Util\Xml\Object as XmlObject,
     Doctrine\ORM\EntityManager,
     IntlDateFormatter,
-    Zend\I18n\Translator\Translator;
+    Zend\I18n\Translator\TranslatorInterface;
 
 /**
  * Generate a PDF for a contract.
@@ -38,20 +38,21 @@ use BrBundle\Component\ContractParser\Parser as BulletParser,
 class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var \BrBundle\Entity\Contract
+     * @var ContractEntity
      */
-    private $_contract;
+    private $contract;
 
     /**
-     * @var \Zend\I18n\Translator\Translator
+     * @var TranslatorInterface
      */
-    private $_translator;
+    private $translator;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Contract   $contract      The contract for which we want to generate a PDF
+     * @param EntityManager       $entityManager The EntityManager instance
+     * @param ContractEntity      $contract      The contract for which we want to generate a PDF
+     * @param TranslatorInterface $translator
      */
-    public function __construct(EntityManager $entityManager, ContractEntity $contract, Translator $translator)
+    public function __construct(EntityManager $entityManager, ContractEntity $contract, TranslatorInterface $translator)
     {
         parent::__construct(
             $entityManager,
@@ -63,27 +64,30 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                 ->getConfigValue('br.file_path') . '/contracts/'
                 . $contract->getId() . '/contract.pdf'
         );
-        $this->_translator = $translator;
-        $this->_contract = $contract;
+        $this->translator = $translator;
+        $this->contract = $contract;
     }
 
+    /**
+     * @param TmpFile $tmpFile
+     */
     protected function generateXml(TmpFile $tmpFile)
     {
         $xml = new XmlGenerator($tmpFile);
 
         $configs = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config');
 
-        $title = $this->_contract->getTitle();
-        $company = $this->_contract->getOrder()->getCompany();
+        $title = $this->contract->getTitle();
+        $company = $this->contract->getOrder()->getCompany();
 
         $locale = $configs->getConfigValue('br.contract_language');
-        $this->_translator->setLocale($locale);
+        $this->translator->setLocale($locale);
 
         $formatter = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::NONE);
-        $date = $formatter->format($this->_contract->getOrder()->getCreationTime());
+        $date = $formatter->format($this->contract->getOrder()->getCreationTime());
 
-        $ourContactPerson = $this->_contract->getOrder()->getCreationPerson()->getPerson()->getFullName();
-        $entries = $this->_contract->getEntries();
+        $ourContactPerson = $this->contract->getOrder()->getCreationPerson()->getPerson()->getFullName();
+        $entries = $this->contract->getEntries();
 
         $unionName = $configs->getConfigValue('organization_name');
         $unionNameShort = $configs->getConfigValue('organization_short_name');
@@ -127,7 +131,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                     new XmlObject(
                         'company',
                         array(
-                            'contact_person' => $this->_contract->getOrder()->getContact()->getFullName(),
+                            'contact_person' => $this->contract->getOrder()->getContact()->getFullName(),
                         ),
                         array(
                             new XmlObject('name', null, $company->getName()),
@@ -163,7 +167,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                                     new XmlObject(
                                         'country',
                                         null,
-                                        $this->_translator->translate($company->getAddress()->getCountry())
+                                        $this->translator->translate($company->getAddress()->getCountry())
                                     ),
                                 )
                             ),

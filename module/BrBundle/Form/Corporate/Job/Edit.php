@@ -31,7 +31,7 @@ class Edit extends Add
     /**
      * @var Job
      */
-    private $_job;
+    private $job;
 
     public function init()
     {
@@ -40,15 +40,15 @@ class Edit extends Add
         $this->remove('submit');
         $this->addSubmit('Save Changes');
 
-        if (null !== $this->_job) {
+        if (null !== $this->job) {
             $hydrator = $this->getHydrator();
-            $this->populateValues($hydrator->extract($this->_job));
+            $this->populateValues($hydrator->extract($this->job));
         }
     }
 
     public function setJob(Job $job)
     {
-        $this->_job = $job;
+        $this->job = $job;
 
         return $this;
     }

@@ -39,11 +39,11 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'bookings' => $this->_getBookings(),
-                'calendarItems' => $this->_getCalendarItems(),
-                'wiki' => $this->_getWiki(),
-                'cudi' => $this->_getCudiInfo(),
-                'newsItems' => $this->_getNewsItems(),
+                'bookings' => $this->getBookings(),
+                'calendarItems' => $this->getCalendarItems(),
+                'wiki' => $this->getWiki(),
+                'cudi' => $this->getCudiInfo(),
+                'newsItems' => $this->getNewsItems(),
                 'notifications' => $notifications,
                 'piwik' => $this->_getPiwikInfo(),
                 'myShifts' => $this->_getMyShifts(),
@@ -52,12 +52,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return array
+     * @return array|null
      */
     private function _getBookings()
     {
         $bookings = null;
-        if (null !== $this->getAuthentication()->getPersonObject()) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             $bookings = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllOpenByPerson($this->getAuthentication()->getPersonObject());
@@ -79,7 +79,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return array
      */
-    private function _getNewsItems()
+    private function getNewsItems()
     {
         $maxAge = new DateTime();
         $maxAge->sub(
@@ -98,7 +98,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return array
      */
-    private function _getCalendarItems()
+    private function getCalendarItems()
     {
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
@@ -122,7 +122,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return array
      */
-    private function _getCudiInfo()
+    private function getCudiInfo()
     {
         $cudi = array();
         $cudi['currentOpeningHour'] = $this->getEntityManager()
@@ -149,9 +149,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    private function _getPiwikInfo()
+    private function getPiwikInfo()
     {
         $enablePiwik = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -175,11 +175,11 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    private function _getMyShifts()
+    private function getMyShifts()
     {
-        if (!$this->getAuthentication()->getPersonObject()) {
+        if (!$this->getAuthentication()->isAuthenticated()) {
             return null;
         }
 
@@ -188,7 +188,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllActiveByPerson($this->getAuthentication()->getPersonObject());
     }
 
-    private function _getWiki()
+    /**
+     * @return array
+     */
+    private function getWiki()
     {
         return array(
             'enable' => $this->getEntityManager()

@@ -28,9 +28,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Visit extends EntityRepository
 {
+    /**
+     * @param  string              $controller
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByControllerQuery($controller)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('CommonBundle\Entity\General\Visit', 'v')
             ->where(
@@ -46,9 +50,13 @@ class Visit extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $name
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByUserQuery($name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('CommonBundle\Entity\General\Visit', 'v')
             ->innerJoin('v.user', 'p')
@@ -77,9 +85,13 @@ class Visit extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $url
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByUrlQuery($url)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('CommonBundle\Entity\General\Visit', 'v')
             ->where(

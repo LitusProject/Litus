@@ -1,0 +1,97 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'syllabus/admin/study/module-group/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'syllabus/admin/study/module-group/partials/years.twig' %}
+
+    <div id="controller_action">
+        <div id="module_group_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="name">Name</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Name</th>
+                    <th width="70px">Phase</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="default_page">
+            <table class="full_width manage">
+                <tr>
+                    <th>Name</th>
+                    <th width="70px">Phase</th>
+                    <th width="70px">Actions</th>
+                </tr>
+
+                {% for module_group in paginator %}
+                    <tr class="item item-{{ module_group.getId() }}">
+                        <td>{{ module_group.getTitle() }}</td>
+                        <td>{{ module_group.getPhase() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('syllabus_admin_study_module_group', 'view') %}
+                                <a href="{{ url('syllabus_admin_study_module_group', {'action': 'view', 'id': module_group.getId()}) }}" class="view">View</a>
+                            {% endif %}
+                                {% if hasAccess('syllabus_admin_study_module_group', 'edit') %}
+                                    <a href="{{ url('syllabus_admin_study_module_group', {'action': 'edit', 'id': module_group.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('syllabus_admin_study_module_group', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#module_group_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('syllabus_admin_study_module_group', {'action': 'manage'}) }}',
+                url: '{{ url('syllabus_admin_study_module_group', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#module_group_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#module_group_search table').append(row = $('<tr>', {class: 'item item-' + this.studyId}));
+                        row.append('<td>' + this.title + '</td>')
+                            .append('<td>' + this.phase + '</td>')
+                            .append(
+                                actions = $('<td>', {'class': 'actions'})
+                            );
+
+                            {% if hasAccess('syllabus_admin_study_module_group', 'view') %}
+                                actions.append('<a href="{{ url('syllabus_admin_study_module_group') }}view/' + this.id + '" class="view">View</a>');
+                            {% endif %}
+
+                            {% if hasAccess('syllabus_admin_study_module_group', 'edit') %}
+                                actions.append('<a href="{{ url('syllabus_admin_study_module_group') }}edit/' + this.id + '" class="edit">Edit</a>');
+                            {% endif %}
+                    });
+                    $('#module_group_search table').change();
+                },
+                clear: function () {
+                    $('#module_group_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+    </script>
+{% endblock %}

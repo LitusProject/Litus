@@ -102,8 +102,8 @@ class Role
     }
 
     /**
-     * @param  array                         $parents
-     * @return \CommonBundle\Entity\Acl\Role
+     * @param  array $parents
+     * @return self
      */
     public function setParents(array $parents)
     {
@@ -121,8 +121,8 @@ class Role
     }
 
     /**
-     * @param  array                         $actions
-     * @return \CommonBundle\Entity\Acl\Role
+     * @param  array $actions
+     * @return self
      */
     public function setActions(array $actions)
     {
@@ -142,32 +142,36 @@ class Role
     /**
      * Allow this role access to the given action.
      *
-     * @param  \CommonBundle\Entity\Acl\Action $action The action the role should have access to
-     * @return \CommonBundle\Entity\Acl\Role
+     * @param  Action $action The action the role should have access to
+     * @return self
      */
     public function addAction(Action $action)
     {
         $this->actions->add($action);
+
+        return $this;
     }
 
     /**
      * Remove the given action from the role.
      *
-     * @param  \CommonBundle\Entity\Acl\Action $action The action the role should have access to
-     * @return \CommonBundle\Entity\Acl\Role
+     * @param  Action $action The action the role should have access to
+     * @return Role
      */
     public function removeAction(Action $action)
     {
         $this->actions->removeElement($action);
+
+        return $this;
     }
 
     /**
      * Checks whether or not this role has sufficient permissions to access
      * the specified action.
      *
-     * @param  \CommonBundle\Component\Acl\Acl $acl      The ACL instance
-     * @param  string                          $resource The resource the action belongs to
-     * @param  string                          $action   The action that should be verified
+     * @param  Acl    $acl      The ACL instance
+     * @param  string $resource The resource the action belongs to
+     * @param  string $action   The action that should be verified
      * @return bool
      */
     public function isAllowed(Acl $acl, $resource, $action)

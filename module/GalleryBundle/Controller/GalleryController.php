@@ -20,6 +20,8 @@ namespace GalleryBundle\Controller;
 
 use CommonBundle\Component\Util\AcademicYear,
     DateInterval,
+    GalleryBundle\Entity\Album\Album,
+    GalleryBundle\Entity\Album\Photo,
     Zend\View\Model\ViewModel;
 
 /**
@@ -106,7 +108,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function albumAction()
     {
-        if (!($album = $this->_getAlbumByName())) {
+        if (!($album = $this->getAlbumEntity())) {
             return $this->notFoundAction();
         }
 
@@ -137,7 +139,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
-        if (!($photo = $this->_getPhoto())) {
+        if (!($photo = $this->getPhotoEntity())) {
             return $this->notFoundAction();
         }
 
@@ -159,7 +161,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
-        if (!($photo = $this->_getPhoto())) {
+        if (!($photo = $this->getPhotoEntity())) {
             return $this->notFoundAction();
         }
 
@@ -175,37 +177,31 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    public function _getAlbumByName()
+    /**
+     * @return Album|null
+     */
+    private function getAlbumEntity()
     {
-        if (null === $this->getParam('name')) {
-            return;
-        }
+        $album = $this->getEntityById('GalleryBundle\Entity\Album\Album', 'name', 'name');
 
-        $album = $this->getEntityManager()
-            ->getRepository('GalleryBundle\Entity\Album\Album')
-            ->findOneByName($this->getParam('name'));
-
-        if (null === $album) {
+        if (!($album instanceof Album)) {
             return;
         }
 
         return $album;
     }
 
-    public function _getPhoto()
+    /**
+     * @return Photo|null
+     */
+    private function getPhotoEntity()
     {
-        if (null === $this->getParam('name')) {
+        $photo = $this->getEntityById('GalleryBundle\Entity\Album\Photo', 'id', 'name');
+
+        if (!($photo instanceof Photo)) {
             return;
         }
 
-        $album = $this->getEntityManager()
-            ->getRepository('GalleryBundle\Entity\Album\Photo')
-            ->findOneById($this->getParam('name'));
-
-        if (null === $album) {
-            return;
-        }
-
-        return $album;
+        return $photo;
     }
 }

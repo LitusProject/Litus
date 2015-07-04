@@ -160,9 +160,9 @@ Example content of this section.
             array(
                 /*
                 Structure:
-                {key: year code XXYY} = array:
-                    {key: 'full_year'} = {full year XXXX-YYYY}
-                    {key: 'file'}      = {filename}
+                {key: year code XXYY} => array:
+                    {key: 'full_year'} => {full year XXXX-YYYY}
+                    {key: 'file'}      => {filename}
                  */
             )
         ),

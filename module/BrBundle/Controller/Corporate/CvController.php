@@ -33,7 +33,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 {
     public function groupedAction()
     {
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -88,7 +88,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     public function listAction()
     {
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -127,7 +127,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             }
         }
 
-        $entries = $this->_getList($academicYear);
+        $entries = $this->getList($academicYear);
 
         return new ViewModel(
             array(
@@ -145,7 +145,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
     {
         $this->initAjax();
 
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -187,7 +187,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
             }
         }
 
-        $filtered = $this->_doFilter($this->_getList($academicYear), $filters);
+        $filtered = $this->doFilter($this->getList($academicYear), $filters);
         $result = array();
         foreach ($filtered as $entry) {
             $result[] = $entry->getId();
@@ -202,7 +202,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
 
     public function downloadArchiveAction()
     {
-        if (!($person = $this->_getPerson())) {
+        if (!($person = $this->getCorporateEntity())) {
             return new ViewModel();
         }
 
@@ -261,27 +261,41 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         );
     }
 
-    private function _getList(AcademicYear $academicYear)
+    /**
+     * @param  AcademicYear $academicYear
+     * @return array
+     */
+    private function getList(AcademicYear $academicYear)
     {
         return $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findAllByAcademicYear($academicYear);
     }
 
-    private function _doFilter($entries, $filters)
+    /**
+     * @param  array $entries
+     * @param  array $filters
+     * @return array
+     */
+    private function doFilter($entries, $filters)
     {
         if (isset($filters['string'])) {
-            $entries = $this->_filterString($entries, $filters['string']);
+            $entries = $this->filterString($entries, $filters['string']);
         }
 
         if (isset($filters['grade'])) {
-            $entries = $this->_filterGrade($entries, $filters['grade']);
+            $entries = $this->filterGrade($entries, $filters['grade']);
         }
 
         return $entries;
     }
 
-    private function _filterString($entries, $string)
+    /**
+     * @param  array  $entries
+     * @param  string $string
+     * @return array
+     */
+    private function filterString($entries, $string)
     {
         $result = array();
         $words = preg_split('/[\s,]+/', $string);
@@ -301,7 +315,12 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         return $result;
     }
 
-    private function _filterGrade($entries, $grade)
+    /**
+     * @param  array $entries
+     * @param  int   $grade
+     * @return array
+     */
+    private function filterGrade($entries, $grade)
     {
         $result = array();
         $min = $grade['min'] * 100;
@@ -313,29 +332,5 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         }
 
         return $result;
-    }
-
-    /**
-     * @return Corporate
-     */
-    private function _getPerson()
-    {
-        $person = $this->getAuthentication()->getPersonObject();
-
-        if ($person === null || !($person instanceof Corporate)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'Please login to view the CV book.'
-            );
-
-            $this->redirect()->toRoute(
-                'br_corporate_index',
-                array(
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-        }
-
-        return $person;
     }
 }

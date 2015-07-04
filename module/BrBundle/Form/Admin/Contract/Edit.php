@@ -34,7 +34,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var Contract
      */
-    private $_contract;
+    private $contract;
 
     public function init()
     {
@@ -73,7 +73,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        foreach ($this->_contract->getEntries() as $entry) {
+        foreach ($this->contract->getEntries() as $entry) {
             $this->add(array(
                 'type'     => 'textarea',
                 'name'     => 'entry_' . $entry->getId(),
@@ -90,8 +90,8 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Save', 'contract_edit');
 
-        if (null !== $this->_contract) {
-            $this->bind($this->_contract);
+        if (null !== $this->contract) {
+            $this->bind($this->contract);
         }
     }
 
@@ -101,7 +101,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setContract(Contract $contract)
     {
-        $this->_contract = $contract;
+        $this->contract = $contract;
 
         return $this;
     }

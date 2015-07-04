@@ -75,14 +75,14 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
         parent::__construct($contact);
 
         $this->job = $job;
-        $this->_setRequestType($requestType);
+        $this->setRequestType($requestType);
         $this->editJob = $editJob;
     }
 
     /**
      * @param string $type
      */
-    private function _setRequestType($type)
+    private function setRequestType($type)
     {
         if (!in_array($type, self::$possibleRequests)) {
             throw new Exception('The requested type does not exist for the vacancy requests');
@@ -115,6 +115,9 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
         return $this->requestType;
     }
 
+    /**
+     * @return null
+     */
     public function approveRequest()
     {
         switch ($this->requestType) {
@@ -135,6 +138,9 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
         }
     }
 
+    /**
+     * @return null
+     */
     public function rejectRequest()
     {
         switch ($this->requestType) {

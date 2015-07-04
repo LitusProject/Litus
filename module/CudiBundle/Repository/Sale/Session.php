@@ -34,9 +34,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Session extends EntityRepository
 {
+    /**
+     * @param  CashRegister                         $cashRegister
+     * @return \CudiBundle\Entity\Sale\Session|null
+     */
     public function findOneByCashRegister(CashRegister $cashRegister)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CudiBundle\Entity\Sale\Session', 's')
             ->where(
@@ -53,7 +57,12 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
-    private function _personsByAcademicYearAndOrganization(AcademicYear $academicYear, Organization $organization = null)
+    /**
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
+     * @return array
+     */
+    private function personsByAcademicYearAndOrganization(AcademicYear $academicYear, Organization $organization = null)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p.id')
@@ -78,14 +87,19 @@ class Session extends EntityRepository
         return $ids;
     }
 
+    /**
+     * @param  SessionEntity     $session
+     * @param  Organization|null $organization
+     * @return int
+     */
     public function getTheoreticalRevenue(SessionEntity $session, Organization $organization = null)
     {
         if ($organization !== null) {
             $session->setEntityManager($this->getEntityManager());
 
-            $ids = $this->_personsByAcademicYearAndOrganization($session->getAcademicYear(), $organization);
+            $ids = $this->personsByAcademicYearAndOrganization($session->getAcademicYear(), $organization);
 
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->innerJoin('s.queueItem', 'q')
@@ -99,7 +113,7 @@ class Session extends EntityRepository
                 ->getQuery()
                 ->getSingleScalarResult();
 
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $resultSet - $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\ReturnItem', 's')
                 ->innerJoin('s.queueItem', 'q')
@@ -113,7 +127,7 @@ class Session extends EntityRepository
                 ->getQuery()
                 ->getSingleScalarResult();
         } else {
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->where(
@@ -123,7 +137,7 @@ class Session extends EntityRepository
                 ->getQuery()
                 ->getSingleScalarResult();
 
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $resultSet - $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\ReturnItem', 's')
                 ->where(
@@ -138,22 +152,33 @@ class Session extends EntityRepository
             $resultSet = 0;
         }
 
-        return $resultSet;
+        return (int) $resultSet;
     }
 
+    /**
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
+     * @return int
+     */
     public function getTheoreticalRevenueByAcademicYear(AcademicYear $academicYear, Organization $organization = null)
     {
         return $this->getTheoreticalRevenueBetween($academicYear->getUniversityStartDate(), $academicYear->getUniversityEndDate(), $organization);
     }
 
+    /**
+     * @param  DateTime          $startDate
+     * @param  DateTime          $endDate
+     * @param  Organization|null $organization
+     * @return int
+     */
     public function getTheoreticalRevenueBetween(DateTime $startDate, DateTime $endDate, Organization $organization = null)
     {
         if ($organization !== null) {
-            $academicYear = AcademicYearUtil::getUniversityYear($this->_em, $startDate);
+            $academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager(), $startDate);
 
-            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+            $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->innerJoin('s.session', 'e')
@@ -170,7 +195,7 @@ class Session extends EntityRepository
                 ->getQuery()
                 ->getSingleScalarResult();
 
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $resultSet - $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\ReturnItem', 's')
                 ->innerJoin('s.session', 'e')
@@ -187,7 +212,7 @@ class Session extends EntityRepository
                 ->getQuery()
                 ->getSingleScalarResult();
         } else {
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->innerJoin('s.session', 'e')
@@ -202,7 +227,7 @@ class Session extends EntityRepository
                 ->getQuery()
                 ->getSingleScalarResult();
 
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $resultSet - $query->select('SUM(s.price)')
                 ->from('CudiBundle\Entity\Sale\ReturnItem', 's')
                 ->innerJoin('s.session', 'e')
@@ -222,17 +247,22 @@ class Session extends EntityRepository
             $resultSet = 0;
         }
 
-        return $resultSet;
+        return (int) $resultSet;
     }
 
+    /**
+     * @param  SessionEntity     $session
+     * @param  Organization|null $organization
+     * @return int
+     */
     public function getPurchasedAmountBySession(SessionEntity $session, Organization $organization = null)
     {
         if ($organization !== null) {
             $session->setEntityManager($this->getEntityManager());
 
-            $ids = $this->_personsByAcademicYearAndOrganization($session->getAcademicYear(), $organization);
+            $ids = $this->personsByAcademicYearAndOrganization($session->getAcademicYear(), $organization);
 
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(s.purchasePrice)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->innerJoin('s.queueItem', 'q')
@@ -246,7 +276,7 @@ class Session extends EntityRepository
                 ->getQuery()
                 ->getSingleScalarResult();
         } else {
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(s.purchasePrice)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->where(
@@ -264,19 +294,30 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear      $academicYear
+     * @param  Organization|null $organization
+     * @return int
+     */
     public function getPurchasedAmountByAcademicYear(AcademicYear $academicYear, Organization $organization = null)
     {
         return $this->getPurchasedAmountBetween($academicYear->getUniversityStartDate(), $academicYear->getUniversityEndDate(), $organization);
     }
 
+    /**
+     * @param  DateTime          $startDate
+     * @param  DateTime          $endDate
+     * @param  Organization|null $organization
+     * @return int
+     */
     public function getPurchasedAmountBetween(DateTime $startDate, DateTime $endDate, Organization $organization = null)
     {
         if ($organization !== null) {
-            $academicYear = AcademicYearUtil::getUniversityYear($this->_em, $startDate);
+            $academicYear = AcademicYearUtil::getUniversityYear($this->getEntityManager(), $startDate);
 
-            $ids = $this->_personsByAcademicYearAndOrganization($academicYear, $organization);
+            $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(s.purchasePrice)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->innerJoin('s.session', 'e')
@@ -293,7 +334,7 @@ class Session extends EntityRepository
                 ->getQuery()
                 ->getSingleScalarResult();
         } else {
-            $query = $this->_em->createQueryBuilder();
+            $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(s.purchasePrice)')
                 ->from('CudiBundle\Entity\Sale\SaleItem', 's')
                 ->innerJoin('s.session', 'e')
@@ -316,9 +357,12 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \CudiBundle\Entity\Sale\Session|null
+     */
     public function getLast()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CudiBundle\Entity\Sale\Session', 's')
             ->orderBy('s.openDate', 'DESC')
@@ -329,9 +373,13 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  DateTime                             $date
+     * @return \CudiBundle\Entity\Sale\Session|null
+     */
     public function findOnebyDate(DateTime $date)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CudiBundle\Entity\Sale\Session', 's')
             ->where(
@@ -348,9 +396,12 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findOpenQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CudiBundle\Entity\Sale\Session', 's')
             ->where(
@@ -362,14 +413,23 @@ class Session extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         return $this->findAllBetweenQuery($academicYear->getUniversityStartDate(), $academicYear->getUniversityEndDate());
     }
 
+    /**
+     * @param  DateTime            $startDate
+     * @param  DateTime            $endDate
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBetweenQuery(DateTime $startDate, DateTime $endDate)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CudiBundle\Entity\Sale\Session', 's')
             ->where(

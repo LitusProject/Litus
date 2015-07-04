@@ -30,7 +30,7 @@ class TmpFile
     /**
      * @var string The name of the file
      */
-    private $_filename;
+    private $filename;
 
     /**
      * @var resource The file handler
@@ -47,12 +47,12 @@ class TmpFile
             $filename = '/.' . uniqid();
         } while (file_exists($tmpDirectory . $filename));
 
-        $this->_filename = FileUtil::getRealFilename($tmpDirectory . $filename);
-        $this->fileHandle = fopen($this->_filename, 'wb');
+        $this->filename = FileUtil::getRealFilename($tmpDirectory . $filename);
+        $this->fileHandle = fopen($this->filename, 'wb');
 
         if (false === $this->fileHandle) {
             throw new Exception\FailedToOpenException(
-                'Failed to open file "' . $this->_filename . '"'
+                'Failed to open file "' . $this->filename . '"'
             );
         }
     }
@@ -66,7 +66,7 @@ class TmpFile
     {
         $this->checkOpen();
 
-        return $this->_filename;
+        return $this->filename;
     }
 
     /**
@@ -78,8 +78,8 @@ class TmpFile
     {
         $this->checkOpen();
 
-        $handle = fopen($this->_filename, 'r');
-        $data = fread($handle, filesize($this->_filename));
+        $handle = fopen($this->filename, 'r');
+        $data = fread($handle, filesize($this->filename));
         fclose($handle);
 
         return $data;
@@ -104,13 +104,13 @@ class TmpFile
      */
     public function destroy()
     {
-        if ($this->_isOpen()) {
+        if ($this->isOpen()) {
             $fileHandle = $this->fileHandle;
             $this->fileHandle = null;
 
             fclose($fileHandle);
-            if (file_exists($this->_filename)) {
-                unlink($this->_filename);
+            if (file_exists($this->filename)) {
+                unlink($this->filename);
             }
         }
     }
@@ -131,9 +131,9 @@ class TmpFile
      */
     protected function checkOpen()
     {
-        if (!$this->_isOpen()) {
+        if (!$this->isOpen()) {
             throw new Exception\TmpFileClosedException(
-                'The file "' . $this->_filename . '" has already been closed'
+                'The file "' . $this->filename . '" has already been closed'
             );
         }
     }
@@ -143,7 +143,7 @@ class TmpFile
      *
      * @return bool
      */
-    private function _isOpen()
+    private function isOpen()
     {
         return null !== $this->fileHandle;
     }

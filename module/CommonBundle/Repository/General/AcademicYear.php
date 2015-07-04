@@ -28,9 +28,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class AcademicYear extends EntityRepository
 {
+    /**
+     * @param  int                                            $id
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
     public function findOneById($id)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('y')
             ->from('CommonBundle\Entity\General\AcademicYear', 'y')
             ->where(
@@ -44,9 +48,12 @@ class AcademicYear extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('y')
             ->from('CommonBundle\Entity\General\AcademicYear', 'y')
             ->orderBy('y.universityStart', 'DESC')

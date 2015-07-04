@@ -31,9 +31,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Volunteer extends EntityRepository
 {
+    /**
+     * @param  AcademicYear        $academicYear
+     * @param  int                 $minimum
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByCountMinimumQuery(AcademicYear $academicYear, $minimum)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.volunteers', 'v')
@@ -59,9 +64,15 @@ class Volunteer extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @param  int                 $minimum
+     * @param  int                 $maximum
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByCountLimitsQuery(AcademicYear $academicYear, $minimum, $maximum)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p.id', 'COUNT(p.id) shiftCount')
             ->from('ShiftBundle\Entity\Shift', 's')
             ->innerJoin('s.volunteers', 'v')
@@ -91,9 +102,13 @@ class Volunteer extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('ShiftBundle\Entity\Shift\Volunteer', 'v')
             ->where(

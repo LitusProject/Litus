@@ -34,7 +34,7 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var MailingList
      */
-    private $_list;
+    private $list;
 
     public function init()
     {
@@ -46,7 +46,7 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Role',
             'required'   => true,
             'options'    => array(
-                'options' => $this->_createRolesArray(),
+                'options' => $this->createRolesArray(),
                 'input' => array(
                     'validators' => array(
                         array(
@@ -76,7 +76,7 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
         ));
     }
 
-    private function _createRolesArray()
+    private function createRolesArray()
     {
         $roles = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\Acl\Role')
@@ -102,7 +102,7 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
      */
     public function setList(MailingList $list)
     {
-        $this->_list = $list;
+        $this->list = $list;
 
         return $this;
     }
@@ -112,6 +112,6 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
      */
     public function getList()
     {
-        return $this->_list;
+        return $this->list;
     }
 }

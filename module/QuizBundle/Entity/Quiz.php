@@ -32,7 +32,7 @@ use CommonBundle\Entity\User\Person,
 class Quiz
 {
     /**
-     * @var The entry's unique identifier
+     * @var int The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -166,7 +166,7 @@ class Quiz
     /**
      * Checks whether or not the given user can edit the quiz.
      *
-     * @param  Person  $person The person that should be checked
+     * @param  Person|null $person The person that should be checked
      * @return boolean
      */
     public function canBeEditedBy(Person $person = null)
@@ -184,11 +184,17 @@ class Quiz
         return false;
     }
 
+    /**
+     * @return array
+     */
     public function getRounds()
     {
         return $this->rounds->toArray();
     }
 
+    /**
+     * @return array
+     */
     public function getTeams()
     {
         return $this->teams->toArray();

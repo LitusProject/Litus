@@ -28,9 +28,12 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Log extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findBookingLogsQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('CudiBundle\Entity\Log', 'l')
             ->where(
@@ -39,8 +42,8 @@ class Log extends EntityRepository
                     'l INSTANCE OF :cancellations'
                 )
             )
-            ->setParameter('assignments', $this->_em->getMetadataFactory()->getMetadataFor('CudiBundle\Entity\Log\Sale\Assignments'))
-            ->setParameter('cancellations', $this->_em->getMetadataFactory()->getMetadataFor('CudiBundle\Entity\Log\Sale\Cancellations'))
+            ->setParameter('assignments', $this->getEntityManager()->getMetadataFactory()->getMetadataFor('CudiBundle\Entity\Log\Sale\Assignments'))
+            ->setParameter('cancellations', $this->getEntityManager()->getMetadataFactory()->getMetadataFor('CudiBundle\Entity\Log\Sale\Cancellations'))
             ->orderBy('l.timestamp', 'DESC')
             ->getQuery();
 

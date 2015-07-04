@@ -29,7 +29,7 @@ class AddProduct extends Add
     /**
      * @var array The currently used products
      */
-    protected $_currentProducts;
+    protected $currentProducts;
 
     public function init()
     {
@@ -57,7 +57,7 @@ class AddProduct extends Add
             'label'    => 'Product',
             'required' => true,
             'attributes' => array(
-                'options' => $this->_createProductArray(),
+                'options' => $this->createProductArray(),
             ),
         ));
 
@@ -89,22 +89,22 @@ class AddProduct extends Add
      */
     public function setCurrentProducts(array $currentProducts)
     {
-        $this->_currentProducts = $currentProducts;
+        $this->currentProducts = $currentProducts;
 
         return $this;
     }
 
-    private function _createProductArray()
+    private function createProductArray()
     {
         $products = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Product')
-            ->findByAcademicYear($this->_currentYear);
+            ->findByAcademicYear($this->currentYear);
 
         $productArray = array(
             '' => '',
         );
         foreach ($products as $product) {
-            if (!in_array($product, $this->_currentProducts) && $product->isOld() == false) {
+            if (!in_array($product, $this->currentProducts) && $product->isOld() == false) {
                 $productArray[$product->getId()] = $product->getName();
             }
         }

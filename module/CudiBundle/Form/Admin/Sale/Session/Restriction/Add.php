@@ -128,7 +128,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required'   => true,
             'attributes' => array(
                 'class'   => 'restriction_value restriction_value_year',
-                'options' => YearRestriction::$POSSIBLE_YEARS,
+                'options' => YearRestriction::$possibleYears,
             ),
         ));
 
@@ -139,7 +139,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required'   => true,
             'attributes' => array(
                 'class'   => 'restriction_value restriction_value_year',
-                'options' => YearRestriction::$POSSIBLE_YEARS,
+                'options' => YearRestriction::$possibleYears,
             ),
             'options'    => array(
                 'input' => array(
@@ -192,11 +192,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findAllParentsByAcademicYear($academicYear);
+            ->findAllByAcademicYear($academicYear);
 
         $options = array();
         foreach ($studies as $study) {
-            $options[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
+            $options[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getTitle();
         }
 
         return $options;

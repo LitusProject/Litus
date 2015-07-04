@@ -18,7 +18,9 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\File\TmpFile,
+use CalendarBundle\Entity\Node\Event,
+    CommonBundle\Component\Util\File\TmpFile,
+    DateInterval,
     DateTime,
     ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator,
     ShiftBundle\Entity\Shift,
@@ -76,8 +78,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $startDate = self::_loadDate($formData['start_date']);
-                $endDate = self::_loadDate($formData['end_date']);
+                $startDate = self::loadDate($formData['start_date']);
+                $endDate = self::loadDate($formData['end_date']);
 
                 $formData = $form->getData();
                 $interval = $startDate->diff($endDate);
@@ -124,21 +126,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    /**
-     * @param integer $duplicate
-     */
-    private function addInterval(DateTime $time, $interval, $duplicate)
-    {
-        for ($i = 0; $i < $duplicate; $i++) {
-            $time = $time->add($interval);
-        }
-
-        return clone $time;
-    }
-
     public function editAction()
     {
-        if (!($shift = $this->_getShift())) {
+        if (!($shift = $this->getShiftEntity())) {
             return new ViewModel();
         }
 
@@ -178,7 +168,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($shift = $this->_getShift())) {
+        if (!($shift = $this->getShiftEntity())) {
             return new ViewModel();
         }
 
@@ -246,7 +236,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $shifts = $this->_search()
+        $shifts = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -280,7 +270,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function pdfAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
@@ -303,9 +293,24 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-    *   @return \Doctrine\ORM\Query
+     * @param  DateTime     $time
+     * @param  DateInterval $interval
+     * @param  integer      $duplicate
+     * @return DateTime
+     */
+    private function addInterval(DateTime $time, $interval, $duplicate)
+    {
+        for ($i = 0; $i < $duplicate; $i++) {
+            $time = $time->add($interval);
+        }
+
+        return clone $time;
+    }
+
+    /**
+    *   @return \Doctrine\ORM\Query|null
     */
-    private function _search()
+    private function search()
     {
         switch ($this->getParam('field')) {
             case 'name':
@@ -318,32 +323,14 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return Shift|null
      */
-    private function _getShift()
+    private function getShiftEntity()
     {
-        if (null === $this->getParam('id')) {
+        $shift = $this->getEntityById('ShiftBundle\Entity\Shift');
+
+        if (!($shift instanceof Shift)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the shift!'
-            );
-
-            $this->redirect()->toRoute(
-                'shift_admin_shift',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $shift = $this->getEntityManager()
-            ->getRepository('ShiftBundle\Entity\Shift')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $shift) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No shift with the given ID was found!'
+                'No shift was found!'
             );
 
             $this->redirect()->toRoute(
@@ -359,36 +346,21 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         return $shift;
     }
 
-    private function _getEvent()
+    /**
+     * @return Event|null
+     */
+    private function getEventEntity()
     {
-        if (null === $this->getParam('id')) {
+        $event = $this->getEntityById('CalendarBundle\Entity\Node\Event');
+
+        if (!($event instanceof Event)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the event!'
+                'No event was found!'
             );
 
             $this->redirect()->toRoute(
-                'calendar_admin_calendar',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $event = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $event) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No event with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'calendar_admin_calendar',
+                'shift_admin_shift',
                 array(
                     'action' => 'manage',
                 )
@@ -404,7 +376,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
      * @param  string        $date
      * @return DateTime|null
      */
-    private static function _loadDate($date)
+    private static function loadDate($date)
     {
         return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }

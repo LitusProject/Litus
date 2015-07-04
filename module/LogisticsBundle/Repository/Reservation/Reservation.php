@@ -32,7 +32,7 @@ class Reservation extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
             ->getQuery();
@@ -42,7 +42,7 @@ class Reservation extends EntityRepository
 
     public function findAllConflictingQuery(DateTime $startDate, DateTime $endDate, ReservableResourceEntity $resource)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
             ->where(
@@ -72,7 +72,7 @@ class Reservation extends EntityRepository
      */
     public function findAllConflictingIgnoringIdQuery(DateTime $startDate, DateTime $endDate, ReservableResourceEntity $resource, $ignoreId)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\Reservation', 'r')
             ->where(

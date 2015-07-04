@@ -31,15 +31,19 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Entry extends EntityRepository
 {
-    public function findAllByAcademicYearQuery(AcademicYear $year)
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('BrBundle\Entity\Cv\Entry', 'e')
             ->where(
                 $query->expr()->eq('e.year', ':year')
             )
-            ->setParameter('year', $year)
+            ->setParameter('year', $academicYear)
             ->orderBy('e.lastName', 'ASC')
             ->addOrderBy('e.firstName', 'ASC')
             ->getQuery();
@@ -47,31 +51,36 @@ class Entry extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllUngroupedStudiesQuery()
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllUngroupedStudiesQuery(AcademicYear $academicYear)
     {
-        $subQuery = $this->_em->createQueryBuilder();
+        $subQuery = $this->getEntityManager()->createQueryBuilder();
         $subQuery->select('e')
             ->from('BrBundle\Entity\Cv\Entry', 'e')
             ->where(
                 $subQuery->expr()->eq('e.study', 's')
             );
 
-        $groupQuery = $this->_em->createQueryBuilder();
+        $groupQuery = $this->getEntityManager()->createQueryBuilder();
         $groupQuery->select('g')
-            ->from('SyllabusBundle\Entity\StudyGroupMap', 'g')
+            ->from('SyllabusBundle\Entity\Group\StudyMap', 'g')
             ->innerJoin('g.group', 'd')
             ->where(
-                $groupQuery->expr()->andx(
+                $groupQuery->expr()->andX(
                     $groupQuery->expr()->eq('g.study', 's'),
                     $groupQuery->expr()->eq('d.cvBook', 'true')
                 )
             );
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SyllabusBundle\Entity\Study', 's')
+            ->innerJoin('s.combination', 'c')
             ->where(
-                $query->expr()->andx(
+                $query->expr()->andX(
                     $query->expr()->exists(
                         $subQuery->getDql()
                     ),
@@ -79,39 +88,46 @@ class Entry extends EntityRepository
                         $query->expr()->exists(
                             $groupQuery->getDql()
                         )
-                    )
+                    ),
+                    $query->expr()->eq('s.academicYear', ':academicYear')
                 )
             )
-            ->orderBy('s.title', 'ASC')
+            ->setParameter('academicYear', $academicYear)
+            ->orderBy('c.title', 'ASC')
             ->getQuery();
 
         return $resultSet;
     }
 
-    public function findAllByGroupAndAcademicYearQuery(Group $group, AcademicYear $year)
+    /**
+     * @param  Group               $group
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByGroupAndAcademicYearQuery(Group $group, AcademicYear $academicYear)
     {
-        $subQuery = $this->_em->createQueryBuilder();
+        $subQuery = $this->getEntityManager()->createQueryBuilder();
         $subQuery->select('g')
-            ->from('SyllabusBundle\Entity\StudyGroupMap', 'g')
+            ->from('SyllabusBundle\Entity\Group\StudyMap', 'g')
             ->where(
-                $subQuery->expr()->andx(
+                $subQuery->expr()->andX(
                     $subQuery->expr()->eq('g.study', 's'),
                     $subQuery->expr()->eq('g.group', ':group')
                 )
             );
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('BrBundle\Entity\Cv\Entry', 'e')
             ->innerJoin('e.study', 's')
             ->where(
-                $query->expr()->andx(
+                $query->expr()->andX(
                     $query->expr()->exists($subQuery->getDql()),
                     $query->expr()->eq('e.year', ':year')
                 )
             )
             ->setParameter('group', $group)
-            ->setParameter('year', $year)
+            ->setParameter('year', $academicYear)
             ->orderBy('e.lastName', 'ASC')
             ->addOrderBy('e.firstName', 'ASC')
             ->getQuery();
@@ -119,19 +135,23 @@ class Entry extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByStudyAndAcademicYearQuery(Study $study, AcademicYear $year)
+    /**
+     * @param  Study               $study
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByStudyQuery(Study $study)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('BrBundle\Entity\Cv\Entry', 'e')
             ->where(
-                $query->expr()->andx(
+                $query->expr()->andX(
                     $query->expr()->eq('e.study', ':study'),
                     $query->expr()->eq('e.year', ':year')
                 )
             )
             ->setParameter('study', $study)
-            ->setParameter('year', $year)
+            ->setParameter('year', $study->getAcademicYear())
             ->orderBy('e.lastName', 'ASC')
             ->addOrderBy('e.firstName', 'ASC')
             ->getQuery();

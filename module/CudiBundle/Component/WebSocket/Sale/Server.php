@@ -33,12 +33,12 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * @var EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @var Queue
      */
-    private $_queue;
+    private $queue;
 
     /**
      * @param EntityManager $entityManager
@@ -51,8 +51,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 ->getConfigValue('cudi.queue_socket_file')
         );
 
-        $this->_entityManager = $entityManager;
-        $this->_queue = new Queue($entityManager);
+        $this->entityManager = $entityManager;
+        $this->queue = new Queue($entityManager);
     }
 
     /**
@@ -63,9 +63,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
      */
     protected function gotText(User $user, $data)
     {
-        $this->_entityManager->clear();
+        $this->entityManager->clear();
 
-        $key = $this->_entityManager
+        $key = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.queue_socket_key');
 
@@ -78,7 +78,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         switch ($command->command) {
             case 'action':
                 if ($this->isAuthenticated($user->getSocket())) {
-                    $this->_gotAction($user, $command);
+                    $this->gotAction($user, $command);
                 }
                 break;
             case 'queueUpdated':
@@ -102,13 +102,13 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                         return;
                     }
 
-                    $authSession = $this->_entityManager
+                    $authSession = $this->entityManager
                         ->getRepository('CommonBundle\Entity\User\Session')
                         ->findOneById($command->authSession);
 
                     $allowed = false;
                     if ($authSession) {
-                        $acl = new Acl($this->_entityManager);
+                        $acl = new Acl($this->entityManager);
 
                         foreach ($authSession->getPerson()->getRoles() as $role) {
                             if (
@@ -149,8 +149,9 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Parse received binary
      *
-     * @param User   $user
-     * @param string $data
+     * @param  User   $user
+     * @param  string $data
+     * @return null
      */
     protected function gotBin(User $user, $data)
     {
@@ -159,13 +160,14 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Do action when user closed his socket
      *
-     * @param User    $user
-     * @param integer $statusCode
-     * @param string  $reason
+     * @param  User    $user
+     * @param  integer $statusCode
+     * @param  string  $reason
+     * @return null
      */
     protected function onClose(User $user, $statusCode, $reason)
     {
-        $this->_queue->unlockByUser($user);
+        $this->queue->unlockByUser($user);
         parent::onClose($user, $statusCode, $reason);
         $this->sendQueueToAll();
     }
@@ -173,7 +175,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Do action when a new user has connected to this socket
      *
-     * @param User $user
+     * @param  User $user
+     * @return null
      */
     protected function onConnect(User $user)
     {
@@ -182,7 +185,8 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Send queue to one user
      *
-     * @param User $user
+     * @param  User $user
+     * @return null
      */
     private function sendQueue(User $user)
     {
@@ -190,22 +194,23 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             return;
         }
 
-        $session = $this->_entityManager
+        $session = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($user->getExtraData('session'));
 
         switch ($user->getExtraData('queueType')) {
             case 'queue':
-                $this->sendText($user, $this->_queue->getJsonQueue($session));
+                $this->sendText($user, $this->queue->getJsonQueue($session));
                 break;
             case 'queueList':
-                $this->sendText($user, $this->_queue->getJsonQueueList($session));
+                $this->sendText($user, $this->queue->getJsonQueueList($session));
                 break;
         }
     }
 
     /**
      * Send queue to all users
+     * @return null
      */
     private function sendQueueToAll()
     {
@@ -216,23 +221,25 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
     /**
      * Send queue to all users
+     * @param  int  $id
+     * @return null
      */
     private function sendQueueItemToAll($id)
     {
-        if (null == $id) {
+        if (null === $id) {
             return;
         }
 
-        $json = $this->_queue->getJsonQueueItem($id);
+        $json = $this->queue->getJsonQueueItem($id);
 
         foreach ($this->getUsers() as $user) {
-            $session = $this->_entityManager
+            $session = $this->entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->findOneById($user->getExtraData('session'));
 
             switch ($user->getExtraData('queueType')) {
                 case 'queue':
-                    $this->sendText($user, $this->_queue->getJsonQueue($session));
+                    $this->sendText($user, $this->queue->getJsonQueue($session));
                     break;
                 case 'queueList':
                     $this->sendText($user, $json);
@@ -244,10 +251,11 @@ class Server extends \CommonBundle\Component\WebSocket\Server
     /**
      * Parse action text
      *
-     * @param User  $user
-     * @param mixed $command
+     * @param  User  $user
+     * @param  mixed $command
+     * @return null
      */
-    private function _gotAction(User $user, $command)
+    private function gotAction(User $user, $command)
     {
         if (null == $user->getExtraData('session')) {
             return;
@@ -255,69 +263,74 @@ class Server extends \CommonBundle\Component\WebSocket\Server
 
         switch ($command->action) {
             case 'signIn':
-                $id = $this->_signIn($user, $command->universityIdentification);
+                $id = $this->signIn($user, $command->universityIdentification);
                 $this->sendQueueItemToAll($id);
                 break;
             case 'addToQueue':
-                $id = $this->_addToQueue($user, $command->universityIdentification);
+                $id = $this->addToQueue($user, $command->universityIdentification);
                 $this->sendQueueItemToAll($id);
                 break;
             case 'startCollecting':
-                $this->_startCollecting($user, $command->id);
+                $this->startCollecting($user, $command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'startCollectingBulk':
-                $this->_startCollecting($user, $command->id, true);
+                $this->startCollecting($user, $command->id, true);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'cancelCollecting':
-                $this->_cancelCollecting($command->id);
+                $this->cancelCollecting($command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'stopCollecting':
-                $this->_stopCollecting($command->id, isset($command->articles) ? $command->articles : null);
+                $this->stopCollecting($command->id, isset($command->articles) ? $command->articles : null);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'startSale':
-                $this->_startSale($user, $command->id);
+                $this->startSale($user, $command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'cancelSale':
-                $this->_cancelSale($command->id);
+                $this->cancelSale($command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'concludeSale':
-                $this->_concludeSale($user, $command->id, $command->articles, $command->discounts, $command->payMethod);
+                $this->concludeSale($user, $command->id, $command->articles, $command->discounts, $command->payMethod);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'hold':
-                $this->_hold($command->id);
+                $this->hold($command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'unhold':
-                $this->_unhold($command->id);
+                $this->unhold($command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
             case 'saveComment':
-                $this->_saveComment($command->id, $command->comment);
+                $this->saveComment($command->id, $command->comment);
                 break;
             case 'addArticle':
-                $this->_addArticle($user, $command->id, $command->articleId);
+                $this->addArticle($user, $command->id, $command->articleId);
                 break;
             case 'undoSale':
-                $this->_undoSale($user, $command->id);
+                $this->undoSale($user, $command->id);
                 $this->sendQueueItemToAll($command->id);
                 break;
         }
     }
 
-    private function _signIn(User $user, $universityIdentification)
+    /**
+     * @param  User     $user
+     * @param  string   $universityIdentification
+     * @return int|null
+     */
+    private function signIn(User $user, $universityIdentification)
     {
-        $session = $this->_entityManager
+        $session = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($user->getExtraData('session'));
 
-        $item = $this->_queue->addPerson($session, $universityIdentification);
+        $item = $this->queue->addPerson($session, $universityIdentification);
 
         if (is_string($item)) {
             $this->sendText($user, $item);
@@ -332,12 +345,12 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             );
 
             Printer::signInTicket(
-                $this->_entityManager,
-                $this->_entityManager
+                $this->entityManager,
+                $this->entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.signing_printer'),
                 $item,
-                $this->_entityManager
+                $this->entityManager
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findAllAssignedByPerson($item->getPerson())
             );
@@ -346,13 +359,18 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         }
     }
 
-    private function _addToQueue(User $user, $universityIdentification)
+    /**
+     * @param  User     $user
+     * @param  string   $universityIdentification
+     * @return int|null
+     */
+    private function addToQueue(User $user, $universityIdentification)
     {
-        $session = $this->_entityManager
+        $session = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($user->getExtraData('session'));
 
-        $item = $this->_queue->addPerson($session, $universityIdentification, true);
+        $item = $this->queue->addPerson($session, $universityIdentification, true);
 
         if (is_string($item)) {
             $object = (object) array(
@@ -364,105 +382,159 @@ class Server extends \CommonBundle\Component\WebSocket\Server
         }
     }
 
-    private function _startCollecting(User $user, $id, $bulk = false)
+    /**
+     * @param  User    $user
+     * @param  int     $id
+     * @param  boolean $bulk
+     * @return null
+     */
+    private function startCollecting(User $user, $id, $bulk = false)
     {
-        $result = $this->_queue->startCollecting($user, $id, $bulk);
-        if ($result) {
+        $result = $this->queue->startCollecting($user, $id, $bulk);
+        if ($result !== null) {
             $this->sendText($user, $result);
         }
 
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         Printer::collectTicket(
-            $this->_entityManager,
+            $this->entityManager,
             $user->getExtraData('paydesk'),
             $item,
-            $this->_entityManager
+            $this->entityManager
                 ->getRepository('CudiBundle\Entity\Sale\Booking')
                 ->findAllAssignedByPerson($item->getPerson())
         );
     }
 
-    private function _stopCollecting($id, $articles = null)
+    /**
+     * @param  int        $id
+     * @param  array|null $articles
+     * @return null
+     */
+    private function stopCollecting($id, $articles = null)
     {
-        $this->_queue->stopCollecting($id, $articles);
+        $this->queue->stopCollecting($id, $articles);
     }
 
-    private function _cancelCollecting($id)
+    /**
+     * @param  int  $id
+     * @return null
+     */
+    private function cancelCollecting($id)
     {
-        $this->_queue->cancelCollecting($id);
+        $this->queue->cancelCollecting($id);
     }
 
-    private function _startSale(User $user, $id)
+    /**
+     * @param  User $user
+     * @param  int  $id
+     * @return null
+     */
+    private function startSale(User $user, $id)
     {
-        $this->sendText($user, $this->_queue->startSale($user, $id));
+        $this->sendText($user, $this->queue->startSale($user, $id));
     }
 
-    private function _cancelSale($id)
+    /**
+     * @param  int  $id
+     * @return null
+     */
+    private function cancelSale($id)
     {
-        $this->_queue->cancelSale($id);
+        $this->queue->cancelSale($id);
     }
 
-    private function _concludeSale(User $user, $id, $articles, $discounts, $payMethod)
+    /**
+     * @param  User   $user
+     * @param  int    $id
+     * @param  array  $articles
+     * @param  array  $discounts
+     * @param  string $payMethod
+     * @return null
+     */
+    private function concludeSale(User $user, $id, $articles, $discounts, $payMethod)
     {
-        $saleItems = $this->_queue->concludeSale($id, $articles, $discounts, $payMethod);
+        $saleItems = $this->queue->concludeSale($id, $articles, $discounts, $payMethod);
 
         if (null == $saleItems) {
             return;
         }
 
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         Printer::saleTicket(
-            $this->_entityManager,
+            $this->entityManager,
             $user->getExtraData('paydesk'),
             $item,
             $saleItems
         );
     }
 
-    private function _hold($id)
+    /**
+     * @param  int  $id
+     * @return null
+     */
+    private function hold($id)
     {
-        $this->_queue->setHold($id);
+        $this->queue->setHold($id);
     }
 
-    private function _unhold($id)
+    /**
+     * @param  int  $id
+     * @return null
+     */
+    private function unhold($id)
     {
-        $this->_queue->setUnhold($id);
+        $this->queue->setUnhold($id);
     }
 
-    private function _saveComment($id, $comment)
+    /**
+     * @param  int    $id
+     * @param  string $comment
+     * @return null
+     */
+    private function saveComment($id, $comment)
     {
-        $item = $this->_entityManager
+        $item = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneById($id);
 
         $item->setComment($comment);
-        $this->_entityManager->flush();
+        $this->entityManager->flush();
     }
 
-    private function _addArticle(User $user, $id, $articleId)
+    /**
+     * @param  User $user
+     * @param  int  $id
+     * @param  int  $articleId
+     * @return null
+     */
+    private function addArticle(User $user, $id, $articleId)
     {
-        $result = $this->_queue->addArticle($id, $articleId);
-        if ($result) {
-            $this->sendText($user, $result);
-        }
+        $result = $this->queue->addArticle($id, $articleId);
+        $this->sendText($user, $result);
     }
 
-    private function _undoSale(User $user, $id)
+    /**
+     * @param  User $user
+     * @param  int  $id
+     * @return null
+     */
+    private function undoSale(User $user, $id)
     {
-        $this->_queue->undoSale($id);
+        $this->queue->undoSale($id);
 
-        $lightVersion = $this->_entityManager
+        $lightVersion = $this->entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.sale_light_version');
 
         if ($lightVersion == '1') {
-            $this->_startSale($user, $id);
+            $this->startSale($user, $id);
         }
     }
 }

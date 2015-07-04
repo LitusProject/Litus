@@ -85,7 +85,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($category = $this->_getCategory())) {
+        if (!($category = $this->getCategoryEntity())) {
             return new ViewModel();
         }
 
@@ -125,7 +125,7 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($category = $this->_getCategory())) {
+        if (!($category = $this->getCategoryEntity())) {
             return new ViewModel();
         }
 
@@ -142,32 +142,17 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    private function _getCategory()
+    /**
+     * @return Category|null
+     */
+    private function getCategoryEntity()
     {
-        if (null === $this->getParam('id')) {
+        $category = $this->getEntityById('PageBundle\Entity\Category');
+
+        if (!($category instanceof Category)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the category!'
-            );
-
-            $this->redirect()->toRoute(
-                'page_admin_category',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $category = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Category')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $category) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No category with the given ID was found!'
+                'No category was found!'
             );
 
             $this->redirect()->toRoute(

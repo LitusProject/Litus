@@ -69,14 +69,14 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('CommonBundle\Entity\User\Status\University')
                     ->findAllByStatus('professor', $academicYear);
 
-                $this->_saveConfig($formData['subject'], $formData['message']);
+                $this->saveConfig($formData['subject'], $formData['message']);
 
                 foreach ($statuses as $status) {
                     if ('' == $status->getPerson()->getEmail()) {
                         continue;
                     }
 
-                    if (!($subjects = $this->_getSubjects($status->getPerson(), $academicYear, $semester))) {
+                    if (!($subjects = $this->getSubjects($status->getPerson(), $academicYear, $semester))) {
                         continue;
                     }
 
@@ -153,7 +153,11 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _saveConfig($subject, $message)
+    /**
+     * @param string $subject
+     * @param string $message
+     */
+    private function saveConfig($subject, $message)
     {
         $config = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -170,10 +174,16 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         $this->getEntityManager()->flush();
     }
 
-    private function _getSubjects(Person $person, AcademicYear $academicYear, $semester)
+    /**
+     * @param  Person       $person
+     * @param  AcademicYear $academicYear
+     * @param  int          $semester
+     * @return string|null
+     */
+    private function getSubjects(Person $person, AcademicYear $academicYear, $semester)
     {
         $allSubjects = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findAllByProfAndAcademicYear($person, $academicYear);
 
         $subjects = array();
@@ -184,7 +194,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         }
 
         if (empty($subjects)) {
-            return;
+            return null;
         }
 
         $text = '';

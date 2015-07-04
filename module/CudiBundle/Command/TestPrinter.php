@@ -22,6 +22,9 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class TestPrinter extends \CommonBundle\Component\Console\Command
 {
+    /**
+     * @return null
+     */
     protected function configure()
     {
         $this
@@ -42,25 +45,34 @@ EOT
         );
     }
 
+    /**
+     * @return int|null
+     */
     protected function executeCommand()
     {
-        if (false === ($printer = $this->_getPrinter())) {
+        if (!($printer = $this->getPrinter())) {
             return 1;
         }
 
-        if (false === ($ticket = $this->_getTicket())) {
+        if (!($ticket = $this->getTicket())) {
             return 2;
         }
 
-        $this->_send($printer, $ticket);
+        $this->send($printer, $ticket);
     }
 
+    /**
+     * @return string
+     */
     protected function getLogName()
     {
         return 'TestPrinter';
     }
 
-    private function _getPrinter()
+    /**
+     * @return string|null
+     */
+    private function getPrinter()
     {
         $printers = unserialize(
             $this->getEntityManager()
@@ -80,10 +92,13 @@ EOT
             $this->writeln('    -> ' . $key . ':' . $printer);
         }
 
-        return false;
+        return null;
     }
 
-    private function _getTicket()
+    /**
+     * @return int|null
+     */
+    private function getTicket()
     {
         switch ($this->getArgument('ticket')) {
             case 'signin':
@@ -99,14 +114,16 @@ EOT
                 $this->writeln('    -> collect');
                 $this->writeln('    -> sale');
 
-                return false;
+                return null;
         }
     }
 
     /**
-     * @param integer $ticket
+     * @param  string  $printer
+     * @param  integer $ticket
+     * @return null
      */
-    private function _send($printer, $ticket)
+    private function send($printer, $ticket)
     {
         $ticket = (object) array(
             'type' => $ticket,

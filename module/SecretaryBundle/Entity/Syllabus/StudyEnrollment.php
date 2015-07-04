@@ -60,19 +60,18 @@ class StudyEnrollment
      * @var Study The study of the enrollment
      *
      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Study")
-     * @ORM\JoinColumn(name="study", referencedColumnName="id")
+     * @ORM\JoinColumn(name="study", referencedColumnName="id", onDelete="CASCADE")
      */
     private $study;
 
     /**
-     * @param Academic     $academic
-     * @param AcademicYear $academicYear
-     * @param Study        $study
+     * @param Academic $academic
+     * @param Study    $study
      */
-    public function __construct(Academic $academic, AcademicYear $academicYear, Study $study)
+    public function __construct(Academic $academic, Study $study)
     {
         $this->academic = $academic;
-        $this->academicYear = $academicYear;
+        $this->academicYear = $study->getAcademicYear();
         $this->study = $study;
     }
 

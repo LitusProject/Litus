@@ -20,8 +20,10 @@ namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     SyllabusBundle\Component\Document\Generator\Group as CsvGenerator,
-    SyllabusBundle\Entity\StudyGroupMap,
+    SyllabusBundle\Entity\Group,
+    SyllabusBundle\Entity\Group\StudyMap,
     Zend\View\Model\ViewModel;
 
 /**
@@ -33,7 +35,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -65,7 +67,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -110,11 +112,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
 
@@ -160,17 +162,17 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function studiesAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
 
         $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findAllParentsByAcademicYear($academicYear);
+            ->findAllByAcademicYear($academicYear);
 
         $form = $this->getForm('syllabus_group_study_add', array('studies' => $studies));
 
@@ -181,6 +183,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 $formData = $form->getData();
 
                 $studyIds = $formData['studies'];
+
                 if ($studyIds) {
                     foreach ($studyIds as $studyId) {
                         $study = $this->getEntityManager()
@@ -188,10 +191,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                             ->findOneById($studyId);
 
                         $map = $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
-                            ->findOneByStudyGroupAndAcademicYear($study, $group, $academicYear);
+                            ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
+                            ->findOneByStudyGroup($study, $group);
+
                         if (null === $map) {
-                            $this->getEntityManager()->persist(new StudyGroupMap($study, $group, $academicYear));
+                            $this->getEntityManager()->persist(new StudyMap($study, $group));
                         }
                     }
                 } else {
@@ -222,7 +226,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $studies = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+            ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
             ->findAllByGroupAndAcademicYear($group, $academicYear);
 
         $academicYears = $this->getEntityManager()
@@ -244,7 +248,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
 
@@ -262,7 +266,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping())) {
+        if (!($mapping = $this->getStudyMapEntity())) {
             return new ViewModel();
         }
 
@@ -278,11 +282,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function exportAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
-        if (!($group = $this->_getGroup())) {
+        if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
 
@@ -303,59 +307,17 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    private function _getAcademicYear()
+    /**
+     * @return Group|null
+     */
+    private function getGroupEntity()
     {
-        $date = null;
-        if (null !== $this->getParam('academicyear')) {
-            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
-        }
-        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
+        $group = $this->getEntityById('SyllabusBundle\Entity\Group');
 
-        if (null === $academicYear) {
+        if (!($group instanceof Group)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No academic year was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'syllabus_admin_study',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $academicYear;
-    }
-
-    private function _getGroup()
-    {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the group!'
-            );
-
-            $this->redirect()->toRoute(
-                'syllabus_admin_group',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $group = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Group')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $group) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No group with the given ID was found!'
+                'No group was found!'
             );
 
             $this->redirect()->toRoute(
@@ -373,12 +335,17 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         return $group;
     }
 
-    private function _getMapping()
+    /**
+     * @return StudyMap|null
+     */
+    private function getStudyMapEntity()
     {
-        if (null === $this->getParam('id')) {
+        $map = $this->getEntityById('SyllabusBundle\Entity\Group\StudyMap');
+
+        if (!($map instanceof StudyMap)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the mapping!'
+                'No study group map was found!'
             );
 
             $this->redirect()->toRoute(
@@ -391,14 +358,24 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
-            ->findOneById($this->getParam('id'));
+        return $map;
+    }
 
-        if (null === $mapping) {
+    /**
+     * @return AcademicYearEntity|null
+     */
+    private function getAcademicYearEntity()
+    {
+        $date = null;
+        if (null !== $this->getParam('academicyear')) {
+            $date = AcademicYear::getDateTime($this->getParam('academicyear'));
+        }
+        $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
+
+        if (!($academicYear instanceof AcademicYearEntity)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No mapping with the given ID was found!'
+                'No academic year was found!'
             );
 
             $this->redirect()->toRoute(
@@ -411,6 +388,6 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        return $mapping;
+        return $academicYear;
     }
 }

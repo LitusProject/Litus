@@ -29,6 +29,12 @@ class IndexController extends \CudiBundle\Component\Controller\SupplierControlle
 {
     public function indexAction()
     {
-        return new ViewModel();
+        $supplier = $this->getSupplierEntity();
+
+        return new ViewModel(
+            array(
+                'supplier' => $supplier,
+            )
+        );
     }
 }

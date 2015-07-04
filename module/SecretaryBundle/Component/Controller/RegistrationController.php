@@ -37,11 +37,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
      * @param Academic     $academic
      * @param AcademicYear $academicYear
      */
-    protected function _studiesAction(Academic $academic, AcademicYear $academicYear)
+    protected function doStudiesAction(Academic $academic, AcademicYear $academicYear)
     {
         $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findAllParentsByAcademicYear($academicYear);
+            ->findAllByAcademicYear($academicYear);
 
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
@@ -65,7 +65,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
      * @param AcademicYear $academicYear
      * @param array        $data
      */
-    protected function _saveStudiesAction(Academic $academic, AcademicYear $academicYear, $data)
+    protected function doSaveStudiesAction(Academic $academic, AcademicYear $academicYear, $data)
     {
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
@@ -96,11 +96,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
                     ->findOneById($id);
-                $this->getEntityManager()->persist(new StudyEnrollment($academic, $academicYear, $study));
+                $this->getEntityManager()->persist(new StudyEnrollment($academic, $study));
 
                 $subjects = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                    ->findAllByStudyAndAcademicYear($study, $academicYear);
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+                    ->findAllByStudy($study);
 
                 foreach ($subjects as $subject) {
                     if ($subject->isMandatory()) {
@@ -123,7 +123,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
      * @param AcademicYear   $academicYear
      * @param AddSubjectForm $form
      */
-    protected function _subjectAction(Academic $academic, AcademicYear $academicYear, AddSubjectForm $form)
+    protected function doSubjectAction(Academic $academic, AcademicYear $academicYear, AddSubjectForm $form)
     {
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -172,8 +172,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
         $studySubjects = array();
         foreach ($enrollments as $enrollment) {
             $subjects = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $academicYear);
+                ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+                ->findAllByStudy($enrollment->getStudy());
             $mappings[] = array(
                 'enrollment' => $enrollment,
                 'subjects' => $subjects,
@@ -213,7 +213,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
      * @param AcademicYear $academicYear
      * @param array        $data
      */
-    protected function _saveSubjectAction(Academic $academic, AcademicYear $academicYear, $data)
+    protected function doSaveSubjectAction(Academic $academic, AcademicYear $academicYear, $data)
     {
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
@@ -252,7 +252,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
      * @param  string $email
      * @return string
      */
-    protected function _parseUniversityEmail($email)
+    protected function parseUniversityEmail($email)
     {
         $studentDomain = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -282,7 +282,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
     /**
      * @return string
      */
-    protected function _getTermsAndConditions()
+    protected function getTermsAndConditions()
     {
         $termsAndConditions = unserialize(
             $this->getEntityManager()
@@ -298,7 +298,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
      * @param AcademicYear $academicYear
      * @param Organization $organization
      */
-    protected function _setOrganization(Academic $academic, AcademicYear $academicYear, Organization $organization)
+    protected function setOrganization(Academic $academic, AcademicYear $academicYear, Organization $organization)
     {
         $map = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')

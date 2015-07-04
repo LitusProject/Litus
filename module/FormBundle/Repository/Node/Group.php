@@ -31,7 +31,7 @@ class Group extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Node\Group', 'n')
             ->orderBy('n.creationTime', 'DESC')
@@ -42,7 +42,7 @@ class Group extends EntityRepository
 
     public function findAllActive()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('g')
             ->from('FormBundle\Entity\Node\Group\Mapping', 'm')
             ->from('FormBundle\Entity\Node\Group', 'g')
@@ -62,7 +62,7 @@ class Group extends EntityRepository
 
     public function findAllOld()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('g')
             ->from('FormBundle\Entity\Node\Group\Mapping', 'm')
             ->from('FormBundle\Entity\Node\Group', 'g')

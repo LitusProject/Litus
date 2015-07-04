@@ -18,8 +18,9 @@
 
 namespace CudiBundle\Controller\Prof\Article;
 
-use CudiBundle\Entity\Article,
+use CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\File\File,
+    CudiBundle\Entity\File\Mapping,
     CudiBundle\Entity\Prof\Action,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -33,7 +34,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 {
     public function manageAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getInternalArticleEntity())) {
             return new ViewModel();
         }
 
@@ -80,7 +81,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
 
-        if (!($mapping = $this->_getFileMapping())) {
+        if (!($mapping = $this->getFileMappingEntity())) {
             return new ViewModel();
         }
 
@@ -107,7 +108,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
     public function uploadAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getInternalArticleEntity())) {
             return new ViewModel();
         }
 
@@ -183,7 +184,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getFileMapping())) {
+        if (!($mapping = $this->getFileMappingEntity())) {
             return new ViewModel();
         }
 
@@ -210,35 +211,19 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
-    private function _getArticle($id = null)
+    /**
+     * @return InternalArticle|null
+     */
+    private function getInternalArticleEntity()
     {
-        $id = $id == null ? $this->getParam('id') : $id;
-
-        if (null === $id) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_prof_article',
-                array(
-                    'action' => 'manage',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
-            return;
-        }
-
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
-            ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
+            ->findOneByIdAndProf($this->getParam('id', 0), $this->getAuthentication()->getPersonObject());
 
-        if (null === $article) {
+        if (!($article instanceof InternalArticle)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -255,12 +240,17 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         return $article;
     }
 
-    private function _getFileMapping()
+    /**
+     * @return Mapping|null
+     */
+    private function getFileMappingEntity()
     {
-        if (null === $this->getParam('id')) {
+        $mapping = $this->getEntityById('CudiBundle\Entity\File\Mapping');
+
+        if (!($mapping instanceof Mapping)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the file!'
+                'No mapping was found!'
             );
 
             $this->redirect()->toRoute(
@@ -274,27 +264,6 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             return;
         }
 
-        $file = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\File\Mapping')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $file) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No file with the given ID was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_prof_article',
-                array(
-                    'action' => 'manage',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
-            return;
-        }
-
-        return $file;
+        return $mapping;
     }
 }

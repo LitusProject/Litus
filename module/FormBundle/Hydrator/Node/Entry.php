@@ -67,7 +67,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             $readableValue = null;
 
             if ($field instanceof FileFieldEntity) {
-                list($removed, $value, $readableValue) = $this->_processFileField($field, $fieldEntry, $object, $fieldData);
+                list($removed, $value, $readableValue) = $this->processFileField($field, $object, $fieldData, $fieldEntry);
             }
 
             if (!$removed) {
@@ -105,7 +105,14 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
         return $data;
     }
 
-    private function _processFileField(FieldEntity $field, FieldEntryEntity $fieldEntry = null, FormEntryEntity $formEntry, $data)
+    /**
+     * @param  FieldEntity           $field
+     * @param  FormEntryEntity       $formEntry
+     * @param  array                 $data
+     * @param  FieldEntryEntity|null $fieldEntry
+     * @return array
+     */
+    private function processFileField(FieldEntity $field, FormEntryEntity $formEntry, $data, FieldEntryEntity $fieldEntry = null)
     {
         $removed = false;
         $value = '';

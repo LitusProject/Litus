@@ -36,14 +36,14 @@ class Photos extends \CommonBundle\Component\Form\Admin\Form
             'required'   => true,
             'attributes' => array(
                 'id'      => 'academic_year',
-                'options' => $this->_getAcademicYears(),
+                'options' => $this->getAcademicYears(),
             ),
         ));
 
         $this->addSubmit('Download Photos', 'download');
     }
 
-    private function _getAcademicYears()
+    private function getAcademicYears()
     {
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')

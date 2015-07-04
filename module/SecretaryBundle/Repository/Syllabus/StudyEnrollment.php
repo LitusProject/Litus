@@ -31,19 +31,15 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class StudyEnrollment extends EntityRepository
 {
-    public function findAllByStudyAndAcademicYearQuery(Study $study, AcademicYear $academicYear)
+    public function findAllByStudyQuery(Study $study)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SecretaryBundle\Entity\Syllabus\StudyEnrollment', 's')
             ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('s.study', ':study'),
-                    $query->expr()->eq('s.academicYear', ':academicYear')
-                )
+                $query->expr()->eq('s.study', ':study')
             )
             ->setParameter('study', $study)
-            ->setParameter('academicYear', $academicYear)
             ->getQuery();
 
         return $resultSet;
@@ -51,7 +47,7 @@ class StudyEnrollment extends EntityRepository
 
     public function findAllByAcademicAndAcademicYearQuery(Academic $academic, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SecretaryBundle\Entity\Syllabus\StudyEnrollment', 's')
             ->where(
@@ -67,20 +63,18 @@ class StudyEnrollment extends EntityRepository
         return $resultSet;
     }
 
-    public function findOneByAcademicAndAcademicYearAndStudy(Academic $academic, AcademicYear $academicYear, Study $study)
+    public function findOneByAcademicAndStudy(Academic $academic, Study $study)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('SecretaryBundle\Entity\Syllabus\StudyEnrollment', 's')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('s.academic', ':academic'),
-                    $query->expr()->eq('s.academicYear', ':academicYear'),
                     $query->expr()->eq('s.study', ':study')
                 )
             )
             ->setParameter('academic', $academic)
-            ->setParameter('academicYear', $academicYear)
             ->setParameter('study', $study)
             ->setMaxResults(1)
             ->getQuery()

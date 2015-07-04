@@ -55,7 +55,7 @@ class Street
     private $name;
 
     /**
-     * @var \CommonBundle\Entity\General\Address\City The city
+     * @var City The city
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Address\City", inversedBy="streets")
      * @ORM\JoinColumn(name="city", referencedColumnName="id")
@@ -63,9 +63,9 @@ class Street
     private $city;
 
     /**
-     * @param \CommonBundle\Entity\General\Address\City $city
-     * @param integer                                   $registerNumber
-     * @param string                                    $name
+     * @param City    $city
+     * @param integer $registerNumber
+     * @param string  $name
      */
     public function __construct(City $city, $registerNumber, $name)
     {

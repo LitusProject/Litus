@@ -19,6 +19,7 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Company,
+    BrBundle\Entity\Company\Job,
     Zend\View\Model\ViewModel;
 
 /**
@@ -85,7 +86,9 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 
     public function viewAction()
     {
-        $vacancy = $this->_getVacancy();
+        if (!($vacancy = $this->getVacancyEntity())) {
+            return new ViewModel();
+        }
 
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -99,32 +102,19 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
-    private function _getVacancy()
+    /**
+     * @return Job|null
+     */
+    private function getVacancyEntity()
     {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the vacancy!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_career_vacancy',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return;
-        }
-
-        $vacancy = $this->getEntityManager()
+        $job = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findOneActiveByTypeAndId('vacancy', $this->getParam('id'));
+            ->findOneActiveByTypeAndId('vacancy', $this->getParam('id', 0));
 
-        if (null === $vacancy) {
+        if (!($job instanceof Job)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No vacancy with the given ID was found!'
+                'No job was found!'
             );
 
             $this->redirect()->toRoute(
@@ -137,16 +127,6 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
             return;
         }
 
-        return $vacancy;
-    }
-
-    private function _getSectors()
-    {
-        $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
+        return $job;
     }
 }

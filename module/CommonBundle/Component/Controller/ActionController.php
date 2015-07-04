@@ -50,7 +50,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * @var Language
      */
-    protected $_language = null;
+    protected $language = null;
 
     /**
      * Execute the request.
@@ -66,18 +66,18 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             ->plugin('headMeta')
             ->setCharset('utf-8');
 
-        $this->_initAcademicYear();
+        $this->initAcademicYear();
 
-        $this->_initAuthenticationService();
-        $this->_initControllerPlugins();
-        $this->_initFallbackLanguage();
-        $this->_initViewHelpers();
+        $this->initAuthenticationService();
+        $this->initControllerPlugins();
+        $this->initFallbackLanguage();
+        $this->initViewHelpers();
 
         if (null !== $this->initAuthentication()) {
             return new ViewModel();
         }
 
-        $this->_logVisit();
+        $this->logVisit();
 
         $this->initLocalization();
 
@@ -127,7 +127,10 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         }
     }
 
-    private function _logVisit()
+    /**
+     * @return null
+     */
+    private function logVisit()
     {
         $saveVisit = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -143,7 +146,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 $server->get('REQUEST_METHOD'),
                 $route->getParam('controller'),
                 $route->getParam('action'),
-                $this->getAuthentication()->getPersonObject()
+                $this->getAuthentication()->isAuthenticated() ? $this->getAuthentication()->getPersonObject() : null
             );
 
             $this->getEntityManager()->persist($visit);
@@ -151,7 +154,10 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         }
     }
 
-    private function _initAcademicYear()
+    /**
+     * @return null
+     */
+    private function initAcademicYear()
     {
         $this->getServiceLocator()
             ->setService('litus.academic_year', $this->findCurrentAcademicYear());
@@ -165,7 +171,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         return $this->getCurrentAcademicYear(false);
     }
 
-    private function _initAuthenticationService()
+    private function initAuthenticationService()
     {
         $this->getServiceLocator()->get('authentication_service')
             ->setRequest($this->getRequest())
@@ -175,9 +181,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * Initializes our custom controller plugins.
      *
-     * @return void
+     * @return null
      */
-    private function _initControllerPlugins()
+    private function initControllerPlugins()
     {
         // Url Plugin
         $this->url()->setLanguage($this->getLanguage());
@@ -185,9 +191,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         // HasAccess Plugin
         $this->hasAccess()->setDriver(
             new HasAccessDriver(
-                $this->_getAcl(),
+                $this->getAcl(),
                 $this->getAuthentication()->isAuthenticated(),
-                $this->getAuthentication()->getPersonObject()
+                $this->getAuthentication()->isAuthenticated() ? $this->getAuthentication()->getPersonObject() : null
             )
         );
     }
@@ -198,7 +204,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      * @return void
      * @throws RuntimeException
      */
-    private function _initFallbackLanguage()
+    private function initFallbackLanguage()
     {
         try {
             $fallbackLanguage = $this->getEntityManager()
@@ -227,7 +233,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      *
      * @return void
      */
-    private function _initViewHelpers()
+    private function initViewHelpers()
     {
         $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
 
@@ -238,9 +244,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         // HasAccess View Helper
         $renderer->plugin('hasAccess')->setDriver(
             new HasAccessDriver(
-                $this->_getAcl(),
+                $this->getAcl(),
                 $this->getAuthentication()->isAuthenticated(),
-                $this->getAuthentication()->getPersonObject()
+                $this->getAuthentication()->isAuthenticated() ? $this->getAuthentication()->getPersonObject() : null
             )
         );
 
@@ -327,7 +333,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function initLocalization()
     {
-        $this->getTranslator()->setCache($this->getCache())
+        $translator = $this->getTranslator()->getTranslator();
+
+        $translator->setCache($this->getCache())
             ->setLocale($this->getLanguage()->getAbbrev());
 
         \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
@@ -343,7 +351,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      *
      * @return Acl
      */
-    private function _getAcl()
+    private function getAcl()
     {
         if (null !== $this->getCache()) {
             if (!$this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
@@ -404,8 +412,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function getLanguage()
     {
-        if (null !== $this->_language) {
-            return $this->_language;
+        if (null !== $this->language) {
+            return $this->language;
         }
 
         if ($this->getParam('language')) {
@@ -437,7 +445,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
 
         $this->getSessionStorage()->language = $language->getAbbrev();
 
-        $this->_language = $language;
+        $this->language = $language;
 
         return $language;
     }
@@ -510,5 +518,32 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $form = $this->getFormFactory()->create(array('type' => $name), $data);
 
         return $form;
+    }
+
+    /**
+     * @param  string     $entityName
+     * @param  string     $paramKey
+     * @param  string     $entityKey
+     * @return mixed|null
+     */
+    protected function getEntityById($entityName, $paramKey = 'id', $entityKey = 'id')
+    {
+        if (null === $this->getParam($paramKey)) {
+            return;
+        }
+
+        $entity = $this->getEntityManager()
+            ->getRepository($entityName)
+            ->findOneBy(
+                array(
+                    $entityKey => $this->getParam($paramKey),
+                )
+            );
+
+        if (null === $entity) {
+            return;
+        }
+
+        return $entity;
     }
 }

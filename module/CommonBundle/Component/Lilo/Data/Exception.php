@@ -35,12 +35,12 @@ class Exception extends \CommonBundle\Component\Lilo\Data
     /**
      * @var array The correctly formatted data object
      */
-    private $_data = array();
+    private $data = array();
 
     /**
      * @var RequestInterface The request to the page
      */
-    private $_request;
+    private $request;
 
     /**
      * Construct a new Exception object.
@@ -51,11 +51,11 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      */
     public function __construct(GenericException $exception, Authentication $authentication, RequestInterface $request)
     {
-        $this->_request = $request;
-        $this->_data = array(
+        $this->request = $request;
+        $this->data = array(
             'class' => get_class($exception),
             'message' => $exception->getMessage(),
-            'trace' => $this->_formatBacktrace($exception),
+            'trace' => $this->formatBacktrace($exception),
             'environment' => array(
                 'person' => $authentication->isAuthenticated()
                     ? $authentication->getPersonObject()->getFullName() . ' (' . $authentication->getPersonObject()->getUsername() . ')'
@@ -63,8 +63,8 @@ class Exception extends \CommonBundle\Component\Lilo\Data
                 'session' => $authentication->isAuthenticated()
                     ? $authentication->getSessionObject()->getId()
                     : '',
-                'url' => $this->_formatUrl(),
-                'userAgent' => $this->_getUserAgent(),
+                'url' => $this->formatUrl(),
+                'userAgent' => $this->getUserAgent(),
             ),
         );
     }
@@ -76,7 +76,7 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      */
     public function __toString()
     {
-        return json_encode($this->_data);
+        return json_encode($this->data);
     }
 
     /**
@@ -85,7 +85,7 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      * @param  \Exception $exception The exception which trace should be formatted
      * @return array
      */
-    private function _formatBacktrace(GenericException $exception)
+    private function formatBacktrace(GenericException $exception)
     {
         $backtrace = array();
         foreach ($exception->getTrace() as $t) {
@@ -110,13 +110,13 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      *
      * @return string
      */
-    private function _formatUrl()
+    private function formatUrl()
     {
-        if ($this->_request instanceof ConsoleRequest) {
-            return $this->_request->toString();
-        } elseif ($this->_request instanceof PhpRequest) {
-            return '' != $this->_request->getServer()->get('HTTP_HOST')
-                ? (($this->_request->getServer()->get('HTTPS') != 'off') ? 'https://' : 'http://') . $this->_request->getServer()->get('HTTP_HOST') . $this->_request->getServer()->get('REQUEST_URI')
+        if ($this->request instanceof ConsoleRequest) {
+            return $this->request->toString();
+        } elseif ($this->request instanceof PhpRequest) {
+            return '' != $this->request->getServer()->get('HTTP_HOST')
+                ? (($this->request->getServer()->get('HTTPS') != 'off') ? 'https://' : 'http://') . $this->request->getServer()->get('HTTP_HOST') . $this->request->getServer()->get('REQUEST_URI')
                 : '';
         }
 
@@ -128,12 +128,12 @@ class Exception extends \CommonBundle\Component\Lilo\Data
      *
      * @return string
      */
-    private function _getUserAgent()
+    private function getUserAgent()
     {
-        if ($this->_request instanceof ConsoleRequest) {
+        if ($this->request instanceof ConsoleRequest) {
             return 'Console';
-        } elseif ($this->_request instanceof PhpRequest) {
-            return $this->_request->getServer()->get('HTTP_USER_AGENT');
+        } elseif ($this->request instanceof PhpRequest) {
+            return $this->request->getServer()->get('HTTP_USER_AGENT');
         }
 
         return '';

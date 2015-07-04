@@ -29,6 +29,9 @@ use DateTime,
  */
 class Rule extends DocumentRepository
 {
+    /**
+     * @return mixed
+     */
     public function findAll()
     {
         $resultSet = $this->createQueryBuilder()
@@ -39,6 +42,9 @@ class Rule extends DocumentRepository
         return $resultSet;
     }
 
+    /**
+     * @return mixed
+     */
     public function findOld()
     {
         $resultSet = $this->createQueryBuilder()

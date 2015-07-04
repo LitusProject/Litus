@@ -30,7 +30,7 @@ class Runner extends EntityRepository
 {
     public function findOneByUniversityIdentification($universityIdentification)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SportBundle\Entity\Runner', 'r')
             ->innerJoin('r.academic', 'a')
@@ -47,7 +47,7 @@ class Runner extends EntityRepository
 
     public function findAllWithoutIdentificationQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('SportBundle\Entity\Runner', 'r')
             ->where(

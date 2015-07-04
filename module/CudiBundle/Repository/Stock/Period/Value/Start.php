@@ -30,9 +30,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Start extends EntityRepository
 {
+    /**
+     * @param  Article                                          $article
+     * @param  Period                                           $period
+     * @return \CudiBundle\Entity\Stock\Period\Value\Start|null
+     */
     public function findOneByArticleAndPeriod(Article $article, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('v')
             ->from('CudiBundle\Entity\Stock\Period\Value\Start', 'v')
             ->where(
@@ -50,6 +55,11 @@ class Start extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article $article
+     * @param  Period  $period
+     * @return int
+     */
     public function findValueByArticleAndPeriod(Article $article, Period $period)
     {
         $value = $this->findOneByArticleAndPeriod($article, $period);

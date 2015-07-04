@@ -31,7 +31,7 @@ class Form extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('n')
             ->from('FormBundle\Entity\Node\Form', 'n')
             ->orderBy('n.startDate', 'DESC')
@@ -42,7 +42,7 @@ class Form extends EntityRepository
 
     public function findAllActiveQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('f')
             ->from('FormBundle\Entity\Node\Form', 'f')
             ->where(
@@ -57,7 +57,7 @@ class Form extends EntityRepository
 
     public function findAllOldQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('f')
             ->from('FormBundle\Entity\Node\Form', 'f')
             ->where(

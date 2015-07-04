@@ -31,7 +31,7 @@ class Photo extends EntityRepository
 {
     public function findOneByAlbumAndFilePath(AlbumEntity $album, $filePath)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('GalleryBundle\Entity\Album\Photo', 'p')
             ->where(

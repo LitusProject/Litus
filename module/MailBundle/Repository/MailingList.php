@@ -30,7 +30,7 @@ class MailingList extends EntityRepository
 {
     public function findAllByNameQuery($name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('l')
             ->from('MailBundle\Entity\MailingList\Named','l')
             ->where(

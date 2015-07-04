@@ -18,7 +18,7 @@
 
 namespace CudiBundle\Form\Prof\Subject;
 
-use SyllabusBundle\Entity\StudentEnrollment;
+use SyllabusBundle\Entity\Subject\StudentEnrollment;
 
 /**
  * Update student enrollment
@@ -30,7 +30,7 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
     /**
      * @var StudentEnrollment|null
      */
-    private $_enrollment;
+    private $enrollment;
 
     public function init()
     {
@@ -41,7 +41,7 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'students',
             'label'      => 'Students',
             'required'   => true,
-            'value'      => null !== $this->_enrollment ? $this->_enrollment->getNumber() : '',
+            'value'      => null !== $this->enrollment ? $this->enrollment->getNumber() : '',
             'attributes' => array(
                 'autocomplete' => 'off',
             ),
@@ -68,7 +68,7 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     public function setEnrollment(StudentEnrollment $enrollment = null)
     {
-        $this->_enrollment = $enrollment;
+        $this->enrollment = $enrollment;
 
         return $this;
     }

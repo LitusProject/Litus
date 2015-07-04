@@ -35,7 +35,7 @@ class Round extends EntityRepository
      */
     public function findAllByQuizQuery(QuizEntity $quiz)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
 
         $resultSet = $query->select('r')
             ->from('QuizBundle\Entity\Round', 'r')
@@ -56,7 +56,7 @@ class Round extends EntityRepository
      */
     public function getNextRoundOrderForQuiz(QuizEntity $quiz)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('MAX(r.order)')
             ->from('QuizBundle\Entity\Round', 'r')
             ->where(

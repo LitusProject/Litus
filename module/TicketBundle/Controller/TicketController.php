@@ -32,15 +32,19 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function eventAction()
     {
-        if (!($event = $this->_getEvent())) {
+        if (!($event = $this->getEventEntity())) {
+            return $this->notFoundAction();
+        }
+
+        if (!($person = $this->getPersonEntity())) {
             return $this->notFoundAction();
         }
 
         $tickets = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
-            ->findAllByEventAndPerson($event, $this->getAuthentication()->getPersonObject());
+            ->findAllByEventAndPerson($event, $person);
 
-        $form = $this->getForm('ticket_ticket_book', array('event' => $event, 'person' => $this->getAuthentication()->getPersonObject()));
+        $form = $this->getForm('ticket_ticket_book', array('event' => $event, 'person' => $person));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -60,11 +64,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                 TicketBook::book(
                     $event,
-                    $this->getAuthentication()->getPersonObject(),
-                    null,
                     $numbers,
                     false,
-                    $this->getEntityManager()
+                    $this->getEntityManager(),
+                    $person,
+                    null
                 );
 
                 $this->getEntityManager()->flush();
@@ -84,7 +88,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             }
         }
 
-        $organizationStatus = $this->getAuthentication()->getPersonObject()->getOrganizationStatus($this->getCurrentAcademicYear());
+        $organizationStatus = $person->getOrganizationStatus($this->getCurrentAcademicYear());
 
         return new ViewModel(
             array(
@@ -101,7 +105,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket())) {
+        if (!($ticket = $this->getTicketEntity())) {
             return $this->notFoundAction();
         }
 
@@ -121,19 +125,25 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @return Event|null
+     * @return \CommonBundle\Entity\User\Person|null
      */
-    private function _getEvent()
+    private function getPersonEntity()
     {
-        if (null === $this->getParam('id')) {
+        if (!$this->getAuthentication()->isAuthenticated()) {
             return;
         }
 
-        $event = $this->getEntityManager()
-            ->getRepository('TicketBundle\Entity\Event')
-            ->findOneById($this->getParam('id'));
+        return $this->getAuthentication()->getPersonObject();
+    }
 
-        if (null === $event || !$event->isActive()) {
+    /**
+     * @return Event|null
+     */
+    private function getEventEntity()
+    {
+        $event = $this->getEntityById('TicketBundle\Entity\Event');
+
+        if (!($event instanceof Event) || !$event->isActive()) {
             return;
         }
 
@@ -143,17 +153,15 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * @return Ticket|null
      */
-    private function _getTicket()
+    private function getTicketEntity()
     {
-        if (null === $this->getParam('id')) {
+        if (!($person = $this->getPersonEntity())) {
             return;
         }
 
-        $ticket = $this->getEntityManager()
-            ->getRepository('TicketBundle\Entity\Ticket')
-            ->findOneById($this->getParam('id'));
+        $ticket = $this->getEntityById('TicketBundle\Entity\Ticket');
 
-        if (null === $ticket || $ticket->getPerson() != $this->getAuthentication()->getPersonObject()) {
+        if (!($ticket instanceof Ticket) || $ticket->getPerson() != $person) {
             return;
         }
 

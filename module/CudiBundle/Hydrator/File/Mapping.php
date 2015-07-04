@@ -22,7 +22,7 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 class Mapping extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('printable');
+    private static $stdKeys = array('printable');
 
     protected function doExtract($object = null)
     {
@@ -30,7 +30,7 @@ class Mapping extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['description'] = $object->getFile()->getDescription();
 
@@ -47,6 +47,6 @@ class Mapping extends \CommonBundle\Component\Hydrator\Hydrator
             $object->getFile()->setDescription($data['description']);
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

@@ -141,13 +141,13 @@ class Lease
     private $returnedComment;
 
     /**
-     * @param Item     $item          The leased item
-     * @param int      $leasedAmount  The number of items that was leased
-     * @param DateTime $leasedDate    The date of the lease
-     * @param Person   $leasedBy      The person who handed out the item
-     * @param string   $leasedTo      The person who received the item
-     * @param int      $leasedPawn    The pawn paid for the item
-     * @param string   $leasedComment An optional comment for the lease
+     * @param Item        $item          The leased item
+     * @param int         $leasedAmount  The number of items that was leased
+     * @param DateTime    $leasedDate    The date of the lease
+     * @param Person      $leasedBy      The person who handed out the item
+     * @param string      $leasedTo      The person who received the item
+     * @param int         $leasedPawn    The pawn paid for the item
+     * @param string|null $leasedComment An optional comment for the lease
      */
     public function __construct(Item $item, $leasedAmount, DateTime $leasedDate, Person $leasedBy, $leasedTo, $leasedPawn, $leasedComment = null)
     {
@@ -351,11 +351,15 @@ class Lease
     }
 
     /**
-     * @return float|null
+     * @return float|integer
      */
     public function getReturnedPawn()
     {
-        return $this->returnedPawn/100;
+        if (null === $this->returnedPawn) {
+            return 0;
+        }
+
+        return (float) $this->returnedPawn/100;
     }
 
     /**
@@ -370,7 +374,7 @@ class Lease
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getReturnedComment()
     {

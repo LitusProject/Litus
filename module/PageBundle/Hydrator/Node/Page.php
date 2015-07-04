@@ -32,7 +32,7 @@ class Page extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        $newPage = new PageEntity($this->getPerson());
+        $newPage = new PageEntity($this->getPersonEntity());
 
         if (null !== $object && null !== $object->getName()) {
             $object->close();

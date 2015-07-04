@@ -253,6 +253,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->addSubmit('Add', 'shift_add');
     }
 
+    /**
+     * @return array
+     */
     private function createDuplicatesArray()
     {
         $duplications = array();
@@ -263,6 +266,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $duplications;
     }
 
+    /**
+     * @return array
+     */
     private function createUnitsArray()
     {
         $units = $this->getEntityManager()
@@ -281,6 +287,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $unitsArray;
     }
 
+    /**
+     * @return array
+     */
     private function createEventsArray()
     {
         $events = $this->getEntityManager()
@@ -297,6 +306,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $eventsArray;
     }
 
+    /**
+     * @return array
+     */
     private function createLocationsArray()
     {
         $locations = $this->getEntityManager()
@@ -315,6 +327,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $locationsArray;
     }
 
+    /**
+     * @return array
+     */
     private function createEditRolesArray()
     {
         $roles = $this->getEntityManager()
@@ -335,6 +350,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $rolesArray;
     }
 
+    /**
+     * @return array
+     */
     private function createRewardArray()
     {
         return unserialize(

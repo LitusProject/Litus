@@ -88,7 +88,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         <li><b>Fixed:</b> the value will be subtracted from the real price</li>
                         <li><b>Override:</b> the value will be used as the new price</li>
                     </ul>',
-                'options'   => Discount::$POSSIBLE_METHODS,
+                'options'   => Discount::$possibleMethods,
             ),
         ));
 
@@ -99,7 +99,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required'   => true,
             'attributes' => array(
                 'class'   => 'element type',
-                'options' => Discount::$POSSIBLE_TYPES,
+                'options' => Discount::$possibleTypes,
             ),
             'options'    => array(
                 'input' => array(
@@ -192,7 +192,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function getRoundings()
     {
         $roundings = array();
-        foreach (Discount::$POSSIBLE_ROUNDINGS as $key => $rounding) {
+        foreach (Discount::$possibleRoundings as $key => $rounding) {
             $roundings[$key] = $rounding['name'];
         }
 

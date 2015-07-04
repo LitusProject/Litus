@@ -55,7 +55,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             $piwik = array(
                 'uniqueVisitors' => $analytics->getUniqueVisitors(),
                 'liveCounters' => $analytics->getLiveCounters(),
-                'visitsGraph' => $this->_getVisitsGraph($analytics),
+                'visitsGraph' => $this->getVisitsGraph($analytics),
             );
         }
 
@@ -65,7 +65,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         $registrationsGraph = null;
         if ($enableRegistration) {
-            $registrationsGraph = $this->_getRegistrationsGraph();
+            $registrationsGraph = $this->getRegistrationsGraph();
         }
 
         $profActions = $this->getEntityManager()
@@ -111,7 +111,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
      * @param  Analytics $analytics
      * @return array
      */
-    private function _getVisitsGraph(Analytics $analytics)
+    private function getVisitsGraph(Analytics $analytics)
     {
         if (null !== $this->getCache()) {
             if ($this->getCache()->hasItem('CommonBundle_Controller_IndexController_VisitsGraph')) {
@@ -123,20 +123,20 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
             $this->getCache()->setItem(
                 'CommonBundle_Controller_IndexController_VisitsGraph',
-                $this->_getVisitsGraphData($analytics)
+                $this->getVisitsGraphData($analytics)
             );
 
             return $this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph');
         }
 
-        return $this->_getVisitsGraphData($analytics);
+        return $this->getVisitsGraphData($analytics);
     }
 
     /**
      * @param  Analytics $analytics
      * @return array
      */
-    private function _getVisitsGraphData(Analytics $analytics)
+    private function getVisitsGraphData(Analytics $analytics)
     {
         $now = new DateTime();
 
@@ -160,7 +160,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @return array
      */
-    private function _getRegistrationsGraph()
+    private function getRegistrationsGraph()
     {
         if (null !== $this->getCache()) {
             if ($this->getCache()->hasItem('CommonBundle_Controller_IndexController_RegistrationsGraph')) {
@@ -172,19 +172,19 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
             $this->getCache()->setItem(
                 'CommonBundle_Controller_IndexController_RegistrationsGraph',
-                $this->_getRegistrationsGraphData()
+                $this->getRegistrationsGraphData()
             );
 
             return $this->getCache()->getItem('CommonBundle_Controller_IndexController_RegistrationsGraph');
         }
 
-        return $this->_getRegistrationsGraphData();
+        return $this->getRegistrationsGraphData();
     }
 
     /**
      * @return array
      */
-    private function _getRegistrationsGraphData()
+    private function getRegistrationsGraphData()
     {
         $now = new DateTime();
 

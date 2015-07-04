@@ -32,28 +32,28 @@ class HasAccess
     /**
      * @var Acl The ACL object
      */
-    private $_acl = null;
+    private $acl = null;
 
     /**
      * @var RoleAware The authentication entity
      */
-    private $_entity = null;
+    private $entity = null;
 
     /**
      * @var boolean Whether the person is authenticated
      */
-    private $_authenticated = false;
+    private $authenticated = false;
 
     /**
-     * @param Acl       $acl           The ACL object
-     * @param boolean   $authenticated Whether the person is authenticated
-     * @param RoleAware $entity        The authenticated entity
+     * @param Acl            $acl           The ACL object
+     * @param boolean        $authenticated Whether the person is authenticated
+     * @param RoleAware|null $entity        The authenticated entity
      */
     public function __construct(Acl $acl, $authenticated, RoleAware $entity = null)
     {
-        $this->_acl = $acl;
-        $this->_authenticated = $authenticated;
-        $this->_entity = $entity;
+        $this->acl = $acl;
+        $this->authenticated = $authenticated;
+        $this->entity = $entity;
     }
 
     /**
@@ -63,11 +63,11 @@ class HasAccess
      */
     public function __invoke($resource, $action)
     {
-        if (null === $this->_acl) {
+        if (null === $this->acl) {
             throw new Exception\RuntimeException('No ACL object was provided');
         }
 
-        if ($this->_authenticated && null === $this->_entity) {
+        if ($this->authenticated && null === $this->entity) {
             throw new Exception\RuntimeException('No entity was provided');
         }
 
@@ -76,15 +76,15 @@ class HasAccess
             return true;
         }
 
-        if (!$this->_acl->hasResource($resource)) {
+        if (!$this->acl->hasResource($resource)) {
             return false;
         }
 
-        if ($this->_authenticated && null !== $this->_entity) {
-            foreach ($this->_entity->getRoles() as $role) {
+        if ($this->authenticated && null !== $this->entity) {
+            foreach ($this->entity->getRoles() as $role) {
                 if (
                     $role->isAllowed(
-                        $this->_acl, $resource, $action
+                        $this->acl, $resource, $action
                     )
                 ) {
                     return true;
@@ -93,7 +93,7 @@ class HasAccess
 
             return false;
         } else {
-            return $this->_acl->isAllowed(
+            return $this->acl->isAllowed(
                 'guest', $resource, $action
             );
         }

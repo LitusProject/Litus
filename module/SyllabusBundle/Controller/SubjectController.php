@@ -30,19 +30,21 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function typeaheadAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYear())) {
             return $this->notFoundAction();
         }
 
-        $subjects = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Subject')
-            ->findAllByNameAndAcademicYearTypeAhead($this->getParam('string'), $academicYear);
+        $mappings = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+            ->findAllByNameQuery($this->getParam('string'), $academicYear)
+            ->setMaxResults(20)
+            ->getResult();
 
         $result = array();
-        foreach ($subjects as $subject) {
+        foreach ($mappings as $mapping) {
             $item = (object) array();
-            $item->id = $subject->getId();
-            $item->value = $subject->getCode() . ' - ' . $subject->getName();
+            $item->id = $mapping->getSubject()->getId();
+            $item->value = $mapping->getSubject()->getCode() . ' - ' . $mapping->getSubject()->getName();
             $result[] = $item;
         }
 
@@ -53,7 +55,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _getAcademicYear()
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
+    private function getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
             $start = AcademicYear::getStartOfAcademicYear();

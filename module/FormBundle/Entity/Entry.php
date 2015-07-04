@@ -63,10 +63,10 @@ class Entry
     private $readableValue;
 
     /**
-     * @param NodeEntry $formEntry
-     * @param Field     $field
-     * @param string    $value
-     * @param string    $readableValue
+     * @param NodeEntry   $formEntry
+     * @param Field       $field
+     * @param string      $value
+     * @param string|null $readableValue
      */
     public function __construct(NodeEntry $formEntry, Field $field, $value, $readableValue = null)
     {
@@ -101,7 +101,7 @@ class Entry
     }
 
     /**
-     * @param  string $value;
+     * @param  string $value
      * @return self
      */
     public function setValue($value)
@@ -120,7 +120,7 @@ class Entry
     }
 
     /**
-     * @param  string $readableValue;
+     * @param  string $readableValue
      * @return self
      */
     public function setReadableValue($readableValue)

@@ -22,7 +22,7 @@ use SyllabusBundle\Entity\Subject as SubjectEntity;
 
 class Subject extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('code', 'name', 'semester', 'credits');
+    private static $stdKeys = array('code', 'name', 'semester', 'credits');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -30,7 +30,7 @@ class Subject extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new SubjectEntity();
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -39,6 +39,6 @@ class Subject extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        return $this->stdExtract($object, self::$std_keys);
+        return $this->stdExtract($object, self::$stdKeys);
     }
 }

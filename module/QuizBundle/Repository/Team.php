@@ -35,7 +35,7 @@ class Team extends EntityRepository
      */
     public function findAllByQuizQuery(QuizEntity $quiz)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
 
         $resultSet = $query->select('t')
             ->from('QuizBundle\Entity\Team', 't')
@@ -56,7 +56,7 @@ class Team extends EntityRepository
      */
     public function getNextTeamNumberForQuiz(QuizEntity $quiz)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('MAX(t.number)')
             ->from('QuizBundle\Entity\Team', 't')
             ->where(

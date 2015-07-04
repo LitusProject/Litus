@@ -18,7 +18,8 @@
 
 namespace TicketBundle\Controller\Sale;
 
-use Zend\View\Model\ViewModel;
+use TicketBundle\Entity\Ticket,
+    Zend\View\Model\ViewModel;
 
 /**
  * TicketController
@@ -52,7 +53,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket())) {
+        if (!($ticket = $this->getTicketEntity())) {
             return new ViewModel();
         }
 
@@ -70,7 +71,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket()) && !$ticket->getEvent()->areTicketsGenerated()) {
+        if (!($ticket = $this->getTicketEntity()) || !$ticket->getEvent()->areTicketsGenerated()) {
             return new ViewModel();
         }
 
@@ -88,7 +89,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket())) {
+        if (!($ticket = $this->getTicketEntity())) {
             return new ViewModel();
         }
 
@@ -106,7 +107,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
-        if (!($ticket = $this->_getTicket())) {
+        if (!($ticket = $this->getTicketEntity())) {
             return new ViewModel();
         }
 
@@ -120,29 +121,17 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
         );
     }
 
-    private function _getTicket()
+    /**
+     * @return Ticket|null
+     */
+    private function getTicketEntity()
     {
-        if (null === $this->getParam('ticket')) {
+        $ticket = $this->getEntityById('TicketBundle\Entity\Ticket');
+
+        if (!($ticket instanceof Ticket)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the ticket!'
-            );
-
-            $this->redirect()->toRoute(
-                'ticket_sale_index'
-            );
-
-            return;
-        }
-
-        $ticket = $this->getEntityManager()
-            ->getRepository('TicketBundle\Entity\Ticket')
-            ->findOneById($this->getParam('ticket'));
-
-        if (null === $ticket) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ticket with the given ID was found!'
+                'No ticket was found!'
             );
 
             $this->redirect()->toRoute(

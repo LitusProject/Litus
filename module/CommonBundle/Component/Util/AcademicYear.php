@@ -44,8 +44,8 @@ class AcademicYear
      * for the given date. If no date is given, the current date is used.
      *
      * @static
-     * @param  DateTime $date If null, the current date is used
-     * @return string   The academic year in yyyy-zzzz notation
+     * @param  DateTime|null $date If null, the current date is used
+     * @return string        The academic year in yyyy-zzzz notation
      */
     public static function getAcademicYear(DateTime $date = null)
     {
@@ -71,8 +71,8 @@ class AcademicYear
      * If no date is given, the current date is used.
      *
      * @static
-     * @param  DateTime $date If null, the current date is used
-     * @return string   The academic year in yyzz format
+     * @param  DateTime|null $date If null, the current date is used
+     * @return string        The academic year in yyzz format
      */
     public static function getShortAcademicYear(DateTime $date = null)
     {
@@ -210,7 +210,7 @@ class AcademicYear
 
     /**
      * @param  EntityManager      $entityManager
-     * @param  DateTime           $date
+     * @param  DateTime|null      $date
      * @return AcademicYearEntity
      */
     public static function getUniversityYear(EntityManager $entityManager, DateTime $date = null)
@@ -247,7 +247,7 @@ class AcademicYear
 
     /**
      * @param  EntityManager      $entityManager
-     * @param  DateTime           $date
+     * @param  DateTime|null      $date
      * @return AcademicYearEntity
      */
     public static function getOrganizationYear(EntityManager $entityManager, DateTime $date = null)

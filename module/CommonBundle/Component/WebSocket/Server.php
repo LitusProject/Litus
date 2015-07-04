@@ -27,13 +27,13 @@ use Exception;
  */
 abstract class Server
 {
-    private $_file;
+    private $file;
 
-    private $_users;
-    private $_sockets;
-    private $_master;
+    private $users;
+    private $sockets;
+    private $master;
 
-    private $_authenticated;
+    private $authenticated;
 
     const OP_CONT = 0x0;
     const OP_TEXT = 0x1;
@@ -46,10 +46,10 @@ abstract class Server
      */
     public function __construct($file)
     {
-        $this->_file = $file;
-        $this->_users = array();
-        $this->_sockets = array();
-        $this->_authenticated = array();
+        $this->file = $file;
+        $this->users = array();
+        $this->sockets = array();
+        $this->authenticated = array();
 
         $this->createSocket();
     }
@@ -61,8 +61,8 @@ abstract class Server
     {
         $err = $errno = 0;
 
-        $isFile = strpos($this->_file, 'unix://') === 0;
-        $fileName = substr($this->_file, strlen('unix://'));
+        $isFile = strpos($this->file, 'unix://') === 0;
+        $fileName = substr($this->file, strlen('unix://'));
 
         if ($isFile) {
             if (file_exists($fileName)) {
@@ -74,15 +74,15 @@ abstract class Server
             }
         }
 
-        $this->_master = stream_socket_server($this->_file, $errno, $err, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN);
+        $this->master = stream_socket_server($this->file, $errno, $err, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN);
 
         if ($isFile) {
             chmod($fileName, 0777);
         }
 
-        $this->_sockets[] = $this->_master;
+        $this->sockets[] = $this->master;
 
-        if ($this->_master == false) {
+        if ($this->master == false) {
             throw new Exception('Socket could not be created: ' . $err);
         }
     }
@@ -99,21 +99,21 @@ abstract class Server
                 gc_collect_cycles();
             }
 
-            $changed = $this->_sockets;
+            $changed = $this->sockets;
             stream_select($changed, $write, $except, null);
 
             foreach ($changed as $socket) {
-                if ($socket == $this->_master) {
-                    $this->_addUserSocket(stream_socket_accept($this->_master));
+                if ($socket == $this->master) {
+                    $this->addUserSocket(stream_socket_accept($this->master));
                 } else {
                     $buffer = fread($socket, 2048);
 
-                    if (false == $buffer || strlen($buffer) == 0) {
-                        $this->_removeUserSocket($socket);
+                    if (false === $buffer || strlen($buffer) === 0) {
+                        $this->removeUserSocket($socket);
                     } else {
                         $user = $this->getUserBySocket($socket);
                         if ($user->hasHandshaked()) {
-                            $this->_processFrame($user, $buffer);
+                            $this->processFrame($user, $buffer);
                         } else {
                             $user->doHandShake($buffer);
                             if ($user->hasHandshaked()) {
@@ -129,46 +129,49 @@ abstract class Server
     /**
      * Add a user socket to listen to
      *
-     * @param resource $socket
+     * @param  resource $socket
+     * @return null
      */
-    private function _addUserSocket($socket)
+    private function addUserSocket($socket)
     {
         if (!$socket) {
             return;
         }
-        $this->_users[] = new User($socket);
-        $this->_sockets[] = $socket;
+        $this->users[] = new User($socket);
+        $this->sockets[] = $socket;
     }
 
     /**
      * Add a authenticated socket
      *
-     * @param mixed $socket
+     * @param  resource $socket
+     * @return null
      */
     protected function addAuthenticated($socket)
     {
-        $this->_authenticated[(int) $socket] = $socket;
+        $this->authenticated[(int) $socket] = $socket;
     }
 
     /**
      * Check a authenticated socket
      *
-     * @param mixed $socket
+     * @param  resource $socket
+     * @return boolean
      */
     protected function isAuthenticated($socket)
     {
-        return isset($this->_authenticated[(int) $socket]);
+        return isset($this->authenticated[(int) $socket]);
     }
 
     /**
      * Get a user by his socket
      *
-     * @param  mixed $socket
+     * @param  resource $socket
      * @return User
      */
     public function getUserBySocket($socket)
     {
-        foreach ($this->_users as $user) {
+        foreach ($this->users as $user) {
             if ($user->getSocket() == $socket) {
                 return $user;
             }
@@ -178,19 +181,20 @@ abstract class Server
     /**
      * Remove a user socket
      *
-     * @param mixed $socket
+     * @param  resource $socket
+     * @return null
      */
-    private function _removeUserSocket($socket)
+    private function removeUserSocket($socket)
     {
-        foreach ($this->_users as $key => $value) {
+        foreach ($this->users as $key => $value) {
             if ($value->getSocket() == $socket) {
-                unset($this->_users[$key]);
+                unset($this->users[$key]);
                 $this->onClose($value, 0, '');
             }
         }
 
-        if (isset($this->_authenticated[(int) $socket])) {
-            unset($this->_authenticated[(int) $socket]);
+        if (isset($this->authenticated[(int) $socket])) {
+            unset($this->authenticated[(int) $socket]);
         }
 
         try {
@@ -199,9 +203,9 @@ abstract class Server
             // Do nothing
         }
 
-        foreach ($this->_sockets as $key => $value) {
+        foreach ($this->sockets as $key => $value) {
             if ($value == $socket) {
-                unset($this->_sockets[$key]);
+                unset($this->sockets[$key]);
             }
         }
     }
@@ -209,26 +213,28 @@ abstract class Server
     /**
      * Remove a user
      *
-     * @param User $user
+     * @param  User $user
+     * @return null
      */
     protected function removeUser(User $user)
     {
-        $this->_removeUserSocket($user->getSocket());
+        $this->removeUserSocket($user->getSocket());
     }
 
     /**
      * Process a frame send by a user to the master socket
      *
-     * @param User   $user
-     * @param string $data
+     * @param  User   $user
+     * @param  string $data
+     * @return null
      */
-    private function _processFrame(User $user, $data)
+    private function processFrame(User $user, $data)
     {
         $f = new Frame($data);
 
         if ($f->getIsFin() && $f->getOpcode() != 0) {
             if ($f->getIsControl()) {
-                $this->_handleControlFrame($user, $f);
+                $this->handleControlFrame($user, $f);
             } else {
                 $this->handleDataFrame($user, $f);
             }
@@ -250,10 +256,11 @@ abstract class Server
     /**
      * Handle the received control frames
      *
-     * @param User  $user
-     * @param Frame $frame
+     * @param  User  $user
+     * @param  Frame $frame
+     * @return null
      */
-    private function _handleControlFrame(User $user, Frame $frame)
+    private function handleControlFrame(User $user, Frame $frame)
     {
         $len = strlen($frame->getData());
 
@@ -273,7 +280,7 @@ abstract class Server
 
             $user->write(chr(0x88) . chr(0));
 
-            $this->_removeUserSocket($user->getSocket());
+            $this->removeUserSocket($user->getSocket());
             $this->onClose($user, $statusCode, $reason);
         }
     }
@@ -281,8 +288,9 @@ abstract class Server
     /**
      * Handle a received data frame
      *
-     * @param User  $user
-     * @param Frame $frame
+     * @param  User  $user
+     * @param  Frame $frame
+     * @return null
      */
     protected function handleDataFrame(User $user, Frame $frame)
     {
@@ -296,8 +304,9 @@ abstract class Server
     /**
      * Send text to a user socket
      *
-     * @param User   $user
-     * @param string $text
+     * @param  User   $user
+     * @param  string $text
+     * @return null
      */
     public function sendText($user, $text)
     {
@@ -325,7 +334,8 @@ abstract class Server
     /**
      * Send text to all user socket
      *
-     * @param string $text
+     * @param  string $text
+     * @return null
      */
     public function sendTextToAll($text)
     {
@@ -343,7 +353,7 @@ abstract class Server
             $header .= chr($len);
         }
 
-        foreach ($this->_users as $user) {
+        foreach ($this->users as $user) {
             if ($this->isAuthenticated($user->getSocket())) {
                 $user->write($header . $text);
             }
@@ -355,41 +365,45 @@ abstract class Server
      */
     public function getUsers()
     {
-        return $this->_users;
+        return $this->users;
     }
 
     /**
      * Parse received text
      *
-     * @param User   $user
-     * @param string $data
+     * @param  User   $user
+     * @param  string $data
+     * @return null
      */
     abstract protected function gotText(User $user, $data);
 
     /**
      * Parse received binary
      *
-     * @param User   $user
-     * @param string $data
+     * @param  User   $user
+     * @param  string $data
+     * @return null
      */
     abstract protected function gotBin(User $user, $data);
 
     /**
      * Do action when user closed his socket
      *
-     * @param User    $user
-     * @param integer $statusCode
-     * @param string  $reason
+     * @param  User    $user
+     * @param  integer $statusCode
+     * @param  string  $reason
+     * @return null
      */
     protected function onClose(User $user, $statusCode, $reason)
     {
-        $this->_removeUserSocket($user->getSocket());
+        $this->removeUserSocket($user->getSocket());
     }
 
     /**
      * Do action when a new user has connected to this socket
      *
-     * @param User $user
+     * @param  User $user
+     * @return null
      */
     abstract protected function onConnect(User $user);
 }

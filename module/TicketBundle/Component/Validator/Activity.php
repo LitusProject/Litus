@@ -59,8 +59,8 @@ class Activity extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Returns true if these does not exceed max
      *
-     * @param  string  $value   The value of the field that will be validated
-     * @param  array   $context The context of the field that will be validated
+     * @param  string     $value   The value of the field that will be validated
+     * @param  array|null $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)

@@ -29,6 +29,10 @@ use DateTime,
  */
 class Log extends DocumentRepository
 {
+    /**
+     * @param  DateTime $since
+     * @return mixed
+     */
     public function findAllSince(DateTime $since)
     {
         $resultSet = $this->createQueryBuilder()

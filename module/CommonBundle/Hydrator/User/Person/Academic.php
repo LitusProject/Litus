@@ -23,7 +23,7 @@ use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
 
 class Academic extends \CommonBundle\Hydrator\User\Person
 {
-    protected static $std_keys = array(
+    protected static $stdKeys = array(
         'university_identification', 'personal_email',
     );
 
@@ -35,6 +35,12 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             return $data;
         }
 
+        /** @var \CommonBundle\Hydrator\General\Address $hydratorAddress */
+        $hydratorAddress = $this->getHydrator('CommonBundle\Hydrator\General\Address');
+
+        /** @var \CommonBundle\Hydrator\General\PrimaryAddress $hydratorPrimaryAddress */
+        $hydratorPrimaryAddress = $this->getHydrator('CommonBundle\Hydrator\General\PrimaryAddress');
+
         $data['roles'] = $this->rolesToData($object->getRoles(false));
 
         $data['primary_email'] = $object->getEmail() === $object->getPersonalEmail();
@@ -42,14 +48,12 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             ? $object->getBirthday()->format('d/m/Y')
             : '';
 
-        $data['secondary_address'] = $this->getHydrator('CommonBundle\Hydrator\General\Address')
-            ->extract($object->getSecondaryAddress());
-        $data['primary_address'] = $this->getHydrator('CommonBundle\Hydrator\General\PrimaryAddress')
-            ->extract($object->getPrimaryAddress());
+        $data['secondary_address'] = $hydratorAddress->extract($object->getSecondaryAddress());
+        $data['primary_address'] = $hydratorPrimaryAddress->extract($object->getPrimaryAddress());
 
         $data = array_merge(
             $data,
-            $this->stdExtract($object, self::$std_keys)
+            $this->stdExtract($object, self::$stdKeys)
         );
 
         $academicYear = $this->getCurrentAcademicYear();
@@ -131,22 +135,26 @@ class Academic extends \CommonBundle\Hydrator\User\Person
         $object->setUniversityEmail($universityEmail)
             ->setUniversityIdentification($data['university']['identification']);
 
-        if (isset($data['secondary_address']) && !empty($data['secondary_address']['city'])) {
+        /** @var \CommonBundle\Hydrator\General\Address $hydratorAddress */
+        $hydratorAddress = $this->getHydrator('CommonBundle\Hydrator\General\Address');
+
+        /** @var \CommonBundle\Hydrator\General\PrimaryAddress $hydratorPrimaryAddress */
+        $hydratorPrimaryAddress = $this->getHydrator('CommonBundle\Hydrator\General\PrimaryAddress');
+
+        if (isset($data['secondary_adress']) && is_array($data['secondary_address']) && !empty($data['secondary_address']['city'])) {
             $object->setSecondaryAddress(
-                $this->getHydrator('CommonBundle\Hydrator\General\Address')
-                    ->hydrate($data['secondary_address'], $object->getSecondaryAddress())
+                $hydratorAddress->hydrate($data['secondary_address'], $object->getSecondaryAddress())
             );
         }
 
-        if (isset($data['primary_address']) && !empty($data['primary_address']['city'])) {
+        if (isset($data['secondary_adress']) && is_array($data['primary_address']) && !empty($data['primary_address']['city'])) {
             $object->setPrimaryAddress(
-                $this->getHydrator('CommonBundle\Hydrator\General\PrimaryAddress')
-                    ->hydrate($data['primary_address'], $object->getPrimaryAddress())
+                $hydratorPrimaryAddress->hydrate($data['primary_address'], $object->getPrimaryAddress())
             );
         }
 
         parent::doHydrate($data, $object);
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

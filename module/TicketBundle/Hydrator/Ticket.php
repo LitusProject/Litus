@@ -54,11 +54,11 @@ class Ticket extends \CommonBundle\Component\Hydrator\Hydrator
 
         return TicketBook::book(
             $object,
-            $person,
-            $guestInfo,
             $numbers,
             $data['payed'],
-            $this->getEntityManager()
+            $this->getEntityManager(),
+            $person,
+            $guestInfo
         );
     }
 

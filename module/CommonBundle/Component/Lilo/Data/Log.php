@@ -29,7 +29,7 @@ class Log extends \CommonBundle\Component\Lilo\Data
     /**
      * @var array The correctly formatted data object
      */
-    private $_data = array();
+    private $data = array();
 
     /**
      * Construct a new Exception object.
@@ -39,7 +39,7 @@ class Log extends \CommonBundle\Component\Lilo\Data
      */
     public function __construct($message, $tags)
     {
-        $this->_data = array(
+        $this->data = array(
             'message' => $message,
             'tags' => $tags,
         );
@@ -52,6 +52,6 @@ class Log extends \CommonBundle\Component\Lilo\Data
      */
     public function __toString()
     {
-        return json_encode($this->_data);
+        return json_encode($this->data);
     }
 }

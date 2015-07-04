@@ -54,7 +54,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function viewAction()
     {
-        if (!($contract = $this->_getContract())) {
+        if (!($contract = $this->getContractEntity())) {
             return new ViewModel();
         }
 
@@ -67,7 +67,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function historyAction()
     {
-        if (!($contract = $this->_getContract())) {
+        if (!($contract = $this->getContractEntity())) {
             return new ViewModel();
         }
 
@@ -88,7 +88,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function editAction()
     {
-        if (!($contract = $this->_getContract(false))) {
+        if (!($contract = $this->getContractEntity(false))) {
             return new ViewModel();
         }
 
@@ -133,7 +133,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     {
         $this->initAjax();
 
-        if (!($contract = $this->_getContract())) {
+        if (!($contract = $this->getContractEntity())) {
             return new ViewModel();
         }
 
@@ -169,7 +169,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function signAction()
     {
-        if (!($contract = $this->_getContract(false))) {
+        if (!($contract = $this->getContractEntity(false))) {
             return new ViewModel();
         }
 
@@ -210,7 +210,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function downloadAction()
     {
-        if (!($contract = $this->_getContract())) {
+        if (!($contract = $this->getContractEntity())) {
             return new ViewModel();
         }
 
@@ -288,32 +288,14 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
      * @param  boolean       $allowSigned
      * @return Contract|null
      */
-    private function _getContract($allowSigned = true)
+    private function getContractEntity($allowSigned = true)
     {
-        if (null === $this->getParam('id')) {
+        $contract = $this->getEntityById('BrBundle\Entity\Contract');
+
+        if (!($contract instanceof Contract)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the contract!'
-            );
-
-            $this->redirect()->toRoute(
-                'br_admin_order',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $contract = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Contract')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $contract) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No contract with the given ID was found!'
+                'No contract was found!'
             );
 
             $this->redirect()->toRoute(

@@ -182,6 +182,9 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
         return new ViewModel();
     }
 
+    /**
+     * @return \Zend\Http\Response|null
+     */
     protected function redirectAfterAuthentication()
     {
         if (!$this->getAuthentication()->isAuthenticated() || !$this->getAuthentication()->isExternallyAuthenticated()) {

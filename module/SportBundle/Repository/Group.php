@@ -36,7 +36,7 @@ class Group extends EntityRepository
      */
     public function findLast()
     {
-        $builder = $this->_em->createQueryBuilder();
+        $builder = $this->getEntityManager()->createQueryBuilder();
 
         $count = $builder->select($builder->expr()->count('g.id'))
             ->from('SportBundle\Entity\Group', 'g')
@@ -50,7 +50,7 @@ class Group extends EntityRepository
             return array();
         }
 
-        $builder = $this->_em->createQueryBuilder();
+        $builder = $this->getEntityManager()->createQueryBuilder();
 
         return $builder->select('g')
             ->from('SportBundle\Entity\Group', 'g')
@@ -60,9 +60,13 @@ class Group extends EntityRepository
             ->getResult();
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('g')
             ->from('SportBundle\Entity\Group', 'g')
             ->where(

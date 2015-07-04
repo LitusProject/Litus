@@ -41,7 +41,7 @@ class Values extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array The message variables
      */
     protected $messageVariables = array(
-        'start_value'  => array('options' => '_startValue'),
+        'start_value'  => array('options' => 'startValue'),
     );
 
     protected $options = array(
@@ -52,7 +52,7 @@ class Values extends \CommonBundle\Component\Validator\AbstractValidator
      * Original start value against which to validate
      * @var string
      */
-    protected $_startValue;
+    protected $startValue;
 
     /**
      * Sets validator options
@@ -71,10 +71,11 @@ class Values extends \CommonBundle\Component\Validator\AbstractValidator
     }
 
     /**
-     * Returns true if and only if the end date is after the start date
+     * Returns true if and only if a field name has been set, the field name is available in the
+     * context, and the value of that field is valid.
      *
-     * @param  mixed   $value
-     * @param  array   $context
+     * @param  string     $value   The value of the field that will be validated
+     * @param  array|null $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -87,7 +88,7 @@ class Values extends \CommonBundle\Component\Validator\AbstractValidator
 
         if (($context !== null) && isset($context) && array_key_exists($this->options['start_value'], $context)) {
             $startValue = $context[$this->options['start_value']];
-            $this->_startValue = $startValue;
+            $this->startValue = $startValue;
         } else {
             $this->error(self::NOT_VALID);
 

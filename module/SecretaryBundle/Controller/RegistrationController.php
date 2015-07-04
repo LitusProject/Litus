@@ -95,7 +95,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     'You have already registered for this academic year.'
                 );
 
-                if ($this->_isValidCode()) {
+                if ($this->isValidCode()) {
                     $authentication = new Authentication(
                         new ShibbolethAdapter(
                             $this->getEntityManager(),
@@ -130,10 +130,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_other_organization');
 
-        $termsAndConditions = $this->_getTermsAndConditions();
+        $termsAndConditions = $this->getTermsAndConditions();
 
         if (null !== $academic) {
-            $this->_authenticate();
+            $this->authenticate();
 
             $this->redirect()->toRoute(
                 'secretary_registration',
@@ -163,7 +163,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         }
 
         if ($this->getRequest()->isPost()) {
-            if ($this->_isValidCode()) {
+            if ($this->isValidCode()) {
                 $code = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
@@ -205,7 +205,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $organizationData = $formData['organization_info'];
 
                     if (isset($organizationData['organization']) && $selectedOrganization) {
-                        $this->_setOrganization(
+                        $this->setOrganization(
                             $academic,
                             $this->getCurrentAcademicYear(),
                             $selectedOrganization
@@ -288,7 +288,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 );
             }
         } else {
-            if ($this->_isValidCode()) {
+            if ($this->isValidCode()) {
                 $code = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                     ->findLastByUniversityIdentification($this->getParam('identification'));
@@ -313,14 +313,14 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
         return new ViewModel(
             array(
-                'registerShibbolethUrl' => $this->_getRegisterhibbolethUrl(),
+                'registerShibbolethUrl' => $this->getRegisterhibbolethUrl(),
             )
         );
     }
 
     public function editAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -351,7 +351,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_other_organization');
 
-        $termsAndConditions = $this->_getTermsAndConditions();
+        $termsAndConditions = $this->getTermsAndConditions();
 
         if (null !== $metaData) {
             $form = $this->getForm('secretary_registration_edit', array('meta_data' => $metaData));
@@ -426,7 +426,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 }
 
                 if (null !== $selectedOrganization) {
-                    $this->_setOrganization(
+                    $this->setOrganization(
                         $academic,
                         $this->getCurrentAcademicYear(),
                         $selectedOrganization
@@ -528,7 +528,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function studiesAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -539,7 +539,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             return new ViewModel();
         }
 
-        return $this->_studiesAction(
+        return $this->doStudiesAction(
             $academic,
             $this->getCurrentAcademicYear()
         );
@@ -549,7 +549,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     {
         $this->initAjax();
 
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -557,7 +557,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             );
         }
 
-        return $this->_saveStudiesAction(
+        return $this->doSaveStudiesAction(
             $academic,
             $this->getCurrentAcademicYear(),
             $this->getRequest()->getPost()->toArray()
@@ -566,7 +566,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function subjectsAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -577,10 +577,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             return new ViewModel();
         }
 
-        return $this->_subjectAction(
+        /** @var \SecretaryBundle\Form\Registration\Subject\Add $form */
+        $form = $this->getForm('secretary_registration_subject_add');
+
+        return $this->doSubjectAction(
             $academic,
             $this->getCurrentAcademicYear(),
-            $this->getForm('secretary_registration_subject_add')
+            $form
         );
     }
 
@@ -588,7 +591,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     {
         $this->initAjax();
 
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),
@@ -596,7 +599,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             );
         }
 
-        return $this->_saveSubjectAction(
+        return $this->doSaveSubjectAction(
             $academic,
             $this->getCurrentAcademicYear(),
             $this->getRequest()->getPost()->toArray()
@@ -605,7 +608,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
     public function completeAction()
     {
-        if (!($academic = $this->_getAcademic())) {
+        if (!($academic = $this->getAcademicEntity())) {
             $this->redirect()->toRoute(
                 'secretary_registration',
                 array(
@@ -629,8 +632,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $mappings[] = array(
                 'enrollment' => $enrollment,
                 'subjects' => $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                    ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear()),
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+                    ->findAllByStudy($enrollment->getStudy()),
             );
         }
 
@@ -654,25 +657,40 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         );
     }
 
-    private function _getAcademic()
+    /**
+     * @return Academic|null
+     */
+    private function getAcademicEntity()
     {
-        return $this->getAuthentication()->getPersonObject();
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return;
+        }
+
+        $person = $this->getAuthentication()->getPersonObject();
+
+        if (!($person instanceof Academic)) {
+            return;
+        }
+
+        return $person;
     }
 
-    private function _isValidCode()
+    /**
+     * @return boolean
+     */
+    private function isValidCode()
     {
         $code = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
             ->findLastByUniversityIdentification($this->getParam('identification'));
 
-        if (null !== $code || 'development' == getenv('APPLICATION_ENV')) {
-            return true;
-        }
-
-        return false;
+        return (null !== $code || 'development' == getenv('APPLICATION_ENV'));
     }
 
-    private function _getRegisterhibbolethUrl()
+    /**
+     * @return string
+     */
+    private function getRegisterhibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -700,7 +718,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         return $shibbolethUrl . '?source=register';
     }
 
-    private function _authenticate()
+    /**
+     * @return null
+     */
+    private function authenticate()
     {
         $authentication = new Authentication(
             new ShibbolethAdapter(

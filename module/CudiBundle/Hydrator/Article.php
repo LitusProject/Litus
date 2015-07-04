@@ -24,11 +24,11 @@ use CudiBundle\Entity\Article\External as ExternalArticle,
 
 class Article extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $article_keys = array(
+    private static $articleKeys = array(
         'title', 'year_published', 'isbn', 'url',
     );
 
-    private static $internal_keys = array(
+    private static $internalKeys = array(
         'nb_black_and_white', 'nb_colored',
     );
 
@@ -42,7 +42,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
             'article' => $this->stdExtract(
                 $object,
                 array(
-                    self::$article_keys,
+                    self::$articleKeys,
                     array('downloadable', 'same_as_previous_year', 'internal'),
                 )
             ),
@@ -56,7 +56,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
             $data['internal'] = $this->stdExtract(
                 $object,
                 array(
-                    self::$internal_keys,
+                    self::$internalKeys,
                     array('perforated', 'colored', 'hardcovered', 'official'),
                 )
             );
@@ -84,7 +84,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         if (isset($data['article'])) {
-            $this->stdHydrate($data['article'], $object, self::$article_keys);
+            $this->stdHydrate($data['article'], $object, self::$articleKeys);
 
             $object->setAuthors($data['article']['authors'])
                 ->setPublishers($data['article']['publisher'])
@@ -105,7 +105,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
                     ->findOneById($data['internal']['front_color']);
             }
 
-            $this->stdHydrate($data['internal'], $object, self::$internal_keys);
+            $this->stdHydrate($data['internal'], $object, self::$internalKeys);
 
             $object->setBinding($binding)
                 ->setIsOfficial(isset($data['internal']['official']) ? $data['internal']['official'] : true)

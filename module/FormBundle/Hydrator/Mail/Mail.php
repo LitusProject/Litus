@@ -23,7 +23,7 @@ use FormBundle\Entity\Mail\Mail as MailEntity,
 
 class Mail extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('from', 'bcc');
+    private static $stdKeys = array('from', 'bcc');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -31,7 +31,7 @@ class Mail extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new MailEntity();
         }
 
-        $object = $this->stdHydrate($data, $object, self::$std_keys);
+        $object = $this->stdHydrate($data, $object, self::$stdKeys);
         $this->getEntityManager()->persist($object);
 
         foreach ($this->getLanguages() as $language) {
@@ -61,7 +61,7 @@ class Mail extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         foreach ($this->getLanguages() as $language) {
             $data['tab_content']['tab_' . $language->getAbbrev()]['subject'] = $object->getSubject($language, false);

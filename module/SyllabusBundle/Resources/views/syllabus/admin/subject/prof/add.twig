@@ -1,0 +1,56 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'syllabus/admin/study/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'syllabus/admin/study/partials/years.twig' %}
+
+    <div id="controller_action">
+        <h1>Subject</h1>
+
+        <p>Code: <b>{{ subject.getCode() }}</b></p>
+        <p>Name: <b>{{ subject.getName() }}</b></p>
+        <p>Semester: <b>{{ subject.getSemester() }}</b></p>
+        <p>Credits: <b>{{ subject.getCredits() }}</b></p>
+        <br />
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    <aside>
+        {% if hasAccess('syllabus_admin_subject', 'view') %}
+            <div class="sidebox">
+                <div class="title">View Subject</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to view this subject!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url("syllabus_admin_subject", {"action": "view", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}">&rarr; View Subject</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#prof').typeaheadRemote(
+                {
+                    source: '{{ url("syllabus_admin_subject_prof_typeahead")}}',
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('[name="prof[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="prof[id]"]').val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}

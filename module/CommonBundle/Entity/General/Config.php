@@ -120,7 +120,7 @@ class Config
     }
 
     /**
-    * @param string $description A description for this configuration entry
+    * @param  string|null $description A description for this configuration entry
     * @return self
     * @throws InvalidArgumentException Description must be a string or null
      */
@@ -131,6 +131,8 @@ class Config
         }
 
         $this->description = $description;
+
+        return $this;
     }
 
     /**

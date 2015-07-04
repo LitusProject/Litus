@@ -29,7 +29,8 @@ class XmlNodeVisitor implements NodeVisitor
     private $string = '';
 
     /**
-     * @param Entry $entry
+     * @param  Entry $entry
+     * @return null
      */
     public function visitEntry(Entry $entry)
     {
@@ -42,7 +43,8 @@ class XmlNodeVisitor implements NodeVisitor
     }
 
     /**
-     * @param Entries $entries
+     * @param  Entries $entries
+     * @return null
      */
     public function visitEntries(Entries $entries)
     {
@@ -55,7 +57,8 @@ class XmlNodeVisitor implements NodeVisitor
     }
 
     /**
-     * @param Text $text
+     * @param  Text $text
+     * @return null
      */
     public function visitText(Text $text)
     {

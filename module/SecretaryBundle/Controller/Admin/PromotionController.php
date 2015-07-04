@@ -20,6 +20,7 @@ namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
     CommonBundle\Entity\General\AcademicYear,
+    SecretaryBundle\Entity\Promotion,
     SecretaryBundle\Entity\Promotion\Academic,
     SecretaryBundle\Entity\Promotion\External,
     Zend\View\Model\ViewModel;
@@ -37,13 +38,13 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
         if (null !== $this->getParam('field')) {
             $paginator = $this->paginator()->createFromArray(
-                $this->_search($academicYear),
+                $this->search($academicYear),
                 $this->getParam('page')
             );
         }
@@ -73,11 +74,11 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
-        $promotions = $this->_search($academicYear);
+        $promotions = $this->search($academicYear);
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -109,7 +110,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -216,7 +217,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
     {
         $this->initAjax();
 
-        if (!($promotion = $this->_getPromotion())) {
+        if (!($promotion = $this->getPromotionEntity())) {
             return new ViewModel();
         }
 
@@ -232,7 +233,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
     public function updateAction()
     {
-        if (!($academicYear = $this->_getAcademicYear())) {
+        if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
@@ -245,7 +246,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         }
 
         $studyMappings = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\AcademicYearMap')
+            ->getRepository('SyllabusBundle\Entity\Study\AcademicYearMap')
             ->findAllByAcademicYear($academicYear);
 
         $academics = array();
@@ -257,7 +258,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
             $enrollments = $this->getEntityManager()
                 ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                ->findAllByStudyAndAcademicYear($mapping->getStudy(), $academicYear);
+                ->findAllByStudy($mapping->getStudy());
 
             foreach ($enrollments as $enrollment) {
                 $academics[$enrollment->getAcademic()->getId()] = $enrollment->getAcademic();
@@ -286,7 +287,10 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         return new ViewModel();
     }
 
-    private function _search(AcademicYear $academicYear)
+    /**
+     * @return array
+     */
+    private function search(AcademicYear $academicYear)
     {
         switch ($this->getParam('field')) {
             case 'name':
@@ -298,9 +302,14 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
                     ->getRepository('SecretaryBundle\Entity\Promotion')
                     ->findAllByEMail($this->getParam('string'), $academicYear);
         }
+
+        return array();
     }
 
-    protected function _getAcademicYear()
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
+    private function getAcademicYearEntity()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {
@@ -327,32 +336,17 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         return $academicYear;
     }
 
-    private function _getPromotion()
+    /**
+     * @return Promotion|null
+     */
+    private function getPromotionEntity()
     {
-        if (null === $this->getParam('id')) {
+        $promotion = $this->getEntityById('SecretaryBundle\Entity\Promotion');
+
+        if (!($promotion instanceof Promotion)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the promotion!'
-            );
-
-            $this->redirect()->toRoute(
-                'secretary_admin_promotion',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $promotion = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Promotion')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $promotion) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No promotion with the given ID was found!'
+                'No promotion was found!'
             );
 
             $this->redirect()->toRoute(

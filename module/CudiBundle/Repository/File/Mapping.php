@@ -30,9 +30,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Mapping extends EntityRepository
 {
+    /**
+     * @param  Article                              $article
+     * @param  FileEntity                           $file
+     * @return \CudiBundle\Entity\File\Mapping|null
+     */
     public function findOneByArticleAndFile(Article $article, FileEntity $file)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\File\Mapping', 'm')
             ->where(
@@ -50,9 +55,14 @@ class Mapping extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @param  boolean             $isProf
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllPrintableByArticleQuery(Article $article, $isProf = false)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\File\Mapping', 'm')
             ->where(
@@ -69,9 +79,14 @@ class Mapping extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Article             $article
+     * @param  boolean             $isProf
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleQuery(Article $article, $isProf = false)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\File\Mapping', 'm')
             ->where(

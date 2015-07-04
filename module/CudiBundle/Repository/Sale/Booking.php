@@ -40,6 +40,10 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Booking extends EntityRepository
 {
+    /**
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveByPeriodQuery(Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -67,6 +71,11 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity       $article
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveByArticleAndPeriodQuery(ArticleEntity $article, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -96,6 +105,11 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Person              $person
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPersonAndPeriodQuery(Person $person, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -121,6 +135,11 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Person              $person
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPersonAndAcademicYearQuery(Person $person, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -142,6 +161,11 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity       $article
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleAndPeriodQuery(ArticleEntity $article, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -167,6 +191,11 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity       $article
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleAndAcademicYearQuery(ArticleEntity $article, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -188,6 +217,12 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $status
+     * @param  ArticleEntity       $article
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByStatusAndArticleAndPeriodQuery($status, ArticleEntity $article, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -215,6 +250,10 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllInactiveByPeriodQuery(Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -244,6 +283,12 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $person
+     * @param  string              $type
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPersonNameAndTypeAndPeriodQuery($person, $type, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -304,6 +349,12 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $article
+     * @param  string              $type
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByArticleAndTypeAndPeriodQuery($article, $type, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -350,6 +401,12 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $status
+     * @param  string              $type
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByStatusAndTypeAndPeriodQuery($status, $type, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -394,6 +451,10 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Period|null         $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBookedQuery(Period $period = null)
     {
         if (null == $period) {
@@ -424,6 +485,10 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Period|null         $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllAssignedQuery(Period $period = null)
     {
         if (null == $period) {
@@ -454,6 +519,9 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBookedArticlesQuery()
     {
         $period = $this->getEntityManager()
@@ -484,6 +552,11 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity       $article
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBookedByArticleAndPeriodQuery(ArticleEntity $article, Period $period)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -510,6 +583,10 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Person              $person
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllAssignedByPersonQuery(Person $person)
     {
         $period = $this->getEntityManager()
@@ -539,6 +616,11 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity                        $article
+     * @param  Person                               $person
+     * @return \CudiBundle\Entity\Sale\Booking|null
+     */
     public function findOneAssignedByArticleAndPerson(ArticleEntity $article, Person $person)
     {
         $period = $this->getEntityManager()
@@ -548,11 +630,24 @@ class Booking extends EntityRepository
         return $this->findOneAssignedByArticleAndPersonBetween($article, $person, $period->getStartDate(), $period->getEndDate());
     }
 
+    /**
+     * @param  ArticleEntity                        $article
+     * @param  Person                               $person
+     * @param  AcademicYear                         $academicYear
+     * @return \CudiBundle\Entity\Sale\Booking|null
+     */
     public function findOneAssignedByArticleAndPersonInAcademicYear(ArticleEntity $article, Person $person, AcademicYear $academicYear)
     {
         return $this->findOneAssignedByArticleAndPersonBetween($article, $person, $academicYear->getStartDate(), $academicYear->getEndDate());
     }
 
+    /**
+     * @param  ArticleEntity                        $article
+     * @param  Person                               $person
+     * @param  DateTime                             $start
+     * @param  DateTime|null                        $end
+     * @return \CudiBundle\Entity\Sale\Booking|null
+     */
     public function findOneAssignedByArticleAndPersonBetween(ArticleEntity $article, Person $person, DateTime $start, DateTime $end = null)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -582,11 +677,24 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity                        $article
+     * @param  Person                               $person
+     * @param  AcademicYear                         $academicYear
+     * @return \CudiBundle\Entity\Sale\Booking|null
+     */
     public function findOneBookedOrAssignedByArticleAndPersonInAcademicYear(ArticleEntity $article, Person $person, AcademicYear $academicYear)
     {
         return $this->findOneBookedOrAssignedByArticleAndPersonBetween($article, $person, $academicYear->getStartDate(), $academicYear->getEndDate());
     }
 
+    /**
+     * @param  ArticleEntity                        $article
+     * @param  Person                               $person
+     * @param  DateTime                             $start
+     * @param  DateTime|null                        $end
+     * @return \CudiBundle\Entity\Sale\Booking|null
+     */
     public function findOneBookedOrAssignedByArticleAndPersonBetween(ArticleEntity $article, Person $person, DateTime $start, DateTime $end = null)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -619,6 +727,12 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity                        $article
+     * @param  Person                               $person
+     * @param  boolean                              $limitByPeriod
+     * @return \CudiBundle\Entity\Sale\Booking|null
+     */
     public function findOneSoldByArticleAndPerson(ArticleEntity $article, Person $person, $limitByPeriod = true)
     {
         $period = $this->getEntityManager()
@@ -656,6 +770,11 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity                        $article
+     * @param  Person                               $person
+     * @return \CudiBundle\Entity\Sale\Booking|null
+     */
     public function findOneSoldOrAssignedOrBookedByArticleAndPerson(ArticleEntity $article, Person $person)
     {
         $period = $this->getEntityManager()
@@ -665,11 +784,24 @@ class Booking extends EntityRepository
         return $this->findOneSoldOrAssignedOrBookedByArticleAndPersonBetween($article, $person, $period->getStartDate(), $period->getEndDate());
     }
 
+    /**
+     * @param  ArticleEntity                        $article
+     * @param  Person                               $person
+     * @param  AcademicYear                         $academicYear
+     * @return \CudiBundle\Entity\Sale\Booking|null
+     */
     public function findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(ArticleEntity $article, Person $person, AcademicYear $academicYear)
     {
         return $this->findOneSoldOrAssignedOrBookedByArticleAndPersonBetween($article, $person, $academicYear->getStartDate(), $academicYear->getEndDate());
     }
 
+    /**
+     * @param  ArticleEntity                        $article
+     * @param  Person                               $person
+     * @param  DateTime                             $start
+     * @param  DateTime|null                        $end
+     * @return \CudiBundle\Entity\Sale\Booking|null
+     */
     public function findOneSoldOrAssignedOrBookedByArticleAndPersonBetween(ArticleEntity $article, Person $person, DateTime $start, DateTime $end = null)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -703,11 +835,24 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity $article
+     * @param  Person        $person
+     * @param  AcademicYear  $academicYear
+     * @return array
+     */
     public function findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(ArticleEntity $article, Person $person, AcademicYear $academicYear)
     {
         return $this->findAllSoldOrAssignedOrBookedByArticleAndPersonBetween($article, $person, $academicYear->getStartDate(), $academicYear->getEndDate());
     }
 
+    /**
+     * @param  ArticleEntity $article
+     * @param  Person        $person
+     * @param  DateTime      $start
+     * @param  DateTime|null $end
+     * @return array
+     */
     public function findAllSoldOrAssignedOrBookedByArticleAndPersonBetween(ArticleEntity $article, Person $person, DateTime $start, DateTime $end = null)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -740,6 +885,11 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity       $article
+     * @param  Person              $person
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllSoldOrAssignedOrBookedByArticleAndPersonQuery(ArticleEntity $article, Person $person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -763,6 +913,10 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Person              $person
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllOpenByPersonQuery(Person $person)
     {
         $period = $this->getEntityManager()
@@ -799,6 +953,10 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Person              $person
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllSoldByPersonQuery(Person $person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -815,6 +973,11 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Person                               $person
+     * @param  ArticleEntity                        $article
+     * @return \CudiBundle\Entity\Sale\Booking|null
+     */
     public function findOneSoldByPersonAndArticle(Person $person, ArticleEntity $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -836,6 +999,11 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  ArticleEntity                        $article
+     * @param  int                                  $number
+     * @return \CudiBundle\Entity\Sale\Booking|null
+     */
     public function findOneSoldByArticleAndNumber(ArticleEntity $article, $number)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -858,6 +1026,12 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Person  $person
+     * @param  boolean $removeRegistrationArticles
+     * @param  array   $excluded
+     * @return int
+     */
     public function cancelAll(Person $person, $removeRegistrationArticles = false, $excluded = array())
     {
         if (!$removeRegistrationArticles) {
@@ -920,6 +1094,11 @@ class Booking extends EntityRepository
         return $counter;
     }
 
+    /**
+     * @param  Person             $person
+     * @param  TransportInterface $mailTransport
+     * @return int
+     */
     public function assignAll(Person $person, TransportInterface $mailTransport)
     {
         $period = $this->getEntityManager()
@@ -993,6 +1172,11 @@ class Booking extends EntityRepository
         return $counter;
     }
 
+    /**
+     * @param  ArticleEntity      $article
+     * @param  TransportInterface $mailTransport
+     * @return int
+     */
     public function assignAllByArticle(ArticleEntity $article, TransportInterface $mailTransport)
     {
         $period = $this->getEntityManager()
@@ -1049,6 +1233,10 @@ class Booking extends EntityRepository
         return $counter;
     }
 
+    /**
+     * @param  TransportInterface $mailTransport
+     * @return int
+     */
     public function expireBookings(TransportInterface $mailTransport)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -1084,6 +1272,10 @@ class Booking extends EntityRepository
         return sizeof($bookings);
     }
 
+    /**
+     * @param  DateTime $date
+     * @return int
+     */
     public function extendAllBookings(DateTime $date)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -1099,15 +1291,10 @@ class Booking extends EntityRepository
             ->getQuery()
             ->getResult();
 
-        $extendTime = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.reservation_extend_time');
-
         $number = 0;
         foreach ($bookings as $booking) {
             if ($booking->getExpirationDate()) {
-                $date = clone $booking->getExpirationDate();
-                $booking->setExpirationDate($date->add(new DateInterval($extendTime)));
+                $booking->setExpirationDate($date);
                 $number++;
             }
         }
@@ -1115,6 +1302,10 @@ class Booking extends EntityRepository
         return $number;
     }
 
+    /**
+     * @param  ArticleEntity       $article
+     * @return \Doctrine\ORM\Query
+     */
     public function findLastAssignedByArticleQuery(ArticleEntity $article)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -1135,6 +1326,11 @@ class Booking extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  DateTime            $start
+     * @param  DateTime            $end
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllExpiringBetweenQuery(DateTime $start, DateTime $end)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

@@ -47,8 +47,8 @@ class Resource
     private $parent;
 
     /**
-     * @param string                            $name   The name of the resource
-     * @param \CommonBundle\Entity\Acl\Resource $parent The parent of the resource, or null if there is no parent
+     * @param string        $name   The name of the resource
+     * @param null|Resource $parent The parent of the resource, or null if there is no parent
      */
     public function __construct($name, Resource $parent = null)
     {

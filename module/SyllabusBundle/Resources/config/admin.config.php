@@ -33,6 +33,10 @@ return array(
                     'action' => 'manage',
                     'title'  => 'Studies',
                 ),
+                'syllabus_admin_study_module_group' => array(
+                    'action' => 'manage',
+                    'title'  => 'Module Groups',
+                ),
                 'syllabus_admin_subject'  => array(
                     'action' => 'manage',
                     'title'  => 'Subjects',
@@ -44,7 +48,8 @@ return array(
             ),
             'controllers' => array(
                 'syllabus_admin_subject_comment',
-                'syllabus_admin_prof',
+                'syllabus_admin_subject_prof',
+                'syllabus_admin_subject_module_group',
             ),
         ),
     ),

@@ -74,7 +74,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
     public function __call($method, $arguments)
     {
         if (method_exists($this, $method . 'Query')) {
-            return $this->_fetchResults($method . 'Query', $arguments);
+            return $this->fetchResults($method . 'Query', $arguments);
         }
 
         return parent::__call($method, $arguments);
@@ -88,7 +88,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
      * @return array
      * @throws LogicException When the method does not return a {@link Query}
      */
-    private function _fetchResults($method, $arguments)
+    private function fetchResults($method, $arguments)
     {
         switch (count($arguments)) {
             // Some fast paths to call methods with zero, one or two arguments.
@@ -117,7 +117,7 @@ abstract class EntityRepository extends DoctrineEntityRepository
     public function findAll()
     {
         if (method_exists($this, 'findAllQuery')) {
-            return $this->_fetchResults('findAllQuery', array());
+            return $this->fetchResults('findAllQuery', array());
         }
 
         return parent::findAll();

@@ -24,7 +24,8 @@ namespace BrBundle\Component\ContractParser;
 interface Node
 {
     /**
-     * @param NodeVisitor $nodeVisitor
+     * @param  NodeVisitor $nodeVisitor
+     * @return null
      */
     public function visitNode(NodeVisitor $nodeVisitor);
 }

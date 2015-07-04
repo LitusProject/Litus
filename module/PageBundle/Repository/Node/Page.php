@@ -31,7 +31,7 @@ class Page extends EntityRepository
 {
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PageBundle\Entity\Node\Page', 'p')
             ->where(
@@ -44,13 +44,15 @@ class Page extends EntityRepository
 
     public function findByCategory($category)
     {
-        return $this->_em->getRepository('PageBundle\Entity\Node\Page')
+        return $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Node\Page')
             ->findBy(array('category' => $category, 'endTime' => null));
     }
 
     public function findByParent($parent)
     {
-        return $this->_em->getRepository('PageBundle\Entity\Node\Page')
+        return $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Node\Page')
             ->findBy(array('parent' => $parent, 'endTime' => null));
     }
 
@@ -60,7 +62,7 @@ class Page extends EntityRepository
             return $this->findOneByName($name, null);
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PageBundle\Entity\Node\Page', 'p')
             ->innerJoin('p.parent', 'par')
@@ -82,7 +84,7 @@ class Page extends EntityRepository
 
     public function findOneByName($name, PageEntity $parent = null)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('p')
             ->from('PageBundle\Entity\Node\Page', 'p')
             ->where(
@@ -109,7 +111,7 @@ class Page extends EntityRepository
 
     public function findAllByTitleQuery($title)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $translations = $query->select('p.id')
             ->from('PageBundle\Entity\Node\Translation', 't')
             ->innerJoin('t.page', 'p')
@@ -125,7 +127,7 @@ class Page extends EntityRepository
             $ids[] = $translation['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PageBundle\Entity\Node\Page', 'p')
             ->where(

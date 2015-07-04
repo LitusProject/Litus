@@ -30,9 +30,12 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Article extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Article', 'a')
             ->where(
@@ -47,9 +50,13 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $title
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByTitleQuery($title)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Article', 'a')
             ->where($query->expr()->andX(
@@ -65,9 +72,13 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $author
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAuthorQuery($author)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Article', 'a')
             ->where(
@@ -84,9 +95,13 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByISBNQuery($isbn)
+    /**
+     * @param  string              $isbn
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByIsbnQuery($isbn)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Article', 'a')
             ->where(
@@ -103,9 +118,13 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $publisher
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPublisherQuery($publisher)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Article', 'a')
             ->where(
@@ -122,9 +141,14 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $subject
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySubjectQuery($subject, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $subjects = $query->select('s.id')
             ->from('SyllabusBundle\Entity\Subject', 's')
             ->where(
@@ -142,7 +166,7 @@ class Article extends EntityRepository
             $ids[] = $subject['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a.id')
             ->from('CudiBundle\Entity\Article\SubjectMap', 's')
             ->innerJoin('s.article', 'a')
@@ -161,7 +185,7 @@ class Article extends EntityRepository
             $articles[] = $mapping->getArticle()->getId();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Article', 'a')
             ->where(
@@ -176,21 +200,25 @@ class Article extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Person $person
+     * @return array
+     */
     public function findAllByProf(Person $person)
     {
         $ids = array_merge(
-            $this->_getCurrentArticleIdsByProf($person),
-            $this->_getAddedArticleIdsByProf($person)
+            $this->getCurrentArticleIdsByProf($person),
+            $this->getAddedArticleIdsByProf($person)
         );
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('CudiBundle\Entity\Article', 'a')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->in('a.id', $ids),
-                    $query->expr()->notIn('a.id', $this->_getRemovedArticleIds())
+                    $query->expr()->notIn('a.id', $this->getRemovedArticleIds())
                 )
             )
             ->orderBy('a.title', 'ASC')
@@ -207,10 +235,14 @@ class Article extends EntityRepository
         return $articles;
     }
 
-    private function _getCurrentArticleIdsByProf(Person $person)
+    /**
+     * @param  Person $person
+     * @return array
+     */
+    private function getCurrentArticleIdsByProf(Person $person)
     {
         $subjects = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findByProf($person);
 
         $ids = array(0);
@@ -218,7 +250,7 @@ class Article extends EntityRepository
             $ids[] = $subject->getSubject()->getId();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
             ->where(
@@ -246,7 +278,11 @@ class Article extends EntityRepository
         return $ids;
     }
 
-    private function _getAddedArticleIdsByProf(Person $person)
+    /**
+     * @param  Person $person
+     * @return array
+     */
+    private function getAddedArticleIdsByProf(Person $person)
     {
         $added = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')
@@ -268,7 +304,10 @@ class Article extends EntityRepository
         return $ids;
     }
 
-    private function _getRemovedArticleIds()
+    /**
+     * @return array
+     */
+    private function getRemovedArticleIds()
     {
         $removed = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Prof\Action')
@@ -284,10 +323,15 @@ class Article extends EntityRepository
         return $ids;
     }
 
+    /**
+     * @param  int                             $id
+     * @param  Person                          $person
+     * @return \CudiBundle\Entity\Article|null
+     */
     public function findOneByIdAndProf($id, Person $person)
     {
         $subjects = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findByProf($person);
 
         $subjectIds = array(0);
@@ -296,11 +340,11 @@ class Article extends EntityRepository
         }
 
         $articleIds = array_merge(
-            $this->_getCurrentArticleIdsByProf($person),
-            $this->_getAddedArticleIdsByProf($person)
+            $this->getCurrentArticleIdsByProf($person),
+            $this->getAddedArticleIdsByProf($person)
         );
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('CudiBundle\Entity\Article\SubjectMap', 'm')
             ->innerJoin('m.article', 'a')
@@ -310,7 +354,7 @@ class Article extends EntityRepository
                     $query->expr()->eq('m.article', ':id'),
                     $query->expr()->in('m.subject', $subjectIds),
                     $query->expr()->in('a.id', $articleIds),
-                    $query->expr()->notIn('a.id', $this->_getRemovedArticleIds())
+                    $query->expr()->notIn('a.id', $this->getRemovedArticleIds())
                 )
             )
             ->setParameter('id', $id)
@@ -329,7 +373,7 @@ class Article extends EntityRepository
             ->findAllByEntityAndEntityIdAndPerson('article', $id, $person);
 
         if (isset($actions[0])) {
-            return $actions[0]->setEntityManager($this->_em)
+            return $actions[0]->setEntityManager($this->getEntityManager())
                 ->getEntity();
         }
 

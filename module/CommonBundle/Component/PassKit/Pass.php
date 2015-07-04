@@ -32,32 +32,32 @@ abstract class Pass
     /**
      * @var TmpFile The temporary file for the pass
      */
-    private $_pass = null;
+    private $pass = null;
 
     /**
      * @var string The location of the image directory
      */
-    private $_imageDirectory = '';
+    private $imageDirectory = '';
 
     /**
      * @var TmpFile The temporary file for the manifest
      */
-    private $_manifest = null;
+    private $manifest = null;
 
     /**
      * @var TmpFile The temporary file for the signature
      */
-    private $_signature = null;
+    private $signature = null;
 
     /**
      * @var string The pass' serial number
      */
-    private $_serialNumber = '';
+    private $serialNumber = '';
 
     /**
      * @var array The pass' languages
      */
-    private $_languages = array();
+    private $languages = array();
 
     /**
      * @param TmpFile $pass           The temporary file for the pass
@@ -65,11 +65,11 @@ abstract class Pass
      */
     public function __construct(TmpFile $pass, $imageDirectory)
     {
-        $this->_pass = $pass;
-        $this->_imageDirectory = $imageDirectory;
+        $this->pass = $pass;
+        $this->imageDirectory = $imageDirectory;
 
-        $this->_manifest = new TmpFile();
-        $this->_signature = new TmpFile();
+        $this->manifest = new TmpFile();
+        $this->signature = new TmpFile();
     }
 
     /**
@@ -79,22 +79,22 @@ abstract class Pass
      */
     public function createPass()
     {
-        $this->_createManifest();
+        $this->createManifest();
 
         $pass = new ZipArchive();
-        $pass->open($this->_pass->getFilename(), ZipArchive::CREATE);
-        $pass->addFromString('signature', $this->_createSignature());
-        $pass->addFromString('manifest.json', $this->_manifest->getContent());
+        $pass->open($this->pass->getFilename(), ZipArchive::CREATE);
+        $pass->addFromString('signature', $this->createSignature());
+        $pass->addFromString('manifest.json', $this->manifest->getContent());
         $pass->addFromString('pass.json', $this->getJson());
 
-        foreach ($this->_getImages() as $image) {
+        foreach ($this->getImages() as $image) {
             $pass->addFile($image, basename($image));
         }
 
-        $languages = array_keys($this->_languages);
+        $languages = array_keys($this->languages);
         for ($i = 0; isset($languages[$i]); $i++) {
             $pass->addEmptyDir($languages[$i] . '.lproj');
-            $pass->addFromString($languages[$i] . '.lproj/pass.strings', $this->_createLanguage($languages[$i]));
+            $pass->addFromString($languages[$i] . '.lproj/pass.strings', $this->createLanguage($languages[$i]));
         }
 
         $pass->close();
@@ -108,7 +108,7 @@ abstract class Pass
      */
     protected function addLanguage($name, array $strings)
     {
-        $this->_languages[$name] = $strings;
+        $this->languages[$name] = $strings;
 
         return $this;
     }
@@ -134,11 +134,11 @@ abstract class Pass
      */
     protected function getSerialNumber()
     {
-        if ('' == $this->_serialNumber) {
-            $this->_serialNumber = uniqid();
+        if ('' == $this->serialNumber) {
+            $this->serialNumber = uniqid();
         }
 
-        return $this->_serialNumber;
+        return $this->serialNumber;
     }
 
     /**
@@ -146,22 +146,22 @@ abstract class Pass
      *
      * @return void
      */
-    private function _createManifest()
+    private function createManifest()
     {
         $hashes = array(
             'pass.json' => sha1($this->getJson()),
         );
 
-        foreach ($this->_getImages() as $image) {
+        foreach ($this->getImages() as $image) {
             $hashes[strtolower(basename($image))] = sha1(file_get_contents($image));
         }
 
-        $languages = array_keys($this->_languages);
+        $languages = array_keys($this->languages);
         for ($i = 0; isset($languages[$i]); $i++) {
-            $hashes[$languages[$i] . '.lproj/pass.strings'] = sha1($this->_createLanguage($languages[$i]));
+            $hashes[$languages[$i] . '.lproj/pass.strings'] = sha1($this->createLanguage($languages[$i]));
         }
 
-        $this->_manifest->appendContent(json_encode($hashes, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        $this->manifest->appendContent(json_encode($hashes, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     }
 
     /**
@@ -169,7 +169,7 @@ abstract class Pass
      *
      * @return string
      */
-    private function _createSignature()
+    private function createSignature()
     {
         $certificate = $this->getCertificate();
         $readCertificates = array();
@@ -184,8 +184,8 @@ abstract class Pass
         }
 
         openssl_pkcs7_sign(
-            $this->_manifest->getFilename(),
-            $this->_signature->getFilename(),
+            $this->manifest->getFilename(),
+            $this->signature->getFilename(),
             $certificateData,
             $privateKey,
             array(),
@@ -193,13 +193,13 @@ abstract class Pass
             'data/certificates/AppleWWDRCA.pem'
         );
 
-        return $this->_convertPemToDer($this->_signature->getContent());
+        return $this->convertPemToDer($this->signature->getContent());
     }
 
-    private function _createLanguage($name)
+    private function createLanguage($name)
     {
         $strings = '';
-        foreach ($this->_languages[$name] as $key => $value) {
+        foreach ($this->languages[$name] as $key => $value) {
             $strings .= '"' . $key . '" = "' . $value . '";' . PHP_EOL;
         }
 
@@ -212,7 +212,7 @@ abstract class Pass
      * @param  string $signature The PEM signature
      * @return string
      */
-    private function _convertPemToDer($signature)
+    private function convertPemToDer($signature)
     {
         $signature = substr($signature, (strpos($signature, 'filename="smime.p7s"')+20));
 
@@ -224,9 +224,9 @@ abstract class Pass
      *
      * @return array
      */
-    private function _getImages()
+    private function getImages()
     {
-        $directory = new DirectoryIterator($this->_imageDirectory);
+        $directory = new DirectoryIterator($this->imageDirectory);
 
         $images = array();
         foreach ($directory as $splFileInfo) {

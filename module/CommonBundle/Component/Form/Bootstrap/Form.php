@@ -31,7 +31,7 @@ abstract class Form extends \CommonBundle\Component\Form\Form
     /**
      * @var boolean Whether or not to show the form-actions div
      */
-    private $_displayFormActions;
+    private $displayFormActions;
 
     /**
      * @param null|string|int $name               Optional name for the element
@@ -42,7 +42,7 @@ abstract class Form extends \CommonBundle\Component\Form\Form
     {
         parent::__construct($name);
 
-        $this->_displayFormActions = $displayFormActions;
+        $this->displayFormActions = $displayFormActions;
 
         if ($horizontal) {
             $this->setAttribute('class', 'form-horizontal');
@@ -60,6 +60,6 @@ abstract class Form extends \CommonBundle\Component\Form\Form
      */
     public function getDisplayFormActions()
     {
-        return $this->_displayFormActions;
+        return $this->displayFormActions;
     }
 }

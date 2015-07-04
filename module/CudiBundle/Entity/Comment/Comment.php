@@ -72,7 +72,7 @@ class Comment
     /**
      * @var array The possible types of a comment
      */
-    public static $POSSIBLE_TYPES = array(
+    public static $possibleTypes = array(
         'internal' => 'Internal',
         'external' => 'External',
         'site' => 'Site',
@@ -85,7 +85,7 @@ class Comment
      * @param Person        $person        The person that created the comment
      * @param Article       $article       The article of the comment
      * @param string        $text          The content of the comment
-     * @param string        $type          The type of the comment
+     * @param string|null   $type          The type of the comment
      */
     public function __construct(EntityManager $entityManager, Person $person, Article $article, $text = '', $type = null)
     {
@@ -106,7 +106,7 @@ class Comment
      */
     public static function isValidCommentType($type)
     {
-        return array_key_exists($type, self::$POSSIBLE_TYPES);
+        return array_key_exists($type, self::$possibleTypes);
     }
 
     /**

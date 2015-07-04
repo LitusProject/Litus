@@ -493,11 +493,7 @@ class Event
             $getStartDate = clone $this->getBookingsCloseDate();
         }
 
-        if ($getStartDate->sub($removeReservationThreshold) < $now) {
-            return false;
-        }
-
-        return true;
+        return !($getStartDate->sub($removeReservationThreshold) < $now);
     }
 
     /**
@@ -505,7 +501,7 @@ class Event
      * @param  boolean     $member
      * @return integer
      */
-    public function getNumberSoldByOption(Option $option = null, $member)
+    public function getNumberSoldByOption(Option $option = null, $member = false)
     {
         $number = 0;
         foreach ($this->tickets as $ticket) {
@@ -532,7 +528,7 @@ class Event
      * @param  boolean     $member
      * @return integer
      */
-    public function getNumberBookedByOption(Option $option = null, $member)
+    public function getNumberBookedByOption(Option $option = null, $member = false)
     {
         $number = 0;
         foreach ($this->tickets as $ticket) {

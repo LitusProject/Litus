@@ -30,9 +30,12 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Group extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('g')
             ->from('SyllabusBundle\Entity\Group', 'g')
             ->where(
@@ -43,25 +46,15 @@ class Group extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllCvBookQuery()
-    {
-        $query = $this->_em->createQueryBuilder();
-        $resultSet = $query->select('g')
-            ->from('SyllabusBundle\Entity\Group', 'g')
-            ->where(
-                $query->expr()->eq('g.cvBook', 'true'),
-                $query->expr()->eq('g.removed', 'false')
-            )
-            ->orderBy('g.name', 'ASC')
-            ->getQuery();
-
-        return $resultSet;
-    }
-
+    /**
+     * @param  GroupEntity  $group
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
     public function findNbStudentsByGroupAndAcademicYear(GroupEntity $group, AcademicYear $academicYear)
     {
-        $studies = $this->_em
-            ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+        $studies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
             ->findAllByGroupAndAcademicYear($group, $academicYear);
 
         $ids = array(0);
@@ -69,7 +62,7 @@ class Group extends EntityRepository
             $ids[] = $study->getStudy()->getId();
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select($query->expr()->count('e'))
             ->from('SecretaryBundle\Entity\Syllabus\StudyEnrollment', 'e')
             ->where(
@@ -82,10 +75,30 @@ class Group extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        if ($resultSet) {
+        if (null !== $resultSet) {
             return $resultSet;
         }
 
         return 0;
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllCvBookQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('g')
+            ->from('SyllabusBundle\Entity\Group', 'g')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('g.cvBook', 'true'),
+                    $query->expr()->eq('g.removed', 'false')
+                )
+            )
+            ->orderBy('g.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
     }
 }

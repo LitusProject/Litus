@@ -68,7 +68,7 @@ class Printer
             'type' => 1,
         );
 
-        self::_print($entityManager, $printer, $data);
+        self::doPrint($entityManager, $printer, $data);
     }
 
     /**
@@ -108,7 +108,7 @@ class Printer
             'type' => 2,
         );
 
-        self::_print($entityManager, $printer, $data);
+        self::doPrint($entityManager, $printer, $data);
     }
 
     /**
@@ -148,7 +148,7 @@ class Printer
             'type' => 3,
         );
 
-        self::_print($entityManager, $printer, $data);
+        self::doPrint($entityManager, $printer, $data);
     }
 
     /**
@@ -156,7 +156,7 @@ class Printer
      * @param string        $printer
      * @param array         $data
      */
-    private static function _print(EntityManager $entityManager, $printer, array $data)
+    private static function doPrint(EntityManager $entityManager, $printer, array $data)
     {
         $enablePrinters = $entityManager->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_printers');

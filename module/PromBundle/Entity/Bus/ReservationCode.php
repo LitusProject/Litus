@@ -50,15 +50,9 @@ class ReservationCode
      */
     private $used;
 
-    /**
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $email
-     * @param string $code
-     */
     public function __construct()
     {
-        $this->code = $this->_generateCode();
+        $this->code = $this->generateCode();
         $this->used = false;
     }
 
@@ -97,15 +91,15 @@ class ReservationCode
     /**
      * @return string
      */
-    private function _generateCode()
+    private function generateCode()
     {
-        return $this->_generateRandomString();
+        return $this->generateRandomString();
     }
 
     /**
      * @return string
      */
-    private function _generateRandomString($length = 10)
+    private function generateRandomString($length = 10)
     {
         $characters = '123456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ';
         $charactersLength = strlen($characters);

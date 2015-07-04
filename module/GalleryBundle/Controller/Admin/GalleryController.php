@@ -92,7 +92,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function editAction()
     {
-        if (!($album = $this->_getAlbum())) {
+        if (!($album = $this->getAlbumEntity())) {
             return new ViewModel();
         }
 
@@ -131,7 +131,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($album = $this->_getAlbum())) {
+        if (!($album = $this->getAlbumEntity())) {
             return new ViewModel();
         }
 
@@ -150,7 +150,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function photosAction()
     {
-        if (!($album = $this->_getAlbum())) {
+        if (!($album = $this->getAlbumEntity())) {
             return new ViewModel();
         }
 
@@ -175,7 +175,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function addPhotosAction()
     {
-        if (!($album = $this->_getAlbum())) {
+        if (!($album = $this->getAlbumEntity())) {
             return new ViewModel();
         }
 
@@ -188,7 +188,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function deletePhotoAction()
     {
-        if (!($photo = $this->_getPhoto())) {
+        if (!($photo = $this->getPhotoEntity())) {
             return new ViewModel();
         }
 
@@ -217,7 +217,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function uploadAction()
     {
-        if (!($album = $this->_getAlbum())) {
+        if (!($album = $this->getAlbumEntity())) {
             return new ViewModel();
         }
 
@@ -321,7 +321,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function censorPhotoAction()
     {
-        if (!($photo = $this->_getPhoto())) {
+        if (!($photo = $this->getPhotoEntity())) {
             return new ViewModel();
         }
 
@@ -340,7 +340,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
     public function unCensorPhotoAction()
     {
-        if (!($photo = $this->_getPhoto())) {
+        if (!($photo = $this->getPhotoEntity())) {
             return new ViewModel();
         }
 
@@ -357,32 +357,17 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel();
     }
 
-    public function _getAlbum()
+    /**
+     * @return Album|null
+     */
+    private function getAlbumEntity()
     {
-        if (null === $this->getParam('id')) {
+        $album = $this->getEntityById('GalleryBundle\Entity\Album\Album');
+
+        if (!($album instanceof Album)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No id was given to identify the album!'
-            );
-
-            $this->redirect()->toRoute(
-                'gallery_admin_gallery',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $album = $this->getEntityManager()
-            ->getRepository('GalleryBundle\Entity\Album\Album')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $album) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No album with the given id was found!'
+                'No album was found!'
             );
 
             $this->redirect()->toRoute(
@@ -398,12 +383,17 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return $album;
     }
 
-    public function _getPhoto()
+    /**
+     * @return Photo|null
+     */
+    private function getPhotoEntity()
     {
-        if (null === $this->getParam('id')) {
+        $photo = $this->getEntityById('GalleryBundle\Entity\Album\Photo');
+
+        if (!($photo instanceof Photo)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No id was given to identify the photo!'
+                'No photo was found!'
             );
 
             $this->redirect()->toRoute(
@@ -416,26 +406,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             return;
         }
 
-        $album = $this->getEntityManager()
-            ->getRepository('GalleryBundle\Entity\Album\Photo')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $album) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No photo with the given id was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'gallery_admin_gallery',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $album;
+        return $photo;
     }
 }

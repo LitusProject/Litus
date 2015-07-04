@@ -22,7 +22,7 @@ use QuizBundle\Entity\Quiz as QuizEntity;
 
 class Quiz extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('name');
+    private static $stdKeys = array('name');
 
     protected function doExtract($object = null)
     {
@@ -30,7 +30,7 @@ class Quiz extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['edit_roles'] = array();
         foreach ($object->getEditRoles() as $role) {
@@ -43,7 +43,7 @@ class Quiz extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new QuizEntity($this->getPerson());
+            $object = new QuizEntity($this->getPersonEntity());
         }
 
         if (isset($data['edit_roles'])) {
@@ -58,6 +58,6 @@ class Quiz extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setEditRoles($editRoles);
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

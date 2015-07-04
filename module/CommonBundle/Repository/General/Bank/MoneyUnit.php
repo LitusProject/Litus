@@ -28,9 +28,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class MoneyUnit extends EntityRepository
 {
+    /**
+     * @param  int                                             $unit
+     * @return CommonBundle\Entity\General\Bank\MoneyUnit|null
+     */
     public function findOneByUnit($unit)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('u')
             ->from('CommonBundle\Entity\General\Bank\MoneyUnit', 'u')
             ->where(

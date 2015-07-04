@@ -37,22 +37,22 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     /**
      * @var EntityManager The EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @var string The base url
      */
-    private $_serverName;
+    private $serverName;
 
     /**
      * @var Language The language
      */
-    private $_language;
+    private $language;
 
     /**
      * @var Url The url plugin
      */
-    private $_url;
+    private $url;
 
     /**
      * @param TmpFile       $file
@@ -65,10 +65,10 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     {
         parent::__construct($file);
 
-        $this->_entityManager = $entityManager;
-        $this->_serverName = 'http://' . str_replace(',', '', $request->getServer('SERVER_NAME'));
-        $this->_language = $language;
-        $this->_url = $url;
+        $this->entityManager = $entityManager;
+        $this->serverName = 'http://' . str_replace(',', '', $request->getServer('SERVER_NAME'));
+        $this->language = $language;
+        $this->url = $url;
 
         $feed = new XmlObject(
             'rss',
@@ -79,7 +79,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                 new XmlObject(
                     'channel',
                     array(),
-                    $this->_generateContent()
+                    $this->generateContent()
                 ),
             )
         );
@@ -90,16 +90,16 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     /**
      * @return XmlObject[]
      */
-    private function _generateContent()
+    private function generateContent()
     {
-        $data = $this->_generateHeader();
+        $data = $this->generateHeader();
 
-        $news = $this->_entityManager
+        $news = $this->entityManager
             ->getRepository('NewsBundle\Entity\Node\News')
             ->findAllSite();
 
         foreach ($news as $item) {
-            $data[] = $this->_generateItemXml($item);
+            $data[] = $this->generateItemXml($item);
         }
 
         return $data;
@@ -108,13 +108,13 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     /**
      * @return XmlObject[]
      */
-    private function _generateHeader()
+    private function generateHeader()
     {
-        $config = $this->_entityManager->getRepository('CommonBundle\Entity\General\Config');
+        $config = $this->entityManager->getRepository('CommonBundle\Entity\General\Config');
 
         $descriptions = unserialize($config->getConfigValue('news.rss_description'));
-        if (isset($descriptions[$this->_language->getAbbrev()])) {
-            $description = $descriptions[$this->_language->getAbbrev()];
+        if (isset($descriptions[$this->language->getAbbrev()])) {
+            $description = $descriptions[$this->language->getAbbrev()];
         } else {
             $description = $descriptions[Locale::getDefault()];
         }
@@ -133,12 +133,12 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
             new XmlObject(
                 'language',
                 array(),
-                $this->_language->getAbbrev()
+                $this->language->getAbbrev()
             ),
             new XmlObject(
                 'link',
                 array(),
-                $this->_serverName . $this->_url->fromRoute(
+                $this->serverName . $this->url->fromRoute(
                     'news',
                     array(
                         'feed',
@@ -157,12 +157,12 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                     new XmlObject(
                         'url',
                         array(),
-                        $this->_serverName . $config->getConfigValue('news.rss_image_link')
+                        $this->serverName . $config->getConfigValue('news.rss_image_link')
                     ),
                     new XmlObject(
                         'link',
                         array(),
-                        $this->_serverName . $this->_url->fromRoute(
+                        $this->serverName . $this->url->fromRoute(
                             'news',
                             array(
                                 'feed',
@@ -178,7 +178,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
      * @param  News      $item
      * @return XmlObject
      */
-    private function _generateItemXml(News $item)
+    private function generateItemXml(News $item)
     {
         return new XmlObject(
             'item',
@@ -187,17 +187,17 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                 new XmlObject(
                     'title',
                     array(),
-                    $item->getTitle($this->_language)
+                    $item->getTitle($this->language)
                 ),
                 new XmlObject(
                     'description',
                     array(),
-                    $item->getSummary(200, $this->_language)
+                    $item->getSummary(200, $this->language)
                 ),
                 new XmlObject(
                     'link',
                     array(),
-                    $this->_serverName . $this->_url->fromRoute(
+                    $this->serverName . $this->url->fromRoute(
                         'news',
                         array(
                             'action' => 'view',
@@ -208,7 +208,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                 new XmlObject(
                     'guid',
                     array(),
-                    $this->_serverName . $this->_url->fromRoute(
+                    $this->serverName . $this->url->fromRoute(
                         'news',
                         array(
                             'action' => 'view',

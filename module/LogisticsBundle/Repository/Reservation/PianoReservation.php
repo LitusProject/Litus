@@ -33,7 +33,7 @@ class PianoReservation extends EntityRepository
 {
     public function findAllActiveQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\PianoReservation', 'r')
             ->where(
@@ -48,7 +48,7 @@ class PianoReservation extends EntityRepository
 
     public function findAllOldQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\PianoReservation', 'r')
             ->where(
@@ -63,7 +63,7 @@ class PianoReservation extends EntityRepository
 
     public function findAllByDatesQuery(DateTime $start, DateTime $end)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\PianoReservation', 'r')
             ->where(
@@ -87,7 +87,7 @@ class PianoReservation extends EntityRepository
 
     public function findAllConfirmedByDatesAndPersonQuery(DateTime $start, DateTime $end, Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\PianoReservation', 'r')
             ->where(
@@ -116,7 +116,7 @@ class PianoReservation extends EntityRepository
 
     public function findAllByDatesAndPersonQuery(DateTime $start, DateTime $end, Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\PianoReservation', 'r')
             ->where(
@@ -144,7 +144,7 @@ class PianoReservation extends EntityRepository
 
     public function isTimeInExistingReservation(DateTime $date, $isStart)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
 
         if ($isStart) {
             $where = $query->expr()->andX(
@@ -185,7 +185,7 @@ class PianoReservation extends EntityRepository
      */
     public function findAllConflictingIgnoringIdQuery(DateTime $startDate, DateTime $endDate, ReservableResourceEntity $resource, $ignoreId)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
             ->from('LogisticsBundle\Entity\Reservation\PianoReservation', 'r')
             ->where(

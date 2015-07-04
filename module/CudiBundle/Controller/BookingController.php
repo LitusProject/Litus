@@ -32,15 +32,13 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function viewAction()
     {
-        $authenticatedPerson = $this->getAuthentication()->getPersonObject();
-
-        if (null === $authenticatedPerson) {
+        if (!($academic = $this->getAcademicEntity())) {
             return $this->notFoundAction();
         }
 
         $bookings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findAllOpenByPerson($authenticatedPerson);
+            ->findAllOpenByPerson($academic);
 
         $total = 0;
         foreach ($bookings as $booking) {
@@ -59,7 +57,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
-        if (!($booking = $this->_getBooking())) {
+        if (!($booking = $this->getBookingEntity())) {
             return $this->notFoundAction();
         }
 
@@ -101,9 +99,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 ->getConfigValue('cudi.bookings_closed_exceptions')
         );
 
-        $authenticatedPerson = $this->getAuthentication()->getPersonObject();
-
-        if (null === $authenticatedPerson || !($authenticatedPerson instanceof Academic)) {
+        if (!($academic = $this->getAcademicEntity())) {
             return $this->notFoundAction();
         }
 
@@ -111,11 +107,11 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $enrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
-            ->findAllByAcademicAndAcademicYear($authenticatedPerson, $currentYear);
+            ->findAllByAcademicAndAcademicYear($academic, $currentYear);
 
         $bookingsOpen = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findAllOpenByPerson($authenticatedPerson);
+            ->findAllOpenByPerson($academic);
 
         $booked = array();
         foreach ($bookingsOpen as $booking) {
@@ -127,7 +123,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $bookingsSold = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findAllSoldByPerson($authenticatedPerson);
+            ->findAllSoldByPerson($academic);
 
         $sold = array();
         foreach ($bookingsSold as $booking) {
@@ -165,7 +161,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         'booked' => isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0,
                         'sold' => isset($sold[$article->getId()]) ? $sold[$article->getId()] : 0,
                         'bookable' => $article->isBookable()
-                            && $article->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager())
+                            && $article->canBook($academic, $this->getEntityManager())
                             && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions)),
                     );
 
@@ -199,7 +195,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     'booked' => isset($booked[$commonArticle->getId()]) ? $booked[$commonArticle->getId()] : 0,
                     'sold' => isset($sold[$commonArticle->getId()]) ? $sold[$commonArticle->getId()] : 0,
                     'bookable' => $commonArticle->isBookable()
-                        && $commonArticle->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager())
+                        && $commonArticle->canBook($academic, $this->getEntityManager())
                         && ($enableBookings || in_array($commonArticle->getId(), $bookingsClosedExceptions)),
                 );
 
@@ -243,7 +239,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                             ->getRepository('CudiBundle\Entity\Sale\Article')
                             ->findOneById($saleArticleId);
 
-                        if (!$saleArticle->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager())) {
+                        if (!$saleArticle->canBook($academic, $this->getEntityManager())) {
                             continue;
                         }
 
@@ -254,7 +250,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                                         ->getRepository('CudiBundle\Entity\Sale\Booking')
                                         ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
                                             $saleArticle,
-                                            $this->getAuthentication()->getPersonObject(),
+                                            $academic,
                                             $this->getCurrentAcademicYear()
                                     )
                                 );
@@ -266,7 +262,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                         $booking = new Booking(
                             $this->getEntityManager(),
-                            $authenticatedPerson,
+                            $academic,
                             $saleArticle,
                             'booked',
                             $formValue
@@ -336,7 +332,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 'searchForm' => $searchForm,
                 'isSubscribed' => $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article\Notification\Subscription')
-                    ->findOneByPerson($this->getAuthentication()->getPersonObject()) !== null,
+                    ->findOneByPerson($academic) !== null,
             )
         );
     }
@@ -344,6 +340,10 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     public function searchAction()
     {
         $this->initAjax();
+
+        if (!($academic = $this->getAcademicEntity())) {
+            return $this->notFoundAction();
+        }
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -367,7 +367,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $bookingsOpen = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findAllOpenByPerson($this->getAuthentication()->getPersonObject());
+            ->findAllOpenByPerson($academic);
 
         $booked = array();
         foreach ($bookingsOpen as $booking) {
@@ -379,7 +379,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
         $bookingsSold = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findAllSoldByPerson($this->getAuthentication()->getPersonObject());
+            ->findAllSoldByPerson($academic);
 
         $sold = array();
         foreach ($bookingsSold as $booking) {
@@ -410,7 +410,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             }
 
             $item->bookable = $article->isBookable()
-                && $article->canBook($this->getAuthentication()->getPersonObject(), $this->getEntityManager())
+                && $article->canBook($academic, $this->getEntityManager())
                 && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions));
             $item->booked = isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0;
             $item->sold = isset($sold[$article->getId()]) ? $sold[$article->getId()] : 0;
@@ -437,6 +437,10 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     public function bookSearchAction()
     {
         $this->initAjax();
+
+        if (!($academic = $this->getAcademicEntity())) {
+            return $this->notFoundAction();
+        }
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -472,7 +476,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 if ($article->isBookable() && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions))) {
                     $booking = new Booking(
                         $this->getEntityManager(),
-                        $this->getAuthentication()->getPersonObject(),
+                        $academic,
                         $article,
                         'booked',
                         $number
@@ -533,12 +537,16 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $this->initAjax();
 
+        if (!($academic = $this->getAcademicEntity())) {
+            return $this->notFoundAction();
+        }
+
         if ($this->getRequest()->getPost()['keepUpdated'] == 'true') {
-            $this->getEntityManager()->persist(new Subscription($this->getAuthentication()->getPersonObject()));
+            $this->getEntityManager()->persist(new Subscription($academic));
         } else {
             $subscription = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\Notification\Subscription')
-                ->findOneByPerson($this->getAuthentication()->getPersonObject());
+                ->findOneByPerson($academic);
             if (null !== $subscription) {
                 $this->getEntityManager()->remove($subscription);
             }
@@ -552,9 +560,34 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    private function _getBooking()
+    /**
+     * @return Academic|null
+     */
+    private function getAcademicEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return null;
+        }
+
+        $academic = $this->getAuthentication()->getPersonObject();
+
+        if (!($academic instanceof Academic)) {
+            return;
+        }
+
+        return $academic;
+    }
+
+    /**
+     * @return Booking
+     */
+    private function getBookingEntity()
     {
         if (null === $this->getParam('id') || !is_numeric($this->getParam('id'))) {
+            return;
+        }
+
+        if (!($academic = $this->getAcademicEntity())) {
             return;
         }
 
@@ -562,7 +595,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findOneById($this->getParam('id'));
 
-        if (null === $booking) {
+        if ($booking->getPerson() !== $academic) {
             return;
         }
 

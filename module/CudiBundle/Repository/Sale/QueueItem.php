@@ -30,9 +30,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class QueueItem extends EntityRepository
 {
+    /**
+     * @param  SessionEntity $session
+     * @return int
+     */
     public function getNextQueueNumber(SessionEntity $session)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('MAX(i.queueNumber)')
             ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where(
@@ -49,9 +53,14 @@ class QueueItem extends EntityRepository
         return 1;
     }
 
+    /**
+     * @param  SessionEntity                          $session
+     * @param  Person                                 $person
+     * @return \CudiBundle\Entity\Sale\QueueItem|null
+     */
     public function findOneByPersonNotSold(SessionEntity $session, Person $person)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where(
@@ -71,9 +80,14 @@ class QueueItem extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  SessionEntity       $session
+     * @param  string              $status
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByStatusQuery(SessionEntity $session, $status)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where(
@@ -90,9 +104,13 @@ class QueueItem extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  SessionEntity       $session
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySessionQuery(SessionEntity $session)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where(
@@ -111,9 +129,13 @@ class QueueItem extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  SessionEntity $session
+     * @return int
+     */
     public function findNbBySession(SessionEntity $session)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('COUNT(i)')
             ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where(
@@ -134,9 +156,14 @@ class QueueItem extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Person                                 $person
+     * @param  SessionEntity                          $session
+     * @return \CudiBundle\Entity\Sale\QueueItem|null
+     */
     public function findOneSoldByPersonAndSession(Person $person, SessionEntity $session)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Sale\QueueItem', 'i')
             ->where(

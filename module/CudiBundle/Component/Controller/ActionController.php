@@ -18,7 +18,8 @@
 
 namespace CudiBundle\Component\Controller;
 
-use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Util\AcademicYear,
+    CudiBundle\Entity\Stock\Period;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -30,7 +31,7 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
      *
      * @return \CommonBundle\Entity\General\AcademicYear
      */
-    protected function getAcademicYear()
+    protected function getAcademicYearEntity()
     {
         $date = null;
         if (null !== $this->getParam('academicyear')) {
@@ -43,15 +44,15 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
     /**
      * Returns the active stock period.
      *
-     * @return \CudiBundle\Entity\Stock\Period
+     * @return Period|null
      */
-    protected function getActiveStockPeriod()
+    protected function getActiveStockPeriodEntity()
     {
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
             ->findOneActive();
 
-        if (null === $period) {
+        if (!($period instanceof Period)) {
             $this->flashMessenger()->error(
                 'Error',
                 'There is no active stock period!'

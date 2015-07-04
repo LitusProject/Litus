@@ -32,7 +32,7 @@ class MetaData extends EntityRepository
 {
     public function findOneByAcademicAndAcademicYear(Academic $academic, AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')
             ->from('SecretaryBundle\Entity\Organization\MetaData', 'm')
             ->where(

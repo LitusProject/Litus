@@ -30,7 +30,7 @@ use Doctrine\Common\Collections\ArrayCollection,
 class Round
 {
     /**
-     * @var The entry's unique identifier
+     * @var int The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue

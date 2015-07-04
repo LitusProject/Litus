@@ -35,7 +35,7 @@ class Point extends EntityRepository
      */
     public function findAllByQuizQuery(QuizEntity $quiz)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('QuizBundle\Entity\Point', 'p')
             ->innerJoin('p.round', 'r')

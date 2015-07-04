@@ -25,12 +25,12 @@ namespace CommonBundle\Component\WebSocket;
  */
 class Frame
 {
-    private $_isFin;
-    private $_opcode;
-    private $_isControl;
-    private $_isMasked;
-    private $_paylen;
-    private $_data;
+    private $isFin;
+    private $opcode;
+    private $isControl;
+    private $isMasked;
+    private $paylen;
+    private $data;
 
     const MAX_BUFFER_SIZE = 1048576;
     const MAX_PAYLOAD_LEN = 1048576;
@@ -40,7 +40,7 @@ class Frame
      */
     public function __construct($data)
     {
-        $this->_decodeFrame($data);
+        $this->decodeFrame($data);
     }
 
     /**
@@ -48,7 +48,7 @@ class Frame
      */
     public function getIsFin()
     {
-        return $this->_isFin;
+        return $this->isFin;
     }
 
     /**
@@ -56,7 +56,7 @@ class Frame
      */
     public function getOpcode()
     {
-        return $this->_opcode;
+        return $this->opcode;
     }
 
     /**
@@ -64,7 +64,7 @@ class Frame
      */
     public function getIsControl()
     {
-        return $this->_isControl;
+        return $this->isControl;
     }
 
     /**
@@ -72,7 +72,7 @@ class Frame
      */
     public function getIsMasked()
     {
-        return $this->_isMasked;
+        return $this->isMasked;
     }
 
     /**
@@ -80,7 +80,7 @@ class Frame
      */
     public function getPaylen()
     {
-        return $this->_paylen;
+        return $this->paylen;
     }
 
     /**
@@ -88,7 +88,7 @@ class Frame
      */
     public function getData()
     {
-        return $this->_data;
+        return $this->data;
     }
 
     /**
@@ -97,10 +97,10 @@ class Frame
      */
     public function appendData($data)
     {
-        $this->_data .= $data;
+        $this->data .= $data;
 
-        if (strlen($this->_data) > self::MAX_BUFFER_SIZE) {
-            $this->_data = '';
+        if (strlen($this->data) > self::MAX_BUFFER_SIZE) {
+            $this->data = '';
         }
     }
 
@@ -109,7 +109,7 @@ class Frame
      *
      * @param string $frame
      */
-    private function _decodeFrame($frame)
+    private function decodeFrame($frame)
     {
         $data = substr($frame, 0, 2);
         $frame = substr($frame, 2);
@@ -157,11 +157,11 @@ class Frame
             $data = substr($frame, 0, $paylen);
         }
 
-        $this->_isFin = $isFin;
-        $this->_opcode = $opcode;
-        $this->_isControl = $isControl;
-        $this->_isMasked = $isMasked;
-        $this->_paylen = $paylen;
-        $this->_data = $data;
+        $this->isFin = $isFin;
+        $this->opcode = $opcode;
+        $this->isControl = $isControl;
+        $this->isMasked = $isMasked;
+        $this->paylen = $paylen;
+        $this->data = $data;
     }
 }

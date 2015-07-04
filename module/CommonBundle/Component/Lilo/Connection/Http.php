@@ -33,17 +33,17 @@ class Http extends \CommonBundle\Component\Lilo\Connection
     /**
      * @var string The server's address
      */
-    private $_host = 'localhost';
+    private $host = 'localhost';
 
     /**
      * @var boolean The port used by the server
      */
-    private $_secure = true;
+    private $secure = true;
 
     /**
      * @var string The application's secret key
      */
-    private $_secretKey = '';
+    private $secretKey = '';
 
     /**
      * Creates a new HTTP connection.
@@ -54,9 +54,9 @@ class Http extends \CommonBundle\Component\Lilo\Connection
      */
     public function __construct($host = '', $secure = true, $secretKey = '')
     {
-        $this->_host = $host;
-        $this->_secure = $secure;
-        $this->_secretKey = $secretKey;
+        $this->host = $host;
+        $this->secure = $secure;
+        $this->secretKey = $secretKey;
     }
 
     /**
@@ -67,12 +67,12 @@ class Http extends \CommonBundle\Component\Lilo\Connection
      */
     public function send(Data $data)
     {
-        $client = new Client($this->_getRequestUrl($data));
+        $client = new Client($this->getRequestUrl($data));
         $client->setMethod(Request::METHOD_POST)
             ->setParameterPost(
                 array(
                     'data' => (string) $data,
-                    'key' => $this->_secretKey,
+                    'key' => $this->secretKey,
                 )
             );
 
@@ -85,10 +85,10 @@ class Http extends \CommonBundle\Component\Lilo\Connection
      * @param  Data   $data The data object
      * @return string
      */
-    private function _getRequestUrl(Data $data)
+    private function getRequestUrl(Data $data)
     {
-        return (true === $this->_secure ? 'https://' : 'http://')
-            . $this->_host
+        return (true === $this->secure ? 'https://' : 'http://')
+            . $this->host
             . '/api/'
             . ($data instanceof ExceptionData ? 'exception' : 'message') . '/add';
     }

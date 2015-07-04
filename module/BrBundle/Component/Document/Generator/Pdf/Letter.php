@@ -24,12 +24,12 @@ use BrBundle\Entity\Contract as ContractEntity,
     CommonBundle\Component\Util\Xml\Object as XmlObject,
     Doctrine\ORM\EntityManager;
 
-class Letter extends DocumentGenerator
+class Letter extends CommonBundle\Component\Document\Generator\Pdf
 {
     /**
      * @var \BrBundle\Entity\Contract
      */
-    private $_contract;
+    private $contract;
 
     public function __construct(EntityManager $entityManager, ContractEntity $contract)
     {
@@ -41,38 +41,37 @@ class Letter extends DocumentGenerator
                 . $contract->getId() . '/letter.pdf'
         );
 
-        $this->_contract = $contract;
+        $this->contract = $contract;
     }
 
-    protected function _generateXml(TmpFile $file)
+    protected function generateXml(TmpFile $file)
     {
         $xml = new XmlGenerator($file);
 
-        $configs = $this->_getConfigRepository();
+        $configs = $this->getConfigRepository();
 
         $ourUnionName = $configs->getConfigValue('br.letter.union_name');
-        $ourUnionAddress = self::_formatAddress($configs->getConfigValue('br.letter.union_address'));
+        $ourUnionAddress = self::formatAddress($configs->getConfigValue('br.letter.union_address'));
         $ourUnionLogo = $configs->getConfigValue('br.letter.logo');
         $ourUnionVatNb = $configs->getConfigValue('br.letter.union_vat');
 
         $content = $configs->getConfigValue('br.letter.content');
         $footer = $configs->getConfigValue('br.letter.footer');
 
-        $company = $this->_contract->getCompany();
-        $companyAddress = self::_formatAddress($company->getAddress());
+        $company = $this->contract->getCompany();
+        $companyAddress = self::formatAddress($company->getAddress());
         $companyName = $company->getName();
 
-        $ourContactPerson = $this->_contract->getAuthor();
-        $ourContactPerson = $ourContactPerson->getFirstName() . ' ' . $ourContactPerson->getLastName();
+        $ourContactPerson = $this->contract->getAuthor()->getPerson();
 
-        $title = $configs->getConfigValue('br.letter.title.' . $company->getSex());
+        $title = $configs->getConfigValue('br.letter.title.' . $ourContactPerson->getSex());
 
         $xml->append(new XmlObject('letter', null,
                  array(
                      new XmlObject('our_union', null,
                         array(
                             new XmlObject('name', null, $ourUnionName),
-                            new XmlObject('contact_person', null, $ourContactPerson),
+                            new XmlObject('contact_person', null, $ourContactPerson->getFirstName() . ' ' . $ourContactPerson->getLastName()),
                             new XmlObject('address', null, $ourUnionAddress),
                             new XmlObject('logo', null, $ourUnionLogo),
                             new XmlObject('vat_number', null, $ourUnionVatNb),
@@ -85,8 +84,8 @@ class Letter extends DocumentGenerator
                              new XmlObject('contact_person', null,
                                 array(
                                     new XmlObject('title', null, $title),
-                                    new XmlObject('first_name', null, $company->getFirstName()),
-                                    new XmlObject('last_name', null, $company->getLastName()),
+                                    new XmlObject('first_name', null, $ourContactPerson->getFirstName()),
+                                    new XmlObject('last_name', null, $ourContactPerson->getLastName()),
                                 )
                              ),
                              new XmlObject('address', null, $companyAddress),

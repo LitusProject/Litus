@@ -61,8 +61,8 @@ class StringField extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Returns true if a person exists for this value, but no driver exists for that person.
      *
-     * @param  string  $value   The value of the field that will be validated
-     * @param  array   $context The context of the field that will be validated
+     * @param  string     $value   The value of the field that will be validated
+     * @param  array|null $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)
@@ -70,14 +70,14 @@ class StringField extends \CommonBundle\Component\Validator\AbstractValidator
         $this->setValue($value);
 
         if ($this->options['multiline']) {
-            if ( ($this->_isSpecified($this->options['lines']) && !$this->_isSpecified($value)) ||
-                (!$this->_isSpecified($this->options['lines']) && $this->_isSpecified($value)) ) {
+            if ( ($this->isSpecified($this->options['lines']) && !$this->isSpecified($value)) ||
+                (!$this->isSpecified($this->options['lines']) && $this->isSpecified($value)) ) {
                 $this->error(self::ML_BOTH);
 
                 return false;
             }
         } else {
-            if ($this->_isSpecified($this->options['lines'])) {
+            if ($this->isSpecified($this->options['lines'])) {
                 $this->error(self::NON_ML_LINES);
 
                 return false;
@@ -92,7 +92,7 @@ class StringField extends \CommonBundle\Component\Validator\AbstractValidator
      *
      * @param mixed $value The value to check.
      */
-    private function _isSpecified($value)
+    private function isSpecified($value)
     {
         return $value !== NULL && $value != 0 && $value != '';
     }

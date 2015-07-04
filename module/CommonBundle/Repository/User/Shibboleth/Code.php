@@ -29,9 +29,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Code extends EntityRepository
 {
+    /**
+     * @param  string                                         $universityIdentification
+     * @return \CommonBundle\Entity\User\Shibboleth\Code|null
+     */
     public function findLastByUniversityIdentification($universityIdentification)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('CommonBundle\Entity\User\Shibboleth\Code', 'c')
             ->where(
@@ -46,9 +50,12 @@ class Code extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllExpiredQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('CommonBundle\Entity\User\Shibboleth\Code', 'c')
             ->where(

@@ -31,7 +31,7 @@ class GuestInfo extends EntityRepository
 {
     public function findOneByFormAndSessionId(FormEntity $form, $sessionId)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $guestInfo = $query->select('g')
             ->from('FormBundle\Entity\Node\GuestInfo', 'g')
             ->where(
@@ -46,7 +46,7 @@ class GuestInfo extends EntityRepository
             return null;
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('FormBundle\Entity\Node\Entry', 'e')
             ->where(

@@ -66,7 +66,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Sector',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->_getSectors(),
+                'options' => $this->getSectors(),
             ),
         ));
 
@@ -130,7 +130,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required'   => false,
             'attributes' => array(
                 'multiple'  => true,
-                'options'   => $this->_getCVBookYears(),
+                'options'   => $this->getCvBookYears(),
                 'data-help' => 'The selected years will be visible in the corporate app of this company. The archived ones are downloadable in pdf format.',
             ),
         ));
@@ -156,7 +156,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'label'      => 'Page Visible During',
                     'attributes' => array(
                         'multiple' => true,
-                        'options'  => $this->_getYears(),
+                        'options'  => $this->getYears(),
                     ),
                 ),
                 array(
@@ -199,7 +199,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
     }
 
-    private function _getSectors()
+    /**
+     * @return array
+     */
+    private function getSectors()
     {
         $sectorArray = array();
         foreach (Company::$possibleSectors as $key => $sector) {
@@ -209,7 +212,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $sectorArray;
     }
 
-    private function _getYears()
+    /**
+     * @return array
+     */
+    private function getYears()
     {
         $years = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -223,7 +229,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $options;
     }
 
-    private function _getArchiveYears()
+    /**
+     * @return array
+     */
+    private function getArchiveYears()
     {
         $years = unserialize(
             $this->getEntityManager()
@@ -239,10 +248,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         return $options;
     }
 
-    private function _getCVBookYears()
+    /**
+     * @return array
+     */
+    private function getCvBookYears()
     {
-        $cvYears = $this->_getArchiveYears();
-        $years = $this->_getYears();
+        $cvYears = $this->getArchiveYears();
+        $years = $this->getYears();
         foreach ($years as $key => $year) {
             $shortCode = substr($year, 2, 2) . substr($year, 7, 2);
             if (isset($cvYears['archive-' . $shortCode])) {

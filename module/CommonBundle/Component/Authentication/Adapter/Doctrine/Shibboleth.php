@@ -59,6 +59,8 @@ class Shibboleth extends \CommonBundle\Component\Authentication\Adapter\Doctrine
 
     /**
      * Validate the query result: check the credential.
+     *
+     * @return null
      */
     protected function validatePersonObject()
     {

@@ -33,11 +33,10 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             $this->getParam('page')
         );
 
-        $current = $this->getAuthentication()->getPersonObject();
-        if ($current != null) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             $driver = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Driver')
-                ->findOneById($current->getId());
+                ->findOneById($this->getAuthentication()->getPersonObject()->getId());
             $isDriverLoggedIn = ($driver !== null);
         } else {
             $isDriverLoggedIn = false;
@@ -45,7 +44,6 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
         return new ViewModel(
             array(
-                'currentUser' => $current,
                 'isDriverLoggedIn' => $isDriverLoggedIn,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
@@ -62,11 +60,10 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
             $this->getParam('page')
         );
 
-        $current = $this->getAuthentication()->getPersonObject();
-        if ($current != null) {
+        if ($this->getAuthentication()->isAuthenticated()) {
             $driver = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Driver')
-                ->findOneById($current->getId());
+                ->findOneById($this->getAuthentication()->getPersonObject()->getId());
             $isDriverLoggedIn = ($driver !== null);
         } else {
             $isDriverLoggedIn = false;
@@ -74,7 +71,6 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
         return new ViewModel(
             array(
-                'currentUser' => $current,
                 'isDriverLoggedIn' => $isDriverLoggedIn,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
@@ -120,7 +116,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
     public function editAction()
     {
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getVanReservationEntity())) {
             return new ViewModel();
         }
 
@@ -159,7 +155,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getVanReservationEntity())) {
             return new ViewModel();
         }
 
@@ -177,7 +173,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getVanReservationEntity())) {
             return new ViewModel();
         }
 
@@ -203,7 +199,7 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     {
         $this->initAjax();
 
-        if (!($reservation = $this->_getReservation())) {
+        if (!($reservation = $this->getVanReservationEntity())) {
             return new ViewModel();
         }
 
@@ -221,34 +217,16 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
     }
 
     /**
-     * @return VanReservation
+     * @return VanReservation|null
      */
-    private function _getReservation()
+    private function getVanReservationEntity()
     {
-        if (null === $this->getParam('id')) {
+        $reservation = $this->getEntityById('LogisticsBundle\Entity\Reservation\VanReservation');
+
+        if (!($reservation instanceof VanReservation)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the reservation!'
-            );
-
-            $this->redirect()->toRoute(
-                'logistics_admin_van_reservation',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $reservation = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Reservation\VanReservation')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $reservation) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
+                'No reservation was found!'
             );
 
             $this->redirect()->toRoute(

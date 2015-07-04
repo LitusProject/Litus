@@ -34,12 +34,12 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * @var Order
      */
-    private $_order;
+    private $order;
 
     /**
      * @var string
      */
-    private $_sortOrder;
+    private $sortOrder;
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
@@ -58,8 +58,8 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             $filePath . '/order/templates/' . $order->getSupplier()->getTemplate() . '.xsl',
             $file->getFilename()
         );
-        $this->_order = $order;
-        $this->_sortOrder = $sortOrder;
+        $this->order = $order;
+        $this->sortOrder = $sortOrder;
     }
 
     /**
@@ -93,14 +93,14 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
         $external_items = array();
         $internal_items = array();
 
-        if ($this->_sortOrder == 'barcode') {
+        if ($this->sortOrder == 'barcode') {
             $items = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Item')
-                ->findAllByOrderOnBarcode($this->_order);
+                ->findAllByOrderOnBarcode($this->order);
         } else {
             $items = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Stock\Order\Item')
-                ->findAllByOrderOnAlpha($this->_order);
+                ->findAllByOrderOnAlpha($this->order);
         }
 
         foreach ($items as $item) {
@@ -187,13 +187,13 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             new Object(
                 'order',
                 array(
-                    'date' => $this->_order->getDateOrdered()->format('d F Y'),
+                    'date' => $this->order->getDateOrdered()->format('d F Y'),
                 ),
                 array(
                     new Object(
                         'comment',
                         array(),
-                        $this->_order->getComment()
+                        $this->order->getComment()
                     ),
                     new Object(
                         'our_union',

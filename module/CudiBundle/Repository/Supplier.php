@@ -28,9 +28,12 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Supplier extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s')
             ->from('CudiBundle\Entity\Supplier', 's')
             ->orderBy('s.name', 'ASC')

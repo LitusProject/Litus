@@ -18,7 +18,8 @@
 
 namespace CudiBundle\Controller\Prof;
 
-use SyllabusBundle\Entity\SubjectProfMap,
+use SyllabusBundle\Entity\Subject,
+    SyllabusBundle\Entity\Subject\ProfMap,
     Zend\View\Model\ViewModel;
 
 /**
@@ -30,7 +31,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
 {
     public function addAction()
     {
-        if (!($subject = $this->_getSubject())) {
+        if (!($subject = $this->getSubjectEntity())) {
             return new ViewModel();
         }
 
@@ -51,11 +52,11 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
                     ->findOneById($formData['prof']['id']);
 
                 $mapping = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+                    ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
                     ->findOneBySubjectAndProfAndAcademicYear($subject, $docent, $academicYear);
 
                 if (null === $mapping) {
-                    $mapping = new SubjectProfMap($subject, $docent, $academicYear);
+                    $mapping = new ProfMap($subject, $docent, $academicYear);
                     $this->getEntityManager()->persist($mapping);
                     $this->getEntityManager()->flush();
                 }
@@ -90,7 +91,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
     {
         $this->initAjax();
 
-        if (!($mapping = $this->_getMapping())) {
+        if (!($mapping = $this->getProfMapEntity())) {
             return new ViewModel();
         }
 
@@ -138,47 +139,31 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         );
     }
 
-    private function _getSubject($id = null)
+    /**
+     * @return Subject|null
+     */
+    private function getSubjectEntity()
     {
         if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
         }
 
-        $id = $id == null ? $this->getParam('id') : $id;
-
-        if (null === $id) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the subject!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_prof_subject',
-                array(
-                    'action' => 'manage',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
-            return;
-        }
-
         $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findOneBySubjectIdAndProfAndAcademicYear(
-                $id,
+                $this->getParam('id', 0),
                 $this->getAuthentication()->getPersonObject(),
                 $academicYear
             );
 
-        if (null === $mapping) {
+        if (!($mapping instanceof ProfMap)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No subject with the given ID was found!'
+                'No subject was found!'
             );
 
             $this->redirect()->toRoute(
-                'cudi_prof_subject',
+                'cudi_prof_article',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
@@ -191,37 +176,31 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         return $mapping->getSubject();
     }
 
-    private function _getMapping()
+    /**
+     * @return ProfMap|null
+     */
+    private function getProfMapEntity()
     {
-        if (null === $this->getParam('id')) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No ID was given to identify the mapping!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_prof_subject',
-                array(
-                    'action' => 'manage',
-                    'language' => $this->getLanguage()->getAbbrev(),
-                )
-            );
-
+        if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
         }
 
         $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
-            ->findOneById($this->getParam('id'));
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
+            ->findOneBySubjectIdAndProfAndAcademicYear(
+                $this->getParam('id', 0),
+                $this->getAuthentication()->getPersonObject(),
+                $academicYear
+            );
 
-        if (null === $mapping || null === $this->_getSubject($mapping->getSubject()->getId())) {
+        if (!($mapping instanceof ProfMap)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No mapping with the given ID was found!'
+                'No subject was found!'
             );
 
             $this->redirect()->toRoute(
-                'cudi_prof_subject',
+                'cudi_prof_article',
                 array(
                     'action' => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),

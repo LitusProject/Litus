@@ -22,7 +22,7 @@ use LogisticsBundle\Entity\Driver as DriverEntity;
 
 class Driver extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('color');
+    private static $stdKeys = array('color');
 
     protected function doExtract($object = null)
     {
@@ -30,7 +30,7 @@ class Driver extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         $years = array();
         foreach ($object->getYears() as $year) {
@@ -67,6 +67,6 @@ class Driver extends \CommonBundle\Component\Hydrator\Hydrator
         }
         $object->setYears($years);
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

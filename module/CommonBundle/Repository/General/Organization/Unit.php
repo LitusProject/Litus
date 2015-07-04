@@ -28,9 +28,12 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Unit extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('u')
             ->from('CommonBundle\Entity\General\Organization\Unit', 'u')
             ->where(
@@ -42,9 +45,12 @@ class Unit extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveAndDisplayedQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('u')
             ->from('CommonBundle\Entity\General\Organization\Unit', 'u')
             ->where(
@@ -59,9 +65,12 @@ class Unit extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveAndNotDisplayedQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('u')
             ->from('CommonBundle\Entity\General\Organization\Unit', 'u')
             ->where(

@@ -25,28 +25,41 @@ namespace CommonBundle\Component\WebSocket;
  */
 class User
 {
-    private $_socket;
+    /**
+     * @var resource
+     */
+    private $socket;
 
-    private $_handshaked = false;
+    /**
+     * @var boolean
+     */
+    private $handshaked = false;
 
-    private $_buffer;
+    /**
+     * @var Frame
+     */
+    private $buffer;
 
-    private $_extraData;
+    /**
+     * @var array
+     */
+    private $extraData;
 
     /**
      * @param mixed $socket
      */
     public function __construct($socket)
     {
-        $this->_socket = $socket;
+        $this->socket = $socket;
+        $this->extraData = array();
     }
 
     /**
-     * @return mixed
+     * @return resource
      */
     public function getSocket()
     {
-        return $this->_socket;
+        return $this->socket;
     }
 
     /**
@@ -54,7 +67,7 @@ class User
      */
     public function hasHandshaked()
     {
-        return $this->_handshaked;
+        return $this->handshaked;
     }
 
     /**
@@ -88,7 +101,7 @@ class User
             . "\r\n";
 
         if ($this->write($response)) {
-            $this->_handshaked = true;
+            $this->handshaked = true;
         }
     }
 
@@ -101,7 +114,7 @@ class User
     {
         $len = strlen($data);
         for ($written = 0; $written < $len; $written += $fwrite) {
-            $fwrite = fwrite($this->_socket, substr($data, $written));
+            $fwrite = fwrite($this->socket, substr($data, $written));
             if ($fwrite === false || $fwrite === 0) {
                 return $written;
             }
@@ -117,7 +130,7 @@ class User
      */
     public function createBuffer(Frame $frame)
     {
-        $this->_buffer = $frame;
+        $this->buffer = $frame;
     }
 
     /**
@@ -127,7 +140,7 @@ class User
      */
     public function appendBuffer(Frame $frame)
     {
-        $this->_buffer->appendData($frame->getData());
+        $this->buffer->appendData($frame->getData());
     }
 
     /**
@@ -135,7 +148,7 @@ class User
      */
     public function clearBuffer()
     {
-        $this->_buffer = null;
+        $this->buffer = null;
     }
 
     /**
@@ -145,7 +158,7 @@ class User
      */
     public function getBuffer()
     {
-        return $this->_buffer;
+        return $this->buffer;
     }
 
     /**
@@ -156,7 +169,7 @@ class User
      */
     public function setExtraData($key, $value)
     {
-        $this->_extraData[$key] = $value;
+        $this->extraData[$key] = $value;
 
         return $this;
     }
@@ -168,7 +181,7 @@ class User
      */
     public function getExtraData($key)
     {
-        return isset($this->_extraData[$key]) ? $this->_extraData[$key] : null;
+        return isset($this->extraData[$key]) ? $this->extraData[$key] : null;
     }
 
     /**
@@ -178,7 +191,7 @@ class User
      */
     public function removeExtraData($key)
     {
-        unset($this->_extraData[$key]);
+        unset($this->extraData[$key]);
 
         return $this;
     }

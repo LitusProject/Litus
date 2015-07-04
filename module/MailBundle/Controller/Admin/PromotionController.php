@@ -62,23 +62,14 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                                 ->findOneById($groupId);
 
                             $studies = $this->getEntityManager()
-                                ->getRepository('SyllabusBundle\Entity\StudyGroupMap')
+                                ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
                                 ->findAllByGroupAndAcademicYear($group, $academicYear);
 
                             foreach ($studies as $study) {
                                 if ($study->getStudy()->getPhase() == 2) {
-                                    $children = $study->getStudy()->getAllChildren();
-
-                                    foreach ($children as $child) {
-                                        $enrollments = array_merge($enrollments, $this->getEntityManager()
-                                            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                                            ->findAllByStudyAndAcademicYear($child, $academicYear)
-                                        );
-                                    }
-
                                     $enrollments = array_merge($enrollments, $this->getEntityManager()
                                         ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                                        ->findAllByStudyAndAcademicYear($study->getStudy(), $academicYear)
+                                        ->findAllByStudy($study->getStudy())
                                     );
                                 }
                             }
@@ -241,24 +232,5 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 'form' => $form,
             )
         );
-    }
-
-    private function _getPeople($listTo)
-    {
-        $people = array();
-        foreach ($listTo as $to) {
-            $academicYear = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\AcademicYear')
-                ->findOneById($to);
-
-            $people = array_merge(
-                $people,
-                $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Promotion')
-                    ->findAllByAcademicYear($academicYear)
-            );
-        }
-
-        return $people;
     }
 }

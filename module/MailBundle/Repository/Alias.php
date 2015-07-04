@@ -30,7 +30,7 @@ class Alias extends EntityRepository
 {
     public function findAllByNameQuery($name)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
             ->from('MailBundle\Entity\Alias','a')
             ->where(

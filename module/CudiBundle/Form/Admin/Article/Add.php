@@ -178,7 +178,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             <li><b>Textbook:</b> a textbook of the course</li>
                             <li><b>Other:</b> any other type</li>
                         </ul>',
-                        'options'  => Article::$POSSIBLE_TYPES,
+                        'options'  => Article::$possibleTypes,
                     ),
                 ),
                 array(

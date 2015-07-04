@@ -61,8 +61,8 @@ class Html extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Returns true if no edition with this title exists.
      *
-     * @param  string  $value   The value of the field that will be validated
-     * @param  array   $context The context of the field that will be validated
+     * @param  string     $value   The value of the field that will be validated
+     * @param  array|null $context The context of the field that will be validated
      * @return boolean
      */
     public function isValid($value, $context = null)

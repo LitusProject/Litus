@@ -54,8 +54,8 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
     protected $translatorEnabled = true;
 
     /**
-     * @param DateTime $date
-     * @param string   $format
+     * @param DateTime|null $date
+     * @param string        $format
      *
      * @return string
      */
@@ -81,10 +81,10 @@ class DateLocalized extends \Zend\View\Helper\AbstractHelper implements Translat
     /**
      * Sets translator to use in helper
      *
-     * @param  TranslatorInterface $translator [optional] translator.
-     *                                         Default is null, which sets no translator.
-     * @param  string              $textDomain [optional] text domain
-     *                                         Default is null, which skips setTranslatorTextDomain
+     * @param  TranslatorInterface|null $translator [optional] translator.
+     *                                              Default is null, which sets no translator.
+     * @param  string|null              $textDomain [optional] text domain
+     *                                              Default is null, which skips setTranslatorTextDomain
      * @return DateLocalized
      */
     public function setTranslator(TranslatorInterface $translator = null, $textDomain = null)

@@ -24,11 +24,11 @@ class PrimaryAddress extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected $entity = 'CommonBundle\Entity\General\Address';
 
-    private static $std_keys = array(
+    private static $stdKeys = array(
         'number', 'mailbox',
     );
 
-    private static $other_keys = array(
+    private static $otherKeys = array(
         'street', 'postal', 'city',
     );
 
@@ -45,7 +45,7 @@ class PrimaryAddress extends \CommonBundle\Component\Hydrator\Hydrator
             ->getRepository('CommonBundle\Entity\General\Address\City')
             ->findOneByName($object->getCity());
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         if (null !== $city) {
             $data['city'] = $city->getId();
@@ -57,7 +57,7 @@ class PrimaryAddress extends \CommonBundle\Component\Hydrator\Hydrator
             $data['street']['street_' . $city->getId()] = $street ? $street->getId() : 0;
         } else {
             $data['city'] = 'other';
-            $data['other'] = $this->stdExtract($object, self::$other_keys);
+            $data['other'] = $this->stdExtract($object, self::$otherKeys);
         }
 
         $data['country'] = $object->getCountry();
@@ -74,7 +74,7 @@ class PrimaryAddress extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setCountry('BE');
 
         if ($data['city'] === 'other') {
-            $this->stdHydrate($data['other'], $object, self::$other_keys);
+            $this->stdHydrate($data['other'], $object, self::$otherKeys);
         } else {
             $city = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Address\City')
@@ -89,6 +89,6 @@ class PrimaryAddress extends \CommonBundle\Component\Hydrator\Hydrator
                 ->setStreet($street !== null ? $street->getName() : '');
         }
 
-        return $this->stdHydrate($data, $object, self::$std_keys);
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 }

@@ -32,14 +32,14 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 {
     public function viewAction()
     {
-        if (!($page = $this->_getPage())) {
+        if (!($page = $this->getPageEntity())) {
             return $this->notFoundAction();
         }
 
-        $submenu = $this->_buildSubmenu($page);
+        $submenu = $this->buildSubmenu($page);
         $parent = $page->getParent();
         if (empty($submenu) && null !== $parent) {
-            $submenu = $this->_buildSubmenu($parent);
+            $submenu = $this->buildSubmenu($parent);
         }
 
         return new ViewModel(
@@ -80,21 +80,17 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return Page
+     * @return Page|null
      */
-    private function _getPage()
+    private function getPageEntity()
     {
-        if (null === $this->getParam('name')) {
-            return;
-        }
-
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Node\Page')
             ->findOneByNameAndParent(
-                $this->getParam('name'), $this->getParam('parent')
+                $this->getParam('name', ''), $this->getParam('parent')
             );
 
-        if (null === $page) {
+        if (!($page instanceof Page)) {
             return;
         }
 

@@ -34,9 +34,13 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
  */
 class Item extends EntityRepository
 {
+    /**
+     * @param  Article                                  $article
+     * @return \CudiBundle\Entity\Stock\Order\Item|null
+     */
     public function findOneOpenByArticle(Article $article)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
@@ -54,6 +58,11 @@ class Item extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Supplier     $supplier
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
     public function findNumberBySupplier(Supplier $supplier, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -80,11 +89,20 @@ class Item extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
     public function getOrderedAmountByAcademicYear(AcademicYear $academicYear)
     {
         return $this->getOrderedAmountBetween($academicYear->getStartDate(), $academicYear->getEndDate());
     }
 
+    /**
+     * @param  DateTime $startDate
+     * @param  DateTime $endDate
+     * @return int
+     */
     public function getOrderedAmountBetween(DateTime $startDate, DateTime $endDate)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -110,11 +128,20 @@ class Item extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
     public function getNumberByAcademicYear(AcademicYear $academicYear)
     {
         return $this->getNumberBetween($academicYear->getStartDate(), $academicYear->getEndDate());
     }
 
+    /**
+     * @param  DateTime $startDate
+     * @param  DateTime $endDate
+     * @return int
+     */
     public function getNumberBetween(DateTime $startDate, DateTime $endDate)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -139,9 +166,13 @@ class Item extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByPeriodQuery(Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
@@ -166,9 +197,14 @@ class Item extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $title
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByTitleAndPeriodQuery($title, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
@@ -199,9 +235,14 @@ class Item extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  string              $supplier
+     * @param  Period              $period
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllBySupplierStringAndPeriodQuery($supplier, Period $period)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('i, o')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.order', 'o')
@@ -231,9 +272,13 @@ class Item extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  OrderEntity         $order
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByOrderOnAlphaQuery(OrderEntity $order)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i, a, m')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
@@ -248,9 +293,13 @@ class Item extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  OrderEntity         $order
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByOrderOnBarcodeQuery(OrderEntity $order)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('i, a, b')
             ->from('CudiBundle\Entity\Stock\Order\Item', 'i')
             ->innerJoin('i.article', 'a')
@@ -269,6 +318,10 @@ class Item extends EntityRepository
         return $resultSet;
     }
 
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

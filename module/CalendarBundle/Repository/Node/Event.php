@@ -31,7 +31,7 @@ class Event extends EntityRepository
 {
     public function findAllActiveQuery($nbResults = 15)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('e')
             ->from('CalendarBundle\Entity\Node\Event', 'e')
             ->where(
@@ -57,7 +57,7 @@ class Event extends EntityRepository
 
     public function findAllOldQuery()
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('CalendarBundle\Entity\Node\Event', 'e')
             ->where(
@@ -75,7 +75,7 @@ class Event extends EntityRepository
 
     public function findAllBetweenQuery(DateTime $first, DateTime $last)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('e')
             ->from('CalendarBundle\Entity\Node\Event', 'e')
             ->where(

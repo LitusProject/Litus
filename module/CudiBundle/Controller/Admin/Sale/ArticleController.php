@@ -21,6 +21,7 @@ namespace CudiBundle\Controller\Admin\Sale;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Component\Document\Generator\SaleArticles as SaleArticlesGenerator,
+    CudiBundle\Entity\Article,
     CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\Log\Article\Sale\Bookable as BookableLog,
     CudiBundle\Entity\Log\Article\Sale\Unbookable as UnbookableLog,
@@ -39,11 +40,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $academicYear = $this->getAcademicYear();
-        $semester = $this->_getSemester();
+        $academicYear = $this->getAcademicYearEntity();
+        $semester = $this->getSemester();
 
         if (null !== $this->getParam('field')) {
-            $articles = $this->_search($academicYear, $semester);
+            $articles = $this->search($academicYear, $semester);
         }
 
         if (!isset($articles)) {
@@ -130,7 +131,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        if (!($article = $this->_getArticle())) {
+        if (!($article = $this->getArticleEntity())) {
             return new ViewModel();
         }
 
@@ -194,7 +195,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($saleArticle = $this->_getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -270,7 +271,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function viewAction()
     {
-        if (!($saleArticle = $this->_getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -288,7 +289,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        if (!($saleArticle = $this->_getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -304,7 +305,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function assignAllAction()
     {
-        if (!($saleArticle = $this->_getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -332,8 +333,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('search_max_results');
 
-        $semester = $this->_getSemester();
-        $articles = $this->_search($this->getAcademicYear(), $semester)
+        $semester = $this->getSemester();
+        $articles = $this->search($this->getAcademicYearEntity(), $semester)
             ->setMaxResults($numResults)
             ->getResult();
 
@@ -359,7 +360,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function historyAction()
     {
-        if (!($article = $this->_getSaleArticle())) {
+        if (!($article = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -379,7 +380,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $academicYear = $this->getAcademicYear();
+        $academicYear = $this->getAcademicYearEntity();
 
         $numResults = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -408,7 +409,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function mailAction()
     {
-        if (!($saleArticle = $this->_getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
@@ -434,7 +435,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 foreach ($formData['to'] as $status) {
                     $bookings = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Booking')
-                        ->findAllByStatusAndArticleAndPeriod($status, $saleArticle, $this->getActiveStockPeriod());
+                        ->findAllByStatusAndArticleAndPeriod($status, $saleArticle, $this->getActiveStockPeriodEntity());
 
                     foreach ($bookings as $booking) {
                         if (isset($persons[$booking->getPerson()->getId()])) {
@@ -480,13 +481,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function cancelBookingsAction()
     {
-        if (!($saleArticle = $this->_getSaleArticle())) {
+        if (!($saleArticle = $this->getSaleArticleEntity())) {
             return new ViewModel();
         }
 
         $bookings = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findAllActiveByArticleAndPeriod($saleArticle, $this->getActiveStockPeriod());
+            ->findAllActiveByArticleAndPeriod($saleArticle, $this->getActiveStockPeriodEntity());
 
         $idsCancelled = array();
         foreach ($bookings as $booking) {
@@ -508,7 +509,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel();
     }
 
-    private function _search(AcademicYear $academicYear, $semester)
+    /**
+     * @param  AcademicYear             $academicYear
+     * @param  int                      $semester
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function search(AcademicYear $academicYear, $semester)
     {
         switch ($this->getParam('field')) {
             case 'title':
@@ -533,32 +539,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return SaleArticle|null
      */
-    private function _getSaleArticle()
+    private function getSaleArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
+
+        if (!($article instanceof SaleArticle)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -575,34 +563,16 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \CudiBundle\Entity\Article|null
+     * @return Article|null
      */
-    private function _getArticle()
+    private function getArticleEntity()
     {
-        if (null === $this->getParam('id')) {
+        $article = $this->getEntityById('CudiBundle\Entity\Article');
+
+        if (!($article instanceof Article)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the article!'
-            );
-
-            $this->redirect()->toRoute(
-                'cudi_admin_sales_article',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $article) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article with the given ID was found!'
+                'No article was found!'
             );
 
             $this->redirect()->toRoute(
@@ -621,9 +591,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     /**
      * @return int
      */
-    private function _getSemester()
+    private function getSemester()
     {
-        $semester = $this->getParam('semester');
+        $semester = (int) $this->getParam('semester');
 
         if ($semester == 1 || $semester == 2 || $semester == 3) {
             return $semester;

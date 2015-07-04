@@ -59,7 +59,9 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
 
     public function posterAction()
     {
-        if (null === ($poster = $this->_getPoster())) {
+        $this->initJson();
+
+        if (!($poster = $this->getPoster())) {
             return $this->error(404, 'No poster key was provided with the request');
         }
 
@@ -68,7 +70,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
             ->getConfigValue('calendar.poster_path') . '/';
 
         if (!file_exists($filePath . $poster)) {
-            return $this->error(500, 'The poster file does not exist');
+            return $this->error(404, 'The poster file does not exist');
         }
 
         if (!file_exists($filePath . $poster . '_thumb')) {
@@ -96,10 +98,11 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
     /**
      * @return string|null
      */
-    private function _getPoster()
+    private function getPoster()
     {
-        if (null !== $this->getRequest()->getQuery('poster')) {
-            return $this->getRequest()->getQuery('poster');
+        $poster = $this->getRequest()->getQuery('poster');
+        if (is_string($poster)) {
+            return $poster;
         }
 
         return null;

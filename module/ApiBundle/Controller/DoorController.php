@@ -90,8 +90,8 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
 
-        if (!($academic = $this->_getAcademic())) {
-            return $this->error(500, 'The person does not exist');
+        if (!($academic = $this->getAcademicEntity())) {
+            return $this->error(404, 'The person does not exist');
         }
 
         $log = new Log($academic);
@@ -109,7 +109,7 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
     /**
      * @return Academic|null
      */
-    private function _getAcademic()
+    private function getAcademicEntity()
     {
         if (null !== $this->getRequest()->getPost('academic')) {
             return $this->getEntityManager()

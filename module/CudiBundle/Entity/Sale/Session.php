@@ -96,7 +96,7 @@ class Session
     /**
      * @var EntityManager
      */
-    private $_entityManager;
+    private $entityManager;
 
     /**
      * @param CashRegister $openRegister The cash register contents at the start of the session
@@ -212,20 +212,16 @@ class Session
             return true;
         }
 
-        if ($this->getCloseDate() >= $this->getOpenDate()) {
-            return false;
-        }
-
-        return true;
+        return ($this->getCloseDate() < $this->getOpenDate());
     }
 
     /**
-     * @param  Organization $organization
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getTheoreticalRevenue(Organization $organization = null)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->getTheoreticalRevenue($this, $organization);
     }
@@ -243,12 +239,12 @@ class Session
     }
 
     /**
-     * @param  Organization $organization
+     * @param  Organization|null $organization
      * @return integer
      */
     public function getPurchasedAmount(Organization $organization = null)
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->getPurchasedAmountBySession($this, $organization);
     }
@@ -260,7 +256,7 @@ class Session
      */
     public function setEntityManager(EntityManager $entityManager)
     {
-        $this->_entityManager = $entityManager;
+        $this->entityManager = $entityManager;
 
         return $this;
     }
@@ -270,7 +266,7 @@ class Session
      */
     public function getNumberSaleItems()
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\SaleItem')
             ->findNumberBySession($this);
     }
@@ -280,7 +276,7 @@ class Session
      */
     public function getNumberReturnItems()
     {
-        return $this->_entityManager
+        return $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\ReturnItem')
             ->findNumberBySession($this);
     }
@@ -307,6 +303,6 @@ class Session
      */
     public function getAcademicYear()
     {
-        return AcademicYear::getUniversityYear($this->_entityManager, $this->getOpenDate());
+        return AcademicYear::getUniversityYear($this->entityManager, $this->getOpenDate());
     }
 }

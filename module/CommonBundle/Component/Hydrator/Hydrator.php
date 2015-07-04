@@ -120,7 +120,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
      * @param mixed|null $object
      * @param string     $method
      */
-    private function checkType($object = null, $method)
+    private function checkType($object = null, $method = '')
     {
         if (null !== $object && null !== $this->entity) {
             if (!($object instanceof $this->entity)) {
@@ -149,13 +149,14 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     {
         $keys = self::flatten($keys);
 
+        /** @var \Zend\Stdlib\Hydrator\ClassMethods $hydrator */
+        $hydrator = $this->getHydrator('classmethods');
+
         if (empty($keys)) {
-            return $this->getHydrator('classmethods')
-                ->hydrate($data, $object);
+            return $hydrator->hydrate($data, $object);
         }
 
-        return $this->getHydrator('classmethods')
-                ->hydrate(array_intersect_key($data, array_flip($keys)), $object);
+        return $hydrator->hydrate(array_intersect_key($data, array_flip($keys)), $object);
     }
 
     /**
@@ -180,6 +181,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
 
         $keys = self::flatten($keys);
 
+        /** @var \Zend\Stdlib\Hydrator\ClassMethods $hydrator */
         $hydrator = clone $originalHydrator;
         if (!empty($keys)) {
             $hydrator->addFilter('keys', function ($property) use ($hydrator, $keys, $object) {
@@ -225,11 +227,11 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     }
 
     /**
-     * Returns the logged in user. The return value is null if no one is logged in.
+     * Returns the logged in user.
      *
-     * @return null|\CommonBundle\Entity\User\Person
+     * @return \CommonBundle\Entity\User\Person
      */
-    public function getPerson()
+    public function getPersonEntity()
     {
         return $this->getAuthentication()->getPersonObject();
     }

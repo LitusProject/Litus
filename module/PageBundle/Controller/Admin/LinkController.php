@@ -82,7 +82,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
 
     public function editAction()
     {
-        if (!($link = $this->_getLink())) {
+        if (!($link = $this->getLinkEntity())) {
             return new ViewModel();
         }
 
@@ -122,7 +122,7 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->initAjax();
 
-        if (!($link = $this->_getLink())) {
+        if (!($link = $this->getLinkEntity())) {
             return new ViewModel();
         }
 
@@ -139,32 +139,17 @@ class LinkController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
-    private function _getLink()
+    /**
+     * @return Link|null
+     */
+    private function getLinkEntity()
     {
-        if (null === $this->getParam('id')) {
+        $link = $this->getEntityById('PageBundle\Entity\Link');
+
+        if (!($link instanceof Link)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No ID was given to identify the link!'
-            );
-
-            $this->redirect()->toRoute(
-                'page_admin_link',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        $link = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Link')
-            ->findOneById($this->getParam('id'));
-
-        if (null === $link) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No link with the given ID was found!'
+                'No link was found!'
             );
 
             $this->redirect()->toRoute(

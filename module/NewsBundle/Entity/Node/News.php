@@ -74,7 +74,7 @@ class News extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  DateTime $endDate
+     * @param  DateTime|null $endDate
      * @return self
      */
     public function setEndDate(DateTime $endDate = null)

@@ -18,7 +18,8 @@
 
 namespace BrBundle\Component\Controller;
 
-use CommonBundle\Component\Controller\Exception\HasNoAccessException,
+use BrBundle\Entity\User\Person\Corporate,
+    CommonBundle\Component\Controller\Exception\HasNoAccessException,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Form\Auth\Login as LoginForm,
     Zend\Mvc\MvcEvent;
@@ -40,10 +41,6 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
     public function onDispatch(MvcEvent $e)
     {
         $result = parent::onDispatch($e);
-
-        if (!method_exists($this->getAuthentication()->getPersonObject(), 'getCompany') && $this->getAuthentication()->isAuthenticated()) {
-            throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
-        }
 
         $result->cvArchiveYears = unserialize(
             $this->getEntityManager()
@@ -67,6 +64,22 @@ class CorporateController extends \CommonBundle\Component\Controller\ActionContr
         $e->setResult($result);
 
         return $result;
+    }
+
+    /**
+     * @return Corporate
+     */
+    protected function getCorporateEntity()
+    {
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
+
+            if ($person instanceof Corporate) {
+                return $person;
+            }
+        }
+
+        throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
     }
 
     /**

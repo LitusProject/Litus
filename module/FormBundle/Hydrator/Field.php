@@ -30,7 +30,7 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
 
 class Field extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $std_keys = array('order', 'required');
+    private static $stdKeys = array('order', 'required');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -42,7 +42,7 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
             $data['order'] = 0;
         }
 
-        $object = $this->stdHydrate($data, $object, self::$std_keys);
+        $object = $this->stdHydrate($data, $object, self::$stdKeys);
 
         $visibleId = $data['visibility']['if'] == 'always' ? 0 : $data['visibility']['if'];
 
@@ -83,8 +83,15 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setMaxSize($fileData['max_size'] === '' ? 4 : $fileData['max_size']);
         } elseif ($object instanceof TimeslotFieldEntity) {
             $timeslotData = $data['timeslot_form'];
-            $object->setStartDate(self::loadDateTime($timeslotData['start_date']))
-                ->setEndDate(self::loadDateTime($timeslotData['end_date']));
+            $startDate = self::loadDateTime($timeslotData['start_date']);
+            $endDate = self::loadDateTime($timeslotData['start_date']);
+
+            if (!$startDate || !$endDate) {
+                throw new \RuntimeException('Timeslot has invalid dates.');
+            }
+
+            $object->setStartDate($startDate)
+                ->setEndDate($endDate);
 
             foreach ($this->getLanguages() as $language) {
                 $languageData = $timeslotData['tab_content']['tab_' . $language->getAbbrev()];
@@ -146,7 +153,7 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$std_keys);
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         if ($object->getVisibilityDecissionField()) {
             $data['visibility']['if'] = $object->getVisibilityDecissionField()->getId();

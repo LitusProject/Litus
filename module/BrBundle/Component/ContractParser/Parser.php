@@ -34,7 +34,8 @@ class Parser
     }
 
     /**
-     * @param string $text
+     * @param  string $text
+     * @return null
      */
     public function parse($text)
     {
@@ -55,7 +56,8 @@ class Parser
     }
 
     /**
-     * @param string $line
+     * @param  string $line
+     * @return null
      */
     protected function parseLine($line)
     {

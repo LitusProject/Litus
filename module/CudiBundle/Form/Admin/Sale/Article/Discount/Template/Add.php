@@ -84,7 +84,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         <li><b>Override:</b> the value will be used as the new price</li>
                     </ul>',
                 'id'        => 'method',
-                'options'   => Discount::$POSSIBLE_METHODS,
+                'options'   => Discount::$possibleMethods,
             ),
         ));
 
@@ -95,7 +95,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required'   => true,
             'attributes' => array(
                 'id'      => 'type',
-                'options' => Discount::$POSSIBLE_TYPES,
+                'options' => Discount::$possibleTypes,
             ),
         ));
 
@@ -137,7 +137,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function getRoundings()
     {
         $roundings = array();
-        foreach (Discount::$POSSIBLE_ROUNDINGS as $key => $rounding) {
+        foreach (Discount::$possibleRoundings as $key => $rounding) {
             $roundings[$key] = $rounding['name'];
         }
 

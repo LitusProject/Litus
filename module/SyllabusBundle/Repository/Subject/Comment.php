@@ -32,7 +32,7 @@ class Comment extends EntityRepository
 {
     public function findLast($nb = 10)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('SyllabusBundle\Entity\Subject\Comment', 'c')
             ->where(
@@ -48,9 +48,9 @@ class Comment extends EntityRepository
 
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
     {
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('s.id')
-            ->from('SyllabusBundle\Entity\StudySubjectMap', 'm')
+            ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
             ->innerJoin('m.subject', 's')
             ->where(
                 $query->expr()->eq('m.academicYear', ':academicYear')
@@ -64,7 +64,7 @@ class Comment extends EntityRepository
             $ids[$item['id']] = $item['id'];
         }
 
-        $query = $this->_em->createQueryBuilder();
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('SyllabusBundle\Entity\Subject\Comment', 'c')
             ->where(
@@ -78,18 +78,18 @@ class Comment extends EntityRepository
 
     public function findRecentConversationsByPersonAndAcademicYear(Person $person, AcademicYear $academicYear)
     {
-        $subjects = $this->_em
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+        $subjects = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findAllByProfAndAcademicYear($person, $academicYear);
 
         $comments = array();
         foreach ($subjects as $subject) {
-            $commentsOfSubject = $this->_em
+            $commentsOfSubject = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Subject\Comment')
                 ->findBySubject($subject->getSubject());
 
             foreach ($commentsOfSubject as $comment) {
-                $reply = $this->_em
+                $reply = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Subject\Reply')
                     ->findLastByComment($comment);
 

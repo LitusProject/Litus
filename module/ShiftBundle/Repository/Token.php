@@ -29,6 +29,10 @@ use CommonBundle\Entity\User\Person,
  */
 class Token extends DocumentRepository
 {
+    /**
+     * @param  Person                           $person
+     * @return \ShiftBundle\Document\Token|null
+     */
     public function findOneByPerson(Person $person)
     {
         return $this->findOneBy(array('person' => (int) $person->getId()));

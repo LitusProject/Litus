@@ -38,13 +38,9 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
      */
     public function onDispatch(MvcEvent $e)
     {
-        if (!method_exists($this->getAuthentication()->getPersonObject(), 'getSupplier') && $this->getAuthentication()->isAuthenticated()) {
-            throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
-        }
-
         $result = parent::onDispatch($e);
 
-        $result->supplier = $this->getSupplier();
+        $result->supplier = $this->getSupplierEntity();
         $result->loginForm = $this->getForm('common_auth_login')
             ->setAttribute('class', '')
             ->setAttribute('action', $this->url()->fromRoute(
@@ -83,13 +79,18 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * Returns the supplier for the user that is currently logged in.
      *
-     * @return \CudiBundle\Entity\Supplier
+     * @return Supplier
      */
-    protected function getSupplier()
+    protected function getSupplierEntity()
     {
-        $person = $this->getAuthentication()->getPersonObject();
-        if ($this->getAuthentication()->isAuthenticated() && $person instanceof Supplier) {
-            return $person->getSupplier();
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
+
+            if ($person instanceof Supplier) {
+                return $person;
+            }
         }
+
+        throw new HasNoAccessException('You do not have sufficient permissions to access this resource');
     }
 }
