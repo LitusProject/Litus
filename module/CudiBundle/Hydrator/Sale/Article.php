@@ -22,12 +22,12 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 class Article extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    static $stdKeys = array(
-        'bookable', 'unbookable', 'sellable',
-    );
-
     protected function doExtract($object = null)
     {
+        static $stdKeys = array(
+            'bookable', 'unbookable', 'sellable',
+        );
+
         if (null === $object) {
             return array();
         }
