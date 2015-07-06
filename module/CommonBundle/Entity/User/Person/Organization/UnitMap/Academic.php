@@ -26,7 +26,7 @@ use CommonBundle\Entity\General\AcademicYear,
 /**
  * Specifying the mapping between organization and academic.
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person\Organization\UnitMap\External")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Person\Organization\UnitMap\Academic")
  * @ORM\Table(name="users.people_organizations_unit_map_academic")
  */
 class Academic extends \CommonBundle\Entity\User\Person\Organization\UnitMap

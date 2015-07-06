@@ -56,6 +56,6 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
             'value' => 'academic',
         ));
 
-        $this->addSubmit('Add', 'unit_academic_add');
+        $this->addSubmit('Add', 'unit_add');
     }
 }

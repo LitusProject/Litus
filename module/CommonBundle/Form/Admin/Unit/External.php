@@ -95,6 +95,6 @@ class External extends \CommonBundle\Component\Form\Admin\Form
             'value' => 'external',
         ));
 
-        $this->addSubmit('Add', 'unit_external_add');
+        $this->addSubmit('Add', 'unit_add');
     }
 }

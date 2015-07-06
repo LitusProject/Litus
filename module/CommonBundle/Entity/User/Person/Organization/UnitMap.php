@@ -20,7 +20,6 @@ namespace CommonBundle\Entity\User\Person\Organization;
 
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization\Unit,
-    CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -70,7 +69,6 @@ abstract class UnitMap
     private $coordinator;
 
     /**
-     * @param Academic     $academic     The person
      * @param AcademicYear $academicYear The academic year
      * @param Unit         $unit         The unit
      * @param boolean      $coordinator  Whether or not the academic is the coordinator

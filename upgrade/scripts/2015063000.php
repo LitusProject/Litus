@@ -66,5 +66,4 @@ foreach ($unitMaps as $map) {
     $unitMap = new \CommonBundle\Entity\User\Person\Organization\UnitMap\Academic($academic, $academicYear, $unit, $coordinator);
     $entityManager->persist($unitMap);
 }
-$a = $b;
 $entityManager->flush();

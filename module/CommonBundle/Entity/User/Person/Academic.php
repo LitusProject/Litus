@@ -101,7 +101,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     /**
      * @var ArrayCollection The user's unit mapping
      *
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organization\UnitMap", mappedBy="academic", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organization\UnitMap\Academic", mappedBy="academic", cascade={"persist", "remove"})
      */
     private $unitMap;
 
