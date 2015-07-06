@@ -18,7 +18,7 @@
 include 'init_autoloader.php';
 $app = Zend\Mvc\Application::init(include 'config/application.config.php');
 $entityManager = $app->getServiceManager()->get('doctrineormentitymanager');
-$dumpFileName = '/tmp/units_update_2015063000.txt';
+$dumpFileName = '/tmp/units_update_2015070600.txt';
 $unitMaps = array();
 // Get a local dump of the updated tables
 echo ' -> Get a local dump of the tables' . PHP_EOL;
@@ -54,7 +54,7 @@ if ($returnValue !== 0) {
     echo ' Failed to update database, please try it manualy. This script can be run again afterwards.' . PHP_EOL;
     exit(1);
 }
-echo ' -> Import old unitMaps' . PHP_EOL;
+echo ' -> Import old unitMaps into new structure' . PHP_EOL;
 foreach ($unitMaps as $map) {
     $academicYear = $entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
         ->findOneById($map['academic_year']);
