@@ -46,7 +46,7 @@ use Doctrine\Common\Collections\ArrayCollection,
      /**
       * @var string The title of the module group
       *
-      * @ORM\Column(type="string", length=300)
+      * @ORM\Column(type="string", length=400)
       */
      private $title;
 
