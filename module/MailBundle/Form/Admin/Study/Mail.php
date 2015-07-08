@@ -223,11 +223,11 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     {
         $studies = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study')
-            ->findAllParentsByAcademicYear($this->academicYear);
+            ->findAllByAcademicYear($this->academicYear);
 
         $studyNames = array();
         foreach ($studies as $study) {
-            $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getFullTitle();
+            $studyNames[$study->getId()] = 'Phase ' . $study->getPhase() . ' - ' . $study->getTitle();
         }
 
         return $studyNames;

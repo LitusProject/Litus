@@ -73,7 +73,7 @@ class Subject
     /**
      * @var ArrayCollection The enrollments of the subject
      *
-     * @ORM\OneToMany(targetEntity="SyllabusBundle\Entity\StudentEnrollment", mappedBy="subject")
+     * @ORM\OneToMany(targetEntity="SyllabusBundle\Entity\Subject\StudentEnrollment", mappedBy="subject")
      */
     private $enrollments;
 

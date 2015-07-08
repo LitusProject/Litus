@@ -1,128 +1,57 @@
-{% extends 'admin/base.twig' %}
+{% extends 'syllabus/admin/study/view.twig' %}
 
-{% block content %}
-    {% include 'syllabus/admin/study/partials/navigation.twig' %}
-
-    {% include 'admin/partials/flashMessenger.twig' %}
-
-    {% include 'syllabus/admin/study/partials/years.twig' %}
-
-    <div id="controller_action">
-        <h1>Study</h1>
-
-        <p>Title: <b>{{ study.getFullTitle() }}</b></p>
-        <p>Phase: <b>{{ study.getPhase() }}</b></p>
-        <p>Language: <b>{{ study.getLanguage() }}</b></p>
-        <br />
-
-        {% if hasAccess('syllabus_admin_study', 'edit') %}
-            {% import 'admin/partials/form.twig' as forms %}
-            {{ forms.renderForm(form) }}
-            <br style="clear:both" />
-        {% endif %}
-
-        <div id="subject_search" style="display:none;">
-            <div style="padding:4px;text-align:right">
-                Search:
-                <select id="searchField">
-                    <option value="name">Name</option>
-                    <option value="code">Code</option>
-                </select>
-                is
-                <input type="text" id="searchString" size="30" />
-            </div>
-
-            <table class="full_width manage">
-                <tr>
-                    <th width="80px">Code</th>
-                    <th>Name</th>
-                    <th width="70px">Semester</th>
-                    <th width="60px">Credits</th>
-                    <th width="80px">Mandatory</th>
-                    <th width="70px">Students</th>
-                    <th width="70px">Actions</th>
-                </tr>
-            </table>
-        </div>
-
-        <div id="default_page">
-            <table class="full_width manage">
-                <tr>
-                    <th width="80px">Code</th>
-                    <th>Name</th>
-                    <th width="70px">Semester</th>
-                    <th width="60px">Credits</th>
-                    <th width="80px">Mandatory</th>
-                    <th width="70px">Students</th>
-                    <th width="70px">Actions</th>
-                </tr>
-
-                {% for mapping in mappings %}
-                    <tr class="item">
-                        <td>{{ mapping.getSubject().getCode() }}</td>
-                        <td>{{ mapping.getSubject().getName() }}</td>
-                        <td>{{ mapping.getSubject().getSemester() }}</td>
-                        <td>{{ mapping.getSubject().getCredits() }}</td>
-                        <td>{% if mapping.isMandatory() %}Yes{% else %}No{% endif %}</td>
-                        <td>{{ mapping.getSubject().getNbEnrollment(currentAcademicYear) }}</td>
-                        <td class="actions">
-                            {% if hasAccess('syllabus_admin_subject', 'edit') %}
-                                <a href="{{ url('syllabus_admin_subject', {"action": "edit", "id": mapping.getSubject().getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
+{% block form %}
+    {% import 'admin/partials/form.twig' as forms %}
+    {{ forms.renderForm(form) }}
+    <br style="clear:both" />
 {% endblock %}
 
 {% block content_script %}
+    {{ parent() }}
     <script type="text/javascript">
+        var currentCount = 0;
         $(document).ready(function () {
-            $('#studySearch').typeaheadRemote(
+            while ($('input[name="module_groups[' + (currentCount) + '][module_group][value]"]').length) {
+                currentCount++;
+                enableTypeahead(currentCount);
+            }
+
+            addModuleGroup();
+        });
+
+        function triggerKeyUp() {
+            if ($(this).val().length > 0) {
+                $(this).unbind('keyup');
+                addModuleGroup();
+            }
+        }
+
+        function addModuleGroup() {
+            var template = $('#data-template-module_groups').data('template');
+            template = template.replace(/__index__/g, currentCount);
+            currentCount++;
+
+            $('form > fieldset#module_groups').append(template);
+            $('input[name="module_groups[' + (currentCount - 1) + '][module_group]"]').keyup(triggerKeyUp);
+
+            enableTypeahead(currentCount);
+        }
+
+        function enableTypeahead(i) {
+            $('#module_groups\\[' + (i - 1) + '\\]\\[module_group\\]').typeaheadRemote(
                 {
-                    source: '{{ url('syllabus_admin_study_typeahead', {'academicyear': currentAcademicYear.getCode()})}}',
+                    source: '{{ url('syllabus_admin_study_module_group_typeahead')}}',
                     items: 30,
                 }
             ).change(function (e) {
+                var field = $(this).closest('.row').parent().find('input[type=hidden]');
                 if ($(this).data('value')) {
-                    $('#parentId').val($(this).data('value').id);
+                    field.val($(this).data('value').id);
+                    addModuleGroup();
                 } else {
-                    $('#parentId').val('');
+                    field.val('');
                 }
             });
-
-            {% if hasAccess('syllabus_admin_subject', 'search') %}
-            $.searchDatabase({
-                defaultPage: $('#default_page'),
-                searchDiv: $('#subject_search'),
-                searchString: $('#searchString'),
-                searchField: $('#searchField'),
-                searchPage: '{{ url('syllabus_admin_study', {'action': 'edit', 'id': study.getId(), 'academicyear': currentAcademicYear.getCode()}) }}',
-                url: '{{ url('syllabus_admin_study', {'action': 'searchSubject', 'id': study.getId(), 'academicyear': currentAcademicYear.getCode()}) }}',
-                display: function (data) {
-                    $('#subject_search table').find('tr.item').remove();
-                    $(data).each(function () {
-                        $('#subject_search table').append(row = $('<tr>', {class: 'item'}));
-                        row.append('<td>' + this.code + '</td>')
-                            .append('<td>' + this.name + '</td>')
-                            .append('<td>' + this.semester + '</td>')
-                            .append('<td>' + this.credits + '</td>')
-                            .append('<td>' + (this.mandatory ? 'yes' : 'no') + '</td>')
-                            .append('<td>' + this.students + '</td>')
-                            .append(actions = $('<td>', {'class': 'actions'}));
-                        {% if hasAccess('syllabus_admin_subject', 'edit') %}
-                            actions.append('<a href="{{ url('syllabus_admin_subject') }}edit/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
-                        {% endif %}
-                    });
-                    $('#subject_search table').change();
-                },
-                clear: function () {
-                    $('#subject_search table').find('tr.item').remove();
-                }
-            });
-            {% endif %}
-        });
+        }
     </script>
 {% endblock %}

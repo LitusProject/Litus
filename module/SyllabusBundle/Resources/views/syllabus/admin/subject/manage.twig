@@ -3,9 +3,9 @@
 {% block content %}
     {% include 'syllabus/admin/subject/partials/navigation.twig' %}
 
-    {% include 'admin/partials/flashMessenger.twig' %}
-
     {% include 'syllabus/admin/subject/partials/years.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
         <div id="subject_search" style="display:none;">
@@ -47,8 +47,11 @@
                         <td>{{ subject.getSemester() }}</td>
                         <td>{{ subject.getCredits() }}</td>
                         <td class="actions">
+                            {% if hasAccess('syllabus_admin_subject', 'view') %}
+                                <a href="{{ url('syllabus_admin_subject', {"action": "view", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
+                            {% endif %}
                             {% if hasAccess('syllabus_admin_subject', 'edit') %}
-                                <a href="{{ url('syllabus_admin_subject', {"action": "edit", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="view">View</a>
+                                <a href="{{ url('syllabus_admin_subject', {"action": "edit", "id": subject.getId(), "academicyear": currentAcademicYear.getCode()}) }}" class="edit">Edit</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -69,8 +72,8 @@
                 searchDiv: $('#subject_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('syllabus_admin_subject', {'action': 'manage', 'academicyear': currentAcademicYear.getCode()}) }}',
-                url: '{{ url('syllabus_admin_subject', {'action': 'search', 'academicyear': currentAcademicYear.getCode()}) }}',
+                searchPage: '{{ url('syllabus_admin_subject', {'action': 'manage', "academicyear": currentAcademicYear.getCode()}) }}',
+                url: '{{ url('syllabus_admin_subject', {'action': 'search', "academicyear": currentAcademicYear.getCode()}) }}',
                 display: function (data) {
                     $('#subject_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -80,8 +83,13 @@
                             .append('<td>' + this.semester + '</td>')
                             .append('<td>' + this.credits + '</td>')
                             .append(actions = $('<td>', {'class': 'actions'}));
+
+                        {% if hasAccess('syllabus_admin_subject', 'view') %}
+                            actions.append('<a href="{{ url('syllabus_admin_subject') }}view/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
+                        {% endif %}
+
                         {% if hasAccess('syllabus_admin_subject', 'edit') %}
-                            actions.append('<a href="{{ url('syllabus_admin_subject') }}edit/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="view">View</a>')
+                            actions.append('<a href="{{ url('syllabus_admin_subject') }}edit/' + this.id + '/{{ currentAcademicYear.getCode() }}" class="edit">Edit</a>')
                         {% endif %}
                     });
                     $('#subject_search table').change();

@@ -661,8 +661,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             $mappings[] = array(
                 'enrollment' => $enrollment,
                 'subjects' => $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                    ->findAllByStudyAndAcademicYear($enrollment->getStudy(), $this->getCurrentAcademicYear()),
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+                    ->findAllByStudy($enrollment->getStudy()),
             );
         }
 

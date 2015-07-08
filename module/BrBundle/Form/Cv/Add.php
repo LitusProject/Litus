@@ -588,7 +588,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->findAllByAcademicAndAcademicYear($this->academic, $this->academicYear);
 
         foreach ($studies as $study) {
-            $studyMap[$study->getStudy()->getId()] = $study->getStudy()->getFullTitle();
+            $studyMap[$study->getStudy()->getId()] = $study->getStudy()->getTitle();
         }
 
         return $studyMap;

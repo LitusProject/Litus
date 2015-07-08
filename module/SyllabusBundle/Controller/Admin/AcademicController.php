@@ -161,24 +161,24 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
                 $enrollment = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                    ->findOneByAcademicAndAcademicYearAndStudy($academic, $academicYear, $study);
+                    ->findOneByAcademicAndStudy($academic, $study);
 
                 if (null === $enrollment) {
-                    $this->getEntityManager()->persist(new StudyEnrollment($academic, $academicYear, $study));
+                    $this->getEntityManager()->persist(new StudyEnrollment($academic, $study));
                 }
 
-                $subjects = $this->getEntityManager()
-                    ->getRepository('SyllabusBundle\Entity\StudySubjectMap')
-                    ->findAllByStudyAndAcademicYear($study, $academicYear);
+                $mappings = $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+                    ->findAllByStudy($study);
 
-                foreach ($subjects as $subject) {
-                    if ($subject->isMandatory()) {
+                foreach ($mappings as $mapping) {
+                    if ($mapping->isMandatory()) {
                         $enrollment = $this->getEntityManager()
                             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
-                            ->findOneByAcademicAndAcademicYearAndSubject($academic, $academicYear, $subject->getSubject());
+                            ->findOneByAcademicAndAcademicYearAndSubject($academic, $academicYear, $mapping->getSubject());
 
                         if (null === $enrollment) {
-                            $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $subject->getSubject()));
+                            $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $mapping->getSubject()));
                         }
                     }
                 }
@@ -199,12 +199,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     )
                 );
 
-                return new ViewModel(
-                    array(
-                        'academicYears' => $academicYears,
-                        'currentAcademicYear' => $academicYear,
-                    )
-                );
+                return new ViewModel();
             }
         }
 
@@ -268,12 +263,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     )
                 );
 
-                return new ViewModel(
-                    array(
-                        'academicYears' => $academicYears,
-                        'currentAcademicYear' => $academicYear,
-                    )
-                );
+                return new ViewModel();
             }
         }
 

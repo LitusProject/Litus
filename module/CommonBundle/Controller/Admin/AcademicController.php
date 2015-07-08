@@ -203,7 +203,9 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         $academics = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findAllByNameTypeahead($this->getParam('string'));
+            ->findAllByNameQuery($this->getParam('string'))
+            ->setMaxResults(20)
+            ->getResult();
 
         $result = array();
         foreach ($academics as $academic) {

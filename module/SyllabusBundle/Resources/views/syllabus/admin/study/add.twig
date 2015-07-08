@@ -15,19 +15,52 @@
 
 {% block content_script %}
     <script type="text/javascript">
+        var currentCount = 0;
         $(document).ready(function () {
-            $('#parent').typeaheadRemote(
+            while ($('input[name="module_groups[' + (currentCount) + '][module_group]"]').length) {
+                currentCount++;
+                enableTypeahead(currentCount);
+            }
+
+            if (currentCount == 0)
+                addModuleGroup();
+            else
+                $('input[name="module_groups[' + (currentCount - 1) + '][module_group]"]').keyup(triggerKeyUp);
+        });
+
+        function triggerKeyUp() {
+            if ($(this).val().length > 0) {
+                $(this).unbind('keyup');
+                addModuleGroup();
+            }
+        }
+
+        function addModuleGroup() {
+            var template = $('#data-template-module_groups').data('template');
+            template = template.replace(/__index__/g, currentCount);
+            currentCount++;
+
+            $('form > fieldset#module_groups').append(template);
+            $('input[name="module_groups[' + (currentCount - 1) + '][module_group]"]').keyup(triggerKeyUp);
+
+            enableTypeahead(currentCount);
+        }
+
+        function enableTypeahead(i) {
+            $('#module_groups\\[' + (i - 1) + '\\]\\[module_group\\]').typeaheadRemote(
                 {
-                    source: '{{ url('syllabus_admin_study_typeahead', {'academicyear': currentAcademicYear.getCode()})}}',
+                    source: '{{ url('syllabus_admin_study_module_group_typeahead')}}',
                     items: 30,
                 }
             ).change(function (e) {
+                var field = $(this).closest('.row').parent().find('input[type=hidden]');
                 if ($(this).data('value')) {
-                    $('[name="parent[id]"]').val($(this).data('value').id);
+                    field.val($(this).data('value').id);
+                    addModuleGroup();
                 } else {
-                    $('[name="parent[id]"]').val('');
+                    field.val('');
                 }
             });
-        });
+        }
     </script>
 {% endblock %}

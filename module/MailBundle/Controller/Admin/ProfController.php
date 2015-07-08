@@ -183,7 +183,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     private function getSubjects(Person $person, AcademicYear $academicYear, $semester)
     {
         $allSubjects = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findAllByProfAndAcademicYear($person, $academicYear);
 
         $subjects = array();

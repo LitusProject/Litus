@@ -1,0 +1,34 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'syllabus/admin/study/module-group/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'syllabus/admin/study/module-group/partials/years.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#parent').typeaheadRemote(
+                {
+                    source: '{{ url('syllabus_admin_study_module_group_typeahead')}}',
+                    items: 30,
+                }
+            ).change(function (e) {
+                var field = $(this).closest('.row').parent().find('input[type=hidden]');
+                if ($(this).data('value')) {
+                    field.val($(this).data('value').id);
+                } else {
+                    field.val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}

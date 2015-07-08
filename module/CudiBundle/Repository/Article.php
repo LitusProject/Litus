@@ -242,7 +242,7 @@ class Article extends EntityRepository
     private function getCurrentArticleIdsByProf(Person $person)
     {
         $subjects = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findByProf($person);
 
         $ids = array(0);
@@ -331,7 +331,7 @@ class Article extends EntityRepository
     public function findOneByIdAndProf($id, Person $person)
     {
         $subjects = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\SubjectProfMap')
+            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
             ->findByProf($person);
 
         $subjectIds = array(0);

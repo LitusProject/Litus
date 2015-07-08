@@ -88,7 +88,7 @@ class Comment
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="SyllabusBundle\Entity\Subject\Reply", mappedBy="comment")
+     * @ORM\OneToMany(targetEntity="SyllabusBundle\Entity\Subject\Reply", mappedBy="comment", cascade={"remove"})
      * @ORM\OrderBy({"date" = "ASC"})
      */
     private $replies;
