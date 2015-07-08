@@ -350,7 +350,7 @@ class Academic extends \CommonBundle\Entity\User\Person
 
     /**
      * Retrieves all the roles from the academic's units for the
-     * latest academic year.
+     * latest and upcomming academic years.
      *
      * @return array
      */
@@ -360,10 +360,6 @@ class Academic extends \CommonBundle\Entity\User\Person
 
         $unitMaps = array();
         foreach ($this->unitMap as $map) {
-            if ($map->getAcademicYear()->getStartDate() > $now) {
-                continue;
-            }
-
             if ($map->getAcademicYear()->getEndDate() < $now) {
                 continue;
             }
