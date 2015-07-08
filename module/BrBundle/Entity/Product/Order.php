@@ -294,7 +294,7 @@ class Order
             }
         } else {
             foreach ($this->orderEntries as $orderEntry) {
-                $orderEntry->getProduct()->setEntityManager($this->_entityManager);
+                $orderEntry->getProduct()->setEntityManager($this->entityManager);
                 $cost = $cost + (($orderEntry->getProduct()->getPrice() * (1 + $orderEntry->getProduct()->getVatPercentage()/100)) * $orderEntry->getQuantity());
             }
         }
