@@ -41,7 +41,7 @@ class Generator
     /**
      * @param TmpFile|null $tmpFile The file where the data will be saved to
      */
-    public function __construct(TmpFile $tmpFile = null)
+    public function __construct(TmpFile $tmpFile = null, $headerKeys = null)
     {
         if ($tmpFile === null) {
             $this->data = new TmpFile();
@@ -51,7 +51,11 @@ class Generator
             $this->destroy = false;
         }
 
-        $this->data->appendContent('<?xml version="1.0" encoding="ISO-8859-1"?>');
+        if ($headerKeys === null) {
+            $this->data->appendContent('<?xml version="1.0" encoding="ISO-8859-1"?>');
+        } else {
+            $this->data->appendContent('<?xml ' . $headerKeys . '?>');
+        }
     }
 
     /**

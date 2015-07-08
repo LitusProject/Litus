@@ -415,7 +415,7 @@ VTK Cudi
     ),
     array(
         'key'         => 'cudi.order_job_id',
-        'value'       => 'vtk-{{ date }}',
+        'value'       => '{{ date }}-VTK-{{ code }}',
         'description' => 'The job id for a XML exported order',
     ),
     array(
@@ -464,5 +464,10 @@ VTK Cudi
         'key'         => 'cudi.enable_assign_after_stock_update',
         'value'       => '1',
         'description' => 'Enable assign after updating the stock (enable_automatic_assignment must also be enabled).',
+    ),
+    array(
+        'key'         => 'cudi.export_order_format',
+        'value'       => 'default',
+        'description' => 'Select the order export xml format choose: default, pmr',
     ),
 );
