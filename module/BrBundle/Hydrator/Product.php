@@ -18,7 +18,8 @@
 
 namespace BrBundle\Hydrator;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use BrBundle\Entity\Product as ProductEntity,
+    CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
  * This hydrator hydrates/extracts Product data.
@@ -39,7 +40,24 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException('Cannot create a product');
         }
 
-        $object->setDeliveryDate(self::loadDate($data['delivery_date']));
+        if ($object->getName() != null) {
+            $orderEntry = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Product\OrderEntry')
+                    ->findOneByProduct($object->getId());
+
+            if ($orderEntry !== null) {
+                $object->setOld();
+
+                $object = new ProductEntity(
+                    $object->getAuthor(),
+                    $object->getAcademicYear()
+                );
+            }
+        }
+
+        if ('' != $data['delivery_date']) {
+            $object->setDeliveryDate(self::loadDate($data['delivery_date']));
+        }
 
         if ('' != $data['event']) {
             $object->setEvent(
@@ -47,9 +65,9 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
                     ->getRepository('CalendarBundle\Entity\Node\Event')
                     ->findOneById($data['event'])
             );
-        } else {
-            $object->setEvent(null);
         }
+
+        $this->getEntityManager()->persist($object);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }

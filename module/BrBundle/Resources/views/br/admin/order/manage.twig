@@ -50,7 +50,11 @@
                             <a href="#" class="delete" data-id="{{ order.getId() }}" data-name="{{ order.getCompany().getName() }} ({{ order.getDescription() }})">Delete</a>
                         {% endif %}
                         {% if hasAccess('br_admin_contract', 'view') %}
-                            <a href="{{ url('br_admin_contract', {"action": "view", "id": order.getContract().getId()}) }}" class="contract">Contract</a>
+                            {% if order.hasContract() %}
+                                <a href="{{ url('br_admin_contract', {"action": "view", "id": order.getContract().getId()}) }}" class="contract">Contract</a>
+                            {% else %}
+                                <a href="{{ url('br_admin_order', {"action": "generate", "id": order.getId()}) }}" class="contract">Generate Contract</a>
+                            {% endif %}
                         {% endif %}
                         {% if hasAccess('br_admin_invoice', 'view') and order.getInvoice() %}
                             <a href="{{ url('br_admin_invoice', {"action": "view", "id": order.getInvoice().getId()}) }}" class="invoice">Invoice</a>

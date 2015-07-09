@@ -120,6 +120,20 @@ class Order
     private $taxFree;
 
     /**
+     * @var int The discount the company gets.
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $discount;
+
+    /**
+     * @var string A possible context for the discount
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $discountContext;
+
+    /**
      * @var EntityManager
      */
     private $entityManager;
@@ -135,6 +149,49 @@ class Order
         $this->old = false;
     }
 
+    /**
+     * @return string
+     */
+    public function getDiscountContext()
+    {
+        return $this->discountContext;
+    }
+
+    /**
+     * @param string $text
+     */
+    public function setDiscountContext($text)
+    {
+        $this->discountContext = $text;
+    }
+
+    public function hasDiscount()
+    {
+        return $this->discount > 0;
+    }
+
+    /**
+     * @param  int  $discount
+     * @return self
+     */
+    public function setDiscount($discount)
+    {
+        if ($discount < 0) {
+            throw new InvalidArgumentException('Invalid discount');
+        }
+
+        $this->discount = $discount;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
+    }
     /**
      * @return int
      */
@@ -210,6 +267,14 @@ class Order
     public function getContract()
     {
         return $this->contract;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasContract()
+    {
+        return (null !== $this->getContract() ? true : false);
     }
 
     /**
@@ -299,7 +364,7 @@ class Order
             }
         }
 
-        return (double) (($cost / 100) - $this->getContract()->getDiscount());
+        return (double) (($cost / 100) - $this->getDiscount());
     }
 
     /**

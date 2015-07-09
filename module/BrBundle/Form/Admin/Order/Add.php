@@ -33,11 +33,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $hydrator = 'BrBundle\Hydrator\Product\Order';
 
     /**
-     * The maximum number allowed to enter in the corporate order form.
-     */
-    const MAX_ORDER_NUMBER = 10;
-
-    /**
      * @var Order
      */
     protected $order;
@@ -51,7 +46,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
+        /*$this->add(array(
             'type'     => 'text',
             'name'     => 'title',
             'label'    => 'Order Title',
@@ -63,7 +58,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                 ),
             ),
-        ));
+        ));*/
 
         $this->add(array(
             'type'     => 'select',
@@ -135,40 +130,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'    => 'Tax Free',
         ));
 
-        $products = $this->getProducts();
-
-        foreach ($products as $product) {
-            if (!$product->isOld()) {
-                $this->add(array(
-                    'type'       => 'text',
-                    'name'       => 'product_' . $product->getId(),
-                    'label'      => $product->getName(),
-                    'attributes' => array(
-                        'placeholder' => 0,
-                    ),
-                    'options'    => array(
-                        'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'digits',
-                                ),
-                                array(
-                                    'name' => 'between',
-                                    'options' => array(
-                                        'min' => 0,
-                                        'max' => self::MAX_ORDER_NUMBER,
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ));
-            }
-        }
-
         $this->addSubmit('Add Products', 'product_add');
 
         if (null !== $this->order) {
@@ -232,16 +193,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         return $contactArray;
-    }
-
-    /**
-     * @return array
-     */
-    private function getProducts()
-    {
-        return $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Product')
-            ->findByAcademicYear($this->currentYear);
     }
 
     /**

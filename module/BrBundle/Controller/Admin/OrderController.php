@@ -19,6 +19,9 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Collaborator,
+    BrBundle\Entity\Contract,
+    BrBundle\Entity\Contract\ContractEntry,
+    BrBundle\Entity\Contract\ContractHistory,
     BrBundle\Entity\Product\Order,
     BrBundle\Entity\Product\OrderEntry,
     Zend\View\Model\ViewModel;
@@ -98,7 +101,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if ($order->getContract()->isSigned()) {
+        if ($order->hasContract() && $order->getContract()->isSigned()) {
             return new ViewModel();
         }
 
@@ -121,7 +124,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
             if ($form->isValid()) {
                 $this->getEntityManager()->flush();
-
                 $this->redirect()->toRoute(
                     'br_admin_order',
                     array(
@@ -146,7 +148,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if ($order->getContract()->isSigned()) {
+        if ($order->hasContract() && $order->getContract()->isSigned()) {
             return new ViewModel();
         }
 
@@ -240,6 +242,71 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function generateAction()
+    {
+        if (!($order = $this->getOrderEntity(false))) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('br_order_generate-contract');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $contract = new Contract(
+                    $order,
+                    $order->getCreationPerson(),
+                    $order->getCompany(),
+                    $formData['title']
+                );
+
+                $contract->setContractNb(
+                    $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Contract')
+                        ->findNextContractNb()
+                );
+
+                $order->setContract($contract);
+
+                $entries = $order->getEntries();
+
+                $counter = 0;
+                foreach ($entries as $entry) {
+                    $contractEntry = new ContractEntry($contract, $entry, $counter, 0);
+                    $counter++;
+                    $contract->setEntry($contractEntry);
+                }
+
+                $this->getEntityManager()->persist($contract);
+                $this->getEntityManager()->persist(new ContractHistory($contract));
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The contract was succesfully generated!'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_contract',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
     /**
      * @param  boolean    $allowSigned
      * @return Order|null
@@ -264,7 +331,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        if ($order->getContract()->isSigned() && !$allowSigned) {
+        if ($order->hasContract() && $order->getContract()->isSigned() && !$allowSigned) {
             $this->flashMessenger()->error(
                 'Error',
                 'The given order\'s contract has been signed! Signed orders cannot be modified.'
@@ -307,7 +374,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        if ($entry->getOrder()->getContract()->isSigned() && !$allowSigned) {
+        if ($entry->getOrder()->hasContract() && $entry->getOrder()->getContract()->isSigned() && !$allowSigned) {
             $this->flashMessenger()->error(
                 'Error',
                 'The given order\'s contract has been signed! Signed orders cannot be modified.'

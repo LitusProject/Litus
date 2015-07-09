@@ -82,20 +82,6 @@ class Contract
     private $contractEntries;
 
     /**
-     * @var int The discount the company gets.
-     *
-     * @ORM\Column(type="integer")
-     */
-    private $discount;
-
-    /**
-     * @var string A possible context for the discount
-     *
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $discountContext;
-
-    /**
      * @var string The title of the contract
      *
      * @ORM\Column(type="string")
@@ -138,19 +124,17 @@ class Contract
     private $version;
 
     /**
-     * @param Order        $order    The order of this contract
-     * @param Collaborator $author   The author of this contract
-     * @param Company      $company  The company for which this contract is meant
-     * @param int          $discount The discount associated with this contract
-     * @param string       $title    The title of the contract
+     * @param Order        $order   The order of this contract
+     * @param Collaborator $author  The author of this contract
+     * @param Company      $company The company for which this contract is meant
+     * @param string       $title   The title of the contract
      */
-    public function __construct(Order $order, Collaborator $author, Company $company, $discount, $title)
+    public function __construct(Order $order, Collaborator $author, Company $company, $title)
     {
         $this->setOrder($order);
         $this->setDate();
         $this->setAuthor($author);
         $this->setCompany($company);
-        $this->setDiscount($discount);
         $this->setTitle($title);
         $this->setVersion(0);
 
@@ -159,27 +143,6 @@ class Contract
 
         $this->contractEntries = new ArrayCollection();
         $this->signed = false;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDiscountContext()
-    {
-        return $this->discountContext;
-    }
-
-    /**
-     * @param string $text
-     */
-    public function setDiscountContext($text)
-    {
-        $this->discountContext = $text;
-    }
-
-    public function hasDiscount()
-    {
-        return $this->discount > 0;
     }
 
     /**
@@ -289,29 +252,6 @@ class Contract
         $this->company = $company;
 
         return $this;
-    }
-
-    /**
-     * @param  int  $discount
-     * @return self
-     */
-    public function setDiscount($discount)
-    {
-        if ($discount < 0) {
-            throw new InvalidArgumentException('Invalid discount');
-        }
-
-        $this->discount = $discount;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDiscount()
-    {
-        return $this->discount;
     }
 
     /**

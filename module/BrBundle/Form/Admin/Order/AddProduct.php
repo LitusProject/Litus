@@ -31,6 +31,11 @@ class AddProduct extends Add
      */
     protected $currentProducts;
 
+    /**
+     * The maximum number allowed to enter in the corporate order form.
+     */
+    const MAX_ORDER_NUMBER = 10;
+
     public function init()
     {
         parent::init();
@@ -74,6 +79,13 @@ class AddProduct extends Add
                     'validators' => array(
                         array(
                             'name' => 'int',
+                        ),
+                        array(
+                            'name' => 'between',
+                            'options' => array(
+                                'min' => 0,
+                                'max' => self::MAX_ORDER_NUMBER,
+                            ),
                         ),
                     ),
                 ),

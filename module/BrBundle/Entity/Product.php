@@ -38,7 +38,7 @@ class Product
      * @var int A generated ID
      *
      * @ORM\Id
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="bigint", unique=true)
      * @ORM\GeneratedValue
      */
     private $id;
@@ -46,7 +46,7 @@ class Product
     /**
      * @var string The name of this product
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string")
      */
     private $name;
 
