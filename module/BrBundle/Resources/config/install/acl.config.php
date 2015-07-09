@@ -81,6 +81,9 @@ return array(
         'br_corporate_index' => array(
             'index',
         ),
+        'br_corporate_jobfair' => array(
+            'overview',
+        ),
         'br_corporate_cv' => array(
             'downloadArchive', 'grouped', 'list', 'search',
         ),
