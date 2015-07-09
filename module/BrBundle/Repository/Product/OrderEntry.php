@@ -57,4 +57,27 @@ class OrderEntry extends EntityRepository
 
         return null;
     }
+
+    /**
+     * @param  Product                                 $product
+     * @return \BrBundle\Entity\Product\OrderEntr|null
+     */
+    public function findOneByProductId($productId)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('o')
+            ->from('BrBundle\Entity\Product\OrderEntry', 'o')
+            ->where(
+                $query->expr()->eq('o.product', ':product')
+            )
+            ->setParameter('product', $productId)
+            ->getQuery()
+            ->getResult();
+
+        if (isset($resultSet[0])) {
+            return $resultSet[0];
+        }
+
+        return null;
+    }
 }

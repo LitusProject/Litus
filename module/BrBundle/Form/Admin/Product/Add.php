@@ -147,7 +147,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'date',
             'name'       => 'delivery_date',
             'label'      => 'Delivery Date',
-            'required'   => true,
+            'required'   => false,
             'attributes' => array(
                 'id' => 'delivery_date',
             ),
