@@ -127,9 +127,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $entries[] = new XmlObject('empty_line');
         $entries[] = new XmlObject('empty_line');
 
-        $discount = $this->invoide->getOrder()->getContract()->getDiscount();
+        $discount = $this->invoide->getOrder()->getDiscount();
         if (0 != $discount) {
-            if ('' == $this->invoide->getOrder()->getContract()->getDiscountContext()) {
+            if ('' == $this->invoide->getOrder()->getDiscountContext()) {
                 $entries[] = new XmlObject('entry', null,
                 array(
                     new XmlObject('description', null, 'Korting'),
@@ -141,7 +141,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             } else {
                 $entries[] = new XmlObject('entry', null,
                     array(
-                        new XmlObject('description', null,$this->invoide->getOrder()->getContract()->getDiscountContext()),
+                        new XmlObject('description', null,$this->invoide->getOrder()->getDiscountContext()),
                         new XmlObject('price', null, XmlObject::fromString('- <euro/>' . number_format($discount, 2))),
                         new XmlObject('amount', null, ' '),
                         new XmlObject('vat_type', null, ' '),

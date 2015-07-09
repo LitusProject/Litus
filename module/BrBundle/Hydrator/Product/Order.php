@@ -36,7 +36,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('tax_free');
+    private static $stdKeys = array('tax_free', 'discount', 'discount_context');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -44,10 +44,11 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException('Cannot create a contract');
         }
 
-        if (null !== $object->getContact()) {
+        if (null !== $object->getContact() && $object->hasContract()) {
             $object->setOld();
 
             $company = $object->getContract()->getCompany();
+            $entries = $object->getEntries();
 
             $object = new OrderEntity(
                 $object->getCreationPerson()
@@ -64,52 +65,24 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
                 ->findOneById($data['contact_' . $company->getId()])
         );
 
-        $contract = new ContractEntity(
-            $object,
-            $object->getCreationPerson(),
-            $company,
-            $data['discount'],
-            $data['title']
-        );
-
-        $contract->setContractNb(
-            $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract')
-                ->findNextContractNb()
-        );
-
-        $contract->setDiscountContext($data['discount_context']);
-        $object->setContract($contract);
-
-        $products = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Product')
-            ->findByAcademicYear($this->getCurrentAcademicYear());
-
-        $counter = 0;
-        foreach ($products as $product) {
-            if ($data['product_' . $product->getId()] > 0) {
-                $orderEntry = new OrderEntryEntity($object, $product, $data['product_' . $product->getId()]);
-                $contractEntry = new ContractEntryEntity($contract, $orderEntry, $counter, 0);
-                $counter++;
+        if (isset($entries)) {
+            foreach ($entries as $entry) {
+                $orderEntry = new OrderEntryEntity($object, $entry->getProduct(), $entry->getQuantity());
                 $object->setEntry($orderEntry);
-                $contract->setEntry($contractEntry);
             }
         }
 
         if (isset($data['new_product'])) {
             $product = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Product')
-                ->findByAcademicYear($data['new_product']);
+                ->findProductByIdQuery($data['new_product'])
+                ->getResult()[0];
 
             $orderEntry = new OrderEntryEntity($object, $product, $data['new_product_amount']);
-            $contractEntry = new ContractEntryEntity($contract, $orderEntry, $counter, 0);
             $object->setEntry($orderEntry);
-            $contract->setEntry($contractEntry);
         }
 
         $this->getEntityManager()->persist($object);
-
-        $this->getEntityManager()->persist(new ContractHistoryEntity($contract));
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -122,15 +95,15 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        $data['title'] = $object->getContract()->getTitle();
+        //$data['title'] = $object->getContract()->getTitle();
         $data['company'] = $object->getCompany()->getId();
         $data['contact_' . $object->getCompany()->getId()] = $object->getContact()->getId();
-        $data['discount'] = $object->getContract()->getDiscount();
-        $data['discount_context'] = $object->getContract()->getDiscountContext();
+        /*$data['discount'] = $object->getDiscount();
+        $data['discount_context'] = $object->getDiscountContext();
 
         foreach ($object->getEntries() as $entry) {
             $data['product_' . $entry->getProduct()->getId()] = $entry->getQuantity();
-        }
+        }*/
 
         return $data;
     }
