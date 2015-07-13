@@ -95,15 +95,8 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        //$data['title'] = $object->getContract()->getTitle();
         $data['company'] = $object->getCompany()->getId();
         $data['contact_' . $object->getCompany()->getId()] = $object->getContact()->getId();
-        /*$data['discount'] = $object->getDiscount();
-        $data['discount_context'] = $object->getDiscountContext();
-
-        foreach ($object->getEntries() as $entry) {
-            $data['product_' . $entry->getProduct()->getId()] = $entry->getQuantity();
-        }*/
 
         return $data;
     }
