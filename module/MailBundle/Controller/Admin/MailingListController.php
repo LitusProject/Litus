@@ -469,7 +469,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     {
         $entry = $this->getEntityById('MailBundle\Entity\MailingList\Entry');
 
-        if (!($entry instanceof MailingListEntry)) {
+        if (!($entry instanceof ExternalEntry or $entry instanceof AcademicEntry)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No mailing list entry was found!'
