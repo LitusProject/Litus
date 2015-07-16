@@ -19,8 +19,11 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Company,
+    CommonBundle\Component\Util\File\TmpFile,
+    BrBundle\Component\Document\Generator\Company\Pdf as PdfGenerator,
     Imagick,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\Http\Headers,
     Zend\Validator\File\IsImage as IsImageValidator,
     Zend\View\Model\ViewModel;
 
@@ -286,6 +289,31 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function exportAction()
+    {
+        return $this->pdfAction();
+    }
+
+    public function pdfAction()
+    {
+        $file = new TmpFile();
+        $document = new PdfGenerator($this->getEntityManager(), $file);
+        $document->generate();
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="company_list.pdf"',
+            'Content-Type'        => 'application/pdf',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
     /**
      * @return \Doctrine\ORM\Query|null
      */
@@ -295,7 +323,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company')
-                    ->findAllByNameQuery($this->getParam('string'));
+                    ->findAllByNameQuery($this->getParamf('string'));
         }
     }
 
