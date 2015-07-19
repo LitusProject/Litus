@@ -16,14 +16,33 @@
  * @license http://litus.cc/LICENSE
  */
 
+/**
+ * Litus is a project by a group of students from the KU Leuven. The goal is to create
+ * various applications to support the IT needs of student unions.
+ *
+ * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Karsten Daemen <karsten.daemen@litus.cc>
+ * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Dario Incalza <dario.incalza@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @license http://litus.cc/LICENSE
+ */
+
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Collaborator,
+use BrBundle\Component\Document\Generator\Pdf\Overview as PdfGenerator,
+    BrBundle\Entity\Collaborator,
     BrBundle\Entity\Company,
+    CommonBundle\Component\Util\File\TmpFile,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
- * OverviewController
+ * OverviewController.
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  */
@@ -75,6 +94,26 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    public function exportAction()
+    {
+        $file = new TmpFile();
+        $document = new PdfGenerator($this->getEntityManager(), $file);
+        $document->generate();
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="contracts_overview.pdf"',
+            'Content-Type' => 'application/pdf',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
     public function companyviewAction()
     {
         if (!($company = $this->getCompanyEntity())) {
@@ -96,7 +135,6 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             )
         );
     }
-
     /**
      * @return array
      */
@@ -121,7 +159,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 ->getRepository('BrBundle\Entity\Contract')
                 ->findAllNewOrSignedByCompany($company);
 
-            $companyNmbr++;
+            ++$companyNmbr;
 
             $contracted = 0;
             $signed = 0;
@@ -186,7 +224,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             $paid = 0;
 
             foreach ($contracts as $contract) {
-                $contractNmbr++;
+                ++$contractNmbr;
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
                 $value = $contract->getOrder()->getTotalCost();
                 $contracted = $contracted + $value;
