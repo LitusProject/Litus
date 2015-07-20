@@ -179,6 +179,22 @@
                 <fo:block text-align="left">€ <xsl:apply-templates select="value"/></fo:block>
             </fo:table-cell>
         </fo:table-row>
+
+        <xsl:apply-templates select="products"/>
+    </xsl:template>
+
+    <xsl:template match="products">
+        <xsl:apply-templates select="product"/>
+    </xsl:template>
+
+    <xsl:template match="product">
+        <fo:table-row>
+            <fo:table-cell number-columns-spanned="7" padding-start="10mm" padding-before="1mm" border-style="solid" border-width="0.5mm" border-color="black">
+                <fo:block text-align="left">
+                    <xsl:apply-templates select="text"/>
+                </fo:block>
+            </fo:table-cell>
+        </fo:table-row>
     </xsl:template>
 
     <xsl:param name="companies" select="/companies_overview/companies/*"/>

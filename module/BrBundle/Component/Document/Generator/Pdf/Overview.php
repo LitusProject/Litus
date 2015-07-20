@@ -159,6 +159,23 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
                     }
                 }
 
+                $products = array();
+                $orderEntries = $contract->getOrder()->getEntries();
+
+                foreach ($orderEntries as $entry) {
+                    $products[] = new Object(
+                        'product',
+                        array(),
+                        array(
+                            new Object(
+                                'text',
+                                array(),
+                                $entry->getProduct()->getName()
+                            ),
+                        )
+                    );
+                }
+
                 $contract_details[] = new Object(
                     'contract',
                     array(),
@@ -197,6 +214,11 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
                             'value',
                             array(),
                             $value . ''
+                        ),
+                        new Object(
+                            'products',
+                            array(),
+                            $products
                         ),
                     )
                 );
