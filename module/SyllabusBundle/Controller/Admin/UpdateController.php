@@ -42,7 +42,7 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
                     ->getSessionObject(),
                 'key' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('syllabus.queue_socket_key'),
+                    ->getConfigValue('syllabus.update_socket_key'),
             )
         );
     }
