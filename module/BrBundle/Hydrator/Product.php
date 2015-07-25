@@ -80,7 +80,9 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        $data['delivery_date'] = $object->getDeliveryDate()->format('d/m/Y');
+        if (isset($data['delivery_date'])) {
+            $data['delivery_date'] = $object->getDeliveryDate()->format('d/m/Y');
+        }
 
         return $data;
     }

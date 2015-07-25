@@ -127,7 +127,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'br_admin_order',
                     array(
-                        'action' => 'manage',
+                        'action' => 'product',
+                        'id' => $order->getId(),
                     )
                 );
             }
