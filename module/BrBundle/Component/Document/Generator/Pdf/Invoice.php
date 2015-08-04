@@ -68,7 +68,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $invoiceDate = $this->invoide->getCreationTime()->format('j/m/Y');
         $dueDate = $this->invoide->getExpirationTime($this->getEntityManager())->format('j/m/Y');
-        $clientVat = $this->vatFormat($this->invoide->getOrder()->getCompany()->getVatNumber());
+        $clientVat = $this->vatFormat($this->invoide->getOrder()->getCompany()->getInvoiceVatNumber());
         $reference = '/'; // TODO? (this was here already)
 
         $invoiceNb = $this->invoide->getInvoiceNumber($this->getEntityManager());
@@ -90,7 +90,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $company = $this->invoide->getOrder()->getCompany();
         $companyContactPerson = $this->invoide->getOrder()->getContact()->getFullName();
-        $companyName = $company->getName();
+        $companyName = $company->getInvoiceName();
 
         $count = 0;
         $entries = array();
@@ -220,32 +220,32 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                                 new XmlObject(
                                     'street',
                                     null,
-                                    $company->getAddress()->getStreet()
+                                    $company->getInvoiceAddress()->getStreet()
                                 ),
                                 new XmlObject(
                                     'number',
                                     null,
-                                    $company->getAddress()->getNumber()
+                                    $company->getInvoiceAddress()->getNumber()
                                 ),
                                 new XmlObject(
                                     'mailbox',
                                     null,
-                                    $company->getAddress()->getMailbox()
+                                    $company->getInvoiceAddress()->getMailbox()
                                 ),
                                 new XmlObject(
                                     'postal',
                                     null,
-                                    $company->getAddress()->getPostal()
+                                    $company->getInvoiceAddress()->getPostal()
                                 ),
                                 new XmlObject(
                                     'city',
                                     null,
-                                    $company->getAddress()->getCity()
+                                    $company->getInvoiceAddress()->getCity()
                                 ),
                                 new XmlObject(
                                     'country',
                                     null,
-                                    $company->getAddress()->getCountry()
+                                    $company->getInvoiceAddress()->getCountry()
                                 ),
                             )
                         ),
