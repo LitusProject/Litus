@@ -46,7 +46,7 @@ class Product
     /**
      * @var string The name of this product
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string")
      */
     private $name;
 

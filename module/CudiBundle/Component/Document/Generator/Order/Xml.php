@@ -26,6 +26,7 @@ use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Entity\Stock\Order\Item,
     CudiBundle\Entity\Stock\Order\Order,
     Doctrine\ORM\EntityManager,
+    UnexpectedValueException,
     ZipArchive;
 
 class Xml
@@ -61,6 +62,10 @@ class Xml
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.file_path');
 
+        $xmlFormat = $this->entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.export_order_format');
+
         $zip = new ZipArchive();
 
         foreach ($this->order->getItems() as $item) {
@@ -70,19 +75,26 @@ class Xml
 
             $zip->open($archive->getFileName(), ZIPARCHIVE::CREATE);
             $xmlFile = new TmpFile();
-            $this->generateXml($item, $xmlFile);
+            if ($xmlFormat == 'default') {
+                $this->generateXml($item, $xmlFile);
 
-            $file = new TmpFile();
-            $document = new FrontGenerator($this->entityManager, $item->getArticle(), $file);
-            $document->generate();
+                $file = new TmpFile();
+                $document = new FrontGenerator($this->entityManager, $item->getArticle(), $file);
+                $document->generate();
 
-            $zip->addFile($file->getFilename(), 'front_' . $item->getArticle()->getId() . '.pdf');
+                $zip->addFile($file->getFilename(), 'front_' . $item->getArticle()->getId() . '.pdf');
+                $zip->addFile($xmlFile->getFilename(), $item->getId() . '.xml');
+            } elseif ($xmlFormat == 'pmr') {
+                $this->generatePmrXml($item, $xmlFile);
+                $zip->addFile($xmlFile->getFilename(), $item->getArticle()->getMainArticle()->getTitle() . '.xml');
+            } else {
+                throw new UnexpectedValueException('unexpected configuration value cudi.order_export_format');
+            }
 
             $mappings = $this->entityManager
                 ->getRepository('CudiBundle\Entity\File\Mapping')
                 ->findAllPrintableByArticle($item->getArticle()->getMainArticle());
 
-            $zip->addFile($xmlFile->getFilename(), $item->getId() . '.xml');
             foreach ($mappings as $mapping) {
                 $zip->addFile($filePath . $mapping->getFile()->getPath(), $mapping->getFile()->getName());
             }
@@ -299,6 +311,116 @@ class Xml
                         )
                     ),
                 )
+            )
+        );
+    }
+
+    private function generatePmrXml(Item $item, TmpFile $tmpFile)
+    {
+        $xml = new Generator($tmpFile, 'version="1.0" encoding="utf-8" standalone="yes"');
+
+        $mainArticle = $item->getArticle()->getMainArticle();
+        if (!($mainArticle instanceof InternalArticle)) {
+            return;
+        }
+
+        switch ($mainArticle->getBinding()->getCode()) {
+            case 'glued':
+                $binding = 'A4vouw';
+                break;
+            case 'stapled':
+                $binding = 'Geniet';
+                break;
+            default:
+                $binding = 'Los en ingepakt in krimpfolie';
+                break;
+        }
+
+        $jobId = $this->entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.order_job_id');
+
+        $name = $this->entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('organization_short_name');
+
+        $mail = $this->entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.mail');
+
+        $orderDetails = array(
+                    new Object(
+                        'Jobnummber',
+                        null,
+                        str_replace('{{ code }}', substr((string) $item->getArticle()->getBarcode(),-5) ,str_replace('{{ date }}', $this->order->getDateOrdered()->format('Ymd'), $jobId))
+                    ),
+                    new Object(
+                        'Klantnaam',
+                        null,
+                        $name
+                    ),
+                    new Object(
+                        'Klantvoornaam',
+                        null,
+                        ''
+                    ),
+                    new Object(
+                        'Klantemail',
+                        null,
+                        $mail
+                    ),
+                    new Object(
+                        'Levering',
+                        null,
+                        $this->order->getDeliveryDate()->format('d/m/Y')
+                    ),
+                    new Object(
+                        'Levering2',
+                        null,
+                        ''
+                    ),
+                    new Object(
+                        'Orderline',
+                        null,
+                        '1'
+                    ),
+                    new Object(
+                        'Categorie',
+                        null,
+                        'DOC'
+                    ),
+                    new Object(
+                        'Quantity',
+                        null,
+                        (string) $item->getNumber()
+                    ),
+                    new Object(
+                        'Afdruk',
+                        null,
+                        $mainArticle->getNbColored() > 0 ? 'kleur' : 'zwart wit'
+                    ),
+                    new Object(
+                        'bedrukking',
+                        null,
+                        (string) $mainArticle->isRectoVerso() ? 'Recto-Verso' : 'Recto'
+                    ),
+                    new Object(
+                        'afwerking',
+                        null,
+                        $binding
+                    ),
+                    new Object(
+                        'Bestandsnaam',
+                        null,
+                        substr((string) $item->getArticle()->getBarcode(),-5) . '.pdf'
+                    ),
+                );
+
+        $xml->append(
+            new Object(
+                'Order',
+                null,
+                $orderDetails
             )
         );
     }

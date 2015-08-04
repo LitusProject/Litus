@@ -46,7 +46,7 @@ return array(
             'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay',
         ),
         'br_admin_order' => array(
-            'product', 'edit', 'delete', 'view', 'add', 'old', 'manage',
+            'product', 'edit', 'delete', 'view', 'add', 'old', 'manage', 'generate',
         ),
         'br_admin_overview' => array(
             'person', 'company', 'view','personview','companyview',
@@ -80,6 +80,9 @@ return array(
         ),
         'br_corporate_index' => array(
             'index',
+        ),
+        'br_corporate_jobfair' => array(
+            'overview',
         ),
         'br_corporate_cv' => array(
             'downloadArchive', 'grouped', 'list', 'search',
