@@ -269,8 +269,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             unset($specs['mail_form']);
         }
 
-        if (!$this->get('reminder_mail')->getValue()) {
-            unset($specs['reminder_mail_form']);
+        if (!$this instanceof Edit || $this->isDoodle()) {
+            if (!$this->get('reminder_mail')->getValue()) {
+                unset($specs['reminder_mail_form']);
+            }
         }
 
         return $specs;
