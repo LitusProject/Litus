@@ -189,4 +189,13 @@ Example content of this section.
         ),
         'description' => 'The codes to use for contract number generation.',
     ),
+    array(
+        'key'         => 'br.automatic_discounts',
+        'value'       => serialize(
+            array(
+                '400000'  => '5',
+            )
+        ),
+        'description' => 'The automatic discount: (money value (in cents, discount percentage)',
+    ),
 );

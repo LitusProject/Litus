@@ -83,7 +83,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(array(
             'type'     => 'text',
             'name'     => 'discount',
-            'label'    => 'Discount',
+            'label'    => 'Discount (in cents)',
             'required' => true,
             'options'  => array(
                 'input' => array(
@@ -112,8 +112,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(array(
             'type'     => 'checkbox',
-            'name'     => 'tax_free',
-            'label'    => 'Tax Free',
+            'name'     => 'auto_discount',
+            'label'    => 'Automatic Discount',
+            'value'    => true,
         ));
 
         $this->addSubmit('Add Products', 'product_add');

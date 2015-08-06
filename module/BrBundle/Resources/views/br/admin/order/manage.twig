@@ -24,10 +24,11 @@
             <tr>
                 <th>Company</th>
                 <th>Description</th>
-                <th width="60px">Tax Free</th>
-                <th width="60px">Cost</th>
+                <th width="60px">Auto Discount</th>
+                <th width="70px">Discount</th>
+                <th width="80px">Total Cost</th>
                 <th width="110px">Date</th>
-                <th width="150px">Placed By</th>
+                <th width="130px">Placed By</th>
                 <th width="70px">Actions</th>
             </tr>
 
@@ -35,8 +36,9 @@
                 <tr class="item item-{{ order.getId() }}">
                     <td>{{ order.getCompany().getName() }}</td>
                     <td>{{ order.getDescription() }}</td>
-                    <td>{% if order.isTaxFree() %} Yes {% else %} No {% endif %} </td>
-                    <td> &euro; {{ order.getTotalCost()|number_format(2) }}</td>
+                    <td>{{ order.getAutoDiscountPercentage() }}%</td>
+                    <td> &euro; {{ order.getDiscount() |number_format(2) }}</td>
+                    <td> &euro; {{ order.getTotalCost() |number_format(2) }}</td>
                     <td>{{ order.getCreationTime().format('d/m/Y H:i') }}</td>
                     <td>{{ order.getCreationPerson().getPerson().getFullName() }}</td>
                     <td class="actions">

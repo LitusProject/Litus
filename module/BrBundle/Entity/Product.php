@@ -288,13 +288,13 @@ class Product
             throw new InvalidArgumentException('Invalid price');
         }
 
-        $this->price = (int) ($price * 100);
+        $this->price = (int) ($price);
 
         return $this;
     }
 
     /**
-     * @return int
+     * @return int price in cents
      */
     public function getPrice()
     {
