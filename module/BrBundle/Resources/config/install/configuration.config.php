@@ -177,4 +177,16 @@ Example content of this section.
   At a sublevel you can also drop the bullet. This will be renderered without bullet.',
             'description' => 'The standard text that is displayed on the creation of a new product.',
     ),
+    array(
+        'key'         => 'br.contract_number_codes',
+        'value'       => serialize(
+            array(
+                '1415'  => '22',
+                '1516'  => '33',
+                '1617'  => '44',
+                '1718'  => '55',
+            )
+        ),
+        'description' => 'The codes to use for contract number generation.',
+    ),
 );

@@ -37,6 +37,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             array(
                 'array' => $array,
                 'totals' => $totals,
+                'em' => $this->getEntityManager(),
             )
         );
     }
@@ -49,6 +50,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             array(
                 'array' => $array,
                 'totals' => $totals,
+                'em' => $this->getEntityManager(),
             )
         );
     }

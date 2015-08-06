@@ -65,13 +65,18 @@ class Contract extends EntityRepository
     }
 
     /**
+     * @param  CollaboratorEntity $$collaborator
      * @return int
      */
-    public function findNextContractNb()
+    public function findNextContractNbByCollaborator(CollaboratorEntity $collaborator)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $highestContractNb = $query->select('MAX(c.contractNb)')
             ->from('BrBundle\Entity\Contract', 'c')
+            ->where(
+                $query->expr()->eq('c.author', ':person')
+            )
+            ->setParameter('person', $collaborator)
             ->getQuery()
             ->getSingleScalarResult();
 

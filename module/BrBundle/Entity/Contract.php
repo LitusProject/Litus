@@ -24,6 +24,7 @@ use BrBundle\Entity\Collaborator,
     BrBundle\Entity\Product\Order,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
     InvalidArgumentException;
 
@@ -31,7 +32,10 @@ use BrBundle\Entity\Collaborator,
  * This is the entity for a contract.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Contract")
- * @ORM\Table(name="br.contracts")
+ * @ORM\Table(
+ *       name="br.contracts",
+ *       uniqueConstraints={@ORM\UniqueConstraint(name="contract_unique", columns={"author", "contract_nb"})}
+ *      )
  */
 class Contract
 {
@@ -100,7 +104,7 @@ class Contract
     /**
      * @var int The contract number. A form of identification that means something to the human users.
      *
-     * @ORM\Column(name="contract_nb", type="integer", unique=true)
+     * @ORM\Column(name="contract_nb", type="integer")
      */
     private $contractNb;
 
@@ -349,9 +353,19 @@ class Contract
      *          With AA the $contractStartNb, x the personal number of the collaborator who created the contract and
      *          YYY the number of current contract.
      **/
-    public function getContractNb()
+    public function getContractNb(EntityManager $entityManager)
     {
-        return '22' . $this->getAuthor()->getNumber() . str_pad($this->contractNb, 3, '0', STR_PAD_LEFT);
+        $academicYear = $entityManager
+                ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                ->findOneByDate($this->getDate());
+
+        $contractYearCode = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.contract_number_codes')
+            )[$academicYear->getCode(true)];
+
+        return $contractYearCode . $this->getAuthor()->getNumber() . str_pad($this->contractNb, 3, '0', STR_PAD_LEFT);
     }
 
     /**

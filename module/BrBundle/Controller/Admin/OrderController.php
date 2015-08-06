@@ -266,7 +266,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $contract->setContractNb(
                     $this->getEntityManager()
                         ->getRepository('BrBundle\Entity\Contract')
-                        ->findNextContractNb()
+                        ->findNextContractNbByCollaborator($contract->getAuthor())
                 );
 
                 $order->setContract($contract);

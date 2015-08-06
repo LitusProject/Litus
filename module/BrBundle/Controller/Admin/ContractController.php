@@ -48,6 +48,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'em' => $this->getEntityManager(),
             )
         );
     }
