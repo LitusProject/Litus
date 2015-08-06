@@ -162,7 +162,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'type'       => 'form_form_mail_add',
             'name'       => 'mail_form',
             'label'      => 'Mail',
-            'required'   => true,
             'attributes' => array(
                 'id' => 'mail_form',
             ),
@@ -183,7 +182,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'type'       => 'form_form_mail_add',
             'name'       => 'reminder_mail_form',
             'label'      => 'Reminder Mail',
-            'required'   => true,
             'attributes' => array(
                 'id'    => 'reminder_mail_form',
             ),
