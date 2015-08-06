@@ -174,39 +174,52 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        $invoice = new Invoice($contract->getOrder());
+        $form = $this->getForm('br_contract_sign-contract');
 
-        foreach ($contract->getEntries() as $entry) {
-            $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(), 0);
-            $this->getEntityManager()->persist($invoiceEntry);
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $invoice = new Invoice($contract->getOrder(), $formData['reference']);
+
+                foreach ($contract->getEntries() as $entry) {
+                    $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(), 0);
+                    $this->getEntityManager()->persist($invoiceEntry);
+                }
+
+                $this->getEntityManager()->persist($invoice);
+
+                $contract->setSigned();
+
+                $contract->setInvoiceNb(
+                    $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Contract')
+                        ->findNextInvoiceNb()
+                );
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The contract was succesfully signed!'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_contract',
+                    array(
+                        'action' => 'view',
+                        'id' => $contract->getId(),
+                    )
+                );
+            }
         }
 
-        $this->getEntityManager()->persist($invoice);
-
-        $contract->setSigned();
-
-        $contract->setInvoiceNb(
-            $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract')
-                ->findNextInvoiceNb()
-        );
-
-        $this->getEntityManager()->flush();
-
-        $this->flashMessenger()->success(
-            'Success',
-            'The contract was succesfully signed!'
-        );
-
-        $this->redirect()->toRoute(
-            'br_admin_contract',
+        return new ViewModel(
             array(
-                'action' => 'view',
-                'id' => $contract->getId(),
+                'form' => $form,
             )
         );
-
-        return new ViewModel();
     }
 
     public function downloadAction()

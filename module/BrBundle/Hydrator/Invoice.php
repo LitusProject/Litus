@@ -36,6 +36,7 @@ class Invoice extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->setVatContext($data['VATContext']);
+        $object->setCompanyReference($data['reference']);
 
         $newVersionNb = 0;
 
@@ -64,6 +65,7 @@ class Invoice extends \CommonBundle\Component\Hydrator\Hydrator
         $data = array();
 
         $data['VATContext'] = $object->getVatContext();
+        $data['reference'] = $object->getCompanyReference();
 
         foreach ($object->getEntries() as $entry) {
             $data['entry_' . $entry->getId()] = $entry->getInvoiceText();

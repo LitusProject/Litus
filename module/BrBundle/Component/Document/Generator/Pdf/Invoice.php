@@ -69,7 +69,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $invoiceDate = $this->invoide->getCreationTime()->format('j/m/Y');
         $dueDate = $this->invoide->getExpirationTime($this->getEntityManager())->format('j/m/Y');
         $clientVat = $this->vatFormat($this->invoide->getOrder()->getCompany()->getInvoiceVatNumber());
-        $reference = '/'; // TODO? (this was here already)
+        $reference =  $this->invoide->getCompanyReference;
 
         $invoiceNb = $this->invoide->getInvoiceNumber($this->getEntityManager());
 

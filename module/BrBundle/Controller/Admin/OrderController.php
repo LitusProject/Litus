@@ -296,8 +296,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         'action' => 'manage',
                     )
                 );
-
-                return new ViewModel();
             }
         }
 

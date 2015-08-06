@@ -94,16 +94,24 @@ class Invoice
     private $vatContext;
 
     /**
+     * @var string that provides any possible context for a reference of a company
+     *
+     * @ORM\Column(type="string", name="company_reference", nullable=true)
+     */
+    private $companyReference;
+
+    /**
      * Creates a new invoice
      *
      * @param Order $order The order to create the invoice for.
      */
-    public function __construct(Order $order)
+    public function __construct(Order $order, $companyReference = '')
     {
         $this->setOrder($order);
         $this->creationTime = new DateTime();
         $this->setVersion(0);
         $this->setVatContext();
+        $this->setCompanyReference($companyReference);
 
         $this->invoiceEntries = new ArrayCollection();
     }
@@ -127,6 +135,18 @@ class Invoice
     public function getVatContext()
     {
         return $this->vatContext;
+    }
+
+    public function setCompanyReference($reference)
+    {
+        $this->companyReference = $reference;
+
+        return $this;
+    }
+
+    public function getCompanyReference()
+    {
+        return $this->companyReference;
     }
 
     /**
