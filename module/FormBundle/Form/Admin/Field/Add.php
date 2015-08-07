@@ -309,7 +309,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
      */
     public function getInputFilterSpecification()
     {
-        print_r('Where?');
         $type = $this->getType();
 
         if ($type == 'string') {
