@@ -309,16 +309,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
      */
     public function getInputFilterSpecification()
     {
+        print_r('Where?');
         $type = $this->getType();
 
         if ($type == 'string') {
             /** @var \FormBundle\Form\Admin\Field\Field\String $stringForm */
             $stringForm = $this->get('string_form');
-            $$stringForm->setRequired();
+            $stringForm->setRequired();
         } elseif ($type == 'dropdown') {
             /** @var \FormBundle\Form\Admin\Field\Field\Dropdown $dropdownForm */
             $dropdownForm = $this->get('dropdown_form');
-            $$dropdownForm->setRequired();
+            $dropdownForm->setRequired();
         } elseif ($type == 'file') {
             /** @var \FormBundle\Form\Admin\Field\Field\File $fileForm */
             $fileForm = $this->get('file_form');
