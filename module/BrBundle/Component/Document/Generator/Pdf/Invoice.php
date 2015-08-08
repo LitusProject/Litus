@@ -69,7 +69,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $invoiceDate = $this->invoide->getCreationTime()->format('j/m/Y');
         $dueDate = $this->invoide->getExpirationTime($this->getEntityManager())->format('j/m/Y');
         $clientVat = $this->vatFormat($this->invoide->getOrder()->getCompany()->getInvoiceVatNumber());
-        $reference =  $this->invoide->getCompanyReference;
+        $reference =  $this->invoide->getCompanyReference();
 
         $invoiceNb = $this->invoide->getInvoiceNumber($this->getEntityManager());
 
@@ -99,6 +99,11 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             $price = $product->getPrice() / 100;
 
             if (($price > 0) || (null !== $entry->getInvoiceDescription() && '' != $entry->getInvoiceDescription())) {
+                $tax = 0;
+                if (!$this->invoide->getTaxFree()) {
+                    $tax = $vatTypes[$product->getVatType()];
+                }
+
                 $entries[] = new XmlObject('entry', null,
                     array(
                         new XmlObject('description', null,
@@ -108,12 +113,14 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                         ),
                         new XmlObject('price', null, XmlObject::fromString('<euro/>' . number_format($price, 2))),
                         new XmlObject('amount', null, $entry->getOrderEntry()->getQuantity() . ''),
-                        new XmlObject('vat_type', null, $vatTypes[$product->getVatType()] . '%'),
+                        new XmlObject('vat_type', null,  $tax . '%'),
                     )
                 );
 
                 $totalExclusive += $price * $entry->getOrderEntry()->getQuantity();
-                $totalVat += ($price * $entry->getOrderEntry()->getQuantity() * $vatTypes[$product->getVatType()]) / 100;
+                if (!$this->invoide->getTaxFree()) {
+                    $totalVat += ($price * $entry->getOrderEntry()->getQuantity() * $vatTypes[$product->getVatType()]) / 100;
+                }
 
                 $count++;
             }

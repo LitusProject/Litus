@@ -45,6 +45,13 @@ class SignContract extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
+        $this->add(array(
+            'type'     => 'checkbox',
+            'name'     => 'tax_free',
+            'label'    => 'Tax Free',
+            'value'    => true,
+        ));
+
         $this->addSubmit('Sign Contract', 'contract_edit');
     }
 }

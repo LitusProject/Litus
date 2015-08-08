@@ -53,6 +53,13 @@ class Invoice
     private $order;
 
     /**
+     * @var bool True if this invoice is tax free.
+     *
+     * @ORM\Column(name="tax_free", type="boolean", options={"default" = false})
+     */
+    private $taxFree;
+
+    /**
      * @var DateTime The time of creation of this invoice
      *
      * @ORM\Column(name="creation_time", type="datetime")
@@ -112,6 +119,7 @@ class Invoice
         $this->setVersion(0);
         $this->setVatContext();
         $this->setCompanyReference($companyReference);
+        $this->setTaxFree();
 
         $this->invoiceEntries = new ArrayCollection();
     }
@@ -135,6 +143,18 @@ class Invoice
     public function getVatContext()
     {
         return $this->vatContext;
+    }
+
+    public function setTaxFree($free = false)
+    {
+        $this->taxFree = $free;
+
+        return $this;
+    }
+
+    public function getTaxFree()
+    {
+        return $this->taxFree;
     }
 
     public function setCompanyReference($reference)
