@@ -240,9 +240,12 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $fileHandler = fopen($file, 'r');
         $content = fread($fileHandler, filesize($file));
 
+        $contractNb = $contract->getContractNb($this->getEntityManager());
+        $companyName = $contract->getCompany()->getName();
+
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="contract.pdf"',
+            'Content-Disposition' => 'attachment; filename="' . $contractNb . ' ' . $companyName . '.pdf"',
             'Content-Type'        => 'application/pdf',
         ));
         $this->getResponse()->setHeaders($headers);
