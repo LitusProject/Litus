@@ -162,7 +162,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'type'       => 'form_form_mail_add',
             'name'       => 'mail_form',
             'label'      => 'Mail',
-            'required'   => true,
             'attributes' => array(
                 'id' => 'mail_form',
             ),
@@ -183,7 +182,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'type'       => 'form_form_mail_add',
             'name'       => 'reminder_mail_form',
             'label'      => 'Reminder Mail',
-            'required'   => true,
             'attributes' => array(
                 'id'    => 'reminder_mail_form',
             ),
@@ -269,8 +267,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             unset($specs['mail_form']);
         }
 
-        if (!$this->get('reminder_mail')->getValue()) {
-            unset($specs['reminder_mail_form']);
+        if (!$this instanceof Edit || $this->isDoodle()) {
+            if (!$this->get('reminder_mail')->getValue()) {
+                unset($specs['reminder_mail_form']);
+            }
         }
 
         return $specs;

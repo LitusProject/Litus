@@ -98,7 +98,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
      */
     private function getPublicationEntity()
     {
-        $publication = $this->getEntityById('PublicationBundle\Entity\Publication');
+        $publication = $this->getEntityById('PublicationBundle\Entity\Publication', 'publication');
 
         if (!($publication instanceof Publication)) {
             $this->flashMessenger()->error(
