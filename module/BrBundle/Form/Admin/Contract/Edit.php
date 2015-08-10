@@ -27,7 +27,7 @@ use BrBundle\Entity\Contract;
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 
-class Edit extends \CommonBundle\Component\Form\Admin\Form
+class Edit extends \BrBundle\Form\Admin\Order\GenerateContract
 {
     protected $hydrator = 'BrBundle\Hydrator\Contract';
 
@@ -39,20 +39,6 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
     public function init()
     {
         parent::init();
-
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'title',
-            'label'    => 'Title',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
 
         $this->add(array(
             'type'     => 'text',

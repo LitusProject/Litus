@@ -198,4 +198,10 @@ Example content of this section.
         ),
         'description' => 'The automatic discount: (money value (in cents, discount percentage)',
     ),
+    array(
+            'key'         => 'br.contract_payment_details',
+            'value'       => '* Het Bedrijf verklaart de volgende betalingsvoorwaarden na te leven:
+  <total_price/> te betalen uiterlijk <payment_days/> dagen na facturatiedatum. De storting dient te gebeuren op het rekeningnummer 745-0175900-11 van VTK Ondersteuning vzw met vermelding van het factuurnummer.',
+            'description' => 'The standard payment details text that is displayed on the creation of a new contract.',
+    ),
 );

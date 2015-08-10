@@ -95,6 +95,20 @@ class Contract
     private $title;
 
     /**
+     * @var string The paymentdetails of the contract
+     *
+     * @ORM\Column(name="payment_details", type="text", nullable=true)
+     */
+    private $paymentDetails;
+
+    /**
+     * @var string The paymentdays of the contract
+     *
+     * @ORM\Column(name="payment_days", type="integer", options={"default" = 30})
+     */
+    private $paymentDays;
+
+    /**
      * @var int The invoice number; -1 indicates that the contract hasn't been signed yet
      *
      * @ORM\Column(name="invoice_nb", type="integer")
@@ -135,7 +149,7 @@ class Contract
      * @param Company      $company The company for which this contract is meant
      * @param string       $title   The title of the contract
      */
-    public function __construct(Order $order, Collaborator $author, Company $company, $title)
+    public function __construct(Order $order, Collaborator $author, Company $company, $title, $paymentDays, $paymentDetails)
     {
         $this->setOrder($order);
         $this->setDate();
@@ -143,6 +157,9 @@ class Contract
         $this->setCompany($company);
         $this->setTitle($title);
         $this->setVersion(0);
+
+        $this->setPaymentDays($paymentdays);
+        $this->setPaymentDetails($paymentDetails);
 
         $this->setDirty();
         $this->setInvoiceNb();
@@ -165,6 +182,44 @@ class Contract
     public function setVersion($versionNb)
     {
         $this->version = $versionNb;
+    }
+
+    /**
+     * @return PaymentDays
+     */
+    public function getPaymentDays()
+    {
+        return $this->paymentDays;
+    }
+
+    /**
+     * @param  PaymentDays $paymentDays
+     * @return self
+     */
+    public function setPaymentDays($paymentDays)
+    {
+        $this->paymentDays = $paymentDays;
+
+        return $this;
+    }
+
+    /**
+     * @return PaymentDetails
+     */
+    public function getPaymentDetails()
+    {
+        return $this->paymentDetails;
+    }
+
+    /**
+     * @param  PaymentDetails $paymentDetails
+     * @return self
+     */
+    public function setPaymentDetails($paymentDetails)
+    {
+        $this->paymentDetails = $paymentDetails;
+
+        return $this;
     }
 
     /**

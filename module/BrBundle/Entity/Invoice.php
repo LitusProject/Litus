@@ -248,21 +248,19 @@ class Invoice
     /**
      * @return bool
      */
-    public function isExpired(EntityManager $entityManager)
+    public function isExpired()
     {
         $now = new DateTime();
 
-        return !$this->isPaid() && $now > $this->getExpirationTime($entityManager);
+        return !$this->isPaid() && $now > $this->getExpirationTime();
     }
 
     /**
      * @return DateTime
      */
-    public function getExpirationTime(EntityManager $entityManager)
+    public function getExpirationTime()
     {
-        $expireTime = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.invoice_expire_time');
+        $expireTime = 'P' . $this->getOrder()->getContract()->getPaymentDays() . 'D';
 
         return $this->getCreationTime()->add(new DateInterval($expireTime));
     }

@@ -35,7 +35,7 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
         $this->add(array(
             'type'     => 'text',
             'name'     => 'title',
-            'label'    => 'Order Title',
+            'label'    => 'Contract Title',
             'required' => true,
             'options'  => array(
                 'input' => array(
@@ -46,6 +46,50 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'payment_days',
+            'label'    => 'Payment Days',
+            'required' => true,
+            'value'    => 30,
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name' => 'digits',
+                        ),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'     => 'textarea',
+            'name'     => 'payement_details',
+            'label'    => 'Payement Details',
+            'value'    => $this->getPaymentDetailsText(),
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
         $this->addSubmit('Generate Contract', 'contract_edit');
+    }
+
+    /**
+     * @return string
+     */
+    private function getPaymentDetailsText()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.contract_payment_details');
     }
 }

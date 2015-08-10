@@ -390,6 +390,25 @@ class Order
     }
 
     /**
+     * @param  int    $autoDiscount
+     * @return double combined cost of all entries with the given vat type, in cents
+     */
+    public function getCostVatTypeExclusive($vatType)
+    {
+        $cost = 0;
+
+        foreach ($this->orderEntries as $orderEntry) {
+            $orderEntry->getProduct()->setEntityManager($this->entityManager);
+
+            if ($orderEntry->getProduct()->getVatPercentage() == $vatType) {
+                $cost = $cost + (double) ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity()) ;
+            }
+        }
+
+        return (double) $cost;
+    }
+
+    /**
      * @return double combined cost of all entries, in cents
      */
     public function getFullCost()
