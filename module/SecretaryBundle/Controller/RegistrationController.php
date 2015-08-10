@@ -224,7 +224,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                     if ($organizationData['become_member']) {
                         if ($selectedOrganization) {
-                            $this->_bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
+                            $this->bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
                         }
                     }
 
@@ -448,7 +448,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     }
 
                     if ($metaData->becomeMember() && null !== $selectedOrganization) {
-                        $this->_bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
+                        $this->bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()

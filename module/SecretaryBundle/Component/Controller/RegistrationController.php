@@ -266,7 +266,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
      * @param Organization $organization
      * @param AcademicYear $academicYear
      */
-    protected function _bookRegistrationArticles(Academic $academic, Organization $organization, AcademicYear $academicYear)
+    protected function bookRegistrationArticles(Academic $academic, Organization $organization, AcademicYear $academicYear)
     {
         RegistrationArticles::book(
             $this->getEntityManager(),

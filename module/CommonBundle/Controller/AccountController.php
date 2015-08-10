@@ -219,7 +219,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     }
 
                     if ($metaData->becomeMember() && null !== $selectedOrganization) {
-                        $this->_bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
+                        $this->bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
