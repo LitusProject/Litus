@@ -32,7 +32,7 @@ use CommonBundle\Entity\General\AcademicYear,
 class Academic extends \CommonBundle\Entity\User\Person\Organization\UnitMap
 {
     /**
-     * @var Academic The person
+     * @var AcademicEntity The person
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", inversedBy="organizationMap")
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")

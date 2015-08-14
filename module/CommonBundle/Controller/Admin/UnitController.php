@@ -371,7 +371,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
     {
         $unitMap = $this->getEntityById('CommonBundle\Entity\User\Person\Organization\UnitMap');
 
-        if (!($unitMap instanceof UnitMapAcademic or $unitMap instanceof UnitMapExternal)) {
+        if (!($unitMap instanceof UnitMapAcademic || $unitMap instanceof UnitMapExternal)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No unit map was found!'
