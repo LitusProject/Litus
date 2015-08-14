@@ -54,7 +54,7 @@ class Academic extends \CommonBundle\Entity\User\Person\Organization\UnitMap
     }
 
     /**
-     * @param  \CommonBundle\Entity\User\Person\Academic $academic
+     * @param  AcademicEntity $academic
      * @return self
      */
     public function setAcademic(AcademicEntity $academic)
