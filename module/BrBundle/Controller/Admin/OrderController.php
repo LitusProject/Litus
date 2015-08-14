@@ -256,11 +256,13 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $contract = new Contract(
-                    $order,
-                    $order->getCreationPerson(),
-                    $order->getCompany(),
-                    $formData['title']
+                $contract = $form->hydrateObject(
+                    new Contract(
+                        $order,
+                        $order->getCreationPerson(),
+                        $order->getCompany(),
+                        $formData['title']
+                    )
                 );
 
                 $contract->setContractNb(

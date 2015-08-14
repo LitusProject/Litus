@@ -32,7 +32,7 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'description', 'invoice_description', 'contract_text', 'price', 'vat_type');
+    private static $stdKeys = array('name', 'description', 'invoice_description', 'contract_text', 'price', 'vat_type', 'refund');
 
     protected function doHydrate(array $data, $object = null)
     {

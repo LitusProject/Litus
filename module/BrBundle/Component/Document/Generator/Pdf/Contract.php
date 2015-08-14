@@ -114,9 +114,12 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
             $this->contract->getPaymentDetails()
         );
 
-        $p = new BulletParser();
-        $p->parse($paymentDetailsText);
-        $paymentDetails = array(XmlObject::fromString($p->getXml()));
+        $paymentDetails = array();
+        if ($paymentDetailsText != '') {
+            $p = new BulletParser();
+            $p->parse($paymentDetailsText);
+            $paymentDetails[] = XmlObject::fromString($p->getXml());
+        }
 
         $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl']; //TODO make this possible in both english and dutch.
 
@@ -124,10 +127,18 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         foreach ($entries as $entry) {
             $contractText = $contractText . "\n" . $entry->getContractText();
         }
-        $p = new BulletParser();
-        $p->parse($contractText);
+        if ($this->contract->getAutoDiscountText() != '') {
+            $contractText = $contractText . "\n" . $this->contract->getAutoDiscountText();
+        }
+        if ($this->contract->getDiscountText() != '') {
+            $contractText = $contractText . "\n" . $this->contract->getDiscountText();
+        }
 
-        $entry_s = XmlObject::fromString($p->getXml());
+        if ($contractText != '') {
+            $p = new BulletParser();
+            $p->parse($contractText);
+            $entry_s = XmlObject::fromString($p->getXml());
+        }
 
         $xml->append(
             new XmlObject(

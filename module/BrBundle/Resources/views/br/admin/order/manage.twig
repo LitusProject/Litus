@@ -38,7 +38,7 @@
                     <td>{{ order.getDescription() }}</td>
                     <td>{{ order.getAutoDiscountPercentage() }}%</td>
                     <td> &euro; {{ order.getDiscount() |number_format(2) }}</td>
-                    <td> &euro; {{ order.getTotalCost() |number_format(2) }}</td>
+                    <td> &euro; {{ order.getTotalCostExclusive() |number_format(2) }}</td>
                     <td>{{ order.getCreationTime().format('d/m/Y H:i') }}</td>
                     <td>{{ order.getCreationPerson().getPerson().getFullName() }}</td>
                     <td class="actions">

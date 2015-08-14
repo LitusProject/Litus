@@ -96,9 +96,23 @@ class Invoice
     /**
      * @var string that provides any possible context for the VAT
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     private $vatContext;
+
+    /**
+     * @var string The text of the extra discount of the invoice
+     *
+     * @ORM\Column(name="discount_text", type="text", nullable=true)
+     */
+    private $discountText;
+
+    /**
+     * @var string The text for the automatic discount of the invoice
+     *
+     * @ORM\Column(name="auto_discount_text", type="text", nullable=true)
+     */
+    private $autoDiscountText;
 
     /**
      * @var string that provides any possible context for a reference of a company
@@ -112,13 +126,12 @@ class Invoice
      *
      * @param Order $order The order to create the invoice for.
      */
-    public function __construct(Order $order, $companyReference = '')
+    public function __construct(Order $order)
     {
         $this->setOrder($order);
         $this->creationTime = new DateTime();
         $this->setVersion(0);
         $this->setVatContext();
-        $this->setCompanyReference($companyReference);
         $this->setTaxFree();
 
         $this->invoiceEntries = new ArrayCollection();
@@ -143,6 +156,44 @@ class Invoice
     public function getVatContext()
     {
         return $this->vatContext;
+    }
+
+    /**
+     * @return DiscountText
+     */
+    public function getDiscountText()
+    {
+        return $this->discountText;
+    }
+
+    /**
+     * @param  DiscountText $discountText
+     * @return self
+     */
+    public function setDiscountText($discountText)
+    {
+        $this->discountText = $discountText;
+
+        return $this;
+    }
+
+    /**
+     * @return AutoDiscountText
+     */
+    public function getAutoDiscountText()
+    {
+        return $this->autoDiscountText;
+    }
+
+    /**
+     * @param  AutoDiscountText $discountText
+     * @return self
+     */
+    public function setAutoDiscountText($autoDiscountText)
+    {
+        $this->autoDiscountText = $autoDiscountText;
+
+        return $this;
     }
 
     public function setTaxFree($free = false)

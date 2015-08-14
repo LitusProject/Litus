@@ -68,9 +68,36 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(array(
             'type'     => 'textarea',
-            'name'     => 'payement_details',
-            'label'    => 'Payement Details',
+            'name'     => 'payment_details',
+            'label'    => 'Payment Details',
             'value'    => $this->getPaymentDetailsText(),
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'     => 'textarea',
+            'name'     => 'auto_discount_text',
+            'label'    => 'Auto Discount Text',
+            'value'    => $this->getAutoDiscountText(),
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'     => 'textarea',
+            'name'     => 'discount_text',
+            'label'    => 'Discount Text',
             'options'  => array(
                 'input' => array(
                     'filters'  => array(
@@ -91,5 +118,15 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.contract_payment_details');
+    }
+
+    /**
+     * @return string
+     */
+    private function getAutoDiscountText()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.contract_auto_discount_text');
     }
 }

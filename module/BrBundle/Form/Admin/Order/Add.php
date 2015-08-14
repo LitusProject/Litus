@@ -85,6 +85,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'     => 'discount',
             'label'    => 'Discount (in cents)',
             'required' => true,
+            'value'    => 0,
             'options'  => array(
                 'input' => array(
                     'filters'  => array(
@@ -92,19 +93,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array('name' => 'digits'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'discount_context',
-            'label'    => 'Discount Context',
-            'options'  => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
                     ),
                 ),
             ),

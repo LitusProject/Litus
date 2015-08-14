@@ -51,6 +51,43 @@ class SignContract extends \CommonBundle\Component\Form\Admin\Form
             'label'    => 'Tax Free',
         ));
 
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'auto_discount_text',
+            'label'    => 'Auto Discount Text',
+            'value'    => $this->getAutoDiscountText(),
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'discount_text',
+            'label'    => 'Discount Text',
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
         $this->addSubmit('Sign Contract', 'contract_edit');
+    }
+
+    /**
+     * @return string
+     */
+    private function getAutoDiscountText()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.invoice_auto_discount_text');
     }
 }

@@ -134,13 +134,6 @@ class Order
     private $discount;
 
     /**
-     * @var string A possible context for the discount
-     *
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $discountContext;
-
-    /**
      * @var EntityManager
      */
     private $entityManager;
@@ -154,22 +147,6 @@ class Order
         $this->creationPerson = $creationPerson;
         $this->orderEntries = new ArrayCollection();
         $this->old = false;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDiscountContext()
-    {
-        return $this->discountContext;
-    }
-
-    /**
-     * @param string $text
-     */
-    public function setDiscountContext($text)
-    {
-        $this->discountContext = $text;
     }
 
     public function hasDiscount()
@@ -213,9 +190,18 @@ class Order
                 ->getConfigValue('br.automatic_discounts')
         );
 
+        $costNoRefund = 0;
+
+        foreach ($this->orderEntries as $orderEntry) {
+            if (!$orderEntry->getProduct()->isRefund()) {
+                $orderEntry->getProduct()->setEntityManager($this->entityManager);
+                $costNoRefund = $costNoRefund + ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
+            }
+        }
+
         if ($this->hasAutoDiscount()) {
             foreach ($discounts as $price => $discount) {
-                if ($this->getFullCost() >= $price && $discount > $percentage) {
+                if ($costNoRefund >= $price && $discount > $percentage) {
                     $percentage = $discount;
                 }
             }
@@ -401,7 +387,7 @@ class Order
             $orderEntry->getProduct()->setEntityManager($this->entityManager);
 
             if ($orderEntry->getProduct()->getVatPercentage() == $vatType) {
-                $cost = $cost + (double) ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity()) ;
+                $cost = $cost + (double) ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
             }
         }
 
@@ -409,15 +395,15 @@ class Order
     }
 
     /**
-     * @return double combined cost of all entries, in cents
+     * @return double combined cost of all entries without VAT, in cents
      */
-    public function getFullCost()
+    public function getFullCostExclusive()
     {
         $cost = 0;
 
         foreach ($this->orderEntries as $orderEntry) {
             $orderEntry->getProduct()->setEntityManager($this->entityManager);
-            $cost = $cost + (($orderEntry->getProduct()->getPrice() * (1 + $orderEntry->getProduct()->getVatPercentage()/100)) * $orderEntry->getQuantity()) ;
+            $cost = $cost + ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
         }
 
         return (double) $cost;
@@ -426,13 +412,15 @@ class Order
     /**
      * @return double cost of this order, with auto discount, in euro's
      */
-    public function getTotalCost()
+    public function getTotalCostExclusive()
     {
-        $cost = $this->getFullCost();
+        $cost = $this->getFullCostExclusive();
+
+        $cost = $cost - ($this->getDiscount());
 
         $cost = ($cost - ($cost*$this->getAutoDiscountPercentage() / 100));
 
-        return (double) ($cost - ($this->getDiscount())) / 100;
+        return (double) $cost / 100;
     }
 
     /**

@@ -274,6 +274,10 @@
         <fo:block><xsl:apply-templates/></fo:block>
     </xsl:template>
 
+    <xsl:template name="payment_days" match="payment_days">
+        <xsl:value-of select="/invoice/@payment_days"/>
+    </xsl:template>
+
     <xsl:template match="total">
         <fo:table table-layout="fixed" width="100%">
             <fo:table-column column-width="59%"/>

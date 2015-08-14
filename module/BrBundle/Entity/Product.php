@@ -111,6 +111,13 @@ class Product
     private $vatType;
 
     /**
+     * @var boolean that reflects if the product is a refund.
+     *
+     * @ORM\Column(name="refund", type="boolean", options={"default" = false})
+     */
+    private $refund;
+
+    /**
      * @var boolean that reflects if the current product is still being sold or not.
      *
      * @ORM\Column(name="old", type="boolean")
@@ -156,6 +163,25 @@ class Product
     public function isOld()
     {
         return $this->old;
+    }
+
+    /**
+     * @param  boolean $refund the boolean to set
+     * @return self
+     */
+    public function setRefund($refund)
+    {
+        $this->refund = $refund;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRefund()
+    {
+        return $this->refund;
     }
 
     /**
@@ -298,7 +324,12 @@ class Product
      */
     public function getPrice()
     {
-        return $this->price;
+        $sign = 1;
+        if ($this->isRefund()) {
+            $sign = -1;
+        }
+
+        return $sign*$this->price;
     }
 
     /**

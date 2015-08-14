@@ -95,6 +95,20 @@ class Contract
     private $title;
 
     /**
+     * @var string The text of the extra discount of the contract
+     *
+     * @ORM\Column(name="discount_text", type="text", nullable=true)
+     */
+    private $discountText;
+
+    /**
+     * @var string The text for the automatic discount of the contract
+     *
+     * @ORM\Column(name="auto_discount_text", type="text", nullable=true)
+     */
+    private $autoDiscountText;
+
+    /**
      * @var string The paymentdetails of the contract
      *
      * @ORM\Column(name="payment_details", type="text", nullable=true)
@@ -149,7 +163,7 @@ class Contract
      * @param Company      $company The company for which this contract is meant
      * @param string       $title   The title of the contract
      */
-    public function __construct(Order $order, Collaborator $author, Company $company, $title, $paymentDays, $paymentDetails)
+    public function __construct(Order $order, Collaborator $author, Company $company, $title)
     {
         $this->setOrder($order);
         $this->setDate();
@@ -157,9 +171,6 @@ class Contract
         $this->setCompany($company);
         $this->setTitle($title);
         $this->setVersion(0);
-
-        $this->setPaymentDays($paymentdays);
-        $this->setPaymentDetails($paymentDetails);
 
         $this->setDirty();
         $this->setInvoiceNb();
@@ -218,6 +229,44 @@ class Contract
     public function setPaymentDetails($paymentDetails)
     {
         $this->paymentDetails = $paymentDetails;
+
+        return $this;
+    }
+
+    /**
+     * @return DiscountText
+     */
+    public function getDiscountText()
+    {
+        return $this->discountText;
+    }
+
+    /**
+     * @param  DiscountText $discountText
+     * @return self
+     */
+    public function setDiscountText($discountText)
+    {
+        $this->discountText = $discountText;
+
+        return $this;
+    }
+
+    /**
+     * @return AutoDiscountText
+     */
+    public function getAutoDiscountText()
+    {
+        return $this->autoDiscountText;
+    }
+
+    /**
+     * @param  AutoDiscountText $discountText
+     * @return self
+     */
+    public function setAutoDiscountText($autoDiscountText)
+    {
+        $this->autoDiscountText = $autoDiscountText;
 
         return $this;
     }

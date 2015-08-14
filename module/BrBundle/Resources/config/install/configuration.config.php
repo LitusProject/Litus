@@ -38,11 +38,6 @@ return array(
             'description' => 'Whether the CV Book is currently open for entries or not',
     ),
     array(
-        'key'         => 'br.invoice_expire_time',
-        'value'       => 'P30D',
-        'description' => 'The time interval within which a invoice must be paid. See http://www.php.net/manual/en/dateinterval.construct.php for the format.',
-    ),
-    array(
             'key'         => 'br.vat_number',
             'value'       => 'BE0479-482-282',
             'description' => 'The VAT number of the organisation sending the invoice.',
@@ -56,8 +51,8 @@ return array(
         'key'         => 'br.invoice_below_entries',
         'value'       => serialize(
             array(
-                'en' => 'Please pay at the latest 30 days after the invoice date, as agreed in the contract. For information of a financial nature, you can always contact beheer@vtk.be.',
-                'nl' => 'Gelieve het bovenstaande factuurbedrag te betalen ten laatste 30 dagen na factuurdatum, zoals overeengekomen in het contract. Voor inlichtingen van financiële aard kan u steeds terecht bij beheer@vtk.be .',
+                'en' => 'Please pay at the latest <payment_days/> days after the invoice date, as agreed in the contract. For information of a financial nature, you can always contact beheer@vtk.be.',
+                'nl' => 'Gelieve het bovenstaande factuurbedrag te betalen ten laatste <payment_days/> dagen na factuurdatum, zoals overeengekomen in het contract. Voor inlichtingen van financiële aard kan u steeds terecht bij beheer@vtk.be .',
             )
         ),
         'description' => 'Payment information',
@@ -203,5 +198,15 @@ Example content of this section.
             'value'       => '* Het Bedrijf verklaart de volgende betalingsvoorwaarden na te leven:
   <total_price/> te betalen uiterlijk <payment_days/> dagen na facturatiedatum. De storting dient te gebeuren op het rekeningnummer 745-0175900-11 van VTK Ondersteuning vzw met vermelding van het factuurnummer.',
             'description' => 'The standard payment details text that is displayed on the creation of a new contract.',
+    ),
+    array(
+            'key'         => 'br.contract_auto_discount_text',
+            'value'       => '* Vanwege de trouwe samenwerking biedt VTK een partnership aan. Dit houdt in dat het logo van het bedrijf gratis in ons wekelijks boekje \'t Bakske en op de homepage van de website www.vtk.be te zien zal zijn. Zo staat het bedrijf het hele jaar door in de spotlights. Bovendien krijgt het bedrijf een korting van 5% op het totale bedrag van dit contract.',
+            'description' => 'The standard auto discount text that is displayed on the creation of a new contract.',
+    ),
+    array(
+            'key'         => 'br.invoice_auto_discount_text',
+            'value'       => 'Partnership: logo op www.vtk.be, wekelijks in \'t Bakske, 5% korting',
+            'description' => 'The standard auto discount text that is displayed on the creation of a new invoice.',
     ),
 );

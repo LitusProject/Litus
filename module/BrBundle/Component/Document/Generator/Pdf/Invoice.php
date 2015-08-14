@@ -68,6 +68,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $invoiceDate = $this->invoide->getCreationTime()->format('j/m/Y');
         $dueDate = $this->invoide->getExpirationTime($this->getEntityManager())->format('j/m/Y');
+        $paymentDays = $this->invoide->getOrder()->getContract()->getPaymentDays();
         $clientVat = $this->vatFormat($this->invoide->getOrder()->getCompany()->getInvoiceVatNumber());
         $reference =  $this->invoide->getCompanyReference();
 
@@ -99,10 +100,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             $price = $product->getPrice() / 100;
 
             if (($price > 0) || (null !== $entry->getInvoiceDescription() && '' != $entry->getInvoiceDescription())) {
-                $tax = 0;
-                if (!$this->invoide->getTaxFree()) {
-                    $tax = $vatTypes[$product->getVatType()];
-                }
+                $tax = $this->invoide->getTaxFree() ? 0 : $vatTypes[$product->getVatType()];
 
                 $entries[] = new XmlObject('entry', null,
                     array(
@@ -111,19 +109,44 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                                     ? $product->getName()
                                     : $entry->getInvoiceDescription()
                         ),
-                        new XmlObject('price', null, XmlObject::fromString('<euro/>' . number_format($price, 2))),
+                        new XmlObject('price', null, XmlObject::fromString('<euro/> ' . number_format($price, 2))),
                         new XmlObject('amount', null, $entry->getOrderEntry()->getQuantity() . ''),
                         new XmlObject('vat_type', null,  $tax . '%'),
                     )
                 );
 
                 $totalExclusive += $price * $entry->getOrderEntry()->getQuantity();
+
                 if (!$this->invoide->getTaxFree()) {
                     $totalVat += ($price * $entry->getOrderEntry()->getQuantity() * $vatTypes[$product->getVatType()]) / 100;
                 }
 
                 $count++;
             }
+        }
+
+        $percentage = $this->invoide->getOrder()->getAutoDiscountPercentage()/100;
+        $autoDiscount = -$totalExclusive * $percentage;
+
+        $discountTax = $this->invoide->getTaxFree() ? 0 : 21;
+
+        if ( $percentage > 0) {
+            $entries[] = new XmlObject('entry', null,
+                    array(
+                        new XmlObject('description', null,
+                            (null === $this->invoide->getAutoDiscountText() || '' == $this->invoide->getAutoDiscountText())
+                                    ? 'Korting: ' . $percentage . '%'
+                                    : $this->invoide->getAutoDiscountText()
+                        ),
+                        new XmlObject('price', null, XmlObject::fromString('<euro/> ' . number_format($autoDiscount, 2))),
+                        new XmlObject('amount', null, '1'),
+                        new XmlObject('vat_type', null,  $discountTax . '%'),
+                    )
+                );
+
+            $totalVat += $autoDiscount * $discountTax/100;
+
+            $count++;
         }
 
         while ($count < 8) {
@@ -136,32 +159,37 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $discount = $this->invoide->getOrder()->getDiscount();
         if (0 != $discount) {
-            if ('' == $this->invoide->getOrder()->getDiscountContext()) {
+            if ('' == $this->invoide->getDiscountText()) {
                 $entries[] = new XmlObject('entry', null,
                 array(
                     new XmlObject('description', null, 'Korting'),
-                    new XmlObject('price', null, XmlObject::fromString('- <euro/>' . number_format($discount, 2))),
-                    new XmlObject('amount', null, ' '),
-                    new XmlObject('vat_type', null, ' '),
+                    new XmlObject('price', null, XmlObject::fromString('<euro/> -' . number_format($discount, 2))),
+                    new XmlObject('amount', null, '1'),
+                    new XmlObject('vat_type', null, $discountTax . '%'),
                 )
             );
             } else {
                 $entries[] = new XmlObject('entry', null,
                     array(
-                        new XmlObject('description', null,$this->invoide->getOrder()->getDiscountContext()),
-                        new XmlObject('price', null, XmlObject::fromString('- <euro/>' . number_format($discount, 2))),
-                        new XmlObject('amount', null, ' '),
-                        new XmlObject('vat_type', null, ' '),
+                        new XmlObject('description', null,$this->invoide->getDiscountText()),
+                        new XmlObject('price', null, XmlObject::fromString('<euro/> -' . number_format($discount, 2))),
+                        new XmlObject('amount', null, '1'),
+                        new XmlObject('vat_type', null, $discountTax . '%'),
                     )
                 );
             }
+
+            $totalVat += -$discount * $discountTax/100;
         }
 
-        $totalExclusive = $totalExclusive - $discount;
+        $totalExclusive = $totalExclusive - $discount + $autoDiscount;
 
         $total = $totalExclusive + $totalVat;
 
-        $xml->append(new XmlObject('invoice', null,
+        $xml->append(new XmlObject('invoice',
+            array(
+                'payment_days' => (String) $paymentDays,
+                ),
             array(
                 new XmlObject('title', null,
                     array(

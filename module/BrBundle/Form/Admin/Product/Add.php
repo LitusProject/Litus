@@ -94,6 +94,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
+            'type'     => 'checkbox',
+            'name'     => 'refund',
+            'label'    => 'Refund',
+        ));
+
+        $this->add(array(
             'type'     => 'select',
             'name'     => 'vat_type',
             'label'    => 'VAT Type',

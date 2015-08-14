@@ -181,7 +181,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $invoice = new Invoice($contract->getOrder(), $formData['reference']);
+                $invoice = $form->hydrateObject(
+                    new Invoice($contract->getOrder())
+                );
 
                 foreach ($contract->getEntries() as $entry) {
                     $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(), 0);

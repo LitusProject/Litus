@@ -131,7 +131,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
             foreach ($contracts as $contract) {
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
-                $value = $contract->getOrder()->getTotalCost();
+                $value = $contract->getOrder()->getTotalCostExclusive();
                 $contracted = $contracted + $value;
                 $totalContracted = $totalContracted + $value;
 
@@ -190,7 +190,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             foreach ($contracts as $contract) {
                 $contractNmbr++;
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
-                $value = $contract->getOrder()->getTotalCost();
+                $value = $contract->getOrder()->getTotalCostExclusive();
                 $contracted = $contracted + $value;
                 $totalContracted = $totalContracted + $value;
 
