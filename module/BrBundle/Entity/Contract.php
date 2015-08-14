@@ -116,7 +116,7 @@ class Contract
     private $paymentDetails;
 
     /**
-     * @var string The paymentdays of the contract
+     * @var int The paymentdays of the contract
      *
      * @ORM\Column(name="payment_days", type="integer", options={"default" = 30})
      */
