@@ -86,4 +86,9 @@ return array(
         ),
         'description' => 'The organization\'s terms and conditions',
     ),
+    array(
+        'key'         => 'secretary.date_info_message_interval',
+        'value'       => 'P15D',
+        'description' => 'The date info message is displayed from this amount of days before the start of the new organizational year.',
+    ),
 );
