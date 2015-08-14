@@ -48,9 +48,9 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
                     ->findAllByUnitAndAcademicYear($unit, $academicYear);
             if (isset($members[0])) {
                 $list[] = array(
-                'unit' => $unit,
-                'members' => $members,
-            );
+                    'unit' => $unit,
+                    'members' => $members,
+                );
             }
         }
 

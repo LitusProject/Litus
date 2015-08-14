@@ -43,13 +43,15 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $units = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Organization\Unit')->findAll();
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAll();
 
         $unitsWithMembers = array();
         foreach ($units as $key => $unit) {
             $members = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-            ->findBy(array('unit' => $unit, 'academicYear' => $academicYear));
+                ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                ->findBy(array('unit' => $unit, 'academicYear' => $academicYear));
             if (isset($members[0])) {
                 array_push($unitsWithMembers, $unit);
                 unset($units[$key]);
@@ -442,7 +444,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($start);
 
-        if (null === $academicYear) {
+        if (!($academicYear instanceof AcademicYear)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No academic year was found!'
