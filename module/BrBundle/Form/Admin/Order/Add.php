@@ -83,8 +83,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(array(
             'type'     => 'text',
             'name'     => 'discount',
-            'label'    => 'Discount',
+            'label'    => 'Discount (in cents)',
             'required' => true,
+            'value'    => 0,
             'options'  => array(
                 'input' => array(
                     'filters'  => array(
@@ -98,22 +99,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'discount_context',
-            'label'    => 'Discount Context',
-            'options'  => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
             'type'     => 'checkbox',
-            'name'     => 'tax_free',
-            'label'    => 'Tax Free',
+            'name'     => 'auto_discount',
+            'label'    => 'Automatic Discount',
+            'value'    => true,
         ));
 
         $this->addSubmit('Add Products', 'product_add');

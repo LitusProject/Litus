@@ -52,6 +52,13 @@ class Invoice
     private $order;
 
     /**
+     * @var bool True if this invoice is tax free.
+     *
+     * @ORM\Column(name="tax_free", type="boolean", options={"default" = false})
+     */
+    private $taxFree;
+
+    /**
      * @var DateTime The time of creation of this invoice
      *
      * @ORM\Column(name="creation_time", type="datetime")
@@ -88,9 +95,30 @@ class Invoice
     /**
      * @var string that provides any possible context for the VAT
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     private $vatContext;
+
+    /**
+     * @var string The text of the extra discount of the invoice
+     *
+     * @ORM\Column(name="discount_text", type="text", nullable=true)
+     */
+    private $discountText;
+
+    /**
+     * @var string The text for the automatic discount of the invoice
+     *
+     * @ORM\Column(name="auto_discount_text", type="text", nullable=true)
+     */
+    private $autoDiscountText;
+
+    /**
+     * @var string that provides any possible context for a reference of a company
+     *
+     * @ORM\Column(type="string", name="company_reference", nullable=true)
+     */
+    private $companyReference;
 
     /**
      * Creates a new invoice
@@ -103,6 +131,7 @@ class Invoice
         $this->creationTime = new DateTime();
         $this->setVersion(0);
         $this->setVatContext();
+        $this->setTaxFree();
 
         $this->invoiceEntries = new ArrayCollection();
     }
@@ -126,6 +155,68 @@ class Invoice
     public function getVatContext()
     {
         return $this->vatContext;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscountText()
+    {
+        return $this->discountText;
+    }
+
+    /**
+     * @param  string $discountText
+     * @return self
+     */
+    public function setDiscountText($discountText)
+    {
+        $this->discountText = $discountText;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAutoDiscountText()
+    {
+        return $this->autoDiscountText;
+    }
+
+    /**
+     * @param  string $autoDiscountText
+     * @return self
+     */
+    public function setAutoDiscountText($autoDiscountText)
+    {
+        $this->autoDiscountText = $autoDiscountText;
+
+        return $this;
+    }
+
+    public function setTaxFree($free = false)
+    {
+        $this->taxFree = $free;
+
+        return $this;
+    }
+
+    public function getTaxFree()
+    {
+        return $this->taxFree;
+    }
+
+    public function setCompanyReference($reference)
+    {
+        $this->companyReference = $reference;
+
+        return $this;
+    }
+
+    public function getCompanyReference()
+    {
+        return $this->companyReference;
     }
 
     /**
@@ -207,21 +298,19 @@ class Invoice
     /**
      * @return bool
      */
-    public function isExpired(EntityManager $entityManager)
+    public function isExpired()
     {
         $now = new DateTime();
 
-        return !$this->isPaid() && $now > $this->getExpirationTime($entityManager);
+        return !$this->isPaid() && $now > $this->getExpirationTime();
     }
 
     /**
      * @return DateTime
      */
-    public function getExpirationTime(EntityManager $entityManager)
+    public function getExpirationTime()
     {
-        $expireTime = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.invoice_expire_time');
+        $expireTime = 'P' . $this->getOrder()->getContract()->getPaymentDays() . 'D';
 
         return $this->getCreationTime()->add(new DateInterval($expireTime));
     }

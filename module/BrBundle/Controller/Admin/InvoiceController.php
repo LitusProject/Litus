@@ -143,9 +143,12 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         $fileHandler = fopen($file, 'r');
         $content = fread($fileHandler, filesize($file));
 
+        $invoiceNb = $invoice->getInvoiceNumber($this->getEntityManager());
+        $companyName = $invoice->getOrder()->getCompany()->getName();
+
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="invoice.pdf"',
+            'Content-Disposition' => 'attachment; filename="' . $invoiceNb . ' ' . $companyName . '.pdf"',
             'Content-Type'        => 'application/pdf',
         ));
         $this->getResponse()->setHeaders($headers);

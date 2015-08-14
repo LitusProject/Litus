@@ -22,6 +22,7 @@ use BrBundle\Entity\Contract\ContractEntry,
     BrBundle\Entity\Product\Order,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM,
     InvalidArgumentException;
 
@@ -29,7 +30,10 @@ use BrBundle\Entity\Contract\ContractEntry,
  * This is the entity for a contract.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Contract")
- * @ORM\Table(name="br.contracts")
+ * @ORM\Table(
+ *       name="br.contracts",
+ *       uniqueConstraints={@ORM\UniqueConstraint(name="contract_unique", columns={"author", "contract_nb"})}
+ *      )
  */
 class Contract
 {
@@ -89,6 +93,34 @@ class Contract
     private $title;
 
     /**
+     * @var string The text of the extra discount of the contract
+     *
+     * @ORM\Column(name="discount_text", type="text", nullable=true)
+     */
+    private $discountText;
+
+    /**
+     * @var string The text for the automatic discount of the contract
+     *
+     * @ORM\Column(name="auto_discount_text", type="text", nullable=true)
+     */
+    private $autoDiscountText;
+
+    /**
+     * @var string The paymentdetails of the contract
+     *
+     * @ORM\Column(name="payment_details", type="text", nullable=true)
+     */
+    private $paymentDetails;
+
+    /**
+     * @var int The paymentdays of the contract
+     *
+     * @ORM\Column(name="payment_days", type="integer", options={"default" = 30})
+     */
+    private $paymentDays;
+
+    /**
      * @var int The invoice number; -1 indicates that the contract hasn't been signed yet
      *
      * @ORM\Column(name="invoice_nb", type="integer")
@@ -98,7 +130,7 @@ class Contract
     /**
      * @var int The contract number. A form of identification that means something to the human users.
      *
-     * @ORM\Column(name="contract_nb", type="integer", unique=true)
+     * @ORM\Column(name="contract_nb", type="integer")
      */
     private $contractNb;
 
@@ -159,6 +191,82 @@ class Contract
     public function setVersion($versionNb)
     {
         $this->version = $versionNb;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPaymentDays()
+    {
+        return $this->paymentDays;
+    }
+
+    /**
+     * @param  int  $paymentDays
+     * @return self
+     */
+    public function setPaymentDays($paymentDays)
+    {
+        $this->paymentDays = $paymentDays;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentDetails()
+    {
+        return $this->paymentDetails;
+    }
+
+    /**
+     * @param  string $paymentDetails
+     * @return self
+     */
+    public function setPaymentDetails($paymentDetails)
+    {
+        $this->paymentDetails = $paymentDetails;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscountText()
+    {
+        return $this->discountText;
+    }
+
+    /**
+     * @param  string $discountText
+     * @return self
+     */
+    public function setDiscountText($discountText)
+    {
+        $this->discountText = $discountText;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAutoDiscountText()
+    {
+        return $this->autoDiscountText;
+    }
+
+    /**
+     * @param  string $discountText
+     * @return self
+     */
+    public function setAutoDiscountText($autoDiscountText)
+    {
+        $this->autoDiscountText = $autoDiscountText;
+
+        return $this;
     }
 
     /**
@@ -347,9 +455,19 @@ class Contract
      *          With AA the $contractStartNb, x the personal number of the collaborator who created the contract and
      *          YYY the number of current contract.
      **/
-    public function getContractNb()
+    public function getContractNb(EntityManager $entityManager)
     {
-        return '22' . $this->getAuthor()->getNumber() . str_pad($this->contractNb, 3, '0', STR_PAD_LEFT);
+        $academicYear = $entityManager
+                ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                ->findOneByDate($this->getDate());
+
+        $contractYearCode = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.contract_number_codes')
+            )[$academicYear->getCode(true)];
+
+        return $contractYearCode . $this->getAuthor()->getNumber() . str_pad($this->contractNb, 3, '0', STR_PAD_LEFT);
     }
 
     /**

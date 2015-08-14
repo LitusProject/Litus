@@ -127,6 +127,9 @@
                             <xsl:apply-templates select="entries"/>
                         </fo:block>
                         <fo:block padding-after="20px">
+                            <xsl:apply-templates select="payment_details"/>
+                        </fo:block>
+                        <fo:block padding-after="8px">
                             <xsl:apply-templates select="sub_entries"/>
                         </fo:block>
                         <fo:table table-layout="fixed" width="100%">
@@ -195,6 +198,20 @@
         </fo:list-item>
     </xsl:template>
 
+    <xsl:template match="payment_details">
+        <fo:block><xsl:apply-templates/></fo:block>
+    </xsl:template>
+
+    <xsl:template match="total_price">
+        <xsl:apply-templates select="vat_total"/>
+    </xsl:template>
+
+    <xsl:template match="vat_total">
+        <xsl:text>&#x20AC; </xsl:text>
+        <xsl:value-of select="total"/>
+        (excl. <xsl:value-of select="vat"/>% BTW),
+    </xsl:template>
+
     <xsl:template match="sub_entries">
         <fo:block><xsl:apply-templates/></fo:block>
     </xsl:template>
@@ -215,6 +232,10 @@
 
     <xsl:template name="location" match="location">
         <xsl:value-of select="/contract/@location"/>
+    </xsl:template>
+
+    <xsl:template name="payment_days" match="payment_days">
+        <xsl:value-of select="/contract/payment_details/@payment_days"/>
     </xsl:template>
 
     <xsl:template name="date_and_location" match="date_and_location">

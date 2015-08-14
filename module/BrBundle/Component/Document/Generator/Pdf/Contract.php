@@ -98,15 +98,48 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $brName = $configs->getConfigValue('br.contract_name');
         $logo = $configs->getConfigValue('organization_logo');
 
+        $vatTypes = unserialize($configs->getConfigValue('br.vat_types'));
+        $vatTotals = '';
+        $this->contract->getOrder()->setEntityManager($this->getEntityManager());
+        foreach ($vatTypes as $type) {
+            if ($this->contract->getOrder()->getCostVatTypeExclusive($type) > 0) {
+                $price = $this->contract->getOrder()->getCostVatTypeExclusive($type)/100;
+                $vatTotals = $vatTotals . '<vat_total><vat>' . $type . '</vat><total>' . $price . '</total></vat_total>';
+            }
+        }
+
+        $paymentDetailsText = str_replace(
+            '<total_price/>',
+            '<total_price>' . $vatTotals . '</total_price>',
+            $this->contract->getPaymentDetails()
+        );
+
+        $paymentDetails = array();
+        if ($paymentDetailsText != '') {
+            $p = new BulletParser();
+            $p->parse($paymentDetailsText);
+            $paymentDetails[] = XmlObject::fromString($p->getXml());
+        }
+
         $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl']; //TODO make this possible in both english and dutch.
 
         $contractText = '';
         foreach ($entries as $entry) {
             $contractText = $contractText . "\n" . $entry->getContractText();
         }
-        $p = new BulletParser();
-        $p->parse($contractText);
-        $entry_s = XmlObject::fromString($p->getXml());
+        if ($this->contract->getAutoDiscountText() != '') {
+            $contractText = $contractText . "\n" . $this->contract->getAutoDiscountText();
+        }
+        if ($this->contract->getDiscountText() != '') {
+            $contractText = $contractText . "\n" . $this->contract->getDiscountText();
+        }
+
+        $entry_s = new XmlObject('entries', null, 'Empty Contract');
+        if ($contractText != '') {
+            $p = new BulletParser();
+            $p->parse($contractText);
+            $entry_s = XmlObject::fromString($p->getXml());
+        }
 
         $xml->append(
             new XmlObject(
@@ -217,6 +250,11 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                         )
                     ),
                     $entry_s,
+                    new XmlObject(
+                        'payment_details',
+                        array('payment_days' => (String) $this->contract->getPaymentDays()),
+                        $paymentDetails
+                    ),
                     new XmlObject('sub_entries', null, $sub_entries),
                     new XmlObject('footer'),
                     new XmlObject('sale_conditions_nl'),

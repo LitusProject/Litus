@@ -208,7 +208,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             -1 => '',
         );
         foreach ($drivers as $driver) {
-            print_r($driver->getPerson()->getFullName());
             $driversArray[$driver->getPerson()->getId()] = $driver->getPerson()->getFullName();
         }
 
