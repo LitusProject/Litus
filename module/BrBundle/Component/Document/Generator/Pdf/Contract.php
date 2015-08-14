@@ -109,8 +109,8 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         }
 
         $paymentDetailsText = str_replace(
-            "<total_price/>",
-            "<total_price>" . $vatTotals . "</total_price>",
+            '<total_price/>',
+            '<total_price>' . $vatTotals . '</total_price>',
             $this->contract->getPaymentDetails()
         );
 
@@ -134,6 +134,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
             $contractText = $contractText . "\n" . $this->contract->getDiscountText();
         }
 
+        $entry_s = new XmlObject('entries', null, 'Empty Contract');
         if ($contractText != '') {
             $p = new BulletParser();
             $p->parse($contractText);

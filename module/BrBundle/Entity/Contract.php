@@ -196,7 +196,7 @@ class Contract
     }
 
     /**
-     * @return PaymentDays
+     * @return int
      */
     public function getPaymentDays()
     {
@@ -204,7 +204,7 @@ class Contract
     }
 
     /**
-     * @param  PaymentDays $paymentDays
+     * @param  int  $paymentDays
      * @return self
      */
     public function setPaymentDays($paymentDays)
@@ -215,7 +215,7 @@ class Contract
     }
 
     /**
-     * @return PaymentDetails
+     * @return string
      */
     public function getPaymentDetails()
     {
@@ -223,7 +223,7 @@ class Contract
     }
 
     /**
-     * @param  PaymentDetails $paymentDetails
+     * @param  string $paymentDetails
      * @return self
      */
     public function setPaymentDetails($paymentDetails)
@@ -234,7 +234,7 @@ class Contract
     }
 
     /**
-     * @return DiscountText
+     * @return string
      */
     public function getDiscountText()
     {
@@ -242,7 +242,7 @@ class Contract
     }
 
     /**
-     * @param  DiscountText $discountText
+     * @param  string $discountText
      * @return self
      */
     public function setDiscountText($discountText)
@@ -253,7 +253,7 @@ class Contract
     }
 
     /**
-     * @return AutoDiscountText
+     * @return string
      */
     public function getAutoDiscountText()
     {
@@ -261,7 +261,7 @@ class Contract
     }
 
     /**
-     * @param  AutoDiscountText $discountText
+     * @param  string $discountText
      * @return self
      */
     public function setAutoDiscountText($autoDiscountText)

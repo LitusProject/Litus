@@ -376,7 +376,7 @@ class Order
     }
 
     /**
-     * @param  int    $autoDiscount
+     * @param  int    $vatType
      * @return double combined cost of all entries with the given vat type, in cents
      */
     public function getCostVatTypeExclusive($vatType)

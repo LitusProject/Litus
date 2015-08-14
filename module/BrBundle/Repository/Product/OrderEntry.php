@@ -59,7 +59,7 @@ class OrderEntry extends EntityRepository
     }
 
     /**
-     * @param  Product                                 $product
+     * @param  Product                                 $productId
      * @return \BrBundle\Entity\Product\OrderEntr|null
      */
     public function findOneByProductId($productId)

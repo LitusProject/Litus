@@ -65,7 +65,7 @@ class Contract extends EntityRepository
     }
 
     /**
-     * @param  CollaboratorEntity $$collaborator
+     * @param  CollaboratorEntity $collaborator
      * @return int
      */
     public function findNextContractNbByCollaborator(CollaboratorEntity $collaborator)

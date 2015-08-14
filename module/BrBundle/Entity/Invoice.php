@@ -159,7 +159,7 @@ class Invoice
     }
 
     /**
-     * @return DiscountText
+     * @return string
      */
     public function getDiscountText()
     {
@@ -167,7 +167,7 @@ class Invoice
     }
 
     /**
-     * @param  DiscountText $discountText
+     * @param  string $discountText
      * @return self
      */
     public function setDiscountText($discountText)
@@ -178,7 +178,7 @@ class Invoice
     }
 
     /**
-     * @return AutoDiscountText
+     * @return string
      */
     public function getAutoDiscountText()
     {
@@ -186,7 +186,7 @@ class Invoice
     }
 
     /**
-     * @param  AutoDiscountText $discountText
+     * @param  string $autoDiscountText
      * @return self
      */
     public function setAutoDiscountText($autoDiscountText)
