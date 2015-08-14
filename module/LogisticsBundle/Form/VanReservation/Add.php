@@ -202,12 +202,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $drivers = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Driver')
-            ->findAllByYear($this->getCurrentAcademicYear());
+            ->findAllByYear($this->getCurrentAcademicYear(true));
 
         $driversArray = array(
             -1 => '',
         );
         foreach ($drivers as $driver) {
+            print_r($driver->getPerson()->getFullName());
             $driversArray[$driver->getPerson()->getId()] = $driver->getPerson()->getFullName();
         }
 
