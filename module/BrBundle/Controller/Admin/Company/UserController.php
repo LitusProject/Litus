@@ -73,11 +73,13 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                 $user = $form->hydrateObject();
                 $user->setCompany($company);
 
-                $user->activate(
-                    $this->getEntityManager(),
-                    $this->getMailTransport(),
-                    false
-                );
+                if ($formData['activate']) {
+                    $user->activate(
+                        $this->getEntityManager(),
+                        $this->getMailTransport(),
+                        false
+                    );
+                }
 
                 $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();

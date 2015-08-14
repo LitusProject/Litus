@@ -73,6 +73,28 @@ class Company
     private $address;
 
     /**
+     * @var string The company's name
+     *
+     * @ORM\Column(type="string", length=50, name="invoice_name", nullable=true)
+     */
+    private $invoiceName;
+
+    /**
+     * @var string The company's VAT number
+     *
+     * @ORM\Column(type="string", name="invoice_vat_number", nullable=true)
+     */
+    private $invoiceVatNumber;
+
+    /**
+     * @var Address The address of the company
+     *
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="invoice_address", referencedColumnName="id", nullable=true)
+     */
+    private $invoiceAddress;
+
+    /**
      * @var string The company's telephone number
      *
      * @ORM\Column(type="string", length=15, nullable=true)
@@ -257,6 +279,87 @@ class Company
     public function setAddress(Address $address)
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInvoiceName()
+    {
+        return $this->invoiceName == null ? $this->name : $this->invoiceName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawInvoiceName()
+    {
+        return $this->invoiceName;
+    }
+
+    /**
+     * @param  string $name
+     * @return self
+     */
+    public function setInvoiceName($name)
+    {
+        $this->invoiceName = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInvoiceVatNumber()
+    {
+        return $this->invoiceVatNumber  == null ? $this->vatNumber : $this->invoiceVatNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawInvoiceVatNumber()
+    {
+        return $this->invoiceVatNumber;
+    }
+
+    /**
+     * @param  string $vatNumber
+     * @return self
+     */
+    public function setInvoiceVatNumber($vatNumber)
+    {
+        $this->invoiceVatNumber = $vatNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return Address
+     */
+    public function getInvoiceAddress()
+    {
+        return $this->invoiceAddress  == null ? $this->address : $this->invoiceAddress;
+    }
+
+    /**
+     * @return Address
+     */
+    public function getRawInvoiceAddress()
+    {
+        return $this->invoiceAddress;
+    }
+
+    /**
+     * @param  Address $address
+     * @return self
+     */
+    public function setInvoiceAddress(Address $address)
+    {
+        $this->invoiceAddress = $address;
 
         return $this;
     }
