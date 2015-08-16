@@ -469,7 +469,9 @@ class Study
                 }
             } else {
                 foreach ($combination['groups'] as $id) {
-                    $groups[] = $moduleGroups['_' . $combination['entity']->getPhase() . $id];
+                    if (isset($moduleGroups['_' . $combination['entity']->getPhase() . $id])) {
+                        $groups[] = $moduleGroups['_' . $combination['entity']->getPhase() . $id];
+                    }
                 }
             }
 

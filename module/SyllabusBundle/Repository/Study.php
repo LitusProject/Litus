@@ -43,8 +43,8 @@ class Study extends EntityRepository
                 $query->expr()->eq('s.academicYear', ':academicYear')
             )
             ->setParameter('academicYear', $academicYear)
-            ->orderBy('c.phase', 'ASC')
-            ->addOrderBy('c.title', 'ASC')
+            ->orderBy('c.title', 'ASC')
+            ->addOrderBy('c.phase', 'ASC')
             ->getQuery();
 
         return $resultSet;
@@ -68,8 +68,8 @@ class Study extends EntityRepository
             )
             ->setParameter('academicYear', $academicYear)
             ->setParameter('title', '%' . strtolower($title) . '%' )
-            ->orderBy('c.phase', 'ASC')
-            ->addOrderBy('c.title', 'ASC')
+            ->orderBy('c.title', 'ASC')
+            ->addOrderBy('c.phase', 'ASC')
             ->getQuery();
 
         return $resultSet;

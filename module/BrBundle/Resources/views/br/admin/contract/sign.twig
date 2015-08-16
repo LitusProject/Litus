@@ -1,3 +1,12 @@
-{% autoescape false %}
-    {{ result|json_encode }}
-{% endautoescape %}
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/contract/partials/navigation.twig' %}
+
+    <div id="controller_action">
+        {% include 'admin/partials/flashMessenger.twig' %}
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}

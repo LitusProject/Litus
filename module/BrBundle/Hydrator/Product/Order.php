@@ -36,12 +36,12 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('tax_free', 'discount', 'discount_context');
+    private static $stdKeys = array('discount', 'discount_context');
 
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            throw new InvalidObjectException('Cannot create a contract');
+            throw new InvalidObjectException('Cannot create an order');
         }
 
         if (null !== $object->getContact() && $object->hasContract()) {
@@ -82,6 +82,10 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setEntry($orderEntry);
         }
 
+        $object->setEntityManager($this->getEntityManager());
+        $object->setAutoDiscount($data['auto_discount']);
+        $object->setAutoDiscountPercentage();
+
         $this->getEntityManager()->persist($object);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
@@ -95,6 +99,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
+        $data['auto_discount'] = $object->hasAutoDiscount();
         $data['company'] = $object->getCompany()->getId();
         $data['contact_' . $object->getCompany()->getId()] = $object->getContact()->getId();
 

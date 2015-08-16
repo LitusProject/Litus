@@ -86,7 +86,13 @@ class Xml
                 $zip->addFile($xmlFile->getFilename(), $item->getId() . '.xml');
             } elseif ($xmlFormat == 'pmr') {
                 $this->generatePmrXml($item, $xmlFile);
-                $zip->addFile($xmlFile->getFilename(), $item->getArticle()->getMainArticle()->getTitle() . '.xml');
+
+                $jobId = $this->entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.order_job_id');
+                $jobId = str_replace('{{ code }}', substr((string) $item->getArticle()->getBarcode(),-5) ,str_replace('{{ date }}', $this->order->getDateOrdered()->format('Ymd'), $jobId));
+
+                $zip->addFile($xmlFile->getFilename(), $jobId . '.xml');
             } else {
                 throw new UnexpectedValueException('unexpected configuration value cudi.order_export_format');
             }

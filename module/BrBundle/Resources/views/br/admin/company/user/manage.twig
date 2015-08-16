@@ -34,6 +34,7 @@
                 <th width="150px">Username</th>
                 <th>Name</th>
                 <th width="160px">E-mail</th>
+                <th width="70px">Activated</th>
                 <th width="70px">Action</th>
             </tr>
 
@@ -42,6 +43,11 @@
                     <td>{{ user.getUsername() }}</td>
                     <td>{{ user.getFullName() }}</td>
                     <td>{{ user.getEmail() }}</td>
+                    <td>
+                        {% if user.hasCredential() %}
+                            X
+                        {% endif %}
+                    </td>
                     <td class="actions">
                         {% if hasAccess('br_admin_company_user', 'edit') %}
                             <a href="{{ url('br_admin_company_user', {"action": "edit", "id": user.getId()}) }}" class="edit">Edit</a>

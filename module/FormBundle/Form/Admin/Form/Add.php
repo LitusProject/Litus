@@ -258,4 +258,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             ),
         ));
     }
+
+    public function getInputFilterSpecification()
+    {
+        $specs = parent::getInputFilterSpecification();
+
+        if (!$this->get('mail')->getValue()) {
+            unset($specs['mail_form']);
+        }
+
+        if (!$this instanceof Edit || $this->isDoodle()) {
+            if (!$this->get('reminder_mail')->getValue()) {
+                unset($specs['reminder_mail_form']);
+            }
+        }
+
+        return $specs;
+    }
 }

@@ -142,7 +142,9 @@ class DriverController extends \CommonBundle\Component\Controller\ActionControll
      */
     private function getDriverEntity()
     {
-        $driver = $this->getEntityById('LogisticsBundle\Entity\Driver');
+        $driver = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Driver')
+            ->findOneById($this->getParam('id'));
 
         if (!($driver instanceof Driver)) {
             $this->flashMessenger()->error(

@@ -95,4 +95,9 @@ class Edit extends Add
 
         return $this;
     }
+
+    public function isDoodle()
+    {
+        return $this->form instanceof Doodle;
+    }
 }

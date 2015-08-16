@@ -23,11 +23,17 @@
     {% include 'common/account/partials/navigation.twig' %}
 
     <h2>
-        {{ translate('Choose Your Study') }}
+        {{ translate('Choose Your Study: Year') }} {{ academicYear.getCode() }}
         <div class="pull-right">
             <a href="{{ url('common_account', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
         </div>
     </h2>
+    {% if dateInfoMessage %}
+        <div class="alert alert-info notification">
+            <b>{{ translate('The changes you make will still be for last year. You will be able to select your study for next year from:') }} {{startNewUniversityYear.format('Y-m-d')}}</b>
+        </div>
+        </br>
+    {% endif %}
     <div id="studies">
         {{ _self.displayStudies(studies, enrollments) }}
     </div>
@@ -42,8 +48,6 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <a class="panel-toggle" data-toggle="collapse" data-parent="#studies-{{ study.getId() }}" href="#collapse_study-{{ study.getId() }}">
-                        <span class="title">{{ study.getTitle() }}</span><span class="phase">&mdash;{{ translate('Phase') }} {{ study.getPhase() }}</span>
-                        &nbsp;
                         {% if study.getChildren()|length == 0 %}
                             <span class="pull-right">
                                 <button class="btn btn-xs btn-info study_enroll {% if study.getId() in enrollments %}active{% endif %}" id="study-{{ study.getId() }}" data-id="{{ study.getId() }}" type="button">{% if study.getId() in enrollments %}{{ translate('Unsubscribe') }}{% else %}{{ translate('Enroll') }}{% endif %}</button>
@@ -51,6 +55,7 @@
                         {% else %}
                             <span class="pull-right glyphicon glyphicon-arrow-down collapse-icon" style="margin-top: 2px;"></span>
                         {% endif %}
+                        <span class="title">{{ study.getTitle() }}</span><span class="phase">&mdash;{{ translate('Phase') }} {{ study.getPhase() }}</span>
                     </a>
                 </div>
                 <div id="collapse_study-{{ study.getId() }}" class="panel-collapse collapse">
