@@ -96,5 +96,6 @@ return array(
     'Other Subjects' => 'Andere Vakken',
     'You have not yet added any other subjects.' => 'Je hebt nog geen andere vakken toegevoegd.',
     'Add Other Subjects' => 'Andere Vakken Toevoegen',
+    'Add Other Subject' => 'Ander Vak Toevoegen',
     'The subject was succesfully added!' => 'Het vak is succesvol toegevoegd!',
 );

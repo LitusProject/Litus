@@ -95,5 +95,6 @@ return array(
     'Other Subjects' => 'Other Subjects',
     'You have not yet added any other subjects.' => 'You have not yet added any other subjects.',
     'Add Other Subjects' => 'Add Other Subjects',
+    'Add Other Subject' => 'Add Other Subject',
     'The subject was succesfully added!' => 'The subject was succesfully added!',
 );
