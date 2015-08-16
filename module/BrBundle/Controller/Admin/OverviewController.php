@@ -37,7 +37,9 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Component\Document\Generator\Pdf\Overview as PdfGenerator,
     BrBundle\Entity\Collaborator,
     BrBundle\Entity\Company,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     CommonBundle\Component\Util\File\TmpFile,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -94,7 +96,65 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    public function exportAction()
+    public function csvAction()
+    {
+        $file = new CsvFile();
+        $heading = array('Company Name', 'Contract Number', 'Author', 'Product', 'Parameters', 'Amount', 'Price', 'Numbers Only', 'Contract Total', 'Invoice');
+
+        $ids = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findContractCompany();
+
+        $results = array();
+        foreach ($ids as $id) {
+            $company = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Company')
+                ->findOneById($id);
+
+            $contracts = $this->getEntityManager()
+                ->getRepository('BrBundle\entity\Contract')
+                ->findAllNewOrSignedByCompany($company);
+
+            foreach ($contracts as $contract) {
+                $contract->getOrder()->setEntityManager($this->getEntityManager());
+                $value = $contract->getOrder()->getTotalCost();
+
+                $orderEntries = $contract->getOrder()->getEntries();
+
+                foreach ($orderEntries as $entry) {
+                    $results[] = array(
+                        $company->getName(),
+                        $contract->getContractNb(),
+                        $contract->getAuthor()->getPerson()->getFullName(),
+                        $entry->getProduct()->getName(),
+                        "?",
+                        $entry->getQuantity(),
+                        "",
+                        "",
+                        $value,
+                        $contract->isSigned(),
+                    );
+                }
+            }
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="academics.csv"',
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+    public function pdfAction()
     {
         $file = new TmpFile();
         $document = new PdfGenerator($this->getEntityManager(), $file);
