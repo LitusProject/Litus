@@ -18,9 +18,11 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Company,
+use BrBundle\Component\Document\Generator\Company\Pdf as PdfGenerator,
+    BrBundle\Entity\Company,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     CommonBundle\Component\Util\File\TmpFile,
-    BrBundle\Component\Document\Generator\Company\Pdf as PdfGenerator,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     Imagick,
     Zend\File\Transfer\Adapter\Http as FileUpload,
     Zend\Http\Headers,
@@ -289,9 +291,44 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    public function exportAction()
+    public function csvAction()
     {
-        return $this->pdfAction();
+        $file = new CsvFile();
+        $heading = array('Company Name', 'VAT', 'Name', 'Username', 'E-mail');
+
+        $companies = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company')
+            ->findAll();
+
+        $results = array();
+        foreach ($companies as $company) {
+            $company_users = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\User\Person\Corporate')
+                ->findBy(array(
+                    'canLogin'  => 'true',
+                    'company'   => $company->getId(),
+                ));
+
+            foreach ($company_users as $user) {
+                $results[] = array($company->getName(), $company->getVatNumber(), $user->getFullName(), $user->getUsername(), $user->getEmail());
+            }
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="contacts_list.csv"',
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
     }
 
     public function pdfAction()
@@ -302,7 +339,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="company_list.pdf"',
+            'Content-Disposition' => 'attachment; filename="contacts_list.pdf"',
             'Content-Type'        => 'application/pdf',
         ));
         $this->getResponse()->setHeaders($headers);
