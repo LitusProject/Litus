@@ -354,6 +354,9 @@ class Xml
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.mail');
 
+        setlocale(LC_ALL, 'en_US.UTF8');
+        $title = iconv("UTF-8", "ASCII//TRANSLIT", $item->getArticle()->getMainArticle()->getTitle());
+
         $orderDetails = array(
                     new Object(
                         'Jobnummber',
@@ -389,6 +392,16 @@ class Xml
                         'Orderline',
                         null,
                         '1'
+                    ),
+                    new Object(
+                        'Titel',
+                        null,
+                        $title
+                    ),
+                    new Object(
+                        'Barcode',
+                        null,
+                        $item->getArticle()->getBarcode()
                     ),
                     new Object(
                         'Categorie',
