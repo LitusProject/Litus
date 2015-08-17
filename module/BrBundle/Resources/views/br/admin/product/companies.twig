@@ -1,0 +1,39 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/product/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+
+        <p>
+            The following table shows all signed contracts including the product <b>{{ product.getName() }}</b>.
+        </p>
+
+        <table class="full_width companies">
+            <tr>
+                <th>Company</th>
+                <th width="100px">Contract Date</th>
+                <th width="70px">Quantity</th>
+                <th width="100px">Contract Nb</th>
+            </tr>
+
+            {% for entry in paginator %}
+                {% if entry.getOrder().hasContract() %}
+                    {% if entry.getOrder().getContract().isSigned() %}
+                        <tr class="item item-{{ entry.getId() }}">
+                            <td>{{ entry.getOrder().getCompany().getName() }}</td>
+                            <td>{{ entry.getOrder().getContract().getDate().format('Y-m-d') }}</td>
+                            <td>{{ entry.getQuantity() }}</td>
+                            <td>{{ entry.getOrder().getContract().getContractNb(em) }}</td>
+                        </tr>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+{% endblock %}

@@ -143,6 +143,29 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function companiesAction()
+    {
+        if (!($product = $this->getProductEntity())) {
+            return new ViewModel();
+        }
+
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Product\OrderEntry')
+                ->findAllByProductIdQuery($product->getId()),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'em' => $this->getEntityManager(),
+                'product' => $product,
+            )
+        );
+    }
+
     public function oldAction()
     {
         $paginator = $this->paginator()->createFromEntity(
