@@ -19,6 +19,9 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Product,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -162,6 +165,49 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                 'paginationControl' => $this->paginator()->createControl(true),
                 'em' => $this->getEntityManager(),
                 'product' => $product,
+            )
+        );
+    }
+
+    public function companiescsvAction()
+    {
+        if (!($product = $this->getProductEntity())) {
+            return new ViewModel();
+        }
+
+        $file = new CsvFile();
+        $heading = array('Company Name', 'Date', 'Quantity', 'Contract Nb');
+
+        $orderEntries = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Product\OrderEntry')
+            ->findAllByProductId($product->getId());
+
+        $results = array();
+        foreach ($orderEntries as $entry) {
+            if (!$entry->getOrder()->hasContract() || !$entry->getOrder()->getContract()->isSigned()) {
+                continue;
+            }
+            $results[] = array(
+                $entry->getOrder()->getCompany()->getName(),
+                $entry->getOrder()->getContract()->getDate()->format('Y-m-d'),
+                $entry->getQuantity(),
+                $entry->getOrder()->getContract()->getContractNb($this->getEntityManager()),
+            );
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="contracts_overview.csv"',
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }

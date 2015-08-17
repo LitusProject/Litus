@@ -97,4 +97,13 @@ class OrderEntry extends EntityRepository
             ->setParameter('product', $productId)
             ->getQuery();
     }
+
+    /**
+     * @param  Product $productId
+     * @return array
+     */
+    public function findAllByProductId($productId)
+    {
+        return $this->findAllByProductIdQuery($productId)->getResult();
+    }
 }
