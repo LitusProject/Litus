@@ -42,7 +42,7 @@ use CommonBundle\Component\Util\File\TmpFile,
 /**
  * Generate an overview pdf.
  *
- * @author Floris Kint <floris.kint@gmail.com>
+ * @author Floris Kint <floris.kint@litus.cc>
  */
 class Overview extends \CommonBundle\Component\Document\Generator\Pdf
 {
@@ -143,7 +143,7 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
 
             foreach ($contracts as $contract) {
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
-                $value = $contract->getOrder()->getTotalCost();
+                $value = $contract->getOrder()->getTotalCostExclusive();
                 $contracted = $contracted + $value;
                 $totalContracted = $totalContracted + $value;
 
@@ -193,7 +193,7 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
                         new Object(
                             'contract_nb',
                             array(),
-                            $contract->getContractNb()
+                            $contract->getContractNb($this->getEntityManager())
                         ),
                         new Object(
                             'signed',

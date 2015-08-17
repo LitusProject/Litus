@@ -119,22 +119,22 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
             foreach ($contracts as $contract) {
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
-                $value = $contract->getOrder()->getTotalCost();
+                $totalContractValue = $contract->getOrder()->getTotalCostExclusive();
 
                 $orderEntries = $contract->getOrder()->getEntries();
 
                 foreach ($orderEntries as $entry) {
                     $results[] = array(
                         $company->getName(),
-                        $contract->getContractNb(),
+                        $contract->getContractNb($this->getEntityManager()),
                         $contract->getAuthor()->getPerson()->getFullName(),
                         $entry->getProduct()->getName(),
                         "?",
                         $entry->getQuantity(),
-                        "",
-                        "",
-                        $value,
-                        $contract->isSigned(),
+                        $entry->getProduct()->getPrice()/100,
+                        $entry->getProduct()->getPrice()/100,
+                        $totalContractValue,
+                        $contract->isSigned() ? 1 : 0,
                     );
                 }
             }
@@ -145,7 +145,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="academics.csv"',
+            'Content-Disposition' => 'attachment; filename="contracts_overview.csv"',
             'Content-Type'        => 'text/csv',
         ));
         $this->getResponse()->setHeaders($headers);
