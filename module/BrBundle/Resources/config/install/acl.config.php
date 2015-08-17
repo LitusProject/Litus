@@ -38,7 +38,7 @@ return array(
             'add', 'retire', 'edit', 'manage', 'rehire',
         ),
         'br_admin_company' => array(
-            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload',
+            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'export'
         ),
         'br_admin_company_event' => array(
             'add', 'delete', 'edit', 'editPoster', 'manage', 'upload',

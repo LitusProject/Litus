@@ -3,6 +3,9 @@
 
     <nav id="controller_nav">
         <ul>
+            {% if hasAccess('br_admin_company', 'export') %}
+                <li><a {% if 'export' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_company', {"action": "export"}) }}">Export</a></li>
+            {% endif %}
             {% if hasAccess('br_admin_company', 'add') %}
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_company', {"action": "add"}) }}">Add</a></li>
             {% endif %}
