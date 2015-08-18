@@ -294,7 +294,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     public function csvAction()
     {
         $file = new CsvFile();
-        $heading = array('Company Name', 'VAT', 'Name', 'Username', 'E-mail');
+        $heading = array('Company Name', 'Company Phone Number', 'Name', 'Username', 'E-mail', 'Contact Phone Number');
 
         $companies = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company')
@@ -310,7 +310,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 ));
 
             foreach ($company_users as $user) {
-                $results[] = array($company->getName(), $company->getVatNumber(), $user->getFullName(), $user->getUsername(), $user->getEmail());
+                $results[] = array($company->getName(), $company->getPhoneNumber(), $user->getFullName(), $user->getUsername(), $user->getEmail(), " " . $user->getPhoneNumber());
             }
         }
 

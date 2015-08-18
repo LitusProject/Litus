@@ -110,15 +110,16 @@
             <xsl:apply-templates select="name"/>
         </fo:block>
         <fo:block text-align="left" font-style="italic" font-size="10pt" margin-bottom="1mm">
-            <xsl:apply-templates select="vatnumber"/>
+            <xsl:call-template name="companyPhoneNumber"/>:
+            <xsl:apply-templates select="companyPhone"/>
         </fo:block>
         <xsl:choose>
             <xsl:when test="count(users/*) != 0">
                 <fo:table table-layout="fixed" width="100%" margin-bottom="5mm">
-                    <fo:table-column column-width="40%"/>
+                    <fo:table-column column-width="30%"/>
                     <fo:table-column column-width="20%"/>
-                    <fo:table-column column-width="40%"/>
-
+                    <fo:table-column column-width="30%"/>
+                    <fo:table-column column-width="20%"/>
                     <fo:table-header>
                         <fo:table-row>
                             <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm"
@@ -133,10 +134,16 @@
                                     <xsl:call-template name="username"/>
                                 </fo:block>
                             </fo:table-cell>
-                            <fo:table-cell padding-before="1mm" padding-after="1mm" border-style="solid"
+                            <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid"
                                            border-width="0.5mm" border-color="black">
                                 <fo:block text-align="left" font-weight="bold">
                                     <xsl:call-template name="email"/>
+                                </fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid"
+                                           border-width="0.5mm" border-color="black">
+                                <fo:block text-align="left" font-weight="bold">
+                                    <xsl:call-template name="userPhoneNumber"/>
                                 </fo:block>
                             </fo:table-cell>
                         </fo:table-row>
@@ -170,10 +177,16 @@
                     <xsl:apply-templates select="username"/>
                 </fo:block>
             </fo:table-cell>
-            <fo:table-cell padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm"
+            <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm"
                            border-color="black">
                 <fo:block text-align="left" font-family="Arial">
                     <xsl:apply-templates select="email"/>
+                </fo:block>
+            </fo:table-cell>
+            <fo:table-cell padding-start="2mm" padding-before="1mm" padding-after="1mm" border-style="solid" border-width="0.5mm"
+                           border-color="black">
+                <fo:block text-align="left" font-family="Arial">
+                    <xsl:apply-templates select="userPhone"/>
                 </fo:block>
             </fo:table-cell>
         </fo:table-row>

@@ -23,4 +23,12 @@
         <xsl:text>Username</xsl:text>
     </xsl:template>
 
+    <xsl:template name="companyPhoneNumber">
+        <xsl:text>Phone</xsl:text>
+    </xsl:template>
+
+    <xsl:template name="userPhoneNumber">
+        <xsl:text>Phone</xsl:text>
+    </xsl:template>
+
 </xsl:stylesheet>

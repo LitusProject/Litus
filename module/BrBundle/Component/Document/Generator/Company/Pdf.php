@@ -9,7 +9,7 @@
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Dario Incalza <dario.incalza@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Kristof MariÃ«n <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  *
@@ -77,7 +77,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                 ->getRepository('BrBundle\Entity\User\Person\Corporate')
                 ->findBy(array(
                     'canLogin'  => 'true',
-                    'company'   => $company->getId()
+                    'company'   => $company->getId(),
                 ));
 
             foreach ($company_users as $user) {
@@ -99,7 +99,12 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                             'email',
                             array(),
                             $user->getEmail()
-                        )
+                        ),
+                        new Object(
+                            'userPhone',
+                            array(),
+                            $user->getPhoneNumber()
+                        ),
                     )
                 );
             }
@@ -113,15 +118,15 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                         $company->getName()
                     ),
                     new Object(
-                        'vatnumber',
+                        'companyPhone',
                         array(),
-                        $company->getVatNumber()
+                        $company->getPhoneNumber()
                     ),
                     new Object(
                         'users',
                         array(),
                         $all_users
-                    )
+                    ),
                 )
             );
         }

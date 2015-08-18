@@ -176,7 +176,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $file = new CsvFile();
-        $heading = array('Company Name', 'Date', 'Quantity', 'Contract Nb');
+        $heading = array('Contract', 'Invoice', 'Company Name', 'Author', 'Contact Person', 'Contact Phone', 'Contact Email', 'Remarks');
 
         $orderEntries = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Product\OrderEntry')
@@ -187,11 +187,29 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
             if (!$entry->getOrder()->hasContract() || !$entry->getOrder()->getContract()->isSigned()) {
                 continue;
             }
+            $order = $entry->getOrder();
+            $company = $order->getCompany();
+            $contract = $order->getContract();
+
+            $contacts = $company->getContacts();
+            $contactName = "";
+            $contactPhone = $company->getPhoneNumber();
+            $contactEmail = "";
+            if (count($contacts) > 0) {
+                $contact = $contacts[0];
+                $contactName = $contact->getFullName();
+                $contactPhone = $contact->getPhoneNumber() ? $contact->getPhoneNumber() : $contactPhone;
+                $contactEmail = $contact->getEmail() ? $contact->getEmail() : $contactEmail;
+            }
             $results[] = array(
-                $entry->getOrder()->getCompany()->getName(),
-                $entry->getOrder()->getContract()->getDate()->format('Y-m-d'),
-                $entry->getQuantity(),
-                $entry->getOrder()->getContract()->getContractNb($this->getEntityManager()),
+                $contract->getContractNb($this->getEntityManager()),
+                $order->getInvoice()->getInvoiceNumber($this->getEntityManager()),
+                $company->getName(),
+                $contract->getAuthor()->getPerson()->getFullName(),
+                $contactName,
+                $contactPhone,
+                $contactEmail,
+                "",
             );
         }
 

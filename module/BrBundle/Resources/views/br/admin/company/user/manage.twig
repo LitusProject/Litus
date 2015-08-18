@@ -34,6 +34,7 @@
                 <th width="150px">Username</th>
                 <th>Name</th>
                 <th width="160px">E-mail</th>
+                <th width="150px">Phone</th>
                 <th width="70px">Activated</th>
                 <th width="70px">Action</th>
             </tr>
@@ -43,6 +44,7 @@
                     <td>{{ user.getUsername() }}</td>
                     <td>{{ user.getFullName() }}</td>
                     <td>{{ user.getEmail() }}</td>
+                    <td>{{ user.getPhoneNumber() }}</td>
                     <td>
                         {% if user.hasCredential() %}
                             X
