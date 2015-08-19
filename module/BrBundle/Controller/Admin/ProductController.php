@@ -192,9 +192,9 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
             $contract = $order->getContract();
 
             $contacts = $company->getContacts();
-            $contactName = "";
+            $contactName = '';
             $contactPhone = $company->getPhoneNumber();
-            $contactEmail = "";
+            $contactEmail = '';
             if (count($contacts) > 0) {
                 $contact = $contacts[0];
                 $contactName = $contact->getFullName();
@@ -209,7 +209,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                 $contactName,
                 $contactPhone,
                 $contactEmail,
-                "",
+                '',
             );
         }
 

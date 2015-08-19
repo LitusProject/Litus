@@ -113,7 +113,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                         $contract->getFullContractNumber($this->getEntityManager()),
                         $contract->getAuthor()->getPerson()->getFullName(),
                         $entry->getProduct()->getName(),
-                        "?",
+                        '?',
                         $entry->getQuantity(),
                         $entry->getProduct()->getPrice()/100,
                         $entry->getProduct()->getPrice()/100,

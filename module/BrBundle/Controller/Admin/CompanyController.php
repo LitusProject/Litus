@@ -310,7 +310,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 ));
 
             foreach ($company_users as $user) {
-                $results[] = array($company->getName(), $company->getPhoneNumber(), $user->getFullName(), $user->getUsername(), $user->getEmail(), " " . $user->getPhoneNumber());
+                $results[] = array($company->getName(), $company->getPhoneNumber(), $user->getFullName(), $user->getUsername(), $user->getEmail(), ' ' . $user->getPhoneNumber());
             }
         }
 
@@ -360,7 +360,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             case 'name':
                 return $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company')
-                    ->findAllByNameQuery($this->getParamf('string'));
+                    ->findAllByNameQuery($this->getParam('string'));
         }
     }
 

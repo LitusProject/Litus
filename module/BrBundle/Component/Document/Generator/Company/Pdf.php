@@ -27,12 +27,12 @@ use BrBundle\Entity\Company,
 /**
  * CompanyPdf
  *
- * @author Floris Kint <floris.kint@gmail.com>
+ * @author Floris Kint <floris.kint@litus.cc>
  */
 class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
 {
     /**
-     * @var companies
+     * @var array
      */
     private $companies;
 
