@@ -312,6 +312,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             foreach ($company_users as $user) {
                 $results[] = array($company->getName(), $company->getPhoneNumber(), $user->getFullName(), $user->getUsername(), $user->getEmail(), ' ' . $user->getPhoneNumber());
             }
+            if (count($company_users) == 0) {
+                $results[] = array($company->getName(), $company->getPhoneNumber(), '/', '/', '/', '/');
+            }
         }
 
         $document = new CsvGenerator($heading, $results);

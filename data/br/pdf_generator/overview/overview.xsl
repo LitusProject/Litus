@@ -1,9 +1,3 @@
-<!--
-    XSL Stylesheet for Corporate Relations contracts overview
-
-    @author Floris Kint <floris.kint@gmail.com>
--->
-
 <xsl:stylesheet
         xmlns:xls="http://www.w3.org/1999/XSL/Transform" version="1.0"
         xmlns:fo="http://www.w3.org/1999/XSL/Format"
