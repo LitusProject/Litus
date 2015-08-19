@@ -26,7 +26,7 @@
                 {% if entry.getOrder().hasContract() %}
                     {% if entry.getOrder().getContract().isSigned() %}
                         <tr class="item item-{{ entry.getId() }}">
-                            <td>{{ entry.getOrder().getContract().getContractNb(em) }}</td>
+                            <td>{{ entry.getOrder().getContract().getFullContractNumber(em) }}</td>
                             <td>{{ entry.getOrder().getInvoice().getInvoiceNumber(em) }}</td>
                             <td>{{ entry.getOrder().getCompany().getName() }}</td>
                             <td>{{ entry.getOrder().getContract().getAuthor().getPerson().getFullName() }}</td>

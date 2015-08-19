@@ -193,7 +193,7 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
                         new Object(
                             'contract_nb',
                             array(),
-                            $contract->getContractNb($this->getEntityManager())
+                            $contract->getFullContractNumber($this->getEntityManager())
                         ),
                         new Object(
                             'signed',

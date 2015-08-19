@@ -110,7 +110,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 foreach ($orderEntries as $entry) {
                     $results[] = array(
                         $company->getName(),
-                        $contract->getContractNb($this->getEntityManager()),
+                        $contract->getFullContractNumber($this->getEntityManager()),
                         $contract->getAuthor()->getPerson()->getFullName(),
                         $entry->getProduct()->getName(),
                         "?",

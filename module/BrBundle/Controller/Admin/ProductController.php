@@ -202,7 +202,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
                 $contactEmail = $contact->getEmail() ? $contact->getEmail() : $contactEmail;
             }
             $results[] = array(
-                $contract->getContractNb($this->getEntityManager()),
+                $contract->getFullContractNumber($this->getEntityManager()),
                 $order->getInvoice()->getInvoiceNumber($this->getEntityManager()),
                 $company->getName(),
                 $contract->getAuthor()->getPerson()->getFullName(),
