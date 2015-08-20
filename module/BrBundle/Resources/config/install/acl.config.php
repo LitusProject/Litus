@@ -38,7 +38,7 @@ return array(
             'add', 'retire', 'edit', 'manage', 'rehire',
         ),
         'br_admin_company' => array(
-            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'export'
+            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'export',
         ),
         'br_admin_company_event' => array(
             'add', 'delete', 'edit', 'editPoster', 'manage', 'upload',
@@ -65,7 +65,7 @@ return array(
             'product', 'edit', 'delete', 'view', 'add', 'old', 'manage', 'generate',
         ),
         'br_admin_overview' => array(
-            'person', 'company', 'view','personview','companyview', 'export',
+            'person', 'company', 'view', 'personview', 'companyview', 'export',
         ),
         'br_admin_product' => array(
             'add', 'delete', 'manage', 'edit', 'old',
