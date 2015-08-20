@@ -242,7 +242,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $fileHandler = fopen($file, 'r');
         $content = fread($fileHandler, filesize($file));
 
-        $contractNb = $contract->getContractNb($this->getEntityManager());
+        $contractNb = $contract->getFullContractNumber($this->getEntityManager());
         $companyName = $contract->getCompany()->getName();
 
         $headers = new Headers();
