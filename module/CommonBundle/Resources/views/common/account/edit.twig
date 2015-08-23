@@ -74,7 +74,6 @@
 
             $('#register').click(function (e) {
                 e.preventDefault();
-
                 if (!$('#become_member').is(':checked') && !$('#become_member').is(':disabled') && $form.find('#organization').val() != 0) {
                     $('#modalMemberWarning')
                         .modal()
@@ -97,7 +96,7 @@
                         .hide();
             } else {
                 $form.find('#become_member')
-                    .prop('checked', true)
+                    .prop('checked', 'checked')
                     .closest('label')
                     .closest('.form-group')
                         .show()
@@ -163,6 +162,11 @@
                 $form.find('#organization_info .form-group').show();
             else
                 $form.find('#organization_info .form-group').hide();
+
+            if ($form.find('#become_member').is(':disabled'))
+                $form.find('#irreeel')
+                    .closest('.form-group')
+                        .show();
 
             $form.find('#conditions, #bakske')
                 .closest('.form-group')
