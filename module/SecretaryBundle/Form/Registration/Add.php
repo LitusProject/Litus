@@ -294,6 +294,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                     'name'    => 'identical',
                                     'options' => array(
                                         'token' => true,
+                                        'strict' => false,
                                         'messages' => array(
                                             Identical::NOT_SAME => 'You must agree to the terms and conditions.',
                                         ),
