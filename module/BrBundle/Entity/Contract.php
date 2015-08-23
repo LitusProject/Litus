@@ -455,7 +455,7 @@ class Contract
      *          With AA the $contractStartNb, x the personal number of the collaborator who created the contract and
      *          YYY the number of current contract.
      **/
-    public function getContractNb(EntityManager $entityManager)
+    public function getFullContractNumber(EntityManager $entityManager)
     {
         $academicYear = $entityManager
                 ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -468,6 +468,17 @@ class Contract
             )[$academicYear->getCode(true)];
 
         return $contractYearCode . $this->getAuthor()->getNumber() . str_pad($this->contractNb, 3, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * @return int
+     *
+     * @note    Returns the number of the current contract. This number is used to generate the full contract number.
+     *
+     **/
+    public function getContractNb()
+    {
+        return $this->contractNb;
     }
 
     /**

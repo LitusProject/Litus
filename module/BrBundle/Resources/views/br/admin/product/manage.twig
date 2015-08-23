@@ -35,6 +35,12 @@
                         <td> &euro; {{ (product.getPrice()/100) |number_format(2) }}</td>
                         <td>{{ product.getAuthor().getFullName() }}</td>
                         <td class="actions">
+                            {% if hasAccess('br_admin_product', 'companies') %}
+                                <a href="{{ url('br_admin_product', {"action": "companies", "id": product.getId()}) }}" class="view">Companies</a>
+                            {% endif %}
+                            {% if hasAccess('br_admin_product', 'companiescsv') %}
+                                <a href="{{ url('br_admin_product', {"action": "companiescsv", "id": product.getId()}) }}" class="view">Companies CSV</a>
+                            {% endif %}
                             {% if hasAccess('br_admin_product', 'edit') %}
                                 <a href="{{ url('br_admin_product', {"action": "edit", "id": product.getId()}) }}" class="edit">Edit</a>
                             {% endif %}

@@ -293,7 +293,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name'    => 'identical',
                                     'options' => array(
-                                        'token' => '1',
+                                        'token' => true,
+                                        'strict' => false,
                                         'messages' => array(
                                             Identical::NOT_SAME => 'You must agree to the terms and conditions.',
                                         ),
@@ -308,6 +309,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'name'  => 'receive_irreeel_at_cudi',
                     'label' => 'I want to receive my Ir.Reëel at CuDi',
                     'value' => true,
+                    'attributes' => array(
+                        'id' => 'irreeel',
+                    ),
                 ),
                 array(
                     'type'       => 'checkbox',
@@ -447,7 +451,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     public function getInputFilterSpecification()
     {
         $specs = parent::getInputFilterSpecification();
-
         if (null !== $this->metaData) {
             if (isset($specs['organization_info']['conditions'])) {
                 unset($specs['organization_info']['conditions']);
