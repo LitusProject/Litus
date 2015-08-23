@@ -41,7 +41,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(array(
             'type'     => 'text',
             'name'     => 'name',
-            'label'    => 'Copmany Name',
+            'label'    => 'Company Name',
             'required' => true,
             'options'  => array(
                 'input' => array(
@@ -153,7 +153,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 array(
                     'type'     => 'text',
                     'name'     => 'invoice_name',
-                    'label'    => 'Copmany Invoice Name',
+                    'label'    => 'Company Invoice Name',
                     'required' => false,
                     'options'  => array(
                         'input' => array(

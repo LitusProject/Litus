@@ -31,9 +31,9 @@ use BrBundle\Entity\Product,
 class OrderEntry extends EntityRepository
 {
     /**
-     * @param  EditOrder                               $order
-     * @param  Product                                 $product
-     * @return \BrBundle\Entity\Product\OrderEntr|null
+     * @param  EditOrder                                $order
+     * @param  Product                                  $product
+     * @return \BrBundle\Entity\Product\OrderEntry|null
      */
     public function findOneByOrderAndProduct(EditOrder $order, Product $product)
     {
@@ -59,8 +59,8 @@ class OrderEntry extends EntityRepository
     }
 
     /**
-     * @param  Product                                 $productId
-     * @return \BrBundle\Entity\Product\OrderEntr|null
+     * @param  Product                                  $productId
+     * @return \BrBundle\Entity\Product\OrderEntry|null
      */
     public function findOneByProductId($productId)
     {
@@ -79,5 +79,31 @@ class OrderEntry extends EntityRepository
         }
 
         return null;
+    }
+
+    /**
+     * @param  Product             $productId
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByProductIdQuery($productId)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+
+        return $query->select('o')
+            ->from('BrBundle\Entity\Product\OrderEntry', 'o')
+            ->where(
+                $query->expr()->eq('o.product', ':product')
+            )
+            ->setParameter('product', $productId)
+            ->getQuery();
+    }
+
+    /**
+     * @param  Product $productId
+     * @return array
+     */
+    public function findAllByProductId($productId)
+    {
+        return $this->findAllByProductIdQuery($productId)->getResult();
     }
 }
