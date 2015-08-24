@@ -14,17 +14,34 @@
             {{ translate('The removal of the vacancy was succesfully registered. This will be reviewed by our corporate relations team.') }}
         </div>
     </div>
+    <div class="flashmessage alert alert-danger fade" id="request_removed_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while removing request.') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-success fade" id="request_removed_success">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('The removal of the request was succesfully registered. This will be reviewed by our corporate relations team.') }}
+        </div>
+    </div>
 
-    <h1>{{ translate('Vacancy') }}</h1>
-
-    <p>
-        <a class="btn btn-success pull-right" href="{{ url('br_corporate_vacancy', {'action': 'add'}) }}" style="margin-bottom: 5px;">{{ translate('Add Item') }}</a>
-    </p>
     <div class="row">
+        <div class="col-md-6">
+            <h1 style="float:left;">{{ translate('Vacancies') }}</h1>
+            <div style="margin-top: 37px;"><strong>&nbsp;&nbsp;{{ translate('currently listed on our website') }}</div></strong>
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-success pull-right" href="{{ url('br_corporate_vacancy', {'action': 'add'}) }}" style="margin-bottom: 5px; margin-top: 20px;">{{ translate('Add Vacancy') }}</a>
+        </div>
+    </div>
+    <div class="row">
+        {% set onceDisabled = false %}
         <div class="col-md-12">
             <table class="table table-hover full-width">
                 {% for vacancy in paginator %}
-                    {% if not vacancy.canShow() == false %}
+                    {% if not vacancy.isApproved() == false %}
                         <tr>
                             <td width="120">
                                 <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">
@@ -45,10 +62,14 @@
                             </td>
                             <td width="230" style="vertical-align: middle;">
                                 <a class="btn btn-sm btn-info" href="{{ url('br_career_vacancy', {'action': 'view', 'id': vacancy.getId() }) }}">{{ translate('View') }}</a>
-                                <a class="btn btn-sm btn-primary" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': vacancy.getId()}) }}">{{ translate('Edit') }}</a>
-                                <a class="btn btn-sm btn-danger deleteVacancy" data-id="{{ vacancy.getId() }}" href="#">{{ translate('Delete') }}</a>
+                                {% set disabled =  ((unfinishedRequests[vacancy.getId()] == 'delete' or unfinishedRequests[vacancy.getId()] == 'edit') or unfinishedRequests[vacancy.getId()] == 'edit reject') %}
+                                <a class="btn btn-sm btn-primary {% if disabled == true %}disabled{% endif %}" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': vacancy.getId()}) }}">{{ translate('Edit') }}</a>
+                                <a class="btn btn-sm btn-danger deleteVacancy {% if disabled == true %}disabled{% endif %}" data-id="{{ vacancy.getId() }}" href="#">{{ translate('Delete') }}</a>
+                                {% if disabled == true %} {% set onceDisabled = true %}{% endif %}
                             </td>
+
                         </tr>
+
                     {% endif %}
                 {% else %}
                     <div class="flashmessage alert alert-warning fade in">
@@ -60,7 +81,67 @@
 
             {% include 'site/partials/paginationControl.twig' %}
         </div>
+        {% if onceDisabled == true %}
+            <div class="flashmessage alert alert-warning fade in">
+                <a class="close" data-dismiss="alert">&times;</a>
+                {{ translate('You can only edit or delete when there are no pending or rejectjed requests. Edit or delete the requests if you want to make changes.') }}
+            </div>
+        {% endif %}
     </div>
+    {% if not requests is empty %}
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ translate('Requests') }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            {% set onceRejected = false %}
+            {% set oncePending = false %}
+            <div class="col-md-12">
+                <table class="table table-hover full-width">
+                    {% for request in requests %}
+                        {% if request.getStatus() == 'rejected' %}{% set onceRejected = true %}{% endif %}
+                        {% if request.getStatus() == 'pending' %}{% set oncePending = true %}{% endif %}
+                        <tr>
+                            <td width="200">
+                                <strong>{{ translate('Type: ' ~ request.getRequestType()) }}</strong>
+                                <br/><br/>
+                                <strong>{{ translate('Status: ' ~ request.getStatus()) }}</strong>
+                            </td>
+                            <td>
+                                <strong>{{ request.getJob().getCompany().getName() }} - {{ request.getJob().getName() }}</strong>
+                                <br/>
+                                <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(request.getJob().getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
+                                <br/>
+                                {% if request.getStatus() == 'rejected' %}
+                                    <font color="red">{{ request.getRejectMessage()|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</font>
+                                {% else %}
+                                    {{ request.getJob().getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+                                {% endif %}
+                            </td>
+                            <td width="230" style="vertical-align: middle;">
+                                <a class="btn btn-sm btn-info" href="{{ url('br_career_vacancy', {'action': 'view', 'id': request.getJob().getId() }) }}">{{ translate('View') }}</a>
+                                <a class="btn btn-sm btn-primary" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': request.getJob().getId()}) }}">{{ translate('Edit') }}</a>
+                                <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getJob().getId() }}" href="#">{{ translate('Delete') }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% if onceRejected == true %}
+                <div class="flashmessage alert alert-warning fade in">
+                    <a class="close" data-dismiss="alert">&times;</a>
+                    {{ translate('You have one or more rejected requests. Edit the requests if you want to ask for approval again, or delete them if you don\'t need them anymore.') }}
+                </div>
+            {% endif %}
+            {% if oncePending == true %}
+                <div class="flashmessage alert alert-warning fade in">
+                    <a class="close" data-dismiss="alert">&times;</a>
+                    {{ translate('You have one or more pending requests. We will handle these as fast as possible. Edit the requests if you want to make more changes, or delete them if you don\'t need them anymore.') }}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
 
     <div id="modalDeleteVacancy" class="modal fade">
         <div class="modal-dialog">
@@ -79,6 +160,24 @@
             </div>
         </div>
     </div>
+
+    <div id="modalDeleteRequest" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Remove request') }}</h4>
+                </div>
+                <div class="modal-body">
+                    {{ translate('Are you sure that you want to remove this request') }}?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -89,6 +188,7 @@
             });
 
             $('.deleteVacancy').click(openRemoveVacancy);
+            $('.deleteRequest').click(openRemoveRequest);
         });
 
         function openRemoveVacancy(e) {
@@ -103,6 +203,7 @@
                         $('#vacancy_removed_success').addClass('in');
                         $this.parent().parent().remove();
                         deleteVacancy.modal('hide');
+                        location.reload();
                     } else {
                         errorDeleteVacancy();
                     }
@@ -111,10 +212,37 @@
             deleteVacancy.modal();
         }
 
+        function openRemoveRequest(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var deleteRequest = $('#modalDeleteRequest');
+            deleteRequest.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('br_corporate_vacancy', {"action": "deleteRequest"})}}' + $this.data('id'), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#request_removed_success').addClass('in');
+                        $this.parent().parent().remove();
+                        deleteRequest.modal('hide');
+                        location.reload();
+                    } else {
+                        errorDeleteRequest();
+                    }
+                }, 'json').error(errorDeleteRequest);
+            });
+            deleteRequest.modal();
+        }
+
         function errorDeleteVacancy() {
             $('.flashmessage').removeClass('in');
             $('#vacancy_removed_error').addClass('in');
             $('#modalDeleteVacancy').modal('hide');
+        }
+
+        function errorDeleteRequest() {
+            $('.flashmessage').removeClass('in');
+            $('#request_removed_error').addClass('in');
+            $('#modalDeleteRequest').modal('hide');
         }
     </script>
 {% endblock %}

@@ -135,6 +135,13 @@ class Job
     private $approved;
 
     /**
+     * @var boolean If this job has been removed.
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $removed;
+
+    /**
      * @static
      * @var array All the possible types allowed
      */
@@ -152,6 +159,7 @@ class Job
         $this->type = $type;
         $this->company = $company;
         $this->dateUpdated = new DateTime();
+        $this->removed = false;
     }
 
     /**
@@ -177,9 +185,9 @@ class Job
     /**
      * @return self
      */
-    public function removed()
+    public function remove()
     {
-        $this->approved = false;
+        $this->removed = true;
 
         return $this;
     }
@@ -187,7 +195,15 @@ class Job
     /**
      * @return bool
      */
-    public function canShow()
+    public function isRemoved()
+    {
+        return $this->removed;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isApproved()
     {
         if (null === $this->approved) {
             return true;

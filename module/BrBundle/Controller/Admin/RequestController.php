@@ -78,24 +78,39 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $request->rejectRequest();
-        $request->handled();
+        $form = $this->getForm('br_admin_request_reject');
 
-        $this->getEntityManager()->flush();
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
-        $this->flashMessenger()->success(
-            'Success',
-            'The request was succesfully rejected.'
-        );
+            if ($form->isValid()) {
+                $formData = $form->getData();
 
-        $this->redirect()->toRoute(
-            'br_admin_request',
+                $request->rejectRequest($formData['reject_reason']);
+                $request->handled();
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The request was succesfully rejected.'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_request',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
             array(
-                'action' => 'manage',
-            )
-        );
-
-        return new ViewModel();
+                'form' => $form,
+                'request' => $request,
+            ));
     }
 
     /**

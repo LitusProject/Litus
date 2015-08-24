@@ -49,11 +49,32 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
 
+        $unhandledRequests = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+            ->findAllUnhandledByCompany($person->getCompany());
+
+        $handledRejects = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+            ->findRejectsByCompany($person->getCompany());
+
+        $requests = array_merge($handledRejects, $unhandledRequests);
+
+        $unfinishedRequestsJobs = array();
+        foreach ($requests as $request) {
+            if ($request->getRequestType() == 'edit' || $request->getRequestType() == 'edit reject') {
+                $unfinishedRequestsJobs[$request->getEditJob()->getId()] = $request->getRequestType();
+            } else {
+                $unfinishedRequestsJobs[$request->getJob()->getId()] = $request->getRequestType();
+            }
+        }
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'logoPath' => $logoPath,
+                'requests' => $requests,
+                'unfinishedRequests' => $unfinishedRequestsJobs,
             )
         );
     }
@@ -124,17 +145,36 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $job = $form->hydrateObject(
-                    new Job($person->getCompany(), 'vacancy')
-                );
+                if ($oldJob->isApproved()) {
+                    $job = $form->hydrateObject(
+                        new Job($person->getCompany(), 'vacancy')
+                    );
+                    $job->pending();
+                    $this->getEntityManager()->persist($job);
 
-                $job->pending();
+                    $request = new RequestVacancy($job, 'edit', $person, $oldJob);
+                    $this->getEntityManager()->persist($request);
+                } else {
+                    $job = $form->hydrateObject($oldJob);
+                    $this->getEntityManager()->persist($job);
 
-                $this->getEntityManager()->persist($job);
+                    $unhandledRequest = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+                        ->findUnhandledRequestsByJob($oldJob);
 
-                $request = new RequestVacancy($job, 'edit', $person, $oldJob);
+                    if (empty($unhandledRequest)) {
+                        $oldRequest = $this->getEntityManager()
+                            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+                            ->findOneByJob($oldJob->getId());
 
-                $this->getEntityManager()->persist($request);
+                        $request = new RequestVacancy($job, 'edit reject', $person, $oldRequest->getEditJob());
+                        $this->getEntityManager()->persist($request);
+
+                        if (isset($oldRequest)) {
+                            $this->getEntityManager()->remove($oldRequest);
+                        }
+                    }
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -174,6 +214,26 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         $request = new RequestVacancy($vacancy, 'delete', $person);
 
         $this->getEntityManager()->persist($request);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function deleteRequestAction()
+    {
+        if (!($vacancy = $this->getVacancyEntity())) {
+            return new ViewModel();
+        }
+
+        $request = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+            ->findOneByJob($vacancy->getId());
+
+        $this->getEntityManager()->remove($request);
         $this->getEntityManager()->flush();
 
         return new ViewModel(

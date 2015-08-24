@@ -39,4 +39,6 @@ return array(
     'So just look around and you might just find what you are looking for!' => 'So just look around and you might just find what you are looking for!',
 
     'No items found' => 'No items found',
+    'This vacancy is not yet on publicly visible. It will be after it is approved by an admin.' => 'This vacancy is not yet on publicly visible. It will be after it is approved by an admin.',
+    'This internship is not yet on publicly visible. It will be after it is approved by an admin.' => 'This internship is not yet on publicly visible. It will be after it is approved by an admin.',
 );

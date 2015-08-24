@@ -48,11 +48,32 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
 
+        $unhandledRequests = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+            ->findAllUnhandledByCompany($person->getCompany());
+
+        $handledRejects = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+            ->findRejectsByCompany($person->getCompany());
+
+        $requests = array_merge($handledRejects, $unhandledRequests);
+
+        $unfinishedRequestsJobs = array();
+        foreach ($requests as $request) {
+            if ($request->getRequestType() == 'edit' || $request->getRequestType() == 'edit reject') {
+                $unfinishedRequestsJobs[$request->getEditJob()->getId()] = $request->getRequestType();
+            } else {
+                $unfinishedRequestsJobs[$request->getJob()->getId()] = $request->getRequestType();
+            }
+        }
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'logoPath' => $logoPath,
+                'requests' => $requests,
+                'unfinishedRequests' => $unfinishedRequestsJobs,
             )
         );
     }
@@ -123,17 +144,36 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $job = $form->hydrateObject(
-                    new Job($person->getCompany(), 'internship')
-                );
+                if ($oldJob->isApproved()) {
+                    $job = $form->hydrateObject(
+                        new Job($person->getCompany(), 'internship')
+                    );
+                    $job->pending();
+                    $this->getEntityManager()->persist($job);
 
-                $job->pending();
+                    $request = new RequestInternship($job, 'edit', $person, $oldJob);
+                    $this->getEntityManager()->persist($request);
+                } else {
+                    $job = $form->hydrateObject($oldJob);
+                    $this->getEntityManager()->persist($job);
 
-                $this->getEntityManager()->persist($job);
+                    $unhandledRequest = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+                        ->findUnhandledRequestsByJob($oldJob);
 
-                $request = new RequestInternship($job, 'edit', $person, $oldJob);
+                    if (empty($unhandledRequest)) {
+                        $oldRequest = $this->getEntityManager()
+                            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+                            ->findOneByJob($oldJob->getId());
 
-                $this->getEntityManager()->persist($request);
+                        $request = new RequestVacancy($job, 'edit reject', $person, $oldRequest->getEditJob());
+                        $this->getEntityManager()->persist($request);
+
+                        if (isset($oldRequest)) {
+                            $this->getEntityManager()->remove($oldRequest);
+                        }
+                    }
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -173,6 +213,26 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         $request = new RequestInternship($internship, 'delete', $person);
 
         $this->getEntityManager()->persist($request);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function deleteRequestAction()
+    {
+        if (!($internship = $this->getInternshipEntity())) {
+            return new ViewModel();
+        }
+
+        $request = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+            ->findOneByJob($internship->getId());
+
+        $this->getEntityManager()->remove($request);
         $this->getEntityManager()->flush();
 
         return new ViewModel(

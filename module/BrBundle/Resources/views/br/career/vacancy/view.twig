@@ -1,6 +1,16 @@
 {% extends 'career/partials/layout.twig' %}
 
 {% block page_content %}
+    {% if not vacancy.isApproved() %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="flashmessage alert alert-warning fade in">
+                    <a class="close" data-dismiss="alert">&times;</a>
+                    {{ translate('This vacancy is not yet on publicly visible. It will be after it is approved by an admin.') }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
     <div class="row">
         <div class="col-sm-2">
             {% if vacancy.getCompany().getPage().hasYear(currentAcademicYear) %}

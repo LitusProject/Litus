@@ -46,7 +46,8 @@ class Job extends EntityRepository
                     $query->expr()->eq('v.type', ':type'),
                     $query->expr()->eq('v.id', ':id'),
                     $query->expr()->gt('v.endDate', ':now'),
-                    $query->expr()->eq('c.active', 'true')
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.removed', 'FALSE')
                 )
             )
             ->setParameter('id', $id)
@@ -69,7 +70,11 @@ class Job extends EntityRepository
         $resultSet = $query->select('v')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->where(
-                $query->expr()->eq('v.company', ':company')
+                $query->expr()->andx(
+                    $query->expr()->eq('v.company', ':company'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
+                )
             )
             ->setParameter('company', $company->getId())
             ->orderBy('v.type', 'ASC')
@@ -92,7 +97,9 @@ class Job extends EntityRepository
                 $query->expr()->andx(
                     $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
-                    $query->expr()->eq('c.active', 'true')
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
                 )
             )
             ->setParameter('type', $type)
@@ -118,7 +125,9 @@ class Job extends EntityRepository
                 $query->expr()->andx(
                     $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
-                    $query->expr()->eq('c.active', 'true')
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
                 )
             )
             ->setParameter('type', $type)
@@ -143,7 +152,9 @@ class Job extends EntityRepository
                 $query->expr()->andx(
                     $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
-                    $query->expr()->eq('c.active', 'true')
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
                 )
             )
             ->setParameter('type', $type)
@@ -170,7 +181,9 @@ class Job extends EntityRepository
                     $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
-                    $query->expr()->eq('v.sector', ':sector')
+                    $query->expr()->eq('v.sector', ':sector'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
                 )
             )
             ->setParameter('type', $type)
@@ -198,7 +211,9 @@ class Job extends EntityRepository
                     $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
-                    $query->expr()->eq('v.sector', ':sector')
+                    $query->expr()->eq('v.sector', ':sector'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
                 )
             )
             ->setParameter('type', $type)
@@ -227,7 +242,9 @@ class Job extends EntityRepository
                     $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
-                    $query->expr()->eq('v.sector', ':sector')
+                    $query->expr()->eq('v.sector', ':sector'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
                 )
             )
             ->setParameter('type', $type)
@@ -253,7 +270,9 @@ class Job extends EntityRepository
                 $query->expr()->andx(
                     $query->expr()->eq('v.company', ':company'),
                     $query->expr()->eq('v.type', ':type'),
-                    $query->expr()->gt('v.endDate', ':now')
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
                 )
             )
             ->setParameter('type', $type)

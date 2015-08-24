@@ -33,21 +33,23 @@
 
             <tbody>
                 {% for job in paginator %}
-                    <tr class="item item-{{ job.getId() }}">
-                        <td>{{ job.getName() }}</td>
-                        <td>{% autoescape false %}{{ job.getSummaryStriped() }}{% endautoescape %}</td>
-                        <td>{{ job.getTypeName() }}</td>
-                        <td class="actions">
-                            <ul>
-                                {% if hasAccess('br_admin_company_job', 'delete') %}
-                                    <li><a href="#" class="delete" data-id="{{ job.getId() }}" data-name="{{ job.getName() }}">Delete</a></li>
-                                {% endif %}
-                                {% if hasAccess('br_admin_company_job', 'edit') %}
-                                    <li><a href="{{ url('br_admin_company_job', {"action": "edit", "id": job.getId()}) }}" class="edit">Edit</a></li>
-                                {% endif %}
-                            </ul>
-                        </td>
-                    </tr>
+                    {% if not job.isRemoved() and job.isApproved() %}
+                        <tr class="item item-{{ job.getId() }}">
+                            <td>{{ job.getName() }}</td>
+                            <td>{% autoescape false %}{{ job.getSummaryStriped() }}{% endautoescape %}</td>
+                            <td>{{ job.getTypeName() }}</td>
+                            <td class="actions">
+                                <ul>
+                                    {% if hasAccess('br_admin_company_job', 'delete') %}
+                                        <li><a href="#" class="delete" data-id="{{ job.getId() }}" data-name="{{ job.getName() }}">Delete</a></li>
+                                    {% endif %}
+                                    {% if hasAccess('br_admin_company_job', 'edit') %}
+                                        <li><a href="{{ url('br_admin_company_job', {"action": "edit", "id": job.getId()}) }}" class="edit">Edit</a></li>
+                                    {% endif %}
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>
