@@ -35,7 +35,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                "canReserve" => $canReserve,
+                'canReserve' => $canReserve,
             )
         );
     }
@@ -46,7 +46,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                "canReserve" => $canReserve,
+                'canReserve' => $canReserve,
             )
         );
     }
@@ -58,7 +58,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                "canReserve" => $canReserve,
+                'canReserve' => $canReserve,
             )
         );
     }

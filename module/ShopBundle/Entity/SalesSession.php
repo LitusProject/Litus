@@ -60,16 +60,11 @@ class SalesSession
     private $reservationsPossible;
 
     /**
-     * @param datetime $startDate
-     * @param datetime $endDate
-     * @param datetime $reservationsPossible
+     * @var string Remarks for this sales session
+     *
+     * @ORM\Column(type="text")
      */
-    public function __construct($startDate, $endDate, $reservationsPossible)
-    {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->reservationsPossible = $reservationsPossible;
-    }
+    private $remarks;
 
     /**
      * @return integer
@@ -134,5 +129,22 @@ class SalesSession
     public function getReservationsPossible()
     {
         return $this->reservationsPossible;
+    }
+
+    /**
+     * @param  string $remarks
+     * @return self
+     */
+    public function setRemarks($remarks)
+    {
+        $this->remarks = $remarks;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemarks()
+    {
+        return $this->remarks;
     }
 }

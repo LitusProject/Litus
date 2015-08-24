@@ -25,4 +25,17 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class SalesSession extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllFutureQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('ShopBundle\Entity\SalesSession', 's')
+            ->orderBy('s.startDate', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

@@ -182,6 +182,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
             $item->id = $product->getId();
             $item->name = $product->getName();
             $item->sellPrice = $product->getSellPrice();
+            $item->available = $product->getAvailable();
 
             $result[] = $item;
         }

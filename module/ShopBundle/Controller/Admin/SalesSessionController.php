@@ -18,11 +18,29 @@
 
 namespace ShopBundle\Controller\Admin;
 
+use Zend\View\Model\ViewModel;
+
 /**
- * OpeningDayController
+ * SalesSessionController
  *
  * @author Floris Kint <floris.kint@litus.cc>
  */
 class SalesSessionController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
+    public function manageAction()
+    {
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('ShopBundle\Entity\SalesSession')
+                ->findAllFutureQuery(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
 }

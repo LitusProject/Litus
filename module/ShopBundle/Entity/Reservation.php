@@ -53,7 +53,7 @@ class Reservation
     private $amount;
 
     /**
-     * @var integer The id of the sales session for which this reservation was made
+     * @var SalesSession The id of the sales session for which this reservation was made
      *
      * @ORM\ManyToOne(targetEntity="ShopBundle\Entity\SalesSession")
      * @ORM\JoinColumn(name="session", referencedColumnName="id")
@@ -79,6 +79,7 @@ class Reservation
      * @param Product      $product
      * @param int          $amount
      * @param SalesSession $salesSession
+     * @param Person       $person
      */
     public function __construct(Product $product, $amount, SalesSession $salesSession, Person $person)
     {
@@ -109,7 +110,7 @@ class Reservation
     }
 
     /**
-     * @return string
+     * @return Product
      */
     public function getProduct()
     {

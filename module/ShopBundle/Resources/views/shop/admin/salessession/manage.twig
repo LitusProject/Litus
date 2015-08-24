@@ -1,28 +1,28 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'shop/admin/product/partials/navigation.twig' %}
+    {% include 'shop/admin/salessession/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
-    <div class="flashmessage success_message full_width product_removed_success hide">
+    <div class="flashmessage success_message full_width session_removed_success hide">
         <div class="title">Success</div>
         <div class="content">
-            <p>The product was successfully removed!</p>
+            <p>The session was successfully removed!</p>
         </div>
     </div>
-    <div class="flashmessage error_message full_width product_removed_error hide">
+    <div class="flashmessage error_message full_width session_removed_error hide">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while trying to delete the product.</p>
+            <p>An error occurred while trying to delete the session.</p>
         </div>
     </div>
 
     <div id="controller_action">
-        <div id="product_search" style="display: none;">
+        <div id="session_search" style="display: none;">
             <div style="padding: 4px; text-align: right">
                 Search:
                 <select id="searchField">
-                    <option value="name">Name</option>
+                    <option value="name">Date</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30"/>
@@ -30,9 +30,10 @@
 
             <table class="full_width manage">
                 <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Available</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Remarks</th>
+                    <th>Reservations possible</th>
                     <th width="70px">Actions</th>
                 </tr>
             </table>
@@ -41,24 +42,27 @@
         <div id="default_page">
             <table class="full_width manage">
                 <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Available</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Remarks</th>
+                    <th>Reservations possible</th>
                     <th width="70px">Actions</th>
                 </tr>
 
-                {% for product in paginator %}
-                    <tr class="item item-{{ product.getId() }}">
-                        <td>{{ product.getName() }}</td>
-                        <td>{{ product.getSellPrice() }}</td>
-                        <td><input type="checkbox" {% if product.getAvailable() %}checked{% endif %} }} disabled/></td>
+                {% for session in paginator %}
+                    <tr class="item item-{{ session.getId() }}">
+                        <td>{{ session.getStartTime() }}</td>
+                        <td>{{ session.getEndTime() }}</td>
+                        <td><input type="checkbox" {% if session.getReservationsPossible() %}checked{% endif %} }}
+                                   disabled/></td>
                         <td class="actions">
-                            {% if hasAccess('shop_admin_shop_product', 'edit') %}
-                                <a href="{{ url('shop_admin_shop_product', {"action": "edit", "id": product.getId()}) }}"
+                            {% if hasAccess('shop_admin_shop_session', 'edit') %}
+                                <a href="{{ url('shop_admin_shop_session', {"action": "edit", "id": session.getId()}) }}"
                                    class="edit">Edit</a>
                             {% endif %}
-                            {% if hasAccess('shop_admin_shop_product', 'delete') %}
-                                <a href="#" data-id="{{ product.getId() }}" data-name="{{ product.getName() }}"
+                            {% if hasAccess('shop_admin_shop_session', 'delete') %}
+                                <a href="#" data-id="{{ session.getId() }}" data-start="{{ session.getStartTime() }}"
+                                   data-end="{{ session.getEndTime() }}"
                                    class="delete">Delete</a>
                             {% endif %}
                         </td>
@@ -70,16 +74,16 @@
         </div>
     </div>
 
-    <div class="modal fade" id="removeProduct" tabindex="-1">
+    <div class="modal fade" id="removeSession" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <span>Litus Admin</span>
-                    /Delete Product
+                    /Delete Session
                 </div>
                 <div class="modal-body">
                     <p>
-                        You are about to delete the product with the following name: <b class="name"></b>?
+                        You are about to delete the following sales session: <b class="name"></b>?
                         Please note that this operation cannot be undone!
                     </p>
 
@@ -100,38 +104,39 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if hasAccess('shop_admin_shop_product', 'search') %}
+            {% if hasAccess('shop_admin_shop_session', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
-                searchDiv: $('#product_search'),
+                searchDiv: $('#session_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('shop_admin_shop_product', {'action': 'manage'}) }}manage/',
-                url: '{{ url('shop_admin_shop_product', {'action': 'search'}) }}',
+                searchPage: '{{ url('shop_admin_shop_session', {'action': 'manage'}) }}manage/',
+                url: '{{ url('shop_admin_shop_session', {'action': 'search'}) }}',
                 display: function (data) {
-                    $('#product_search table').find('tr.item').remove();
+                    $('#session_search table').find('tr.item').remove();
                     $(data).each(function () {
-                        $('#product_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
-                        row.append('<td>' + this.name + '</td>')
-                                .append('<td>' + this.sellPrice + '</td>')
+                        $('#session_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.startDate + '</td>')
+                                .append('<td>' + this.endDate + '</td>')
+                                .append('<td>' + this.remarks + '</td>')
                                 .append($('<td>')
                                         .append($('<input>', {type: "checkbox"})
-                                                .attr('checked', this.available)))
+                                                .attr('checked', this.reservationsPossible)))
                                 .append(
                                 $('<td>', {'class': 'actions'})
-                                        .append('<a href="{{ url('shop_admin_shop_product', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                                        .append('<a href="{{ url('shop_admin_shop_session', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
                                         .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
                         );
                         deleteButton.data({
                             id: this.id,
-                            fullName: this.name
+                            fullName: this.startDate+" - "+this.endDate
                         });
                     });
-                    $('#product_search .delete').click(openModal);
-                    $('#product_search table').change();
+                    $('#session_search .delete').click(openModal);
+                    $('#session_search table').change();
                 },
                 clear: function () {
-                    $('#product_search table').find('tr.item').remove();
+                    $('#session_search table').find('tr.item').remove();
                 }
             });
             {% endif %}
@@ -142,31 +147,31 @@
         function openModal(e) {
             var $this = $(this);
             e.preventDefault();
-            var removeProduct = $('#removeProduct');
-            removeProduct.find('.name').html($(this).data('name'));
-            removeProduct.find('.cancel').one('click', function () {
-                removeProduct.modal('hide');
+            var removeSession = $('#removeSession');
+            removeSession.find('.name').html($(this).data('name'));
+            removeSession.find('.cancel').one('click', function () {
+                removeSession.modal('hide');
             });
             var id = $this.data('id');
-            removeProduct.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('shop_admin_shop_product', {"action": "delete"})}}' + id, function (data) {
+            removeSession.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('shop_admin_shop_session', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
-                        $('.product_removed_success').removeClass('hide');
+                        $('.session_removed_success').removeClass('hide');
                         $('.item-' + id).remove();
-                        removeProduct.modal('hide');
+                        removeSession.modal('hide');
                     } else {
                         errorRemove();
                     }
                 }, 'json').error(errorRemove);
             });
-            removeProduct.modal();
+            removeSession.modal();
         }
 
         function errorRemove() {
             $('.flashmessage').addClass('hide');
-            $('.product_removed_error').removeClass('hide');
-            $('#removeProduct').modal('hide');
+            $('.session_removed_error').removeClass('hide');
+            $('#removeSession').modal('hide');
         }
     </script>
 {% endblock %}
