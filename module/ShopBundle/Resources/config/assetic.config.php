@@ -38,12 +38,16 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'shop_admin_shop_openingday' => array(
+        'shop_admin_shop_salessession' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@common_jqueryui',
+            '@common_jqueryui_datepicker',
+            '@common_jqueryui_css',
+            '@common_jqueryui_datepicker_css',
         ),
         'shop_admin_shop_reservation' => array(
             '@common_jquery',

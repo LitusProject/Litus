@@ -16,44 +16,46 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace ShopBundle\Form\Admin\Product;
+namespace ShopBundle\Form\Admin\SalesSession;
 
 use LogicException,
-    ShopBundle\Entity\Product;
+    ShopBundle\Entity\SalesSession;
 
 /**
- * Edit Product
+ * Edit SalesSession
  *
  * @author Floris Kint <floris.kint@litus.cc>
  */
 class Edit extends Add
 {
     /**
-	 * @var Product The product to edit.
+	 * @var SalesSession The session to edit.
 	 */
-    private $product;
+    private $salesSession;
 
     public function init()
     {
-        if (null === $this->product) {
+        if (null === $this->salesSession) {
             throw new LogicException('Cannot edit a null shift');
         }
 
         parent::init();
 
-        $this->remove('submit')
-            ->addSubmit('Save', 'product_edit');
+        $this->remove('duplicate_weeks')
+            ->remove('duplicate_days')
+            ->remove('session_add')
+            ->addSubmit('Save', 'session_edit');
 
-        $this->bind($this->product);
+        $this->bind($this->salesSession);
     }
 
     /**
-	 * @param  Product $product
+	 * @param  SalesSession $salesSession
 	 * @return self
 	 */
-    public function setProduct(Product $product)
+    public function setSalesSession(SalesSession $salesSession)
     {
-        $this->product = $product;
+        $this->salesSession = $salesSession;
 
         return $this;
     }

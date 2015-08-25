@@ -52,12 +52,13 @@ return array(
         'shop_admin_shop_salessession' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/shop/salessession[/:action[/:id][/type/:type][/page/:page]][/]',
+                'route' => '/admin/shop/salessession[/:action[/:id][:field[/:string]][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id' => '[0-9]*',
-                    'type' => '[a-zA-Z]*',
                     'page' => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'shop_admin_shop_salessession',
