@@ -23,7 +23,7 @@
     <div class="flashmessage alert alert-success fade" id="request_removed_success">
         <a class="close">&times;</a>
         <div class="content">
-            {{ translate('The removal of the request was succesfully registered. This will be reviewed by our corporate relations team.') }}
+            {{ translate('The removal of the request was succesfully registered.') }}
         </div>
     </div>
 
@@ -104,9 +104,9 @@
                         {% if request.getStatus() == 'pending' %}{% set oncePending = true %}{% endif %}
                         <tr>
                             <td width="200">
-                                <strong>{{ translate('Type: ' ~ request.getRequestType()) }}</strong>
+                                Type: <strong>{{ translate(request.getRequestType()) }}</strong>
                                 <br/><br/>
-                                <strong>{{ translate('Status: ' ~ request.getStatus()) }}</strong>
+                                Status: <strong>{{ translate(request.getStatus()) }}</strong>
                             </td>
                             <td>
                                 <strong>{{ request.getJob().getCompany().getName() }} - {{ request.getJob().getName() }}</strong>
@@ -121,8 +121,10 @@
                             </td>
                             <td width="230" style="vertical-align: middle;">
                                 <a class="btn btn-sm btn-info" href="{{ url('br_career_vacancy', {'action': 'view', 'id': request.getJob().getId() }) }}">{{ translate('View') }}</a>
-                                <a class="btn btn-sm btn-primary" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': request.getJob().getId()}) }}">{{ translate('Edit') }}</a>
-                                <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getJob().getId() }}" href="#">{{ translate('Delete') }}</a>
+                                {% if not (request.getRequestType() == 'delete') %}
+                                    <a class="btn btn-sm btn-primary" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': request.getJob().getId()}) }}">{{ translate('Edit') }}</a>
+                                {% endif %}
+                                <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getId() }}" href="#">{{ translate('Delete') }}</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -201,7 +203,6 @@
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#vacancy_removed_success').addClass('in');
-                        $this.parent().parent().remove();
                         deleteVacancy.modal('hide');
                         location.reload();
                     } else {
@@ -222,7 +223,6 @@
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#request_removed_success').addClass('in');
-                        $this.parent().parent().remove();
                         deleteRequest.modal('hide');
                         location.reload();
                     } else {

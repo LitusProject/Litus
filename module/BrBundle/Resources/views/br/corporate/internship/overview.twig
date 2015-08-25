@@ -23,7 +23,7 @@
     <div class="flashmessage alert alert-success fade" id="request_removed_success">
         <a class="close">&times;</a>
         <div class="content">
-            {{ translate('The removal of the request was succesfully registered. This will be reviewed by our corporate relations team.') }}
+            {{ translate('The removal of the request was succesfully registered.') }}
         </div>
     </div>
 
@@ -62,7 +62,7 @@
                         </td>
                         <td width="230" style="vertical-align: middle;">
                             <a class="btn btn-sm btn-info" href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">{{ translate('View') }}</a>
-                            {% set disabled =  ((unfinishedRequests[vacancy.getId()] == 'delete' or unfinishedRequests[vacancy.getId()] == 'edit') or unfinishedRequests[vacancy.getId()] == 'edit reject') %}
+                            {% set disabled =  ((unfinishedRequests[internship.getId()] == 'delete' or unfinishedRequests[internship.getId()] == 'edit') or unfinishedRequests[internship.getId()] == 'edit reject') %}
                             <a class="btn btn-sm btn-primary {% if disabled == true %}disabled{% endif %}" href="{{ url('br_corporate_internship', {'action': 'edit', 'id': internship.getId()}) }}">{{ translate('Edit') }}</a>
                             <a class="btn btn-sm btn-danger deleteInternship {% if disabled == true %}disabled{% endif %}" data-id="{{ internship.getId() }}" href="#">{{ translate('Delete') }}</a>
                             {% if disabled == true %} {% set onceDisabled = true %}{% endif %}
@@ -101,9 +101,9 @@
                         {% if request.getStatus() == 'pending' %}{% set oncePending = true %}{% endif %}
                         <tr>
                             <td width="200">
-                                <strong>{{ translate('Type: ' ~ request.getRequestType()) }}</strong>
+                                Type: <strong>{{ translate(request.getRequestType()) }}</strong>
                                 <br/><br/>
-                                <strong>{{ translate('Status: ' ~ request.getStatus()) }}</strong>
+                                Status: <strong>{{ translate(request.getStatus()) }}</strong>
                             </td>
                             <td>
                                 <strong>{{ request.getJob().getCompany().getName() }} - {{ request.getJob().getName() }}</strong>
@@ -117,9 +117,11 @@
                                 {% endif %}
                             </td>
                             <td width="230" style="vertical-align: middle;">
-                                <a class="btn btn-sm btn-info" href="{{ url('br_career_vacancy', {'action': 'view', 'id': request.getJob().getId() }) }}">{{ translate('View') }}</a>
-                                <a class="btn btn-sm btn-primary" href="{{ url('br_corporate_vacancy', {'action': 'edit', 'id': request.getJob().getId()}) }}">{{ translate('Edit') }}</a>
-                                <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getJob().getId() }}" href="#">{{ translate('Delete') }}</a>
+                                <a class="btn btn-sm btn-info" href="{{ url('br_career_internship', {'action': 'view', 'id': request.getJob().getId() }) }}">{{ translate('View') }}</a>
+                                {% if not (request.getRequestType() == 'delete') %}
+                                    <a class="btn btn-sm btn-primary" href="{{ url('br_corporate_internship', {'action': 'edit', 'id': request.getJob().getId()}) }}">{{ translate('Edit') }}</a>
+                                {% endif %}
+                                <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getId() }}" href="#">{{ translate('Delete') }}</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -184,6 +186,7 @@
             });
 
             $('.deleteInternship').click(openRemoveInternship);
+            $('.deleteRequest').click(openRemoveRequest);
         });
 
         function openRemoveInternship(e) {
@@ -196,8 +199,8 @@
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#internship_removed_success').addClass('in');
-                        $this.parent().parent().remove();
                         deleteInternship.modal('hide');
+                        location.reload();
                     } else {
                         errordeleteInternship();
                     }
@@ -212,11 +215,10 @@
             e.preventDefault();
             var deleteRequest = $('#modalDeleteRequest');
             deleteRequest.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('br_corporate_vacancy', {"action": "deleteRequest"})}}' + $this.data('id'), function (data) {
+                $.post('{{ url('br_corporate_internship', {"action": "deleteRequest"})}}' + $this.data('id'), function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#request_removed_success').addClass('in');
-                        $this.parent().parent().remove();
                         deleteRequest.modal('hide');
                         location.reload();
                     } else {

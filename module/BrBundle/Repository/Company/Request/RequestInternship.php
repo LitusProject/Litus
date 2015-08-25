@@ -18,7 +18,9 @@
 
 namespace BrBundle\Repository\Company\Request;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Company as CompanyEntity,
+    BrBundle\Entity\Company\Job as JobEntity,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * RequestInternship
@@ -52,7 +54,7 @@ class RequestInternship extends EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('r')
-            ->from('BrBundle\Entity\Company\Request\RequestVacancy', 'r')
+            ->from('BrBundle\Entity\Company\Request\RequestInternship', 'r')
             ->innerJoin('r.job', 'v')
             ->where(
                 $query->expr()->andx(

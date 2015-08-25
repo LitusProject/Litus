@@ -49,15 +49,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
 
-        $unhandledRequests = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
-            ->findAllUnhandledByCompany($person->getCompany());
-
-        $handledRejects = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
-            ->findRejectsByCompany($person->getCompany());
-
-        $requests = array_merge($handledRejects, $unhandledRequests);
+        $requests = $this->getOpenRequests($person->getCompany());
 
         $unfinishedRequestsJobs = array();
         foreach ($requests as $request) {
@@ -138,6 +130,26 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             return new ViewModel();
         }
 
+        $requests = $this->getOpenRequests($person->getCompany());
+
+        $unfinishedRequestsJobs = array();
+        foreach ($requests as $request) {
+            if ($request->getRequestType() == 'edit' || $request->getRequestType() == 'edit reject') {
+                $unfinishedRequestsJobs[$request->getEditJob()->getId()] = $request->getRequestType();
+            } elseif ($request->getRequestType() == 'delete') {
+                $unfinishedRequestsJobs[$request->getJob()->getId()] = $request->getRequestType();
+            }
+        }
+
+        if (isset($unfinishedRequestsJobs[$oldJob->getId()])) {
+            $this->redirect()->toRoute(
+                'br_corporate_vacancy',
+                array(
+                    'action' => 'overview',
+                )
+            );
+        }
+
         $form = $this->getForm('br_corporate_job_edit', array('job' => $oldJob));
 
         if ($this->getRequest()->isPost()) {
@@ -211,6 +223,26 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             return new ViewModel();
         }
 
+        $requests = $this->getOpenRequests($person->getCompany());
+
+        $unfinishedRequestsJobs = array();
+        foreach ($requests as $request) {
+            if ($request->getRequestType() == 'edit' || $request->getRequestType() == 'edit reject') {
+                $unfinishedRequestsJobs[$request->getEditJob()->getId()] = $request->getRequestType();
+            } else {
+                $unfinishedRequestsJobs[$request->getJob()->getId()] = $request->getRequestType();
+            }
+        }
+
+        if (isset($unfinishedRequestsJobs[$vacancy->getId()])) {
+            $this->redirect()->toRoute(
+                'br_corporate_vacancy',
+                array(
+                    'action' => 'overview',
+                )
+            );
+        }
+
         $request = new RequestVacancy($vacancy, 'delete', $person);
 
         $this->getEntityManager()->persist($request);
@@ -225,13 +257,18 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
     public function deleteRequestAction()
     {
-        if (!($vacancy = $this->getVacancyEntity())) {
-            return new ViewModel();
+        if (!($request = $this->getRequestEntity())) {
+            $this->redirect()->toRoute(
+                'br_corporate_vacancy',
+                array(
+                    'action' => 'overview',
+                )
+            );
         }
 
         $request = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
-            ->findOneByJob($vacancy->getId());
+            ->findOneById($request->getId());
 
         $this->getEntityManager()->remove($request);
         $this->getEntityManager()->flush();
@@ -259,7 +296,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
             );
 
             $this->redirect()->toRoute(
-                'br_career_internship',
+                'br_career_vacancy',
                 array(
                     'action' => 'overview',
                 )
@@ -269,6 +306,34 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         }
 
         return $job;
+    }
+
+    /**
+     * @return RequestVacancy|null
+     */
+    private function getRequestEntity()
+    {
+        $request = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+            ->findOneById($this->getParam('id', 0));
+
+        if (!($request instanceof RequestVacancy)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No request was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'br_career_vacancy',
+                array(
+                    'action' => 'overview',
+                )
+            );
+
+            return;
+        }
+
+        return $request;
     }
 
     /**
@@ -282,5 +347,21 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         }
 
         return $sectorArray;
+    }
+
+    /**
+     * @return array
+     */
+    private function getOpenRequests($company)
+    {
+        $unhandledRequests = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+            ->findAllUnhandledByCompany($company);
+
+        $handledRejects = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\RequestVacancy')
+            ->findRejectsByCompany($company);
+
+        return array_merge($handledRejects, $unhandledRequests);
     }
 }
