@@ -267,6 +267,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         if (!$this->get('mail')->getValue()) {
             unset($specs['mail_form']);
+        } else {
+            unset($specs['mail_form']['languages']);
         }
 
         if (!$this instanceof Edit || $this->isDoodle()) {
