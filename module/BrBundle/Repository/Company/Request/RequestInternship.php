@@ -18,7 +18,9 @@
 
 namespace BrBundle\Repository\Company\Request;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Company as CompanyEntity,
+    BrBundle\Entity\Company\Job as JobEntity,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * RequestInternship
@@ -39,6 +41,95 @@ class RequestInternship extends EntityRepository
             ->where(
                 $query->expr()->eq('r.handled', 'FALSE')
             )
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findAllUnhandledByCompany(CompanyEntity $company)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('BrBundle\Entity\Company\Request\RequestInternship', 'r')
+            ->innerJoin('r.job', 'v')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'FALSE'),
+                    $query->expr()->eq('v.company', ':company'),
+                    $query->expr()->eq('v.removed', 'FALSE')
+                )
+            )
+            ->setParameter('company', $company->getId())
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findRejectsByCompany(CompanyEntity $company)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('BrBundle\Entity\Company\Request\RequestInternship', 'r')
+            ->innerJoin('r.job', 'v')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'TRUE'),
+                    $query->expr()->eq('v.approved', 'FALSE'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.company', ':company')
+                )
+            )
+            ->setParameter('company', $company->getId())
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findUnhandledRequestsByJob(JobEntity $job)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('BrBundle\Entity\Company\Request\RequestInternship', 'r')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'FALSE'),
+                    $query->expr()->eq('r.job', ':job')
+                )
+            )
+            ->setParameter('job', $job->getId())
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findUnhandledRequestsByType($type)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('r')
+            ->from('BrBundle\Entity\Company\Request\RequestInternship', 'r')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'FALSE'),
+                    $query->expr()->eq('r.requestType', ':type')
+                )
+            )
+            ->setParameter('type', $type)
             ->getQuery()
             ->getResult();
 

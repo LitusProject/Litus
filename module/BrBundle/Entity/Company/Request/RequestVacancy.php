@@ -55,11 +55,19 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
     private $editJob;
 
     /**
+     * @var string The type of the request
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $rejectMessage;
+
+    /**
      * @static
      * @var array All the possible requests allowed
      */
     public static $possibleRequests = array(
         'edit' => 'edit',
+        'edit reject' => 'edit reject',
         'add' => 'add',
         'delete' => 'delete',
     );
@@ -100,6 +108,14 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
     }
 
     /**
+     * @return String
+     */
+    public function getRejectMessage()
+    {
+        return $this->rejectMessage;
+    }
+
+    /**
      * @return Job
      */
     public function getEditJob()
@@ -127,11 +143,16 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
 
             case 'edit':
                 $this->getJob()->approve();
-                $this->getEditJob()->removed();
+                $this->getEditJob()->remove();
+                break;
+
+            case 'edit reject':
+                $this->getJob()->approve();
+                $this->getEditJob()->remove();
                 break;
 
             case 'delete':
-                $this->getJob()->removed();
+                $this->getJob()->remove();
                 break;
 
             default:break;
@@ -141,19 +162,8 @@ class RequestVacancy extends \BrBundle\Entity\Company\Request
     /**
      * @return null
      */
-    public function rejectRequest()
+    public function rejectRequest($message)
     {
-        switch ($this->requestType) {
-            case 'add':
-                break;
-
-            case 'edit':
-                break;
-
-            case 'delete':
-                break;
-
-            default:break;
-        }
+        $this->rejectMessage = $message;
     }
 }
