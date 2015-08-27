@@ -18,8 +18,7 @@
 
 namespace ShopBundle\Controller;
 
-use Doctrine\DBAL\Schema\View,
-    Zend\View\Model\ViewModel;
+use Zend\View\Model\ViewModel;
 
 /**
  * ShopController
@@ -42,11 +41,44 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
     public function reserveAction()
     {
+        $reserveForm = $this->getForm('shop_shop_reserve');
         $canReserve = true;
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $reserveForm->setData($formData);
+
+            if ($reserveForm->isValid()) {
+                $reservation = $reserveForm->hydrateObject();
+                $reservation->setPerson($this->getPersonEntity());
+                $this->getEntityManager()->persist($reservation);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The reservation was successfully made!'
+                );
+
+                $this->redirect()->toRoute(
+                    'shop',
+                    array(
+                        'action' => 'reserve',
+                    )
+                );
+
+                return new ViewModel();
+            } else {
+                $this->flashMessenger()->error(
+                    'Error',
+                    'An error occurred while processing your reservation!'
+                );
+            }
+        }
 
         return new ViewModel(
             array(
                 'canReserve' => $canReserve,
+                'form' => $reserveForm,
             )
         );
     }
@@ -56,10 +88,48 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         //TODO
         $canReserve = true;
 
+        $reservations = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Reservation')
+            ->getAllCurrentReservationsByPersonId($this->getPersonEntity());
+
         return new ViewModel(
             array(
                 'canReserve' => $canReserve,
+                'reservations' => $reservations,
             )
         );
+    }
+
+    public function deleteReservationAction()
+    {
+        if ($reservation = $this->getEntityById('ShopBundle\Entity\Reservation')) {
+            $this->getEntityManager()->remove($reservation);
+            $this->getEntityManager()->flush();
+
+            $this->flashMessenger()->success("Success", "Your reservation was successfully cancelled");
+        } else {
+            $this->flashMessenger()->error("Error", "An error occurred while trying to cancel your reservation");
+        }
+
+        $this->redirect()->toRoute(
+            'shop',
+            array(
+                'action' => 'reservations',
+            )
+        );
+
+        return new ViewModel();
+    }
+
+    /**
+	 * @return \CommonBundle\Entity\User\Person|null
+	 */
+    private function getPersonEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return;
+        }
+
+        return $this->getAuthentication()->getPersonObject();
     }
 }

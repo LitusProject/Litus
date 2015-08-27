@@ -95,7 +95,7 @@ class SalesSession extends EntityRepository
         $resultSet = $query->select('s')
             ->from('ShopBundle\Entity\SalesSession', 's')
             ->where(
-                $query->andX(
+                $query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('s.remarks'), ':remarks'),
                     $query->expr()->lt('s.startDate', ':now')
                 )
@@ -104,6 +104,28 @@ class SalesSession extends EntityRepository
             ->setParameter('remarks', '%' . strtolower($remarks) . '%')
             ->setParameter('now', new DateTime())
             ->getQuery();
+
+        return $resultSet;
+    }
+
+    public function findAllReservationsPossibleInterval($startDate, $endDate)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('ShopBundle\Entity\SalesSession', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.reservationsPossible', ':reservations_possible'),
+                    $query->expr()->lt('s.startDate', ':end_date'),
+                    $query->expr()->gt('s.startDate', ':start_date')
+                )
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('reservations_possible', true)
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }

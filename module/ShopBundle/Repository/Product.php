@@ -26,8 +26,8 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 class Product extends EntityRepository
 {
     /**
-     * @return \Doctrine\ORM\Query
-     */
+	 * @return \Doctrine\ORM\Query
+	 */
     public function findAllQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -40,9 +40,9 @@ class Product extends EntityRepository
     }
 
     /**
-     * @param  string              $name
-     * @return \Doctrine\ORM\Query
-     */
+	 * @param  string $name
+	 * @return \Doctrine\ORM\Query
+	 */
     public function findAllByNameQuery($name)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -54,6 +54,25 @@ class Product extends EntityRepository
             ->orderBy('p.name', 'ASC')
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+	 * @return array
+	 */
+    public function findAllAvailable()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('ShopBundle\Entity\Product', 'p')
+            ->where(
+                $query->expr()->eq('p.available', ':available')
+            )
+            ->orderBy('p.name', 'ASC')
+            ->setParameter('available', true)
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }

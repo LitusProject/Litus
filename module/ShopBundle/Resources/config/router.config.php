@@ -85,10 +85,11 @@ return array(
         'shop' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/shop[/:action][/]',
+                'route' => '/shop[/:action[/:id]][/]',
                 'constraints' => array(
                     'language' => '[a-z]{2}',
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id' => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'shop',

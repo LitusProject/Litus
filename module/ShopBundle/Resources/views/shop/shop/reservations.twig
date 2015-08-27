@@ -11,6 +11,40 @@
     <div style="text-align: justify;">
         {% if canReserve %}
             {{ translate("Below is a list of all your reservations in the shop.") }}
+            <table id="table-reservations" class="table table-condensed table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Reservation time</th>
+                    <th>Sales Session</th>
+                    <th>Product</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                    <th>Total price</th>
+                    <th>Cancel</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.getTimestamp().format('d/m/Y H:i') }}</td>
+                        <td>{{ reservation.getSalesSession().getStartDate().format('d/m/Y H:i') }}
+                            - {{ reservation.getSalesSession().getEndDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ reservation.getProduct().getName() }}</td>
+                        <td>{{ reservation.getAmount }}</td>
+                        <td>{{ reservation.getProduct().getSellPrice() }}</td>
+                        <td>{{ reservation.getProduct().getSellPrice() * reservation.getAmount() }}</td>
+                        <td>
+                            {% if reservation.canCancel() %}
+                                <a class="btn btn-xs btn-default"
+                                   href="{{ url('shop', {action: 'deleteReservation', id: reservation.getId()}) }}">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         {% else %}
             {{ translate("You cannot reserve items from the shop. This privilege might require you to do some shifts in the shop.") }}
         {% endif %}

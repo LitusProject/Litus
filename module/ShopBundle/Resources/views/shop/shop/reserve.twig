@@ -8,9 +8,24 @@
 
     {% include 'shop/shop/partials/navigation.twig' %}
 
+    <div class="flashmessage alert alert-success fade" id="success">
+        <div class="content">
+            {{ translate('Your reservation was successful!') }}
+        </div>
+    </div>
+    <div class="flashmessage alert alert-danger fade" id="error">
+        <div class="content">
+            {{ translate('An error occurred while processing your reservation!') }}
+        </div>
+    </div>
+
     <div style="text-align: justify;">
         {% if canReserve %}
             {{ translate("On this page you can make a reservation in the shop.") }}
+            <div>
+                {% import 'admin/partials/form.twig' as forms %}
+                {{ forms.renderForm(form) }}
+            </div>
         {% else %}
             {{ translate("You cannot reserve items from the shop. This privilege might require you to do some shifts in the shop.") }}
         {% endif %}

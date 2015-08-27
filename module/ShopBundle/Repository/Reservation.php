@@ -18,11 +18,31 @@
 
 namespace ShopBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateTime;
 
 /**
  * Reservation
  */
 class Reservation extends EntityRepository
 {
+    public function getAllCurrentReservationsByPersonId($person)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+
+        return $query->select('r')
+            ->from('ShopBundle\Entity\Reservation', 'r')
+            ->innerJoin('ShopBundle\Entity\SalesSession', 'ss', $query->expr()->eq('r.salesSession', 'ss.id'))
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->lt('ss.endDate', ':now'),
+                    $query->expr()->eq('r.person', ':person')
+                )
+            )
+            ->orderBy('ss.startDate', 'ASC')
+            ->setParameter('now', new DateTime())
+            ->setParameter('person', $person)
+            ->getQuery()
+            ->getResult();
+    }
 }
