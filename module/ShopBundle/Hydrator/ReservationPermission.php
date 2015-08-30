@@ -18,41 +18,35 @@
 
 namespace ShopBundle\Hydrator;
 
-use ShopBundle\Entity\SalesSession as SalesSessionEntity;
+use ShopBundle\Entity\ReservationPermission as ReservationPermissionEntity;
 
 /**
- * Class SalesSession
+ * Class ReservationPermission
  * @author Floris Kint <floris.kint@litus.cc>
  */
-class SalesSession extends \CommonBundle\Component\Hydrator\Hydrator
+class ReservationPermission extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $stdKeys = array(
-        'reservations_possible',
-        'remarks',
+        'reservationsAllowed',
     );
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
-            return array();
-        }
-
-        $data = $this->stdExtract($object, self::$stdKeys);
-        $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
-        $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
-
-        return $data;
+        return array();
     }
 
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new SalesSessionEntity();
+            $object = new ReservationPermissionEntity();
         }
 
         $object = $this->stdHydrate($data, $object, self::$stdKeys);
-        $object->setStartDate(self::loadDateTime($data['start_date']));
-        $object->setEndDate(self::loadDateTime($data['end_date']));
+
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->find($data['person']['id']);
+        $object->setPerson($person);
 
         return $object;
     }

@@ -82,6 +82,24 @@ return array(
                 ),
             ),
         ),
+        'shop_admin_shop_reservationpermission' => array(
+            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/shop/reservationpermission[/:action[/:id][/type/:type][/page/:page]][/:field/:string][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id' => '[0-9]*',
+                    'type' => '[a-zA-Z]*',
+                    'page' => '[0-9]*',
+                    'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'shop_admin_shop_reservationpermission',
+                    'action' => 'manage',
+                ),
+            ),
+        ),
         'shop' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -103,6 +121,7 @@ return array(
         'shop_admin_shop_salessession' => 'ShopBundle\Controller\Admin\SalesSessionController',
         'shop_admin_shop_product' => 'ShopBundle\Controller\Admin\ProductController',
         'shop_admin_shop_reservation' => 'ShopBundle\Controller\Admin\ReservationController',
+        'shop_admin_shop_reservationpermission' => 'ShopBundle\Controller\Admin\ReservationPermissionController',
 
         'shop' => 'ShopBundle\Controller\ShopController',
     ),

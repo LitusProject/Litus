@@ -24,5 +24,14 @@ return array(
         'shop_admin_shop_product' => array(
             'manage', 'add', 'edit', 'delete',
         ),
+        'shop_admin_shop_salessession' => array(
+            'manage', 'add', 'edit', 'delete', 'reservations',
+        ),
+        'shop_admin_shop_reservation' => array(
+            'delete', 'noshow', 'manage',
+        ),
+        'shop_admin_shop_blacklist' => array(
+            'manage', 'delete', 'add', 'togglepermission',
+        ),
     ),
 );

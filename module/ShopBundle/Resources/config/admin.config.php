@@ -29,9 +29,9 @@ return array(
                     'action' => 'manage',
                     'title' => 'Sales Sessions',
                 ),
-                'shop_admin_shop_reservation' => array(
+                'shop_admin_shop_reservationpermission' => array(
                     'action' => 'manage',
-                    'title' => 'Reservations',
+                    'title' => 'Permissions',
                 ),
             ),
             'controllers' => array('shop_admin_shop'),

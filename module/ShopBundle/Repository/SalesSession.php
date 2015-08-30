@@ -23,6 +23,7 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
 
 /**
  * SalesSession
+ * @author Floris Kint <floris.kint@litus.cc>
  */
 class SalesSession extends EntityRepository
 {

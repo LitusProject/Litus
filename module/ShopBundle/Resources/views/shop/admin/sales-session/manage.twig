@@ -57,6 +57,9 @@
                         <td><input type="checkbox" {% if session.getReservationsPossible() %}checked{% endif %} }}
                                    disabled/></td>
                         <td class="actions">
+                            {% if hasAccess('shop_admin_shop_reservation', 'manage') %}
+                                <a href="{{ url('shop_admin_shop_reservation', {"action": "salessession", "id": session.getId()}) }}" class="view">Reservations</a>
+                            {% endif %}
                             {% if hasAccess('shop_admin_shop_salessession', 'edit') %}
                                 <a href="{{ url('shop_admin_shop_salessession', {"action": "edit", "id": session.getId()}) }}"
                                    class="edit">Edit</a>

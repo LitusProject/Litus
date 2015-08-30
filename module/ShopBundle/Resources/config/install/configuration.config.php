@@ -29,7 +29,7 @@ return array(
         'description' => 'The name of the shop',
     ),
     array(
-        'key' => 'shop.reservation_treshold',
+        'key' => 'shop.reservation_threshold',
         'value' => 'P1D',
         'description' => 'The maximal interval before the beginning of a sales session reservations can be made',
     ),

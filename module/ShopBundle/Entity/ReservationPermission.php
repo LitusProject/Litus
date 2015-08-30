@@ -24,10 +24,10 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores a reservation permission entry.
  *
  * @author Floris Kint <floris.kint@litus.cc>
- * @ORM\Entity(repositoryClass="ShopBundle\Repository\ReservationPermissionEntry")
- * @ORM\Table(name="shop.permission_entries")
+ * @ORM\Entity(repositoryClass="ShopBundle\Repository\ReservationPermission")
+ * @ORM\Table(name="shop.reservation_permissions")
  */
-class ReservationPermissionEntry
+class ReservationPermission
 {
     /**
 	 * @var Person The person this permission entry belongs to
@@ -39,6 +39,7 @@ class ReservationPermissionEntry
     private $person;
     /**
 	 * @var boolean Whether this person is allowed to make reservations
+	 * @ORM\Column(type="boolean")
 	 */
     private $reservationsAllowed;
 

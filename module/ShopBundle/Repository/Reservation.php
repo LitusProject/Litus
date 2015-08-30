@@ -23,9 +23,14 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
 
 /**
  * Reservation
+ * @author Floris Kint <floris.kint@litus.cc>
  */
 class Reservation extends EntityRepository
 {
+    /**
+	 * @param $person
+	 * @return array
+	 */
     public function getAllCurrentReservationsByPersonId($person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -44,5 +49,45 @@ class Reservation extends EntityRepository
             ->setParameter('person', $person)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+	 * @param $salesSession
+	 * @return \Doctrine\ORM\Query
+	 */
+    public function findBySalesSessionQuery($salesSession)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+
+        return $query->select('r')
+            ->from('ShopBundle\Entity\Reservation', 'r')
+            ->where(
+                $query->expr()->eq('r.salesSession', ':salesSession')
+            )
+            ->orderBy('r.person', 'ASC')
+            ->setParameter('salesSession', $salesSession)
+            ->getQuery();
+    }
+
+    /**
+	 * @param Person $person
+	 * @return int
+	 */
+    public function getNoShowSessionCount($person)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+
+        return $query->select($query->expr()->countDistinct('r.salesSession'))
+            ->from('ShopBundle\Entity\Reservation', 'r')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('r.person', ':person'),
+                    $query->expr()->eq('r.noShow', ':true')
+                )
+            )
+            ->setParameter('person', $person)
+            ->setParameter('true', true)
+            ->getQuery()
+            ->getResult()[0][1];
     }
 }

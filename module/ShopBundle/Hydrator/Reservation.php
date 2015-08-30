@@ -21,6 +21,10 @@ namespace ShopBundle\Hydrator;
 use DateTime,
     ShopBundle\Entity\Reservation as ReservationEntity;
 
+/**
+ * Class Reservation
+ * @author Floris Kint <floris.kint@litus.cc>
+ */
 class Reservation extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $stdKeys = array(

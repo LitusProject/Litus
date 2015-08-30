@@ -87,7 +87,7 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
         $interval = new DateInterval(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shop.reservation_treshold')
+                ->getConfigValue('shop.reservation_threshold')
         );
 
         $startDate = new DateTime();

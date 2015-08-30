@@ -22,6 +22,7 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Product
+ * @author Floris Kint <floris.kint@litus.cc>
  */
 class Product extends EntityRepository
 {
