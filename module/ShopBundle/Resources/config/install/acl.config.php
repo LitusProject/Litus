@@ -19,7 +19,7 @@
 return array(
     'shopbundle' => array(
         'shop' => array(
-            'index', 'reserve', 'reservations',
+            'index', 'reserve', 'reservations','deleteReservation',
         ),
         'shop_admin_shop_product' => array(
             'manage', 'add', 'edit', 'delete','search',
