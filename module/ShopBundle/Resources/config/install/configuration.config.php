@@ -18,12 +18,6 @@
 
 return array(
     array(
-        'key'         => 'shift.signout_treshold',
-        'value'       => 'P1D',
-        'description' => 'The date interval after which a person cannot sign out from a shift',
-        'published'   => true,
-    ),
-    array(
         'key' => 'shop.name',
         'value' => 'Theokot',
         'description' => 'The name of the shop',

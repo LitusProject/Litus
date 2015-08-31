@@ -28,6 +28,15 @@ use DateTime,
  */
 class ShopController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
+    /**
+	 * @return string
+	 */
+    private function getShopName()
+    {
+        return $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.name');
+    }
     public function indexAction()
     {
         $canReserve = $this->canReserve();
@@ -35,6 +44,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'canReserve' => $canReserve,
+                'shopName' => $this->getShopName(),
             )
         );
     }
@@ -91,6 +101,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'canReserve' => $canReserve,
                 'form' => $reserveForm,
+                'shopName' => $this->getShopName(),
             )
         );
     }
@@ -107,6 +118,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'canReserve' => $canReserve,
                 'reservations' => $reservations,
+                'shopName' => $this->getShopName(),
             )
         );
     }

@@ -38,19 +38,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name' => 'start_date',
             'label' => 'Start Date',
             'required' => true,
-            'options' => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name' => 'date_compare',
-                            'options' => array(
-                                'first_date' => (new DateTime())->format('d/m/Y H:i'),
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
-                    ),
-                ),
-            ),
         ));
 
         $this->add(array(

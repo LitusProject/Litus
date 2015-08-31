@@ -18,7 +18,8 @@
 
 namespace ShopBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores a reservation permission entry.

@@ -120,12 +120,8 @@
                                 .append(
                                 $('<td>', {'class': 'actions'})
                                         .append('<a href="{{ url('shop_admin_shop_product', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
-                                        .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                                        .append($('<a href="#" class="delete" data-name="'+this.name+'" data-id="'+this.id+'">Delete</a>'))
                         );
-                        deleteButton.data({
-                            id: this.id,
-                            fullName: this.name
-                        });
                     });
                     $('#product_search .delete').click(openModal);
                     $('#product_search table').change();

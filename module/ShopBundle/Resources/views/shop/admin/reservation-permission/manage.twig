@@ -126,14 +126,16 @@
                         row.append('<td>' + this.name + '</td>')
                                 .append($('<td>')
                                         .append($('<input>', {type: "checkbox"})
+                                                .addClass('reservations-checkbox')
                                                 .attr('checked', this.reservationsAllowed)))
                                 .append(
                                 $('<td>', {'class': 'actions'})
-                                        .append($('<a href="#" class="edit toggle-permission" data-id="' + this.id + '">Toggle permission</a>').click(togglePermission))
-                                        .append($('<a href="#" class="delete" data-id="' + this.id + '" data-name="' + this.name + '">Delete</a>').click(openDeleteModal))
+                                        .append($('<a href="#" class="edit toggle-permission" data-id="' + this.id + '">Toggle permission</a>'))
+                                        .append($('<a href="#" class="delete" data-id="' + this.id + '" data-name="' + this.name + '">Delete</a>'))
                         );
                     });
                     $('#reservationpermission_search .delete').click(openDeleteModal);
+                    $('#reservationpermission_search .toggle-permission').click(togglePermission);
                     $('#reservationpermission_search table').change();
                 },
                 clear: function () {

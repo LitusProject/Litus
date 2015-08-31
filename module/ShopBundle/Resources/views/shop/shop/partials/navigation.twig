@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs hidden-xs">
     <li {% if getParam('action') == 'index' %}class="active"{% endif %}>
         <a href="{{ url('shop', {'action': 'index'}) }}">
-            {{ translate('Shop') }}
+            {{ shopName }}
         </a>
     </li>
 
