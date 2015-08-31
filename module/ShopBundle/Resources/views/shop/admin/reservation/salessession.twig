@@ -1,0 +1,178 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'shop/admin/reservation/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width reservation_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The reservation was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage success_message full_width reservation_noshow_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The reservation was successfully updated!</p>
+        </div>
+    </div>
+    <div class="flashmessage success_message full_width reservation_noshow_blacklistAvoided hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The person who made this reservation would've been put on the blacklist, but he/she was explicitly given permission to make reservations. You can manually revoke this permission!</p>
+        </div>
+    </div>
+    <div class="flashmessage success_message full_width reservation_noshow_blacklisted hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>No reservations for this person anymore! He didn't show up a bit too often.</p>
+        </div>
+    </div>
+
+    <div class="flashmessage error_message full_width reservation_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the reservation.</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width reservation_noshow_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to update the no-show status.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <div id="default_page">
+            <div>
+                Below you find a list of all reservations for the sales session starting
+                at {{ salesSession.getStartDate().format('d/m/Y H:i') }} and ending
+                at {{ salesSession.getEndDate().format('d/m/Y H:i') }}.
+            </div>
+            <br>
+            <table class="full_width manage">
+                <tr>
+                    <th>Person</th>
+                    <th>Product</th>
+                    <th>Amount</th>
+                    <th>Total Price</th>
+                    <th>No-show</th>
+                    <th width="70px">Actions</th>
+                </tr>
+
+                {% for reservation in paginator %}
+                    <tr class="item item-{{ reservation.getId() }}">
+                        <td>{{ reservation.getPerson().getFullName() }}</td>
+                        <td>{{ reservation.getProduct().getName() }}</td>
+                        <td>{{ reservation.getAmount() }}</td>
+                        <td>{{ reservation.getAmount() * reservation.getProduct().getSellPrice() }}</td>
+                        <td style="text-align:center"><input id="noshow-{{ reservation.getId() }}" disabled
+                                                             type="checkbox"
+                                                             {% if reservation.getNoShow() %}checked{% endif %} /></td>
+                        <td class="actions">
+                            {% if hasAccess('shop_admin_shop_reservation', 'noshow') %}
+                                <a href="#" data-id="{{ reservation.getId() }}" class="edit noshow"
+                                   data-name="{{ reservation.getAmount() }} * {{ reservation.getProduct().getName() }} voor {{ reservation.getPerson().getFullName() }}">No-show</a>
+                            {% endif %}
+                            {% if hasAccess('shop_admin_shop_reservation', 'delete') %}
+                                <a href="#" data-id="{{ reservation.getId() }}" class="delete"
+                                   data-name="{{ reservation.getAmount() }} * {{ reservation.getProduct().getName() }} voor {{ reservation.getPerson().getFullName() }}">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="removeReservation" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Reservation
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following reservation: <b class="name"></b>?
+                        Please note that this operation cannot be undone!
+                    </p>
+
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+            $('.item .noshow').click(noShow);
+        });
+
+        function noShow() {
+            var id = $(this).data('id');
+            $.post('{{ url('shop_admin_shop_reservation', {"action":"noshow"}) }}' + id, function (data) {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').addClass('hide');
+                    if(data.blacklisted){
+                        $('.reservation_noshow_blacklisted').removeClass('hide');
+                    }
+                    if(data.blacklistAvoided){
+                        $('.reservation_noshow_blacklistAvoided').removeClass('hide');
+                    }
+                    $('.reservation_noshow_success').removeClass('hide');
+                    $('#noshow-' + id).prop('checked', !$('#noshow-' + id).prop('checked'));
+                } else {
+                    $('.flashmessage').addClass('hide');
+                    $('.reservation_noshow_error').removeClass('hide');
+                }
+            }, 'json').error(function(rq){
+                $('.flashmessage').addClass('hide');
+                $('.reservation_noshow_error').removeClass('hide');
+                console.log(rq.responseText);
+            });
+        }
+
+        function openModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeReservation = $('#removeReservation');
+            removeReservation.find('.name').html($(this).data('name'));
+            removeReservation.find('.cancel').one('click', function () {
+                removeReservation.modal('hide');
+            });
+            var id = $this.data('id');
+            removeReservation.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('shop_admin_shop_reservation', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.reservation_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeReservation.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeReservation.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.reservation_removed_error').removeClass('hide');
+            $('#removeReservation').modal('hide');
+        }
+    </script>
+{% endblock %}
