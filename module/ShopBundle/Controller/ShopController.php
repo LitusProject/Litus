@@ -112,7 +112,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
         $reservations = $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\Reservation')
-            ->getAllCurrentReservationsByPersonId($this->getPersonEntity());
+            ->getAllCurrentReservationsByPerson($this->getPersonEntity());
 
         return new ViewModel(
             array(

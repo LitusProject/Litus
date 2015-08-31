@@ -42,6 +42,26 @@
         </div>
     </div>
 
+    <div id="modalInsurance" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Insurance') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ insuranceText }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary confirm">{{ translate('I have read this') }}</button>
+                    <button class="btn btn-default deny">{{ translate('I do not agree') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="page-header">
         <h1>{{ translate('Shifts') }}</h1>
     </div>
@@ -144,28 +164,15 @@
                     $('#modalSignInWarning .confirm').one('click', function () {
                         $('#modalSignInWarning').modal('hide');
 
-                        $.post(
-                            '{{ url('shift', {"action": "responsible"}) }}',
-                            {"id": button.data('id')},
-                            function (data) {
-                                if (data && 'success' == data.status) {
-                                    $('.flashmessage').removeClass('in');
-                                    $('#responsible_success').addClass('in');
-
-                                    updateButton(button, parseInt(data.ratio, 10), count);
-                                    var panel = $(button.data('panel')).clone();
-                                    panel.find('.buttons').html('').css('display', 'none');
-
-                                    $('#shifts-myShifts .alert').remove();
-                                    $('#shifts-myShifts').prepend(panel);
-                                    panel.fadeIn();
-                                    $('#shifts-search ' + button.data('panel')).fadeOut(function () {$(this).remove()});
-                                } else {
-                                    errorSave();
-                                }
-                            },
-                            'json'
-                        ).error(errorSave);
+                        if(!'{{ hasReadInsurance }}') {
+                            $('#modalInsurance').modal();
+                            $('#modalInsurance .confirm').one('click', function () {
+                                $('#modalInsurance').modal('hide');
+                                responsibleSignIn(button, count);
+                            });
+                        } else {
+                            responsibleSignIn(button, count);
+                        }
                     });
                 }
 
@@ -175,6 +182,14 @@
 
                 $('#modalSignInWarning .deny').one('click', function () {
                     $('#modalSignInWarning').modal('hide');
+
+                    button.parent().find('button').each(function(i) {
+                        $(this).removeClass('disabled');
+                    });
+                });
+
+                $('#modalInsurance .deny').one('click', function () {
+                    $('#modalInsurance').modal('hide');
 
                     button.parent().find('button').each(function(i) {
                         $(this).removeClass('disabled');
@@ -191,28 +206,15 @@
                     $('#modalSignInWarning .confirm').one('click', function () {
                         $('#modalSignInWarning').modal('hide');
 
-                        $.post(
-                            '{{ url('shift', {"action": "volunteer"}) }}',
-                            {"id": button.data('id')},
-                            function (data) {
-                                if (data && 'success' == data.status) {
-                                    $('.flashmessage').removeClass('in');
-                                    $('#responsible_volunteer').addClass('in');
-
-                                    updateButton(button, parseInt(data.ratio, 10), count);
-                                    var panel = $(button.data('panel')).clone();
-                                    panel.find('.buttons').html('').css('display', 'none');
-
-                                    $('#shifts-myShifts .alert').remove();
-                                    $('#shifts-myShifts').prepend(panel);
-                                    panel.fadeIn();
-                                    $('#shifts-search ' + button.data('panel')).fadeOut(function () {$(this).remove()});
-                                } else {
-                                    errorSave();
-                                }
-                            },
-                            'json'
-                        ).error(errorSave);
+                        if(!'{{ hasReadInsurance }}') {
+                            $('#modalInsurance').modal();
+                            $('#modalInsurance .confirm').one('click', function () {
+                                $('#modalInsurance').modal('hide');
+                                volunteerSignIn(button, count);
+                            });
+                        } else {
+                            volunteerSignIn(button, count);
+                        }
                     });
                 }
 
@@ -222,6 +224,14 @@
 
                 $('#modalSignInWarning .deny').one('click', function () {
                     $('#modalSignInWarning').modal('hide');
+
+                    button.parent().find('button').each(function(i) {
+                        $(this).removeClass('disabled');
+                    });
+                });
+
+                $('#modalInsurance .deny').one('click', function () {
+                    $('#modalInsurance').modal('hide');
 
                     button.parent().find('button').each(function(i) {
                         $(this).removeClass('disabled');
@@ -274,6 +284,56 @@
         function errorSave() {
             $('.flashmessage').removeClass('in');
             $('#error').addClass('in');
+        }
+
+        function volunteerSignIn(button, count) {
+            $.post(
+                '{{ url('shift', {"action": "volunteer"}) }}',
+                {"id": button.data('id')},
+                function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#volunteer_success').addClass('in');
+
+                        updateButton(button, parseInt(data.ratio, 10), count);
+                        var panel = $(button.data('panel')).clone();
+                        panel.find('.buttons').html('').css('display', 'none');
+
+                        $('#shifts-myShifts .alert').remove();
+                        $('#shifts-myShifts').prepend(panel);
+                        panel.fadeIn();
+                        $('#shifts-search ' + button.data('panel')).fadeOut(function () {$(this).remove()});
+                    } else {
+                        errorSave();
+                    }
+                },
+                'json'
+            ).error(errorSave);
+        }
+
+        function responsibleSignIn(button, count) {
+            $.post(
+                '{{ url('shift', {"action": "responsible"}) }}',
+                {"id": button.data('id')},
+                function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#responsible_success').addClass('in');
+
+                        updateButton(button, parseInt(data.ratio, 10), count);
+                        var panel = $(button.data('panel')).clone();
+                        panel.find('.buttons').html('').css('display', 'none');
+
+                        $('#shifts-myShifts .alert').remove();
+                        $('#shifts-myShifts').prepend(panel);
+                        panel.fadeIn();
+                        $('#shifts-search ' + button.data('panel')).fadeOut(function () {$(this).remove()});
+                    } else {
+                        errorSave();
+                    }
+                },
+                'json'
+            ).error(errorSave);
         }
     </script>
 {% endblock %}

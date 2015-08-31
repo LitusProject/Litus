@@ -31,7 +31,7 @@ class Reservation extends EntityRepository
 	 * @param $person
 	 * @return array
 	 */
-    public function getAllCurrentReservationsByPersonId($person)
+    public function getAllCurrentReservationsByPerson($person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
 

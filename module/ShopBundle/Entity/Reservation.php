@@ -19,6 +19,7 @@
 namespace ShopBundle\Entity;
 
 use CommonBundle\Entity\User\Person,
+    DateTime,
     Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -211,6 +212,8 @@ class Reservation
 	 */
     public function canCancel()
     {
-        return $this->timestamp < $this->getSalesSession()->getStartDate();
+        $timestamp = new DateTime();
+
+        return $timestamp < $this->getSalesSession()->getStartDate();
     }
 }

@@ -19,19 +19,19 @@
 return array(
     'shopbundle' => array(
         'shop' => array(
-            'index', 'reserve', 'reservations',
+            'index', 'reserve', 'reservations','deleteReservation',
         ),
         'shop_admin_shop_product' => array(
-            'manage', 'add', 'edit', 'delete',
+            'manage', 'add', 'edit', 'delete','search',
         ),
         'shop_admin_shop_salessession' => array(
-            'manage', 'add', 'edit', 'delete', 'reservations',
+            'manage', 'add', 'edit', 'delete', 'old', 'search', 'searchold',
         ),
         'shop_admin_shop_reservation' => array(
-            'delete', 'noshow', 'manage',
+            'delete', 'noshow', 'salessession',
         ),
-        'shop_admin_shop_blacklist' => array(
-            'manage', 'delete', 'add', 'togglepermission',
+        'shop_admin_shop_reservationpermission' => array(
+            'manage', 'delete', 'add', 'togglepermission', 'search',
         ),
     ),
 );

@@ -22,6 +22,7 @@ use DateInterval,
     DateTime,
     ShiftBundle\Document\Token,
     ShiftBundle\Entity\Shift\Responsible,
+    ShiftBundle\Entity\Shift\User\Person\Insurance,
     ShiftBundle\Entity\Shift\Volunteer,
     Zend\Http\Headers,
     Zend\Mail\Message,
@@ -61,6 +62,28 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             );
             $this->getDocumentManager()->persist($token);
             $this->getDocumentManager()->flush();
+        }
+
+        $insuranceEnabled = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.insurance_enabled')
+            );
+        $insuranceText = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.insurance_text')
+            );
+
+        $hasReadInsurance = true;
+        if ($insuranceEnabled) {
+            $insurance = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
+            ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
+
+            if ($insurance === null || !$insurance->hasReadInsurance()) {
+                $hasReadInsurance = false;
+            }
         }
 
         $searchResults = null;
@@ -180,6 +203,9 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'token' => $token,
                 'searchResults' => $searchResults,
                 'entityManager' => $this->getEntityManager(),
+                'hasReadInsurance' => $hasReadInsurance,
+                'insuranceText' => $insuranceText[$this->getLanguage()->getAbbrev()],
+                'insuranceEnabled' => $insuranceEnabled,
             )
         );
     }
@@ -202,6 +228,25 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     'result' => (object) array('status' => 'error'),
                 )
             );
+        }
+
+        $insuranceEnabled = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.insurance_enabled')
+            );
+
+        $hasReadInsurance = true;
+        if ($insuranceEnabled) {
+            $insurance = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\User\Person\Insurance')
+            ->findOneByPersonAndAcademicYear($person, $this->getCurrentAcademicYear());
+
+            if ($insurance === null) {
+                new Insurance($person, true, $this->getCurrentAcademicYear());
+            } elseif (!$insurance->hasReadInsurance()) {
+                $insurance->setHasReadInsurance(true);
+            }
         }
 
         $shift->addResponsible(
@@ -434,6 +479,12 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             return $this->notFoundAction();
         }
 
+        $insuranceEnabled = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.insurance_enabled')
+            );
+
         $academicYear = $this->getCurrentAcademicYear(true);
 
         $asVolunteer = $this->getEntityManager()
@@ -532,6 +583,29 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 'praesidium' => $praesidium,
                 'ranking' => $ranking,
                 'shiftsToNextRanking' => $shiftsToNextRanking,
+                'insuranceEnabled' => $insuranceEnabled,
+            )
+        );
+    }
+
+    public function insuranceAction()
+    {
+        $insuranceText = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.insurance_text')
+            );
+
+        $insuranceEnabled = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shift.insurance_enabled')
+            );
+
+        return new ViewModel(
+            array(
+                'insuranceText' => $insuranceText[$this->getLanguage()->getAbbrev()],
+                'insuranceEnabled' => $insuranceEnabled,
             )
         );
     }
