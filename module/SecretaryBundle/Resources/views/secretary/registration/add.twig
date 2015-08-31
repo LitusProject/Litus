@@ -142,6 +142,7 @@
                             .closest('label')
                             .html()
                             .replace('{ price }', membershipArticles[$('#registerForm #organization').val()])
+                            .replace('{ year }', '{{ academicYear.getCode() }}')
                     );
             {% endif %}
 

@@ -537,8 +537,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return \CommonBundle\Entity\User\Person|null
-     */
+	 * @return \CommonBundle\Entity\User\Person|null
+	 */
     private function getPersonEntity()
     {
         if (!$this->getAuthentication()->isAuthenticated()) {

@@ -34,6 +34,7 @@ return array(
         'CudiBundle',
         'MailBundle',
         'ShiftBundle',
+        'ShopBundle',
         'SportBundle',
         'PromBundle',
         'SyllabusBundle',

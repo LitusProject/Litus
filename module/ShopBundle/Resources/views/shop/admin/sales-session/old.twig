@@ -1,0 +1,88 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'shop/admin/sales-session/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <div id="session_search" style="display: none;">
+            <div style="padding: 4px; text-align: right">
+                Search:
+                <select id="searchField">
+                    <option value="remarks">Remarks</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30"/>
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Remarks</th>
+                    <th>Reservations possible</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="default_page">
+            <table class="full_width manage">
+                <tr>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Remarks</th>
+                    <th>Reservations possible</th>
+                </tr>
+
+                {% for session in paginator %}
+                    <tr class="item item-{{ session.getId() }}">
+                        <td>{{ session.getStartDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ session.getEndDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ session.getRemarks() }}</td>
+                        <td><input type="checkbox" {% if session.getReservationsPossible() %}checked{% endif %} }}
+                                   disabled/></td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('shop_admin_shop_salessession', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#session_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('shop_admin_shop_salessession', {'action': 'old'}) }}old/',
+                url: '{{ url('shop_admin_shop_salessession', {'action': 'oldsearch'}) }}',
+                display: function (data) {
+                    $('#session_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#session_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.start_date + '</td>')
+                                .append('<td>' + this.end_date + '</td>')
+                                .append('<td>' + this.remarks + '</td>')
+                                .append($('<td>')
+                                        .append($('<input>', {type: "checkbox"})
+                                                .attr('checked', this.reservationsPossible)))
+                        )
+                        ;
+                    });
+                    $('#session_search table').change();
+                },
+                clear: function () {
+                    $('#session_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+
+        });
+    </script>
+{% endblock %}
