@@ -146,12 +146,26 @@ U bent verwijderd van de volgende shift door een administrator:
         'key'           => 'shift.reward_numbers',
         'value'         => serialize(
             array(
-            '2' => 2,
-            '0' => 0,
-            '3' => 3,
-            '10' => 10,
+                '2' => 2,
+                '0' => 0,
+                '3' => 3,
+                '10' => 10,
             )
         ),
         'description'   => 'The coins you can select as reward for a shift',
+    ),
+    array(
+        'key'         => 'shift.insurance_enabled',
+        'value'       => 0,
+        'description' => 'A flag if the insurance reading feature is enabled.',
+    ),
+    array(
+        'key'         => 'shift.insurance_text',
+        'value'       =>
+            array(
+                'nl' => 'Vul deze config in!',
+                'en' => 'Fill this config in!',
+            ),
+        'description' => 'The insurance text to be read.',
     ),
 );
