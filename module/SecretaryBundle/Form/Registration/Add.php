@@ -273,7 +273,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 array(
                     'type'       => 'checkbox',
                     'name'       => 'become_member',
-                    'label'      => 'I want to become a member of the student association (&euro; { price })',
+                    'label'      => 'I want to become a member of the student association in academic year { year } (&euro; { price })',
                     'value'      => true,
                     'attributes' => array(
                         'id'       => 'become_member',
