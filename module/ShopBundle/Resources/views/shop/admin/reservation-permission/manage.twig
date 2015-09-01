@@ -70,7 +70,7 @@
                                    class="edit toggle-permission">Toggle permission</a>
                             {% endif %}
                             {% if hasAccess('shop_admin_shop_reservationpermission', 'delete') %}
-                                <a href="#" data-id="{{ permission.getPerson().getId() }}" class="delete">Delete</a>
+                                <a href="#" data-id="{{ permission.getPerson().getId() }}" data-name="{{ permission.getPerson.getFullName() }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
                     </tr>
