@@ -40,7 +40,7 @@ class Reservation extends EntityRepository
             ->innerJoin('ShopBundle\Entity\SalesSession', 'ss', $query->expr()->eq('r.salesSession', 'ss.id'))
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->lt('ss.endDate', ':now'),
+                    $query->expr()->gt('ss.endDate', ':now'),
                     $query->expr()->eq('r.person', ':person')
                 )
             )
