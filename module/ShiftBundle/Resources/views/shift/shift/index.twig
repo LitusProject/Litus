@@ -163,8 +163,7 @@
                     $('#modalSignInWarning').modal();
                     $('#modalSignInWarning .confirm').one('click', function () {
                         $('#modalSignInWarning').modal('hide');
-
-                        if(!'{{ hasReadInsurance }}') {
+                        if(!{{ hasReadInsurance }}) {
                             $('#modalInsurance').modal();
                             $('#modalInsurance .confirm').one('click', function () {
                                 $('#modalInsurance').modal('hide');
@@ -206,7 +205,7 @@
                     $('#modalSignInWarning .confirm').one('click', function () {
                         $('#modalSignInWarning').modal('hide');
 
-                        if(!'{{ hasReadInsurance }}') {
+                        if(!{{ hasReadInsurance }}) {
                             $('#modalInsurance').modal();
                             $('#modalInsurance .confirm').one('click', function () {
                                 $('#modalInsurance').modal('hide');
