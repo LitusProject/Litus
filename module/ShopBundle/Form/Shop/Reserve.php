@@ -76,7 +76,7 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $this->addSubmit('Reserve', 'reserve');
+        $this->addSubmit('Reserve', 'submit');
     }
 
     /**
@@ -89,6 +89,7 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shop.reservation_threshold')
         );
+        $translator = $this->getServiceLocator()->get('translator');
 
         $startDate = new DateTime();
         $endDate = clone $startDate;
@@ -99,7 +100,7 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
             ->findAllReservationsPossibleInterval($startDate, $endDate);
         $result = array();
         foreach ($salesSessions as $session) {
-            $result[$session->getId()] = $session->getStartDate()->format('d/m/Y H:i') . ' - ' . $session->getEndDate()->format('d/m/Y H:i');
+            $result[$session->getId()] = $translator->translate($session->getStartDate()->format('l')) . " " . $session->getStartDate()->format('d/m/Y H:i') . ' - ' . $session->getEndDate()->format('H:i');
         }
 
         return $result;

@@ -35,4 +35,10 @@ return array(
     'Your reservation was successful!' => 'Uw reservatie is gelukt!',
     'An error occurred while processing your reservation!' => 'Er trad een error op bij het verwerken van uw reservatie!',
     'On this page you can make a reservation in the shop.' => 'Op deze pagina kunt u items reserveren.',
+    'You are not allowed to make reservations!' => 'U kunt geen reservaties plaatsen!',
+    'You can only make reservations for sales sessions that have not started yet.' => 'U kunt enkel reservaties plaatsen voor verkoopsessies die nog niet begonnen zijn.',
+    'The reservation was successfully made!' => 'Uw reservatie werd succesvol geplaatst.',
+    'You don\'t have permission to cancel this reservation.' => 'U kunt geen reservaties annuleren!',
+    'Your reservation was successfully cancelled' => 'Uw reservatie was succesvol geannuleerd',
+    'An error occurred while trying to cancel your reservation' => 'Er trad een fout op tijdens het annuleren van uw reservatie.',
 );

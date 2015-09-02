@@ -37,17 +37,6 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shop.name');
     }
-    public function indexAction()
-    {
-        $canReserve = $this->canReserve();
-
-        return new ViewModel(
-            array(
-                'canReserve' => $canReserve,
-                'shopName' => $this->getShopName(),
-            )
-        );
-    }
 
     public function reserveAction()
     {
@@ -55,7 +44,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         if (!$canReserve) {
             $this->flashMessenger()->error(
                 'Error',
-                'You are not allowed to make reservations!'
+                $this->getTranslator()->translate('You are not allowed to make reservations!')
             );
 
             return new ViewModel();
@@ -71,7 +60,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                 if ($reservation->getSalesSession()->getStartDate() <= new DateTime()) {
                     $this->flashMessenger()->error(
                         'Error',
-                        'You can only make reservations for sales sessions that have not started yet.'
+                        $this->getTranslator()->translate('You can only make reservations for sales sessions that have not started yet.')
                     );
                 } else {
                     $reservation->setPerson($this->getPersonEntity());
@@ -80,13 +69,13 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
                     $this->flashMessenger()->success(
                         'Success',
-                        'The reservation was successfully made!'
+                        $this->getTranslator()->translate('The reservation was successfully made!')
                     );
                 }
             } else {
                 $this->flashMessenger()->error(
                     'Error',
-                    'An error occurred while processing your reservation!'
+                    $this->getTranslator()->translate('An error occurred while processing your reservation!')
                 );
             }
             $this->redirect()->toRoute(
@@ -130,15 +119,15 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             $canBeDeleted = $canBeDeleted && $reservation->getPerson()->getId() == $this->getPersonEntity()->getId();
             $canBeDeleted = $canBeDeleted && $reservation->getSalesSession()->getStartDate() > new DateTime();
             if (!$canBeDeleted) {
-                $this->flashMessenger()->error('Error', 'You don\'t have permission to cancel this reservation.');
+                $this->flashMessenger()->error('Error', $this->getTranslator()->translate('You don\'t have permission to cancel this reservation.'));
             } else {
                 $this->getEntityManager()->remove($reservation);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->success('Success', 'Your reservation was successfully cancelled');
+                $this->flashMessenger()->success('Success', $this->getTranslator()->translate('Your reservation was successfully cancelled'));
             }
         } else {
-            $this->flashMessenger()->error('Error', 'An error occurred while trying to cancel your reservation');
+            $this->flashMessenger()->error('Error', $this->getTranslator()->translate('An error occurred while trying to cancel your reservation'));
         }
 
         $this->redirect()->toRoute(

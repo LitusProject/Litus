@@ -208,7 +208,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
-    public function searcholdAction()
+    public function oldsearchAction()
     {
         $this->initAjax();
 

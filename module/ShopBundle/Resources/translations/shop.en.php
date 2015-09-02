@@ -33,4 +33,11 @@ return array(
     'Your reservation was successful!' => 'Your reservation was successful!',
     'An error occurred while processing your reservation!' => 'An error occurred while processing your reservation!',
     'On this page you can make a reservation in the shop.' => 'On this page you can make a reservation in the shop.',
+    'You are not allowed to make reservations!' => 'You are not allowed to make reservations!',
+    'You can only make reservations for sales sessions that have not started yet.' => 'You can only make reservations for sales sessions that have not started yet.',
+    'The reservation was successfully made!' => 'The reservation was successfully made!',
+    'You don\'t have permission to cancel this reservation.' => 'You don\'t have permission to cancel this reservation.',
+    'Your reservation was successfully cancelled' => 'Your reservation was successfully cancelled',
+    'An error occurred while trying to cancel your reservation' => 'An error occurred while trying to cancel your reservation',
+
 );

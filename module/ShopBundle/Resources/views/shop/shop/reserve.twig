@@ -21,7 +21,7 @@
 
     <div style="text-align: justify;">
         {% if canReserve %}
-            {{ translate("On this page you can make a reservation in the shop.") }}
+            {{ translate("You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don't come and buy your reserved items on the right date.") }}
             <div>
                 {% import 'admin/partials/form.twig' as forms %}
                 {{ forms.renderForm(form) }}

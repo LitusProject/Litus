@@ -33,6 +33,7 @@
                     <th>End Time</th>
                     <th>Remarks</th>
                     <th>Reservations possible</th>
+                    <th>Actions</th>
                 </tr>
 
                 {% for session in paginator %}
@@ -42,6 +43,12 @@
                         <td>{{ session.getRemarks() }}</td>
                         <td><input type="checkbox" {% if session.getReservationsPossible() %}checked{% endif %} }}
                                    disabled/></td>
+                        <td class="actions">
+                            {% if hasAccess('shop_admin_shop_reservation', 'salessession') %}
+                                <a href="{{ url('shop_admin_shop_reservation', {"action": "salessession", "id": session.getId()}) }}"
+                                   class="view">Reservations</a>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
@@ -60,20 +67,23 @@
                 searchDiv: $('#session_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('shop_admin_shop_salessession', {'action': 'old'}) }}old/',
+                searchPage: '{{ url('shop_admin_shop_salessession', {'action': 'old'}) }}',
                 url: '{{ url('shop_admin_shop_salessession', {'action': 'oldsearch'}) }}',
                 display: function (data) {
                     $('#session_search table').find('tr.item').remove();
                     $(data).each(function () {
                         $('#session_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        var actionTD = $('<td>', {'class': 'actions'});
+                        {% if hasAccess('shop_admin_shop_reservation', 'salessession') %}
+                        actionTD.append('<a href="{{ url('shop_admin_shop_reservation', {"action": "salessession"}) }}' + this.id + '" class="view">Reservations</a>');
+                        {% endif %}
                         row.append('<td>' + this.start_date + '</td>')
-                                .append('<td>' + this.end_date + '</td>')
-                                .append('<td>' + this.remarks + '</td>')
-                                .append($('<td>')
-                                        .append($('<input>', {type: "checkbox"})
-                                                .attr('checked', this.reservationsPossible)))
-                        )
-                        ;
+                            .append('<td>' + this.end_date + '</td>')
+                            .append('<td>' + this.remarks + '</td>')
+                            .append($('<td>')
+                                    .append($('<input>', {type: "checkbox"})
+                                            .attr('checked', this.reservationsPossible)))
+                            .append(actionTD);
                     });
                     $('#session_search table').change();
                 },

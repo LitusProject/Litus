@@ -57,6 +57,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $this->addSubmit('Add', 'reservationpermission_add');
+        $this->addSubmit('Add', 'add');
     }
 }

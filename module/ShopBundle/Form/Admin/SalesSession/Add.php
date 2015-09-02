@@ -126,7 +126,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $this->addSubmit('Add', 'session_add');
+        $this->addSubmit('Add', 'add');
     }
 
     /**

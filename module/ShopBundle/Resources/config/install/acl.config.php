@@ -25,7 +25,7 @@ return array(
             'manage', 'add', 'edit', 'delete','search',
         ),
         'shop_admin_shop_salessession' => array(
-            'manage', 'add', 'edit', 'delete', 'old', 'search', 'searchold',
+            'manage', 'add', 'edit', 'delete', 'old', 'search', 'oldsearch',
         ),
         'shop_admin_shop_reservation' => array(
             'delete', 'noshow', 'salessession',
