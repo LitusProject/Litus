@@ -26,13 +26,13 @@
                 <tbody>
                 {% for reservation in reservations %}
                     <tr>
-                        <td>{{ reservation.getTimestamp().format('d/m/Y H:i') }}</td>
-                        <td>{{ reservation.getSalesSession().getStartDate().format('d/m/Y H:i') }}
-                            - {{ reservation.getSalesSession().getEndDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ translate(reservation.getTimestamp().format('l')) }} {{ reservation.getTimestamp().format('d/m/Y H:i') }}</td>
+                        <td>{{ translate(reservation.getSalesSession().getStartDate().format('l')) }} {{ reservation.getSalesSession().getStartDate().format('d/m/Y H:i') }}
+                            - {{ reservation.getSalesSession().getEndDate().format('H:i') }}</td>
                         <td>{{ reservation.getProduct().getName() }}</td>
                         <td>{{ reservation.getAmount }}</td>
-                        <td>{{ reservation.getProduct().getSellPrice() }}</td>
-                        <td>{{ reservation.getProduct().getSellPrice() * reservation.getAmount() }}</td>
+                        <td>&euro; {{ reservation.getProduct().getSellPrice() }}</td>
+                        <td>&euro; {{ reservation.getProduct().getSellPrice() * reservation.getAmount() }}</td>
                         <td>
                             {% if reservation.canCancel() %}
                                 <a class="btn btn-xs btn-default"

@@ -19,7 +19,8 @@
 namespace ShopBundle\Hydrator;
 
 use DateTime,
-    ShopBundle\Entity\Reservation as ReservationEntity;
+    ShopBundle\Entity\Reservation as ReservationEntity,
+    Shopbundle\Entity\SalesSession;
 
 /**
  * Class Reservation
@@ -27,9 +28,7 @@ use DateTime,
  */
 class Reservation extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array(
-        'amount',
-    );
+    private static $stdKeys = array();
 
     protected function doExtract($object = null)
     {
@@ -47,18 +46,11 @@ class Reservation extends \CommonBundle\Component\Hydrator\Hydrator
         if (null === $object) {
             $object = new ReservationEntity();
         }
-
-        $object = $this->stdHydrate($data, $object, self::$stdKeys);
-
+        //$object = $this->stdHydrate($data, $object, self::$stdKeys);
         $salesSession = $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\SalesSession')
             ->find($data['salesSession']);
         $object->setSalesSession($salesSession);
-
-        $product = $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\Product')
-            ->find($data['product']);
-        $object->setProduct($product);
 
         $object->setTimestamp(new DateTime());
 

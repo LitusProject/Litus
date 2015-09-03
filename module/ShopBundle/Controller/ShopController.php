@@ -18,7 +18,8 @@
 
 namespace ShopBundle\Controller;
 
-use DateTime,
+use DateInterval,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -38,6 +39,34 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             ->getConfigValue('shop.name');
     }
 
+    private function getSalesSessions()
+    {
+        $interval = new DateInterval(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shop.reservation_threshold')
+        );
+
+        $startDate = new DateTime();
+        $endDate = clone $startDate;
+        $endDate->add($interval);
+
+        $salesSessions = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\SalesSession')
+            ->findAllReservationsPossibleInterval($startDate, $endDate);
+
+        return $salesSessions;
+    }
+
+    private function getProducts()
+    {
+        $products = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Product')
+            ->findAllAvailable();
+
+        return $products;
+    }
+
     public function reserveAction()
     {
         $canReserve = $this->canReserve();
@@ -50,21 +79,41 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $reserveForm = $this->getForm('shop_shop_reserve');
+        $products = $this->getProducts();
+        $salesSessions = $this->getSalesSessions();
+
+        $reserveForm = $this->getForm('shop_shop_reserve',
+            array(
+                'products' => $products,
+                'salesSessions' => $salesSessions,
+            ));
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $reserveForm->setData($formData);
-
             if ($reserveForm->isValid()) {
+                $salesSession = $this->getEntityManager()
+                    ->getRepository('ShopBundle\Entity\SalesSession')
+                    ->find($formData['salesSession']);
+
                 $reservation = $reserveForm->hydrateObject();
-                if ($reservation->getSalesSession()->getStartDate() <= new DateTime()) {
+                if ($salesSession->getStartDate() <= new DateTime()) {
                     $this->flashMessenger()->error(
                         'Error',
                         $this->getTranslator()->translate('You can only make reservations for sales sessions that have not started yet.')
                     );
                 } else {
                     $reservation->setPerson($this->getPersonEntity());
-                    $this->getEntityManager()->persist($reservation);
+                    foreach ($products as $product) {
+                        $amount = $formData['product-' . $product->getId()];
+                        if ($amount) {
+                            $tmpReservation = clone $reservation;
+                            //$tmpReservation->setSalesSession($salesSession);
+                            $tmpReservation->setProduct($product);
+                            $tmpReservation->setAmount($amount);
+                            $this->getEntityManager()->persist($tmpReservation);
+                        }
+                    }
                     $this->getEntityManager()->flush();
 
                     $this->flashMessenger()->success(
@@ -88,9 +137,11 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
+                'salesSessionsAvailable' => count($salesSessions) > 0,
                 'canReserve' => $canReserve,
                 'form' => $reserveForm,
                 'shopName' => $this->getShopName(),
+                'products' => $products,
             )
         );
     }

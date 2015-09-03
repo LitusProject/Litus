@@ -39,5 +39,5 @@ return array(
     'You don\'t have permission to cancel this reservation.' => 'You don\'t have permission to cancel this reservation.',
     'Your reservation was successfully cancelled' => 'Your reservation was successfully cancelled',
     'An error occurred while trying to cancel your reservation' => 'An error occurred while trying to cancel your reservation',
-
+    'However, there are no future sales sessions open for reservations yet.' => 'However, there are no future sales sessions open for reservations yet.',
 );

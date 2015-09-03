@@ -41,4 +41,5 @@ return array(
     'You don\'t have permission to cancel this reservation.' => 'U kunt geen reservaties annuleren!',
     'Your reservation was successfully cancelled' => 'Uw reservatie was succesvol geannuleerd',
     'An error occurred while trying to cancel your reservation' => 'Er trad een fout op tijdens het annuleren van uw reservatie.',
+    'However, there are no future sales sessions open for reservations yet.' => 'Er zijn echter nog geen verkoopsessies beschikbaar om reservaties te plaatsen.',
 );

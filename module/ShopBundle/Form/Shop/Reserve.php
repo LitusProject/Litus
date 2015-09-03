@@ -18,9 +18,7 @@
 
 namespace ShopBundle\Form\Shop;
 
-use DateInterval,
-    DateTime,
-    Zend\Form\Element;
+use Zend\Form\Element;
 
 /**
  * Reserve
@@ -30,6 +28,9 @@ use DateInterval,
 class Reserve extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'ShopBundle\Hydrator\Reservation';
+
+    private $products = array();
+    private $salesSessions = array();
 
     public function init()
     {
@@ -45,36 +46,36 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $this->add(array(
-            'type' => 'select',
-            'name' => 'product',
-            'label' => 'Product',
-            'required' => true,
-            'attributes' => array(
-                'options' => $this->createProductsArray(),
-                'escape' => false,
-            ),
-        ));
-
-        $this->add(array(
-            'type' => 'select',
-            'name' => 'amount',
-            'label' => 'Amount',
-            'required' => true,
-            'attributes' => array(
-                'options' => $this->createAmountsArray(),
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
+        foreach ($this->products as $product) {
+            $this->add(array(
+                'type' => 'hidden',
+                'name' => 'product-' . $product->getId(),
+                'attributes' => array(
+                    'class' => 'input-very-mini',
+                    'id' => 'product-' . $product->getId(),
+                    'placeholder' => '0',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'digits',
+                            ),
+                            array(
+                                'name' => 'between',
+                                'options' => array(
+                                    'min' => 0,
+                                    'max' => 20,
+                                ),
+                            ),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            ));
+        }
 
         $this->addSubmit('Reserve', 'submit');
     }
@@ -84,22 +85,10 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
 	 */
     private function createSalesSessionsArray()
     {
-        $interval = new DateInterval(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shop.reservation_threshold')
-        );
         $translator = $this->getServiceLocator()->get('translator');
 
-        $startDate = new DateTime();
-        $endDate = clone $startDate;
-        $endDate->add($interval);
-
-        $salesSessions = $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\SalesSession')
-            ->findAllReservationsPossibleInterval($startDate, $endDate);
         $result = array();
-        foreach ($salesSessions as $session) {
+        foreach ($this->salesSessions as $session) {
             $result[$session->getId()] = $translator->translate($session->getStartDate()->format('l')) . " " . $session->getStartDate()->format('d/m/Y H:i') . ' - ' . $session->getEndDate()->format('H:i');
         }
 
@@ -107,31 +96,18 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-	 * @return array
+	 * @param SalesSession[] $salesSessions
 	 */
-    private function createProductsArray()
+    public function setSalesSessions($salesSessions)
     {
-        $products = $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\Product')
-            ->findAllAvailable();
-        $result = [];
-        foreach ($products as $product) {
-            $result[$product->getId()] = $product->getName() . ' (' . html_entity_decode('&euro; ', ENT_COMPAT, 'UTF-8') .  $product->getSellPrice() . ')';
-        }
-
-        return $result;
+        $this->salesSessions = $salesSessions;
     }
 
     /**
-	 * @return array
+	 * @param Product[] $products
 	 */
-    private function createAmountsArray()
+    public function setProducts($products)
     {
-        $result = array();
-        for ($i = 1; $i <= 15; ++$i) {
-            $result[$i] = $i;
-        }
-
-        return $result;
+        $this->products = $products;
     }
 }
