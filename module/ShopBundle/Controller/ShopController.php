@@ -39,6 +39,9 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             ->getConfigValue('shop.name');
     }
 
+    /**
+	 * @return SalesSession[]
+	 */
     private function getSalesSessions()
     {
         $interval = new DateInterval(
@@ -58,6 +61,9 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         return $salesSessions;
     }
 
+    /**
+	 * @return Product[]
+	 */
     private function getProducts()
     {
         $products = $this->getEntityManager()

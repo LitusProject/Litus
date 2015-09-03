@@ -89,7 +89,7 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
 
         $result = array();
         foreach ($this->salesSessions as $session) {
-            $result[$session->getId()] = $translator->translate($session->getStartDate()->format('l')) . " " . $session->getStartDate()->format('d/m/Y H:i') . ' - ' . $session->getEndDate()->format('H:i');
+            $result[$session->getId()] = $translator->translate($session->getStartDate()->format('l')) . ' ' . $session->getStartDate()->format('d/m/Y H:i') . ' - ' . $session->getEndDate()->format('H:i');
         }
 
         return $result;

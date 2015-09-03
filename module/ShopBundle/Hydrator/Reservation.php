@@ -19,8 +19,7 @@
 namespace ShopBundle\Hydrator;
 
 use DateTime,
-    ShopBundle\Entity\Reservation as ReservationEntity,
-    Shopbundle\Entity\SalesSession;
+    ShopBundle\Entity\Reservation as ReservationEntity;
 
 /**
  * Class Reservation
@@ -46,7 +45,6 @@ class Reservation extends \CommonBundle\Component\Hydrator\Hydrator
         if (null === $object) {
             $object = new ReservationEntity();
         }
-        //$object = $this->stdHydrate($data, $object, self::$stdKeys);
         $salesSession = $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\SalesSession')
             ->find($data['salesSession']);
