@@ -71,12 +71,12 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     {
         $canReserve = $this->canReserve();
         if (!$canReserve) {
-            $this->flashMessenger()->error(
-                'Error',
-                $this->getTranslator()->translate('You are not allowed to make reservations!')
+            return new ViewModel(
+                array(
+                    'shopName' => $this->getShopName(),
+                    'canReserve' => $canReserve,
+                )
             );
-
-            return new ViewModel();
         }
 
         $products = $this->getProducts();
@@ -92,12 +92,8 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             $formData = $this->getRequest()->getPost();
             $reserveForm->setData($formData);
             if ($reserveForm->isValid()) {
-                $salesSession = $this->getEntityManager()
-                    ->getRepository('ShopBundle\Entity\SalesSession')
-                    ->find($formData['salesSession']);
-
                 $reservation = $reserveForm->hydrateObject();
-                if ($salesSession->getStartDate() <= new DateTime()) {
+                if ($reservation->getSalesSession()->getStartDate() <= new DateTime()) {
                     $this->flashMessenger()->error(
                         'Error',
                         $this->getTranslator()->translate('You can only make reservations for sales sessions that have not started yet.')
@@ -108,7 +104,6 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                         $amount = $formData['product-' . $product->getId()];
                         if ($amount) {
                             $tmpReservation = clone $reservation;
-                            //$tmpReservation->setSalesSession($salesSession);
                             $tmpReservation->setProduct($product);
                             $tmpReservation->setAmount($amount);
                             $this->getEntityManager()->persist($tmpReservation);

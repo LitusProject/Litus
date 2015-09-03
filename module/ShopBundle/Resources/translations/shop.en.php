@@ -19,7 +19,7 @@
 return array(
     'Shop' => 'Shop',
     'You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don\'t come and buy your reserved items on the right date.' => 'You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don\'t come and buy your reserved items on the right date.',
-    'You cannot reserve items from the shop. This privilege might require you to do some shifts in the shop.' => 'You cannot reserve items from the shop. This privilege might require you to do some shifts in the shop.',
+    'You cannot reserve items from the shop. Make sure you\'re logged in. This privilege might require you to do some shifts in the shop as well.' => 'You cannot reserve items from the shop. Make sure you\'re logged in. This privilege might require you to do some shifts in the shop as well.',
     'Reservations' => 'Reservations',
     'Below is a list of all your reservations in the shop.' => 'Below is a list of all your reservations in the shop.',
     'Reservation time' => 'Reservation time',
