@@ -3,7 +3,7 @@
 {% block content %}
 
     <div class="page-header">
-        <h1>{{ translate('Reservations') }}</h1>
+        <h1>{{ shopName}} - {{ translate('Reservations') }}</h1>
     </div>
 
     {% include 'shop/shop/partials/navigation.twig' %}
@@ -46,7 +46,7 @@
                 </tbody>
             </table>
         {% else %}
-            {{ translate("You cannot reserve items from the shop. This privilege might require you to do some shifts in the shop.") }}
+            {{ translate("You cannot reserve items from the shop. Make sure you're logged in. This privilege might require you to do some shifts in the shop as well.") }}
         {% endif %}
     </div>
 

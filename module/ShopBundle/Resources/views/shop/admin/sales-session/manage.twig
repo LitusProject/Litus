@@ -66,8 +66,8 @@
                                    class="edit">Edit</a>
                             {% endif %}
                             {% if hasAccess('shop_admin_shop_salessession', 'delete') %}
-                                <a href="#" data-id="{{ session.getId() }}" data-start="{{ session.getStartTime() }}"
-                                   data-end="{{ session.getEndTime() }}"
+                                <a href="#" data-id="{{ session.getId() }}"
+                                   data-name="{{ session.getStartDate().format('d/m/Y H:i') }} - {{ session.getEndDate().format('d/m/Y H:i') }}"
                                    class="delete">Delete</a>
                             {% endif %}
                         </td>
@@ -135,8 +135,8 @@
                                 .append('<td>' + this.end_date + '</td>')
                                 .append('<td>' + this.remarks + '</td>')
                                 .append($('<td>')
-                                        .append($('<input>', {type: "checkbox"})
-                                                .attr('checked', this.reservationsPossible)))
+                                        .append($('<input>', {type: "checkbox", disabled: "disabled"})
+                                                .attr('checked', this.reservations_possible)))
                                 .append(actionTD);
                     });
                     $('#session_search .delete').click(openModal);
