@@ -1,17 +1,9 @@
-<ul class="nav nav-tabs hidden-xs">
-    <li {% if getParam('action') == 'index' %}class="active"{% endif %}>
-        <a href="{{ url('shop', {'action': 'index'}) }}">
-            {{ shopName }}
+<ul class="nav nav-tabs">
+    <li {% if getParam('action') == 'reserve' %}class="active"{% endif %}>
+        <a href="{{ url('shop', {'action': 'reserve'}) }}">
+            {{ translate('Reserve') }}
         </a>
     </li>
-
-    {% if canReserve %}
-        <li {% if getParam('action') == 'reserve' %}class="active"{% endif %}>
-            <a href="{{ url('shop', {'action': 'reserve'}) }}">
-                {{ translate('Reserve') }}
-            </a>
-        </li>
-    {% endif %}
 
     <li {% if getParam('action') == 'reservations' %}class="active"{% endif %}>
         <a href="{{ url('shop', {'action': 'reservations'}) }}">

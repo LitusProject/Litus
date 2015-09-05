@@ -111,7 +111,7 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'shop',
-                    'action' => 'index',
+                    'action' => 'reserve',
                 ),
             ),
         ),

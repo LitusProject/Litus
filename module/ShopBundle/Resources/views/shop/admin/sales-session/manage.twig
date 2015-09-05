@@ -57,16 +57,17 @@
                         <td><input type="checkbox" {% if session.getReservationsPossible() %}checked{% endif %} }}
                                    disabled/></td>
                         <td class="actions">
-                            {% if hasAccess('shop_admin_shop_reservation', 'manage') %}
-                                <a href="{{ url('shop_admin_shop_reservation', {"action": "salessession", "id": session.getId()}) }}" class="view">Reservations</a>
+                            {% if hasAccess('shop_admin_shop_reservation', 'salessession') %}
+                                <a href="{{ url('shop_admin_shop_reservation', {"action": "salessession", "id": session.getId()}) }}"
+                                   class="view">Reservations</a>
                             {% endif %}
                             {% if hasAccess('shop_admin_shop_salessession', 'edit') %}
                                 <a href="{{ url('shop_admin_shop_salessession', {"action": "edit", "id": session.getId()}) }}"
                                    class="edit">Edit</a>
                             {% endif %}
                             {% if hasAccess('shop_admin_shop_salessession', 'delete') %}
-                                <a href="#" data-id="{{ session.getId() }}" data-start="{{ session.getStartTime() }}"
-                                   data-end="{{ session.getEndTime() }}"
+                                <a href="#" data-id="{{ session.getId() }}"
+                                   data-name="{{ session.getStartDate().format('d/m/Y H:i') }} - {{ session.getEndDate().format('d/m/Y H:i') }}"
                                    class="delete">Delete</a>
                             {% endif %}
                         </td>
@@ -120,18 +121,23 @@
                     $('#session_search table').find('tr.item').remove();
                     $(data).each(function () {
                         $('#session_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        var actionTD = $('<td>', {'class': 'actions'});
+                        {% if hasAccess('shop_admin_shop_reservation', 'salessession') %}
+                        actionTD.append('<a href="{{ url('shop_admin_shop_reservation', {"action": "salessession"}) }}' + this.id + '" class="view">Reservations</a>');
+                        {% endif %}
+                        {% if hasAccess('shop_admin_shop_salessession', 'edit') %}
+                        actionTD.append('<a href="{{ url('shop_admin_shop_salessession', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>');
+                        {% endif %}
+                        {% if hasAccess('shop_admin_shop_salessession', 'delete') %}
+                        actionTD.append($('<a href="#" class="delete" data-id="' + this.id + '" data-name="' + (this.start_date + ' - ' + this.end_date) + '">Delete</a>'));
+                        {% endif %}
                         row.append('<td>' + this.start_date + '</td>')
                                 .append('<td>' + this.end_date + '</td>')
                                 .append('<td>' + this.remarks + '</td>')
                                 .append($('<td>')
-                                        .append($('<input>', {type: "checkbox"})
-                                                .attr('checked', this.reservationsPossible)))
-                                .append(
-                                $('<td>', {'class': 'actions'})
-                                        .append('<a href="{{ url('shop_admin_shop_reservation', {"action": "salessession"}) }}'+this.id+'" class="view">Reservations</a>')
-                                        .append('<a href="{{ url('shop_admin_shop_salessession', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
-                                        .append($('<a href="#" class="delete" data-id="'+this.id+'" data-name="'+(this.start_date+' - '+this.end_date)+'">Delete</a>'))
-                        );
+                                        .append($('<input>', {type: "checkbox", disabled: "disabled"})
+                                                .attr('checked', this.reservations_possible)))
+                                .append(actionTD);
                     });
                     $('#session_search .delete').click(openModal);
                     $('#session_search table').change();

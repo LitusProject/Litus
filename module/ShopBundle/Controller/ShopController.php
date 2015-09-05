@@ -18,7 +18,8 @@
 
 namespace ShopBundle\Controller;
 
-use DateTime,
+use DateInterval,
+    DateTime,
     Zend\View\Model\ViewModel;
 
 /**
@@ -37,56 +38,94 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shop.name');
     }
-    public function indexAction()
-    {
-        $canReserve = $this->canReserve();
 
-        return new ViewModel(
-            array(
-                'canReserve' => $canReserve,
-                'shopName' => $this->getShopName(),
-            )
+    /**
+	 * @return SalesSession[]
+	 */
+    private function getSalesSessions()
+    {
+        $interval = new DateInterval(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shop.reservation_threshold')
         );
+
+        $startDate = new DateTime();
+        $endDate = clone $startDate;
+        $endDate->add($interval);
+
+        $salesSessions = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\SalesSession')
+            ->findAllReservationsPossibleInterval($startDate, $endDate);
+
+        return $salesSessions;
+    }
+
+    /**
+	 * @return Product[]
+	 */
+    private function getProducts()
+    {
+        $products = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Product')
+            ->findAllAvailable();
+
+        return $products;
     }
 
     public function reserveAction()
     {
         $canReserve = $this->canReserve();
         if (!$canReserve) {
-            $this->flashMessenger()->error(
-                'Error',
-                'You are not allowed to make reservations!'
+            return new ViewModel(
+                array(
+                    'shopName' => $this->getShopName(),
+                    'canReserve' => $canReserve,
+                )
             );
-
-            return new ViewModel();
         }
 
-        $reserveForm = $this->getForm('shop_shop_reserve');
+        $products = $this->getProducts();
+        $salesSessions = $this->getSalesSessions();
+
+        $reserveForm = $this->getForm('shop_shop_reserve',
+            array(
+                'products' => $products,
+                'salesSessions' => $salesSessions,
+            ));
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $reserveForm->setData($formData);
-
             if ($reserveForm->isValid()) {
                 $reservation = $reserveForm->hydrateObject();
                 if ($reservation->getSalesSession()->getStartDate() <= new DateTime()) {
                     $this->flashMessenger()->error(
                         'Error',
-                        'You can only make reservations for sales sessions that have not started yet.'
+                        $this->getTranslator()->translate('You can only make reservations for sales sessions that have not started yet.')
                     );
                 } else {
                     $reservation->setPerson($this->getPersonEntity());
-                    $this->getEntityManager()->persist($reservation);
+                    foreach ($products as $product) {
+                        $amount = $formData['product-' . $product->getId()];
+                        if ($amount) {
+                            $tmpReservation = clone $reservation;
+                            $tmpReservation->setProduct($product);
+                            $tmpReservation->setAmount($amount);
+                            $this->getEntityManager()->persist($tmpReservation);
+                        }
+                    }
                     $this->getEntityManager()->flush();
 
                     $this->flashMessenger()->success(
                         'Success',
-                        'The reservation was successfully made!'
+                        $this->getTranslator()->translate('The reservation was successfully made!')
                     );
                 }
             } else {
                 $this->flashMessenger()->error(
                     'Error',
-                    'An error occurred while processing your reservation!'
+                    $this->getTranslator()->translate('An error occurred while processing your reservation!')
                 );
             }
             $this->redirect()->toRoute(
@@ -99,9 +138,11 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
+                'salesSessionsAvailable' => count($salesSessions) > 0,
                 'canReserve' => $canReserve,
                 'form' => $reserveForm,
                 'shopName' => $this->getShopName(),
+                'products' => $products,
             )
         );
     }
@@ -130,15 +171,15 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             $canBeDeleted = $canBeDeleted && $reservation->getPerson()->getId() == $this->getPersonEntity()->getId();
             $canBeDeleted = $canBeDeleted && $reservation->getSalesSession()->getStartDate() > new DateTime();
             if (!$canBeDeleted) {
-                $this->flashMessenger()->error('Error', 'You don\'t have permission to cancel this reservation.');
+                $this->flashMessenger()->error('Error', $this->getTranslator()->translate('You don\'t have permission to cancel this reservation.'));
             } else {
                 $this->getEntityManager()->remove($reservation);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->success('Success', 'Your reservation was successfully cancelled');
+                $this->flashMessenger()->success('Success', $this->getTranslator()->translate('Your reservation was successfully cancelled'));
             }
         } else {
-            $this->flashMessenger()->error('Error', 'An error occurred while trying to cancel your reservation');
+            $this->flashMessenger()->error('Error', $this->getTranslator()->translate('An error occurred while trying to cancel your reservation'));
         }
 
         $this->redirect()->toRoute(

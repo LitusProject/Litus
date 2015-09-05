@@ -42,7 +42,7 @@ class Edit extends Add
         parent::init();
 
         $this->remove('submit')
-            ->addSubmit('Save', 'product_edit');
+            ->addSubmit('Save', 'edit');
 
         $this->bind($this->product);
     }

@@ -36,20 +36,19 @@ class ReservationPermission extends EntityRepository
 
         return $query->select('rp')
             ->from('ShopBundle\Entity\ReservationPermission', 'rp')
-            ->leftJoin('CommonBundle\Entity\User\Person', 'p', $query->expr()->eq('p.id', 'rp.person'))
+            ->join('rp.person', 'p')
             ->where(
                 $query->expr()->orX(
-                    $query->expr()->like($query->expr()->concat('p.firstName', 'p.lastName'), ':name'),
-                    $query->expr()->like($query->expr()->concat('p.lastName', 'p.firstName'), ':name')
+                    $query->expr()->like($query->expr()->lower($query->expr()->concat('p.firstName', $query->expr()->concat("' '", 'p.lastName'))), ':name'),
+                    $query->expr()->like($query->expr()->lower($query->expr()->concat('p.lastName', $query->expr()->concat("' '", 'p.firstName'))), ':name')
                 )
             )
-            ->orderBy('rp.person', 'ASC')
-            ->setParameter('name', strtolower(preg_replace('/\s+/', '', $name)))
+            ->orderBy('p.id', 'ASC')
+            ->setParameter('name', '%' . strtolower($name) . '%')
             ->getQuery();
     }
 
     /**
-	 * @param $name
 	 * @return \Doctrine\ORM\Query
 	 */
     public function findAllQuery()

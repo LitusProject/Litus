@@ -44,7 +44,7 @@ class Edit extends Add
         $this->remove('duplicate_weeks')
             ->remove('duplicate_days')
             ->remove('session_add')
-            ->addSubmit('Save', 'session_edit');
+            ->addSubmit('Save', 'edit');
 
         $this->bind($this->salesSession);
     }
