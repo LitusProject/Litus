@@ -151,7 +151,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($job);
+        $job->remove();
         $this->getEntityManager()->flush();
 
         return new ViewModel(

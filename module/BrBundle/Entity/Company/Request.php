@@ -86,6 +86,24 @@ abstract class Request
     }
 
     /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        $result = 'pending';
+
+        if ($this->handled) {
+            $result = 'rejected';
+
+            if ($this->getJob()->isApproved()) {
+                $result = 'approved';
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getCreationTime()
@@ -109,10 +127,15 @@ abstract class Request
     /**
      * @return null
      */
-    abstract public function rejectRequest();
+    abstract public function rejectRequest($message);
 
     /**
      * @return \BrBundle\Entity\Company\Job
      */
     abstract public function getJob();
+
+    /**
+     * @return String
+     */
+    abstract public function getRejectMessage();
 }

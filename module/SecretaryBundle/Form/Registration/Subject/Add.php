@@ -43,6 +43,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
         ));
 
-        $this->addSubmit('Add', '', 'add_subject');
+        $this->addSubmit('Add Other Subject', '', 'add_subject');
     }
 }

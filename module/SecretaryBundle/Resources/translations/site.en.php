@@ -50,7 +50,7 @@ return array(
     'Personal E-mail' => 'Personal E-mail',
     'I want to receive e-mail at my personal e-mail address' => 'I want to receive e-mail at my personal e-mail address',
     'Student Organization' => 'Student Organization',
-    'I want to become a member of the student association (&euro; { price })' => 'I want to become a member of the student association (&euro; { price })',
+    'I want to become a member of the student association in academic year { year } (&euro; { price })' => 'I want to become a member of the student association in academic year { year } (&euro; { price })',
     'I have read and agree with the terms and conditions' => 'I have read and agree with the terms and conditions',
     'I want to receive my Ir.Reëel at CuDi' => 'I want to receive my Ir.Reëel at CuDi',
     'I want to receive \'t Bakske by e-mail' => 'I want to receive \'t Bakske by e-mail',
@@ -95,5 +95,6 @@ return array(
     'Other Subjects' => 'Other Subjects',
     'You have not yet added any other subjects.' => 'You have not yet added any other subjects.',
     'Add Other Subjects' => 'Add Other Subjects',
+    'Add Other Subject' => 'Add Other Subject',
     'The subject was succesfully added!' => 'The subject was succesfully added!',
 );

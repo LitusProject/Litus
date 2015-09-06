@@ -86,7 +86,13 @@ class Xml
                 $zip->addFile($xmlFile->getFilename(), $item->getId() . '.xml');
             } elseif ($xmlFormat == 'pmr') {
                 $this->generatePmrXml($item, $xmlFile);
-                $zip->addFile($xmlFile->getFilename(), $item->getArticle()->getMainArticle()->getTitle() . '.xml');
+
+                $jobId = $this->entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.order_job_id');
+                $jobId = str_replace('{{ code }}', substr((string) $item->getArticle()->getBarcode(),-5) ,str_replace('{{ date }}', $this->order->getDateOrdered()->format('Ymd'), $jobId));
+
+                $zip->addFile($xmlFile->getFilename(), $jobId . '.xml');
             } else {
                 throw new UnexpectedValueException('unexpected configuration value cudi.order_export_format');
             }
@@ -348,6 +354,9 @@ class Xml
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.mail');
 
+        setlocale(LC_ALL, 'en_US.UTF8');
+        $title = iconv("UTF-8", "ASCII//TRANSLIT", $item->getArticle()->getMainArticle()->getTitle());
+
         $orderDetails = array(
                     new Object(
                         'Jobnummber',
@@ -383,6 +392,16 @@ class Xml
                         'Orderline',
                         null,
                         '1'
+                    ),
+                    new Object(
+                        'Titel',
+                        null,
+                        $title
+                    ),
+                    new Object(
+                        'Barcode',
+                        null,
+                        $item->getArticle()->getBarcode()
                     ),
                     new Object(
                         'Categorie',

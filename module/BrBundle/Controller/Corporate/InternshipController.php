@@ -48,11 +48,24 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
 
+        $requests = $this->getOpenRequests($person->getCompany());
+
+        $unfinishedRequestsJobs = array();
+        foreach ($requests as $request) {
+            if ($request->getRequestType() == 'edit' || $request->getRequestType() == 'edit reject') {
+                $unfinishedRequestsJobs[$request->getEditJob()->getId()] = $request->getRequestType();
+            } else {
+                $unfinishedRequestsJobs[$request->getJob()->getId()] = $request->getRequestType();
+            }
+        }
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'logoPath' => $logoPath,
+                'requests' => $requests,
+                'unfinishedRequests' => $unfinishedRequestsJobs,
             )
         );
     }
@@ -116,6 +129,26 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             return new ViewModel();
         }
 
+        $requests = $this->getOpenRequests($person->getCompany());
+
+        $unfinishedRequestsJobs = array();
+        foreach ($requests as $request) {
+            if ($request->getRequestType() == 'edit' || $request->getRequestType() == 'edit reject') {
+                $unfinishedRequestsJobs[$request->getEditJob()->getId()] = $request->getRequestType();
+            } elseif ($request->getRequestType() == 'delete') {
+                $unfinishedRequestsJobs[$request->getJob()->getId()] = $request->getRequestType();
+            }
+        }
+
+        if (isset($unfinishedRequestsJobs[$oldJob->getId()])) {
+            $this->redirect()->toRoute(
+                'br_corporate_internship',
+                array(
+                    'action' => 'overview',
+                )
+            );
+        }
+
         $form = $this->getForm('br_corporate_job_edit', array('job' => $oldJob));
 
         if ($this->getRequest()->isPost()) {
@@ -123,17 +156,36 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $job = $form->hydrateObject(
-                    new Job($person->getCompany(), 'internship')
-                );
+                if ($oldJob->isApproved()) {
+                    $job = $form->hydrateObject(
+                        new Job($person->getCompany(), 'internship')
+                    );
+                    $job->pending();
+                    $this->getEntityManager()->persist($job);
 
-                $job->pending();
+                    $request = new RequestInternship($job, 'edit', $person, $oldJob);
+                    $this->getEntityManager()->persist($request);
+                } else {
+                    $job = $form->hydrateObject($oldJob);
+                    $this->getEntityManager()->persist($job);
 
-                $this->getEntityManager()->persist($job);
+                    $unhandledRequest = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+                        ->findUnhandledRequestsByJob($oldJob);
 
-                $request = new RequestInternship($job, 'edit', $person, $oldJob);
+                    if (empty($unhandledRequest)) {
+                        $oldRequest = $this->getEntityManager()
+                            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+                            ->findOneByJob($oldJob->getId());
 
-                $this->getEntityManager()->persist($request);
+                        $request = new RequestVacancy($job, 'edit reject', $person, $oldRequest->getEditJob());
+                        $this->getEntityManager()->persist($request);
+
+                        if (isset($oldRequest)) {
+                            $this->getEntityManager()->remove($oldRequest);
+                        }
+                    }
+                }
 
                 $this->getEntityManager()->flush();
 
@@ -170,9 +222,54 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             return new ViewModel();
         }
 
+        $requests = $this->getOpenRequests($person->getCompany());
+
+        $unfinishedRequestsJobs = array();
+        foreach ($requests as $request) {
+            if ($request->getRequestType() == 'edit' || $request->getRequestType() == 'edit reject') {
+                $unfinishedRequestsJobs[$request->getEditJob()->getId()] = $request->getRequestType();
+            } else {
+                $unfinishedRequestsJobs[$request->getJob()->getId()] = $request->getRequestType();
+            }
+        }
+
+        if (isset($unfinishedRequestsJobs[$internship->getId()])) {
+            $this->redirect()->toRoute(
+                'br_corporate_internship',
+                array(
+                    'action' => 'overview',
+                )
+            );
+        }
+
         $request = new RequestInternship($internship, 'delete', $person);
 
         $this->getEntityManager()->persist($request);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function deleteRequestAction()
+    {
+        if (!($request = $this->getRequestEntity())) {
+            $this->redirect()->toRoute(
+                'br_corporate_internship',
+                array(
+                    'action' => 'overview',
+                )
+            );
+        }
+
+        $request = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+            ->findOneById($request->getId());
+
+        $this->getEntityManager()->remove($request);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -194,7 +291,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         if (!($job instanceof Job)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No job was found!'
+                'No internship was found!'
             );
 
             $this->redirect()->toRoute(
@@ -211,6 +308,34 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     }
 
     /**
+     * @return RequestVacancy|null
+     */
+    private function getRequestEntity()
+    {
+        $request = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+            ->findOneById($this->getParam('id', 0));
+
+        if (!($request instanceof RequestInternship)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No request was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'br_career_internship',
+                array(
+                    'action' => 'overview',
+                )
+            );
+
+            return;
+        }
+
+        return $request;
+    }
+
+    /**
      * @return array
      */
     private function getSectors()
@@ -221,5 +346,21 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         }
 
         return $sectorArray;
+    }
+
+    /**
+     * @return array
+     */
+    private function getOpenRequests($company)
+    {
+        $unhandledRequests = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+            ->findAllUnhandledByCompany($company);
+
+        $handledRejects = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Request\RequestInternship')
+            ->findRejectsByCompany($company);
+
+        return array_merge($handledRejects, $unhandledRequests);
     }
 }

@@ -50,7 +50,7 @@ return array(
     'Personal E-mail' => 'Persoonlijke E-mail',
     'I want to receive e-mail at my personal e-mail address' => 'Ik wil e-mail ontvangen op mijn persoonlijk e-mail adres',
     'Student Organization' => 'Studentenkring',
-    'I want to become a member of the student association (&euro; { price })' => 'Ik wil lid worden van de studentenkring (&euro; { price })',
+    'I want to become a member of the student association in academic year { year } (&euro; { price })' => 'Ik wil lid worden van de studentenkring in academiejaar { year } (&euro; { price })',
     'I have read and agree with the terms and conditions' => 'Ik heb de voorwaarden gelezen en ga hiermee akkoord',
     'I want to receive my Ir.Reëel at CuDi' => 'Ik wil mijn Ir.Reëel krijgen bij CuDi',
     'I want to receive \'t Bakske by e-mail' => 'Ik wil \'t Bakske ontvangen via e-mail',
@@ -96,5 +96,6 @@ return array(
     'Other Subjects' => 'Andere Vakken',
     'You have not yet added any other subjects.' => 'Je hebt nog geen andere vakken toegevoegd.',
     'Add Other Subjects' => 'Andere Vakken Toevoegen',
+    'Add Other Subject' => 'Ander Vak Toevoegen',
     'The subject was succesfully added!' => 'Het vak is succesvol toegevoegd!',
 );

@@ -49,7 +49,7 @@
                     <td>{{ contract.getAuthor().getPerson().getFullName() }}</td>
                     <td>{{ contract.getTitle() }}</td>
                     <td>{{ contract.getDate().format('j/m/Y') }}</td>
-                    <td>{{ contract.getContractNb() }}</td>
+                    <td>{{ contract.getFullContractNumber(em) }}</td>
 
                     {% if contract.isSigned() %}
                         <td style="text-align: center;">
@@ -57,7 +57,7 @@
                         </td>
                     {% else %}
                         <td style="text-align: center;">
-                            <input type="checkbox" id="{{ contract.getId() }}"/>
+                            <input type="checkbox" disabled id="{{ contract.getId() }}"/>
                         </td>
                     {% endif %}
 

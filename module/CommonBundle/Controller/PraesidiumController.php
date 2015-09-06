@@ -93,6 +93,6 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
             $date = AcademicYearUtil::getDateTime($this->getParam('academicyear'));
         }
 
-        return AcademicYearUtil::getUniversityYear($this->getEntityManager(), $date);
+        return AcademicYearUtil::getOrganizationYear($this->getEntityManager(), $date);
     }
 }

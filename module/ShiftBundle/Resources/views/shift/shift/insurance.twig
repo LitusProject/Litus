@@ -1,0 +1,12 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('Shifts') }}</h1>
+    </div>
+
+    {% include 'shift/shift/partials/navigation.twig' %}
+
+    {{ insuranceText }}
+
+{% endblock %}

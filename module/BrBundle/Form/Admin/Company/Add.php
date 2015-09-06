@@ -41,7 +41,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(array(
             'type'     => 'text',
             'name'     => 'name',
-            'label'    => 'Copmany Name',
+            'label'    => 'Company Name',
             'required' => true,
             'options'  => array(
                 'input' => array(
@@ -140,6 +140,59 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'     => 'address',
             'label'    => 'Address',
             'required' => true,
+        ));
+
+        $this->add(array(
+            'type'       => 'fieldset',
+            'name'       => 'invoice',
+            'label'      => 'Invoice Data',
+            'attributes' => array(
+                'id' => 'invoice_form',
+            ),
+            'elements' => array(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'invoice_name',
+                    'label'    => 'Company Invoice Name',
+                    'required' => false,
+                    'options'  => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'company_name',
+                                    'options' => array(
+                                        'company' => $this->company,
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+
+                array(
+                    'type'     => 'text',
+                    'name'     => 'invoice_vat_number',
+                    'label'    => 'VAT Number',
+                    'required' => false,
+                    'options'  => array(
+                        'input' => array(
+                            'filters'  => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                        ),
+                    ),
+                ),
+
+                array(
+                    'type'     => 'common_address_add',
+                    'name'     => 'invoice_address',
+                    'label'    => 'Invoice Address',
+                    'required' => false,
+                ),
+            ),
         ));
 
         $this->add(array(

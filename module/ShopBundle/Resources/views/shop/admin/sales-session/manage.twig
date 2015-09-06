@@ -1,0 +1,184 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'shop/admin/sales-session/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width session_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The session was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width session_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the session.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <div id="session_search" style="display: none;">
+            <div style="padding: 4px; text-align: right">
+                Search:
+                <select id="searchField">
+                    <option value="remarks">Remarks</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30"/>
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Remarks</th>
+                    <th>Reservations possible</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="default_page">
+            <table class="full_width manage">
+                <tr>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Remarks</th>
+                    <th>Reservations possible</th>
+                    <th width="70px">Actions</th>
+                </tr>
+
+                {% for session in paginator %}
+                    <tr class="item item-{{ session.getId() }}">
+                        <td>{{ session.getStartDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ session.getEndDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ session.getRemarks() }}</td>
+                        <td><input type="checkbox" {% if session.getReservationsPossible() %}checked{% endif %} }}
+                                   disabled/></td>
+                        <td class="actions">
+                            {% if hasAccess('shop_admin_shop_reservation', 'salessession') %}
+                                <a href="{{ url('shop_admin_shop_reservation', {"action": "salessession", "id": session.getId()}) }}"
+                                   class="view">Reservations</a>
+                            {% endif %}
+                            {% if hasAccess('shop_admin_shop_salessession', 'edit') %}
+                                <a href="{{ url('shop_admin_shop_salessession', {"action": "edit", "id": session.getId()}) }}"
+                                   class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('shop_admin_shop_salessession', 'delete') %}
+                                <a href="#" data-id="{{ session.getId() }}"
+                                   data-name="{{ session.getStartDate().format('d/m/Y H:i') }} - {{ session.getEndDate().format('d/m/Y H:i') }}"
+                                   class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="removeSession" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Session
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following sales session: <b class="name"></b>?
+                        Please note that this operation cannot be undone!
+                    </p>
+
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('shop_admin_shop_salessession', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#session_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('shop_admin_shop_salessession', {'action': 'manage'}) }}manage/',
+                url: '{{ url('shop_admin_shop_salessession', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#session_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#session_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        var actionTD = $('<td>', {'class': 'actions'});
+                        {% if hasAccess('shop_admin_shop_reservation', 'salessession') %}
+                        actionTD.append('<a href="{{ url('shop_admin_shop_reservation', {"action": "salessession"}) }}' + this.id + '" class="view">Reservations</a>');
+                        {% endif %}
+                        {% if hasAccess('shop_admin_shop_salessession', 'edit') %}
+                        actionTD.append('<a href="{{ url('shop_admin_shop_salessession', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>');
+                        {% endif %}
+                        {% if hasAccess('shop_admin_shop_salessession', 'delete') %}
+                        actionTD.append($('<a href="#" class="delete" data-id="' + this.id + '" data-name="' + (this.start_date + ' - ' + this.end_date) + '">Delete</a>'));
+                        {% endif %}
+                        row.append('<td>' + this.start_date + '</td>')
+                                .append('<td>' + this.end_date + '</td>')
+                                .append('<td>' + this.remarks + '</td>')
+                                .append($('<td>')
+                                        .append($('<input>', {type: "checkbox", disabled: "disabled"})
+                                                .attr('checked', this.reservations_possible)))
+                                .append(actionTD);
+                    });
+                    $('#session_search .delete').click(openModal);
+                    $('#session_search table').change();
+                },
+                clear: function () {
+                    $('#session_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeSession = $('#removeSession');
+            removeSession.find('.name').html($(this).data('name'));
+            removeSession.find('.cancel').one('click', function () {
+                removeSession.modal('hide');
+            });
+            var id = $this.data('id');
+            removeSession.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('shop_admin_shop_salessession', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.session_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeSession.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeSession.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.session_removed_error').removeClass('hide');
+            $('#removeSession').modal('hide');
+        }
+    </script>
+{% endblock %}

@@ -18,12 +18,17 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Collaborator,
+use BrBundle\Component\Document\Generator\Pdf\Overview as PdfGenerator,
+    BrBundle\Entity\Collaborator,
     BrBundle\Entity\Company,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
- * OverviewController
+ * OverviewController.
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  */
@@ -37,6 +42,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             array(
                 'array' => $array,
                 'totals' => $totals,
+                'em' => $this->getEntityManager(),
             )
         );
     }
@@ -49,6 +55,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             array(
                 'array' => $array,
                 'totals' => $totals,
+                'em' => $this->getEntityManager(),
             )
         );
     }
@@ -75,6 +82,84 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    public function csvAction()
+    {
+        $file = new CsvFile();
+        $heading = array('Company Name', 'Contract Number', 'Author', 'Product', 'Parameters', 'Amount', 'Price', 'Numbers Only', 'Contract Total', 'Invoice');
+
+        $ids = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findContractCompany();
+
+        $results = array();
+        foreach ($ids as $id) {
+            $company = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Company')
+                ->findOneById($id);
+
+            $contracts = $this->getEntityManager()
+                ->getRepository('BrBundle\entity\Contract')
+                ->findAllNewOrSignedByCompany($company);
+
+            foreach ($contracts as $contract) {
+                $contract->getOrder()->setEntityManager($this->getEntityManager());
+                $totalContractValue = $contract->getOrder()->getTotalCostExclusive();
+
+                $orderEntries = $contract->getOrder()->getEntries();
+
+                foreach ($orderEntries as $entry) {
+                    $results[] = array(
+                        $company->getName(),
+                        $contract->getFullContractNumber($this->getEntityManager()),
+                        $contract->getAuthor()->getPerson()->getFullName(),
+                        $entry->getProduct()->getName(),
+                        '?',
+                        $entry->getQuantity(),
+                        $entry->getProduct()->getPrice()/100,
+                        $entry->getProduct()->getPrice()/100,
+                        $totalContractValue,
+                        $contract->isSigned() ? 1 : 0,
+                    );
+                }
+            }
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="contracts_overview.csv"',
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+    public function pdfAction()
+    {
+        $file = new TmpFile();
+        $document = new PdfGenerator($this->getEntityManager(), $file);
+        $document->generate();
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="contracts_overview.pdf"',
+            'Content-Type' => 'application/pdf',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
     public function companyviewAction()
     {
         if (!($company = $this->getCompanyEntity())) {
@@ -96,7 +181,6 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             )
         );
     }
-
     /**
      * @return array
      */
@@ -121,7 +205,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 ->getRepository('BrBundle\Entity\Contract')
                 ->findAllNewOrSignedByCompany($company);
 
-            $companyNmbr++;
+            ++$companyNmbr;
 
             $contracted = 0;
             $signed = 0;
@@ -129,7 +213,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
             foreach ($contracts as $contract) {
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
-                $value = $contract->getOrder()->getTotalCost();
+                $value = $contract->getOrder()->getTotalCostExclusive();
                 $contracted = $contracted + $value;
                 $totalContracted = $totalContracted + $value;
 
@@ -186,9 +270,9 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             $paid = 0;
 
             foreach ($contracts as $contract) {
-                $contractNmbr++;
+                ++$contractNmbr;
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
-                $value = $contract->getOrder()->getTotalCost();
+                $value = $contract->getOrder()->getTotalCostExclusive();
                 $contracted = $contracted + $value;
                 $totalContracted = $totalContracted + $value;
 

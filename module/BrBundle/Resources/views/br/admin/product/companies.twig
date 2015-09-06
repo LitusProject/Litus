@@ -1,0 +1,59 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/product/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+
+        <p>
+            The following table shows all signed contracts including the product <b>{{ product.getName() }}</b>.
+        </p>
+
+        <table class="full_width companies">
+            <tr>
+                <th width="10%">Contract</th>
+                <th width="10%">Invoice</th>
+                <th>Company</th>
+                <th width="15%">Author</th>
+                <th width="15%">Contact</th>
+                <th width="10%">Contact Phone</th>
+                <th width="20%">Contact Email</th>
+            </tr>
+
+            {% for entry in paginator %}
+                {% if entry.getOrder().hasContract() %}
+                    {% if entry.getOrder().getContract().isSigned() %}
+                        <tr class="item item-{{ entry.getId() }}">
+                            <td>{{ entry.getOrder().getContract().getFullContractNumber(em) }}</td>
+                            <td>{{ entry.getOrder().getInvoice().getInvoiceNumber(em) }}</td>
+                            <td>{{ entry.getOrder().getCompany().getName() }}</td>
+                            <td>{{ entry.getOrder().getContract().getAuthor().getPerson().getFullName() }}</td>
+                            <td>{{ entry.getOrder().getCompany().getContacts()[0].getFullName() }}</td>
+                            <td>{{ entry.getOrder().getCompany().getContacts()[0].getPhoneNumber() }}</td>
+                            <td>{{ entry.getOrder().getCompany().getContacts()[0].getEmail() }}</td>
+                        </tr>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+    <aside>
+        {% if hasAccess('br_admin_product', 'companiescsv') %}
+            <div class="sidebox">
+                <div class="title">Export CSV</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to export this list to CSV!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('br_admin_product', {"action": "companiescsv", "id": product.getId()}) }}">&rarr; Export to CSV</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}

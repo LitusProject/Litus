@@ -22,6 +22,8 @@ use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
+    DateInterval,
+    DateTime,
     SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
     SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
@@ -52,10 +54,33 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $studyIds[] = $enrollment->getStudy()->getId();
         }
 
+        $date = new DateTime();
+        $startOffset = new DateInterval(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('start_academic_year_offset')
+            );
+        $endOffset = new DateInterval(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('secretary.date_info_message_interval')
+            );
+
+        $startNewUniversityYear = $academicYear->getUniversityEndDate()->sub($startOffset);
+        $startNewAcademicYear = $academicYear->getStartDate()->add(new DateInterval('P1Y'))->sub($endOffset);
+        $dateInfoMessage = false;
+
+        if ($date > $startNewAcademicYear && $date < $startNewUniversityYear) {
+            $dateInfoMessage = true;
+        }
+
         return new ViewModel(
             array(
                 'studies' => $studies,
                 'enrollments' => $studyIds,
+                'academicYear' => $academicYear,
+                'startNewUniversityYear' => $startNewUniversityYear,
+                'dateInfoMessage' => $dateInfoMessage,
             )
         );
     }

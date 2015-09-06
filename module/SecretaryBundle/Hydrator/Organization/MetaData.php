@@ -99,10 +99,7 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
         if ($data['become_member']) {
             $this->stdHydrate($data, $object, array('become_member', 'tshirt_size', 'receive_irreeel_at_cudi', 'bakske_by_mail'));
         } else {
-            $this->stdHydrate($data, $object, array('become_member', 'bakske_by_mail'));
-
-            $object->setTshirtSize(false)
-                ->setReceiveIrreeelAtCudi(false);
+            $this->stdHydrate($data, $object, array('become_member', 'bakske_by_mail', 'receive_irreeel_at_cudi'));
         }
 
         return $this->stdHydrate($data, $object, self::$stdKeys);

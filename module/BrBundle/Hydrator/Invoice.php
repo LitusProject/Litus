@@ -29,13 +29,16 @@ use BrBundle\Entity\Invoice\InvoiceEntry as InvoiceEntryEntity,
  */
 class Invoice extends \CommonBundle\Component\Hydrator\Hydrator
 {
+    /**
+     * @static @var string[] Key attributes to hydrate using the standard method.
+     */
+    private static $stdKeys = array('VATContext', 'reference', 'tax_free', 'discount_text', 'auto_discount_text');
+
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
             throw new InvalidObjectException('Cannot create an invoice');
         }
-
-        $object->setVatContext($data['VATContext']);
 
         $newVersionNb = 0;
 
@@ -52,7 +55,7 @@ class Invoice extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setVersion($newVersionNb);
 
-        return $object;
+        return $this->stdHydrate($data, $object, self::$stdKeys);
     }
 
     protected function doExtract($object = null)
@@ -61,9 +64,7 @@ class Invoice extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = array();
-
-        $data['VATContext'] = $object->getVatContext();
+        $data = $this->stdExtract($object, self::$stdKeys);
 
         foreach ($object->getEntries() as $entry) {
             $data['entry_' . $entry->getId()] = $entry->getInvoiceText();
