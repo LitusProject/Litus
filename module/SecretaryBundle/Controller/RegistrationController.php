@@ -306,6 +306,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         'organizations' => $organizations,
                         'membershipArticles' => $membershipArticles,
                         'enableOtherOrganization' => $enableOtherOrganization,
+                        'academicYear' => $this->getCurrentAcademicYear(),
                     )
                 );
             }

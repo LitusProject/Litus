@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Repository\General;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    DateInterval;
 
 /**
  * AcademicYear
@@ -58,6 +59,33 @@ class AcademicYear extends EntityRepository
             ->from('CommonBundle\Entity\General\AcademicYear', 'y')
             ->orderBy('y.universityStart', 'DESC')
             ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  dateTime                                       $date
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
+    public function findOneByDate($date)
+    {
+        $datePreviousYear = clone $date;
+        $datePreviousYear = $datePreviousYear->sub( new DateInterval('P1Y'));
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('y')
+            ->from('CommonBundle\Entity\General\AcademicYear', 'y')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->lt('y.start', ':date'),
+                    $query->expr()->gt('y.start', ':datePreviousYear')
+                )
+            )
+            ->setParameter('date', $date)
+            ->setParameter('datePreviousYear', $datePreviousYear)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
 
         return $resultSet;
     }

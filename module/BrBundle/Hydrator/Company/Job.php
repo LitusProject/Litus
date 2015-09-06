@@ -40,6 +40,7 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->setSector($data['sector']);
+        $object->updateDate();
 
         $object->setStartDate(self::loadDateTime($data['start_date']))
             ->setEndDate(self::loadDateTime($data['end_date']));

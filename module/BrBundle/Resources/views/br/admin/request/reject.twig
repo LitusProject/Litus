@@ -1,0 +1,20 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/request/partials/navigation.twig' %}
+
+    <div id="controller_action">
+        {% include 'admin/partials/flashMessenger.twig' %}
+        <h1>Request</h1>
+
+        <p>Type: <b>{{ request.getRequestType }} {{ request.getJob().getType() }}</b></p>
+        <p>Company: <b>{{ request.getJob().getCompany().getName() }}</b></p>
+        <p>Name: <b>{{ request.getJob().getName() }}</b></p>
+        <br />
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+
+    </div>
+
+{% endblock %}

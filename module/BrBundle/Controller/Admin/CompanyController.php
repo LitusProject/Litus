@@ -18,9 +18,14 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Company,
+use BrBundle\Component\Document\Generator\Company\Pdf as PdfGenerator,
+    BrBundle\Entity\Company,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     Imagick,
     Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\Http\Headers,
     Zend\Validator\File\IsImage as IsImageValidator,
     Zend\View\Model\ViewModel;
 
@@ -282,6 +287,69 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'result' => $result,
+            )
+        );
+    }
+
+    public function csvAction()
+    {
+        $file = new CsvFile();
+        $heading = array('Company Name', 'Company Phone Number', 'Name', 'Username', 'E-mail', 'Contact Phone Number');
+
+        $companies = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company')
+            ->findAll();
+
+        $results = array();
+        foreach ($companies as $company) {
+            $company_users = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\User\Person\Corporate')
+                ->findBy(array(
+                    'canLogin'  => 'true',
+                    'company'   => $company->getId(),
+                ));
+
+            foreach ($company_users as $user) {
+                $results[] = array($company->getName(), $company->getPhoneNumber(), $user->getFullName(), $user->getUsername(), $user->getEmail(), ' ' . $user->getPhoneNumber());
+            }
+            if (count($company_users) == 0) {
+                $results[] = array($company->getName(), $company->getPhoneNumber(), '/', '/', '/', '/');
+            }
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="contacts_list.csv"',
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
+    public function pdfAction()
+    {
+        $file = new TmpFile();
+        $document = new PdfGenerator($this->getEntityManager(), $file);
+        $document->generate();
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="contacts_list.pdf"',
+            'Content-Type'        => 'application/pdf',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }

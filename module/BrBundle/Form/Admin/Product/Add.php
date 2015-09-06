@@ -78,7 +78,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(array(
             'type'     => 'text',
             'name'     => 'price',
-            'label'    => 'Price',
+            'label'    => 'Price (in cents)',
             'required' => true,
             'value'    => 0,
             'options'  => array(
@@ -91,6 +91,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                 ),
             ),
+        ));
+
+        $this->add(array(
+            'type'     => 'checkbox',
+            'name'     => 'refund',
+            'label'    => 'Refund',
         ));
 
         $this->add(array(

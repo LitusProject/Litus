@@ -47,6 +47,20 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
             $hydrator->hydrate($data['address'], $object->getAddress())
         );
 
+        if (isset($data['invoice']['invoice_name'])) {
+            $object->setInvoiceName($data['invoice']['invoice_name']);
+        }
+
+        if (isset($data['invoice']['invoice_vat_number'])) {
+            $object->setInvoiceVatNumber($data['invoice']['invoice_vat_number']);
+        }
+
+        if (isset($data['invoice']['invoice_address'])) {
+            $object->setInvoiceAddress(
+                $hydrator->hydrate($data['invoice']['invoice_address'], $object->getRawInvoiceAddress())
+            );
+        }
+
         $object->setSector($data['sector']);
 
         $years = array();
@@ -111,10 +125,18 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
             $data['cvbook'][] = 'archive-' . $year;
         }
 
+        $data['invoice']['invoice_name'] = $object->getRawInvoiceName();
+        $data['invoice']['invoice_vat_number'] = $object->getRawInvoiceVatNumber();
+
         /** @var \CommonBundle\Hydrator\General\Address $hydrator */
         $hydrator = $this->getHydrator('CommonBundle\Hydrator\General\Address');
 
         $data['address'] = $hydrator->extract($object->getAddress());
+
+        $invoiceAddress = $object->getRawInvoiceAddress();
+        if (null !== $invoiceAddress) {
+            $data['invoice']['invoice_address'] = $hydrator->extract($invoiceAddress);
+        }
 
         $page = $object->getPage();
         if (null !== $page) {

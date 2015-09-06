@@ -1,0 +1,20 @@
+<header id="controller_header">
+    <div class="title"><span class="shift">Sales Sessions</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('shop_admin_shop_salessession', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %}
+                            href="{{ url("shop_admin_shop_salessession", {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('shop_admin_shop_salessession', 'old') %}
+                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %}
+                            href="{{ url("shop_admin_shop_salessession", {"action": "old"}) }}">Old</a></li>
+            {% endif %}
+            {% if hasAccess('shop_admin_shop_salessession', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %}
+                            href="{{ url("shop_admin_shop_salessession", {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

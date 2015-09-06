@@ -1,0 +1,58 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+
+    <div class="page-header">
+        <h1>{{ shopName}} - {{ translate('Reservations') }}</h1>
+    </div>
+
+    {% include 'shop/shop/partials/navigation.twig' %}
+
+    <div style="text-align: justify;">
+        {% if canReserve %}
+            {{ translate("Below is a list of all your reservations in the shop.") }}
+            <table id="table-reservations" class="table table-condensed table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>{{ translate('Reservation time') }}</th>
+                    <th>{{ translate('Sales session') }}</th>
+                    <th>{{ translate('Product') }}</th>
+                    <th>{{ translate('Amount') }}</th>
+                    <th>{{ translate('Price') }}</th>
+                    <th>{{ translate('Total price') }}</th>
+                    <th>{{ translate('Cancel') }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ translate(reservation.getTimestamp().format('l')) }} {{ reservation.getTimestamp().format('d/m/Y H:i') }}</td>
+                        <td>{{ translate(reservation.getSalesSession().getStartDate().format('l')) }} {{ reservation.getSalesSession().getStartDate().format('d/m/Y H:i') }}
+                            - {{ reservation.getSalesSession().getEndDate().format('H:i') }}</td>
+                        <td>{{ reservation.getProduct().getName() }}</td>
+                        <td>{{ reservation.getAmount }}</td>
+                        <td>&euro; {{ reservation.getProduct().getSellPrice() }}</td>
+                        <td>&euro; {{ reservation.getProduct().getSellPrice() * reservation.getAmount() }}</td>
+                        <td>
+                            {% if reservation.canCancel() %}
+                                <a class="btn btn-xs btn-default"
+                                   href="{{ url('shop', {action: 'deleteReservation', id: reservation.getId()}) }}">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            {{ translate("You cannot reserve items from the shop. Make sure you're logged in. This privilege might require you to do some shifts in the shop as well.") }}
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+    </script>
+{% endblock %}

@@ -48,6 +48,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'em' => $this->getEntityManager(),
             )
         );
     }
@@ -173,39 +174,54 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        $invoice = new Invoice($contract->getOrder());
+        $form = $this->getForm('br_contract_sign-contract');
 
-        foreach ($contract->getEntries() as $entry) {
-            $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(), 0);
-            $this->getEntityManager()->persist($invoiceEntry);
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $invoice = $form->hydrateObject(
+                    new Invoice($contract->getOrder())
+                );
+
+                foreach ($contract->getEntries() as $entry) {
+                    $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(), 0);
+                    $this->getEntityManager()->persist($invoiceEntry);
+                }
+
+                $this->getEntityManager()->persist($invoice);
+
+                $contract->setSigned();
+
+                $contract->setInvoiceNb(
+                    $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Contract')
+                        ->findNextInvoiceNb()
+                );
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The contract was succesfully signed!'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_contract',
+                    array(
+                        'action' => 'view',
+                        'id' => $contract->getId(),
+                    )
+                );
+            }
         }
 
-        $this->getEntityManager()->persist($invoice);
-
-        $contract->setSigned();
-
-        $contract->setInvoiceNb(
-            $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Contract')
-                ->findNextInvoiceNb()
-        );
-
-        $this->getEntityManager()->flush();
-
-        $this->flashMessenger()->success(
-            'Success',
-            'The contract was succesfully signed!'
-        );
-
-        $this->redirect()->toRoute(
-            'br_admin_contract',
+        return new ViewModel(
             array(
-                'action' => 'view',
-                'id' => $contract->getId(),
+                'form' => $form,
             )
         );
-
-        return new ViewModel();
     }
 
     public function downloadAction()
@@ -226,9 +242,12 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $fileHandler = fopen($file, 'r');
         $content = fread($fileHandler, filesize($file));
 
+        $contractNb = $contract->getFullContractNumber($this->getEntityManager());
+        $companyName = $contract->getCompany()->getName();
+
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="contract.pdf"',
+            'Content-Disposition' => 'attachment; filename="' . $contractNb . ' ' . $companyName . '.pdf"',
             'Content-Type'        => 'application/pdf',
         ));
         $this->getResponse()->setHeaders($headers);

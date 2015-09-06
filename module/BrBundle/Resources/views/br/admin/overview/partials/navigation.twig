@@ -3,6 +3,12 @@
 
     <nav id="controller_nav">
         <ul>
+            {% if hasAccess('br_admin_overview', 'pdf') %}
+                <li><a {% if 'pdf' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_overview', {"action": "pdf"}) }}">PDF</a></li>
+            {% endif %}
+            {% if hasAccess('br_admin_overview', 'csv') %}
+                <li><a {% if 'csv' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_overview', {"action": "csv"}) }}">CSV</a></li>
+            {% endif %}
             {% if hasAccess('br_admin_overview', 'person') %}
                 <li><a {% if 'person' == getParam('action') %} class="active" {% endif %}href="{{ url('br_admin_overview', {"action": "person"}) }}">Persons</a></li>
             {% endif %}

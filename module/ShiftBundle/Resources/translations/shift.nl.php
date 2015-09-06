@@ -75,4 +75,7 @@ return array(
     'You have done your last shift on %lastShift%.' => 'Je hebt je laatste shift gedaan op %lastShift%.',
     'You need to do <span class="label label-success">%shiftsToNextRanking%</span> more shift(s) to get the next ranking.' => 'Je moet nog <span class="label label-success">%shiftsToNextRanking%</span> shift(en) meer doen om de volgende ranking te bereiken.',
     'Your current shiftranking is <span class="label label-success">%ranking%</span>.' => 'Je huidige shiftranking is <span class="label label-success">%ranking%</span>.',
+    'Insurance' => 'Verzekering',
+    'I have read this' => 'Ik heb dit gelezen',
+    'I did not read this' => 'Ik heb dit niet gelezen',
 );

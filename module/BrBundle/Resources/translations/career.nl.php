@@ -40,4 +40,6 @@ return array(
     'So just look around and you might just find what you are looking for!' => 'Kijk dus gerust eens rond en wie weet vind jij wel wat je zoekt!',
 
     'No items found' => 'Geen items gevonden',
+    'This vacancy is not yet on publicly visible. It will be after it is approved by an admin.' => 'Deze job is nog niet publiek zichtbaar. De job zal zichtbaar zijn zodra een beheerder hem heeft goedgekeurd.',
+    'This internship is not yet on publicly visible. It will be after it is approved by an admin.' => 'Deze stage is nog niet publiek zichtbaar. De stage zal zichtbaar zijn zodra een beheerder hem heeft goedgekeurd.',
 );

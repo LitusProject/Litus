@@ -14,4 +14,12 @@
             </a>
         </li>
     {% endif %}
+
+    {% if insuranceEnabled %}
+        <li {% if getParam('action') == 'insurance' %}class="active"{% endif %}>
+            <a href="{{ url('shift', {'action': 'insurance'}) }}">
+                {{ translate('Insurance') }}
+            </a>
+        </li>
+    {% endif %}
 </ul>

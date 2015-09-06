@@ -152,7 +152,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             } else {
                 $formData['organization_info']['become_member'] = isset($formData['organization_info']['become_member'])
                     ? $formData['organization_info']['become_member']
-                    : false;
+                    : 0;
             }
             $formData['organization_info']['conditions'] = true;
 
@@ -173,7 +173,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         ->findAll()
                 );
             }
-
             $form->setData($formData);
 
             if ($form->isValid()) {

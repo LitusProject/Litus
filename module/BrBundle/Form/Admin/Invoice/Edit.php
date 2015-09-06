@@ -38,6 +38,19 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
+        $this->add(array(
+            'type'     => 'text',
+            'name'     => 'reference',
+            'label'    => 'Company Reference',
+            'options'  => array(
+                'input' => array(
+                    'filters'  => array(
+                        array('name' => 'StringTrim'),
+                    ),
+                ),
+            ),
+        ));
+
         foreach ($this->invoice->getEntries() as $entry) {
             $this->add(array(
                 'type'     => 'textarea',

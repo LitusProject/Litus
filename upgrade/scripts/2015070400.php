@@ -160,17 +160,17 @@ foreach ($usedStudies as $id) {
         ->setModuleGroups(array($moduleGroup));
     $entityManager->persist($combination);
 
-    $newStudiesAcademicYearsMap = array();
-    foreach ($studiesAcademicYearsMap as $map) {
+    foreach ($studiesAcademicYearsMap as $mapKey => $map) {
         if ($map['study'] == $id) {
             $academicYear = $entityManager->getRepository('CommonBundle\Entity\General\AcademicYear')
                 ->findOneById($map['academic_year']);
+            unset($studiesAcademicYearsMap[$mapKey]);
             break;
         } else {
             $newStudiesAcademicYearsMap[] = $map;
         }
     }
-    $studiesAcademicYearsMap = $newStudiesAcademicYearsMap;
+    $studiesAcademicYearsMap = array_values($studiesAcademicYearsMap);
 
     $study = new \SyllabusBundle\Entity\Study();
     $study->setCombination($combination)

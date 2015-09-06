@@ -273,7 +273,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 array(
                     'type'       => 'checkbox',
                     'name'       => 'become_member',
-                    'label'      => 'I want to become a member of the student association (&euro; { price })',
+                    'label'      => 'I want to become a member of the student association in academic year { year } (&euro; { price })',
                     'value'      => true,
                     'attributes' => array(
                         'id'       => 'become_member',
@@ -293,7 +293,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name'    => 'identical',
                                     'options' => array(
-                                        'token' => '1',
+                                        'token' => true,
+                                        'strict' => false,
                                         'messages' => array(
                                             Identical::NOT_SAME => 'You must agree to the terms and conditions.',
                                         ),
@@ -424,7 +425,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     public function getInputFilterSpecification()
     {
         $specs = parent::getInputFilterSpecification();
-
         if (null !== $this->metaData) {
             if (isset($specs['organization_info']['conditions'])) {
                 unset($specs['organization_info']['conditions']);

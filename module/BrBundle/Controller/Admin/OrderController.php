@@ -127,7 +127,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'br_admin_order',
                     array(
-                        'action' => 'manage',
+                        'action' => 'product',
+                        'id' => $order->getId(),
                     )
                 );
             }
@@ -255,17 +256,19 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $contract = new Contract(
-                    $order,
-                    $order->getCreationPerson(),
-                    $order->getCompany(),
-                    $formData['title']
+                $contract = $form->hydrateObject(
+                    new Contract(
+                        $order,
+                        $order->getCreationPerson(),
+                        $order->getCompany(),
+                        $formData['title']
+                    )
                 );
 
                 $contract->setContractNb(
                     $this->getEntityManager()
                         ->getRepository('BrBundle\Entity\Contract')
-                        ->findNextContractNb()
+                        ->findNextContractNbByCollaborator($contract->getAuthor())
                 );
 
                 $order->setContract($contract);
@@ -295,8 +298,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         'action' => 'manage',
                     )
                 );
-
-                return new ViewModel();
             }
         }
 
