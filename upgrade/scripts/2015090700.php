@@ -18,7 +18,7 @@
 include 'init_autoloader.php';
 $app = Zend\Mvc\Application::init(include 'config/application.config.php');
 $entityManager = $app->getServiceManager()->get('doctrineormentitymanager');
-$dumpFileName = '/tmp/units_update_2015070600.txt';
+$dumpFileName = '/tmp/units_update_2015090700.txt';
 $unitMaps = array();
 // Get a local dump of the updated tables
 echo ' -> Get a local dump of the tables' . PHP_EOL;
