@@ -28,7 +28,7 @@ use CudiBundle\Entity\Sale\Article\Discount\Discount;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'Cudibundle\Hydrator\Sale\Article\Discount\Template';
+    protected $hydrator = 'CudiBundle\Hydrator\Sale\Article\Discount\Template';
 
     public function init()
     {
