@@ -98,6 +98,10 @@
 
             var $form = $('#registerForm');
 
+            $form.find('#become_member').closest('.form-group').click(function (e) {
+                toggleMember();
+            });
+
             {% if (organizations|length > 1 or enableOtherOrganization) and not isPost %}
                 $('#organizationSelector a').click(function (e) {
                     $('#organizationSelector').hide();
@@ -113,10 +117,9 @@
                             .closest('.form-group')
                                 .hide()
                             .end()
-                            .prop('checked', false);
+                            .attr('checked', false);
                     } else {
                         $form.find('#become_member')
-                            .prop('checked', true)
                             .closest('.form-group')
                                 .show()
                             .end()
@@ -126,6 +129,7 @@
                                         .closest('label')
                                         .html()
                                         .replace('{ price }', membershipArticles[$(this).data('id')])
+                                        .replace('{ year }', '{{ academicYear.getCode() }}')
                                 );
                     }
 

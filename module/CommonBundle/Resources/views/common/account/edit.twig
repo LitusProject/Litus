@@ -64,6 +64,10 @@
 
             var $form = $('#register_form');
 
+            $form.find('#become_member').closest('.form-group').click(function (e) {
+                toggleMember();
+            });
+
             $('#conditions').parent().append(
                 conditionsLink = $('<a>', {'href': '#'}).html('&mdash;{{ translate('Read Them') }}')
             );
@@ -91,12 +95,11 @@
                     .hide();
             if ($form.find('#organization').val() == 0) {
                 $form.find('#become_member')
-                    .prop('checked', false)
+                    .attr('checked', false)
                     .closest('.form-group')
                         .hide();
             } else {
                 $form.find('#become_member')
-                    .prop('checked', 'checked')
                     .closest('label')
                     .closest('.form-group')
                         .show()
@@ -107,6 +110,7 @@
                                 .closest('label')
                                 .html()
                                 .replace('{ price }', membershipArticles[$form.find('#organization').val()])
+                                .replace('{ year }', '{{ academicYear.getCode() }}')
                         );
             }
 
@@ -162,6 +166,10 @@
                 $form.find('#organization_info .form-group').show();
             else
                 $form.find('#organization_info .form-group').hide();
+
+            $form.find('#become_member')
+                .closest('.form-group')
+                    .toggle($('#registerForm').find('#organization').val() !== '0');
 
             if ($form.find('#become_member').is(':disabled'))
                 $form.find('#irreeel')

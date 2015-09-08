@@ -77,7 +77,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     $user->activate(
                         $this->getEntityManager(),
                         $this->getMailTransport(),
-                        false
+                        false,
+                        'br.account_activated_mail'
                     );
                 }
 

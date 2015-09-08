@@ -446,8 +446,6 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             ->findOneByUniversityStart($start);
 
         if (!($academicYear instanceof AcademicYearEntity)) {
-            print_r('no acadmic year');
-            exit();
             $this->flashMessenger()->error(
                 'Error',
                 'No academic year was found!'
