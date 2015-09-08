@@ -38,9 +38,8 @@ class UnitMap extends EntityRepository
     public function findAllByUnitAndAcademicYearQuery(Unit $unit, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('u, a')
+        $resultSet = $query->select('u')
             ->from('CommonBundle\Entity\User\Person\Organization\UnitMap', 'u')
-            ->innerJoin('u.academic', 'a')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('u.unit', ':unit'),
@@ -49,8 +48,6 @@ class UnitMap extends EntityRepository
             )
             ->setParameter('unit', $unit)
             ->setParameter('academicYear', $academicYear)
-            ->orderBy('a.lastName', 'ASC')
-            ->addOrderBy('a.firstName', 'ASC')
             ->getQuery();
 
         return $resultSet;

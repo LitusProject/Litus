@@ -162,11 +162,12 @@ return array(
         'common_admin_unit' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/unit[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/unit[/:action[/:id][/page/:page]][/:academicyear][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
+                    'academicyear' => '[0-9]{4}-[0-9]{4}',
                 ),
                 'defaults' => array(
                     'controller' => 'common_admin_unit',

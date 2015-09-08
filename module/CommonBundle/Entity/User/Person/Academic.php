@@ -101,7 +101,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     /**
      * @var ArrayCollection The user's unit mapping
      *
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organization\UnitMap", mappedBy="academic", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Person\Organization\UnitMap\Academic", mappedBy="academic", cascade={"persist", "remove"})
      */
     private $unitMap;
 
@@ -350,7 +350,7 @@ class Academic extends \CommonBundle\Entity\User\Person
 
     /**
      * Retrieves all the roles from the academic's units for the
-     * latest academic year.
+     * latest and upcomming academic years.
      *
      * @return array
      */
@@ -360,10 +360,6 @@ class Academic extends \CommonBundle\Entity\User\Person
 
         $unitMaps = array();
         foreach ($this->unitMap as $map) {
-            if ($map->getAcademicYear()->getStartDate() > $now) {
-                continue;
-            }
-
             if ($map->getAcademicYear()->getEndDate() < $now) {
                 continue;
             }

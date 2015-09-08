@@ -3,6 +3,8 @@
 {% block content %}
     {% include 'common/admin/unit/partials/navigation.twig' %}
 
+    {% include 'common/admin/unit/partials/member-years.twig' %}
+
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div class="flashmessage success_message full_width member_removed_success hide">
@@ -21,11 +23,14 @@
     <div id="controller_action">
         <h1>Unit</h1>
         <p>Name: <b>{{ unit.getName() }}</b></p>
-
-        <h1>Members</h1>
+        <p>Year: <b>{{ activeAcademicYear.getCode() }}</b></p>
 
         {% import 'admin/partials/form.twig' as forms %}
-        {{ forms.renderForm(form) }}
+        <h2>Add Academic</h2>
+        {{ forms.renderForm(academicForm) }}
+
+        <h2>Add External</h2>
+        {{ forms.renderForm(externalForm) }}
 
         <br style="clear:both">
 
@@ -37,11 +42,11 @@
             </tr>
             {% for member in members %}
                 <tr class="item item-{{ member.getId() }}">
-                    <td>{{ member.getAcademic().getFullName() }}</td>
+                    <td>{{ member.getFullName() }}</td>
                     <td>{% if member.isCoordinator() %}&times;{% endif %}</td>
                     <td>
                         {% if hasAccess('common_admin_unit', 'deleteMember') %}
-                            <a href="#" data-id="{{ member.getId() }}" data-name="{{ member.getAcademic().getFullName() }}" class="delete">Delete</a>
+                            <a href="#" data-id="{{ member.getId() }}" data-name="{{ member.getFullName() }}" class="delete">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
