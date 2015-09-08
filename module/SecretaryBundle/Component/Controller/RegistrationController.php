@@ -22,6 +22,7 @@ use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
+    CommonBundle\Entity\User\Status\University as UniversityStatus,
     DateInterval,
     DateTime,
     SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
@@ -132,6 +133,20 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $subject->getSubject()));
                     }
                 }
+            }
+
+            if (null === $academic->getUniversityStatus($academicYear) && $academic->canHaveUniversityStatus($academicYear)) {
+                $academic->addUniversityStatus(
+                    new UniversityStatus(
+                        $academic,
+                        'student',
+                        $academicYear
+                    )
+                );
+            }
+        } else {
+            if (null !== $academic->getUniversityStatus($academicYear)) {
+                $academic->removeUniversityStatus($academic->getUniversityStatus($academicYear));
             }
         }
         $this->getEntityManager()->flush();
