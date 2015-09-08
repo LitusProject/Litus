@@ -485,8 +485,8 @@ class Study
     }
 
     /**
-     * @param  int phase
-     * @param  array moduleGroups
+     * @param  int $phase
+     * @param  array $moduleGroups
      * @return array
      */
     private function getGeneralMandatoryGroups($phase, $moduleGroups) {
@@ -504,8 +504,8 @@ class Study
         return $groups;
     }
 
-     /**
-     * @param  moduleGroup group
+    /**
+     * @param  moduleGroup $group
      * @return boolean
      */
     private function isFullMandatoryBranch($group) {
