@@ -245,20 +245,20 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
             $this->getEntityManager()->remove($promotion);
         }
 
-        $studyMappings = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Study\AcademicYearMap')
-            ->findAllByAcademicYear($academicYear);
+        $studies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findAllByAcademicYearQuery($academicYear)->getResult();
 
         $academics = array();
 
-        foreach ($studyMappings as $mapping) {
-            if (strpos(strtolower($mapping->getStudy()->getFullTitle()), 'master') === false || $mapping->getStudy()->getPhase() != 2) {
+        foreach ($studies as $study) {
+            if (strpos(strtolower($study->getCombination()->getTitle()), 'master') === false || $study->getCombination()->getPhase() != 2) {
                 continue;
             }
 
             $enrollments = $this->getEntityManager()
                 ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                ->findAllByStudy($mapping->getStudy());
+                ->findAllByStudy($study);
 
             foreach ($enrollments as $enrollment) {
                 $academics[$enrollment->getAcademic()->getId()] = $enrollment->getAcademic();
