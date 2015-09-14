@@ -16,13 +16,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'service_manager' => array(
-        'factories' => array(
-            'cache' =>
-                ('production' == getenv('APPLICATION_ENV'))
-                ? 'CommonBundle\Component\ApplicationConfig\Cache\Memcached'
-                : 'CommonBundle\Component\ApplicationConfig\Cache\Memory',
-        ),
-    ),
-);
+namespace CommonBundle\Component\Authentication\Factory;
+
+use Zend\Authentication\Storage\Session as SessionStorageObject,
+    Zend\ServiceManager\ServiceLocatorInterface;
+
+/**
+ * Factory to create a session storage container for authentication.
+ *
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ */
+class SessionStorage implements \Zend\ServiceManager\FactoryInterface
+{
+    public function createService(ServiceLocatorInterface $sl)
+    {
+        return new SessionStorageObject(getenv('ORGANIZATION') . '_Litus_Auth');
+    }
+}

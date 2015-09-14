@@ -16,13 +16,17 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'service_manager' => array(
-        'factories' => array(
-            'cache' =>
-                ('production' == getenv('APPLICATION_ENV'))
-                ? 'CommonBundle\Component\ApplicationConfig\Cache\Memcached'
-                : 'CommonBundle\Component\ApplicationConfig\Cache\Memory',
-        ),
-    ),
-);
+namespace CommonBundle\Component\Form\Factory;
+
+/**
+ * A factory to create a FormFactory for admin forms.
+ *
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ */
+class Admin extends AbstractFactory
+{
+    public function __construct()
+    {
+        parent::__construct('admin');
+    }
+}

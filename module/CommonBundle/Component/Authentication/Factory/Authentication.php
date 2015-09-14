@@ -16,13 +16,23 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'service_manager' => array(
-        'factories' => array(
-            'cache' =>
-                ('production' == getenv('APPLICATION_ENV'))
-                ? 'CommonBundle\Component\ApplicationConfig\Cache\Memcached'
-                : 'CommonBundle\Component\ApplicationConfig\Cache\Memory',
-        ),
-    ),
-);
+namespace CommonBundle\Component\Authentication\Factory;
+
+use CommonBundle\Component\Authentication\Authentication as AuthenticationObject,
+    Zend\ServiceManager\ServiceLocatorInterface;
+
+/**
+ * Factory to create an authentication object.
+ *
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ */
+class Authentication implements \Zend\ServiceManager\FactoryInterface
+{
+    public function createService(ServiceLocatorInterface $sl)
+    {
+        return new AuthenticationObject(
+            $sl->get('authentication_credentialadapter'),
+            $sl->get('authentication_service')
+        );
+    }
+}

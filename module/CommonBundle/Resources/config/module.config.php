@@ -30,51 +30,23 @@ return Config::create(
     array(
         'service_manager' => array(
             'factories' => array(
-                'authentication' => function ($serviceManager) {
-                    return new Component\Authentication\Authentication(
-                        $serviceManager->get('authentication_credentialadapter'),
-                        $serviceManager->get('authentication_service')
-                    );
-                },
-                'authentication_doctrinecredentialadapter' => function ($serviceManager) {
-                    return new Component\Authentication\Adapter\Doctrine\Credential(
-                        $serviceManager->get('doctrine.entitymanager.orm_default'),
-                        'CommonBundle\Entity\User\Person',
-                        'username'
-                    );
-                },
-                'authentication_doctrineservice' => function ($serviceManager) {
-                    return new Component\Authentication\Service\Doctrine(
-                        $serviceManager->get('doctrine.entitymanager.orm_default'),
-                        'CommonBundle\Entity\User\Session',
-                        2678400,
-                        $serviceManager->get('authentication_sessionstorage'),
-                        'Litus_Auth',
-                        'Session',
-                        $serviceManager->get('authentication_action')
-                    );
-                },
-                'authentication_doctrineaction' => function ($serviceManager) {
-                    return new Component\Authentication\Action\Doctrine(
-                        $serviceManager->get('doctrine.entitymanager.orm_default'),
-                        $serviceManager->get('mail_transport')
-                    );
-                },
-                'authentication_sessionstorage' => function () {
-                    return new \Zend\Authentication\Storage\Session(getenv('ORGANIZATION') . '_Litus_Auth');
-                },
+                'authentication' => 'CommonBundle\Component\Authentication\Factory\Authentication',
 
-                'common_sessionstorage' => function () {
-                    return new \Zend\Session\Container(getenv('ORGANIZATION') . '_Litus_Common');
-                },
+                'authentication_doctrinecredentialadapter' => 'CommonBundle\Component\Authentication\Factory\Adapter\Doctrine',
+                'authentication_doctrineservice' => 'CommonBundle\Component\Authentication\Factory\Service\Doctrine',
+                'authentication_doctrineaction' => 'CommonBundle\Component\Authentication\Factory\Action\Doctrine',
+
+                'authentication_sessionstorage' => 'CommonBundle\Component\Authentication\Factory\SessionStorage',
+
+                'common_sessionstorage' => 'CommonBundle\Component\Module\Factory\SessionStorage',
 
                 'AsseticBundle\Service' => 'CommonBundle\Component\Assetic\ServiceFactory',
 
                 'doctrine.cli' => 'CommonBundle\Component\Console\ApplicationFactory',
                 'litus.console_router' => 'CommonBundle\Component\Mvc\Router\Console\RouteStackFactory',
 
-                'formfactory.bootstrap' => new Component\Form\FactoryFactory(false),
-                'formfactory.admin'     => new Component\Form\FactoryFactory(true),
+                'formfactory.bootstrap' => 'CommonBundle\Component\Form\Factory\Bootstrap',
+                'formfactory.admin'     => 'CommonBundle\Component\Form\Factory\Admin',
             ),
             'invokables' => array(
                 'mail_transport'     => 'Zend\Mail\Transport\Sendmail',

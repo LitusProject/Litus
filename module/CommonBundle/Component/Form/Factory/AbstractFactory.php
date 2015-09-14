@@ -16,9 +16,11 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form;
+namespace CommonBundle\Component\Form\Factory;
 
-use Zend\Filter\FilterChain,
+use CommonBundle\Component\Form\Factory,
+    CommonBundle\Component\Form\FormElementManager,
+    Zend\Filter\FilterChain,
     Zend\ServiceManager\Config,
     Zend\ServiceManager\ServiceLocatorInterface,
     Zend\Validator\ValidatorChain;
@@ -28,25 +30,25 @@ use Zend\Filter\FilterChain,
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class FactoryFactory implements \Zend\ServiceManager\FactoryInterface
+class AbstractFactory implements \Zend\ServiceManager\FactoryInterface
 {
     /**
-     * @var bool
+     * @var string
      */
-    private $isAdmin;
+    private $configName;
 
     /**
-     * @param bool
+     * @param string
      */
-    public function __construct($isAdmin)
+    public function __construct($configName)
     {
-        $this->isAdmin = (bool) $isAdmin;
+        $this->configName = $configName;
     }
 
     public function createService(ServiceLocatorInterface $serviceManager)
     {
         $config = $serviceManager->get('Config');
-        $config = $config['litus']['forms'][$this->isAdmin ? 'admin' : 'bootstrap'];
+        $config = $config['litus']['forms'][$this->configName];
         $config = new Config($config);
 
         $factory = new Factory(

@@ -27,27 +27,10 @@ $databaseConfig = include __DIR__ . '/../database.config.php';
 return array(
     'service_manager' => array(
         'factories' => array(
-            'doctrine.cache.orm_default' => function () {
-                if ('production' == getenv('APPLICATION_ENV')) {
-                    if (!extension_loaded('memcached')) {
-                        throw new \RuntimeException('Litus requires the memcached extension to be loaded');
-                    }
-
-                    $cache = new \Doctrine\Common\Cache\MemcachedCache();
-                    $cache->setNamespace(getenv('ORGANIZATION') . '_LITUS');
-                    $memcached = new \Memcached();
-
-                    if (!$memcached->addServer('localhost', 11211)) {
-                        throw now \RuntimeException('Failed to connect to the memcached server');
-                    }
-
-                    $cache->setMemcached($memcached);
-                } else {
-                    $cache = new \Doctrine\Common\Cache\ArrayCache();
-                }
-
-                return $cache;
-            },
+            'doctrine.cache.orm_default' =>
+                ('production' == getenv('APPLICATION_ENV'))
+                ? 'CommonBundle\Component\ApplicationConfig\DatabaseCache\Memcached'
+                : 'CommonBundle\Component\ApplicationConfig\DatabaseCache\Memory',
         ),
     ),
     'doctrine' => array(

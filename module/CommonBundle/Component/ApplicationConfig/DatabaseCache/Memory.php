@@ -16,13 +16,15 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'service_manager' => array(
-        'factories' => array(
-            'cache' =>
-                ('production' == getenv('APPLICATION_ENV'))
-                ? 'CommonBundle\Component\ApplicationConfig\Cache\Memcached'
-                : 'CommonBundle\Component\ApplicationConfig\Cache\Memory',
-        ),
-    ),
-);
+namespace CommonBundle\Component\ApplicationConfig\DatabaseCache;
+
+use Doctrine\Common\Cache\ArrayCache,
+    Zend\ServiceManager\ServiceLocatorInterface;
+
+class Memory implements \Zend\ServiceManager\FactoryInterface
+{
+    public function createService(ServiceLocatorInterface $sl)
+    {
+        return new ArrayCache();
+    }
+}

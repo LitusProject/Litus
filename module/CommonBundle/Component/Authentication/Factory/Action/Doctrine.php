@@ -16,13 +16,23 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'service_manager' => array(
-        'factories' => array(
-            'cache' =>
-                ('production' == getenv('APPLICATION_ENV'))
-                ? 'CommonBundle\Component\ApplicationConfig\Cache\Memcached'
-                : 'CommonBundle\Component\ApplicationConfig\Cache\Memory',
-        ),
-    ),
-);
+namespace CommonBundle\Component\Authentication\Factory\Action;
+
+use CommonBundle\Component\Authentication\Action\Doctrine as DoctrineAction,
+    Zend\ServiceManager\ServiceLocatorInterface;
+
+/**
+ * Factory to create a Doctrine Adapter.
+ *
+ * @author Bram Gotink <bram.gotink@litus.cc>
+ */
+class Doctrine implements \Zend\ServiceManager\FactoryInterface
+{
+    public function createService(ServiceLocatorInterface $sl)
+    {
+        return new DoctrineAction(
+            $sl->get('doctrine.entitymanager.orm_default'),
+            $sl->get('mail_transport')
+        );
+    }
+}
