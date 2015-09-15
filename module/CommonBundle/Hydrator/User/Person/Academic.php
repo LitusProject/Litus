@@ -141,13 +141,13 @@ class Academic extends \CommonBundle\Hydrator\User\Person
         /** @var \CommonBundle\Hydrator\General\PrimaryAddress $hydratorPrimaryAddress */
         $hydratorPrimaryAddress = $this->getHydrator('CommonBundle\Hydrator\General\PrimaryAddress');
 
-        if (isset($data['secondary_adress']) && is_array($data['secondary_address']) && !empty($data['secondary_address']['city'])) {
+        if (isset($data['secondary_address']) && is_array($data['secondary_address']) && !empty($data['secondary_address']['city'])) {
             $object->setSecondaryAddress(
                 $hydratorAddress->hydrate($data['secondary_address'], $object->getSecondaryAddress())
             );
         }
 
-        if (isset($data['secondary_adress']) && is_array($data['primary_address']) && !empty($data['primary_address']['city'])) {
+        if (isset($data['primary_address']) && is_array($data['primary_address']) && !empty($data['primary_address']['city'])) {
             $object->setPrimaryAddress(
                 $hydratorPrimaryAddress->hydrate($data['primary_address'], $object->getPrimaryAddress())
             );

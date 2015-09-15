@@ -43,12 +43,15 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
 
         $list = array();
         foreach ($units as $unit) {
-            $list[] = array(
-                'unit' => $unit,
-                'members' => $this->getEntityManager()
+            $members = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-                    ->findAllByUnitAndAcademicYear($unit, $academicYear),
-            );
+                    ->findAllByUnitAndAcademicYear($unit, $academicYear);
+            if (isset($members[0])) {
+                $list[] = array(
+                    'unit' => $unit,
+                    'members' => $members,
+                );
+            }
         }
 
         $extraUnits = $this->getEntityManager()
@@ -62,11 +65,11 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
                 ->findAllByUnitAndAcademicYear($unit, $academicYear);
 
             foreach ($members as $member) {
-                if (!isset($extra[$member->getAcademic()->getId()])) {
-                    $extra[$member->getAcademic()->getId()] = array();
+                if (!isset($extra[$member->getId()])) {
+                    $extra[$member->getId()] = array();
                 }
 
-                $extra[$member->getAcademic()->getId()][] = $unit;
+                $extra[$member->getId()][] = $unit;
             }
         }
 
@@ -76,6 +79,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
                 'extraUnits' => $extra,
                 'academicYears' => $academicYears,
                 'activeAcademicYear' => $academicYear,
+                'currentAcademicYear' => $this->getCurrentAcademicYear(),
                 'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),

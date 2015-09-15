@@ -284,6 +284,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         'selectedOrganization' => $selectedOrganization,
                         'isPost' => true,
                         'enableOtherOrganization' => $enableOtherOrganization,
+                        'academicYear' => $this->getCurrentAcademicYear(),
                     )
                 );
             }
@@ -382,7 +383,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             } else {
                 $formData['organization_info']['become_member'] = isset($formData['organization_info']['become_member'])
                     ? $formData['organization_info']['become_member']
-                    : false;
+                    : 0;
             }
             $formData['organization_info']['conditions'] = true;
 
@@ -510,6 +511,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         'selectedOrganization' => $selectedOrganization,
                         'isPost' => true,
                         'enableOtherOrganization' => $enableOtherOrganization,
+                        'academicYear' => $this->getCurrentAcademicYear(),
                     )
                 );
             }
@@ -523,6 +525,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 'membershipArticles' => $membershipArticles,
                 'organizations' => $organizations,
                 'enableOtherOrganization' => $enableOtherOrganization,
+                'academicYear' => $this->getCurrentAcademicYear(),
             )
         );
     }

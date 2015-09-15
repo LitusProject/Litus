@@ -18,7 +18,8 @@
 
 namespace CommonBundle\Repository\General\Organization;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Unit
@@ -79,6 +80,20 @@ class Unit extends EntityRepository
                     $query->expr()->eq('u.displayed', 'false')
                 )
             )
+            ->orderBy('u.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('u')
+            ->from('CommonBundle\Entity\General\Organization\Unit', 'u')
             ->orderBy('u.name', 'ASC')
             ->getQuery();
 

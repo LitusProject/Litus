@@ -26,21 +26,21 @@
     </div>
 
     {% for unit in units %}
-        <h3>{{ unit['unit'].getName() }}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small></h3>
+        <h3>{{ unit['unit'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small>{% endif %}</h3>
         <div class="row">
             {% for member in unit['members'] %}
                 <div class="col-xs-6 col-md-3">
                     <div class="thumbnail" style="height: 250px; text-align: center">
-                        {% if member.getAcademic().getPhotoPath() %}
-                            <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ member.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/180x135/auto/text:Image) no-repeat; width: 180px; height: 135px;" alt="">
+                        {% if member.getPhotoPath() %}
+                            <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ member.getPhotoPath() }}" style="background:url(?holder.js/180x135/auto/text:Image) no-repeat; width: 180px; height: 135px;" alt="">
                         {% else %}
                             <img data-src="holder.js/180x135/auto/text:Image" alt="">
                         {% endif %}
-                        <h4>{{ member.getAcademic().getFullName() }}</h4>
+                        <h4>{{ member.getFullName() }}</h4>
                         {% if member.isCoordinator() %}
                             <p style="text-align: center;">{{ translate('Groupcoordinator') }}</p>
                         {% endif %}
-                        {% for extraUnit in extraUnits[member.getAcademic().getId()] %}
+                        {% for extraUnit in extraUnits[member.getId()] %}
                             <p style="text-align: center;">{{ hideEmail('<a href="mailto:' ~ extraUnit.getMail() ~ '">' ~ extraUnit.getName() ~ '</a>') }}</p>
                         {% endfor %}
                     </div>

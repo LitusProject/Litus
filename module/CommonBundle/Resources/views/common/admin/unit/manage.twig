@@ -3,6 +3,8 @@
 {% block content %}
     {% include 'common/admin/unit/partials/navigation.twig' %}
 
+    {% include 'common/admin/unit/partials/manage-years.twig' %}
+
     {% include 'admin/partials/flashMessenger.twig' %}
     <div class="flashmessage success_message full_width unit_removed_success hide">
         <div class="title">Success</div>
@@ -18,6 +20,7 @@
     </div>
 
     <div id="controller_action">
+        <h1>UNITS</h1>
         <table class="manage">
             <thead>
                 <tr>
@@ -27,12 +30,12 @@
             </thead>
 
             <tbody>
-                {% for unit in paginator %}
+                {% for unit in unitsWithMembers %}
                     <tr class="item item-{{ unit.getId() }}">
                         <td>{{ unit.getName() }}</td>
                         <td class="actions">
                             {% if hasAccess('common_admin_unit', 'members') %}
-                                <a href="{{ url('common_admin_unit', {"action": "members", "id": unit.getId()}) }}" class="unit_member_edit">Members</a>
+                                <a href="{{ url('common_admin_unit', {"action": "members", "id": unit.getId(), "academicyear": activeAcademicYear.getCode()}) }}" class="unit_member_edit">Members</a>
                             {% endif %}
                             {% if hasAccess('common_admin_unit', 'edit') %}
                                 <a href="{{ url('common_admin_unit', {"action": "edit", "id": unit.getId()}) }}" class="edit">Edit</a>
@@ -46,7 +49,35 @@
             </tbody>
         </table>
 
-        {% include 'admin/partials/paginationControl.twig' %}
+        <h1>EMPTY UNITS</h1>
+         <table class="manage">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="70px">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for unit in emptyUnits %}
+                    <tr class="item item-{{ unit.getId() }}">
+                        <td>{{ unit.getName() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('common_admin_unit', 'members') %}
+                                <a href="{{ url('common_admin_unit', {"action": "members", "id": unit.getId(), "academicyear": activeAcademicYear.getCode()}) }}" class="unit_member_edit">Members</a>
+                            {% endif %}
+                            {% if hasAccess('common_admin_unit', 'edit') %}
+                                <a href="{{ url('common_admin_unit', {"action": "edit", "id": unit.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('common_admin_unit', 'delete') %}
+                                <a href="#" data-id="{{ unit.getId() }}" data-name="{{ unit.getName() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
     </div>
 
     <div class="modal fade" id="removeUnit" tabindex="-1">
