@@ -95,14 +95,8 @@ fi
 
 if [ $GIT_STASH -eq 1 ]
 then
-    # make a commit of all staged changes without running the hooks!
-    git commit --quiet --no-verify --message='pre-commit hook commit --DO NOT PUSH--'
-
-    # now make the stash
-    git stash save --include-untracked --quiet 'pre-commit hook stash'
-
-    # undo the commit, but keep staged stuff staged
-    git reset --quiet --soft HEAD^
+    # make the stash
+    git stash save --keep-index --include-untracked --quiet 'pre-commit hook stash'
 
     log_info 'Untracked changes have been stashed'
 fi
