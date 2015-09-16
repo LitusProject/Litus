@@ -72,6 +72,11 @@ class Study
     private $profCache;
 
     /**
+     * @var array
+     */
+    private $activeCombinations;
+
+    /**
      * @param EntityManager      $entityManager
      * @param TransportInterface $mailTransport
      * @param array              $callback
@@ -82,6 +87,7 @@ class Study
         $this->mailTransport = $mailTransport;
         $this->callback = $callback;
         $this->academicYear = $this->getAcademicYear();
+        $this->activeCombinations = array();
     }
 
     /**
@@ -118,7 +124,7 @@ class Study
             $combinations = $this->createCombinations($xml->data->programma);
             $this->callback('create_module_groups', (string) $xml->data->programma->titel);
             $groups = $this->createModuleGroups($xml->data->programma, (string) $xml->data->programma->doceertaal->code);
-            $this->connectModuleGroups($combinations, $groups, $usedModuleGroups);
+            $this->connectModuleGroups($combinations, $groups);
 
             $this->callback('saving_data', (string) $xml->data->programma->titel);
 
@@ -126,6 +132,8 @@ class Study
 
             $this->callback('progress', round($counter/count($urls)*100, 4));
         }
+
+        $this->postCleanUpAcademicYear();
     }
 
     /**
@@ -198,11 +206,19 @@ class Study
             ->setExternalId($id)
             ->setTitle(html_entity_decode(trim($title)));
 
-        $study = new StudyEntity();
-        $study->setCombination($combination)
-            ->setAcademicYear($this->academicYear);
+        $study = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findOneByCombinationAndAcademicYear($combination, $this->academicYear);
 
-        $this->getEntityManager()->persist($study);
+        if (null === $study) {
+            $study = new StudyEntity();
+            $study->setCombination($combination)
+                ->setAcademicYear($this->academicYear);
+
+            $this->getEntityManager()->persist($study);
+        }
+
+        $this->activeCombinations[] = $combination->getId();
 
         return $combination;
     }
@@ -456,7 +472,7 @@ class Study
      * @param  array $usedModuleGroups
      * @return void
      */
-    private function connectModuleGroups($combinations, $moduleGroups, $usedModuleGroups)
+    private function connectModuleGroups($combinations, $moduleGroups)
     {
         foreach ($combinations as $combination) {
             $groups = array();
@@ -538,14 +554,6 @@ class Study
      */
     private function cleanUpAcademicYear()
     {
-        $studies = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Study')
-            ->findByAcademicYear($this->academicYear);
-
-        foreach ($studies as $study) {
-            $this->getEntityManager()->remove($study);
-        }
-
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
             ->findByAcademicYear($this->academicYear);
@@ -560,6 +568,24 @@ class Study
 
         foreach ($mapping as $map) {
             $this->getEntityManager()->remove($map);
+        }
+
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @return void
+     */
+    private function postCleanUpAcademicYear()
+    {
+        $studies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findByAcademicYear($this->academicYear);
+
+        foreach ($studies as $study) {
+            if (!in_array($study->getCombination()->getId(), $this->activeCombinations)) {
+                $this->getEntityManager()->remove($study);
+            }
         }
 
         $this->getEntityManager()->flush();

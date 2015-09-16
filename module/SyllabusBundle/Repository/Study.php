@@ -19,7 +19,8 @@
 namespace SyllabusBundle\Repository;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear;
+    CommonBundle\Entity\General\AcademicYear,
+    SyllabusBundle\Entity\Study\Combination as CombinationEntity;
 
 /**
  * Study
@@ -46,6 +47,31 @@ class Study extends EntityRepository
             ->orderBy('c.title', 'ASC')
             ->addOrderBy('c.phase', 'ASC')
             ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  CombinationEntity            $combination
+     * @param  AcademicYear                 $academicYear
+     * @return \SyllabusBundle\Entity\Study
+     */
+    public function findOneByCombinationAndAcademicYear(CombinationEntity $combination, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Study', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.academicYear', ':academicYear'),
+                    $query->expr()->eq('s.combination', ':combination')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('combination', $combination)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
 
         return $resultSet;
     }
