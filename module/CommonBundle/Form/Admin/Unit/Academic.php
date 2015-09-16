@@ -19,12 +19,12 @@
 namespace CommonBundle\Form\Admin\Unit;
 
 /**
- * The form used to add a member to a unit.
+ * The form used to add an academic member to a unit.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Member extends \CommonBundle\Component\Form\Admin\Form
+class Academic extends \CommonBundle\Component\Form\Admin\Form
 {
     public function init()
     {
@@ -50,6 +50,12 @@ class Member extends \CommonBundle\Component\Form\Admin\Form
             'label' => 'Coordinator',
         ));
 
-        $this->addSubmit('Add', 'unit_member_add');
+        $this->add(array(
+            'type' => 'hidden',
+            'name' => 'mapType',
+            'value' => 'academic',
+        ));
+
+        $this->addSubmit('Add', 'unit_add');
     }
 }

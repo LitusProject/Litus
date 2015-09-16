@@ -499,6 +499,11 @@ class Study
                         $groups[] = $moduleGroups['_' . $combination['entity']->getPhase() . $id];
                     }
                 }
+
+                $generalGroups = $this->getGeneralMandatoryGroups($combination['entity']->getPhase(), $moduleGroups);
+                if (!empty($generalGroups)) {
+                   $groups = array_merge($groups, $generalGroups);
+                }
             }
 
             foreach ($moduleGroups as $group) {
@@ -510,6 +515,43 @@ class Study
             $combination['entity']->setModuleGroups($groups);
         }
     }
+
+    /**
+     * @param  int $phase
+     * @param  array $moduleGroups
+     * @return array
+     */
+    private function getGeneralMandatoryGroups($phase, $moduleGroups) {
+        $groups = array();
+
+        //for each child node in the same phase check if branch is fully mandatory
+        foreach($moduleGroups as $group) {
+            if($phase == $group->getPhase() && count($group->getChildren()) == 0) {
+                if ($this->isFullMandatoryBranch($group)) {
+                    $groups[] = $group;
+                } else {
+            }
+        }
+
+        return $groups;
+    }
+
+    /**
+     * @param  moduleGroup $group
+     * @return boolean
+     */
+    private function isFullMandatoryBranch($group) {
+        $result = false;
+        if($group->isMandatory()){
+            if (null !== $group->getParent()) {
+                $result = $this->isFullMandatoryBranch($group->getParent());
+            } else {
+                return true;
+            }
+        }
+        return $result;
+    }
+
 
     /**
      * @return EntityManager
