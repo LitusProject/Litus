@@ -413,9 +413,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             return new ViewModel();
         }
 
-        if (!($organization = $this->getOrganizationEntity())) {
-            return new ViewModel();
-        }
+        $organization = $this->getOrganizationEntity();
 
         $this->initAjax();
 
