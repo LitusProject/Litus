@@ -118,7 +118,8 @@ class Study
             $combinations = $this->createCombinations($xml->data->programma);
             $this->callback('create_module_groups', (string) $xml->data->programma->titel);
             $groups = $this->createModuleGroups($xml->data->programma, (string) $xml->data->programma->doceertaal->code);
-            $this->connectModuleGroups($combinations, $groups);
+            $usedModuleGroups = $this->getUsedModuleGroups($xml->data->programma);
+            $this->connectModuleGroups($combinations, $groups, $usedModuleGroups);
 
             $this->callback('saving_data', (string) $xml->data->programma->titel);
 
@@ -126,6 +127,30 @@ class Study
 
             $this->callback('progress', round($counter/count($urls)*100, 4));
         }
+    }
+
+    /**
+     * Return an array of modulegroups used in combinations
+     *
+     * @param  SimpleXMLElement $xml
+     * @return array
+     */
+    private function getUsedModuleGroups(SimpleXMLElement $xml)
+    {
+        $moduleGroups = array();
+
+        foreach ($xml->fases->children() as $phase) {
+            $phaseNumber = (int) $phase->attributes()->code;
+            foreach ($phase->toegestane_combinaties->children() as $data) {
+                foreach ($data->modulegroepen->children() as $group) {
+                    $moduleGroups[] = $phaseNumber . (int) $group->attributes()->id;
+                }
+            }
+        }
+
+        $moduleGroups = array_unique($moduleGroups);
+
+        return $moduleGroups;
     }
 
     /**
@@ -453,9 +478,10 @@ class Study
     /**
      * @param  array $combinations
      * @param  array $moduleGroups
+     * @param  array $usedModuleGroups
      * @return void
      */
-    private function connectModuleGroups($combinations, $moduleGroups)
+    private function connectModuleGroups($combinations, $moduleGroups, $usedModuleGroups)
     {
         foreach ($combinations as $combination) {
             $groups = array();
@@ -472,6 +498,12 @@ class Study
                     if (isset($moduleGroups['_' . $combination['entity']->getPhase() . $id])) {
                         $groups[] = $moduleGroups['_' . $combination['entity']->getPhase() . $id];
                     }
+                }
+            }
+
+            foreach ($moduleGroups as $group) {
+                if (!in_array($group->getId(), $usedModuleGroups)) {
+                    $groups[] = $group;
                 }
             }
 
