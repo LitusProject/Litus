@@ -21,7 +21,8 @@
                 } else {
                     $('#subject_form').show();
                 }
-            });
+            }).trigger('change');
+
             $('#internal').click(toggleInternal);
             toggleInternal();
 
