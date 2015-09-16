@@ -179,6 +179,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             <li><b>Other:</b> any other type</li>
                         </ul>',
                         'options'  => Article::$possibleTypes,
+                        'id'       => 'type',
                     ),
                 ),
                 array(
@@ -371,9 +372,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             }
         }
 
-        if (!isset($this->data['article']['type']) || 'common' === $this->data['article']['type'] || !isset($this->data['subject']['id'])) {
-            if (isset($specs['subject'])) {
-                unset($specs['subject']);
+        if (!isset($this->data['article']['type']) || 'common' === $this->data['article']['type'] || !isset($this->data['subject_form']['subject']['id'])) {
+            if (isset($specs['subject_form'])) {
+                unset($specs['subject_form']);
             }
         }
 

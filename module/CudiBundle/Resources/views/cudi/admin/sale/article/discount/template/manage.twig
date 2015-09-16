@@ -52,7 +52,7 @@
                     </td>
                     <td>{{ template.getMethod() }}</td>
                     <td>{{ template.getRounding() }}</td>
-                    <td style="text-align: center">{% if template.applyOnce() %}&times;{% endif %}</td>
+                    <td style="text-align: center">{% if template.applyOnce() %}Yes{% else %}No{% endif %}</td>
                     <td class="actions">
                         {% if hasAccess('cudi_admin_sales_article_discount_template', 'edit') %}
                             <a href="{{ url('cudi_admin_sales_article_discount_template', {"action": "edit", "id": template.getId()}) }}" class="edit">Edit</a>
