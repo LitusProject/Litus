@@ -824,7 +824,11 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $academic = $this->getEntityById('CommonBundle\Entity\User\Person\Academic');
 
-        if (!($academic instanceof Academic) && !$nullable) {
+        if (!($academic instanceof Academic)) {
+            if ($nullable) {
+                return null;
+            }
+
             $this->flashMessenger()->error(
                 'Error',
                 'No academic was found!'
@@ -851,7 +855,11 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
 
-        if (!($article instanceof SaleArticle) && !$nullable) {
+        if (!($article instanceof SaleArticle)) {
+            if ($nullable) {
+                return null;
+            }
+
             $this->flashMessenger()->error(
                 'Error',
                 'No article was found!'
