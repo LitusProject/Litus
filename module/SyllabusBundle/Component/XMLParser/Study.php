@@ -118,7 +118,7 @@ class Study
             $combinations = $this->createCombinations($xml->data->programma);
             $this->callback('create_module_groups', (string) $xml->data->programma->titel);
             $groups = $this->createModuleGroups($xml->data->programma, (string) $xml->data->programma->doceertaal->code);
-            $this->connectModuleGroups($combinations, $groups);
+            $this->connectModuleGroups($combinations, $groups, $usedModuleGroups);
 
             $this->callback('saving_data', (string) $xml->data->programma->titel);
 
@@ -453,9 +453,10 @@ class Study
     /**
      * @param  array $combinations
      * @param  array $moduleGroups
+     * @param  array $usedModuleGroups
      * @return void
      */
-    private function connectModuleGroups($combinations, $moduleGroups)
+    private function connectModuleGroups($combinations, $moduleGroups, $usedModuleGroups)
     {
         foreach ($combinations as $combination) {
             $groups = array();
@@ -476,7 +477,7 @@ class Study
 
                 $generalGroups = $this->getGeneralMandatoryGroups($combination['entity']->getPhase(), $moduleGroups);
                 if (!empty($generalGroups)) {
-                   $groups = array_merge($groups, $generalGroups);
+                    $groups = array_merge($groups, $generalGroups);
                 }
             }
 
@@ -485,19 +486,21 @@ class Study
     }
 
     /**
-     * @param  int $phase
+     * @param  int   $phase
      * @param  array $moduleGroups
      * @return array
      */
-    private function getGeneralMandatoryGroups($phase, $moduleGroups) {
+    private function getGeneralMandatoryGroups($phase, $moduleGroups)
+    {
         $groups = array();
 
         //for each child node in the same phase check if branch is fully mandatory
-        foreach($moduleGroups as $group) {
-            if($phase == $group->getPhase() && count($group->getChildren()) == 0) {
-                if ($this->isFullMandatoryBranch($group)) {
+        foreach ($moduleGroups as $group) {
+            if ($phase == $group->getPhase() && count($group->getChildren()) == 0) {
+                if ( $this->isFullMandatoryBranch($group) ) {
                     $groups[] = $group;
                 } else {
+                }
             }
         }
 
@@ -508,18 +511,19 @@ class Study
      * @param  moduleGroup $group
      * @return boolean
      */
-    private function isFullMandatoryBranch($group) {
+    private function isFullMandatoryBranch($group)
+    {
         $result = false;
-        if($group->isMandatory()){
+        if ($group->isMandatory()) {
             if (null !== $group->getParent()) {
                 $result = $this->isFullMandatoryBranch($group->getParent());
             } else {
                 return true;
             }
         }
+
         return $result;
     }
-
 
     /**
      * @return EntityManager

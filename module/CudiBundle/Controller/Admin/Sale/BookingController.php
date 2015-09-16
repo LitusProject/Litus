@@ -626,7 +626,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $form = $this->getForm('cudi_sale_booking_person');
 
-        if ($person = $this->getAcademicEntity()) {
+        if ($person = $this->getAcademicEntity(true)) {
             $paginator = $this->paginator()->createFromQuery(
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -659,7 +659,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $form = $this->getForm('cudi_sale_booking_article');
 
-        if ($article = $this->getSaleArticleEntity()) {
+        if ($article = $this->getSaleArticleEntity(true)) {
             $paginator = $this->paginator()->createFromQuery(
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
@@ -817,13 +817,14 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
+     * @param  bool          $nullable
      * @return Academic|null
      */
-    private function getAcademicEntity()
+    private function getAcademicEntity($nullable = false)
     {
         $academic = $this->getEntityById('CommonBundle\Entity\User\Person\Academic');
 
-        if (!($academic instanceof Academic)) {
+        if (!($academic instanceof Academic) && !$nullable) {
             $this->flashMessenger()->error(
                 'Error',
                 'No academic was found!'
@@ -843,13 +844,14 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
+     * @param  bool             $nullable
      * @return SaleArticle|null
      */
-    private function getSaleArticleEntity()
+    private function getSaleArticleEntity($nullable = false)
     {
         $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
 
-        if (!($article instanceof SaleArticle)) {
+        if (!($article instanceof SaleArticle) && !$nullable) {
             $this->flashMessenger()->error(
                 'Error',
                 'No article was found!'
