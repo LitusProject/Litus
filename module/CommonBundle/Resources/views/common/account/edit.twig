@@ -167,6 +167,10 @@
             else
                 $form.find('#organization_info .form-group').hide();
 
+            $form.find('#become_member')
+                .closest('.form-group')
+                    .toggle($('#register_form').find('#organization').val() !== '0');
+
             $form.find('#conditions')
                 .closest('.form-group')
                     .show();
