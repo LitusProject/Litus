@@ -469,7 +469,6 @@ class Study
     /**
      * @param  array $combinations
      * @param  array $moduleGroups
-     * @param  array $usedModuleGroups
      * @return void
      */
     private function connectModuleGroups($combinations, $moduleGroups)
