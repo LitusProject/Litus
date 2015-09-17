@@ -65,7 +65,7 @@ EOT
         return 'CatalogUpdate';
     }
 
-    private function findAllBookable(array $subjects, DateTime $date, AcademicYear $academicYear)
+    private function findAllBookable(array &$subjects, DateTime $date, AcademicYear $academicYear)
     {
         $logs = $this->getEntityManager()->getRepository('CudiBundle\Entity\Log\Article\Sale\Bookable')
             ->findAllAfter($date);
@@ -95,7 +95,7 @@ EOT
         }
     }
 
-    private function findAllUnbookable(array $subjects, DateTime $date, AcademicYear $academicYear)
+    private function findAllUnbookable(array &$subjects, DateTime $date, AcademicYear $academicYear)
     {
         $logs = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Log\Article\Sale\Unbookable')
@@ -126,7 +126,7 @@ EOT
         }
     }
 
-    private function findAllAdded(array $subjects, DateTime $date)
+    private function findAllAdded(array &$subjects, DateTime $date)
     {
         $logs = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Added')
@@ -152,7 +152,7 @@ EOT
         }
     }
 
-    private function findAllRemoved(array $subjects, DateTime $date)
+    private function findAllRemoved(array &$subjects, DateTime $date)
     {
         $logs = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Log\Article\SubjectMap\Removed')
@@ -294,13 +294,6 @@ EOT
      */
     public function getCurrentAcademicYear($organization = null)
     {
-        $startAcademicYear = AcademicYearUtil::getStartOfAcademicYear();
-        $startAcademicYear->setTime(0, 0);
-
-        $academicYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByUniversityStart($startAcademicYear);
-
-        return $academicYear;
+        return AcademicYearUtil::getOrganizationYear($this->getEntityManager());
     }
 }

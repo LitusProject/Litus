@@ -51,6 +51,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                     'validators' => array(
                         array(
                             'name' => 'notEmpty',
+                            'options' => array(
+                                'zero', 'string',
+                            ),
                         ),
                     ),
                 ),
@@ -85,10 +88,11 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                     ),
                 ),
                 array(
-                    'type'    => 'text',
-                    'name'    => 'city',
-                    'label'   => 'City',
-                    'options' => array(
+                    'type'     => 'text',
+                    'name'     => 'city',
+                    'label'    => 'City',
+                    'required' => true,
+                    'options'  => array(
                         'input' => array(
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
@@ -104,6 +108,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                         'input' => array(
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array('name' => 'notEmpty'),
                             ),
                         ),
                     ),
@@ -121,6 +128,21 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                 'attributes' => array(
                     'class'   => 'street street-' . $id,
                     'options' => $collection,
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'notEmpty',
+                                'options' => array(
+                                    'zero', 'string',
+                                ),
+                            ),
+                        ),
+                    ),
                 ),
             );
         }
@@ -175,6 +197,8 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
 
     public function setRequired($required = true)
     {
+        parent::setRequired($required);
+
         /** @var \CommonBundle\Component\Form\Bootstrap\Element $street */
         $street = $this->get('street');
         /** @var \CommonBundle\Component\Form\Bootstrap\Element $number */
@@ -218,6 +242,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                 $optionsStreet[$city->getId()][$street->getId()] = $street->getName();
             }
         }
+
         $optionsCity['other'] = 'Other';
 
         if (null !== $this->getCache()) {
@@ -237,7 +262,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
     {
         $specs = parent::getInputFilterSpecification();
 
-        if ('' === $this->get('city')->getValue()) {
+        if ('' === $this->get('city')->getValue() && !$this->isRequired()) {
             // empty form
             return array();
         }
@@ -250,7 +275,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                     if ('type' == $city) {
                         continue;
                     }
-                    $specs['street'][$city]['required'] = ($city == $this->get('city')->getValue());
+                    $specs['street'][$city]['required'] = $this->isRequired() && ($city == 'street_' . $this->get('city')->getValue());
                 }
             }
         } else {
