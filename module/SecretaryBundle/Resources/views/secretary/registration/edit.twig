@@ -28,7 +28,7 @@
             </ul>
         </div>
     {% endif %}
-    <div id="register_form"{% if (organizations|length > 1 or enableOtherOrganization) and not isPost %} style="display: none;"{% endif %}>
+    <div id="registerForm"{% if (organizations|length > 1 or enableOtherOrganization) and not isPost %} style="display: none;"{% endif %}>
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>

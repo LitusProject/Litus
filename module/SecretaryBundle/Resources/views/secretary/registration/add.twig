@@ -227,7 +227,7 @@
         }
 
         function toggleMember() {
-            var $form = $('#registerForm');
+            var $form = $('#register_form');
 
             if ($form.find('#become_member').is(':checked'))
                 $form.find('#organization_info .form-group').show();
@@ -236,7 +236,7 @@
 
             $form.find('#become_member')
                 .closest('.form-group')
-                    .toggle($('#registerForm').find('#organization').val() !== '0');
+                    .toggle($('#register_form').find('#organization').val() !== '0');
 
             $form.find('#conditions, #bakske')
                 .closest('.form-group')
