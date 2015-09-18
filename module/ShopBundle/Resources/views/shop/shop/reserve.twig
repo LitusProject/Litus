@@ -28,41 +28,13 @@
                     {% autoescape false %}
                         {{ form().openTag(form) }}
                         {{ formElement(form.get('csrf')) }}
-                        {% if form.get('salesSession') %}
-                            {{ formElement(form.get('salesSession')) }}
-                        {% endif %}
-                        <br>
-                        <table class="table table-condensed table-striped">
-                            {% for product in products %}
-                                <tr>
-                                    <td>
-                                        {{ product.getName() }}
-                                    </td>
-                                    <td>
-                                        &euro; {{ product.getSellPrice() }}
-                                    </td>
-                                    <td width="60" style="text-align:center;">
-                                        {% set name = 'product-' ~ product.getId() %}
-                                        {% set element = form.get(name) %}
-                                        {{ formElement(element) }}
-                                        <a href="#" class="decrease-value"><span
-                                                    class="glyphicon glyphicon-minus-sign pull-left"
-                                                    style="margin-top: 3px;"></span></a>
-                                        <b>0</b>
-                                        <a href="#" class="increase-value"><span
-                                                    class="glyphicon glyphicon-plus-sign pull-right"
-                                                    style="margin-top: 3px;"></span></a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </table>
+                        {{ formElement(form.get('salesSession')) }}
+
                         {% if form.get('submit') %}
                             {{ formElement(form.get('submit')) }}
                         {% endif %}
 
-
                         {{ form().closeTag() }}
-
                     {% endautoescape %}
                 {% else %}
                     {{ translate("However, there are no future sales sessions open for reservations yet.") }}
@@ -73,28 +45,4 @@
         {% endif %}
     </div>
 
-{% endblock %}
-
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.increase-value').click(function (e) {
-                e.preventDefault();
-                var newAmount = parseInt($(e.target).closest('td').find('b').html(), 10) + 1;
-
-                $(e.target).closest('td').find('b').html(newAmount);
-                $(e.target).closest('td').find('input').val(newAmount);
-            });
-
-            $('.decrease-value').click(function (e) {
-                e.preventDefault();
-                var newAmount = parseInt($(e.target).closest('td').find('b').html(), 10) - 1;
-
-                if (newAmount >= 0) {
-                    $(e.target).closest('td').find('b').html(newAmount);
-                    $(e.target).closest('td').find('input').val(newAmount);
-                }
-            });
-        });
-    </script>
 {% endblock %}

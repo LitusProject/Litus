@@ -18,7 +18,8 @@
 
 namespace ShopBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    Doctrine\ORM\Query\Expr;
 
 /**
  * Product
@@ -69,6 +70,56 @@ class Product extends EntityRepository
             ->from('ShopBundle\Entity\Product', 'p')
             ->where(
                 $query->expr()->eq('p.available', ':available')
+            )
+            ->orderBy('p.name', 'ASC')
+            ->setParameter('available', true)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    /**
+	 * @param SalesSession $salesSession
+	 * @return Product[]
+	 */
+    public function findAvailableAndStockAndReservation($salesSession)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $stockSubQueryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $goodProducts = $stockSubQueryBuilder->select('p2')
+            ->from('ShopBundle\Entity\Product\SessionStockEntry', 'sse')
+            ->join('ShopBundle\Entity\Product', 'p2', Expr\Join::WITH, 'p2.id = sse.product')
+            ->where(
+                $stockSubQueryBuilder->expr()->eq('sse.salesSession', ':session')
+            )
+            ->setParameter('session', $salesSession)
+            ->getQuery()
+            ->getResult();
+        $goodProductIds = array();
+        foreach ($goodProducts as $product) {
+            $goodProductIds[] = $product->getId();
+        }
+        $reservationsSubQueryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $goodProducts = $reservationsSubQueryBuilder->select('p2')
+            ->from('ShopBundle\Entity\Reservation', 'r')
+            ->join('ShopBundle\Entity\Product', 'p2', Expr\Join::WITH, 'p2.id = r.product')
+            ->where(
+                $reservationsSubQueryBuilder->expr()->eq('r.salesSession', ':session')
+            )
+            ->setParameter('session', $salesSession)
+            ->getQuery()
+            ->getResult();
+        foreach ($goodProducts as $product) {
+            $goodProductIds[] = $product->getId();
+        }
+        $resultSet = $query->select('p')
+            ->from('ShopBundle\Entity\Product', 'p')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->in('p.id', $goodProductIds),
+                    $query->expr()->eq('p.available', ':available')
+                )
             )
             ->orderBy('p.name', 'ASC')
             ->setParameter('available', true)

@@ -20,6 +20,7 @@ namespace ShopBundle\Controller;
 
 use DateInterval,
     DateTime,
+    ShopBundle\Entity\SalesSession,
     Zend\View\Model\ViewModel;
 
 /**
@@ -61,19 +62,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         return $salesSessions;
     }
 
-    /**
-	 * @return Product[]
-	 */
-    private function getProducts()
-    {
-        $products = $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\Product')
-            ->findAllAvailable();
-
-        return $products;
-    }
-
-    public function reserveAction()
+    public function reserveproductsAction()
     {
         $canReserve = $this->canReserve();
         if (!$canReserve) {
@@ -85,13 +74,13 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        $products = $this->getProducts();
-        $salesSessions = $this->getSalesSessions();
+        $salesSession = $this->getSalesSessionEntity();
+        $stockEntries = $this->getStockEntries($salesSession);
 
         $reserveForm = $this->getForm('shop_shop_reserve',
             array(
-                'products' => $products,
-                'salesSessions' => $salesSessions,
+                'stockEntries' => $stockEntries,
+                'salesSession' => $salesSession,
             ));
 
         if ($this->getRequest()->isPost()) {
@@ -99,6 +88,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             $reserveForm->setData($formData);
             if ($reserveForm->isValid()) {
                 $reservation = $reserveForm->hydrateObject();
+                $reservation->setSalesSession($this->getSalesSessionEntity());
                 if ($reservation->getSalesSession()->getStartDate() <= new DateTime()) {
                     $this->flashMessenger()->error(
                         'Error',
@@ -106,7 +96,8 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                     );
                 } else {
                     $reservation->setPerson($this->getPersonEntity());
-                    foreach ($products as $product) {
+                    foreach ($stockEntries as $stockEntry) {
+                        $product = $stockEntry->getProduct();
                         $amount = $formData['product-' . $product->getId()];
                         if ($amount) {
                             $tmpReservation = clone $reservation;
@@ -122,27 +113,72 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                         $this->getTranslator()->translate('The reservation was successfully made!')
                     );
                 }
+                $this->redirect()->toRoute(
+                    'shop',
+                    array(
+                        'action' => 'reservations',
+                    )
+                );
+
+                return new ViewModel();
             } else {
                 $this->flashMessenger()->error(
                     'Error',
                     $this->getTranslator()->translate('An error occurred while processing your reservation!')
                 );
             }
-            $this->redirect()->toRoute(
-                'shop',
+        }
+
+        return new ViewModel(
+            array(
+                'canReserve' => $canReserve,
+                'form' => $reserveForm,
+                'shopName' => $this->getShopName(),
+                'stockEntries' => $stockEntries,
+            )
+        );
+    }
+
+    public function reserveAction()
+    {
+        $canReserve = $this->canReserve();
+        if (!$canReserve) {
+            return new ViewModel(
                 array(
-                    'action' => 'reservations',
+                    'shopName' => $this->getShopName(),
+                    'canReserve' => $canReserve,
                 )
             );
+        }
+
+        $salesSessions = $this->getSalesSessions();
+        $sessionsForm = $this->getForm('shop_shop_sessions',
+            array(
+                'salesSessions' => $salesSessions,
+            ));
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $sessionsForm->setData($formData);
+            if ($sessionsForm->isValid()) {
+                $this->redirect()->toRoute(
+                    'shop',
+                    array(
+                        'action' => 'reserveproducts',
+                        'id' => $formData['salesSession'],
+                    )
+                );
+
+                return new ViewModel();
+            }
         }
 
         return new ViewModel(
             array(
                 'salesSessionsAvailable' => count($salesSessions) > 0,
                 'canReserve' => $canReserve,
-                'form' => $reserveForm,
+                'form' => $sessionsForm,
                 'shopName' => $this->getShopName(),
-                'products' => $products,
             )
         );
     }
@@ -296,5 +332,39 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $shiftCount;
+    }
+
+    /**
+	 * @return SalesSession|null
+	 */
+    private function getSalesSessionEntity()
+    {
+        $salesSession = $this->getEntityById('ShopBundle\Entity\SalesSession');
+        if (!($salesSession instanceof SalesSession)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No session was found!'
+            );
+            $this->redirect()->toRoute(
+                'shop'
+            );
+
+            return null;
+        }
+
+        return $salesSession;
+    }
+
+    /**
+	 * @param $salesSession
+	 * @return SessionStockEntry[]
+	 */
+    private function getStockEntries($salesSession)
+    {
+        return $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
+            ->findBy(array(
+                'salesSession' => $salesSession,
+            ));
     }
 }
