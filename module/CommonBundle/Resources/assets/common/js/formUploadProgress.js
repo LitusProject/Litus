@@ -43,7 +43,6 @@
             return;
 
         settings.onSubmit();
-
         $this.ajaxSubmit({
             success: function (output) {
                 settings.onSubmitted(output);
@@ -52,6 +51,11 @@
                 settings.onError();
             },
             uploadProgress: function (event, position, total, percentComplete) {
+                if(event.loaded)
+                    position = event.loaded;
+                if(event.total)
+                    total = event.total;
+                percentComplete = Math.round(position/total)*100;
                 settings.onProgress({total: total, current: position, percentage: percentComplete});
             },
             dataType: 'json'
