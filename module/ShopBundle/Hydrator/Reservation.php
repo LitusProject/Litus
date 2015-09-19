@@ -45,10 +45,6 @@ class Reservation extends \CommonBundle\Component\Hydrator\Hydrator
         if (null === $object) {
             $object = new ReservationEntity();
         }
-        $salesSession = $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\SalesSession')
-            ->find($data['salesSession']);
-        $object->setSalesSession($salesSession);
 
         $object->setTimestamp(new DateTime());
 

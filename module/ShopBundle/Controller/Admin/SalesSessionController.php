@@ -19,6 +19,7 @@
 namespace ShopBundle\Controller\Admin;
 
 use DateTime,
+    ShopBundle\Entity\Product\SessionStockEntry,
     ShopBundle\Entity\SalesSession,
     Zend\View\Model\ViewModel;
 
@@ -63,37 +64,52 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    /**
+	 * @return Product[]
+	 */
+    protected function getAvailableProducts()
+    {
+        return $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Product')
+            ->findAllAvailable();
+    }
+
+    /**
+	 * @return Product[]
+	 */
+    protected function getAvailableAndStockAndReservationProducts($salesSession)
+    {
+        return $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Product')
+            ->findAvailableAndStockAndReservation($salesSession);
+    }
+
     public function addAction()
     {
-        $form = $this->getForm('shop_salesSession_add');
+        $products = $this->getAvailableProducts();
+        $form = $this->getForm('shop_salesSession_add',
+            array(
+                'products' => $products,
+            ));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $startDate = self::loadDate($formData['start_date']);
-                $endDate = self::loadDate($formData['end_date']);
+                $salesSession = $form->hydrateObject();
+                $this->getEntityManager()->persist($salesSession);
 
-                $interval = $startDate->diff($endDate);
-                $weekStartDate = clone $startDate;
-
-                for ($weeks = 0; $weeks < $formData['duplicate_weeks']; ++$weeks) {
-                    $currentStartDate = clone $weekStartDate;
-                    for ($days = 0; $days < $formData['duplicate_days']; ++$days) {
-                        $salesSession = $form->hydrateObject();
-
-                        $salesSession->setStartDate(clone $currentStartDate);
-
-                        $currentEndDate = clone $currentStartDate;
-                        $currentEndDate->add($interval);
-                        $salesSession->setEndDate($currentEndDate);
-
-                        $this->getEntityManager()->persist($salesSession);
-
-                        $currentStartDate = $currentStartDate->modify('+1 day');
+                foreach ($products as $product) {
+                    $amount = $formData[$product->getId() . '-quantity'];
+                    if ($amount == 0) {
+                        continue;
                     }
-                    $weekStartDate = $weekStartDate->modify('+1 week');
+                    $entry = new SessionStockEntry();
+                    $entry->setSalesSession($salesSession);
+                    $entry->setProduct($product);
+                    $entry->setAmount($amount);
+                    $this->getEntityManager()->persist($entry);
                 }
                 $this->getEntityManager()->flush();
 
@@ -125,14 +141,46 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
         if (!($salesSession = $this->getSalesSessionEntity())) {
             return new ViewModel();
         }
-
-        $form = $this->getForm('shop_salesSession_edit', array('salesSession' => $salesSession));
+        $products = $this->getAvailableAndStockAndReservationProducts($salesSession);
+        $form = $this->getForm('shop_salesSession_edit',
+            array(
+                'salesSession' => $salesSession,
+                'products' => $products,
+            ));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $repository = $this->getEntityManager()
+                    ->getRepository('ShopBundle\Entity\Product\SessionStockEntry');
+                $repository->deleteStockEntries($salesSession);
+                foreach ($products as $product) {
+                    $amount = $formData[$product->getId() . '-quantity'];
+                    if ($amount == 0) {
+                        continue;
+                    }
+                    $entry = new SessionStockEntry();
+                    $entry->setSalesSession($salesSession);
+                    $entry->setProduct($product);
+                    $entry->setAmount($amount);
+                    $this->getEntityManager()->persist($entry);
+                }
+
+                $reservations = $this->getEntityManager()
+                    ->getRepository('ShopBundle\Entity\Reservation')
+                    ->findBySalesSession($salesSession);
+
+                foreach ($reservations as $reservation) {
+                    if ($repository->getRealAvailability($reservation->getProduct(), $salesSession) < 0) {
+                        $this->flashMessenger()->warn(
+                            'Warning',
+                            'Some products are overbooked.'
+                        );
+                        break;
+                    }
+                }
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -287,14 +335,5 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         return $salesSession;
-    }
-
-    /**
-	 * @param  string $date
-	 * @return DateTime|null
-	 */
-    private static function loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }

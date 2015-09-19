@@ -1,0 +1,72 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    {% import 'admin/partials/form.twig' as forms %}
+
+    <div class="page-header">
+        <h1>{{ shopName }} - {{ translate('Reserve') }}</h1>
+    </div>
+
+    {% include 'shop/shop/partials/navigation.twig' %}
+    <div class="flashmessage alert alert-danger fade" id="error">
+        <div class="content">
+            {{ translate('An error occurred while processing your reservation!') }}
+        </div>
+    </div>
+
+    <div style="text-align: justify;">
+        {% if canReserve %}
+            {{ translate("You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don't come and buy your reserved items on the right date.") }}
+            <div>
+                {% autoescape false %}
+                    {{ form().openTag(form) }}
+                    {{ formElement(form.get('csrf')) }}
+                    {% for stockEntry in stockEntries %}
+                        {% set name = 'product-' ~ stockEntry.product.getId() %}
+                        {% set element = form.get(name) %}
+                        <div class="form-group">
+                            <label for="{{ name }}" class="control-label col-sm-3">{{ element.label }}</label>
+
+                            <div class="col-sm-1">
+                                {{ formElement(element) }}
+                            </div>
+
+                            <div class=" text-left col-sm-2">
+                                <span class="control-label">{{ element.attributes.max }} {{ translate('available') }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% if form.get('submit') %}
+                        {{ formElement(form.get('submit')) }}
+                    {% endif %}
+
+
+                    {{ form().closeTag() }}
+
+                {% endautoescape %}
+            </div>
+        {% else %}
+            {{ translate("You cannot reserve items from the shop. Make sure you're logged in. This privilege might require you to do some shifts in the shop as well.") }}
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).on('change blur', '.product-amount', function (e) {
+                var originalValue = $(this).val();
+                var min = $(this).prop('min');
+                var max = $(this).prop('max');
+                $(this).val(Math.max(Math.min(max, $(this).val()), min));
+                if ($(this).val() != originalValue) {
+                    $(this).parent().addClass('has-error');
+                } else {
+                    $(this).parent().removeClass('has-error');
+                }
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
