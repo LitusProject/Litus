@@ -40,4 +40,5 @@ return array(
     'Your reservation was successfully cancelled' => 'Your reservation was successfully cancelled',
     'An error occurred while trying to cancel your reservation' => 'An error occurred while trying to cancel your reservation',
     'However, there are no future sales sessions open for reservations yet.' => 'However, there are no future sales sessions open for reservations yet.',
+    'available' => 'available',
 );
