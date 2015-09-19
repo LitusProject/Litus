@@ -122,6 +122,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 $study = $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study')
                     ->findOneById($id);
+
+                if (null === $study) {
+                    continue;
+                }
+
                 $this->getEntityManager()->persist(new StudyEnrollment($academic, $study));
 
                 $subjects = $this->getEntityManager()

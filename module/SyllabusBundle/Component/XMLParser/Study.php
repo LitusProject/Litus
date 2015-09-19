@@ -72,6 +72,11 @@ class Study
     private $profCache;
 
     /**
+     * @var array
+     */
+    private $activeCombinations;
+
+    /**
      * @param EntityManager      $entityManager
      * @param TransportInterface $mailTransport
      * @param array              $callback
@@ -82,6 +87,7 @@ class Study
         $this->mailTransport = $mailTransport;
         $this->callback = $callback;
         $this->academicYear = $this->getAcademicYear();
+        $this->activeCombinations = array();
     }
 
     /**
@@ -126,6 +132,8 @@ class Study
 
             $this->callback('progress', round($counter/count($urls)*100, 4));
         }
+
+        $this->postCleanUpAcademicYear();
     }
 
     /**
@@ -198,11 +206,19 @@ class Study
             ->setExternalId($id)
             ->setTitle(html_entity_decode(trim($title)));
 
-        $study = new StudyEntity();
-        $study->setCombination($combination)
-            ->setAcademicYear($this->academicYear);
+        $study = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findOneByCombinationAndAcademicYear($combination, $this->academicYear);
 
-        $this->getEntityManager()->persist($study);
+        if (null === $study) {
+            $study = new StudyEntity();
+            $study->setCombination($combination)
+                ->setAcademicYear($this->academicYear);
+
+            $this->getEntityManager()->persist($study);
+        }
+
+        $this->activeCombinations[] = $combination->getId();
 
         return $combination;
     }
@@ -476,7 +492,7 @@ class Study
 
                 $generalGroups = $this->getGeneralMandatoryGroups($combination['entity']->getPhase(), $moduleGroups);
                 if (!empty($generalGroups)) {
-                   $groups = array_merge($groups, $generalGroups);
+                    $groups = array_merge($groups, $generalGroups);
                 }
             }
 
@@ -485,19 +501,21 @@ class Study
     }
 
     /**
-     * @param  int $phase
+     * @param  int   $phase
      * @param  array $moduleGroups
      * @return array
      */
-    private function getGeneralMandatoryGroups($phase, $moduleGroups) {
+    private function getGeneralMandatoryGroups($phase, $moduleGroups)
+    {
         $groups = array();
 
         //for each child node in the same phase check if branch is fully mandatory
-        foreach($moduleGroups as $group) {
-            if($phase == $group->getPhase() && count($group->getChildren()) == 0) {
-                if ($this->isFullMandatoryBranch($group)) {
+        foreach ($moduleGroups as $group) {
+            if ($phase == $group->getPhase() && count($group->getChildren()) == 0) {
+                if ( $this->isFullMandatoryBranch($group) ) {
                     $groups[] = $group;
                 } else {
+                }
             }
         }
 
@@ -508,18 +526,19 @@ class Study
      * @param  moduleGroup $group
      * @return boolean
      */
-    private function isFullMandatoryBranch($group) {
+    private function isFullMandatoryBranch($group)
+    {
         $result = false;
-        if($group->isMandatory()){
+        if ($group->isMandatory()) {
             if (null !== $group->getParent()) {
                 $result = $this->isFullMandatoryBranch($group->getParent());
             } else {
                 return true;
             }
         }
+
         return $result;
     }
-
 
     /**
      * @return EntityManager
@@ -534,14 +553,6 @@ class Study
      */
     private function cleanUpAcademicYear()
     {
-        $studies = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Study')
-            ->findByAcademicYear($this->academicYear);
-
-        foreach ($studies as $study) {
-            $this->getEntityManager()->remove($study);
-        }
-
         $mapping = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
             ->findByAcademicYear($this->academicYear);
@@ -556,6 +567,24 @@ class Study
 
         foreach ($mapping as $map) {
             $this->getEntityManager()->remove($map);
+        }
+
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @return void
+     */
+    private function postCleanUpAcademicYear()
+    {
+        $studies = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study')
+            ->findByAcademicYear($this->academicYear);
+
+        foreach ($studies as $study) {
+            if (!in_array($study->getCombination()->getId(), $this->activeCombinations)) {
+                $this->getEntityManager()->remove($study);
+            }
         }
 
         $this->getEntityManager()->flush();
