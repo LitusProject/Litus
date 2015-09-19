@@ -101,7 +101,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
                 $this->getEntityManager()->persist($salesSession);
 
                 foreach ($products as $product) {
-                    $amount = $formData[$product->getId() . "-quantity"];
+                    $amount = $formData[$product->getId() . '-quantity'];
                     if ($amount == 0) {
                         continue;
                     }
@@ -157,7 +157,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
                     ->getRepository('ShopBundle\Entity\Product\SessionStockEntry');
                 $repository->deleteStockEntries($salesSession);
                 foreach ($products as $product) {
-                    $amount = $formData[$product->getId() . "-quantity"];
+                    $amount = $formData[$product->getId() . '-quantity'];
                     if ($amount == 0) {
                         continue;
                     }
@@ -169,7 +169,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
                 }
 
                 $reservations = $this->getEntityManager()
-                    ->getRepository('ShopBundle\Entity\Reservation', 'r')
+                    ->getRepository('ShopBundle\Entity\Reservation')
                     ->findBySalesSession($salesSession);
 
                 foreach ($reservations as $reservation) {
@@ -335,14 +335,5 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         return $salesSession;
-    }
-
-    /**
-	 * @param  string $date
-	 * @return DateTime|null
-	 */
-    private static function loadDate($date)
-    {
-        return DateTime::createFromFormat('d#m#Y H#i', $date) ?: null;
     }
 }
