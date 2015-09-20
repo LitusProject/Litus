@@ -18,8 +18,6 @@
 
 namespace ShopBundle\Form\Admin\SalesSession;
 
-use DateTime;
-
 /**
  * Add SalesSession
  *
@@ -28,6 +26,11 @@ use DateTime;
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'ShopBundle\Hydrator\SalesSession';
+
+    /**
+	 * @var Product[]
+	 */
+    protected $products = array();
 
     public function init()
     {
@@ -61,53 +64,29 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type' => 'select',
-            'name' => 'duplicate_weeks',
-            'label' => 'Duplicate by weeks',
-            'required' => true,
-            'attributes' => array(
-                'options' => $this->createDuplicatesArray(),
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
-            'type' => 'select',
-            'name' => 'duplicate_days',
-            'label' => 'Duplicate by days',
-            'required' => true,
-            'attributes' => array(
-                'options' => $this->createDuplicatesArray(7),
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'int'),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
             'type' => 'checkbox',
             'name' => 'reservations_possible',
             'label' => 'Reservations Possible',
             'attributes' => array(
                 'data-help' => 'Enabling this option will allow clients to reserve articles for this sales session.',
+                'value' => true,
             ),
         ));
+
+        foreach ($this->products as $product) {
+            $this->add(array(
+                'type' => 'number',
+                'name' => $product->getId() . '-quantity',
+                'options' => array(
+                    'label' => $product->getName(),
+                ),
+                'attributes' => array(
+                    'min' => '0',
+                    'max' => '100',
+                    'value' => 0,
+                ),
+            ));
+        }
 
         $this->add(array(
             'type' => 'textarea',
@@ -130,16 +109,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-	 * @param  int $max
-	 * @return array
+	 * @param $products
 	 */
-    private function createDuplicatesArray($max = 20)
+    public function setProducts($products)
     {
-        $duplications = array();
-        for ($i = 1; $i <= $max; $i++) {
-            $duplications[$i] = $i;
-        }
-
-        return $duplications;
+        $this->products = $products;
     }
 }

@@ -41,9 +41,27 @@ class Edit extends Add
 
         parent::init();
 
-        $this->remove('duplicate_weeks')
-            ->remove('duplicate_days')
-            ->remove('session_add')
+        foreach ($this->products as $product) {
+            $this->remove($product->getId() . '-quantity');
+
+            $currentAvailability = $this->getEntityManager()
+                ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
+                ->getProductAvailability($product, $this->salesSession);
+
+            $this->add(array(
+                'type' => 'number',
+                'name' => $product->getId() . '-quantity',
+                'options' => array(
+                    'label' => $product->getName(),
+                ),
+                'attributes' => array(
+                    'min' => '0',
+                    'max' => '100',
+                    'value' => $currentAvailability,
+                ),
+            ));
+        }
+        $this->remove('session_add')
             ->addSubmit('Save', 'edit');
 
         $this->bind($this->salesSession);

@@ -29,50 +29,28 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'ShopBundle\Hydrator\Reservation';
 
-    private $products = array();
-    private $salesSessions = array();
+    private $stockEntries = array();
+    private $salesSession;
 
     public function init()
     {
         parent::init();
-        $this->add(array(
-            'type' => 'select',
-            'name' => 'salesSession',
-            'label' => 'Sales Session',
-            'required' => true,
-            'escape' => false,
-            'attributes' => array(
-                'options' => $this->createSalesSessionsArray(),
-            ),
-        ));
+        $this->addClass('form-horizontal');
 
-        foreach ($this->products as $product) {
+        foreach ($this->stockEntries as $stockEntry) {
+            $product = $stockEntry->getProduct();
+            $availability = max(0, $this->getEntityManager()
+                ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
+                ->getRealAvailability($product, $this->salesSession));
             $this->add(array(
-                'type' => 'hidden',
+                'type' => 'number',
                 'name' => 'product-' . $product->getId(),
+                'label' => $product->getName() . ' (&euro; ' . sprintf('%0.2f', $product->getSellPrice()) . ')',
                 'attributes' => array(
-                    'class' => 'input-very-mini',
-                    'id' => 'product-' . $product->getId(),
-                    'placeholder' => '0',
-                ),
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'digits',
-                            ),
-                            array(
-                                'name' => 'between',
-                                'options' => array(
-                                    'min' => 0,
-                                    'max' => 20,
-                                ),
-                            ),
-                        ),
-                    ),
+                    'value' => '0',
+                    'min' => '0',
+                    'max' => $availability,
+                    'class' => 'product-amount form-control',
                 ),
             ));
         }
@@ -81,33 +59,18 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-	 * @return array
+	 * @param SessionStockEntry[] $stockEntries
 	 */
-    private function createSalesSessionsArray()
+    public function setStockEntries($stockEntries)
     {
-        $translator = $this->getServiceLocator()->get('translator');
-
-        $result = array();
-        foreach ($this->salesSessions as $session) {
-            $result[$session->getId()] = $translator->translate($session->getStartDate()->format('l')) . ' ' . $session->getStartDate()->format('d/m/Y H:i') . ' - ' . $session->getEndDate()->format('H:i');
-        }
-
-        return $result;
+        $this->stockEntries = $stockEntries;
     }
 
     /**
-	 * @param SalesSession[] $salesSessions
+	 * @param SalesSession $salesSession
 	 */
-    public function setSalesSessions($salesSessions)
+    public function setSalesSession($salesSession)
     {
-        $this->salesSessions = $salesSessions;
-    }
-
-    /**
-	 * @param Product[] $products
-	 */
-    public function setProducts($products)
-    {
-        $this->products = $products;
+        $this->salesSession = $salesSession;
     }
 }

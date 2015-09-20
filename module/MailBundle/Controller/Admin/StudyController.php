@@ -53,7 +53,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
                 $addresses = $this->getAddresses($formData['studies'], $groups, $formData['bcc']);
 
-                if ('' == $formData['select_message']['stored_message']) {
+                if (isset($formData['select_message']) && '' == $formData['select_message']['stored_message']) {
                     $body = $formData['compose_message']['message'];
 
                     $part = new Part($body);
