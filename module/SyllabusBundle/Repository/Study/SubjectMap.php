@@ -35,9 +35,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
 class SubjectMap extends EntityRepository
 {
     /**
-     * @param  StudyEntity $study
-     * @return Query
-     */
+	 * @param  StudyEntity $study
+	 * @return Query
+	 */
     public function findAllByStudyQuery(StudyEntity $study)
     {
         $moduleGroups = $this->getModuleGroupIds($study->getCombination()->getModuleGroups()->toArray());
@@ -60,10 +60,10 @@ class SubjectMap extends EntityRepository
     }
 
     /**
-     * @param  ModuleGroupEntity $moduleGroup
-     * @param  AcademicYear      $academicYear
-     * @return Query
-     */
+	 * @param  ModuleGroupEntity $moduleGroup
+	 * @param  AcademicYear $academicYear
+	 * @return Query
+	 */
     public function findAllByModuleGroupAndAcademicYearQuery(ModuleGroupEntity $moduleGroup, AcademicYear $academicYear)
     {
         $moduleGroups = $this->getModuleGroupIds(array($moduleGroup));
@@ -86,10 +86,10 @@ class SubjectMap extends EntityRepository
     }
 
     /**
-     * @param  string      $name
-     * @param  StudyEntity $study
-     * @return Query
-     */
+	 * @param  string $name
+	 * @param  StudyEntity $study
+	 * @return Query
+	 */
     public function findAllByNameAndStudyQuery($name, StudyEntity $study)
     {
         $moduleGroups = $this->getModuleGroupIds($study->getCombination()->getModuleGroups()->toArray());
@@ -114,10 +114,10 @@ class SubjectMap extends EntityRepository
     }
 
     /**
-     * @param  string      $code
-     * @param  StudyEntity $study
-     * @return Query
-     */
+	 * @param  string $code
+	 * @param  StudyEntity $study
+	 * @return Query
+	 */
     public function findAllByCodeAndStudyQuery($code, StudyEntity $study)
     {
         $moduleGroups = $this->getModuleGroupIds($study->getCombination()->getModuleGroups()->toArray());
@@ -142,11 +142,11 @@ class SubjectMap extends EntityRepository
     }
 
     /**
-     * @param  string            $name
-     * @param  ModuleGroupEntity $moduleGroup
-     * @param  AcademicYear      $academicYear
-     * @return Query
-     */
+	 * @param  string $name
+	 * @param  ModuleGroupEntity $moduleGroup
+	 * @param  AcademicYear $academicYear
+	 * @return Query
+	 */
     public function findAllByNameAndModuleGroupAndAcademicYearQuery($name, ModuleGroupEntity $moduleGroup, AcademicYear $academicYear)
     {
         $moduleGroups = $this->getModuleGroupIds(array($moduleGroup));
@@ -171,11 +171,11 @@ class SubjectMap extends EntityRepository
     }
 
     /**
-     * @param  string            $code
-     * @param  ModuleGroupEntity $moduleGroup
-     * @param  AcademicYear      $academicYear
-     * @return Query
-     */
+	 * @param  string $code
+	 * @param  ModuleGroupEntity $moduleGroup
+	 * @param  AcademicYear $academicYear
+	 * @return Query
+	 */
     public function findAllByCodeAndModuleGroupAndAcademicYearQuery($code, ModuleGroupEntity $moduleGroup, AcademicYear $academicYear)
     {
         $moduleGroups = $this->getModuleGroupIds(array($moduleGroup));
@@ -200,9 +200,9 @@ class SubjectMap extends EntityRepository
     }
 
     /**
-     * @param  array $groups
-     * @return array
-     */
+	 * @param  array $groups
+	 * @return array
+	 */
     private function getModuleGroupIds(array $groups)
     {
         $ids = array(0);
@@ -221,10 +221,10 @@ class SubjectMap extends EntityRepository
     }
 
     /**
-     * @param  SubjectEntity       $subject
-     * @param  AcademicYear        $academicYear
-     * @return \Doctrine\ORM\Query
-     */
+	 * @param  SubjectEntity $subject
+	 * @param  AcademicYear $academicYear
+	 * @return \Doctrine\ORM\Query
+	 */
     public function findAllBySubjectAndAcademicYearQuery(SubjectEntity $subject, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -244,11 +244,11 @@ class SubjectMap extends EntityRepository
     }
 
     /**
-     * @param  ModuleGroupEntity $moduleGroup
-     * @param  SubjectEntity     $subject
-     * @param  AcademicYear      $academicYear
-     * @return SubjectMapEntity
-     */
+	 * @param  ModuleGroupEntity $moduleGroup
+	 * @param  SubjectEntity $subject
+	 * @param  AcademicYear $academicYear
+	 * @return SubjectMapEntity
+	 */
     public function findOneByModuleGroupSubjectAndAcademicYear(ModuleGroupEntity $moduleGroup, SubjectEntity $subject, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -272,10 +272,10 @@ class SubjectMap extends EntityRepository
     }
 
     /**
-     * @param  string              $name
-     * @param  AcademicYear        $academicYear
-     * @return \Doctrine\ORM\Query
-     */
+	 * @param  string $name
+	 * @param  AcademicYear $academicYear
+	 * @return \Doctrine\ORM\Query
+	 */
     public function findAllByNameQuery($name, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -291,6 +291,36 @@ class SubjectMap extends EntityRepository
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->setParameter('academicYear', $academicYear)
             ->orderBy('s.name')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+	 * @param string $name
+	 * @param AcademicYear $academicYear
+	 * @return Query
+	 */
+    public function findAllSubjectsByNameQuery($name, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('s.id as id, s.name as name, s.code as code')
+            ->from('SyllabusBundle\Entity\Study\SubjectMap', 'm')
+            ->innerJoin('m.subject', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->like($query->expr()->lower('s.name'), ':name'),
+                        $query->expr()->like($query->expr()->lower('s.code'), ':code')
+                    ),
+                    $query->expr()->eq('m.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->setParameter('code', '%' . strtolower($name) . '%')
+            ->setParameter('academicYear', $academicYear)
+            ->orderBy('s.name')
+            ->distinct()
             ->getQuery();
 
         return $resultSet;
