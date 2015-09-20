@@ -19,6 +19,7 @@
 namespace SyllabusBundle\Controller;
 
 use CommonBundle\Component\Util\AcademicYear,
+    Doctrine\ORM\Query,
     Zend\View\Model\ViewModel;
 
 /**
@@ -34,17 +35,17 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             return $this->notFoundAction();
         }
 
-        $mappings = $this->getEntityManager()
+        $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
-            ->findAllByNameQuery($this->getParam('string'), $academicYear)
+            ->findAllSubjectsByNameQuery($this->getParam('string'), $academicYear)
             ->setMaxResults(20)
             ->getResult();
-
         $result = array();
-        foreach ($mappings as $mapping) {
+        foreach ($subjects as $subjectArr) {
+            $subject = (object) $subjectArr;
             $item = (object) array();
-            $item->id = $mapping->getSubject()->getId();
-            $item->value = $mapping->getSubject()->getCode() . ' - ' . $mapping->getSubject()->getName();
+            $item->id = $subject->id;
+            $item->value = $subject->code . ' - ' . $subject->name;
             $result[] = $item;
         }
 
@@ -56,8 +57,8 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @return \CommonBundle\Entity\General\AcademicYear|null
-     */
+	 * @return \CommonBundle\Entity\General\AcademicYear|null
+	 */
     private function getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {
