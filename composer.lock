@@ -5417,12 +5417,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "db0a0212013ef0b796959d5ba9cc72538c451b8c"
+                "reference": "6fd5cb64fade985dc189e6601c20e743ac846afd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/db0a0212013ef0b796959d5ba9cc72538c451b8c",
-                "reference": "db0a0212013ef0b796959d5ba9cc72538c451b8c",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/6fd5cb64fade985dc189e6601c20e743ac846afd",
+                "reference": "6fd5cb64fade985dc189e6601c20e743ac846afd",
                 "shasum": ""
             },
             "require": {
@@ -5468,7 +5468,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2015-09-15 17:18:15"
+            "time": "2015-09-21 20:15:07"
         },
         {
             "name": "litus/php-cs",
@@ -5476,12 +5476,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/LitusProject/PhpCodeStyle.git",
-                "reference": "27f22afb1c5ee5104405eb85c30b945392107589"
+                "reference": "3002a3d516203553ec9bca6b8481ca0e5c09e313"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LitusProject/PhpCodeStyle/zipball/27f22afb1c5ee5104405eb85c30b945392107589",
-                "reference": "27f22afb1c5ee5104405eb85c30b945392107589",
+                "url": "https://api.github.com/repos/LitusProject/PhpCodeStyle/zipball/3002a3d516203553ec9bca6b8481ca0e5c09e313",
+                "reference": "3002a3d516203553ec9bca6b8481ca0e5c09e313",
                 "shasum": ""
             },
             "require": {
@@ -5497,7 +5497,7 @@
             "license": [
                 "GPL-3.0+"
             ],
-            "time": "2015-09-21 19:57:06"
+            "time": "2015-09-21 21:30:56"
         },
         {
             "name": "symfony/event-dispatcher",
