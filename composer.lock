@@ -5476,12 +5476,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/LitusProject/PhpCodeStyle.git",
-                "reference": "7c727c4082370c951518085a69d9d5534684126b"
+                "reference": "27f22afb1c5ee5104405eb85c30b945392107589"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LitusProject/PhpCodeStyle/zipball/7c727c4082370c951518085a69d9d5534684126b",
-                "reference": "7c727c4082370c951518085a69d9d5534684126b",
+                "url": "https://api.github.com/repos/LitusProject/PhpCodeStyle/zipball/27f22afb1c5ee5104405eb85c30b945392107589",
+                "reference": "27f22afb1c5ee5104405eb85c30b945392107589",
                 "shasum": ""
             },
             "require": {
@@ -5497,7 +5497,7 @@
             "license": [
                 "GPL-3.0+"
             ],
-            "time": "2014-10-01 21:14:36"
+            "time": "2015-09-21 19:57:06"
         },
         {
             "name": "symfony/event-dispatcher",
