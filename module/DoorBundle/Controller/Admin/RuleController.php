@@ -165,7 +165,13 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getRuleEntity()
     {
-        $rule = $this->getEntityById('DoorBundle\Document\Rule');
+        $rule = $this->getDocumentManager()
+            ->getRepository('DoorBundle\Document\Rule')
+            ->findOneBy(
+                array(
+                    'id' => $this->getParam('id'),
+                )
+            );
 
         if (!($rule instanceof Rule)) {
             $this->flashMessenger()->error(
