@@ -445,9 +445,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $persons[$booking->getPerson()->getId()] = true;
 
                         $mail = new Message();
+                        setlocale(LC_ALL, 'en_US.UTF8');
                         $mail->setBody($formData['message'])
                             ->setFrom($mailAddress, $mailName)
-                            ->addTo($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName())
+                            ->addTo($booking->getPerson()->getEmail(), iconv("UTF-8", "ASCII//TRANSLIT",$booking->getPerson()->getFullName()))
                             ->setSubject($formData['subject']);
 
                         if ('development' != getenv('APPLICATION_ENV')) {
@@ -455,6 +456,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         }
                     }
                 }
+
+                exit();
 
                 $this->flashMessenger()->success(
                     'SUCCESS',
