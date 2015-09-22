@@ -407,6 +407,36 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
+    private function isValid($value)
+    {
+        $tot = strlen($value);
+        for ($i = 0; $i < $tot; $i += 1) {
+            $ord = ord($value[$i]);
+            if (($ord < 32 || $ord > 126)
+                && $ord !== 13
+            ) {
+                return false;
+            }
+
+            if ($ord === 13) {
+                if ($i + 2 >= $tot) {
+                    return false;
+                }
+
+                $lf = ord($value[$i + 1]);
+                $sp = ord($value[$i + 2]);
+
+                if ($lf !== 10 || $sp !== 32) {
+                    return false;
+                }
+
+                $i += 2;
+            }
+        }
+
+        return true;
+    }
+
     public function mailAction()
     {
         if (!($saleArticle = $this->getSaleArticleEntity())) {
@@ -445,9 +475,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $persons[$booking->getPerson()->getId()] = true;
 
                         $mail = new Message();
+                        setlocale(LC_ALL, 'en_US.UTF8');
                         $mail->setBody($formData['message'])
                             ->setFrom($mailAddress, $mailName)
-                            ->addTo($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName())
+                            ->addTo($booking->getPerson()->getEmail(), iconv("UTF-8", "ASCII//TRANSLIT",$booking->getPerson()->getFullName()))
                             ->setSubject($formData['subject']);
 
                         if ('development' != getenv('APPLICATION_ENV')) {
@@ -455,6 +486,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         }
                     }
                 }
+
+                exit();
 
                 $this->flashMessenger()->success(
                     'SUCCESS',
