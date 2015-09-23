@@ -457,8 +457,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     }
                 }
 
-                exit();
-
                 $this->flashMessenger()->success(
                     'SUCCESS',
                     'The email was successfully send to ' . sizeof($persons) . ' academics!'
