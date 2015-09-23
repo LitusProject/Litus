@@ -92,9 +92,10 @@ class Booking
         }
 
         $mail = new Message();
+        setlocale(LC_ALL, 'en_US.UTF8');
         $mail->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)
-            ->addTo($person->getEmail(), $person->getFullName())
+            ->addTo($person->getEmail(), iconv("UTF-8", "ASCII//TRANSLIT",$person->getFullName()))
             ->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -177,9 +178,10 @@ class Booking
         }
 
         $mail = new Message();
+        setlocale(LC_ALL, 'en_US.UTF8');
         $mail->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)
-            ->addTo($person->getEmail(), $person->getFullName())
+            ->addTo($person->getEmail(), iconv("UTF-8", "ASCII//TRANSLIT",$person->getFullName()))
             ->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -266,9 +268,10 @@ class Booking
         }
 
         $mail = new Message();
+        setlocale(LC_ALL, 'en_US.UTF8');
         $mail->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)
-            ->addTo($person->getEmail(), $person->getFullName())
+            ->addTo($person->getEmail(), iconv("UTF-8", "ASCII//TRANSLIT",$person->getFullName()))
             ->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
