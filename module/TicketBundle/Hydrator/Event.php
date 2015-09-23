@@ -18,9 +18,9 @@
 
 namespace TicketBundle\Hydrator;
 
-use TicketBundle\Entity\Event as EventEntity,
-    TicketBundle\Entity\Option,
-    TicketBundle\Entity\Ticket as TicketEntity;
+use TicketBundle\Entity\Event as EventEntity;
+use TicketBundle\Entity\Option;
+use TicketBundle\Entity\Ticket as TicketEntity;
 
 class Event extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -48,12 +48,6 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
         $priceMembers = 0;
         $priceNonMembers = 0;
-        if ($enableOptions) {
-            $priceMembers = $data['prices']['price_members'];
-            $priceNonMembers = $data['only_members'] ? 0 : $data['prices']['price_non_members'];
-        }
-
-        $generateTickets = $data['generate_tickets'];
 
         if ($enableOptions) {
             foreach ($data['options'] as $optionData) {
@@ -65,15 +59,16 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                     $option = $this->getEntityManager()
                         ->getRepository('TicketBundle\Entity\Option')
                         ->findOneById($optionData['option_id']);
+
                     $option->setName($optionData['option'])
                         ->setPriceMembers($optionData['price_members'])
-                        ->setPriceNonMembers($priceNonMembers);
+                        ->setPriceNonMembers($optionData['price_non_members']);
                 } else {
                     $option = new Option(
                         $object,
                         $optionData['option'],
                         $optionData['price_members'],
-                        $priceNonMembers
+                        $optionData['price_non_members']
                     );
                     $this->getEntityManager()->persist($option);
                 }
@@ -82,7 +77,12 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             foreach ($object->getOptions() as $option) {
                 $this->getEntityManager()->remove($option);
             }
+
+            $priceMembers = $data['prices']['price_members'];
+            $priceNonMembers = $data['only_members'] ? 0 : $data['prices']['price_non_members'];
         }
+
+        $generateTickets = $data['generate_tickets'];
 
         if ($data['generate_tickets']) {
             if ($object->areTicketsGenerated()) {
@@ -164,8 +164,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data['allow_remove'] = $object->allowRemove();
 
         if (sizeof($object->getOptions()) == 0) {
-            $data['prices']['price_members'] = number_format($object->getPriceMembers()/100, 2);
-            $data['prices']['price_non_members'] = $object->isOnlyMembers() ? '' : number_format($object->getPriceNonMembers()/100, 2);
+            $data['prices']['price_members'] = number_format($object->getPriceMembers() / 100, 2);
+            $data['prices']['price_non_members'] = $object->isOnlyMembers() ? '' : number_format($object->getPriceNonMembers() / 100, 2);
         } else {
             $data['enable_options'] = true;
             $data['enable_options_hidden'] = '1';
@@ -174,8 +174,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                 $data['options'][] = array(
                     'option_id' => $option->getId(),
                     'option' => $option->getName(),
-                    'price_members' => number_format($option->getPriceMembers()/100, 2),
-                    'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers()/100, 2),
+                    'price_members' => number_format($option->getPriceMembers() / 100, 2),
+                    'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
                 );
             }
         }
