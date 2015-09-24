@@ -52,8 +52,14 @@ class MailController extends \FormBundle\Component\Controller\FormController
 
             return new ViewModel();
         }
+        $defaultFromAddress = "";
+        if ($formSpecification->getMail()) {
+            $defaultFromAddress = $formSpecification->getMail()->getFrom();
+        }
 
-        $form = $this->getForm('form_manage_mail_send');
+        $form = $this->getForm('form_manage_mail_send', array(
+            'defaultFromAddress' => $defaultFromAddress,
+        ));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -62,7 +68,7 @@ class MailController extends \FormBundle\Component\Controller\FormController
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                $mailAddress = $formSpecification->getMail()->getFrom();
+                $mailAddress = $formData['from'];
 
                 $entries = $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\Entry')
@@ -106,8 +112,8 @@ class MailController extends \FormBundle\Component\Controller\FormController
     }
 
     /**
-     * @return Form|null
-     */
+	 * @return Form|null
+	 */
     private function getFormEntity()
     {
         $form = $this->getEntityById('FormBundle\Entity\Node\Form');

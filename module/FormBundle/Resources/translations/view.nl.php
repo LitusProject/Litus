@@ -49,6 +49,7 @@ return array(
     'Save as Draft' => 'Opslaan als Concept',
     'Draft' => 'Concept',
     'You have already a draft of this form' => 'U hebt al een concept van dit formulier',
+    'Subject' => 'Onderwerp',
 
     'Yes' => 'Ja',
     'No' => 'Neen',
