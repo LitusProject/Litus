@@ -66,6 +66,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label' => 'Available',
             'attributes' => array(
                 'data-help' => 'Enabling this option will allow clients to reserve this article.',
+                'value' => true,
             ),
         ));
 
