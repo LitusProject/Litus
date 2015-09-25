@@ -52,7 +52,7 @@ class MailController extends \FormBundle\Component\Controller\FormController
 
             return new ViewModel();
         }
-        $defaultFromAddress = "";
+        $defaultFromAddress = '';
         if ($formSpecification->getMail()) {
             $defaultFromAddress = $formSpecification->getMail()->getFrom();
         }
