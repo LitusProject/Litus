@@ -49,6 +49,7 @@ return array(
     'Save as Draft' => 'Save as Draft',
     'Draft' => 'Draft',
     'You have already a draft of this form' => 'You have already a draft of this form',
+    'Subject' => 'Subject',
 
     'Yes' => 'Yes',
     'No' => 'No',

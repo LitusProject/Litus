@@ -396,7 +396,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         foreach ($articles as $article) {
             $item = (object) array();
             $item->id = $article->getId();
-            $item->value = $article->getMainArticle()->getTitle() . ' - ' . $article->getBarcode();
+
+            if ($article->getBarcode() > 0) {
+                $item->value = $article->getMainArticle()->getTitle() . ' - ' . $article->getBarcode();
+            } else {
+                $item->value = $article->getMainArticle()->getTitle();
+            }
             $result[] = $item;
         }
 
@@ -456,8 +461,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         }
                     }
                 }
-
-                exit();
 
                 $this->flashMessenger()->success(
                     'SUCCESS',
