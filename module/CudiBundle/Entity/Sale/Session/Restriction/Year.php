@@ -18,7 +18,8 @@
 
 namespace CudiBundle\Entity\Sale\Session\Restriction;
 
-use CommonBundle\Entity\User\Person,
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Session,
     CudiBundle\Entity\Sale\Session\Restriction,
     Doctrine\ORM\EntityManager,
@@ -106,10 +107,17 @@ class Year extends Restriction
      */
     public function canSignIn(EntityManager $entityManager, Person $person)
     {
-        $years = $entityManager->getRepository('SyllabusBundle\Entity\Subject')
-            ->getYearsByPerson($person);
+        $academicYear = AcademicYearUtil::getUniversityYear($entityManager);
 
-        foreach ($years as $year) {
+        $studies = $entityManager->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->findAllByAcademicAndAcademicYear($person, $academicYear);
+
+        foreach ($studies as $studyMap) {
+            $year = $studyMap->getStudy()->getPhase();
+            if (strpos(strtolower($studyMap->getStudy()->getFullTitle()), 'master') !== false) {
+                $year = $year+3;
+            }
+
             if ($year >= $this->startValue && $year <= $this->endValue) {
                 return true;
             }
