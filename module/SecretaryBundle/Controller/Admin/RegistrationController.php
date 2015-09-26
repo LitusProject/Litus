@@ -200,8 +200,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 }
 
                 $metaData = new MetaData(
-                    $registration->getAcademic(),
-                    $registration->getAcademicYear()
+                    $academic,
+                    $academicYear
                 );
                 $metaData->setBecomeMember(false)
                     ->setReceiveIrReeelAtCudi($formData['irreeel'])
