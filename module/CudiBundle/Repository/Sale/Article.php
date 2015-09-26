@@ -380,12 +380,12 @@ class Article extends EntityRepository
 
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a, m')
+            ->distinct()
             ->from('CudiBundle\Entity\Sale\Article', 'a')
-            ->from('CudiBundle\Entity\Sale\Article\Barcode', 'b')
+            ->leftJoin('CudiBundle\Entity\Sale\Article\Barcode', 'b', 'WITH', 'b.article = a.id')
             ->innerJoin('a.mainArticle', 'm')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('b.article', 'a'),
                     $query->expr()->eq('a.isHistory', 'false'),
                     $query->expr()->orX(
                         $query->expr()->like($query->expr()->lower('m.title'), ':title'),

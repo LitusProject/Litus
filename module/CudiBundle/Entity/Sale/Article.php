@@ -229,6 +229,8 @@ class Article
                 return $barcode->getBarcode();
             }
         }
+
+        return 0;
     }
 
     /**
