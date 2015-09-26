@@ -317,7 +317,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'type'       => 'checkbox',
                     'name'       => 'bakske_by_mail',
                     'label'      => 'I want to receive \'t Bakske by e-mail',
-                    'value'      => false,
+                    'value'      => true,
                     'attributes' => array(
                         'id' => 'bakske',
                     ),
