@@ -33,7 +33,7 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
     );
 
     /**
-	 * @param null $object
+	 * @param Product|null $object
 	 * @return array
 	 */
     protected function doExtract($object = null)
