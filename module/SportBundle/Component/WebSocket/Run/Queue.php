@@ -249,6 +249,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $runner = new Runner(
                 $data->firstName,
                 $data->lastName,
+                $this->getAcademicYear(),
                 $academic,
                 null,
                 $department

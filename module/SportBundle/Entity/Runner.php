@@ -49,6 +49,14 @@ class Runner
     private $academic;
 
     /**
+     * @var AcademicYear The year of the enrollment
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
+
+    /**
      * @var string The user's university identification
      *
      * @ORM\Column(name="runner_identification", type="string", length=8, nullable=true, unique=true)
@@ -97,10 +105,11 @@ class Runner
      * @param Group|null      $group
      * @param Department|null $department
      */
-    public function __construct($firstName, $lastName, Academic $academic = null, Group $group = null, Department $department = null)
+    public function __construct($firstName, $lastName, AcademicYear $academicYear, Academic $academic = null, Group $group = null, Department $department = null)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+        $this->academicYear = $academicYear;
         $this->academic = $academic;
         $this->group = $group;
         $this->department = $department;
@@ -131,6 +140,14 @@ class Runner
         $this->academic = $academic;
 
         return $this;
+    }
+
+    /**
+     * @return AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
     }
 
     /**
@@ -196,7 +213,9 @@ class Runner
      */
     public function setGroup(Group $group)
     {
-        $this->group = $group;
+        if ($group->getAcademicYear() == $this->getAcademicYear()) {
+            $this->group = $group;
+        }
 
         return $this;
     }
