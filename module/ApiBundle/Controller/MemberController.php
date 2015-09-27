@@ -45,7 +45,7 @@ class MemberController extends \ApiBundle\Component\Controller\ActionController\
                 'firstName' => $member->getFirstName(),
                 'lastName' => $member->getLastName(),
                 'barcode' => $member->getBarcode() ? $member->getBarcode()->getBarcode() : '',
-                'organization_status' => $member->getOrganizationStatus($academicYear) ? $member->getOrganizationStatus($academicYear)->getStatus() : "",
+                'organization_status' => $member->getOrganizationStatus($academicYear) ? $member->getOrganizationStatus($academicYear)->getStatus() : '',
             );
         }
 
