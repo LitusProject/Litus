@@ -16,22 +16,21 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SportBundle;
+namespace SportBundle\Component\Validator;
 
-use CommonBundle\Component\Module\Config;
+/**
+ * Verifies whether the given value is in a valid university identification format.
+ *
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ */
+class UniversityIdentification extends \Zend\Validator\Regex
+{
+    public function __construct()
+    {
+        parent::__construct('/[rsu][0-9]{7}$/');
 
-return Config::create(
-    array(
-        'namespace'         => __NAMESPACE__,
-        'directory'         => __DIR__,
-        'translation_files' => array('run'),
-        'has_layouts'       => true,
-    ),
-    array(
-        'validators' => array(
-            'invokables' => array(
-                'university_identification'       => 'SportBundle\Component\Validator\UniversityIdentification',
-            ),
-        ),
-    )
-);
+        $this->setMessage(
+            'The given university identification is not in the correct format of an r-, s-, or u-number'
+        );
+    }
+}
