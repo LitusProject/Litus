@@ -208,19 +208,4 @@ class Registration extends EntityRepository
 
         return $resultSet;
     }
-
-    public function findAllByAcademicYear(AcademicYear $year)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('r')
-            ->from('SecretaryBundle\Entity\Registration', 'r')
-            ->where(
-                $query->expr()->gte('r.academicYear', ':year')
-            )
-            ->setParameter('year', $year)
-            ->getQuery()
-            ->getResult();
-
-        return $resultSet;
-    }
 }

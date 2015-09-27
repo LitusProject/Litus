@@ -35,18 +35,17 @@ class MemberController extends \ApiBundle\Component\Controller\ActionController\
 
         $result = array();
 
-        $registrations = $this->getEntityManager()
-            ->getRepository('SecretaryBundle\Entity\Registration')
-            ->findAllByAcademicYear($academicYear);
-        foreach ($registrations as $registration) {
-            $academic = $registration->getAcademic();
+        $members = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findAllMembers($academicYear);
+        foreach ($members as $member) {
             $result[] = (object) array(
-                'identification' => $academic->getUniversityIdentification(),
-                'payed' => $registration->hasPayed(),
-                'cancelled' => $registration->isCancelled(),
-                'firstName' => $academic->getFirstName(),
-                'lastName' => $academic->getLastName(),
-                'barcode' => $academic->getBarcode() ? $academic->getBarcode()->getBarcode() : '',
+                'id' => $member->getId(),
+                'identification' => $member->getUniversityIdentification(),
+                'firstName' => $member->getFirstName(),
+                'lastName' => $member->getLastName(),
+                'barcode' => $member->getBarcode() ? $member->getBarcode()->getBarcode() : '',
+                'organization_status' => $member->getOrganizationStatus($academicYear) ? $member->getOrganizationStatus($academicYear)->getStatus() : "",
             );
         }
 
