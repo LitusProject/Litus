@@ -26,3 +26,6 @@ public/_br/img
 # Exclude Composer configuration and dependencies
 vendor/
 composer.phar
+
+# Code Style Fixer
+.php_cs.cache
