@@ -33,9 +33,9 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
     );
 
     /**
-	 * @param null $object
-	 * @return array
-	 */
+     * @param Product|null $object
+     * @return array
+     */
     protected function doExtract($object = null)
     {
         if (null === $object) {
@@ -49,10 +49,10 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
     }
 
     /**
-	 * @param array $data
-	 * @param ProductEntity | $object
-	 * @return ProductEntity
-	 */
+     * @param array $data
+     * @param ProductEntity | $object
+     * @return ProductEntity
+     */
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
@@ -60,7 +60,7 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object = $this->stdHydrate($data, $object, self::$stdKeys);
-        $object->setSellPrice(floatval(str_replace(',','.', $data['sell_price'])));
+        $object->setSellPrice(floatval(str_replace(',', '.', $data['sell_price'])));
 
         return $object;
     }

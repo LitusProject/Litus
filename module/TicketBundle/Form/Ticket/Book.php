@@ -18,10 +18,10 @@
 
 namespace TicketBundle\Form\Ticket;
 
-use CommonBundle\Entity\User\Person,
-    LogicException,
-    RuntimeException,
-    TicketBundle\Entity\Event;
+use CommonBundle\Entity\User\Person;
+use LogicException;
+use RuntimeException;
+use TicketBundle\Entity\Event;
 
 /**
  * Book Tickets
@@ -53,7 +53,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->setAttribute('id', 'ticket_sale_form');
 
-        if (empty($this->event->getOptions())) {
+        if ($this->event->getOptions()->isEmpty()) {
             $this->add(array(
                 'type'       => 'select',
                 'name'       => 'number_member',

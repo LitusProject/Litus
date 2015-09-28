@@ -149,10 +149,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'id' => 'university_identification_' . $memberNb,
                     ),
+                    'required' => $required,
                     'options'    => array(
                         'input' => array(
                             'filters'  => array(
                                 array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array(
+                                    'name' => 'university_identification',
+                                ),
                             ),
                         ),
                     ),

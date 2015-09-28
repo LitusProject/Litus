@@ -18,18 +18,18 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\User\Barcode\Ean12,
-    CommonBundle\Entity\User\Barcode\Qr,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    InvalidArgumentException,
-    SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
-    SecretaryBundle\Entity\Organization\MetaData,
-    SecretaryBundle\Entity\Registration,
-    Zend\Validator\Barcode\Ean12 as Ean12Validator,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\User\Barcode\Ean12;
+use CommonBundle\Entity\User\Barcode\Qr;
+use CommonBundle\Entity\User\Person;
+use CommonBundle\Entity\User\Person\Organization\AcademicYearMap;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use InvalidArgumentException;
+use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
+use SecretaryBundle\Entity\Organization\MetaData;
+use SecretaryBundle\Entity\Registration;
+use Zend\Validator\Barcode\Ean12 as Ean12Validator;
+use Zend\View\Model\ViewModel;
 
 /**
  * RegistrationController
@@ -200,8 +200,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 }
 
                 $metaData = new MetaData(
-                    $registration->getAcademic(),
-                    $registration->getAcademicYear()
+                    $academic,
+                    $academicYear
                 );
                 $metaData->setBecomeMember(false);
                 $this->getEntityManager()->persist($metaData);

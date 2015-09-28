@@ -10,6 +10,12 @@
             <p>
                 {{ translate('A group of friends consists of a few runners. Each group has to pick two time slots with a duration of 2 hours. You will receive points for every lap beneath 1\'30". The faster you run,  the more points you get per lap. You pick "happy hours" where your points will count double. If Student IT does not have enough runners and you decide to come run for us, your points will also count double. The group with the most points wins!') }}
             </p>
+            <div class="flashmessage alert alert-danger fade" id="identification_error">
+                <a class="close">&times;</a>
+                <div class="content">
+                    {{ translate('No person found with this university identification. Please fill in the correct one or fill in the first and last name manualy.') }}
+                </div>
+            </div>
         </div>
         <div class="col-md-9">
             {% import 'site/partials/form.twig' as forms %}
@@ -21,6 +27,10 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
             $('[id^=university_identification]').bind('keyup blur', getName);
 
             showHideFieldset('one', 'two');
@@ -29,6 +39,14 @@
             showHideFieldset('four', 'five');
 
             $('[id^=university_identification]').each(function () {
+                var fieldSet = $(this).closest('fieldset');
+
+                fieldSet.find('[name*=first_name]').closest('.form-group').hide();
+                fieldSet.find('[name*=last_name]').closest('.form-group').hide();
+
+                fieldSet.find('[name*=first_name]').closest('.has-error').show();
+                fieldSet.find('[name*=last_name]').closest('.has-error').show();
+
                 $(this).trigger('keyup');
             });
         });
@@ -46,11 +64,16 @@
             var $this = $(this);
             if (8 == $(this).val().length) {
                 $.get('{{ url('sport_run_group', {"action": "getName"})}}' +  $(this).val(), function (data) {
-                    if (data && 'success' == data.status) {
-                        var fieldSet = $this.closest('fieldset');
+                    var fieldSet = $this.closest('fieldset');
 
-                        fieldSet.find('[name*=first_name]').val(data.firstName).addClass('uneditable-input');
-                        fieldSet.find('[name*=last_name]').val(data.lastName).addClass('uneditable-input');
+                    fieldSet.find('[name*=first_name]').prop('readonly', false).closest('.form-group').show();
+                    fieldSet.find('[name*=last_name]').prop('readonly', false).closest('.form-group').show();
+
+                    if (data && 'success' == data.status) {
+                        fieldSet.find('[name*=first_name]').prop('readonly', true).val(data.firstName);
+                        fieldSet.find('[name*=last_name]').prop('readonly', true).val(data.lastName);
+                    } else {
+                        $('#identification_error').addClass('in');
                     }
                 }, 'json');
             }

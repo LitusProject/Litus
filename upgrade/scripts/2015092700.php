@@ -16,22 +16,6 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SportBundle;
-
-use CommonBundle\Component\Module\Config;
-
-return Config::create(
-    array(
-        'namespace'         => __NAMESPACE__,
-        'directory'         => __DIR__,
-        'translation_files' => array('run'),
-        'has_layouts'       => true,
-    ),
-    array(
-        'validators' => array(
-            'invokables' => array(
-                'university_identification'       => 'SportBundle\Component\Validator\UniversityIdentification',
-            ),
-        ),
-    )
-);
+pg_query($connection, 'DROP TABLE IF EXISTS sport.laps CASCADE');
+pg_query($connection, 'DROP TABLE IF EXISTS sport.runners CASCADE');
+pg_query($connection, 'DROP TABLE IF EXISTS sport.groups CASCADE');

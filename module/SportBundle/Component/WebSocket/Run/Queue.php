@@ -18,15 +18,15 @@
 
 namespace SportBundle\Component\WebSocket\Run;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\WebSocket\User,
-    CommonBundle\Entity\User\Person,
-    DateInterval,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    SportBundle\Entity\Lap,
-    SportBundle\Entity\Runner;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\WebSocket\User;
+use CommonBundle\Entity\User\Person;
+use DateInterval;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use SportBundle\Entity\Lap;
+use SportBundle\Entity\Runner;
 
 /**
  * This is the server to handle all requests by the websocket protocol for the Queue.
@@ -249,6 +249,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $runner = new Runner(
                 $data->firstName,
                 $data->lastName,
+                $this->getAcademicYear(),
                 $academic,
                 null,
                 $department
@@ -412,7 +413,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $fastestLap = null;
 
         foreach ($previousLaps as $lap) {
-            if ($this->isValidLapTime($lap->getLapTime()) && strpos(strtolower($lap->getRunner()->getAcademic()->getFullName()),'vtk gent') === false) {
+            if ($this->isValidLapTime($lap->getLapTime()) && strpos(strtolower($lap->getRunner()->getAcademic()->getFullName()), 'vtk gent') === false) {
                 if ($fastestLap == null) {
                     $time = $lap->getLapTime();
                     $fastestLap = $lap;
@@ -449,7 +450,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $runner = $this->entityManager
                 ->getRepository('SportBundle\Entity\Runner')
                 ->findOneById($runners[$index]['runner']);
-            if (strpos(strtolower($runner->getAcademic()->getFullName()),'vtk gent') === false) {
+            if (strpos(strtolower($runner->getAcademic()->getFullName()), 'vtk gent') === false) {
                 array_push($mostLaps, array(
                         'name' => $runner->getAcademic()->getFullName(),
                         'laps' => $runners[$index]['lapCount'],
@@ -510,7 +511,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     }
                 }
 
-                $lapsPerSecond = 1/($resultPage['lap']/($teamData->speed/3.6));
+                $lapsPerSecond = 1 / ($resultPage['lap'] / ($teamData->speed / 3.6));
 
                 return array(
                     'lapLength' => $resultPage['lap'],
@@ -585,7 +586,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function convertDateIntervalToSeconds(DateInterval $interval)
     {
-        return $interval->h*3600 + $interval->i*60 + $interval->s;
+        return $interval->h * 3600 + $interval->i * 60 + $interval->s;
     }
 
     /**

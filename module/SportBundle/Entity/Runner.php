@@ -18,10 +18,10 @@
 
 namespace SportBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents a runner.
@@ -47,6 +47,14 @@ class Runner
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
      */
     private $academic;
+
+    /**
+     * @var AcademicYear The year of the enrollment
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
 
     /**
      * @var string The user's university identification
@@ -97,10 +105,11 @@ class Runner
      * @param Group|null      $group
      * @param Department|null $department
      */
-    public function __construct($firstName, $lastName, Academic $academic = null, Group $group = null, Department $department = null)
+    public function __construct($firstName, $lastName, AcademicYear $academicYear, Academic $academic = null, Group $group = null, Department $department = null)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+        $this->academicYear = $academicYear;
         $this->academic = $academic;
         $this->group = $group;
         $this->department = $department;
@@ -131,6 +140,14 @@ class Runner
         $this->academic = $academic;
 
         return $this;
+    }
+
+    /**
+     * @return AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
     }
 
     /**
@@ -196,7 +213,9 @@ class Runner
      */
     public function setGroup(Group $group)
     {
-        $this->group = $group;
+        if ($group->getAcademicYear() == $this->getAcademicYear()) {
+            $this->group = $group;
+        }
 
         return $this;
     }

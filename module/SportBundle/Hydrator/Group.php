@@ -18,9 +18,9 @@
 
 namespace SportBundle\Hydrator;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    SportBundle\Entity\Group as GroupEntity,
-    SportBundle\Entity\Runner as RunnerEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use SportBundle\Entity\Group as GroupEntity;
+use SportBundle\Entity\Runner as RunnerEntity;
 
 class Group extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -41,35 +41,48 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
         $groupMembers = array();
         foreach (GroupEntity::$allMembers as $memberNb) {
             $memberData = $data['user_' . $memberNb];
-
-            $repositoryCheck = $this->getEntityManager()
-                ->getRepository('SportBundle\Entity\Runner')
-                ->findOneByUniversityIdentification($memberData['university_identification']);
-
-            if (null === $repositoryCheck) {
-                $academic = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            if ($memberData['university_identification'] != '') {
+                $repositoryCheck = $this->getEntityManager()
+                    ->getRepository('SportBundle\Entity\Runner')
                     ->findOneByUniversityIdentification($memberData['university_identification']);
 
-                $department = $this->getEntityManager()
-                    ->getRepository('SportBundle\Entity\Department')
-                    ->findOneById($memberData['department']);
+                if ($repositoryCheck === null) {
+                    $repositoryCheck = $this->getEntityManager()
+                        ->getRepository('SportBundle\Entity\Runner')
+                        ->findOneByRunnerIdentification($memberData['university_identification']);
+                }
 
-                $newRunner = new RunnerEntity(
-                    $memberData['first_name'],
-                    $memberData['last_name'],
-                    $academic,
-                    $object,
-                    $department
-                );
+                if (null === $repositoryCheck) {
+                    $academic = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                        ->findOneByUniversityIdentification($memberData['university_identification']);
 
-                $this->getEntityManager()->persist($newRunner);
+                    $department = $this->getEntityManager()
+                        ->getRepository('SportBundle\Entity\Department')
+                        ->findOneById($memberData['department']);
 
-                $groupMembers[] = $newRunner;
-            } else {
-                if (null === $repositoryCheck->getGroup()) {
-                    $repositoryCheck->setGroup($object);
-                    $groupMembers[] = $repositoryCheck;
+                    $newRunner = new RunnerEntity(
+                        $memberData['first_name'],
+                        $memberData['last_name'],
+                        $object->getAcademicYear(),
+                        $academic,
+                        $department
+                    );
+
+                    $newRunner->setGroup($object);
+
+                    if ('' != $memberData['university_identification']) {
+                        $newRunner->setRunnerIdentification($memberData['university_identification']);
+                    }
+
+                    $this->getEntityManager()->persist($newRunner);
+
+                    $groupMembers[] = $newRunner;
+                } else {
+                    if (null === $repositoryCheck->getGroup()) {
+                        $repositoryCheck->setGroup($object);
+                        $groupMembers[] = $repositoryCheck;
+                    }
                 }
             }
         }

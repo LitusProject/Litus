@@ -39,6 +39,9 @@ return array(
         'api_mail' => array(
             'getAliases', 'getListsArchive',
         ),
+        'api_member' => array(
+            'all',
+        ),
         'api_news' => array(
             'all',
         ),
