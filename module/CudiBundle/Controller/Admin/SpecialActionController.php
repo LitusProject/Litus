@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CudiBundle\Component\Mail\Booking as BookingMail,
-    CudiBundle\Entity\Sale\Booking,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Component\Mail\Booking as BookingMail;
+use CudiBundle\Entity\Sale\Booking;
+use Zend\View\Model\ViewModel;
 
 /**
  * SpecialActionController
@@ -84,7 +84,12 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
                             $this->getEntityManager()->persist($booking);
 
                             if (!$formData['test'] && $formData['send_mail']) {
-                                BookingMail::sendAssignMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson());
+                                $lilo = null;
+                                if ($this->getServiceLocator()->has('lilo')) {
+                                    $lilo = $this->getServiceLocator()->get('lilo');
+                                }
+
+                                BookingMail::sendAssignMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson(), $lilo);
                             }
                         } elseif ($booking->getStatus() == 'booked') {
                             $number++;

@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Controller\Sale;
 
-use CudiBundle\Entity\Sale\QueueItem,
-    CudiBundle\Entity\Sale\ReturnItem,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Sale\QueueItem;
+use CudiBundle\Entity\Sale\ReturnItem;
+use Zend\View\Model\ViewModel;
 
 /**
  * SaleController
@@ -122,7 +122,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                     $booking->setStatus('returned', $this->getEntityManager());
                 }
 
-                $this->getEntityManager()->persist(new ReturnItem($article, $price/100, $queueItem));
+                $this->getEntityManager()->persist(new ReturnItem($article, $price / 100, $queueItem));
 
                 $article->setStockValue($article->getStockValue() + 1);
 
@@ -157,38 +157,39 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
     {
         $this->initAjax();
 
+        $form = $this->getForm('cudi_sale_sale_return-article');
+
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
+            $form->setData($data);
 
-            if (!isset($data['person']) || !isset($data['article'])) {
-                return new ViewModel();
+            if ($form->isValid()) {
+                $person = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person')
+                    ->findOneById($data['person']['id']);
+
+                $article = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Article')
+                    ->findOneById($data['article']['id']);
+
+                $saleItem = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\SaleItem')
+                    ->findOneByPersonAndArticle($person, $article);
+
+                if ($saleItem) {
+                    $price = $saleItem->getPrice() / $saleItem->getNumber();
+                } else {
+                    $price = $article->getSellPrice();
+                }
+
+                return new ViewModel(
+                    array(
+                        'result' => array(
+                            'price' => $price,
+                        ),
+                    )
+                );
             }
-
-            $person = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person')
-                ->findOneById($data['person']);
-
-            $article = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\Article')
-                ->findOneById($data['article']);
-
-            $saleItem = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\SaleItem')
-                ->findOneByPersonAndArticle($person, $article);
-
-            if ($saleItem) {
-                $price = $saleItem->getPrice() / $saleItem->getNumber();
-            } else {
-                $price = $article->getSellPrice();
-            }
-
-            return new ViewModel(
-                array(
-                    'result' => array(
-                        'price' => $price,
-                    ),
-                )
-            );
         }
 
         return new ViewModel();

@@ -43,7 +43,7 @@ class Academic extends \CommonBundle\Hydrator\User\Person
 
         $data['roles'] = $this->rolesToData($object->getRoles(false));
 
-        $data['primary_email'] = $object->getEmail() === $object->getPersonalEmail();
+        $data['personal_email'] = $object->getEmail() === $object->getPersonalEmail();
         $data['birthday'] = $object->getBirthday() !== null
             ? $object->getBirthday()->format('d/m/Y')
             : '';

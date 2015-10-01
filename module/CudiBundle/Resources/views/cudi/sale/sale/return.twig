@@ -6,8 +6,10 @@
         {% autoescape false %}{{ translate('You have to return this customer <b class="price"></b>.') }}{% endautoescape %}
     </div>
 
-    {% import 'site/partials/form.twig' as forms %}
-    {{ forms.renderForm(form) }}
+    <div id="return-form-container">
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -46,15 +48,22 @@
 
         function searchPrice() {
             {% if hasAccess('cudi_sale_sale', 'returnPrice') %}
-            if ($('[name="article[id]"]').val() != '' && $('[name="person[id]"]').val() != '') {
-                $.post('{{ url('cudi_sale_sale', {'action': 'returnPrice', "session": session.getId()}) }}', {'person': $('[name="article[id]"]').val(), 'article': $('[name="person[id]"]').val()}, function (data) {
-                    if (data !== undefined && data.price) {
-                        $('#returnMessage .price').html('&euro; ' + (data.price/100).toFixed(2));
-                        $('#returnMessage').addClass('in');
-                    } else {
+            if ($('[name="article[id]"]').val() != '' && $('[name="person[id]"]') != '') {
+                $('#return-form-container form').ajaxSubmit({
+                    url: '{{ url('cudi_sale_sale', {'action': 'returnPrice', "session": session.getId()}) }}',
+                    success: function (data) {
+                        if (data !== undefined && data.price) {
+                            $('#returnMessage .price').html('&euro; ' + (data.price/100).toFixed(2));
+                            $('#returnMessage').addClass('in');
+                        } else {
+                            $('#returnMessage').removeClass('in');
+                        }
+                    },
+                    error: function(a, b, c) {
                         $('#returnMessage').removeClass('in');
-                    }
-                }, 'json');
+                    },
+                    dataType: 'json'
+                });
             }
             {% endif %}
         }

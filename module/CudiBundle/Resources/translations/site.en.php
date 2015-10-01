@@ -48,7 +48,7 @@ return array(
     'General' => 'General',
 
     'The textbooks have been booked!' => 'The textbooks have been booked!',
-    'The textbooks have been booked! Please wait for them to be assigned before coming to cudi.' => 'The textbooks have been booked! Please wait for them to be assigned before coming to cudi.',
+    'The textbooks have been booked! Please wait for them to be assigned before coming to cudi.' => 'The textbooks have been booked! Please wait for them to be assigned before coming to the bookstore.',
 
     'New bookings have been assigned to you, and you can go and collect them.' => 'New bookings have been assigned to you, and you can go and collect them.',
     'View Bookings' => 'View Bookings',
@@ -68,9 +68,9 @@ return array(
     'An error occurred while updating your preferences.' => 'An error occurred while updating your preferences.',
     'Your preferences where succesfully saved.' => 'Your preferences where succesfully saved.',
     'You will receive an e-mail when the catalog is updated.' => 'You will receive an e-mail when the catalog is updated.',
-    'Keep Me Updated' => 'Keep Me Updated',
+    'Enable catalog update mails' => 'Enable catalog update mails',
     'You won\'t receive an e-mail when the catalog is updated.' => 'You won\'t receive an e-mail when the catalog is updated.',
-    'Don\'t Keep Me Updated' => 'Don\'t Keep Me Updated',
+    'Disable catalog update mails' => 'Disable catalog update mails',
 
     'Color' => 'Color',
     'Status' => 'Status',

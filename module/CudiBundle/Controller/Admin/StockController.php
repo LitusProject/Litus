@@ -18,16 +18,16 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Component\Document\Generator\Stock as StockGenerator,
-    CudiBundle\Entity\Stock\Delivery,
-    CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder,
-    CudiBundle\Entity\Stock\Period,
-    CudiBundle\Entity\Stock\Period\Value\Delta,
-    Cudibundle\Entity\Sale\Article as SaleArticle,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Component\Document\Generator\Stock as StockGenerator;
+use CudiBundle\Entity\Stock\Delivery;
+use CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder;
+use CudiBundle\Entity\Stock\Period;
+use CudiBundle\Entity\Stock\Period\Value\Delta;
+use Cudibundle\Entity\Sale\Article as SaleArticle;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * StockController
@@ -250,9 +250,14 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                                 ->getConfigValue('cudi.enable_assign_after_stock_update');
 
                         if ($enableAssignment) {
+                            $lilo = null;
+                            if ($this->getServiceLocator()->has('lilo')) {
+                                $lilo = $this->getServiceLocator()->get('lilo');
+                            }
+
                             $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sale\Booking')
-                                ->assignAllByArticle($article, $this->getMailTransport());
+                                ->assignAllByArticle($article, $this->getMailTransport(), $lilo);
                             $this->getEntityManager()->flush();
                         }
 
@@ -324,9 +329,14 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                             ->getConfigValue('cudi.enable_assign_after_stock_update');
 
                     if ($enableAssignment) {
+                        $lilo = null;
+                        if ($this->getServiceLocator()->has('lilo')) {
+                            $lilo = $this->getServiceLocator()->get('lilo');
+                        }
+
                         $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\Booking')
-                            ->assignAllByArticle($article, $this->getMailTransport());
+                            ->assignAllByArticle($article, $this->getMailTransport(), $lilo);
                         $this->getEntityManager()->flush();
                     }
 
@@ -549,7 +559,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                         'The stock was successfully updated!'
                     );
 
-                    $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+                    $this->redirect()->toRoute(
+                        'cudi_admin_stock',
+                        array(
+                            'action' => 'manage',
+                        )
+                    );
                 }
             }
 
