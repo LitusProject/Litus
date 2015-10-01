@@ -68,9 +68,9 @@ return array(
     'An error occurred while updating your preferences.' => 'Er is een fout opgetreden tijdens het aanpassen van je voorkeuren.',
     'Your preferences where succesfully saved.' => 'Je voorkeuren zijn succesvol opgeslagen.',
     'You will receive an e-mail when the catalog is updated.' => 'Je krijgt een e-mail wanneer de catalogus aangepast wordt.',
-    'Keep Me Updated' => 'Verwittig Me',
+    'Enable catalog update mails' => 'Activeer catalogus update e-mails',
     'You won\'t receive an e-mail when the catalog is updated.' => 'Er wordt geen e-mail verstuurd wanneer de catalogus aangepast wordt.',
-    'Don\'t Keep Me Updated' => 'Verwittig Me Niet',
+    'Disable catalog update mails' => 'Desactiveer catalogus update e-mails',
 
     'Color' => 'Kleur',
     'Status' => 'Status',

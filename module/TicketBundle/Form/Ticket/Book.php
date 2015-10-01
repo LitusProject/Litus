@@ -53,7 +53,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->setAttribute('id', 'ticket_sale_form');
 
-        if (empty($this->event->getOptions())) {
+        if ($this->event->getOptions()->isEmpty()) {
             $this->add(array(
                 'type'       => 'select',
                 'name'       => 'number_member',
