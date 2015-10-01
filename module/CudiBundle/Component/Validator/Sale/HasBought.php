@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Component\Validator\Sale;
 
-use CommonBundle\Component\Form\Form,
-    CommonBundle\Component\Validator\FormAwareInterface;
+use CommonBundle\Component\Form\Form;
+use CommonBundle\Component\Validator\FormAwareInterface;
 
 /**
  * Check if user has bought an aritcle
@@ -58,6 +58,12 @@ class HasBought extends \CommonBundle\Component\Validator\AbstractValidator impl
 
         /** @var \CommonBundle\Component\Form\Bootstrap\Element\TypeAhead $personField */
         $personField = $this->form->get('person');
+
+        if ($personField->get('id')->getValue() == '' || $context['id'] == null) {
+            $this->error(self::NOT_VALID);
+
+            return false;
+        }
 
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
