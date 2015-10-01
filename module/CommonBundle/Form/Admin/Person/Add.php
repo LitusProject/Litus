@@ -86,7 +86,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(array(
             'type'     => 'text',
-            'name'     => 'email',
+            'name'     => 'personal_email',
             'label'    => 'E-mail',
             'required' => true,
             'options'  => array(
