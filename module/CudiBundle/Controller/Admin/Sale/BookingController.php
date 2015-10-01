@@ -18,17 +18,17 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Entity\User\Person\Academic,
-    CudiBundle\Component\Mail\Booking as BookingMail,
-    CudiBundle\Entity\Log,
-    CudiBundle\Entity\Sale\Article as SaleArticle,
-    CudiBundle\Entity\Sale\Booking,
-    CudiBundle\Entity\Sale\QueueItem,
-    CudiBundle\Entity\Sale\ReturnItem,
-    CudiBundle\Entity\Stock\Period,
-    DateInterval,
-    DateTime,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Component\Mail\Booking as BookingMail;
+use CudiBundle\Entity\Log;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Sale\Booking;
+use CudiBundle\Entity\Sale\QueueItem;
+use CudiBundle\Entity\Sale\ReturnItem;
+use CudiBundle\Entity\Stock\Period;
+use DateInterval;
+use DateTime;
+use Zend\View\Model\ViewModel;
 
 /**
  * BookingController
@@ -330,7 +330,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $booking->setStatus('assigned', $this->getEntityManager());
 
-        BookingMail::sendAssignMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson());
+        $lilo = null;
+        if ($this->getServiceLocator()->has('lilo')) {
+            $lilo = $this->getServiceLocator()->get('lilo');
+        }
+
+        BookingMail::sendAssignMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson(), $lilo);
 
         $this->getEntityManager()->flush();
 
@@ -493,7 +498,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         for ($i = 0 ; $i < $number ; $i++) {
-            $this->getEntityManager()->persist(new ReturnItem($booking->getArticle(), $price/100, $queueItem));
+            $this->getEntityManager()->persist(new ReturnItem($booking->getArticle(), $price / 100, $queueItem));
         }
 
         $booking->getArticle()->setStockValue($booking->getArticle()->getStockValue() + $number);
@@ -549,9 +554,14 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function assignAllAction()
     {
+        $lilo = null;
+        if ($this->getServiceLocator()->has('lilo')) {
+            $lilo = $this->getServiceLocator()->get('lilo');
+        }
+
         $number = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->assignAll($this->getAuthentication()->getPersonObject(), $this->getMailTransport());
+            ->assignAll($this->getAuthentication()->getPersonObject(), $this->getMailTransport(), $lilo);
 
         if (0 == $number) {
             $message = 'No booking could be assigned!';

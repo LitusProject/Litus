@@ -18,18 +18,18 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Component\Document\Generator\SaleArticles as SaleArticlesGenerator,
-    CudiBundle\Entity\Article,
-    CudiBundle\Entity\Article\Internal as InternalArticle,
-    CudiBundle\Entity\Log\Article\Sale\Bookable as BookableLog,
-    CudiBundle\Entity\Log\Article\Sale\Unbookable as UnbookableLog,
-    CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
-    CudiBundle\Entity\Sale\Article as SaleArticle,
-    CudiBundle\Entity\Sale\Article\History,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Component\Document\Generator\SaleArticles as SaleArticlesGenerator;
+use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Article\Internal as InternalArticle;
+use CudiBundle\Entity\Log\Article\Sale\Bookable as BookableLog;
+use CudiBundle\Entity\Log\Article\Sale\Unbookable as UnbookableLog;
+use CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Sale\Article\History;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * ArticleController
@@ -309,9 +309,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
+        $lilo = null;
+        if ($this->getServiceLocator()->has('lilo')) {
+            $lilo = $this->getServiceLocator()->get('lilo');
+        }
+
         $counter = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->assignAllByArticle($saleArticle, $this->getMailTransport());
+            ->assignAllByArticle($saleArticle, $this->getMailTransport(), $lilo);
 
         $this->getEntityManager()->flush();
 
@@ -352,7 +357,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $item->author = $article->getMainArticle()->getAuthors();
             $item->barcode = $article->getBarcode();
             $item->publisher = $article->getMainArticle()->getPublishers();
-            $item->sellPrice = number_format($article->getSellPrice()/100, 2);
+            $item->sellPrice = number_format($article->getSellPrice() / 100, 2);
             $item->stockValue = $article->getStockValue();
             $result[] = $item;
         }
@@ -459,7 +464,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         setlocale(LC_ALL, 'en_US.UTF8');
                         $mail->setBody($formData['message'])
                             ->setFrom($mailAddress, $mailName)
-                            ->addTo($booking->getPerson()->getEmail(), iconv("UTF-8", "ASCII//TRANSLIT",$booking->getPerson()->getFullName()))
+                            ->addTo($booking->getPerson()->getEmail(), iconv("UTF-8", "ASCII//TRANSLIT", $booking->getPerson()->getFullName()))
                             ->setSubject($formData['subject']);
 
                         if ('development' != getenv('APPLICATION_ENV')) {

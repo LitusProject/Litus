@@ -18,19 +18,20 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    CudiBundle\Component\Mail\Booking as BookingMail,
-    CudiBundle\Entity\Log\Sale\Assignments as LogAssignments,
-    CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
-    CudiBundle\Entity\Sale\Article as ArticleEntity,
-    CudiBundle\Entity\Sale\Booking as BookingEntity,
-    CudiBundle\Entity\Stock\Period,
-    DateInterval,
-    DateTime,
-    Exception,
-    Zend\Mail\Transport\TransportInterface;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Lilo\Client as LiloClient;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Component\Mail\Booking as BookingMail;
+use CudiBundle\Entity\Log\Sale\Assignments as LogAssignments;
+use CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations;
+use CudiBundle\Entity\Sale\Article as ArticleEntity;
+use CudiBundle\Entity\Sale\Booking as BookingEntity;
+use CudiBundle\Entity\Stock\Period;
+use DateInterval;
+use DateTime;
+use Exception;
+use Zend\Mail\Transport\TransportInterface;
 
 /**
  * Booking
@@ -1097,9 +1098,10 @@ class Booking extends EntityRepository
     /**
      * @param  Person             $person
      * @param  TransportInterface $mailTransport
+     * @param  LiloClient|null    $lilo
      * @return int
      */
-    public function assignAll(Person $person, TransportInterface $mailTransport)
+    public function assignAll(Person $person, TransportInterface $mailTransport, LiloClient $lilo)
     {
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
@@ -1166,7 +1168,7 @@ class Booking extends EntityRepository
         $this->getEntityManager()->flush();
 
         foreach ($persons as $person) {
-            BookingMail::sendAssignMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person']);
+            BookingMail::sendAssignMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person'], $lilo);
         }
 
         return $counter;
@@ -1175,9 +1177,10 @@ class Booking extends EntityRepository
     /**
      * @param  ArticleEntity      $article
      * @param  TransportInterface $mailTransport
+     * @param  LiloClient|null    $lilo
      * @return int
      */
-    public function assignAllByArticle(ArticleEntity $article, TransportInterface $mailTransport)
+    public function assignAllByArticle(ArticleEntity $article, TransportInterface $mailTransport, LiloClient $lilo)
     {
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
@@ -1227,7 +1230,7 @@ class Booking extends EntityRepository
         $this->getEntityManager()->flush();
 
         foreach ($persons as $person) {
-            BookingMail::sendAssignMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person']);
+            BookingMail::sendAssignMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person'], $lilo);
         }
 
         return $counter;

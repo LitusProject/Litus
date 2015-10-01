@@ -18,10 +18,10 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-use CudiBundle\Entity\Stock\Delivery,
-    CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder,
-    CudiBundle\Entity\Supplier,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Stock\Delivery;
+use CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder;
+use CudiBundle\Entity\Supplier;
+use Zend\View\Model\ViewModel;
 
 /**
  * DeliveryController
@@ -131,9 +131,14 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                         ->getConfigValue('cudi.enable_assign_after_stock_update');
 
                 if ($enableAssignment) {
+                    $lilo = null;
+                    if ($this->getServiceLocator()->has('lilo')) {
+                        $lilo = $this->getServiceLocator()->get('lilo');
+                    }
+
                     $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Booking')
-                        ->assignAllByArticle($article, $this->getMailTransport());
+                        ->assignAllByArticle($article, $this->getMailTransport(), $lilo);
                     $this->getEntityManager()->flush();
                 }
 

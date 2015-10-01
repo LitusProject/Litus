@@ -18,11 +18,12 @@
 
 namespace CudiBundle\Command;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
-    DateInterval,
-    DateTime,
-    Zend\Mail\Message as Mail;
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
+use CommonBundle\Entity\General\AcademicYear;
+use DateInterval;
+use DateTime;
+use Zend\Mail\Header\HeaderValue;
+use Zend\Mail\Message as Mail;
 
 /**
  * Updates catalog
@@ -258,6 +259,15 @@ EOT
             }
 
             if ($updates != '') {
+                if (!HeaderValue::isValid($subscription->getPerson()->getEmail())) {
+                    if ('development' != getenv('APPLICATION_ENV')) {
+                        $this->getServiceLocator()->get('lilo')->sendLog(
+                            'Email address ' . $subscription->getPerson()->getEmail() . ' was not valid',
+                            ['mail']
+                        );
+                    }
+                    continue;
+                }
                 $mail = new Mail();
                 $mail->setBody(str_replace('{{ updates }}', $updates, $message))
                     ->setFrom($mailAddress, $mailName)
