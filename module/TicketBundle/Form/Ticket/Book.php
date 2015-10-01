@@ -18,10 +18,10 @@
 
 namespace TicketBundle\Form\Ticket;
 
-use CommonBundle\Entity\User\Person,
-    LogicException,
-    RuntimeException,
-    TicketBundle\Entity\Event;
+use CommonBundle\Entity\User\Person;
+use LogicException;
+use RuntimeException;
+use TicketBundle\Entity\Event;
 
 /**
  * Book Tickets
