@@ -320,7 +320,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             'The article is successfully assigned to ' . $counter . ' persons'
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_sales_article',
+            array(
+                'action' => 'edit',
+                'id' => $saleArticle->getId(),
+            )
+        );
 
         return new ViewModel();
     }
@@ -510,7 +516,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             'The bookings were successfully cancelled'
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_sales_article',
+            array(
+                'action' => 'edit',
+                'id' => $saleArticle->getId(),
+            )
+        );
 
         return new ViewModel();
     }

@@ -549,7 +549,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                         'The stock was successfully updated!'
                     );
 
-                    $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+                    $this->redirect()->toRoute(
+                        'cudi_admin_stock',
+                        array(
+                            'action' => 'manage',
+                        )
+                    );
                 }
             }
 
