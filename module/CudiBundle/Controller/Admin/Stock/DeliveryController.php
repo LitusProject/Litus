@@ -131,14 +131,9 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
                         ->getConfigValue('cudi.enable_assign_after_stock_update');
 
                 if ($enableAssignment) {
-                    $lilo = null;
-                    if ($this->getServiceLocator()->has('lilo')) {
-                        $lilo = $this->getServiceLocator()->get('lilo');
-                    }
-
                     $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Booking')
-                        ->assignAllByArticle($article, $this->getMailTransport(), $lilo);
+                        ->assignAllByArticle($article, $this->getMailTransport());
                     $this->getEntityManager()->flush();
                 }
 

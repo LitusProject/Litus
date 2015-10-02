@@ -330,12 +330,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $booking->setStatus('assigned', $this->getEntityManager());
 
-        $lilo = null;
-        if ($this->getServiceLocator()->has('lilo')) {
-            $lilo = $this->getServiceLocator()->get('lilo');
-        }
-
-        BookingMail::sendAssignMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson(), $lilo);
+        BookingMail::sendAssignMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson());
 
         $this->getEntityManager()->flush();
 
@@ -554,14 +549,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
     public function assignAllAction()
     {
-        $lilo = null;
-        if ($this->getServiceLocator()->has('lilo')) {
-            $lilo = $this->getServiceLocator()->get('lilo');
-        }
-
         $number = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->assignAll($this->getAuthentication()->getPersonObject(), $this->getMailTransport(), $lilo);
+            ->assignAll($this->getAuthentication()->getPersonObject(), $this->getMailTransport());
 
         if (0 == $number) {
             $message = 'No booking could be assigned!';

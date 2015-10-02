@@ -18,7 +18,6 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use Zend\Mail\Header\HeaderValue;
 use Zend\Mail\Message;
 use Zend\View\Model\ViewModel;
 
@@ -49,23 +48,9 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.mail_name');
 
-                if (!HeaderValue::isValid($formData['email'])) {
-                    if ('development' != getenv('APPLICATION_ENV')) {
-                        $this->getServiceLocator()->get('lilo')->sendLog(
-                            'Email address ' . $formData['email'] . ' was not valid',
-                            ['mail']
-                        );
-                    }
-
-                    return new ViewModel(
-                        array(
-                            'status' => 'error',
-                        )
-                    );
-                }
-
                 $mail = new Message();
-                $mail->setBody($formData['message'])
+                $mail->setEncoding('UTF-8')
+                    ->setBody($formData['message'])
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($formData['email'], $formData['name'])
                     ->setSubject($formData['subject']);
