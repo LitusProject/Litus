@@ -309,14 +309,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $lilo = null;
-        if ($this->getServiceLocator()->has('lilo')) {
-            $lilo = $this->getServiceLocator()->get('lilo');
-        }
-
         $counter = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->assignAllByArticle($saleArticle, $this->getMailTransport(), $lilo);
+            ->assignAllByArticle($saleArticle, $this->getMailTransport());
 
         $this->getEntityManager()->flush();
 
@@ -461,10 +456,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $persons[$booking->getPerson()->getId()] = true;
 
                         $mail = new Message();
-                        setlocale(LC_ALL, 'en_US.UTF8');
-                        $mail->setBody($formData['message'])
+                        $mail->setEncoding('UTF-8')
+                            ->setBody($formData['message'])
                             ->setFrom($mailAddress, $mailName)
-                            ->addTo($booking->getPerson()->getEmail(), iconv("UTF-8", "ASCII//TRANSLIT", $booking->getPerson()->getFullName()))
+                            ->addTo($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName())
                             ->setSubject($formData['subject']);
 
                         if ('development' != getenv('APPLICATION_ENV')) {

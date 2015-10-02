@@ -22,7 +22,6 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
 use CommonBundle\Entity\General\AcademicYear;
 use DateInterval;
 use DateTime;
-use Zend\Mail\Header\HeaderValue;
 use Zend\Mail\Message as Mail;
 
 /**
@@ -259,17 +258,9 @@ EOT
             }
 
             if ($updates != '') {
-                if (!HeaderValue::isValid($subscription->getPerson()->getEmail())) {
-                    if ('development' != getenv('APPLICATION_ENV')) {
-                        $this->getServiceLocator()->get('lilo')->sendLog(
-                            'Email address ' . $subscription->getPerson()->getEmail() . ' was not valid',
-                            ['mail']
-                        );
-                    }
-                    continue;
-                }
                 $mail = new Mail();
-                $mail->setBody(str_replace('{{ updates }}', $updates, $message))
+                $mail->setEncoding('UTF-8')
+                    ->setBody(str_replace('{{ updates }}', $updates, $message))
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($subscription->getPerson()->getEmail(), $subscription->getPerson()->getFullName())
                     ->addCc($mailAddress, $mailName)

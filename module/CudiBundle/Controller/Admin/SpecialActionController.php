@@ -84,12 +84,7 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
                             $this->getEntityManager()->persist($booking);
 
                             if (!$formData['test'] && $formData['send_mail']) {
-                                $lilo = null;
-                                if ($this->getServiceLocator()->has('lilo')) {
-                                    $lilo = $this->getServiceLocator()->get('lilo');
-                                }
-
-                                BookingMail::sendAssignMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson(), $lilo);
+                                BookingMail::sendAssignMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson());
                             }
                         } elseif ($booking->getStatus() == 'booked') {
                             $number++;

@@ -18,10 +18,8 @@
 
 namespace CudiBundle\Component\Mail;
 
-use CommonBundle\Component\Lilo\Client as LiloClient;
 use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\EntityManager;
-use Zend\Mail\Header\HeaderValue;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\TransportInterface;
 
@@ -39,9 +37,8 @@ class Booking
      * @param TransportInterface $mailTransport
      * @param array              $bookings
      * @param Person             $person
-     * @param LiloClient|null    $lilo
      */
-    public static function sendAssignMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person, LiloClient $lilo = null)
+    public static function sendAssignMail(EntityManager $entityManager, TransportInterface $mailTransport, $bookings, Person $person)
     {
         if (!($language = $person->getLanguage())) {
             $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
@@ -94,22 +91,11 @@ class Booking
             $list .= '* ' . $booking->getArticle()->getMainArticle()->getTitle() . ' ' . ($booking->getExpirationDate() ? '(' . $matches[1] . ' ' . $booking->getExpirationDate()->format('d/m/Y') : '') . ")\r\n";
         }
 
-        if (!HeaderValue::isValid($person->getEmail())) {
-            if ('development' != getenv('APPLICATION_ENV') && $lilo != null) {
-                $lilo->sendLog(
-                    'Email address ' . $person->getEmail() . ' was not valid',
-                    ['mail']
-                );
-            }
-
-            return;
-        }
-
         $mail = new Message();
-        setlocale(LC_ALL, 'en_US.UTF8');
-        $mail->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
+        $mail->setEncoding('UTF-8')
+            ->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)
-            ->addTo($person->getEmail(), iconv("UTF-8", "ASCII//TRANSLIT", $person->getFullName()))
+            ->addTo($person->getEmail(), $person->getFullName())
             ->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -192,10 +178,10 @@ class Booking
         }
 
         $mail = new Message();
-        setlocale(LC_ALL, 'en_US.UTF8');
-        $mail->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
+        $mail->setEncoding('UTF-8')
+            ->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)
-            ->addTo($person->getEmail(), iconv("UTF-8", "ASCII//TRANSLIT", $person->getFullName()))
+            ->addTo($person->getEmail(), $person->getFullName())
             ->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -282,10 +268,10 @@ class Booking
         }
 
         $mail = new Message();
-        setlocale(LC_ALL, 'en_US.UTF8');
-        $mail->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
+        $mail->setEncoding('UTF-8')
+            ->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)
-            ->addTo($person->getEmail(), iconv("UTF-8", "ASCII//TRANSLIT", $person->getFullName()))
+            ->addTo($person->getEmail(), $person->getFullName())
             ->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')

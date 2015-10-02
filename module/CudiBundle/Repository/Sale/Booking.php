@@ -19,7 +19,6 @@
 namespace CudiBundle\Repository\Sale;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository;
-use CommonBundle\Component\Lilo\Client as LiloClient;
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use CudiBundle\Component\Mail\Booking as BookingMail;
@@ -1098,10 +1097,9 @@ class Booking extends EntityRepository
     /**
      * @param  Person             $person
      * @param  TransportInterface $mailTransport
-     * @param  LiloClient|null    $lilo
      * @return int
      */
-    public function assignAll(Person $person, TransportInterface $mailTransport, LiloClient $lilo)
+    public function assignAll(Person $person, TransportInterface $mailTransport)
     {
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
@@ -1168,7 +1166,7 @@ class Booking extends EntityRepository
         $this->getEntityManager()->flush();
 
         foreach ($persons as $person) {
-            BookingMail::sendAssignMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person'], $lilo);
+            BookingMail::sendAssignMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person']);
         }
 
         return $counter;
@@ -1177,10 +1175,9 @@ class Booking extends EntityRepository
     /**
      * @param  ArticleEntity      $article
      * @param  TransportInterface $mailTransport
-     * @param  LiloClient|null    $lilo
      * @return int
      */
-    public function assignAllByArticle(ArticleEntity $article, TransportInterface $mailTransport, LiloClient $lilo)
+    public function assignAllByArticle(ArticleEntity $article, TransportInterface $mailTransport)
     {
         $period = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Stock\Period')
@@ -1230,7 +1227,7 @@ class Booking extends EntityRepository
         $this->getEntityManager()->flush();
 
         foreach ($persons as $person) {
-            BookingMail::sendAssignMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person'], $lilo);
+            BookingMail::sendAssignMail($this->getEntityManager(), $mailTransport, $person['bookings'], $person['person']);
         }
 
         return $counter;
