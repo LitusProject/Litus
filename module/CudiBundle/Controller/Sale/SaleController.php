@@ -192,6 +192,12 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             }
         }
 
-        return new ViewModel();
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'error' => 'form_error',
+                ),
+            )
+        );
     }
 }
