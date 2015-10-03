@@ -308,8 +308,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-    *   @return \Doctrine\ORM\Query|null
-    */
+     *   @return \Doctrine\ORM\Query|null
+     */
     private function search()
     {
         switch ($this->getParam('field')) {

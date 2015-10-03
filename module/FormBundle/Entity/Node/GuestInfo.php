@@ -180,7 +180,7 @@ class GuestInfo
         setcookie(
             self::$cookieNamespace,
             $this->sessionId,
-            time() + (60*60*24*25),
+            time() + (60 * 60 * 24 * 25),
             '/',
             str_replace(array('www.', ','), '', $request->getServer('SERVER_NAME'))
         );

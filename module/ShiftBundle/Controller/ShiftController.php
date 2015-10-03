@@ -544,8 +544,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             if ($rankingCriteria[$i]['limit'] < $shiftsAsVolunteerCount) {
                 $ranking = $rankingCriteria[$i]['name'];
 
-                if (isset($rankingCriteria[$i+1])) {
-                    $shiftsToNextRanking = $rankingCriteria[$i+1]['limit'] - $shiftsAsVolunteerCount;
+                if (isset($rankingCriteria[$i + 1])) {
+                    $shiftsToNextRanking = $rankingCriteria[$i + 1]['limit'] - $shiftsAsVolunteerCount;
                 } else {
                     $shiftsToNextRanking = 0;
                 }
@@ -613,8 +613,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-	 * @return \CommonBundle\Entity\User\Person|null
-	 */
+     * @return \CommonBundle\Entity\User\Person|null
+     */
     private function getPersonEntity()
     {
         if (!$this->getAuthentication()->isAuthenticated()) {

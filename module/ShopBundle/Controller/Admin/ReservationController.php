@@ -119,8 +119,8 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
     }
 
     /**
-	 * @return Reservation|null
-	 */
+     * @return Reservation|null
+     */
     private function getReservationEntity()
     {
         $reservation = $this->getEntityById('ShopBundle\Entity\Reservation');
@@ -143,8 +143,8 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
     }
 
     /**
-	 * @return SalesSession|null
-	 */
+     * @return SalesSession|null
+     */
     private function getSalesSessionEntity()
     {
         $salesSession = $this->getEntityById('ShopBundle\Entity\SalesSession');

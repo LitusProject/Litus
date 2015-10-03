@@ -27,9 +27,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 class ReservationPermission extends EntityRepository
 {
     /**
-	 * @param $name
-	 * @return \Doctrine\ORM\Query
-	 */
+     * @param $name
+     * @return \Doctrine\ORM\Query
+     */
     public function findByNameQuery($name)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -49,8 +49,8 @@ class ReservationPermission extends EntityRepository
     }
 
     /**
-	 * @return \Doctrine\ORM\Query
-	 */
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();

@@ -30,54 +30,54 @@ use Doctrine\ORM\Mapping as ORM;
 class SalesSession
 {
     /**
-	 * @var integer The ID of this sales session
-	 *
-	 * @ORM\Id
-	 * @ORM\GeneratedValue
-	 * @ORM\Column(type="bigint")
-	 */
+     * @var integer The ID of this sales session
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
+     */
     private $id;
 
     /**
-	 * @var datetime The start date of this sales session
-	 *
-	 * @ORM\Column(type="datetime")
-	 */
+     * @var datetime The start date of this sales session
+     *
+     * @ORM\Column(type="datetime")
+     */
     private $startDate;
 
     /**
-	 * @var datetime The end date of this sales session
-	 *
-	 * @ORM\Column(type="datetime")
-	 */
+     * @var datetime The end date of this sales session
+     *
+     * @ORM\Column(type="datetime")
+     */
     private $endDate;
 
     /**
-	 * @var boolean Whether reservations can be made for this sales session
-	 *
-	 * @ORM\Column(type="boolean")
-	 */
+     * @var boolean Whether reservations can be made for this sales session
+     *
+     * @ORM\Column(type="boolean")
+     */
     private $reservationsPossible;
 
     /**
-	 * @var string Remarks for this sales session
-	 *
-	 * @ORM\Column(type="text")
-	 */
+     * @var string Remarks for this sales session
+     *
+     * @ORM\Column(type="text")
+     */
     private $remarks;
 
     /**
-	 * @return integer
-	 */
+     * @return integer
+     */
     public function getId()
     {
         return $this->id;
     }
 
     /**
-	 * @param  datetime $startDate
-	 * @return self
-	 */
+     * @param  datetime $startDate
+     * @return self
+     */
     public function setStartDate($startDate)
     {
         $this->startDate = $startDate;
@@ -86,17 +86,17 @@ class SalesSession
     }
 
     /**
-	 * @return datetime
-	 */
+     * @return datetime
+     */
     public function getStartDate()
     {
         return $this->startDate;
     }
 
     /**
-	 * @param  datetime $endDate
-	 * @return self
-	 */
+     * @param  datetime $endDate
+     * @return self
+     */
     public function setEndDate($endDate)
     {
         $this->endDate = $endDate;
@@ -105,17 +105,17 @@ class SalesSession
     }
 
     /**
-	 * @return datetime
-	 */
+     * @return datetime
+     */
     public function getEndDate()
     {
         return $this->endDate;
     }
 
     /**
-	 * @param  boolean $reservationsPossible
-	 * @return self
-	 */
+     * @param  boolean $reservationsPossible
+     * @return self
+     */
     public function setReservationsPossible($reservationsPossible)
     {
         $this->reservationsPossible = $reservationsPossible;
@@ -124,17 +124,17 @@ class SalesSession
     }
 
     /**
-	 * @return boolean
-	 */
+     * @return boolean
+     */
     public function getReservationsPossible()
     {
         return $this->reservationsPossible;
     }
 
     /**
-	 * @param  string $remarks
-	 * @return self
-	 */
+     * @param  string $remarks
+     * @return self
+     */
     public function setRemarks($remarks)
     {
         $this->remarks = $remarks;
@@ -143,8 +143,8 @@ class SalesSession
     }
 
     /**
-	 * @return string
-	 */
+     * @return string
+     */
     public function getRemarks()
     {
         return $this->remarks;

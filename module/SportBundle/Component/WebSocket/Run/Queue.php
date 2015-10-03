@@ -511,7 +511,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     }
                 }
 
-                $lapsPerSecond = 1/($resultPage['lap']/($teamData->speed/3.6));
+                $lapsPerSecond = 1 / ($resultPage['lap'] / ($teamData->speed / 3.6));
 
                 return array(
                     'lapLength' => $resultPage['lap'],
@@ -586,7 +586,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
      */
     private function convertDateIntervalToSeconds(DateInterval $interval)
     {
-        return $interval->h*3600 + $interval->i*60 + $interval->s;
+        return $interval->h * 3600 + $interval->i * 60 + $interval->s;
     }
 
     /**

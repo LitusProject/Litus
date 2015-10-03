@@ -233,7 +233,7 @@ class Lease
      */
     public function getLeasedPawn()
     {
-        return $this->leasedPawn/100;
+        return $this->leasedPawn / 100;
     }
 
     /**
@@ -359,7 +359,7 @@ class Lease
             return 0;
         }
 
-        return (float) $this->returnedPawn/100;
+        return (float) $this->returnedPawn / 100;
     }
 
     /**

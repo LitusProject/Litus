@@ -133,9 +133,9 @@ class Entry
     }
 
     /**
-    * @param  GuestInfo|null
-    * @return self
-    */
+     * @param  GuestInfo|null
+     * @return self
+     */
     public function setGuestInfo(GuestInfo $guestInfo = null)
     {
         $this->guestInfo = $guestInfo;

@@ -27,9 +27,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 class SessionStockEntry extends EntityRepository
 {
     /**
-	 * @param $product
-	 * @return integer
-	 */
+     * @param $product
+     * @return integer
+     */
     public function getProductAvailability($product, $salesSession)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -50,10 +50,10 @@ class SessionStockEntry extends EntityRepository
     }
 
     /**
-	 * @param $product
-	 * @param $salesSession
-	 * @return integer
-	 */
+     * @param $product
+     * @param $salesSession
+     * @return integer
+     */
     public function getProductReservationsAmount($product, $salesSession)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -74,8 +74,8 @@ class SessionStockEntry extends EntityRepository
     }
 
     /**
-	 * @param SalesSession $salesSession
-	 */
+     * @param SalesSession $salesSession
+     */
     public function deleteStockEntries($salesSession)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -87,10 +87,10 @@ class SessionStockEntry extends EntityRepository
     }
 
     /**
-	 * @param Product $product
-	 * @param SalesSession $salesSession
-	 * @return int
-	 */
+     * @param  Product      $product
+     * @param  SalesSession $salesSession
+     * @return int
+     */
     public function getRealAvailability($product, $salesSession)
     {
         return $this->getProductAvailability($product, $salesSession) - $this->getProductReservationsAmount($product, $salesSession);

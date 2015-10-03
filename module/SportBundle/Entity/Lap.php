@@ -218,8 +218,8 @@ class Lap
         $seconds = $this->convertDateIntervalToSeconds($this->getLapTime());
 
         foreach ($pointsCriteria as $i => $pointsCriterium) {
-            if (isset($pointsCriteria[$i+1])) {
-                if ($seconds > $pointsCriteria[$i+1]['limit'] && $seconds <= $pointsCriterium['limit']) {
+            if (isset($pointsCriteria[$i + 1])) {
+                if ($seconds > $pointsCriteria[$i + 1]['limit'] && $seconds <= $pointsCriterium['limit']) {
                     return $pointsCriterium['points'];
                 }
             } else {
@@ -240,6 +240,6 @@ class Lap
      */
     private function convertDateIntervalToSeconds(DateInterval $interval)
     {
-        return $interval->h*3600 + $interval->i*60 + $interval->s;
+        return $interval->h * 3600 + $interval->i * 60 + $interval->s;
     }
 }

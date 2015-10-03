@@ -130,7 +130,7 @@ class Study
 
             $this->getEntityManager()->flush();
 
-            $this->callback('progress', round($counter/count($urls)*100, 4));
+            $this->callback('progress', round($counter / count($urls) * 100, 4));
         }
 
         $this->postCleanUpAcademicYear();

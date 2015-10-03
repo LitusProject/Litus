@@ -96,9 +96,9 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-    * @param  TabContent $tabContent
-    * @param  string     $name
-    * @return TabPane
+     * @param  TabContent $tabContent
+     * @param  string     $name
+     * @return TabPane
      */
     private function createTabPane(TabContent $tabContent, $name)
     {

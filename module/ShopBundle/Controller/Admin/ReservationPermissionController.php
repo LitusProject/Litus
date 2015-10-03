@@ -120,8 +120,8 @@ class ReservationPermissionController extends \CommonBundle\Component\Controller
     }
 
     /**
-	 * @return ReservationPermission|null
-	 */
+     * @return ReservationPermission|null
+     */
     private function getReservationPermissionEntity()
     {
         $person = $this->getEntityById('CommonBundle\Entity\User\Person');
@@ -171,8 +171,8 @@ class ReservationPermissionController extends \CommonBundle\Component\Controller
     }
 
     /**
-	 * @return \Doctrine\ORM\Query|null
-	 */
+     * @return \Doctrine\ORM\Query|null
+     */
     private function search()
     {
         switch ($this->getParam('field')) {
