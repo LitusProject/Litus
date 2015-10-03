@@ -18,10 +18,10 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-use CudiBundle\Entity\Stock\Delivery;
-use CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder;
-use CudiBundle\Entity\Supplier;
-use Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Stock\Delivery,
+    CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder,
+    CudiBundle\Entity\Supplier,
+    Zend\View\Model\ViewModel;
 
 /**
  * DeliveryController

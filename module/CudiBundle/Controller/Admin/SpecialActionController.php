@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CudiBundle\Component\Mail\Booking as BookingMail;
-use CudiBundle\Entity\Sale\Booking;
-use Zend\View\Model\ViewModel;
+use CudiBundle\Component\Mail\Booking as BookingMail,
+    CudiBundle\Entity\Sale\Booking,
+    Zend\View\Model\ViewModel;
 
 /**
  * SpecialActionController

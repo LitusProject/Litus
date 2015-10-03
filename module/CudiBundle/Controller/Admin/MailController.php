@@ -18,8 +18,8 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use Zend\Mail\Message,
+    Zend\View\Model\ViewModel;
 
 /**
  * MailController

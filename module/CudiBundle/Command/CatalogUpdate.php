@@ -18,11 +18,11 @@
 
 namespace CudiBundle\Command;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
-use CommonBundle\Entity\General\AcademicYear;
-use DateInterval;
-use DateTime;
-use Zend\Mail\Message as Mail;
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
+    CommonBundle\Entity\General\AcademicYear,
+    DateInterval,
+    DateTime,
+    Zend\Mail\Message as Mail;
 
 /**
  * Updates catalog

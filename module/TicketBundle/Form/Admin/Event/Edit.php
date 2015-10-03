@@ -18,8 +18,8 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use LogicException;
-use TicketBundle\Entity\Event;
+use LogicException,
+    TicketBundle\Entity\Event;
 
 /**
  * Edit Event
