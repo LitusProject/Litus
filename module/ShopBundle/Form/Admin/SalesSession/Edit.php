@@ -29,8 +29,8 @@ use LogicException,
 class Edit extends Add
 {
     /**
-	 * @var SalesSession The session to edit.
-	 */
+     * @var SalesSession The session to edit.
+     */
     private $salesSession;
 
     public function init()
@@ -68,9 +68,9 @@ class Edit extends Add
     }
 
     /**
-	 * @param  SalesSession $salesSession
-	 * @return self
-	 */
+     * @param  SalesSession $salesSession
+     * @return self
+     */
     public function setSalesSession(SalesSession $salesSession)
     {
         $this->salesSession = $salesSession;

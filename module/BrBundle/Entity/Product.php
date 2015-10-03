@@ -104,7 +104,7 @@ class Product
 
     /**
      * @var string The VAT type (e.g. in Belgium: 6%, 12%, 21% ...); the values are indexes in a configurable
-     * array of possible values
+     *             array of possible values
      *
      * @ORM\Column(name="vat_type", type="integer")
      */
@@ -329,7 +329,7 @@ class Product
             $sign = -1;
         }
 
-        return $sign*$this->price;
+        return $sign * $this->price;
     }
 
     /**

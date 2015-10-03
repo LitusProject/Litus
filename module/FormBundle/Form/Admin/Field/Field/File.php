@@ -19,10 +19,10 @@
 namespace FormBundle\Form\Admin\Field\Field;
 
 /**
-* Add File Field
-*
-* @author Kristof Mariën <kristof.marien@litus.cc>
-*/
+ * Add File Field
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class File extends \CommonBundle\Component\Form\Fieldset
 {
     public function init()

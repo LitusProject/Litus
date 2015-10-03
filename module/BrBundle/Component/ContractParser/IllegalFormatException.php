@@ -38,8 +38,8 @@ class IllegalFormatException extends \Exception
     }
 
     /**
-    * @return int
-    */
+     * @return int
+     */
     public function getLineNumber()
     {
         return $this->lineNb;

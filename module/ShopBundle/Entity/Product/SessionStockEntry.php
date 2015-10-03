@@ -32,42 +32,42 @@ use Doctrine\ORM\Mapping as ORM,
 class SessionStockEntry
 {
     /**
-	 * @var Product The product of this session stock entry.
-	 *
-	 * @ORM\Id
-	 * @ORM\ManyToOne(targetEntity="ShopBundle\Entity\Product")
-	 * @ORM\JoinColumn(name="product", referencedColumnName="id")
-	 */
+     * @var Product The product of this session stock entry.
+     *
+     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="ShopBundle\Entity\Product")
+     * @ORM\JoinColumn(name="product", referencedColumnName="id")
+     */
     private $product;
 
     /**
-	 * @var SalesSession The id of the sales session
-	 *
-	 * @ORM\Id
-	 * @ORM\ManyToOne(targetEntity="ShopBundle\Entity\SalesSession")
-	 * @ORM\JoinColumn(name="session", referencedColumnName="id", onDelete="cascade")
-	 */
+     * @var SalesSession The id of the sales session
+     *
+     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="ShopBundle\Entity\SalesSession")
+     * @ORM\JoinColumn(name="session", referencedColumnName="id", onDelete="cascade")
+     */
     private $salesSession;
 
     /**
-	 * @var integer The amount of products available during this sales session.
-	 *
-	 * @ORM\Column(type="bigint")
-	 */
+     * @var integer The amount of products available during this sales session.
+     *
+     * @ORM\Column(type="bigint")
+     */
     private $amount;
 
     /**
-	 * @return Product
-	 */
+     * @return Product
+     */
     public function getProduct()
     {
         return $this->product;
     }
 
     /**
-	 * @param $product
-	 * @return self
-	 */
+     * @param $product
+     * @return self
+     */
     public function setProduct($product)
     {
         $this->product = $product;
@@ -76,17 +76,17 @@ class SessionStockEntry
     }
 
     /**
-	 * @return SalesSession
-	 */
+     * @return SalesSession
+     */
     public function getSalesSession()
     {
         return $this->salesSession;
     }
 
     /**
-	 * @param SalesSession $salesSession
-	 * @return self
-	 */
+     * @param  SalesSession $salesSession
+     * @return self
+     */
     public function setSalesSession($salesSession)
     {
         $this->salesSession = $salesSession;
@@ -95,17 +95,17 @@ class SessionStockEntry
     }
 
     /**
-	 * @return int
-	 */
+     * @return int
+     */
     public function getAmount()
     {
         return $this->amount;
     }
 
     /**
-	 * @param $amount
-	 * @return $this
-	 */
+     * @param $amount
+     * @return $this
+     */
     public function setAmount($amount)
     {
         $this->amount = $amount;

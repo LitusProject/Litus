@@ -377,9 +377,9 @@ class Discount
             $rounding = self::$possibleRoundings[$this->rounding];
 
             if ($rounding['type'] == 'up') {
-                $value = ceil($value/$rounding['value'])*$rounding['value'];
+                $value = ceil($value / $rounding['value']) * $rounding['value'];
             } else {
-                $value = floor($value/$rounding['value'])*$rounding['value'];
+                $value = floor($value / $rounding['value']) * $rounding['value'];
             }
         }
 

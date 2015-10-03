@@ -69,7 +69,7 @@ class History
             $this->precursor->setTimeStamp($date);
         }
 
-        $article->setVersionNumber($article->getVersionNumber()+1);
+        $article->setVersionNumber($article->getVersionNumber() + 1);
 
         $this->article = $article;
     }

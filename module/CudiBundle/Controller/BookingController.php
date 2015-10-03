@@ -399,13 +399,13 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $item->id = $article->getId();
             $item->title = $article->getMainArticle()->getTitle();
             $item->authors = $article->getMainArticle()->getAuthors();
-            $item->price = number_format($article->getSellPrice()/100, 2);
+            $item->price = number_format($article->getSellPrice() / 100, 2);
             $item->discounts = array();
 
             foreach ($article->getDiscounts() as $discount) {
                 $item->discounts[] = array(
                     'type' => $this->getTranslator()->translate($discount->getType()),
-                    'price' => number_format($discount->apply($article->getSellPrice())/100, 2),
+                    'price' => number_format($discount->apply($article->getSellPrice()) / 100, 2),
                 );
             }
 

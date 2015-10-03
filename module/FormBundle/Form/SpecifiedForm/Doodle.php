@@ -253,9 +253,9 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  boolean $forceEdit
-    * @return self
-    */
+     * @param  boolean $forceEdit
+     * @return self
+     */
     public function setForceEdit($forceEdit)
     {
         $this->forceEdit = $forceEdit;

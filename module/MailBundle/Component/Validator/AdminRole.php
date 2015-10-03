@@ -21,7 +21,7 @@ namespace MailBundle\Component\Validator;
 /**
  * Checks whether a mailing admin role is unique or not.
  *
-* @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class AdminRole extends \CommonBundle\Component\Validator\AbstractValidator
 {

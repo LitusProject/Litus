@@ -101,7 +101,7 @@ class Entry implements Node
                 $this->parseText($text);
             }
         } else {
-            $this->state->passOn($indent-$this->indent, $text);
+            $this->state->passOn($indent - $this->indent, $text);
         }
     }
 

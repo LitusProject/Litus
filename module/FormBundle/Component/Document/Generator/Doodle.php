@@ -61,8 +61,8 @@ class Doodle extends \CommonBundle\Component\Document\Generator\Csv
         }
 
         for ($i = 0 ; $i < $maxSlots ; $i++) {
-            $headers[] = 'Slot ' . ($i+1) . ' Start';
-            $headers[] = 'Slot ' . ($i+1) . ' End';
+            $headers[] = 'Slot ' . ($i + 1) . ' Start';
+            $headers[] = 'Slot ' . ($i + 1) . ' End';
         }
 
         parent::__construct($headers, $results);

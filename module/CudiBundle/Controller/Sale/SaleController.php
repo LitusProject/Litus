@@ -18,9 +18,9 @@
 
 namespace CudiBundle\Controller\Sale;
 
-use CudiBundle\Entity\Sale\QueueItem;
-use CudiBundle\Entity\Sale\ReturnItem;
-use Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Sale\QueueItem,
+    CudiBundle\Entity\Sale\ReturnItem,
+    Zend\View\Model\ViewModel;
 
 /**
  * SaleController
@@ -192,6 +192,12 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             }
         }
 
-        return new ViewModel();
+        return new ViewModel(
+            array(
+                'result' => array(
+                    'error' => 'form_error',
+                ),
+            )
+        );
     }
 }

@@ -18,17 +18,17 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Entity\User\Person\Academic;
-use CudiBundle\Component\Mail\Booking as BookingMail;
-use CudiBundle\Entity\Log;
-use CudiBundle\Entity\Sale\Article as SaleArticle;
-use CudiBundle\Entity\Sale\Booking;
-use CudiBundle\Entity\Sale\QueueItem;
-use CudiBundle\Entity\Sale\ReturnItem;
-use CudiBundle\Entity\Stock\Period;
-use DateInterval;
-use DateTime;
-use Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic,
+    CudiBundle\Component\Mail\Booking as BookingMail,
+    CudiBundle\Entity\Log,
+    CudiBundle\Entity\Sale\Article as SaleArticle,
+    CudiBundle\Entity\Sale\Booking,
+    CudiBundle\Entity\Sale\QueueItem,
+    CudiBundle\Entity\Sale\ReturnItem,
+    CudiBundle\Entity\Stock\Period,
+    DateInterval,
+    DateTime,
+    Zend\View\Model\ViewModel;
 
 /**
  * BookingController

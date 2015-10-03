@@ -19,10 +19,10 @@
 namespace FormBundle\Form\Admin\Field\Field;
 
 /**
-* Add String Field
-*
-* @author Kristof Mariën <kristof.marien@litus.cc>
-*/
+ * Add String Field
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class String extends \CommonBundle\Component\Form\Fieldset
 {
     public function init()
