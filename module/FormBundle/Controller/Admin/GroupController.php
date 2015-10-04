@@ -274,7 +274,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 }
 
                 if (sizeof($group->getForms()) > 0) {
-                    $order = $group->getForms()[sizeof($group->getForms())-1]->getOrder() + 1;
+                    $order = $group->getForms()[sizeof($group->getForms()) - 1]->getOrder() + 1;
                 } else {
                     $order = 1;
                 }
@@ -346,7 +346,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $mapping = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Group\Mapping')
                 ->findOneById($id);
-            $mapping->setOrder($order+1);
+            $mapping->setOrder($order + 1);
         }
 
         $this->getEntityManager()->flush();

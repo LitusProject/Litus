@@ -418,7 +418,7 @@ class Order
 
         $cost = $cost - ($this->getDiscount());
 
-        $cost = ($cost - ($cost*$this->getAutoDiscountPercentage() / 100));
+        $cost = ($cost - ($cost * $this->getAutoDiscountPercentage() / 100));
 
         return (double) $cost / 100;
     }

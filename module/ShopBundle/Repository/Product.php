@@ -28,8 +28,8 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
 class Product extends EntityRepository
 {
     /**
-	 * @return \Doctrine\ORM\Query
-	 */
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -42,9 +42,9 @@ class Product extends EntityRepository
     }
 
     /**
-	 * @param  string $name
-	 * @return \Doctrine\ORM\Query
-	 */
+     * @param  string              $name
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllByNameQuery($name)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -61,8 +61,8 @@ class Product extends EntityRepository
     }
 
     /**
-	 * @return array
-	 */
+     * @return array
+     */
     public function findAllAvailable()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -80,9 +80,9 @@ class Product extends EntityRepository
     }
 
     /**
-	 * @param SalesSession $salesSession
-	 * @return Product[]
-	 */
+     * @param  SalesSession $salesSession
+     * @return Product[]
+     */
     public function findAvailableAndStockAndReservation($salesSession)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

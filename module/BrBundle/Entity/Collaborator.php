@@ -18,7 +18,6 @@
 
 namespace BrBundle\Entity;
 
-
 use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM;
 
@@ -70,7 +69,7 @@ class Collaborator
         $this->activate();
     }
 
-     /**
+    /**
      * @return int
      */
     public function getId()

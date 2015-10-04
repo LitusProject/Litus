@@ -56,22 +56,22 @@ class Utf8
                 $result .= ($encodeTags) ? htmlentities($char) : $char;
             } elseif ($ascii >= 192 && $ascii < 224) {
                 // Two-byte character
-                $ascii1 = ord($utf8[$i+1]);
+                $ascii1 = ord($utf8[$i + 1]);
                 $unicode = (15 & $ascii) * 64 + (63 & $ascii1);
                 $result .= '&#x' . dechex($unicode) . ';';
                 $i++;
             } elseif ($ascii < 240) {
                 // Three-byte character
-                $ascii1 = ord($utf8[$i+1]);
-                $ascii2 = ord($utf8[$i+2]);
+                $ascii1 = ord($utf8[$i + 1]);
+                $ascii2 = ord($utf8[$i + 2]);
                 $unicode = (15 & $ascii) * 4096 + (63 & $ascii1) * 64 + (63 & $ascii2);
                 $result .= '&#x' . dechex($unicode) . ';';
                 $i += 2;
             } elseif ($ascii < 248) {
                 // Four-byte character
-                $ascii1 = ord($utf8[$i+1]);
-                $ascii2 = ord($utf8[$i+2]);
-                $ascii3 = ord($utf8[$i+3]);
+                $ascii1 = ord($utf8[$i + 1]);
+                $ascii2 = ord($utf8[$i + 2]);
+                $ascii3 = ord($utf8[$i + 3]);
                 $unicode = (15 & $ascii) * 262144 + (63 & $ascii1) * 4096 + (63 & $ascii2) * 64 + (63 & $ascii3);
                 $result .= '&#x' . dechex($unicode) . ';';
                 $i += 3;

@@ -424,8 +424,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     }
 
     /**
-    * @return \Doctrine\ORM\Query|null
-    */
+     * @return \Doctrine\ORM\Query|null
+     */
     private function search()
     {
         switch ($this->getParam('field')) {

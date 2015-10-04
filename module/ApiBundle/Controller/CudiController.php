@@ -179,7 +179,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                     'id'             => $booking->getArticle()->getId(),
                     'title'          => $booking->getArticle()->getMainArticle()->getTitle(),
                     'subjects'       => array(),
-                    'price'          => $booking->getArticle()->getSellPrice()/100,
+                    'price'          => $booking->getArticle()->getSellPrice() / 100,
                     'sold'           => in_array($booking->getArticle()->getId(), $sold),
                     'bookable'       => $booking->getArticle()->isBookable()
                         && $booking->getArticle()->canBook($person, $this->getEntityManager())
@@ -466,7 +466,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                                     'mandatory' => $subjectMap->isMandatory(),
                                 ),
                             ),
-                            'price'          => $article->getSellPrice()/100,
+                            'price'          => $article->getSellPrice() / 100,
                             'sold'           => in_array($article->getId(), $sold),
                             'bookable'       => $article->isBookable()
                                 && $article->canBook($person, $this->getEntityManager())
@@ -498,7 +498,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                             'mandatory' => false,
                         ),
                     ),
-                    'price'     => $commonArticle->getSellPrice()/100,
+                    'price'     => $commonArticle->getSellPrice() / 100,
                     'sold'      => in_array($commonArticle->getId(), $sold),
                     'bookable'  => $commonArticle->isBookable()
                         && $commonArticle->canBook($person, $this->getEntityManager())

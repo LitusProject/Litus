@@ -18,13 +18,6 @@
 
 namespace FormBundle\Entity\Field;
 
-
-
-
-
-
-
-
 use CommonBundle\Entity\General\Language,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -64,8 +57,8 @@ class TimeSlot extends Field
     private $timeslotTranslations;
 
     /**
-    * @param Form $form
-    */
+     * @param Form $form
+     */
     public function __construct(Form $form)
     {
         parent::__construct($form);

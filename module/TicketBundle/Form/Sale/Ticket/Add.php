@@ -18,8 +18,8 @@
 
 namespace TicketBundle\Form\Sale\Ticket;
 
-use LogicException;
-use TicketBundle\Entity\Event;
+use LogicException,
+    TicketBundle\Entity\Event;
 
 /**
  * Add Ticket

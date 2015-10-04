@@ -18,7 +18,6 @@
 
 namespace CudiBundle\Controller\Admin;
 
-
 use Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
@@ -50,7 +49,8 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                     ->getConfigValue('cudi.mail_name');
 
                 $mail = new Message();
-                $mail->setBody($formData['message'])
+                $mail->setEncoding('UTF-8')
+                    ->setBody($formData['message'])
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($formData['email'], $formData['name'])
                     ->setSubject($formData['subject']);

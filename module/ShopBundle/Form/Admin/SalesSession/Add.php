@@ -28,8 +28,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     protected $hydrator = 'ShopBundle\Hydrator\SalesSession';
 
     /**
-	 * @var Product[]
-	 */
+     * @var Product[]
+     */
     protected $products = array();
 
     public function init()
@@ -109,8 +109,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-	 * @param $products
-	 */
+     * @param $products
+     */
     public function setProducts($products)
     {
         $this->products = $products;

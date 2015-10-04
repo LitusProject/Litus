@@ -18,11 +18,6 @@
 
 namespace FormBundle\Entity\Field;
 
-
-
-
-
-
 use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
@@ -46,8 +41,8 @@ abstract class OptionSelector extends Field
     private $optionTranslations;
 
     /**
-    * @param Form $form
-    */
+     * @param Form $form
+     */
     public function __construct(Form $form)
     {
         parent::__construct($form);

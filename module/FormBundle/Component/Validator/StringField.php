@@ -94,6 +94,6 @@ class StringField extends \CommonBundle\Component\Validator\AbstractValidator
      */
     private function isSpecified($value)
     {
-        return $value !== NULL && $value != 0 && $value != '';
+        return $value !== null && $value != 0 && $value != '';
     }
 }

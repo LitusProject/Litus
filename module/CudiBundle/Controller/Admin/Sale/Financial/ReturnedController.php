@@ -98,8 +98,8 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             $item->article = $returnedItem->getArticle()->getMainArticle()->getTitle();
             $item->person = $returnedItem->getPerson()->getFullName();
             $item->organization = $organization ? $organization->getName() : '';
-            $item->sellPrice = number_format($returnedItem->getPrice()/100, 2);
-            $item->purchasePrice = number_format($returnedItem->getArticle()->getPurchasePrice()/100, 2);
+            $item->sellPrice = number_format($returnedItem->getPrice() / 100, 2);
+            $item->purchasePrice = number_format($returnedItem->getArticle()->getPurchasePrice() / 100, 2);
             $result[] = $item;
         }
 
@@ -236,8 +236,8 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             $item->article = $returnedItem->getArticle()->getMainArticle()->getTitle();
             $item->person = $returnedItem->getPerson()->getFullName();
             $item->organization = $organization ? $organization->getName() : '';
-            $item->sellPrice = number_format($returnedItem->getPrice()/100, 2);
-            $item->purchasePrice = number_format($returnedItem->getArticle()->getPurchasePrice()/100, 2);
+            $item->sellPrice = number_format($returnedItem->getPrice() / 100, 2);
+            $item->purchasePrice = number_format($returnedItem->getArticle()->getPurchasePrice() / 100, 2);
             $result[] = $item;
         }
 
@@ -334,8 +334,8 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             $item->author = $article->getMainArticle()->getAuthors();
             $item->barcode = $article->getBarcode();
             $item->publishers = $article->getMainArticle()->getPublishers();
-            $item->purchasePrice = number_format($article->getPurchasePrice()/100, 2);
-            $item->sellPrice = number_format($article->getSellPrice()/100, 2);
+            $item->purchasePrice = number_format($article->getPurchasePrice() / 100, 2);
+            $item->sellPrice = number_format($article->getSellPrice() / 100, 2);
             $item->numberReturned = $article->getNumberReturned($academicYear);
             $result[] = $item;
         }
@@ -450,8 +450,8 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             $item->session = $returnedItem->getSession()->getOpenDate()->format('d/m/Y H:i');
             $item->person = $returnedItem->getPerson()->getFullName();
             $item->organization = $organization ? $organization->getName() : '';
-            $item->sellPrice = number_format($returnedItem->getPrice()/100, 2);
-            $item->purchasePrice = number_format($returnedItem->getArticle()->getPurchasePrice()/100, 2);
+            $item->sellPrice = number_format($returnedItem->getPrice() / 100, 2);
+            $item->purchasePrice = number_format($returnedItem->getArticle()->getPurchasePrice() / 100, 2);
             $result[] = $item;
         }
 

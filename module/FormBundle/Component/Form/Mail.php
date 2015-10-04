@@ -18,12 +18,6 @@
 
 namespace FormBundle\Component\Form;
 
-
-
-
-
-
-
 use CommonBundle\Entity\General\Language,
     FormBundle\Entity\Node\Entry as FormEntry,
     FormBundle\Entity\Node\Form as FormEntity,
@@ -33,10 +27,10 @@ use CommonBundle\Entity\General\Language,
     Zend\Mvc\Controller\Plugin\Url;
 
 /**
-* Send form mail
-*
-* @author Kristof Mariën <kristof.marien@litus.cc>
-*/
+ * Send form mail
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
 class Mail
 {
     public static function send(FormEntry $formEntry, FormEntity $formSpecification, Language $language, MailTransport $mailTransport, Url $url, Request $request)

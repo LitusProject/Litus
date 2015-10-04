@@ -103,7 +103,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $this->contract->getOrder()->setEntityManager($this->getEntityManager());
         foreach ($vatTypes as $type) {
             if ($this->contract->getOrder()->getCostVatTypeExclusive($type) > 0) {
-                $price = $this->contract->getOrder()->getCostVatTypeExclusive($type)/100;
+                $price = $this->contract->getOrder()->getCostVatTypeExclusive($type) / 100;
                 $vatTotals = $vatTotals . '<vat_total><vat>' . $type . '</vat><total>' . $price . '</total></vat_total>';
             }
         }

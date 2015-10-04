@@ -18,8 +18,6 @@
 
 namespace FormBundle\Component\Document\Generator;
 
-
-
 use CommonBundle\Entity\General\Language,
     Doctrine\ORM\EntityManager,
     FormBundle\Entity\ViewerMap;
@@ -62,9 +60,9 @@ class Doodle extends \CommonBundle\Component\Document\Generator\Csv
             $results[] = $result;
         }
 
-        for ($i = 0; $i < $maxSlots; $i++) {
-            $headers[] = 'Slot ' . ($i+1) . ' Start';
-            $headers[] = 'Slot ' . ($i+1) . ' End';
+        for ($i = 0 ; $i < $maxSlots ; $i++) {
+            $headers[] = 'Slot ' . ($i + 1) . ' Start';
+            $headers[] = 'Slot ' . ($i + 1) . ' End';
         }
 
         parent::__construct($headers, $results);

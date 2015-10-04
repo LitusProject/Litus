@@ -72,7 +72,7 @@ class Object
             } elseif (is_array($content)) {
                 foreach ($content as $part) {
                     if (is_string($part)) {
-                        $this->content .= $this-_escape($part);
+                        $this->content .= $this - _escape($part);
                     } elseif ($part instanceof Object) {
                         $this->content .= $part->__toString();
                     } else {

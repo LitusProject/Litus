@@ -86,7 +86,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             $item->barcode = $order->getArticle()->getBarcode();
             $item->supplier = $order->getArticle()->getSupplier()->getName();
             $item->number = $order->getNumber();
-            $item->price = number_format($order->getNumber() * $order->getArticle()->getPurchasePrice()/100, 2);
+            $item->price = number_format($order->getNumber() * $order->getArticle()->getPurchasePrice() / 100, 2);
             $result[] = $item;
         }
 
@@ -169,7 +169,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             $item->person = $order->getPerson()->getFullName();
             $item->supplier = $order->getSupplier()->getName();
             $item->number = $order->getTotalNumber();
-            $item->price = number_format($order->getPrice()/100, 2);
+            $item->price = number_format($order->getPrice() / 100, 2);
             $result[] = $item;
         }
 
@@ -256,7 +256,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             $item->article = $order->getArticle()->getMainArticle()->getTitle();
             $item->barcode = $order->getArticle()->getBarcode();
             $item->number = $order->getNumber();
-            $item->price = number_format($order->getNumber() * $order->getArticle()->getPurchasePrice()/100, 2);
+            $item->price = number_format($order->getNumber() * $order->getArticle()->getPurchasePrice() / 100, 2);
             $result[] = $item;
         }
 
@@ -375,7 +375,7 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
             $item->article = $order->getArticle()->getMainArticle()->getTitle();
             $item->barcode = $order->getArticle()->getBarcode();
             $item->number = $order->getNumber();
-            $item->price = number_format($order->getNumber() * $order->getArticle()->getPurchasePrice()/100, 2);
+            $item->price = number_format($order->getNumber() * $order->getArticle()->getPurchasePrice() / 100, 2);
             $result[] = $item;
         }
 

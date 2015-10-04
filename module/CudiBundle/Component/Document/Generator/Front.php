@@ -258,7 +258,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                     new Object(
                         'price',
                         null,
-                        (string) number_format($this->article->getSellPrice()/100, 2)
+                        (string) number_format($this->article->getSellPrice() / 100, 2)
                     ),
                     new Object(
                         'barcode',

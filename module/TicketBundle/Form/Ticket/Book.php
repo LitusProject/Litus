@@ -18,10 +18,10 @@
 
 namespace TicketBundle\Form\Ticket;
 
-use CommonBundle\Entity\User\Person;
-use LogicException;
-use RuntimeException;
-use TicketBundle\Entity\Event;
+use CommonBundle\Entity\User\Person,
+    LogicException,
+    RuntimeException,
+    TicketBundle\Entity\Event;
 
 /**
  * Book Tickets
@@ -36,8 +36,8 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
     private $event;
 
     /**
-    * @var Person
-    */
+     * @var Person
+     */
     private $person;
 
     public function init()
@@ -180,9 +180,9 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  Person $person
-    * @return self
-    */
+     * @param  Person $person
+     * @return self
+     */
     public function setPerson(Person $person)
     {
         $this->person = $person;

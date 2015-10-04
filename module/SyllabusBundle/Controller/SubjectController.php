@@ -57,8 +57,8 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-	 * @return \CommonBundle\Entity\General\AcademicYear|null
-	 */
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
     private function getAcademicYear()
     {
         if (null === $this->getParam('academicyear')) {

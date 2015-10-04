@@ -214,7 +214,7 @@ abstract class Pass
      */
     private function convertPemToDer($signature)
     {
-        $signature = substr($signature, (strpos($signature, 'filename="smime.p7s"')+20));
+        $signature = substr($signature, (strpos($signature, 'filename="smime.p7s"') + 20));
 
         return base64_decode(trim(substr($signature, 0, strpos($signature, '------'))));
     }

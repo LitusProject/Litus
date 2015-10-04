@@ -120,9 +120,9 @@ class Config
     }
 
     /**
-    * @param  string|null $description A description for this configuration entry
-    * @return self
-    * @throws InvalidArgumentException Description must be a string or null
+     * @param  string|null              $description A description for this configuration entry
+     * @return self
+     * @throws InvalidArgumentException Description must be a string or null
      */
     public function setDescription($description = null)
     {
