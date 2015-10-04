@@ -40,6 +40,9 @@
                         {% if member.isCoordinator() %}
                             <p style="text-align: center;">{{ translate('Groupcoordinator') }}</p>
                         {% endif %}
+                        {% if not member.getDescription() == '' %}
+                            <p style="text-align: center;">{{ member.getDescription() }}</p>
+                        {% endif %}
                         {% for extraUnit in extraUnits[member.getId()] %}
                             <p style="text-align: center;">{{ hideEmail('<a href="mailto:' ~ extraUnit.getMail() ~ '">' ~ extraUnit.getName() ~ '</a>') }}</p>
                         {% endfor %}

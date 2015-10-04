@@ -37,13 +37,15 @@
         <table class="full_width manage">
             <tr>
                 <th>Name</th>
-                <th>Coordinator</th>
+                <th>Description</th>
+                <th width="90px">Coordinator</th>
                 <th width="90px">Actions</th>
             </tr>
             {% for member in members %}
                 <tr class="item item-{{ member.getId() }}">
                     <td>{{ member.getFullName() }}</td>
-                    <td>{% if member.isCoordinator() %}&times;{% endif %}</td>
+                    <td>{{ member.getDescription() }}</td>
+                    <td style="text-align: center;">{% if member.isCoordinator() %}&times;{% endif %}</td>
                     <td>
                         {% if hasAccess('common_admin_unit', 'deleteMember') %}
                             <a href="#" data-id="{{ member.getId() }}" data-name="{{ member.getFullName() }}" class="delete">Delete</a>

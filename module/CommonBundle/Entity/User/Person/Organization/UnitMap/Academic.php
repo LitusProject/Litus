@@ -39,9 +39,9 @@ class Academic extends \CommonBundle\Entity\User\Person\Organization\UnitMap
      */
     private $academic;
 
-    public function __construct(AcademicEntity $academic, AcademicYear $academicYear, Unit $unit, $coordinator)
+    public function __construct(AcademicEntity $academic, AcademicYear $academicYear, Unit $unit, $coordinator, $description = '')
     {
-        parent::__construct($academicYear, $unit, $coordinator);
+        parent::__construct($academicYear, $unit, $coordinator, $description);
         $this->setAcademic($academic);
     }
 
