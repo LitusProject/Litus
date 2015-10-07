@@ -49,7 +49,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
             if ($i != (count($rankingCriteria) - 1)) {
                 $volunteers = $this->getEntityManager()
                     ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
-                    ->findAllByCountLimits($academicYear, $rankingCriteria[$i]['limit'], $rankingCriteria[$i+1]['limit']);
+                    ->findAllByCountLimits($academicYear, $rankingCriteria[$i]['limit'], $rankingCriteria[$i + 1]['limit']);
             } else {
                 $volunteers = $this->getEntityManager()
                     ->getRepository('ShiftBundle\Entity\Shift\Volunteer')

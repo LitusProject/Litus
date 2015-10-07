@@ -28,8 +28,8 @@ use Zend\Form\Element;
 class Sessions extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-	 * @var SalesSession[]
-	 */
+     * @var SalesSession[]
+     */
     private $salesSessions = array();
 
     public function init()
@@ -49,8 +49,8 @@ class Sessions extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-	 * @return SalesSession[]
-	 */
+     * @return SalesSession[]
+     */
     private function createSalesSessionsArray()
     {
         $translator = $this->getServiceLocator()->get('translator');
@@ -64,8 +64,8 @@ class Sessions extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-	 * @param SalesSession[] $salesSessions
-	 */
+     * @param SalesSession[] $salesSessions
+     */
     public function setSalesSessions($salesSessions)
     {
         $this->salesSessions = $salesSessions;

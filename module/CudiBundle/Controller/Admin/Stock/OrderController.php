@@ -435,7 +435,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             'The order was successfully canceled!'
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_stock_order',
+            array(
+                'action' => 'edit',
+                'id' => $order->getId(),
+            )
+        );
 
         return new ViewModel();
     }

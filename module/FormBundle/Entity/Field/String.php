@@ -126,7 +126,7 @@ class String extends Field
      */
     public function hasLengthSpecification()
     {
-        $result = $this->getLineLength() !== NULL && $this->getLineLength() != 0 && $this->getLines() !== NULL && $this->getLines() != 0;
+        $result = $this->getLineLength() !== null && $this->getLineLength() != 0 && $this->getLines() !== null && $this->getLines() != 0;
 
         return $result;
     }

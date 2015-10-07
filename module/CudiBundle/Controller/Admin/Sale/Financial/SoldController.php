@@ -106,8 +106,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $item->person = $soldItem->getType() == 'regular' ? $soldItem->getPerson()->getFullName() : $soldItem->getPerson();
             $item->organization = $organization ? $organization->getName() : '';
             $item->number = $soldItem->getNumber();
-            $item->sellPrice = number_format($soldItem->getPrice()/100, 2);
-            $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice()/100, 2);
+            $item->sellPrice = number_format($soldItem->getPrice() / 100, 2);
+            $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice() / 100, 2);
             $item->discount = $soldItem->getDiscountType() ? $soldItem->getDiscountType() : '';
             $item->type = ucfirst($soldItem->getType());
             $result[] = $item;
@@ -262,8 +262,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $item->person = $soldItem->getType() == 'regular' ? $soldItem->getPerson()->getFullName() : $soldItem->getPerson();
             $item->organization = $organization ? $organization->getName() : '';
             $item->number = $soldItem->getNumber();
-            $item->sellPrice = number_format($soldItem->getPrice()/100, 2);
-            $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice()/100, 2);
+            $item->sellPrice = number_format($soldItem->getPrice() / 100, 2);
+            $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice() / 100, 2);
             $item->discount = $soldItem->getDiscountType() ? $soldItem->getDiscountType() : '';
             $item->type = ucfirst($soldItem->getType());
             $result[] = $item;
@@ -366,8 +366,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $item->author = $article->getMainArticle()->getAuthors();
             $item->barcode = $article->getBarcode();
             $item->publishers = $article->getMainArticle()->getPublishers();
-            $item->purchasePrice = number_format($article->getPurchasePrice()/100, 2);
-            $item->sellPrice = number_format($article->getSellPrice()/100, 2);
+            $item->purchasePrice = number_format($article->getPurchasePrice() / 100, 2);
+            $item->sellPrice = number_format($article->getSellPrice() / 100, 2);
             $item->numberSold = $article->getNumberSold($academicYear);
             $result[] = $item;
         }
@@ -490,8 +490,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $item->person = $soldItem->getType() == 'regular' ? $soldItem->getPerson()->getFullName() : $soldItem->getPerson();
             $item->organization = $organization ? $organization->getName() : '';
             $item->number = $soldItem->getNumber();
-            $item->sellPrice = number_format($soldItem->getPrice()/100, 2);
-            $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice()/100, 2);
+            $item->sellPrice = number_format($soldItem->getPrice() / 100, 2);
+            $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice() / 100, 2);
             $item->discount = $soldItem->getDiscountType() ? $soldItem->getDiscountType() : '';
             $item->type = ucfirst($soldItem->getType());
             $result[] = $item;
@@ -646,8 +646,8 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
             $item->person = $soldItem->getType() == 'regular' ? $soldItem->getPerson()->getFullName() : $soldItem->getPerson();
             $item->organization = $organization ? $organization->getName() : '';
             $item->number = $soldItem->getNumber();
-            $item->sellPrice = number_format($soldItem->getPrice()/100, 2);
-            $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice()/100, 2);
+            $item->sellPrice = number_format($soldItem->getPrice() / 100, 2);
+            $item->purchasePrice = number_format($soldItem->getArticle()->getPurchasePrice() / 100, 2);
             $item->discount = $soldItem->getDiscountType() ? $soldItem->getDiscountType() : '';
             $item->type = ucfirst($soldItem->getType());
             $result[] = $item;

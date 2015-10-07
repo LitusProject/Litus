@@ -246,6 +246,7 @@ return array(
             '@bootstrap_js_alert',
             '@common_permanent_modal',
             '@common_socket',
+            '@common_jquery_form',
         ),
         'cudi_sale_queue' => array(
             '@common_jquery',

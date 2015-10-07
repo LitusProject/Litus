@@ -45,7 +45,7 @@ abstract class Request
      */
     private $id;
 
-     /**
+    /**
      * @var Corporate The contact used in this order
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\User\Person\Corporate")

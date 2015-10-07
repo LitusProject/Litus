@@ -28,8 +28,8 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
 class SalesSession extends EntityRepository
 {
     /**
-	 * @return \Doctrine\ORM\Query
-	 */
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllFutureQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -46,8 +46,8 @@ class SalesSession extends EntityRepository
     }
 
     /**
-	 * @return \Doctrine\ORM\Query
-	 */
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllOldQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -64,9 +64,9 @@ class SalesSession extends EntityRepository
     }
 
     /**
-	 * @param  string $remarks
-	 * @return \Doctrine\ORM\Query
-	 */
+     * @param  string              $remarks
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllFutureByRemarksQuery($remarks)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -87,9 +87,9 @@ class SalesSession extends EntityRepository
     }
 
     /**
-	 * @param  string $remarks
-	 * @return \Doctrine\ORM\Query
-	 */
+     * @param  string              $remarks
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllOldByRemarksQuery($remarks)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

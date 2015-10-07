@@ -125,7 +125,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             }
         }
 
-        $percentage = $this->invoide->getOrder()->getAutoDiscountPercentage()/100;
+        $percentage = $this->invoide->getOrder()->getAutoDiscountPercentage() / 100;
         $autoDiscount = -$totalExclusive * $percentage;
 
         $discountTax = $this->invoide->getTaxFree() ? 0 : 21;
@@ -144,7 +144,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                     )
                 );
 
-            $totalVat += $autoDiscount * $discountTax/100;
+            $totalVat += $autoDiscount * $discountTax / 100;
 
             $count++;
         }
@@ -179,7 +179,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                 );
             }
 
-            $totalVat += -$discount * $discountTax/100;
+            $totalVat += -$discount * $discountTax / 100;
         }
 
         $totalExclusive = $totalExclusive - $discount + $autoDiscount;

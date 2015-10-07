@@ -36,8 +36,8 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data['can_expire'] = $object->canExpire();
 
-        $data['purchase_price'] = number_format($object->getPurchasePrice()/100, 2);
-        $data['sell_price'] = number_format($object->getSellPrice()/100, 2);
+        $data['purchase_price'] = number_format($object->getPurchasePrice() / 100, 2);
+        $data['sell_price'] = number_format($object->getSellPrice() / 100, 2);
 
         $data['barcode'] = $object->getBarcode() != '' ? str_pad($object->getBarcode(), 12, '0', STR_PAD_LEFT) : '';
         $data['supplier'] = $object->getSupplier()->getId();

@@ -34,8 +34,24 @@ class GroupController extends \SportBundle\Component\Controller\RunController
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+            $alreadyInGroup = false;
+
             foreach (Group::$allMembers as $memberNb) {
                 $memberData = $formData['user_' . $memberNb];
+
+                $runner = $this->getEntityManager()
+                    ->getRepository('SportBundle\Entity\Runner')
+                    ->findOneByUniversityIdentification($memberData['university_identification']);
+
+                if (null === $runner) {
+                    $runner = $this->getEntityManager()
+                        ->getRepository('SportBundle\Entity\Runner')
+                        ->findOneByRunnerIdentification($memberData['university_identification']);
+                }
+
+                if (!null == $runner && !$runner->getGroup() == null) {
+                    $alreadyInGroup = true;
+                }
 
                 if (
                     '' != $memberData['university_identification']
@@ -50,30 +66,45 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                     $memberData['last_name'] = $academic->getLastName();
                 }
             }
-            $form->setData($formData);
 
-            if ($form->isValid()) {
-                $group = $form->hydrateObject(
-                    new Group($this->getCurrentAcademicYear())
+            if (!$alreadyInGroup) {
+                $form->setData($formData);
+
+                if ($form->isValid()) {
+                    $group = $form->hydrateObject(
+                        new Group($this->getCurrentAcademicYear())
+                    );
+
+                    if (null !== $group) {
+                        $this->getEntityManager()->persist($group);
+
+                        $this->getEntityManager()->flush();
+
+                        $this->flashMessenger()->success(
+                            'Success',
+                            'The group was successfully created!'
+                        );
+
+                        $this->redirect()->toRoute(
+                            'sport_run_index',
+                            array(
+                                'action' => 'index',
+                            )
+                        );
+                    }
+                }
+            } else {
+                $this->flashMessenger()->error(
+                    'Alert',
+                    'One of the group members is already in a group!'
                 );
 
-                if (null !== $group) {
-                    $this->getEntityManager()->persist($group);
-
-                    $this->getEntityManager()->flush();
-
-                    $this->flashMessenger()->success(
-                        'Success',
-                        'The group was successfully created!'
-                    );
-
-                    $this->redirect()->toRoute(
-                        'sport_run_index',
-                        array(
-                            'action' => 'index',
-                        )
-                    );
-                }
+                $this->redirect()->toRoute(
+                    'sport_run_group',
+                    array(
+                        'action' => 'add',
+                    )
+                );
             }
         }
 
@@ -89,17 +120,23 @@ class GroupController extends \SportBundle\Component\Controller\RunController
         $this->initAjax();
 
         if (8 == strlen($this->getParam('university_identification'))) {
-            $academic = $this->getEntityManager()
+            $person = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($this->getParam('university_identification'));
 
-            if (null !== $academic) {
+            if ($person === null) {
+                $person = $this->getEntityManager()
+                    ->getRepository('SportBundle\Entity\Runner')
+                    ->findOneByRunnerIdentification($this->getParam('university_identification'));
+            }
+
+            if (null !== $person) {
                 return new ViewModel(
                     array(
                         'result' => (object) array(
                             'status' => 'success',
-                            'firstName' => $academic->getFirstName(),
-                            'lastName' => $academic->getLastName(),
+                            'firstName' => $person->getFirstName(),
+                            'lastName' => $person->getLastName(),
                         ),
                     )
                 );

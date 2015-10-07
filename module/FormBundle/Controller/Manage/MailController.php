@@ -112,8 +112,8 @@ class MailController extends \FormBundle\Component\Controller\FormController
     }
 
     /**
-	 * @return Form|null
-	 */
+     * @return Form|null
+     */
     private function getFormEntity()
     {
         $form = $this->getEntityById('FormBundle\Entity\Node\Form');

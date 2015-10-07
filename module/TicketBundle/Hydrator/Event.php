@@ -18,9 +18,9 @@
 
 namespace TicketBundle\Hydrator;
 
-use TicketBundle\Entity\Event as EventEntity;
-use TicketBundle\Entity\Option;
-use TicketBundle\Entity\Ticket as TicketEntity;
+use TicketBundle\Entity\Event as EventEntity,
+    TicketBundle\Entity\Option,
+    TicketBundle\Entity\Ticket as TicketEntity;
 
 class Event extends \CommonBundle\Component\Hydrator\Hydrator
 {

@@ -33,9 +33,9 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
     );
 
     /**
-	 * @param Product|null $object
-	 * @return array
-	 */
+     * @param  Product|null $object
+     * @return array
+     */
     protected function doExtract($object = null)
     {
         if (null === $object) {
@@ -49,10 +49,10 @@ class Product extends \CommonBundle\Component\Hydrator\Hydrator
     }
 
     /**
-	 * @param array $data
-	 * @param ProductEntity | $object
-	 * @return ProductEntity
-	 */
+     * @param  array           $data
+     * @param  ProductEntity | $object
+     * @return ProductEntity
+     */
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {

@@ -127,6 +127,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                     $newRunner = new Runner(
                         $academic->getFirstName(),
                         $academic->getLastName(),
+                        $group->getAcadmicYear(),
                         $academic,
                         $group,
                         $department
@@ -332,12 +333,12 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $laps = $runnerEntity->getLaps($this->getAcademicYearEntity());
             foreach ($laps as $lap) {
                 $lapTime = $lap->getLapTime();
-                $totalTime = $totalTime + $lapTime->h*3600 + $lapTime->i*60 + $lapTime->s;
+                $totalTime = $totalTime + $lapTime->h * 3600 + $lapTime->i * 60 + $lapTime->s;
             }
 
             $d1 = new DateTime();
             $d2 = new DateTime();
-            $d2->add(new DateInterval('PT' . round($totalTime/count($laps)) . 'S'));
+            $d2->add(new DateInterval('PT' . round($totalTime / count($laps)) . 'S'));
             $avarage = $d2->diff($d1);
 
             array_push($runnersList,
@@ -443,7 +444,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
      */
     private function convertDateIntervalToSeconds(DateInterval $interval)
     {
-        return $interval->h*3600 + $interval->i*60 + $interval->s;
+        return $interval->h * 3600 + $interval->i * 60 + $interval->s;
     }
 
     /**

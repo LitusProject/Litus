@@ -293,7 +293,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 'The booking could not be assigned! Not enough articles in stock.'
             );
 
-            $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+            $this->redirect()->toRoute(
+                'cudi_admin_sales_booking',
+                array(
+                    'action' => 'edit',
+                    'id' => $booking->getId(),
+                )
+            );
 
             return new ViewModel();
         }
@@ -333,7 +339,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             'The booking was successfully assigned!'
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_sales_booking',
+            array(
+                'action' => 'edit',
+                'id' => $booking->getId(),
+            )
+        );
 
         return new ViewModel();
     }
@@ -365,7 +377,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             'The booking was successfully unassigned!'
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_sales_booking',
+            array(
+                'action' => 'edit',
+                'id' => $booking->getId(),
+            )
+        );
 
         return new ViewModel();
     }
@@ -384,7 +402,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             'The booking was successfully expired!'
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_sales_booking',
+            array(
+                'action' => 'edit',
+                'id' => $booking->getId(),
+            )
+        );
 
         return new ViewModel();
     }
@@ -410,7 +434,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             'The booking was successfully extended!'
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_sales_booking',
+            array(
+                'action' => 'edit',
+                'id' => $booking->getId(),
+            )
+        );
 
         return new ViewModel();
     }
@@ -463,7 +493,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         }
 
         for ($i = 0 ; $i < $number ; $i++) {
-            $this->getEntityManager()->persist(new ReturnItem($booking->getArticle(), $price/100, $queueItem));
+            $this->getEntityManager()->persist(new ReturnItem($booking->getArticle(), $price / 100, $queueItem));
         }
 
         $booking->getArticle()->setStockValue($booking->getArticle()->getStockValue() + $number);
@@ -475,7 +505,13 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             '<b>' . $number . '</b> items of this booking were successfully returned!'
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_sales_booking',
+            array(
+                'action' => 'edit',
+                'id' => $booking->getId(),
+            )
+        );
 
         return new ViewModel();
     }
@@ -501,7 +537,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $message
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_sales_booking',
+            array(
+                'action' => 'manage',
+            )
+        );
 
         return new ViewModel();
     }
@@ -525,7 +566,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $message
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_sales_booking',
+            array(
+                'action' => 'manage',
+            )
+        );
 
         return new ViewModel();
     }
@@ -551,7 +597,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $message
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_sales_booking',
+            array(
+                'action' => 'manage',
+            )
+        );
 
         return new ViewModel();
     }
@@ -582,7 +633,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $message
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_sales_booking',
+            array(
+                'action' => 'manage',
+            )
+        );
 
         return new ViewModel();
     }

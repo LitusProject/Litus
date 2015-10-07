@@ -323,11 +323,11 @@ abstract class Article
         return $this->isbn;
     }
 
-     /**
-      * @param integer $isbn
-      *
-      * @return self
-      */
+    /**
+     * @param integer $isbn
+     *
+     * @return self
+     */
     public function setIsbn($isbn)
     {
         if (strlen($isbn) == 0) {

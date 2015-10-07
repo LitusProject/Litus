@@ -69,7 +69,7 @@ class Collaborator
         $this->activate();
     }
 
-     /**
+    /**
      * @return int
      */
     public function getId()

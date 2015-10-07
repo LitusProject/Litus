@@ -115,7 +115,7 @@ class Year extends Restriction
         foreach ($studies as $studyMap) {
             $year = $studyMap->getStudy()->getPhase();
             if (strpos(strtolower($studyMap->getStudy()->getFullTitle()), 'master') !== false) {
-                $year = $year+3;
+                $year = $year + 3;
             }
 
             if ($year >= $this->startValue && $year <= $this->endValue) {

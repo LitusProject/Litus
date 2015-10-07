@@ -57,8 +57,8 @@ class TimeSlot extends Field
     private $timeslotTranslations;
 
     /**
-    * @param Form $form
-    */
+     * @param Form $form
+     */
     public function __construct(Form $form)
     {
         parent::__construct($form);

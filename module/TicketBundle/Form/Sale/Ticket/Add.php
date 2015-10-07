@@ -147,7 +147,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $optionsForm = $this->addFieldset('Options', 'options_form');
 
-        if (empty($this->event->getOptions()->toArray())) {
+        if ($this->event->getOptions()->isEmpty()) {
             $optionsForm->add(array(
                 'type'       => 'select',
                 'name'       => 'number_member',
@@ -290,7 +290,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         if ($force) {
-            if (empty($this->event->getOptions())) {
+            if ($this->event->getOptions()->isEmpty()) {
                 foreach ($this->event->getOptions() as $option) {
                     unset($specs['options_form']['option_' . $option->getId() . '_number_member']);
                     unset($specs['options_form']['option_' . $option->getId() . '_number_non_member']);

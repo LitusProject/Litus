@@ -320,7 +320,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             'The article is successfully assigned to ' . $counter . ' persons'
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_sales_article',
+            array(
+                'action' => 'edit',
+                'id' => $saleArticle->getId(),
+            )
+        );
 
         return new ViewModel();
     }
@@ -346,7 +352,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $item->author = $article->getMainArticle()->getAuthors();
             $item->barcode = $article->getBarcode();
             $item->publisher = $article->getMainArticle()->getPublishers();
-            $item->sellPrice = number_format($article->getSellPrice()/100, 2);
+            $item->sellPrice = number_format($article->getSellPrice() / 100, 2);
             $item->stockValue = $article->getStockValue();
             $result[] = $item;
         }
@@ -450,10 +456,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         $persons[$booking->getPerson()->getId()] = true;
 
                         $mail = new Message();
-                        setlocale(LC_ALL, 'en_US.UTF8');
-                        $mail->setBody($formData['message'])
+                        $mail->setEncoding('UTF-8')
+                            ->setBody($formData['message'])
                             ->setFrom($mailAddress, $mailName)
-                            ->addTo($booking->getPerson()->getEmail(), iconv("UTF-8", "ASCII//TRANSLIT",$booking->getPerson()->getFullName()))
+                            ->addTo($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName())
                             ->setSubject($formData['subject']);
 
                         if ('development' != getenv('APPLICATION_ENV')) {
@@ -510,7 +516,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             'The bookings were successfully cancelled'
         );
 
-        $this->redirect()->toUrl($this->getRequest()->getServer('HTTP_REFERER'));
+        $this->redirect()->toRoute(
+            'cudi_admin_sales_article',
+            array(
+                'action' => 'edit',
+                'id' => $saleArticle->getId(),
+            )
+        );
 
         return new ViewModel();
     }

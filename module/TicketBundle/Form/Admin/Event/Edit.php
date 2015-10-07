@@ -45,7 +45,7 @@ class Edit extends Add
         $events[$this->event->getActivity()->getId()] = $this->event->getActivity()->getTitle();
         $this->get('event')->setAttribute('options', $events);
 
-        if (!empty($this->event->getOptions())) {
+        if (!$this->event->getOptions()->isEmpty()) {
             $this->get('enable_options')
                 ->setAttribute('disabled', true);
         }
