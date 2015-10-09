@@ -18,8 +18,6 @@
 
 namespace BrBundle\Entity\Invoice;
 
-
-
 use BrBundle\Entity\Invoice,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
@@ -73,8 +71,8 @@ class InvoiceHistory
     }
 
     /**
-    * @return int
-    */
+     * @return int
+     */
     public function getId()
     {
         return $this->id;

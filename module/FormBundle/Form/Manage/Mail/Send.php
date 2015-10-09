@@ -81,8 +81,8 @@ class Send extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-	 * @param string $defaultFromAddress
-	 */
+     * @param string $defaultFromAddress
+     */
     protected function setDefaultFromAddress($defaultFromAddress)
     {
         $this->defaultFromAddress = $defaultFromAddress;

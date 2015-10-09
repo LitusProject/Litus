@@ -18,7 +18,6 @@
 
 namespace CudiBundle\Entity\Article;
 
-
 use CudiBundle\Entity\Article,
     Doctrine\ORM\Mapping as ORM;
 
@@ -70,7 +69,7 @@ class History
             $this->precursor->setTimeStamp($date);
         }
 
-        $article->setVersionNumber($article->getVersionNumber()+1);
+        $article->setVersionNumber($article->getVersionNumber() + 1);
 
         $this->article = $article;
     }

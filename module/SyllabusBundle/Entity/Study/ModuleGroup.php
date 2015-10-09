@@ -21,10 +21,10 @@ namespace SyllabusBundle\Entity\Study;
 use Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study\ModuleGroup")
- * @ORM\Table(name="syllabus.study_module_group")
- */
+ /**
+  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study\ModuleGroup")
+  * @ORM\Table(name="syllabus.study_module_group")
+  */
  class ModuleGroup
  {
      /**

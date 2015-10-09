@@ -16,32 +16,6 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Component\ContractParser;
-
-/**
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- */
-class IllegalFormatException extends \Exception
-{
-    /**
-     * @var integer
-     */
-    private $lineNb;
-
-    /**
-     * @param  integer $lineNumber
-     * @return null
-     */
-    public function setLineNumber($lineNumber)
-    {
-        $this->lineNb = $lineNumber;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLineNumber()
-    {
-        return $this->lineNb;
-    }
-}
+pg_query($connection, 'DROP TABLE IF EXISTS sport.laps CASCADE');
+pg_query($connection, 'DROP TABLE IF EXISTS sport.runners CASCADE');
+pg_query($connection, 'DROP TABLE IF EXISTS sport.groups CASCADE');

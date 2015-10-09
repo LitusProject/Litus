@@ -59,16 +59,16 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-	 * @param SessionStockEntry[] $stockEntries
-	 */
+     * @param SessionStockEntry[] $stockEntries
+     */
     public function setStockEntries($stockEntries)
     {
         $this->stockEntries = $stockEntries;
     }
 
     /**
-	 * @param SalesSession $salesSession
-	 */
+     * @param SalesSession $salesSession
+     */
     public function setSalesSession($salesSession)
     {
         $this->salesSession = $salesSession;

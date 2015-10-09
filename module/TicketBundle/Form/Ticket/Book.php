@@ -36,8 +36,8 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
     private $event;
 
     /**
-    * @var Person
-    */
+     * @var Person
+     */
     private $person;
 
     public function init()
@@ -53,7 +53,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->setAttribute('id', 'ticket_sale_form');
 
-        if (empty($this->event->getOptions())) {
+        if ($this->event->getOptions()->isEmpty()) {
             $this->add(array(
                 'type'       => 'select',
                 'name'       => 'number_member',
@@ -180,9 +180,9 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-    * @param  Person $person
-    * @return self
-    */
+     * @param  Person $person
+     * @return self
+     */
     public function setPerson(Person $person)
     {
         $this->person = $person;

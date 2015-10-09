@@ -31,31 +31,31 @@ use CommonBundle\Entity\User\Person,
 class ReservationPermission
 {
     /**
-	 * @var Person The person this permission entry belongs to
-	 *
-	 * @ORM\Id
-	 * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
-	 * @ORM\JoinColumn(name="person", referencedColumnName="id")
-	 */
+     * @var Person The person this permission entry belongs to
+     *
+     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\JoinColumn(name="person", referencedColumnName="id")
+     */
     private $person;
     /**
-	 * @var boolean Whether this person is allowed to make reservations
-	 * @ORM\Column(type="boolean")
-	 */
+     * @var boolean Whether this person is allowed to make reservations
+     * @ORM\Column(type="boolean")
+     */
     private $reservationsAllowed;
 
     /**
-	 * @return Person
-	 */
+     * @return Person
+     */
     public function getPerson()
     {
         return $this->person;
     }
 
     /**
-	 * @param Person $person
-	 * @return self
-	 */
+     * @param  Person $person
+     * @return self
+     */
     public function setPerson($person)
     {
         $this->person = $person;
@@ -64,17 +64,17 @@ class ReservationPermission
     }
 
     /**
-	 * @return bool
-	 */
+     * @return bool
+     */
     public function getReservationsAllowed()
     {
         return $this->reservationsAllowed;
     }
 
     /**
-	 * @param boolean $reservationsAllowed
-	 * @return self
-	 */
+     * @param  boolean $reservationsAllowed
+     * @return self
+     */
     public function setReservationsAllowed($reservationsAllowed)
     {
         $this->reservationsAllowed = $reservationsAllowed;

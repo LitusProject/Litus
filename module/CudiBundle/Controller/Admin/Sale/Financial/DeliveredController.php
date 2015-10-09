@@ -85,7 +85,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             $item->barcode = $delivery->getArticle()->getBarcode();
             $item->supplier = $delivery->getArticle()->getSupplier()->getName();
             $item->number = $delivery->getNumber();
-            $item->price = number_format($delivery->getNumber() * $delivery->getArticle()->getPurchasePrice()/100, 2);
+            $item->price = number_format($delivery->getNumber() * $delivery->getArticle()->getPurchasePrice() / 100, 2);
             $result[] = $item;
         }
 
@@ -174,8 +174,8 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             $item->author = $article->getMainArticle()->getAuthors();
             $item->barcode = $article->getBarcode();
             $item->publishers = $article->getMainArticle()->getPublishers();
-            $item->purchasePrice = number_format($article->getPurchasePrice()/100, 2);
-            $item->sellPrice = number_format($article->getSellPrice()/100, 2);
+            $item->purchasePrice = number_format($article->getPurchasePrice() / 100, 2);
+            $item->sellPrice = number_format($article->getSellPrice() / 100, 2);
             $item->numberDelivered = $article->getNumberDelivered($academicYear);
             $result[] = $item;
         }
@@ -336,7 +336,7 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
             $item->article = $delivery->getArticle()->getMainArticle()->getTitle();
             $item->barcode = $delivery->getArticle()->getBarcode();
             $item->number = $delivery->getNumber();
-            $item->price = number_format($delivery->getNumber() * $delivery->getArticle()->getPurchasePrice()/100, 2);
+            $item->price = number_format($delivery->getNumber() * $delivery->getArticle()->getPurchasePrice() / 100, 2);
             $result[] = $item;
         }
 

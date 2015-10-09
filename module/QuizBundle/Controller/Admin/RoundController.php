@@ -185,7 +185,7 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
         foreach ($data['items'] as $order => $id) {
             $round = $this->getEntityManager()->find('QuizBundle\Entity\Round', $id);
-            $round->setOrder($order+1);
+            $round->setOrder($order + 1);
         }
 
         $this->getEntityManager()->flush();

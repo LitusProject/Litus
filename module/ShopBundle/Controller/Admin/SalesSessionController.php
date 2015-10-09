@@ -65,8 +65,8 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-	 * @return Product[]
-	 */
+     * @return Product[]
+     */
     protected function getAvailableProducts()
     {
         return $this->getEntityManager()
@@ -75,8 +75,8 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-	 * @return Product[]
-	 */
+     * @return Product[]
+     */
     protected function getAvailableAndStockAndReservationProducts($salesSession)
     {
         return $this->getEntityManager()
@@ -288,8 +288,8 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-	 * @return \Doctrine\ORM\Query|null
-	 */
+     * @return \Doctrine\ORM\Query|null
+     */
     private function search()
     {
         switch ($this->getParam('field')) {
@@ -301,8 +301,8 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-	 * @return \Doctrine\ORM\Query|null
-	 */
+     * @return \Doctrine\ORM\Query|null
+     */
     private function searchold()
     {
         switch ($this->getParam('field')) {
@@ -314,8 +314,8 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     }
 
     /**
-	 * @return SalesSession|null
-	 */
+     * @return SalesSession|null
+     */
     private function getSalesSessionEntity()
     {
         $salesSession = $this->getEntityById('ShopBundle\Entity\SalesSession');

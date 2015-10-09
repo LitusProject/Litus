@@ -78,10 +78,10 @@ class Registration
     private $payedTimestamp;
 
     /**
-    * @var boolean Flag whether this registration has been cancelled
-    *
-    * @ORM\Column(type="boolean")
-    */
+     * @var boolean Flag whether this registration has been cancelled
+     *
+     * @ORM\Column(type="boolean")
+     */
     private $cancelled;
 
     /**

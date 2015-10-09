@@ -28,9 +28,9 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
 class Reservation extends EntityRepository
 {
     /**
-	 * @param $person
-	 * @return array
-	 */
+     * @param $person
+     * @return array
+     */
     public function getAllCurrentReservationsByPerson($person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -52,9 +52,9 @@ class Reservation extends EntityRepository
     }
 
     /**
-	 * @param $salesSession
-	 * @return \Doctrine\ORM\Query
-	 */
+     * @param $salesSession
+     * @return \Doctrine\ORM\Query
+     */
     public function findBySalesSessionQuery($salesSession)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -70,9 +70,9 @@ class Reservation extends EntityRepository
     }
 
     /**
-	 * @param Person $person
-	 * @return int
-	 */
+     * @param  Person $person
+     * @return int
+     */
     public function getNoShowSessionCount($person)
     {
         $query = $this->getEntityManager()->createQueryBuilder();

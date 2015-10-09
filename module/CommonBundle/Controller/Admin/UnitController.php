@@ -156,7 +156,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                         'This academic already is a member of this unit!'
                     );
                 } else {
-                    $member = new UnitMapAcademic($academic, $academicYear, $unit, $formData['coordinator']);
+                    $member = new UnitMapAcademic($academic, $academicYear, $unit, $formData['coordinator'], $formData['description']);
 
                     $this->getEntityManager()->persist($member);
                     $this->getEntityManager()->flush();
@@ -189,7 +189,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
                 $image->writeImage('public/' . $filePath . '/' . $fileName);
 
-                $member = new UnitMapExternal($formData['first_name'], $formData['last_name'], '/' . $fileName , $academicYear, $unit, $formData['coordinator']);
+                $member = new UnitMapExternal($formData['first_name'], $formData['last_name'], '/' . $fileName , $academicYear, $unit, $formData['coordinator'], $formData['description']);
 
                 $this->getEntityManager()->persist($member);
                 $this->getEntityManager()->flush();

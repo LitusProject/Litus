@@ -78,7 +78,7 @@ class CashRegister
         return $this->moneyUnitAmounts->toArray();
     }
 
-      /**
+    /**
      * @return array
      */
     public function getBankDeviceAmounts()

@@ -259,7 +259,8 @@ EOT
 
             if ($updates != '') {
                 $mail = new Mail();
-                $mail->setBody(str_replace('{{ updates }}', $updates, $message))
+                $mail->setEncoding('UTF-8')
+                    ->setBody(str_replace('{{ updates }}', $updates, $message))
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($subscription->getPerson()->getEmail(), $subscription->getPerson()->getFullName())
                     ->addCc($mailAddress, $mailName)

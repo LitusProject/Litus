@@ -693,7 +693,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 if ($formData['x'] == 0 && $formData['y'] == 0 && $formData['x2'] == 0 && $formData['y2'] == 0 && $formData['w'] == 0 && $formData['h'] == 0) {
                     $image->cropThumbnailImage(320, 240);
                 } else {
-                    $ratio = $image->getImageWidth()/320;
+                    $ratio = $image->getImageWidth() / 320;
                     $x = $formData['x'] * $ratio;
                     $y = $formData['y'] * $ratio;
                     $w = $formData['w'] * $ratio;

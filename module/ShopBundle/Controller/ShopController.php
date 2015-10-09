@@ -31,8 +31,8 @@ use DateInterval,
 class ShopController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
     /**
-	 * @return string
-	 */
+     * @return string
+     */
     private function getShopName()
     {
         return $this->getEntityManager()
@@ -41,8 +41,8 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-	 * @return SalesSession[]
-	 */
+     * @return SalesSession[]
+     */
     private function getSalesSessions()
     {
         $interval = new DateInterval(
@@ -229,8 +229,8 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-	 * @return \CommonBundle\Entity\User\Person|null
-	 */
+     * @return \CommonBundle\Entity\User\Person|null
+     */
     private function getPersonEntity()
     {
         if (!$this->getAuthentication()->isAuthenticated()) {
@@ -241,8 +241,8 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-	 * @return bool
-	 */
+     * @return bool
+     */
     private function canReserve()
     {
         if (!$this->getAuthentication()->isAuthenticated()) {
@@ -291,8 +291,8 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-	 * @return int
-	 */
+     * @return int
+     */
     private function getTotalShiftCount()
     {
         $shiftCount = 0;
@@ -311,9 +311,9 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-	 * @param $unitId
-	 * @return int
-	 */
+     * @param $unitId
+     * @return int
+     */
     private function getUnitShiftCount($unitId)
     {
         $shiftCount = 0;
@@ -335,8 +335,8 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-	 * @return SalesSession|null
-	 */
+     * @return SalesSession|null
+     */
     private function getSalesSessionEntity()
     {
         $salesSession = $this->getEntityById('ShopBundle\Entity\SalesSession');
@@ -356,9 +356,9 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-	 * @param $salesSession
-	 * @return SessionStockEntry[]
-	 */
+     * @param $salesSession
+     * @return SessionStockEntry[]
+     */
     private function getStockEntries($salesSession)
     {
         return $this->getEntityManager()

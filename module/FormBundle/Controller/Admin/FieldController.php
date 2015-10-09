@@ -299,7 +299,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
             $field = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Field')
                 ->findOneById($id);
-            $field->setOrder($order+1);
+            $field->setOrder($order + 1);
         }
 
         $this->getEntityManager()->flush();
