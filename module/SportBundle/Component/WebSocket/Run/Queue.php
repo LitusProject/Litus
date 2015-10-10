@@ -336,6 +336,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         }
 
         $lap->setEntityManager($this->entityManager);
+        $lap->getRunner()->setEntityManager($this->entityManager);
 
         return (object) array(
             'id' => $lap->getId(),
@@ -345,6 +346,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             'registrationTime' => $lap->getRegistrationTime()->format('d/m/Y H:i:s'),
             'lapTime' => (null !== $lap->getStartTime()) ? $lap->getLapTime()->format('%i:%S') : '',
             'points' => $lap->getPoints(),
+            'runnerLapCount' => count($lap->getRunner()->getLaps($this->getAcademicYear())),
             'state' => $state,
         );
     }
