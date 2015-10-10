@@ -49,6 +49,7 @@ class Edition extends EntityRepository
                    $subQuery->getDQL()
                )
             )
+            ->orderBy('y.universityStart', 'DESC')
             ->setParameter('publication', $publication)
             ->getQuery();
 
