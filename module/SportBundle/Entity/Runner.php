@@ -295,4 +295,15 @@ class Runner
 
         return $points;
     }
+
+    /**
+	 * @param AcademicYear $academicYear
+	 * @return integer
+	 */
+    public function getStartedLapsCount(AcademicYear $academicYear)
+    {
+        return $this->entityManager
+            ->getRepository('SportBundle\Entity\Lap')
+            ->getStartedLapsCountForRunner($this, $academicYear);
+    }
 }

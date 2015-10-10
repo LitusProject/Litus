@@ -19,7 +19,8 @@
 namespace SportBundle\Repository;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear;
+    CommonBundle\Entity\General\AcademicYear,
+    SportBundle\Entity\Runner as RunnerEntity;
 
 /**
  * Lap
@@ -203,5 +204,30 @@ class Lap extends EntityRepository
             ->getResult();
 
         return $resultSet;
+    }
+
+    /**
+	 * @param RunnerEntity $runner
+	 * @param AcademicYear $academicYear
+	 * @return integer
+	 */
+    public function getStartedLapsCountForRunner(RunnerEntity $runner, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('COUNT(l.id) AS lapCount')
+            ->from('SportBundle\Entity\Lap', 'l')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('l.runner', ':runner'),
+                    $query->expr()->isNotNull('l.startTime'),
+                    $query->expr()->eq('l.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('runner', $runner)
+            ->getQuery()
+            ->getResult()[0];
+
+        return $resultSet['lapCount'];
     }
 }
