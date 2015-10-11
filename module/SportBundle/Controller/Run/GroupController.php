@@ -79,16 +79,16 @@ class GroupController extends \SportBundle\Component\Controller\RunController
 
     public function addAction()
     {
-        $happy_hours_1 = $this->generateHappyHours(20);
-        $happy_hours_2 = $this->generateHappyHours(8);
-        if (count($happy_hours_1) == 0 || count($happy_hours_2) == 0) {
+        $happyHours1 = $this->generateHappyHours(20);
+        $happyHours2 = $this->generateHappyHours(8);
+        if (count($happyHours1) == 0 || count($happyHours2) == 0) {
             return new ViewModel(array(
                 'full' => true,
             ));
         } else {
             $form = $this->getForm('sport_group_add', array(
-                'happy_hours_1' => $happy_hours_1,
-                'happy_hours_2' => $happy_hours_2,
+                'happyHours1' => $happyHours1,
+                'happyHours2' => $happyHours2,
             ));
 
             if ($this->getRequest()->isPost()) {

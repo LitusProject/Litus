@@ -66,6 +66,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
                         $memberData['last_name'],
                         $object->getAcademicYear(),
                         $academic,
+                        $object,
                         $department
                     );
 
