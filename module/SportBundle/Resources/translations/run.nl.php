@@ -37,4 +37,5 @@ return array(
     'University Identification' => 'Studentennummer',
     'First Name' => 'Voornaam',
     'Last Name' => 'Achternaam',
+    'There are no more group slots available. You can of course still run individually!' => 'Er kunnen geen groepen meer gevormd worden. Jullie zijn uiteraard nog steeds welkom om individueel te lopen!',
 );

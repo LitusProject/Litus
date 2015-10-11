@@ -28,91 +28,151 @@ use SportBundle\Entity\Group,
  */
 class GroupController extends \SportBundle\Component\Controller\RunController
 {
-    public function addAction()
+    /**
+	 * @param integer $startTime
+	 * @return array
+	 */
+    private function generateHappyHours($startTime)
     {
-        $form = $this->getForm('sport_group_add');
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $alreadyInGroup = false;
-
-            foreach (Group::$allMembers as $memberNb) {
-                $memberData = $formData['user_' . $memberNb];
-
-                $runner = $this->getEntityManager()
-                    ->getRepository('SportBundle\Entity\Runner')
-                    ->findOneByUniversityIdentification($memberData['university_identification']);
-
-                if (null === $runner) {
-                    $runner = $this->getEntityManager()
-                        ->getRepository('SportBundle\Entity\Runner')
-                        ->findOneByRunnerIdentification($memberData['university_identification']);
-                }
-
-                if (!null == $runner && !$runner->getGroup() == null) {
-                    $alreadyInGroup = true;
-                }
-
-                if (
-                    '' != $memberData['university_identification']
-                        && !isset($memberData['first_name'])
-                        && !isset($memberData['last_name'])
-                ) {
-                    $academic = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                        ->findOneByUniversityIdentification($memberData['university_identification']);
-
-                    $memberData['first_name'] = $academic->getFirstName();
-                    $memberData['last_name'] = $academic->getLastName();
-                }
+        $optionsArray = array();
+        for ($i = 0; $i < 6; $i++) {
+            $startInterval = ($startTime + 2 * $i) % 24;
+            if ($startInterval < 10) {
+                $startInterval = 0 . $startInterval;
             }
 
-            if (!$alreadyInGroup) {
-                $form->setData($formData);
+            $endInterval = ($startTime + 2 * ($i + 1)) % 24;
+            if ($endInterval < 10) {
+                $endInterval = 0 . $endInterval;
+            }
 
-                if ($form->isValid()) {
-                    $group = $form->hydrateObject(
-                        new Group($this->getCurrentAcademicYear())
-                    );
+            $optionKey = $startInterval . $endInterval;
+            $optionValue = $startInterval . ':00 - ' . $endInterval . ':00';
 
-                    if (null !== $group) {
-                        $this->getEntityManager()->persist($group);
+            $optionsArray[$optionKey] = $optionValue;
+        }
 
-                        $this->getEntityManager()->flush();
+        $groups = $this->getEntityManager()
+            ->getRepository('SportBundle\Entity\Group')
+            ->findLast();
 
-                        $this->flashMessenger()->success(
-                            'Success',
-                            'The group was successfully created!'
-                        );
+        return $this->cleanHappyHoursArray($optionsArray, $groups);
+    }
 
-                        $this->redirect()->toRoute(
-                            'sport_run_index',
-                            array(
-                                'action' => 'index',
-                            )
-                        );
-                    }
-                }
-            } else {
-                $this->flashMessenger()->error(
-                    'Alert',
-                    'One of the group members is already in a group!'
-                );
+    private function cleanHappyHoursArray(array $optionsArray, array $groups)
+    {
+        $returnArray = $optionsArray;
+        foreach ($groups as $group) {
+            $happyHours = $group->getHappyHours();
 
-                $this->redirect()->toRoute(
-                    'sport_run_group',
-                    array(
-                        'action' => 'add',
-                    )
-                );
+            if (isset($returnArray[$happyHours[0]])) {
+                unset($returnArray[$happyHours[0]]);
+            }
+
+            if (isset($returnArray[$happyHours[1]])) {
+                unset($returnArray[$happyHours[1]]);
             }
         }
 
-        return new ViewModel(
-            array(
-                'form' => $form,
-            )
-        );
+        return $returnArray;
+    }
+
+    public function addAction()
+    {
+        $happyHours1 = $this->generateHappyHours(20);
+        $happyHours2 = $this->generateHappyHours(8);
+        if (count($happyHours1) == 0 || count($happyHours2) == 0) {
+            return new ViewModel(array(
+                'full' => true,
+            ));
+        } else {
+            $form = $this->getForm('sport_group_add', array(
+                'happyHours1' => $happyHours1,
+                'happyHours2' => $happyHours2,
+            ));
+
+            if ($this->getRequest()->isPost()) {
+                $formData = $this->getRequest()->getPost();
+                $alreadyInGroup = false;
+
+                foreach (Group::$allMembers as $memberNb) {
+                    $memberData = $formData['user_' . $memberNb];
+
+                    $runner = $this->getEntityManager()
+                        ->getRepository('SportBundle\Entity\Runner')
+                        ->findOneByUniversityIdentification($memberData['university_identification']);
+
+                    if (null === $runner) {
+                        $runner = $this->getEntityManager()
+                            ->getRepository('SportBundle\Entity\Runner')
+                            ->findOneByRunnerIdentification($memberData['university_identification']);
+                    }
+
+                    if (!null == $runner && !$runner->getGroup() == null) {
+                        $alreadyInGroup = true;
+                    }
+
+                    if (
+                        '' != $memberData['university_identification']
+                        && !isset($memberData['first_name'])
+                        && !isset($memberData['last_name'])
+                    ) {
+                        $academic = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                            ->findOneByUniversityIdentification($memberData['university_identification']);
+
+                        $memberData['first_name'] = $academic->getFirstName();
+                        $memberData['last_name'] = $academic->getLastName();
+                    }
+                }
+
+                if (!$alreadyInGroup) {
+                    $form->setData($formData);
+
+                    if ($form->isValid()) {
+                        $group = $form->hydrateObject(
+                            new Group($this->getCurrentAcademicYear())
+                        );
+
+                        if (null !== $group) {
+                            $this->getEntityManager()->persist($group);
+
+                            $this->getEntityManager()->flush();
+
+                            $this->flashMessenger()->success(
+                                'Success',
+                                'The group was successfully created!'
+                            );
+
+                            $this->redirect()->toRoute(
+                                'sport_run_index',
+                                array(
+                                    'action' => 'index',
+                                )
+                            );
+                        }
+                    }
+                } else {
+                    $this->flashMessenger()->error(
+                        'Alert',
+                        'One of the group members is already in a group!'
+                    );
+
+                    $this->redirect()->toRoute(
+                        'sport_run_group',
+                        array(
+                            'action' => 'add',
+                        )
+                    );
+                }
+            }
+
+            return new ViewModel(
+                array(
+                    'form' => $form,
+                )
+            );
+        }
     }
 
     public function getNameAction()

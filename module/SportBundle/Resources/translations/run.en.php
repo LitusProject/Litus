@@ -37,4 +37,5 @@ return array(
     'University Identification' => 'University Identification',
     'First Name' => 'First Name',
     'Last Name' => 'Last Name',
+    'There are no more group slots available. You can of course still run individually!' => 'There are no more group slots available. You can of course still run individually!',
 );
