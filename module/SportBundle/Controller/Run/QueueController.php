@@ -50,13 +50,19 @@ class QueueController extends \SportBundle\Component\Controller\RunController
 
         if (8 == strlen($this->getParam('university_identification'))) {
             $runner = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findOneByUniversityIdentification($this->getParam('university_identification'));
+                    ->getRepository('SportBundle\Entity\Runner')
+                    ->findOneByRunnerIdentification($this->getParam('university_identification'));
 
             if (null === $runner) {
                 $runner = $this->getEntityManager()
-                    ->getRepository('SportBundle\Entity\Runner')
-                    ->findOneByRunnerIdentification($this->getParam('university_identification'));
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                    ->findOneByUniversityIdentification($this->getParam('university_identification'));
+                $department = null;
+            } else {
+                $department = $runner->getDepartment();
+                if (null !== $department) {
+                    $department = $department->getId();
+                }
             }
 
             if (null !== $runner) {
@@ -66,6 +72,7 @@ class QueueController extends \SportBundle\Component\Controller\RunController
                             'status' => 'success',
                             'firstName' => $runner->getFirstName(),
                             'lastName' => $runner->getLastName(),
+                            'department' => $department,
                         ),
                     )
                 );
