@@ -10,6 +10,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th width="100px">Happy Hours</th>
                     <th width="100px">Points</th>
                 </tr>
             </thead>
@@ -18,6 +19,11 @@
                 {% for department in paginator %}
                     <tr>
                         <td>{{ department.getName() }}</td>
+                        <td>
+                            {% for happyHour in group.getHappyHours() %}
+                                {{ happyHour }}{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        </td>
                         <td>{{ department.getPoints(academicYear) }}</td>
                     </tr>
                 {% endfor %}

@@ -13,6 +13,13 @@
     <div class="row">
         <div class="col-md-3 justify">
             <p>{{ translate('When you want to run a lap, you should first fill out this form and you will then be added to the runner queue.') }}</p>
+            <div class="flashmessage alert alert-danger fade" id="identification_error">
+                <a class="close">&times;</a>
+
+                <div class="content">
+                    {{ translate('No person found with this university identification. Please fill in the correct one or fill in the first and last name manualy.') }}
+                </div>
+            </div>
         </div>
         <div class="col-md-9" id="queue-form">
             {% import 'site/partials/form.twig' as forms %}
@@ -86,7 +93,12 @@
                         var fieldSet = $this.closest('fieldset');
                         fieldSet.find('#first_name').val(data.firstName).addClass('uneditable-input').attr('disabled', 'disabled');
                         fieldSet.find('#last_name').val(data.lastName).addClass('uneditable-input').attr('disabled', 'disabled');
+                        if (data.department != null) {
+                            fieldSet.find('#departments').val(data.department);
+                        }
                         $('#queue').removeProp('disabled');
+                    } else {
+                        $('#identification_error').addClass('in');
                     }
                 }, 'json');
             }
