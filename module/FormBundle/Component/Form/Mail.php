@@ -46,7 +46,8 @@ class Mail
         $mailAddress = $formSpecification->getMail()->getFrom();
 
         $mail = new Message();
-        $mail->setBody($formSpecification->getCompletedMailBody($formEntry, $language, $urlString))
+        $mail->setEncoding('UTF-8')
+            ->setBody($formSpecification->getCompletedMailBody($formEntry, $language, $urlString))
             ->setFrom($mailAddress)
             ->setSubject($formSpecification->getMail()->getSubject())
             ->addTo($formEntry->getPersonInfo()->getEmail(), $formEntry->getPersonInfo()->getFullName());

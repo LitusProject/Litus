@@ -684,7 +684,8 @@ abstract class Person implements RoleAware
                 ->getConfigValue('system_mail_name');
 
             $mail = new Message();
-            $mail->setBody(str_replace(array('{{ username }}', '{{ name }}', '{{ code }}'), array($this->getUserName(), $this->getFullName(), $code->getCode()), $message))
+            $mail->setEncoding('UTF-8')
+                ->setBody(str_replace(array('{{ username }}', '{{ name }}', '{{ code }}'), array($this->getUserName(), $this->getFullName(), $code->getCode()), $message))
                 ->setFrom($mailAddress, $mailName)
                 ->addTo($this->getEmail(), $this->getFullName())
                 ->setSubject($subject);

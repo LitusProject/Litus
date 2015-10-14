@@ -96,7 +96,8 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     }
 
                     $mail = new Message();
-                    $mail->setBody($message)
+                    $mail->setEncoding('UTF-8')
+                        ->setBody($message)
                         ->setFrom($formData['from'])
                         ->setSubject($formData['compose_message']['subject']);
 
@@ -142,7 +143,8 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     }
 
                     $mail = new Message();
-                    $mail->setBody($message)
+                    $mail->setEncoding('UTF-8')
+                        ->setBody($message)
                         ->setFrom($formData['from'])
                         ->setSubject($storedMessage->getSubject());
 

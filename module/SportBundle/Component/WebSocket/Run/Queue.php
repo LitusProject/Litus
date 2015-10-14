@@ -237,6 +237,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $department = $this->entityManager
                 ->getRepository('SportBundle\Entity\Department')
                 ->findOneById($data->department);
+        } elseif (null !== $runner) {
+            $department = $runner->getDepartment();
         } else {
             $department = null;
         }
@@ -256,9 +258,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             );
 
             $runner->setRunnerIdentification($data->universityIdentification);
+        } else {
+            if (null !== $department) {
+                $runner->setDepartment($department);
+            }
         }
 
-        $lap = new Lap($this->getAcademicYear(), $runner);
+        $lap = new Lap($this->getAcademicYear(), $runner, $department);
         $this->entityManager->persist($lap);
 
         $this->entityManager->flush();

@@ -21,7 +21,8 @@ namespace SportBundle\Entity;
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    SportBundle\Entity\Department;
 
 /**
  * This entity represents a runner.
@@ -86,7 +87,7 @@ class Runner
     private $group;
 
     /**
-     * @var Department The runner's department
+     * @var Department The runner's last choosen department
      *
      * @ORM\ManyToOne(targetEntity="SportBundle\Entity\Department", inversedBy="members")
      * @ORM\JoinColumn(name="department", referencedColumnName="id")

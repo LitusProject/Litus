@@ -20,6 +20,7 @@ namespace SportBundle\Repository;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear,
+    SportBundle\Entity\Department as DepartmentEntity,
     SportBundle\Entity\Runner as RunnerEntity;
 
 /**
@@ -229,5 +230,29 @@ class Lap extends EntityRepository
             ->getResult()[0];
 
         return $resultSet['lapCount'];
+    }
+
+    /**
+     * @param  RunnerEntity $runner
+     * @param  AcademicYear $academicYear
+     * @return integer
+     */
+    public function findByAcadmicYearAndDepartment(AcademicYear $academicYear, DepartmentEntity $department)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('SportBundle\Entity\Lap', 'l')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('l.department', ':department'),
+                    $query->expr()->eq('l.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('department', $department)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
     }
 }

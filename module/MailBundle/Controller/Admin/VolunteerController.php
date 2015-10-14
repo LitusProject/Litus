@@ -55,7 +55,8 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
                 $message->addPart($part);
 
                 $mail = new Message();
-                $mail->setBody($message)
+                $mail->setEncoding('UTF-8')
+                    ->setBody($message)
                     ->setFrom($formData['from'])
                     ->setSubject($formData['subject']);
 

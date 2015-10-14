@@ -109,7 +109,8 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
                 ->getConfigValue('prom.remove_mail')
         );
 
-        $mail->setBody(str_replace('{{ busTime }}', $bus->getDepartureTime()->format('d/m/Y H:i'), $mailData['body']))
+        $mail->setEncoding('UTF-8')
+            ->setBody(str_replace('{{ busTime }}', $bus->getDepartureTime()->format('d/m/Y H:i'), $mailData['body']))
             ->setFrom($mailData['from'])
             ->addBcc($mailData['from'])
             ->setSubject($mailData['subject']);

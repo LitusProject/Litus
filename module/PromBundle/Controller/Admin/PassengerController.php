@@ -82,7 +82,8 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
         );
 
         $mail = new Message();
-        $mail->setBody(str_replace('{{ busTime }}', $bus->getDepartureTime()->format('d/m/Y H:i'), $mailData['body']))
+        $mail->setEncoding('UTF-8')
+            ->setBody(str_replace('{{ busTime }}', $bus->getDepartureTime()->format('d/m/Y H:i'), $mailData['body']))
             ->setFrom($mailData['from'])
             ->addTo($passenger->getEmail())
             ->addBcc($mailData['from'])
