@@ -73,7 +73,8 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                 }
 
                 $mail = new Message();
-                $mail->setBody($body)
+                $mail->setEncoding('UTF-8')
+                    ->setBody($body)
                     ->setFrom($formData['from'], $formData['name'])
                     ->setSubject($formData['subject']);
 

@@ -266,6 +266,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 
         $mail = new Message();
         $mail->addTo($passenger->getEmail())
+            ->setEncoding('UTF-8')
             ->setBody(str_replace('{{ busTime }}', $bus->getDepartureTime()->format('d/m/Y H:i'), $mailData['body']))
             ->setFrom($mailData['from'])
             ->addBcc($mailData['from'])

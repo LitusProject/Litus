@@ -95,7 +95,8 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     $message->addPart($part);
 
                     $mail = new Message();
-                    $mail->setBody($message)
+                    $mail->setEncoding('UTF-8')
+                        ->setBody($message)
                         ->setFrom($mailAddress, $mailName)
                         ->setSubject($formData['subject']);
 

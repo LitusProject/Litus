@@ -105,7 +105,8 @@ EOT
             }
 
             $mail = new Message();
-            $mail->setBody($form->getCompletedReminderMailBody($entry->getFormEntry(), $language))
+            $mail->setEncoding('UTF-8')
+                ->setBody($form->getCompletedReminderMailBody($entry->getFormEntry(), $language))
                 ->setFrom($mailAddress)
                 ->setSubject($form->getReminderMail()->getSubject())
                 ->addTo($entry->getFormEntry()->getPersonInfo()->getEmail(), $entry->getFormEntry()->getPersonInfo()->getFullName());
