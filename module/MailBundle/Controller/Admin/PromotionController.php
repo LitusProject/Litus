@@ -18,11 +18,11 @@
 
 namespace MailBundle\Controller\Admin;
 
-use Zend\Mail\Message,
-    Zend\Mime\Message as MimeMessage,
-    Zend\Mime\Mime,
-    Zend\Mime\Part,
-    Zend\View\Model\ViewModel;
+use Zend\Mail\Message;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Mime;
+use Zend\Mime\Part;
+use Zend\View\Model\ViewModel;
 
 /**
  * PromotionController
@@ -136,7 +136,8 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                     }
 
                     $mail = new Message();
-                    $mail->setBody($message)
+                    $mail->setEncoding('UTF-8')
+                        ->setBody($message)
                         ->setFrom($from, $mailName)
                         ->addTo($from, $mailName)
                         ->setSubject($formData['compose_message']['subject']);
@@ -170,7 +171,8 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                     }
 
                     $mail = new Message();
-                    $mail->setBody($message)
+                    $mail->setEncoding('UTF-8')
+                        ->setBody($message)
                         ->setFrom($from, $mailName)
                         ->addTo($from, $mailName)
                         ->setSubject($storedMessage->getSubject());

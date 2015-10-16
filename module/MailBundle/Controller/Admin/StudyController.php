@@ -18,11 +18,11 @@
 
 namespace MailBundle\Controller\Admin;
 
-use Zend\Mail\Message,
-    Zend\Mime\Message as MimeMessage,
-    Zend\Mime\Mime,
-    Zend\Mime\Part,
-    Zend\View\Model\ViewModel;
+use Zend\Mail\Message;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Mime;
+use Zend\Mime\Part;
+use Zend\View\Model\ViewModel;
 
 /**
  * StudyController
@@ -53,7 +53,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
                 $addresses = $this->getAddresses($formData['studies'], $groups, $formData['bcc']);
 
-                if (isset($formData['select_message']) && '' == $formData['select_message']['stored_message']) {
+                if (!isset($formData['select_message'])) {
                     $body = $formData['compose_message']['message'];
 
                     $part = new Part($body);
@@ -96,7 +96,8 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     }
 
                     $mail = new Message();
-                    $mail->setBody($message)
+                    $mail->setEncoding('UTF-8')
+                        ->setBody($message)
                         ->setFrom($formData['from'])
                         ->setSubject($formData['compose_message']['subject']);
 
@@ -142,7 +143,8 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     }
 
                     $mail = new Message();
-                    $mail->setBody($message)
+                    $mail->setEncoding('UTF-8')
+                        ->setBody($message)
                         ->setFrom($formData['from'])
                         ->setSubject($storedMessage->getSubject());
 

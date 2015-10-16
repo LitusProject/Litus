@@ -18,12 +18,12 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Zend\Mail\Message,
-    Zend\Mime\Message as MimeMessage,
-    Zend\Mime\Mime,
-    Zend\Mime\Part,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use Zend\Mail\Message;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Mime;
+use Zend\Mime\Part;
+use Zend\View\Model\ViewModel;
 
 /**
  * VolunteerController
@@ -55,7 +55,8 @@ class VolunteerController extends \MailBundle\Component\Controller\AdminControll
                 $message->addPart($part);
 
                 $mail = new Message();
-                $mail->setBody($message)
+                $mail->setEncoding('UTF-8')
+                    ->setBody($message)
                     ->setFrom($formData['from'])
                     ->setSubject($formData['subject']);
 

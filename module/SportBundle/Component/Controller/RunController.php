@@ -52,10 +52,10 @@ class RunController extends \CommonBundle\Component\Controller\ActionController
     public function getAuthenticationHandler()
     {
         return array(
-            'action'         => 'index',
-            'controller'     => 'common_index',
+            'action'         => 'common_auth',
+            'controller'     => 'login',
 
-            'auth_route'     => 'sport_run_index',
+            'auth_route'     => 'common_auth',
             'redirect_route' => 'sport_run_index',
         );
     }

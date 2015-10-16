@@ -17,12 +17,12 @@
  */
 namespace PromBundle\Controller\Registration;
 
-use CommonBundle\Component\Form\Form,
-    PromBundle\Entity\Bus,
-    PromBundle\Entity\Bus\Passenger,
-    PromBundle\Entity\Bus\ReservationCode,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Form\Form;
+use PromBundle\Entity\Bus;
+use PromBundle\Entity\Bus\Passenger;
+use PromBundle\Entity\Bus\ReservationCode;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * IndexController
@@ -266,6 +266,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
 
         $mail = new Message();
         $mail->addTo($passenger->getEmail())
+            ->setEncoding('UTF-8')
             ->setBody(str_replace('{{ busTime }}', $bus->getDepartureTime()->format('d/m/Y H:i'), $mailData['body']))
             ->setFrom($mailData['from'])
             ->addBcc($mailData['from'])

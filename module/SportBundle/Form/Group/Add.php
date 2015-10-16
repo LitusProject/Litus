@@ -30,45 +30,67 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
     protected $hydrator = 'SportBundle\Hydrator\Group';
 
+    protected $happyHours1, $happyHours2;
+
+    protected function getHappyHours1()
+    {
+        return $this->happyHours1;
+    }
+
+    protected function getHappyHours2()
+    {
+        return $this->happyHours2;
+    }
+
+    public function setHappyHours1($happyHours1)
+    {
+        $this->happyHours1 = $happyHours1;
+    }
+
+    public function setHappyHours2($happyHours2)
+    {
+        $this->happyHours2 = $happyHours2;
+    }
+
     public function init()
     {
         parent::init();
 
         $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'group_information',
-            'label'      => 'Group Information',
+            'type' => 'fieldset',
+            'name' => 'group_information',
+            'label' => 'Group Information',
             'attributes' => array(
                 'id' => 'group_information',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
-                    'type'     => 'text',
-                    'name'     => 'name',
-                    'label'    => 'Group Name',
+                    'type' => 'text',
+                    'name' => 'name',
+                    'label' => 'Group Name',
                     'required' => true,
-                    'options'  => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
                     ),
                 ),
                 array(
-                    'type'       => 'select',
-                    'name'       => 'happy_hour_one',
-                    'label'      => 'First Happy Hour',
+                    'type' => 'select',
+                    'name' => 'happy_hour_one',
+                    'label' => 'First Happy Hour',
                     'attributes' => array(
-                        'options' => $this->generateHappyHours(20),
+                        'options' => $this->getHappyHours1(),
                     ),
                 ),
                 array(
-                    'type'       => 'select',
-                    'name'       => 'happy_hour_two',
-                    'label'      => 'Second Happy Hour',
+                    'type' => 'select',
+                    'name' => 'happy_hour_two',
+                    'label' => 'Second Happy Hour',
                     'attributes' => array(
-                        'options' => $this->generateHappyHours(8),
+                        'options' => $this->getHappyHours2(),
                     ),
                 ),
             ),
@@ -82,77 +104,29 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @param integer $startTime
-     */
-    private function generateHappyHours($startTime)
-    {
-        $optionsArray = array();
-        for ($i = 0; $i < 6; $i++) {
-            $startInterval = ($startTime + 2 * $i) % 24;
-            if ($startInterval < 10) {
-                $startInterval = 0 . $startInterval;
-            }
-
-            $endInterval = ($startTime + 2 * ($i + 1)) % 24;
-            if ($endInterval < 10) {
-                $endInterval = 0 . $endInterval;
-            }
-
-            $optionKey = $startInterval . $endInterval;
-            $optionValue = $startInterval . ':00 - ' . $endInterval . ':00';
-
-            $optionsArray[$optionKey] = $optionValue;
-        }
-
-        $groups = $this->getEntityManager()
-            ->getRepository('SportBundle\Entity\Group')
-            ->findLast();
-
-        return $this->cleanHappyHoursArray($optionsArray, $groups);
-    }
-
-    private function cleanHappyHoursArray(array $optionsArray, array $groups)
-    {
-        $returnArray = $optionsArray;
-        foreach ($groups as $group) {
-            $happyHours = $group->getHappyHours();
-
-            if (isset($returnArray[$happyHours[0]])) {
-                unset($returnArray[$happyHours[0]]);
-            }
-
-            if (isset($returnArray[$happyHours[1]])) {
-                unset($returnArray[$happyHours[1]]);
-            }
-        }
-
-        return $returnArray;
-    }
-
-    /**
      * @param string $memberNb
      */
     private function generateMemberForm($memberNb, $required = false)
     {
         $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'user_' . $memberNb,
-            'label'      => 'Runner ' . ucfirst($memberNb),
+            'type' => 'fieldset',
+            'name' => 'user_' . $memberNb,
+            'label' => 'Runner ' . ucfirst($memberNb),
             'attributes' => array(
                 'id' => 'user_' . $memberNb,
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
-                    'type'       => 'text',
-                    'name'       => 'university_identification',
-                    'label'      => 'University Identification',
+                    'type' => 'text',
+                    'name' => 'university_identification',
+                    'label' => 'University Identification',
                     'attributes' => array(
                         'id' => 'university_identification_' . $memberNb,
                     ),
                     'required' => $required,
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -164,36 +138,36 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'     => 'text',
-                    'name'     => 'first_name',
-                    'label'    => 'First Name',
+                    'type' => 'text',
+                    'name' => 'first_name',
+                    'label' => 'First Name',
                     'required' => $required,
-                    'options'  => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
                     ),
                 ),
                 array(
-                    'type'     => 'text',
-                    'name'     => 'last_name',
-                    'label'    => 'Last Name',
+                    'type' => 'text',
+                    'name' => 'last_name',
+                    'label' => 'Last Name',
                     'required' => $required,
-                    'options'  => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
                     ),
                 ),
                 array(
-                    'type'       => 'select',
-                    'name'       => 'department',
-                    'label'      => 'Department',
-                    'requied'    => $required,
+                    'type' => 'select',
+                    'name' => 'department',
+                    'label' => 'Department',
+                    'requied' => $required,
                     'attributes' => array(
                         'options' => $this->getDepartments(),
                     ),

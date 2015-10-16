@@ -18,11 +18,11 @@
 
 namespace FormBundle\Command;
 
-use DateInterval,
-    DateTime,
-    FormBundle\Entity\Field\TimeSlot,
-    FormBundle\Entity\Node\Form\Doodle,
-    Zend\Mail\Message;
+use DateInterval;
+use DateTime;
+use FormBundle\Entity\Field\TimeSlot;
+use FormBundle\Entity\Node\Form\Doodle;
+use Zend\Mail\Message;
 
 /**
  * RenderMail
@@ -105,7 +105,8 @@ EOT
             }
 
             $mail = new Message();
-            $mail->setBody($form->getCompletedReminderMailBody($entry->getFormEntry(), $language))
+            $mail->setEncoding('UTF-8')
+                ->setBody($form->getCompletedReminderMailBody($entry->getFormEntry(), $language))
                 ->setFrom($mailAddress)
                 ->setSubject($form->getReminderMail()->getSubject())
                 ->addTo($entry->getFormEntry()->getPersonInfo()->getEmail(), $entry->getFormEntry()->getPersonInfo()->getFullName());

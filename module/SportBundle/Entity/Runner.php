@@ -22,6 +22,7 @@ use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person\Academic;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
+use SportBundle\Entity\Department;
 
 /**
  * This entity represents a runner.
@@ -86,7 +87,7 @@ class Runner
     private $group;
 
     /**
-     * @var Department The runner's department
+     * @var Department The runner's last choosen department
      *
      * @ORM\ManyToOne(targetEntity="SportBundle\Entity\Department", inversedBy="members")
      * @ORM\JoinColumn(name="department", referencedColumnName="id")
@@ -294,5 +295,16 @@ class Runner
         }
 
         return $points;
+    }
+
+    /**
+     * @param AcademicYear $academicYear
+     * @return integer
+     */
+    public function getStartedLapsCount(AcademicYear $academicYear)
+    {
+        return $this->entityManager
+            ->getRepository('SportBundle\Entity\Lap')
+            ->getStartedLapsCountForRunner($this, $academicYear);
     }
 }

@@ -18,8 +18,8 @@
 
 namespace PublicationBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    PublicationBundle\Entity\Publication as PublicationEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use PublicationBundle\Entity\Publication as PublicationEntity;
 
 /**
  * Edition
@@ -49,6 +49,7 @@ class Edition extends EntityRepository
                    $subQuery->getDQL()
                )
             )
+            ->orderBy('y.universityStart', 'DESC')
             ->setParameter('publication', $publication)
             ->getQuery();
 

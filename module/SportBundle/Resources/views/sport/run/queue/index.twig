@@ -13,8 +13,15 @@
     <div class="row">
         <div class="col-md-3 justify">
             <p>{{ translate('When you want to run a lap, you should first fill out this form and you will then be added to the runner queue.') }}</p>
+            <div class="flashmessage alert alert-danger fade" id="identification_error">
+                <a class="close">&times;</a>
+
+                <div class="content">
+                    {{ translate('No person found with this university identification. Please fill in the correct one or fill in the first and last name manualy.') }}
+                </div>
+            </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9" id="queue-form">
             {% import 'site/partials/form.twig' as forms %}
             {{ forms.renderForm(form) }}
         </div>
@@ -30,14 +37,14 @@
                 authSession: '{{ authSession.getId() }}',
                 errorDialog: $('#loading_queue_error'),
             });
-
-            $('#queue').click(function (e) {
-                if ($('#university_identification').val().length != 8)
+            $('#queue-form form').submit(function (e) {
+                var universityIdentification = $('#university_identification').val().trim();
+                if (universityIdentification.length != 8)
                     return;
 
                 e.preventDefault();
                 $(document).runQueue('addToQueue', {
-                    universityIdentification: $('#university_identification').val(),
+                    universityIdentification: universityIdentification,
                     lastName: $('#last_name').val(),
                     firstName: $('#first_name').val(),
                     department: $('#departments').val(),
@@ -47,8 +54,14 @@
                 $('#first_name').removeProp('disabled').val('');
                 $('#departments').val('');
                 $('#added_success').addClass('in');
-                setTimeout(function () {$('.flashmessage').removeClass('in')}, 2000);
-            }).prop('disabled', 'disabled');
+                setTimeout(function () {
+                    $('.flashmessage').removeClass('in')
+                }, 2000);
+                $('#queue').prop('disabled', 'disabled');
+            });
+            $('#queue').click(function (e) {
+                $('#queue-form form').submit(e);
+            });
 
             $('#first_name, #last_name, #university_identification').keyup(function () {
                 if ($('#first_name').val() != '' && $('#last_name').val() != '') {
@@ -58,7 +71,13 @@
                 }
             });
 
-            $('#university_identification').bind('keyup blur', getName);
+            $('#university_identification').bind('keyup blur', getName)
+                    .keydown(function (event) {
+                        if (event.keyCode == 13) {
+                            event.preventDefault();
+                            return false;
+                        }
+                    });
 
             $('#university_identification').each(function () {
                 $(this).trigger('keyup');
@@ -67,14 +86,19 @@
 
         function getName() {
             var $this = $(this);
-            if (8 == $(this).val().length) {
-                $.get('{{ url('sport_run_queue', {"action": "getName"})}}' +  $(this).val(), function (data) {
-                    if (data && 'success' == data.status) {
+            var val = $(this).val().trim();
+            if (8 == val.length) {
+                $.get('{{ url('sport_run_queue', {"action": "getName"})}}' + val, function (data) {
+                    if (data && $this.val().trim() == val && 'success' == data.status) {
                         var fieldSet = $this.closest('fieldset');
-
                         fieldSet.find('#first_name').val(data.firstName).addClass('uneditable-input').attr('disabled', 'disabled');
                         fieldSet.find('#last_name').val(data.lastName).addClass('uneditable-input').attr('disabled', 'disabled');
+                        if (data.department != null) {
+                            fieldSet.find('#departments').val(data.department);
+                        }
                         $('#queue').removeProp('disabled');
+                    } else {
+                        $('#identification_error').addClass('in');
                     }
                 }, 'json');
             }

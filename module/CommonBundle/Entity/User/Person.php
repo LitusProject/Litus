@@ -18,18 +18,18 @@
 
 namespace CommonBundle\Entity\User;
 
-use CommonBundle\Component\Acl\RoleAware,
-    CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException,
-    Zend\Mail\Message,
-    Zend\Mail\Transport\TransportInterface;
+use CommonBundle\Component\Acl\RoleAware;
+use CommonBundle\Entity\Acl\Role;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
+use Zend\Mail\Message;
+use Zend\Mail\Transport\TransportInterface;
 
 /**
  * This is the entity for a person.
@@ -684,7 +684,8 @@ abstract class Person implements RoleAware
                 ->getConfigValue('system_mail_name');
 
             $mail = new Message();
-            $mail->setBody(str_replace(array('{{ username }}', '{{ name }}', '{{ code }}'), array($this->getUserName(), $this->getFullName(), $code->getCode()), $message))
+            $mail->setEncoding('UTF-8')
+                ->setBody(str_replace(array('{{ username }}', '{{ name }}', '{{ code }}'), array($this->getUserName(), $this->getFullName(), $code->getCode()), $message))
                 ->setFrom($mailAddress, $mailName)
                 ->addTo($this->getEmail(), $this->getFullName())
                 ->setSubject($subject);

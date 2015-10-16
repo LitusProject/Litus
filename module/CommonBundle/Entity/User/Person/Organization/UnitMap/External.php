@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Entity\User\Person\Organization\UnitMap;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization\Unit,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization\Unit;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Specifying the mapping between organization and external person.
@@ -52,9 +52,9 @@ class External extends \CommonBundle\Entity\User\Person\Organization\UnitMap
      */
     private $lastName;
 
-    public function __construct($firstName, $lastName, $photoPath, AcademicYear $academicYear, Unit $unit, $coordinator)
+    public function __construct($firstName, $lastName, $photoPath, AcademicYear $academicYear, Unit $unit, $coordinator, $description = '')
     {
-        parent::__construct($academicYear, $unit, $coordinator);
+        parent::__construct($academicYear, $unit, $coordinator, $description);
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->photoPath = $photoPath;

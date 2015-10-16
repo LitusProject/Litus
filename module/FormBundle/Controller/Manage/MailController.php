@@ -18,9 +18,9 @@
 
 namespace FormBundle\Controller\Manage;
 
-use FormBundle\Entity\Node\Form,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use FormBundle\Entity\Node\Form;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * MailController
@@ -76,7 +76,8 @@ class MailController extends \FormBundle\Component\Controller\FormController
 
                 foreach ($entries as $entry) {
                     $mail = new Message();
-                    $mail->setBody($formData['message'])
+                    $mail->setEncoding('UTF-8')
+                        ->setBody($formData['message'])
                         ->setFrom($mailAddress)
                         ->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName())
                         ->setSubject($formData['subject']);

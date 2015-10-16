@@ -22,7 +22,9 @@ return array(
     'Home' => 'Home',
     'Group of Friends' => 'Group of Friends',
 
-    'A group of friends consists of a few runners. Each group has to pick two time slots with a duration of 2 hours. You will receive points for every lap beneath 1\'30". The faster you run,  the more points you get per lap. You pick "happy hours" where your points will count double. If Student IT does not have enough runners and you decide to come run for us, your points will also count double. The group with the most points wins!' => 'A group of friends consists of a few runners. Each group has to pick two time slots with a duration of 2 hours. You will receive points for every lap beneath 1\'30". The faster you run,  the more points you get per lap. You pick "happy hours" where your points will count double. If Student IT does not have enough runners and you decide to come run for us, your points will also count double. The group with the most points wins!',
+    'A group of friends consists of a few runners. Each group has to pick two time slots with a duration of 2 hours. You will receive points for every lap beneath 1\'29". The faster you run,  the more points you get per lap. You pick "happy hours" where your points will count double. If VTK does not have enough runners and you decide to come run for us, your points will also count double. The group with the most points wins!' => 'A group of friends consists of a few runners. Each group has to pick two time slots with a duration of 2 hours. You will receive points for every lap beneath 1\'29". The faster you run,  the more points you get per lap. You pick "happy hours" where your points will count double. If VTK does not have enough runners and you decide to come run for us, your points will also count double. The group with the most points wins!',
+    'point' => 'point',
+    'points' => 'points',
 
     'Group Information' => 'Group Information',
     'Runner One' => 'Runner One',
@@ -37,4 +39,5 @@ return array(
     'University Identification' => 'University Identification',
     'First Name' => 'First Name',
     'Last Name' => 'Last Name',
+    'There are no more group slots available. You can of course still run individually!' => 'There are no more group slots available. You can of course still run individually!',
 );

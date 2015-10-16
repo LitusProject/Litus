@@ -18,11 +18,11 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use ShiftBundle\Entity\Shift,
-    ShiftBundle\Entity\Shift\Responsible,
-    ShiftBundle\Entity\Shift\Volunteer,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use ShiftBundle\Entity\Shift;
+use ShiftBundle\Entity\Shift\Responsible;
+use ShiftBundle\Entity\Shift\Volunteer;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * ShiftController
@@ -138,7 +138,8 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
 
         $mail = new Message();
-        $mail->setBody(str_replace('{{ shift }}', $shiftString, $message))
+        $mail->setEncoding('UTF-8')
+            ->setBody(str_replace('{{ shift }}', $shiftString, $message))
             ->setFrom($mailAddress, $mailName)
             ->addTo($subscription->getPerson()->getEmail(), $subscription->getPerson()->getFullName())
             ->setSubject($subject);

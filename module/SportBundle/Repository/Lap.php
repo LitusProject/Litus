@@ -18,8 +18,10 @@
 
 namespace SportBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use SportBundle\Entity\Department as DepartmentEntity;
+use SportBundle\Entity\Runner as RunnerEntity;
 
 /**
  * Lap
@@ -197,8 +199,57 @@ class Lap extends EntityRepository
                 )
             )
             ->groupBy('l.runner')
-            ->orderBy('lapCount','DESC')
+            ->orderBy('lapCount', 'DESC')
             ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param RunnerEntity $runner
+     * @param AcademicYear $academicYear
+     * @return integer
+     */
+    public function getStartedLapsCountForRunner(RunnerEntity $runner, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('COUNT(l.id) AS lapCount')
+            ->from('SportBundle\Entity\Lap', 'l')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('l.runner', ':runner'),
+                    $query->expr()->isNotNull('l.startTime'),
+                    $query->expr()->eq('l.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('runner', $runner)
+            ->getQuery()
+            ->getResult()[0];
+
+        return $resultSet['lapCount'];
+    }
+
+    /**
+     * @param  RunnerEntity $runner
+     * @param  AcademicYear $academicYear
+     * @return integer
+     */
+    public function findByAcadmicYearAndDepartment(AcademicYear $academicYear, DepartmentEntity $department)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('l')
+            ->from('SportBundle\Entity\Lap', 'l')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('l.department', ':department'),
+                    $query->expr()->eq('l.academicYear', ':academicYear')
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('department', $department)
             ->getQuery()
             ->getResult();
 

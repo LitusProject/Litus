@@ -18,10 +18,10 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use IntlDateFormatter,
-    LogisticsBundle\Entity\Reservation\PianoReservation,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use IntlDateFormatter;
+use LogisticsBundle\Entity\Reservation\PianoReservation;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 class PianoReservationController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -95,7 +95,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                     );
 
                     $mail = new Message();
-                    $mail->setBody(
+                    $mail->setEncoding('UTF-8')
+                        ->setBody(
                             str_replace('{{ name }}', $reservation->getPlayer()->getFullName(),
                                 str_replace('{{ start }}', $formatterDate->format($reservation->getStartDate()),
                                     str_replace('{{ end }}', $formatterDate->format($reservation->getEndDate()), $message)
@@ -181,7 +182,8 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
                     $subject = $mailData[$language->getAbbrev()]['subject'];
 
                     $mail = new Message();
-                    $mail->setBody(
+                    $mail->setEncoding('UTF-8')
+                        ->setBody(
                             str_replace('{{ name }}', $reservation->getPlayer()->getFullName(),
                                 str_replace('{{ start }}', $reservation->getStartDate()->format('D d/m/Y H:i'),
                                     str_replace('{{ end }}', $reservation->getEndDate()->format('D d/m/Y H:i'), $message)

@@ -18,10 +18,10 @@
 
 namespace SportBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents a group of friends.
@@ -142,26 +142,26 @@ class Department
     {
         $points = 0;
 
-        foreach ($this->getMembers() as $member) {
-            $member->setEntityManager($this->entityManager);
+        $laps = $this->entityManager
+            ->getRepository('SportBundle\Entity\Lap')
+            ->findByAcadmicYearAndDepartment($academicYear, $this);
 
-            foreach ($member->getLaps($academicYear) as $lap) {
-                if (null === $lap->getEndTime()) {
-                    continue;
-                }
+        foreach ($laps as $lap) {
+            if (null === $lap->getEndTime()) {
+                continue;
+            }
 
-                $lap->setEntityManager($this->entityManager);
+            $lap->setEntityManager($this->entityManager);
 
-                $startTime = $lap->getStartTime()->format('H');
-                $endTime = $lap->getEndTime()->format('H');
+            $startTime = $lap->getStartTime()->format('H');
+            $endTime = $lap->getEndTime()->format('H');
 
-                $points += $lap->getPoints();
+            $points += $lap->getPoints();
 
-                $happyHours = $this->getHappyHours();
-                for ($i = 0; isset($happyHours[$i]); $i++) {
-                    if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
-                        $points += $lap->getPoints();
-                    }
+            $happyHours = $this->getHappyHours();
+            for ($i = 0; isset($happyHours[$i]); $i++) {
+                if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
+                    $points += $lap->getPoints();
                 }
             }
         }

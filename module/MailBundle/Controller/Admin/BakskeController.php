@@ -18,11 +18,11 @@
 
 namespace MailBundle\Controller\Admin;
 
-use Zend\Mail\Message,
-    Zend\Mime\Message as MimeMessage,
-    Zend\Mime\Mime,
-    Zend\Mime\Part,
-    Zend\View\Model\ViewModel;
+use Zend\Mail\Message;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Mime;
+use Zend\Mime\Part;
+use Zend\View\Model\ViewModel;
 
 /**
  * BakskeController
@@ -62,7 +62,8 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
                 $message->addPart($part);
 
                 $mail = new Message();
-                $mail->setBody($message)
+                $mail->setEncoding('UTF-8')
+                    ->setBody($message)
                     ->setFrom($mailAddress, $mailName)
                     ->setSubject($formData['subject']);
 

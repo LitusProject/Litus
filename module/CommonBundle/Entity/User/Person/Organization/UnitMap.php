@@ -18,9 +18,9 @@
 
 namespace CommonBundle\Entity\User\Person\Organization;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization\Unit,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization\Unit;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Specifying the mapping between organization and academic.
@@ -69,15 +69,23 @@ abstract class UnitMap
     private $coordinator;
 
     /**
+     * @var string Extra description of position
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
      * @param AcademicYear $academicYear The academic year
      * @param Unit         $unit         The unit
      * @param boolean      $coordinator  Whether or not the academic is the coordinator
      */
-    public function __construct(AcademicYear $academicYear, Unit $unit, $coordinator)
+    public function __construct(AcademicYear $academicYear, Unit $unit, $coordinator, $description = '')
     {
         $this->academicYear = $academicYear;
         $this->unit = $unit;
         $this->coordinator = $coordinator;
+        $this->description = $description;
     }
 
     /**
@@ -110,6 +118,25 @@ abstract class UnitMap
     public function isCoordinator()
     {
         return $this->coordinator;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description == null ? '' : $this->description;
+    }
+
+    /**
+     * @param  string $description The unit maps description
+     * @return self
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
     /**

@@ -51,6 +51,12 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
+            'type'       => 'text',
+            'name'       => 'description',
+            'label'      => 'Description',
+        ));
+
+        $this->add(array(
             'type' => 'hidden',
             'name' => 'mapType',
             'value' => 'academic',

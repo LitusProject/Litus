@@ -18,9 +18,9 @@
 
 namespace PromBundle\Controller\Admin;
 
-use PromBundle\Entity\Bus\Passenger,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use PromBundle\Entity\Bus\Passenger;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * PassengerController
@@ -82,7 +82,8 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
         );
 
         $mail = new Message();
-        $mail->setBody(str_replace('{{ busTime }}', $bus->getDepartureTime()->format('d/m/Y H:i'), $mailData['body']))
+        $mail->setEncoding('UTF-8')
+            ->setBody(str_replace('{{ busTime }}', $bus->getDepartureTime()->format('d/m/Y H:i'), $mailData['body']))
             ->setFrom($mailData['from'])
             ->addTo($passenger->getEmail())
             ->addBcc($mailData['from'])

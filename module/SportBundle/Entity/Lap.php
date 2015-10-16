@@ -18,11 +18,12 @@
 
 namespace SportBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    DateInterval,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use DateInterval;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use SportBundle\Entity\Department;
 
 /**
  * This entity represents a lap.
@@ -84,15 +85,24 @@ class Lap
     private $entityManager;
 
     /**
+     * @var Department The lap's department
+     *
+     * @ORM\ManyToOne(targetEntity="SportBundle\Entity\Department", inversedBy="members")
+     * @ORM\JoinColumn(name="department", referencedColumnName="id")
+     */
+    private $department;
+
+    /**
      * @param AcademicYear $academicYear
      * @param Runner       $runner
      */
-    public function __construct(AcademicYear $academicYear, Runner $runner)
+    public function __construct(AcademicYear $academicYear, Runner $runner, Department $department = null)
     {
         $this->academicYear = $academicYear;
 
         $this->runner = $runner;
         $this->registrationTime = new DateTime();
+        $this->department = $department;
     }
 
     /**
@@ -118,6 +128,25 @@ class Lap
     public function setRunner(Runner $runner)
     {
         $this->runner = $runner;
+
+        return $this;
+    }
+
+    /**
+     * @return Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param  Department $department
+     * @return self
+     */
+    public function setDepartment(Department $department)
+    {
+        $this->department = $department;
 
         return $this;
     }

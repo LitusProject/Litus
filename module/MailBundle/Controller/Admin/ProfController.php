@@ -18,15 +18,15 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Markdown_Parser,
-    Zend\Mail\Message,
-    Zend\Mime\Message as MimeMessage,
-    Zend\Mime\Mime,
-    Zend\Mime\Part,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Markdown_Parser;
+use Zend\Mail\Message;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Mime;
+use Zend\Mime\Part;
+use Zend\View\Model\ViewModel;
 
 /**
  * ProfController
@@ -95,7 +95,8 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     $message->addPart($part);
 
                     $mail = new Message();
-                    $mail->setBody($message)
+                    $mail->setEncoding('UTF-8')
+                        ->setBody($message)
                         ->setFrom($mailAddress, $mailName)
                         ->setSubject($formData['subject']);
 

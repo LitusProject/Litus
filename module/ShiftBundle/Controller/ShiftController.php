@@ -18,15 +18,15 @@
 
 namespace ShiftBundle\Controller;
 
-use DateInterval,
-    DateTime,
-    ShiftBundle\Document\Token,
-    ShiftBundle\Entity\Shift\Responsible,
-    ShiftBundle\Entity\Shift\User\Person\Insurance,
-    ShiftBundle\Entity\Shift\Volunteer,
-    Zend\Http\Headers,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use DateInterval;
+use DateTime;
+use ShiftBundle\Document\Token;
+use ShiftBundle\Entity\Shift\Responsible;
+use ShiftBundle\Entity\Shift\User\Person\Insurance;
+use ShiftBundle\Entity\Shift\Volunteer;
+use Zend\Http\Headers;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * ShiftController
@@ -322,7 +322,8 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
 
                     $mail = new Message();
-                    $mail->setBody(str_replace('{{ shift }}', $shiftString, $message))
+                    $mail->setEncoding('UTF-8')
+                        ->setBody(str_replace('{{ shift }}', $shiftString, $message))
                         ->setFrom($mailAddress, $mailName)
                         ->addTo($volunteer->getPerson()->getEmail(), $volunteer->getPerson()->getFullName())
                         ->setSubject($subject);

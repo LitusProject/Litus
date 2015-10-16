@@ -18,10 +18,10 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * GroupController
@@ -73,7 +73,8 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                 }
 
                 $mail = new Message();
-                $mail->setBody($body)
+                $mail->setEncoding('UTF-8')
+                    ->setBody($body)
                     ->setFrom($formData['from'], $formData['name'])
                     ->setSubject($formData['subject']);
 

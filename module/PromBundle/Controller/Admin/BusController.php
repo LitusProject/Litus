@@ -18,15 +18,15 @@
 
 namespace PromBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    DateTime,
-    PromBundle\Component\Document\Generator\Bus\Csv as CsvGenerator,
-    PromBundle\Entity\Bus,
-    PromBundle\Entity\Bus\Passenger,
-    PromBundle\Entity\Bus\ReservationCode,
-    Zend\Http\Headers,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use DateTime;
+use PromBundle\Component\Document\Generator\Bus\Csv as CsvGenerator;
+use PromBundle\Entity\Bus;
+use PromBundle\Entity\Bus\Passenger;
+use PromBundle\Entity\Bus\ReservationCode;
+use Zend\Http\Headers;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * BusController
@@ -109,7 +109,8 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
                 ->getConfigValue('prom.remove_mail')
         );
 
-        $mail->setBody(str_replace('{{ busTime }}', $bus->getDepartureTime()->format('d/m/Y H:i'), $mailData['body']))
+        $mail->setEncoding('UTF-8')
+            ->setBody(str_replace('{{ busTime }}', $bus->getDepartureTime()->format('d/m/Y H:i'), $mailData['body']))
             ->setFrom($mailData['from'])
             ->addBcc($mailData['from'])
             ->setSubject($mailData['subject']);

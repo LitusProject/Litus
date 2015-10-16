@@ -18,14 +18,14 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\General\Organization\Unit,
-    CommonBundle\Entity\User\Person\Organization\UnitMap\Academic as UnitMapAcademic,
-    CommonBundle\Entity\User\Person\Organization\UnitMap\External as UnitMapExternal,
-    Imagick,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\Acl\Role;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use CommonBundle\Entity\General\Organization\Unit;
+use CommonBundle\Entity\User\Person\Organization\UnitMap\Academic as UnitMapAcademic;
+use CommonBundle\Entity\User\Person\Organization\UnitMap\External as UnitMapExternal;
+use Imagick;
+use Zend\View\Model\ViewModel;
 
 /**
  * UnitController
@@ -156,7 +156,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                         'This academic already is a member of this unit!'
                     );
                 } else {
-                    $member = new UnitMapAcademic($academic, $academicYear, $unit, $formData['coordinator']);
+                    $member = new UnitMapAcademic($academic, $academicYear, $unit, $formData['coordinator'], $formData['description']);
 
                     $this->getEntityManager()->persist($member);
                     $this->getEntityManager()->flush();
@@ -189,7 +189,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
                 $image->writeImage('public/' . $filePath . '/' . $fileName);
 
-                $member = new UnitMapExternal($formData['first_name'], $formData['last_name'], '/' . $fileName , $academicYear, $unit, $formData['coordinator']);
+                $member = new UnitMapExternal($formData['first_name'], $formData['last_name'], '/' . $fileName, $academicYear, $unit, $formData['coordinator'], $formData['description']);
 
                 $this->getEntityManager()->persist($member);
                 $this->getEntityManager()->flush();

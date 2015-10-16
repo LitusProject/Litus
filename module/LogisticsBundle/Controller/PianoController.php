@@ -18,13 +18,13 @@
 
 namespace LogisticsBundle\Controller;
 
-use CommonBundle\Entity\User\Person,
-    DateInterval,
-    DateTime,
-    IntlDateFormatter,
-    LogisticsBundle\Entity\Reservation\PianoReservation,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person;
+use DateInterval;
+use DateTime;
+use IntlDateFormatter;
+use LogisticsBundle\Entity\Reservation\PianoReservation;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>
@@ -195,7 +195,8 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
         );
 
         $mail = new Message();
-        $mail->setBody(
+        $mail->setEncoding('UTF-8')
+            ->setBody(
                 str_replace('{{ name }}', $person->getFullName(),
                     str_replace('{{ start }}', $formatterDate->format($reservation->getStartDate()),
                         str_replace('{{ end }}', $formatterDate->format($reservation->getEndDate()), $message)

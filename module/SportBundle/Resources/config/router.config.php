@@ -69,7 +69,7 @@ return array(
                 'constraints' => array(
                     'language'                  => '[a-z]{2}',
                     'action'                    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'university_identification' => '[a-z]{1}[0-9]{7}',
+                    'university_identification' => '[a-z0-9]{1}[0-9]{7}',
                 ),
                 'defaults' => array(
                     'controller' => 'sport_run_queue',
