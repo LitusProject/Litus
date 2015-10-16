@@ -43,7 +43,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
 	 * @var int Minimum runtime required (in seconds)
 	 */
-    private static $minLapTime = 60;
+    private static $minLapTime = 50;
 
     /**
 	 * @param EntityManager $entityManager
