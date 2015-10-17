@@ -43,7 +43,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
     /**
 	 * @var int Minimum runtime required (in seconds)
 	 */
-    private static $minLapTime = 60;
+    private static $minLapTime = 50;
 
     /**
 	 * @param EntityManager $entityManager
@@ -421,7 +421,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $fastestLap = null;
 
         foreach ($previousLaps as $lap) {
-            if ($this->isValidLapTime($lap->getLapTime()) && strpos(strtolower($lap->getRunner()->getAcademic()->getFullName()), 'vtk gent') === false) {
+            if ($this->isValidLapTime($lap->getLapTime())) {
                 if ($fastestLap == null) {
                     $time = $lap->getLapTime();
                     $fastestLap = $lap;
@@ -434,7 +434,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         if ($fastestLap !== null) {
             return array(
                 'time' => $fastestLap->getLapTime()->format('%i:%S'),
-                'runner' => $fastestLap->getRunner()->getAcademic()->getFullName(),
+                'runner' => $fastestLap->getRunner()->getFullName(),
             );
         }
 
@@ -459,7 +459,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 ->getRepository('SportBundle\Entity\Runner')
                 ->findOneById($runners[$index]['runner']);
             array_push($mostLaps, array(
-                    'name' => $runner->getAcademic()->getFullName(),
+                    'name' => $runner->getFullName(),
                     'laps' => $runners[$index]['lapCount'],
                 )
             );
