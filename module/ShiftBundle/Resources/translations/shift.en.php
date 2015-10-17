@@ -42,6 +42,7 @@ return array(
     'Volunteer' => 'Volunteer',
     'An error occurred while processing your request!' => 'An error occurred while processing your request!',
     'You are about to sign yourself in for a shift. Do you want to continue?' => 'You are about to sign yourself in for a shift. Do you want to continue?',
+    'You are about to sign yourself in for a shift. To do this shift you need to have a ticket fot the activity. Do you want to continue?' => 'You are about to sign yourself in for a shift. To do this shift you need to have a ticket fot the activity. Do you want to continue?',
     'You were signed in as a volunteer for the selected shift!' => 'You were signed in as a volunteer for the selected shift!',
     'You were signed in as a responsible for the selected shift!' => 'You were signed in as a responsible for the selected shift!',
     'No shifts were found that match the given query.' => 'No shifts were found that match the given query.',

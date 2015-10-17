@@ -42,6 +42,7 @@ return array(
     'Volunteer' => 'Vrijwilliger',
     'An error occurred while processing your request!' => 'Er trad een fout op bij het verwerken van je aanvraag!',
     'You are about to sign yourself in for a shift. Do you want to continue?' => 'Ben je zeker dat je je wil inschrijven voor deze shift?',
+    'You are about to sign yourself in for a shift. To do this shift you need to have a ticket for this activity. Do you want to continue?' => 'Ben je zeker dat je je wil inschrijven voor deze shift? Om deze shift te doen heb je een ticket nodig voor de activiteit.',
     'You were signed in as a volunteer for the selected shift!' => 'Je werd ingeschreven als vrijwilliger op de geselecteerde shift!',
     'You were signed in as a responsible for the selected shift!' => 'Je werd ingeschreven als verantwoordelijke op de geselecteerde shift!',
     'No shifts were found that match the given query.' => 'Er werden geen shiften gevonden die overeenkomen met de gegeven vraag..',
