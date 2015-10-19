@@ -54,7 +54,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
 
         $groups = $this->getEntityManager()
             ->getRepository('SportBundle\Entity\Group')
-            ->findLast();
+            ->findAllByAcademicYearQuery($this->getCurrentAcademicYear())->getResult();
 
         return $this->cleanHappyHoursArray($optionsArray, $groups);
     }
