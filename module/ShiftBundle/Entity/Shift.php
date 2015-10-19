@@ -195,6 +195,13 @@ class Shift
     private $handledOnEvent;
 
     /**
+     * @var boolean wheter or not a ticket is needed to do ths shift
+     *
+     * @ORM\Column(name="ticket_needed", type="boolean",options={"default" = false})
+     */
+    private $ticketNeeded;
+
+    /**
      * @param Person       $creationPerson
      * @param AcademicYear $academicYear
      */
@@ -736,5 +743,24 @@ class Shift
     public function getHandledOnEvent()
     {
         return $this->handledOnEvent;
+    }
+
+    /**
+     * @param boolean $ticketNeeded
+     * @return self
+     */
+    public function setTicketNeeded($ticketNeeded)
+    {
+        $this->ticketNeeded = $ticketNeeded;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getTicketNeeded()
+    {
+        return $this->ticketNeeded;
     }
 }

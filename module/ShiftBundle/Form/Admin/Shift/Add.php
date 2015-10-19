@@ -201,6 +201,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'ticket_needed',
+            'label' => 'Ticket needed',
+        ));
+
+        $this->add(array(
             'type'       => 'select',
             'name'       => 'event',
             'label'      => 'Event',
