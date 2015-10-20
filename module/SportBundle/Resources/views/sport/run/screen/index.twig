@@ -274,6 +274,7 @@
         $('#nextRunners').html('');
         $('#groupsOfFriends').html('');
         $('#mostLaps').html('');
+        $('#currentRunnerLapCount').hide();
 
         var nextNum = 0;
         $(data.laps).each(function (num, lap) {
@@ -301,7 +302,10 @@
                 });
                 $('#currentLapTime').html(Math.floor(lapTime / 60) + ':' + (lapTime % 60 < 10 ? "0" + lapTime % 60 : lapTime % 60));
                 $('#currentLapDistance').html(officialData ? lapDistance + ' m' : 'N/A');
-                $('#currentRunnerLapCount').html('Lap ' + lap.runnerLapCount);
+                if(lap.runnerLapCount){
+                    $('#currentRunnerLapCount').show();
+                    $('#currentRunnerLapCount').html('Lap ' + lap.runnerLapCount);
+                }
                 $('#officialSpeed').html(officialData ? officialData.speed : 'N/A');
 
                 if (officialData)
@@ -365,6 +369,8 @@
             $('#noCurrentLap').addClass('in');
             $('#currentLapInfo').hide();
         }
+        if (status == 'NoResults')
+            $('#noCurrentLap').removeClass('in');
     }
 
     function updateLapInfo() {
