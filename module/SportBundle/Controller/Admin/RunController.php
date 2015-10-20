@@ -127,7 +127,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                     $newRunner = new Runner(
                         $academic->getFirstName(),
                         $academic->getLastName(),
-                        $group->getAcadmicYear(),
+                        $group->getAcademicYear(),
                         $academic,
                         $group,
                         $department
