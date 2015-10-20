@@ -504,7 +504,11 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     $teamData = $team;
                 }
             }
-
+            $result = array(
+                'time' => $resultPage['time'],
+                'status' => $resultPage['status'],
+                'message' => $resultPage['message'],
+            );
             if (null !== $teamData) {
                 $difference = 0;
                 if (null !== $currentPlace) {
@@ -517,18 +521,20 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                     }
                 }
 
-                $lapsPerSecond = 1 / ($resultPage['lap'] / ($teamData->speed / 3.6));
+                $lapsPerSecond = 1 / $resultPage['lap'] * ($teamData->speed / 3.6);
 
-                return array(
+                $result['data'] = array(
                     'lapLength' => $resultPage['lap'],
                     'nbLaps' => $teamData->laps,
-                    'position' => round($teamData->position * 100),
+                    'position' => $teamData->position,
                     'speed' => round($teamData->speed, 2),
                     'lapsPerSecond' => round($lapsPerSecond, 4),
                     'difference' => $difference,
                     'place' => $currentPlace,
                 );
             }
+
+            return $result;
         }
 
         return null;
