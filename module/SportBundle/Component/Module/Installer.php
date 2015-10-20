@@ -69,7 +69,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
                 ),
             ),
             array(
-                'name' => 'Eerstejaars Burgies A-groep',
+                'name' => 'Eerstejaars Burgies B-groep',
                 'happyHours' => array(
                     '0508',
                 ),
