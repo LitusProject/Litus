@@ -518,7 +518,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                         $difference = round(($firstData->laps + $firstData->position) - ($teamData->laps + $teamData->position), 2);
                     } else {
                         $secondData = $resultPage['teams'][1];
-                        $difference = round(($teamData->laps + $teamData->position) - ($secondData->laps + $teamData->position), 2);
+                        $difference = round(($teamData->laps + $teamData->position) - ($secondData->laps + $secondData->position), 2);
                     }
                 }
 
