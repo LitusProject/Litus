@@ -36,7 +36,7 @@ class SalesSession extends EntityRepository
         $resultSet = $query->select('s')
             ->from('ShopBundle\Entity\SalesSession', 's')
             ->where(
-                $query->expr()->gte('s.startDate', ':now')
+                $query->expr()->gte('s.endDate', ':now')
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
@@ -54,7 +54,7 @@ class SalesSession extends EntityRepository
         $resultSet = $query->select('s')
             ->from('ShopBundle\Entity\SalesSession', 's')
             ->where(
-                $query->expr()->lt('s.startDate', ':now')
+                $query->expr()->lt('s.endDate', ':now')
             )
             ->orderBy('s.startDate', 'ASC')
             ->setParameter('now', new DateTime())
