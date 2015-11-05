@@ -97,7 +97,7 @@
                         <span id="currentLapTime">N/A</span>
                         <span class="show-on-official-data">,
                             <span id="currentLapDistance">N/A</span>,
-                            <span id="officialSpeed">N/A</span> km/h
+                            <span id="officialSpeed">N/A</span> m/s
                         </span>
 
                         <div class="show-on-official-data progress progress-striped active" style="margin-bottom: 0;">
@@ -309,7 +309,7 @@
                 $('#officialSpeed').html(officialData ? officialData.speed : 'N/A');
 
                 if (officialData)
-                    $('#currentLapInfo .progress-bar').css('width', (officialData.lapsPerSecond * lapTime * 100) + '%');
+                    $('#currentLapInfo .progress-bar').css('width', (officialData.lapsPerSecond * lapTime * 100 * 3.6) + '%');
 
                 foundCurrent = true;
             } else if (lap.state == 'previous') {
@@ -386,7 +386,7 @@
         var position = $('#currentLapInfo').data('position');
         var lapLength = $('#currentLapInfo').data('lapLength');
         var lapsPerSecond = $('#currentLapInfo').data('lapsPerSecond');
-        var currentPosition = lapTime * lapsPerSecond;
+        var currentPosition = lapTime * lapsPerSecond * 3.6;
         if (currentPosition > 1)
             currentPosition = 1;
 

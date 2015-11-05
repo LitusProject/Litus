@@ -65,7 +65,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             return null;
         }
 
-        $fileContents = @file_get_contents('data/cache/' . md5('run_result_page'));
+        $fileContents = @file_get_contents('data/cache/run-' . md5('run_result_page'));
 
         $resultPage = null;
         if (false !== $fileContents) {
@@ -81,7 +81,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             $currentPlace = null;
             $teamData = null;
             foreach ($resultPage['teams'] as $place => $team) {
-                if ($team[0] == $teamId) {
+                if ($team->nb == $teamId) {
                     $currentPlace = $place;
                     $teamData = $team;
                 }
@@ -91,13 +91,13 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 $behind = 0;
                 if (null !== $currentPlace && $currentPlace > 0) {
                     $firstData = $resultPage['teams'][0];
-                    $behind = round(($firstData[2] + $firstData[3]) - ($teamData[2] + $teamData[3]), 2);
+                    $behind = round(($firstData->laps + $firstData->position) - ($teamData->laps + $teamData->position), 2);
                 }
 
                 $returnArray = array(
-                    'nbLaps' => $teamData[2],
-                    'position' => round($teamData[3] * 100),
-                    'speed' => round($teamData[4], 2),
+                    'nbLaps' => $teamData->laps,
+                    'position' => round($teamData->position * 100),
+                    'speed' => round($teamData->speed, 2),
                     'behind' => $behind,
                     'currentLap' => $this->getEntityManager()
                         ->getRepository('SportBundle\Entity\Lap')
