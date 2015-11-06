@@ -179,6 +179,7 @@ class Company
         'it' => 'IT',
         'metal' => 'Metal',
         'telecom' => 'Telecom',
+        'nonprofit' => 'Non-Profit',
     );
 
     public function __construct()
