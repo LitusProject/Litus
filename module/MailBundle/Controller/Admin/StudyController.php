@@ -52,8 +52,6 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                 }
 
                 $addresses = $this->getAddresses($formData['studies'], $groups, $formData['bcc']);
-                print_r($formdata);
-                exit();
 
                 if ('' == $formData['selected_message']['stored_message']) {
                     $body = $formData['compose_message']['message'];
