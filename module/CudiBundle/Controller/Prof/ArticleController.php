@@ -338,9 +338,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     {
         $id = $id === null ? $this->getParam('id', 0) : $id;
 
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
+        $article = null;
+
+        if ($this->hasAccess()->toResourceAction('cudi_prof_subject', 'all')) {
+            $article = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Article')
+                ->findOneById($id);
+        } else {
+            $article = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Article')
+                ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
+        }
 
         if (!($article instanceof Article)) {
             $this->flashMessenger()->error(
@@ -371,13 +379,24 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             return;
         }
 
-        $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
-            ->findOneBySubjectIdAndProfAndAcademicYear(
-                $this->getParam('id', 0),
-                $this->getAuthentication()->getPersonObject(),
-                $academicYear
-            );
+        $mapping = null;
+
+        if ($this->hasAccess()->toResourceAction('cudi_prof_subject', 'all')) {
+            $mapping = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
+                ->findOneBySubjectIdAndAcademicYear(
+                    $this->getParam('id', 0),
+                    $academicYear
+                );
+        } else {
+            $mapping = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
+                ->findOneBySubjectIdAndProfAndAcademicYear(
+                    $this->getParam('id', 0),
+                    $this->getAuthentication()->getPersonObject(),
+                    $academicYear
+                );
+        }
 
         if (!($mapping instanceof ProfMap)) {
             $this->flashMessenger()->error(
