@@ -130,7 +130,7 @@ return array(
             'add', 'delete', 'typeahead',
         ),
         'cudi_prof_subject' => array(
-            'manage', 'subject', 'typeahead',
+            'all', 'manage', 'subject', 'typeahead',
         ),
         'cudi_prof_help' => array(
             'index',
