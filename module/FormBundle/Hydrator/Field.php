@@ -84,7 +84,7 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
         } elseif ($object instanceof TimeslotFieldEntity) {
             $timeslotData = $data['timeslot_form'];
             $startDate = self::loadDateTime($timeslotData['start_date']);
-            $endDate = self::loadDateTime($timeslotData['start_date']);
+            $endDate = self::loadDateTime($timeslotData['end_date']);
 
             if (!$startDate || !$endDate) {
                 throw new \RuntimeException('Timeslot has invalid dates.');
