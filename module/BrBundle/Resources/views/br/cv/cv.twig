@@ -56,38 +56,74 @@
 
 {% block content_script %}
     <script type="text/javascript">
-        var currentCount = 0;
+        var languageCount = 0;
+        var experienceCount = 0;
         $(document).ready(function () {
-            while ($('input[name="languages[' + (currentCount) + '][language_name]"]').length) {
-                currentCount++;
+            while ($('input[name="languages[' + (languageCount) + '][language_name]"]').length) {
+                languageCount++;
             }
 
-            if (currentCount == 0 || $('input[name="languages[' + (currentCount - 1) + '][language_name]"]').val().length > 0) {
+            if (languageCount == 0 || $('input[name="languages[' + (languageCount - 1) + '][language_name]"]').val().length > 0) {
                 addLanguage();
             } else {
-                $('input[name="languages[' + (currentCount - 1) + '][language_name]"]').keyup(triggerKeyUp);
+                $('input[name="languages[' + (languageCount - 1) + '][language_name]"]').keyup(triggerKeyUpLanguage);
+            }
+
+            console.log($('input[name="capabilities[experiences][' + (experienceCount) + '][experience_function]"]'))
+            while ($('input[name="capabilities[experiences][' + (experienceCount) + '][experience_function]"]').length) {
+                experienceCount++;
+            }
+
+            if (experienceCount == 0 || $('input[name="capabilities[experiences][' + (experienceCount - 1) + '][experience_function]"]').val().length > 0) {
+                addExperience();
+            } else {
+                $('input[name="capabilities[experiences][' + (experienceCount - 1) + '][experience_function]"]').keyup(triggerKeyUpExperience);
             }
         });
 
-        function triggerKeyUp() {
+        function triggerKeyUpLanguage() {
             if ($(this).val().length > 0) {
                 $(this).unbind('keyup');
                 addLanguage();
             }
         }
 
+        function triggerKeyUpExperience() {
+            if ($(this).val().length > 0) {
+                $(this).unbind('keyup');
+                addExperience();
+            }
+        }
+
         function addLanguage() {
-            if (currentCount >= 5)
+            if (languageCount >= 5)
                 return;
             var template = $('#data-template-languages').data('template');
-            template = template.replace(/__index__/g, currentCount);
-            currentCount++;
+            template = template.replace(/__index__/g, languageCount);
+            languageCount++;
 
             $('form > fieldset#languages').append(template);
-            $('fieldset[name="languages[' + (currentCount - 1) + ']"] .count').each(function() {
+            $('fieldset[name="languages[' + (languageCount - 1) + ']"] .count').each(function() {
                 $(this).fieldCount()
             });
-            $('input[name="languages[' + (currentCount - 1) + '][language_name]"]').keyup(triggerKeyUp);
+            $('input[name="languages[' + (languageCount - 1) + '][language_name]"]').keyup(triggerKeyUpLanguage);
+        }
+
+        function addExperience() {
+            if (experienceCount >= 5)
+                return;
+            var template = $('#data-template-capabilities\\[experiences\\]').data('template');
+            template = template.replace(/__index__/g, experienceCount);
+            experienceCount++;
+
+            $('form > fieldset > fieldset#capabilities\\[experiences\\]').append(template);
+            $('fieldset[name="capabilities[experiences][' + (experienceCount - 1) + ']"] .count').each(function() {
+                $(this).fieldCount()
+            });
+            $('input[name="capabilities[experiences][' + (experienceCount - 1) + '][experience_function]"]').keyup(triggerKeyUpExperience);
+            if (experienceCount == 1) {
+                $('form > fieldset > fieldset > fieldset#capabilities\\[experiences\\] > legend').hide();
+            }
         }
     </script>
 {% endblock %}

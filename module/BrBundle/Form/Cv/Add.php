@@ -333,30 +333,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'       => 'textarea',
+                    'type'       => 'collection',
                     'name'       => 'experiences',
-                    'label'      => 'Experiences, Projects (e.g. Internship, Holiday Jobs)',
-                    'required'   => true,
-                    'attributes' => array(
-                        'row'        => 3,
-                        'class'      => 'count',
-                        'data-count' => 425,
-                        'style'      => 'resize: none;',
-                    ),
+                    'label'      => 'Experiences, Projects (e.g. Internship, Holiday Jobs) (Max 5)',
                     'options'    => array(
-                        'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'field_length',
-                                    'options' => array(
-                                        'max_length' => 425,
-                                        'new_line_length' => 75,
-                                    ),
-                                ),
-                            ),
+                        'count'                  => 0,
+                        'should_create_template' => true,
+                        'allow_add'              => true,
+                        'target_element'         => array(
+                            'type' => 'br_cv_experience',
                         ),
                     ),
                 ),

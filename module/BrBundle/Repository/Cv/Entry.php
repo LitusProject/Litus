@@ -20,6 +20,7 @@ namespace BrBundle\Repository\Cv;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person\Academic,
     SyllabusBundle\Entity\Group,
     SyllabusBundle\Entity\Study;
 
@@ -47,6 +48,29 @@ class Entry extends EntityRepository
             ->orderBy('e.lastName', 'ASC')
             ->addOrderBy('e.firstName', 'ASC')
             ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  AcademicYear        $academicYear
+     * @param  Academic            $academic
+     * @return \Doctrine\ORM\Query
+     */
+    public function findOneByAcademicAndAcademicYear(AcademicYear $academicYear, Academic $academic)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('e')
+            ->from('BrBundle\Entity\Cv\Entry', 'e')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('e.year', ':year')
+                    $query->expr()->eq('e.academic', ':academic')
+            )
+            ->setParameter('year', $academicYear)
+            ->setParameter('academic', $academic->getId())
+            ->getQuery()
+            ->getOneOrNullResult();
 
         return $resultSet;
     }
