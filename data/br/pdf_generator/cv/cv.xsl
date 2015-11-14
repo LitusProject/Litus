@@ -169,6 +169,49 @@
         </fo:block>
     </xsl:template>
 
+    <!-- The Carreer table -->
+    <xsl:template match="sec-special-career">
+        <fo:block text-align="left">
+            <fo:table start-indent="1mm">
+
+                <fo:table-column column-width="80mm"/>
+                <fo:table-column column-width="50mm"/>
+                <fo:table-column column-width="50mm"/>
+
+                <fo:table-header>
+                    <fo:table-row>
+                        <fo:table-cell>
+                            <fo:block font-style="italic"><xsl:value-of select="@InterestHeader"/></fo:block>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block font-style="italic"><xsl:value-of select="@EuropeHeader"/></fo:block>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block font-style="italic"><xsl:value-of select="@WorldHeader"/></fo:block>
+                        </fo:table-cell>
+                    </fo:table-row>
+                </fo:table-header>
+
+                <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@InterestContent"/></fo:block>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@EuropeContent"/></fo:block>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@WorldContent"/></fo:block>
+                        </fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+
+            </fo:table>
+        </fo:block>
+    </xsl:template>
+
+
+
     <!-- The languages table -->
     <xsl:template match="sec-special-languages">
         <fo:block>
@@ -268,7 +311,6 @@
 
         </fo:block>
     </xsl:template>
-
 
     <!-- A generic subsection -->
     <xsl:template match="subsection">
