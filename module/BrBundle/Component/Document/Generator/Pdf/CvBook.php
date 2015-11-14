@@ -133,6 +133,12 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $picturePath = 'public' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('common.profile_path');
+        $phoneNumber =$cv->getPhoneNumber();
+        
+        $monthsEnglish = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' );
+        $monthsDutch = array('Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December' );
+        $birthday = $cv->getBirthDay()->format('d F Y');
+        $birthday = str_ireplace($monthsEnglish, $monthsDutch, $birthday);
 
         return new Object(
             'cv',
@@ -140,9 +146,9 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 'id'        => $cv->getId(),
                 'firstname' => $cv->getFirstName(),
                 'lastname'  => $cv->getLastName(),
-                'birthday'  => $cv->getBirthDay()->format('d/m/Y'),
+                'birthday'  => $birthday,
                 'email'     => $cv->getEmail(),
-                'phone'     => $cv->getPhoneNumber(),
+                'phone'     => substr($phoneNumber, 0,3)." (0)".substr($phoneNumber, 3,3)." ".substr($phoneNumber, 6,2)." ".substr($phoneNumber, 8,2)." ".substr($phoneNumber, 10,2),
                 'img'       => $picturePath . '/' . $cv->getAcademic()->getPhotoPath(),
             ),
             $this->getSections($cv)
