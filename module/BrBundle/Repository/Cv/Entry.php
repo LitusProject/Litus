@@ -66,6 +66,7 @@ class Entry extends EntityRepository
                 $query->expr()->andX(
                     $query->expr()->eq('e.year', ':year'),
                     $query->expr()->eq('e.academic', ':academic')
+                )
             )
             ->setParameter('year', $academicYear)
             ->setParameter('academic', $academic->getId())

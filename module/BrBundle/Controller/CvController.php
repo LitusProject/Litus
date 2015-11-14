@@ -75,7 +75,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
         $entry = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findOneByAcademicAndAcademicYear($this->getCurrentAcademicYear, $person);
+            ->findOneByAcademicAndAcademicYear($this->getCurrentAcademicYear(), $person);
 
         if ($entry !== null) {
             $this->redirect()->toRoute(
@@ -183,7 +183,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
         $entry = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findOneByAcademicAndAcademicYear($this->getCurrentAcademicYear, $person);
+            ->findOneByAcademicAndAcademicYear($this->getCurrentAcademicYear(), $person);
 
         if (null === $entry) {
             $this->redirect()->toRoute(
