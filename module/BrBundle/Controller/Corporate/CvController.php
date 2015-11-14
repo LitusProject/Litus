@@ -132,7 +132,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         return new ViewModel(
             array(
                 'academicYear' => $academicYear,
-                'entries' => array($entries[0]),
+                'entries' => $entries,
                 'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
