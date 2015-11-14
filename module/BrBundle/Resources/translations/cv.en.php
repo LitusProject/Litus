@@ -98,4 +98,10 @@ return array(
     'Monthly trips' => 'Monthly trips',
     'Annual trips' => 'Annual trips',
     'No' => 'No',
+
+    'Notions' => 'Notions',
+    'Basis' => 'Basis',
+    'Good' => 'Good',
+    'Very good' => 'Very good',
+    'Mother tongue' => 'Mother tongue',
 );

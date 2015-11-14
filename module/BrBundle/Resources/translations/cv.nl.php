@@ -97,4 +97,10 @@ return array(
     'Monthly trips' => 'Maandelijkse trips',
     'Annual trips' => 'Jaarlijkse trips',
     'No' => 'Neen',
+
+    'Notions' => 'Noties',
+    'Basis' => 'Basis',
+    'Good' => 'Goed',
+    'Very good' => 'Zeer goed',
+    'Mother tongue' => 'Moedertaal',
 );
