@@ -18,7 +18,8 @@
 
 namespace BrBundle\Hydrator\Cv;
 
-use BrBundle\Entity\Cv\Language as CvLanguageEntity,
+use BrBundle\Entity\Cv\Experience as CvExperienceEntity,
+    BrBundle\Entity\Cv\Language as CvLanguageEntity,
     CommonBundle\Entity\General\Address as AddressEntity;
 /**
  * This hydrator hydrates/extracts Cv entry data.
@@ -57,7 +58,6 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             ->setErasmusLocation($data['erasmus']['location'])
             ->setLanguageExtra($data['languages']['extra'])
             ->setComputerSkills($data['capabilities']['computer_skills'])
-            ->setExperiences($data['capabilities']['experiences'])
             ->setThesisSummary($data['thesis']['summary'])
             ->setFutureInterest($data['future']['field_of_interest'])
             ->setMobilityEurope($data['future']['mobility_europe'])
@@ -79,7 +79,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             ->setCity($person->getSecondaryAddress()->getCity())
             ->setCountry($person->getSecondaryAddress()->getCountryCode());
 
-        $languages = $this->getEntityManager()
+        /*$languages = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Language')
             ->findByEntry($object);
 
@@ -102,6 +102,34 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
 
             $this->getEntityManager()->persist($language);
         }
+
+        $experiences = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Cv\Experience')
+            ->findByEntry($object);
+
+        foreach ($experiences as $experience) {
+            $this->getEntityManager()->remove($experience);
+        }
+        $this->getEntityManager()->flush();
+
+        foreach ($data['capabilities']['experiences'] as $experienceData) {
+            if (!isset($experienceData['experience_function']) || '' === $experienceData['experience_function']) {
+                continue;
+            }
+
+            print_r($experienceData);
+
+            $experience = new CvExperienceEntity(
+                $object,
+                $experienceData['experience_type'],
+                $experienceData['experience_function'],
+                $experienceData['experience_explanation'],
+                $experienceData['experience_start'],
+                $experienceData['experience_end']
+            );
+
+            $this->getEntityManager()->persist($experience);
+        }*/
 
         return $object;
     }
