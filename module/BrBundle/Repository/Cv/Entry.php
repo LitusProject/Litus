@@ -64,7 +64,7 @@ class Entry extends EntityRepository
             ->from('BrBundle\Entity\Cv\Entry', 'e')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('e.year', ':year')
+                    $query->expr()->eq('e.year', ':year'),
                     $query->expr()->eq('e.academic', ':academic')
             )
             ->setParameter('year', $academicYear)
