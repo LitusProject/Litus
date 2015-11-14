@@ -92,4 +92,10 @@ return array(
     'Table of Contents' => 'Table of Contents',
     'Foreword' => 'Foreword',
     'Save Changes' => 'Save Changes',
+
+    'Yes please' => 'Yes please',
+    'If necessary' => 'If necessary',
+    'Monthly trips' => 'Monthly trips',
+    'Annual trips' => 'Annual trips',
+    'No' => 'No',
 );

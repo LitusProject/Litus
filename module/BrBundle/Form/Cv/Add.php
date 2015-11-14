@@ -40,6 +40,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     protected $academicYear;
 
+    /**
+     * @var array The possible mobility answers.
+     */
+    public static $mobilityAnswers = array(
+        'Yes please' => 'Yes please',
+        'If necessary' => 'If necessary',
+        'Monthly trips' => 'Monthly trips',
+        'Annual trips' => 'Annual trips',
+        'No' => 'No',
+    );
+
     public function init()
     {
         parent::init();
@@ -416,55 +427,23 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'       => 'text',
+                    'type'       => 'select',
                     'name'       => 'mobility_europe',
                     'label'      => 'Mobility Europe (Would you be able to travel within Europe? How often?)',
                     'required'   => true,
+                    'value'      => 'No',
                     'attributes' => array(
-                        'class'      => 'count',
-                        'data-count' => 50,
-                    ),
-                    'options'    => array(
-                        'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'field_length',
-                                    'options' => array(
-                                        'max_length' => 50,
-                                        'new_line_length' => 75,
-                                    ),
-                                ),
-                            ),
-                        ),
+                        'options' => self::$mobilityAnswers,
                     ),
                 ),
                 array(
-                    'type'       => 'text',
+                    'type'       => 'select',
                     'name'       => 'mobility_world',
                     'label'      => 'Mobility World (Would you be able to travel around the world? How often?)',
                     'required'   => true,
+                    'value'      => 'No',
                     'attributes' => array(
-                        'class'      => 'count',
-                        'data-count' => 50,
-                    ),
-                    'options'    => array(
-                        'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'field_length',
-                                    'options' => array(
-                                        'max_length' => 50,
-                                        'new_line_length' => 75,
-                                    ),
-                                ),
-                            ),
-                        ),
+                        'options' => self::$mobilityAnswers,
                     ),
                 ),
                 array(
