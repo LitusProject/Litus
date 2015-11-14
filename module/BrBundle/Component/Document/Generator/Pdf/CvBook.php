@@ -315,38 +315,18 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             ),
             array(
                 new Object(
-                    'subsection',
+                    'sec-special-career',
                     array(
-                        'title' => $this->translator->translate('Future Interest'),
+                        'InterestHeader' => $this->translator->translate('Future Interest'),
+                        'EuropeHeader' => $this->translator->translate('Mobility in Europe'),
+                        'WorldHeader' => $this->translator->translate('Mobility in the World'),
+                        'InterestContent' => $cv->getFutureInterest(),
+                        'EuropeContent' => $cv->getMobilityEurope(),
+                        'WorldContent' => $cv->getMobilityWorld(),
+                        ),
+                    null
                     ),
-                    new Object(
-                        'content',
-                        null,
-                        $cv->getFutureInterest()
-                    )
-                ),
-                new Object(
-                    'subsection',
-                    array(
-                        'title' => $this->translator->translate('Mobility in Europe'),
-                    ),
-                    new Object(
-                        'content',
-                        null,
-                        $cv->getMobilityEurope()
-                    )
-                ),
-                new Object(
-                    'subsection',
-                    array(
-                        'title' => $this->translator->translate('Mobility in the World'),
-                    ),
-                    new Object(
-                        'content',
-                        null,
-                        $cv->getMobilityWorld()
-                    )
-                ),
+
                 new Object(
                     'subsection',
                     array(
