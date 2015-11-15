@@ -252,6 +252,19 @@ class Util
                 )
             );
         } else {
+            $index = 1;
+            $experiences = array();
+            foreach ($cv->getExperiences() as $experience) {
+                $tmp = array(
+                    'experience_type' . $index      => $translator->translate($experience->getType()),
+                    'experience_function' . $index      => $experience->getFunction(),
+                    'experience_start' . $index   => strval($experience->getStartYear()),
+                    'experience_end' . $index   => strval($experience->getEndYear()),
+                );
+                $experiences = array_merge($experiences,$tmp);
+                $index++;
+            }
+
             $result[] = new Object(
                 'section',
                 array(
@@ -261,23 +274,23 @@ class Util
                     new Object(
                         'subsection',
                         array(
+                            'title' => $translator->translate('Experiences'),
+                        ),
+                        new Object(
+                            'sec-special-experiences',
+                            $experiences,
+                            null
+                        )
+                    ),
+                    new Object(
+                        'subsection',
+                        array(
                             'title' => $translator->translate('Computer Skills'),
                         ),
                         new Object(
                             'content',
                             null,
                             $cv->getComputerSkills()
-                        )
-                    ),
-                    new Object(
-                        'subsection',
-                        array(
-                            'title' => $translator->translate('Experiences'),
-                        ),
-                        new Object(
-                            'content',
-                            null,
-                            null
                         )
                     ),
                 )

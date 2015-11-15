@@ -315,6 +315,92 @@
         </fo:block>
     </xsl:template>
 
+    <!-- The experiences table -->
+    <xsl:template match="sec-special-experiences">
+        <fo:block text-align="left">
+
+            <fo:table margin-right="0mm">
+
+                <fo:table-column column-width="20mm"/>
+                <fo:table-column column-width="120mm"/>
+                <fo:table-column column-width="25mm"/>
+
+                <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@experience_type1"/></fo:block>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@experience_function1"/></fo:block>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block><xsl:value-of select="@experience_start1"/> - <xsl:value-of select="@experience_end1"/></fo:block>
+                        </fo:table-cell>
+                    </fo:table-row>
+
+                    <xsl:if test="string-length(@experience_function2)!=0">
+                        <fo:table-row>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@experience_type2"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@experience_function2"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@experience_start2"/> - <xsl:value-of select="@experience_end2"/></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </xsl:if>
+
+                    <xsl:if test="string-length(@experience_function3)!=0">
+                        <fo:table-row>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@experience_type3"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@experience_function3"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@experience_start3"/> - <xsl:value-of select="@experience_end3"/></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </xsl:if>
+
+                    <xsl:if test="string-length(@experience_function4)!=0">
+                        <fo:table-row>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@experience_type4"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@experience_function4"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@experience_start4"/> - <xsl:value-of select="@experience_end4"/></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </xsl:if>
+
+                    <xsl:if test="string-length(@experience_function5)!=0">
+                        <fo:table-row>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@experience_type5"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@experience_function5"/></fo:block>
+                            </fo:table-cell>
+                            <fo:table-cell>
+                                <fo:block><xsl:value-of select="@experience_start5"/> - <xsl:value-of select="@experience_end5"/></fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </xsl:if>
+
+                </fo:table-body>
+
+            </fo:table>
+
+        </fo:block>
+    </xsl:template>
+
     <!-- A generic subsection -->
     <xsl:template match="subsection">
 
@@ -325,6 +411,7 @@
                 <fo:block>
                     <!-- Subsection direct content -->
                     <xsl:value-of select="content"/>
+                    <xsl:apply-templates select="sec-special-experiences"/>
                 </fo:block>
             </fo:block>
 
