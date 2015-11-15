@@ -373,7 +373,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'rows'        => 5,
                         'class'      => 'count',
-                        'data-count' => 300,
+                        'data-count' => 250,
                         'style'      => 'resize: none;',
                     ),
                     'options'    => array(
@@ -385,7 +385,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name' => 'field_length',
                                     'options' => array(
-                                        'max_length' => 300,
+                                        'max_length' => 250,
                                         'new_line_length' => 75,
                                     ),
                                 ),

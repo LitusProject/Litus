@@ -142,6 +142,17 @@ class Util
                     ),
                     null
                 ),
+                new Object(
+                    'subsection',
+                    array(
+                        'title' => $translator->translate('Additional Diplomas'),
+                    ),
+                    new Object(
+                        'content',
+                        null,
+                        $cv->getAdditionalDiplomas()
+                    )
+                ),
             )
         );
 
