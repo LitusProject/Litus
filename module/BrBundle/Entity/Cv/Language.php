@@ -36,6 +36,11 @@ class Language
         'none' => 'None_skills',
         'active' => 'Active (Writing)',
         'passive' => 'Passive (Reading)',
+        'Notions' => 'Notions',
+        'Basis' => 'Basis',
+        'Good' => 'Good',
+        'Very good' => 'Very good',
+        'Mother tongue' => 'Mother tongue',
     );
 
     /**
@@ -45,6 +50,11 @@ class Language
         'none' => 'None_skills',
         'active' => 'Active (Speaking)',
         'passive' => 'Passive (Listening)',
+        'Notions' => 'Notions',
+        'Basis' => 'Basis',
+        'Good' => 'Good',
+        'Very good' => 'Very good',
+        'Mother tongue' => 'Mother tongue',
     );
 
     /**
