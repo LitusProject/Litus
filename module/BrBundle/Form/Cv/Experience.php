@@ -76,33 +76,6 @@ class Experience extends Fieldset
         ));
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'experience_explanation',
-            'label'      => 'Explanation',
-            'required'   => true,
-            'attributes' => array(
-                'class'      => 'count',
-                'data-count' => 75,
-            ),
-            'options'    => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'field_length',
-                            'options' => array(
-                                'max_length' => 75,
-                                'new_line_length' => 75,
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
-        $this->add(array(
             'type'       => 'select',
             'name'       => 'experience_start',
             'label'      => 'Start',

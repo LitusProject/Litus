@@ -60,13 +60,6 @@ class Experience
     private $function;
 
     /**
-     * @var string The experience explanation.
-     *
-     * @ORM\Column(type="text", nullable = true)
-     */
-    private $explanation;
-
-    /**
      * @var string The experience start year.
      *
      * @ORM\Column(type="integer", nullable = true)
@@ -84,16 +77,14 @@ class Experience
      * @param Entry  $entry
      * @param string $type
      * @param string $function
-     * @param string $explanation
      * @param string $startYear
      * @param string $startYear
      */
-    public function __construct(Entry $entry, $function, $type = null, $explanation = null, $startYear = null, $endYear = null)
+    public function __construct(Entry $entry, $function, $type = null,  $startYear = null, $endYear = null)
     {
         $this->entry = $entry;
         $this->type = $type;
         $this->function = $function;
-        $this->explanation = $explanation;
         $this->startYear = $startYear;
         $this->endYear = $endYear;
     }
@@ -128,14 +119,6 @@ class Experience
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * @return string The experience explanation.
-     */
-    public function getExplanation()
-    {
-        return $this->explanation;
     }
 
     /**

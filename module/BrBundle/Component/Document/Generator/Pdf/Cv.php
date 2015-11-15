@@ -216,36 +216,69 @@ class Cv extends \CommonBundle\Component\Document\Generator\Pdf
             )
         );
 
-        $result[] = new Object(
-            'section',
-            array(
-                'title' => $this->translator->translate('Capabilities'),
-            ),
-            array(
-                new Object(
-                    'subsection',
-                    array(
-                        'title' => $this->translator->translate('Computer Skills'),
+        if ($cv->hasOldExperiences()) {
+            $result[] = new Object(
+                'section',
+                array(
+                    'title' => $this->translator->translate('Capabilities'),
+                ),
+                array(
+                    new Object(
+                        'subsection',
+                        array(
+                            'title' => $this->translator->translate('Computer Skills'),
+                        ),
+                        new Object(
+                            'content',
+                            null,
+                            $cv->getComputerSkills()
+                        )
                     ),
                     new Object(
-                        'content',
-                        null,
-                        $cv->getComputerSkills()
-                    )
+                        'subsection',
+                        array(
+                            'title' => $this->translator->translate('Experiences'),
+                        ),
+                        new Object(
+                            'content',
+                            null,
+                            $cv->getExperiences()
+                        )
+                    ),
+                )
+            );
+        } else {
+            $result[] = new Object(
+                'section',
+                array(
+                    'title' => $this->translator->translate('Capabilities'),
                 ),
-                new Object(
-                    'subsection',
-                    array(
-                        'title' => $this->translator->translate('Experiences'),
+                array(
+                    new Object(
+                        'subsection',
+                        array(
+                            'title' => $this->translator->translate('Computer Skills'),
+                        ),
+                        new Object(
+                            'content',
+                            null,
+                            $cv->getComputerSkills()
+                        )
                     ),
                     new Object(
-                        'content',
-                        null,
-                        $cv->getExperiences()
-                    )
-                ),
-            )
-        );
+                        'subsection',
+                        array(
+                            'title' => $this->translator->translate('Experiences'),
+                        ),
+                        new Object(
+                            'content',
+                            null,
+                            null
+                        )
+                    ),
+                )
+            );
+        }
 
         $result[] = new Object(
             'section',

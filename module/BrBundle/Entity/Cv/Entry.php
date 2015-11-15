@@ -777,7 +777,7 @@ class Entry
             return false;
         }
 
-        if ($experiences[0]->getType() !== null || $experiences[0]->getStartYear() !== null || $experiences[0]->getEndYear() !== null || $experiences[0]->getExplanation() !== null ) {
+        if ($experiences[0]->getType() !== null || $experiences[0]->getStartYear() !== null || $experiences[0]->getEndYear() !== null) {
             return false;
         }
 

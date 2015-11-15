@@ -79,7 +79,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             ->setCity($person->getSecondaryAddress()->getCity())
             ->setCountry($person->getSecondaryAddress()->getCountryCode());
 
-        /*$languages = $this->getEntityManager()
+        $languages = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Language')
             ->findByEntry($object);
 
@@ -123,13 +123,12 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
                 $object,
                 $experienceData['experience_type'],
                 $experienceData['experience_function'],
-                $experienceData['experience_explanation'],
                 $experienceData['experience_start'],
                 $experienceData['experience_end']
             );
 
             $this->getEntityManager()->persist($experience);
-        }*/
+        }
 
         return $object;
     }
@@ -164,8 +163,16 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             );
         }
 
+        foreach ($object->getExperiences() as $experience) {
+            $data['capabilities']['experiences'][] = array(
+                'experience_type' => $experience->getType(),
+                'experience_function' => $experience->getFunction(),
+                'experience_start' => $experience->getStartYear(),
+                'experience_end' => $experience->getEndYear(),
+            );
+        }
+
         $data['capabilities']['computer_skills'] = $object->getComputerSkills();
-        $data['capabilities']['experiences'] = $object->getExperiences();
 
         $data['thesis']['summary'] = $object->getThesisSummary();
 
