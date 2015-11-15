@@ -151,7 +151,22 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 'phone'     => substr($phoneNumber, 0,3)." (0)".substr($phoneNumber, 3,3)." ".substr($phoneNumber, 6,2)." ".substr($phoneNumber, 8,2)." ".substr($phoneNumber, 10,2),
                 'img'       => $picturePath . '/' . $cv->getAcademic()->getPhotoPath(),
             ),
-            $this->getSections($cv)
+            array_merge(
+                array(
+                    new Object(
+                        'subsection',
+                        array(
+                            'title' => $this->translator->translate('About Myself'),
+                        ),
+                        new Object(
+                            'content',
+                            null,
+                            $cv->getAbout()
+                        )
+                    ),
+                ),
+                $this->getSections($cv)
+            )            
         );
     }
 
@@ -272,23 +287,23 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
                 new Object(
                     'subsection',
                     array(
-                        'title' => $this->translator->translate('Computer Skills'),
-                    ),
-                    new Object(
-                        'content',
-                        null,
-                        $cv->getComputerSkills()
-                    )
-                ),
-                new Object(
-                    'subsection',
-                    array(
                         'title' => $this->translator->translate('Experiences'),
                     ),
                     new Object(
                         'content',
                         null,
                         $cv->getExperiences()
+                    )
+                ),
+                new Object(
+                    'subsection',
+                    array(
+                        'title' => $this->translator->translate('Computer Skills'),
+                    ),
+                    new Object(
+                        'content',
+                        null,
+                        $cv->getComputerSkills()
                     )
                 ),
             )
@@ -344,32 +359,13 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
         $result[] = new Object(
             'section',
             array(
-                'title' => $this->translator->translate('Personal'),
-            ),
-            array(
-                new Object(
-                    'subsection',
-                    array(
-                        'title' => $this->translator->translate('Hobbies'),
-                    ),
-                    new Object(
-                        'content',
-                        null,
-                        $cv->getHobbies()
-                    )
-                ),
-                new Object(
-                    'subsection',
-                    array(
-                        'title' => $this->translator->translate('About Myself'),
-                    ),
-                    new Object(
-                        'content',
-                        null,
-                        $cv->getAbout()
-                    )
-                ),
-            )
+                'title' => $this->translator->translate('Hobbies'),
+            ),            
+            new Object(
+                'content',
+                null,
+                $cv->getHobbies()
+            )              
         );
 
         return $result;

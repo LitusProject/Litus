@@ -21,7 +21,7 @@
             <xsl:call-template name="basicinfo"/>
         </fo:block>
 
-        <fo:block padding-top="-5mm">
+        <fo:block>
             <xsl:apply-templates select="section"/>
         </fo:block>
     </xsl:template>
@@ -56,8 +56,11 @@
                     </fo:table-cell>
                 </fo:table-row>
             </fo:table-body>
-
         </fo:table>
+
+        <fo:block>
+            <xsl:apply-templates select="subsection"/>
+        </fo:block>
 
     </xsl:template>
 
