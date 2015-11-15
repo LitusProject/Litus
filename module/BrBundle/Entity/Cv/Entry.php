@@ -210,9 +210,10 @@ class Entry
     private $computerSkills;
 
     /**
-     * @var string Experiences.
+     * @var \Doctrine\Common\Collections\ArrayCollection The experiences added to this cv
      *
-     * @ORM\Column(type="text")
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Cv\Experience", mappedBy="entry", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
      */
     private $experiences;
 
@@ -747,25 +748,40 @@ class Entry
 
     /**
      * Retrieves the experiences of this entry.
+     * If the entry has old experience return string.
      *
-     * @return string
+     * @return array|string
      */
     public function getExperiences()
     {
-        return $this->experiences;
+        if ($this->hasOldExperiences()) {
+            $experiences = $this->experiences->toArray();
+
+            return $experiences[0]->getFunction();
+        } else {
+            return $this->experiences->toArray();
+        }
     }
 
     /**
-     * Changes the experiences of this cv entry to the given value.
+     * Check if this entry has a single experience with only a function filled in.
+     * This experience is a result of the old structure of the CV.
      *
-     * @param  string $experiences The new value
-     * @return Entry
+     * @return boolean
      */
-    public function setExperiences($experiences)
+    public function hasOldExperiences()
     {
-        $this->experiences = $experiences;
+        $experiences = $this->experiences->toArray();
 
-        return $this;
+        if (count($experiences) != 1) {
+            return false;
+        }
+
+        if ($experiences[0]->getType() !== null || $experiences[0]->getStartYear() !== null || $experiences[0]->getEndYear() !== null) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

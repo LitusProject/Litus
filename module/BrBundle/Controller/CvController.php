@@ -18,9 +18,12 @@
 
 namespace BrBundle\Controller;
 
-use BrBundle\Entity\Cv\Entry as CvEntry,
+use BrBundle\Component\Document\Generator\Pdf\Cv as CvGenerator,
+    BrBundle\Entity\Cv\Entry as CvEntry,
     CommonBundle\Component\FlashMessenger\FlashMessage,
+    CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Entity\User\Person\Academic,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -75,7 +78,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
         $entry = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findOneByAcademic($person);
+            ->findOneByAcademicAndAcademicYear($this->getCurrentAcademicYear(), $person);
 
         if ($entry !== null) {
             $this->redirect()->toRoute(
@@ -148,7 +151,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
     public function editAction()
     {
-        if ($this->getAuthentication()->isAuthenticated()) {
+        if (!$this->getAuthentication()->isAuthenticated()) {
             return new ViewModel(
                 array(
                     'messages' => array(
@@ -183,7 +186,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
         $entry = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Cv\Entry')
-            ->findOneByAcademic($person);
+            ->findOneByAcademicAndAcademicYear($this->getCurrentAcademicYear(), $person);
 
         if (null === $entry) {
             $this->redirect()->toRoute(
@@ -250,6 +253,59 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     public function completeAction()
     {
         return new ViewModel();
+    }
+
+    public function downloadAction()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            $this->redirect()->toRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'cv',
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $person = $this->getAuthentication()->getPersonObject();
+
+        $entry = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Cv\Entry')
+            ->findOneByAcademicAndAcademicYear($this->getCurrentAcademicYear(), $person);
+
+        if (null === $entry) {
+            $this->redirect()->toRoute(
+                'br_cv_index',
+                array(
+                    'action' => 'cv',
+                )
+            );
+
+            return new ViewModel();
+        }
+
+        $file = new TmpFile();
+        $year = $this->getCurrentAcademicYear();
+
+        $translator = $this->getTranslator();
+
+        $document = new CvGenerator($this->getEntityManager(), $year, $entry, $file, $translator);
+
+        $document->generate();
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="cv-' . $person->getFullName() . '.pdf"',
+            'Content-type'        => 'application/pdf',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
     }
 
     /**
