@@ -91,4 +91,16 @@ return array(
     'Table of Contents' => 'Inhoudstafel',
     'Foreword' => 'Voorwoord',
     'Save Changes' => 'Sla Wijzigingen Op',
+
+    'Yes please' => 'Ja graag',
+    'If necessary' => 'Indien nodig',
+    'Monthly trips' => 'Maandelijkse trips',
+    'Annual trips' => 'Jaarlijkse trips',
+    'No' => 'Neen',
+
+    'Notions' => 'Noties',
+    'Basis' => 'Basis',
+    'Good' => 'Goed',
+    'Very good' => 'Zeer goed',
+    'Mother tongue' => 'Moedertaal',
 );
