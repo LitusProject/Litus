@@ -759,8 +759,33 @@ class Entry
 
             return $experiences[0]->getFunction();
         } else {
-            return $this->experiences->toArray();
+            return $this->sortNewExperiences($this->experiences->toArray());
         }
+    }
+
+    /**
+    * Sort the given list of experiences on start date
+    *
+    *@return array
+    */
+    private function sortNewExperiences(array $experiences)
+    {
+        $result = array();
+        $sorted = count($experiences) == 0;
+
+        while(!$sorted){
+            $indexSmalest = 0;
+            for($i = 0; $i < count($experiences); $i++){
+                if($experiences[$i]->getStartYear() < $experiences[$indexSmalest]->getStartYear()){
+                    $indexSmalest = $i;
+                }
+            }
+            $result[] = $experiences[$indexSmalest];
+            unset($experiences[$indexSmalest]);
+            $experiences = array_values($experiences);
+            $sorted = count($experiences)==0;
+        }   
+        return $result; 
     }
 
     /**
