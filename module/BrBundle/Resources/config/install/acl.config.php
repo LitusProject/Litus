@@ -89,7 +89,7 @@ return array(
             'view', 'overview',
         ),
         'br_cv_index' => array(
-            'cv', 'edit', 'complete',
+            'cv', 'edit', 'complete', 'download',
         ),
         'br_corporate_auth' => array(
             'login', 'logout',

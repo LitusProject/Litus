@@ -490,7 +490,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'row'        => 3,
                         'class'      => 'count',
-                        'data-count' => 200,
+                        'data-count' => 100,
                         'style'      => 'resize: none;',
                     ),
                     'options'    => array(
