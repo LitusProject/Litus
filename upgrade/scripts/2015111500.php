@@ -18,7 +18,7 @@
 include 'init_autoloader.php';
 $app = Zend\Mvc\Application::init(include 'config/application.config.php');
 $entityManager = $app->getServiceManager()->get('doctrineormentitymanager');
-$dumpFileName = '/tmp/cv_update_2015111400.txt';
+$dumpFileName = '/tmp/cv_update_2015111500.txt';
 $cvEntries = array();
 // Get a local dump of the updated tables
 echo ' -> Get a local dump of the tables' . PHP_EOL;
@@ -45,7 +45,7 @@ if (!file_exists($dumpFileName)) {
 }
 
 // Build the new units structure
-echo ' -> Build new units structure' . PHP_EOL;
+echo ' -> Build new cv structure' . PHP_EOL;
 exec('./bin/litus.sh orm:schema-tool:update --force', $output, $returnValue);
 if ($returnValue !== 0) {
     echo ' Failed to update database, please try it manualy. This script can be run again afterwards.' . PHP_EOL;
