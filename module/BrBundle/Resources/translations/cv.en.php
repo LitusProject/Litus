@@ -27,8 +27,8 @@ return array(
 
     'Education' => 'Education',
     'Primary Degree' => 'Primary Degree',
-    'Started Bachelor In' => 'Started Bachelor In',
-    'Ended Bachelor In' => 'Ended Bachelor In',
+    'Started Prior Degree In' => 'Started Prior Degree In',
+    'Ended Prior Degree In' => 'Ended Prior Degree In',
     'Started Master In' => 'Started Master In',
     'Will End Master In' => 'Will End Master In',
     'Additional Diplomas (e.g. driver\'s license)' => 'Additional Diplomas (e.g. driver\'s license)',

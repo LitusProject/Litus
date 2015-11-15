@@ -63,11 +63,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'    => 'Education',
             'elements' => array(
                 array(
-                    'type'       => 'text',
+                    'type'       => 'textarea',
                     'name'       => 'prior_degree',
                     'label'      => 'Prior Degree (e.g. Bachelor in Engineering, Industrial Engineering, ...)',
                     'required'   => true,
                     'attributes' => array(
+                        'rows'       => 2,
                         'class'      => 'count',
                         'data-count' => 100,
                     ),
@@ -111,6 +112,26 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
                 array(
                     'type'       => 'select',
+                    'name'       => 'bachelor_start',
+                    'label'      => 'Started Prior Degree In',
+                    'required'   => true,
+                    'value'      => $currentYear - 4,
+                    'attributes' => array(
+                        'options' => $allYears,
+                    ),
+                ),
+                array(
+                    'type'       => 'select',
+                    'name'       => 'bachelor_end',
+                    'label'      => 'Ended Prior Degree In',
+                    'required'   => true,
+                    'value'      => $currentYear - 1,
+                    'attributes' => array(
+                        'options' => $allYears,
+                    ),
+                ),
+                array(
+                    'type'       => 'select',
                     'name'       => 'degree',
                     'label'      => 'Primary Degree',
                     'required'   => true,
@@ -141,26 +162,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
                 array(
                     'type'       => 'select',
-                    'name'       => 'bachelor_start',
-                    'label'      => 'Started Bachelor In',
-                    'required'   => true,
-                    'value'      => $currentYear - 4,
-                    'attributes' => array(
-                        'options' => $allYears,
-                    ),
-                ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'bachelor_end',
-                    'label'      => 'Ended Bachelor In',
-                    'required'   => true,
-                    'value'      => $currentYear - 1,
-                    'attributes' => array(
-                        'options' => $allYears,
-                    ),
-                ),
-                array(
-                    'type'       => 'select',
                     'name'       => 'master_start',
                     'label'      => 'Started Master In',
                     'required'   => true,
@@ -184,9 +185,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'name'       => 'additional_diplomas',
                     'label'      => 'Additional Diplomas (e.g. driver\'s license)',
                     'attributes' => array(
-                        'rows'       => 3,
+                        'rows'       => 2,
                         'class'      => 'count',
-                        'data-count' => 150,
+                        'data-count' => 100,
                         'style'      => 'resize: none;',
                     ),
                     'options'    => array(
@@ -198,7 +199,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name' => 'field_length',
                                     'options' => array(
-                                        'max_length' => 150,
+                                        'max_length' => 100,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -287,7 +288,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'rows'       => 2,
                         'class'      => 'count',
-                        'data-count' => 130,
+                        'data-count' => 100,
                         'style'      => 'resize: none;',
                     ),
                     'options'    => array(
@@ -321,9 +322,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Computer Skills',
                     'required'   => true,
                     'attributes' => array(
-                        'row'        => 3,
+                        'rows'        => 4,
                         'class'      => 'count',
-                        'data-count' => 225,
+                        'data-count' => 250,
                         'style'      => 'resize: none;',
                     ),
                     'options'    => array(
@@ -335,7 +336,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name' => 'field_length',
                                     'options' => array(
-                                        'max_length' => 225,
+                                        'max_length' => 250,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -370,7 +371,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Summary',
                     'required'   => true,
                     'attributes' => array(
-                        'row'        => 3,
+                        'rows'        => 5,
                         'class'      => 'count',
                         'data-count' => 300,
                         'style'      => 'resize: none;',
@@ -447,12 +448,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'       => 'text',
+                    'type'       => 'textarea',
                     'name'       => 'career_expectations',
                     'label'      => 'Career Expectations',
                     'required'   => true,
                     'attributes' => array(
-                        'rows'       => 3,
+                        'rows'       => 2,
                         'class'      => 'count',
                         'data-count' => 200,
                         'style'      => 'resize: none;',
@@ -488,7 +489,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Hobbies',
                     'required'   => true,
                     'attributes' => array(
-                        'row'        => 3,
+                        'rows'        => 3,
                         'class'      => 'count',
                         'data-count' => 100,
                         'style'      => 'resize: none;',
@@ -516,7 +517,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'About Me',
                     'required'   => true,
                     'attributes' => array(
-                        'row'        => 3,
+                        'rows'        => 2,
                         'class'      => 'count',
                         'data-count' => 200,
                         'style'      => 'resize: none;',
