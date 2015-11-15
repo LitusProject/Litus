@@ -140,7 +140,9 @@
                             {% else %}
                                 <td>
                                     {% for slot in entry.getFieldEntries() %}
-                                        {{ slot.getField().getLabel(language) }}{% if not loop.last %},{% endif %}
+                                        {{ slot.getField().getLabel(language) }}
+                                        {% if slot.getField().getExtraInformation(language) %} ({{slot.getField().getExtraInformation(language)}}){% endif %}
+                                        {% if not loop.last %},{% endif %}
                                     {% endfor %}
                                 </td>
                             {% endif %}

@@ -40,6 +40,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      */
     protected $academicYear;
 
+    /**
+     * @var array The possible mobility answers.
+     */
+    public static $mobilityAnswers = array(
+        'Yes please' => 'Yes please',
+        'If necessary' => 'If necessary',
+        'Monthly trips' => 'Monthly trips',
+        'Annual trips' => 'Annual trips',
+        'No' => 'No',
+    );
+
     public function init()
     {
         parent::init();
@@ -52,11 +63,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'    => 'Education',
             'elements' => array(
                 array(
-                    'type'       => 'text',
+                    'type'       => 'textarea',
                     'name'       => 'prior_degree',
                     'label'      => 'Prior Degree (e.g. Bachelor in Engineering, Industrial Engineering, ...)',
                     'required'   => true,
                     'attributes' => array(
+                        'rows'       => 2,
                         'class'      => 'count',
                         'data-count' => 100,
                     ),
@@ -100,6 +112,26 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
                 array(
                     'type'       => 'select',
+                    'name'       => 'bachelor_start',
+                    'label'      => 'Started Prior Degree In',
+                    'required'   => true,
+                    'value'      => $currentYear - 4,
+                    'attributes' => array(
+                        'options' => $allYears,
+                    ),
+                ),
+                array(
+                    'type'       => 'select',
+                    'name'       => 'bachelor_end',
+                    'label'      => 'Ended Prior Degree In',
+                    'required'   => true,
+                    'value'      => $currentYear - 1,
+                    'attributes' => array(
+                        'options' => $allYears,
+                    ),
+                ),
+                array(
+                    'type'       => 'select',
                     'name'       => 'degree',
                     'label'      => 'Primary Degree',
                     'required'   => true,
@@ -130,26 +162,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
                 array(
                     'type'       => 'select',
-                    'name'       => 'bachelor_start',
-                    'label'      => 'Started Bachelor In',
-                    'required'   => true,
-                    'value'      => $currentYear - 4,
-                    'attributes' => array(
-                        'options' => $allYears,
-                    ),
-                ),
-                array(
-                    'type'       => 'select',
-                    'name'       => 'bachelor_end',
-                    'label'      => 'Ended Bachelor In',
-                    'required'   => true,
-                    'value'      => $currentYear - 1,
-                    'attributes' => array(
-                        'options' => $allYears,
-                    ),
-                ),
-                array(
-                    'type'       => 'select',
                     'name'       => 'master_start',
                     'label'      => 'Started Master In',
                     'required'   => true,
@@ -173,9 +185,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'name'       => 'additional_diplomas',
                     'label'      => 'Additional Diplomas (e.g. driver\'s license)',
                     'attributes' => array(
-                        'rows'       => 3,
+                        'rows'       => 2,
                         'class'      => 'count',
-                        'data-count' => 150,
+                        'data-count' => 100,
                         'style'      => 'resize: none;',
                     ),
                     'options'    => array(
@@ -187,7 +199,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name' => 'field_length',
                                     'options' => array(
-                                        'max_length' => 150,
+                                        'max_length' => 100,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -276,7 +288,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'rows'       => 2,
                         'class'      => 'count',
-                        'data-count' => 130,
+                        'data-count' => 100,
                         'style'      => 'resize: none;',
                     ),
                     'options'    => array(
@@ -310,9 +322,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Computer Skills',
                     'required'   => true,
                     'attributes' => array(
-                        'row'        => 3,
+                        'rows'        => 4,
                         'class'      => 'count',
-                        'data-count' => 425,
+                        'data-count' => 250,
                         'style'      => 'resize: none;',
                     ),
                     'options'    => array(
@@ -324,7 +336,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name' => 'field_length',
                                     'options' => array(
-                                        'max_length' => 425,
+                                        'max_length' => 250,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -333,30 +345,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'       => 'textarea',
+                    'type'       => 'collection',
                     'name'       => 'experiences',
-                    'label'      => 'Experiences, Projects (e.g. Internship, Holiday Jobs)',
-                    'required'   => true,
-                    'attributes' => array(
-                        'row'        => 3,
-                        'class'      => 'count',
-                        'data-count' => 425,
-                        'style'      => 'resize: none;',
-                    ),
+                    'label'      => 'Experiences, Projects (e.g. Internship, Holiday Jobs) (Max 5)',
                     'options'    => array(
-                        'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'field_length',
-                                    'options' => array(
-                                        'max_length' => 425,
-                                        'new_line_length' => 75,
-                                    ),
-                                ),
-                            ),
+                        'count'                  => 0,
+                        'should_create_template' => true,
+                        'allow_add'              => true,
+                        'target_element'         => array(
+                            'type' => 'br_cv_experience',
                         ),
                     ),
                 ),
@@ -374,9 +371,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Summary',
                     'required'   => true,
                     'attributes' => array(
-                        'row'        => 3,
+                        'rows'        => 5,
                         'class'      => 'count',
-                        'data-count' => 300,
+                        'data-count' => 250,
                         'style'      => 'resize: none;',
                     ),
                     'options'    => array(
@@ -388,7 +385,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name' => 'field_length',
                                     'options' => array(
-                                        'max_length' => 300,
+                                        'max_length' => 250,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -431,64 +428,32 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'       => 'text',
+                    'type'       => 'select',
                     'name'       => 'mobility_europe',
                     'label'      => 'Mobility Europe (Would you be able to travel within Europe? How often?)',
                     'required'   => true,
+                    'value'      => 'No',
                     'attributes' => array(
-                        'class'      => 'count',
-                        'data-count' => 50,
-                    ),
-                    'options'    => array(
-                        'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'field_length',
-                                    'options' => array(
-                                        'max_length' => 50,
-                                        'new_line_length' => 75,
-                                    ),
-                                ),
-                            ),
-                        ),
+                        'options' => self::$mobilityAnswers,
                     ),
                 ),
                 array(
-                    'type'       => 'text',
+                    'type'       => 'select',
                     'name'       => 'mobility_world',
                     'label'      => 'Mobility World (Would you be able to travel around the world? How often?)',
                     'required'   => true,
+                    'value'      => 'No',
                     'attributes' => array(
-                        'class'      => 'count',
-                        'data-count' => 50,
-                    ),
-                    'options'    => array(
-                        'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array(
-                                    'name' => 'field_length',
-                                    'options' => array(
-                                        'max_length' => 50,
-                                        'new_line_length' => 75,
-                                    ),
-                                ),
-                            ),
-                        ),
+                        'options' => self::$mobilityAnswers,
                     ),
                 ),
                 array(
-                    'type'       => 'text',
+                    'type'       => 'textarea',
                     'name'       => 'career_expectations',
                     'label'      => 'Career Expectations',
                     'required'   => true,
                     'attributes' => array(
-                        'rows'       => 3,
+                        'rows'       => 2,
                         'class'      => 'count',
                         'data-count' => 200,
                         'style'      => 'resize: none;',
@@ -524,9 +489,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Hobbies',
                     'required'   => true,
                     'attributes' => array(
-                        'row'        => 3,
+                        'rows'        => 3,
                         'class'      => 'count',
-                        'data-count' => 200,
+                        'data-count' => 100,
                         'style'      => 'resize: none;',
                     ),
                     'options'    => array(
@@ -538,7 +503,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name' => 'field_length',
                                     'options' => array(
-                                        'max_length' => 200,
+                                        'max_length' => 100,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -552,7 +517,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'About Me',
                     'required'   => true,
                     'attributes' => array(
-                        'row'        => 3,
+                        'rows'        => 2,
                         'class'      => 'count',
                         'data-count' => 200,
                         'style'      => 'resize: none;',
