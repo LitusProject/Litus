@@ -271,7 +271,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add(array(
             'type'       => 'collection',
             'name'       => 'languages',
-            'label'      => 'Languages (max. 5)',
+            'label'      => 'Languages (max. 4)',
             'options'    => array(
                 'count'                  => 0,
                 'should_create_template' => true,
@@ -300,7 +300,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name' => 'field_length',
                                     'options' => array(
-                                        'max_length' => 130,
+                                        'max_length' => 100,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -347,7 +347,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 array(
                     'type'       => 'collection',
                     'name'       => 'experiences',
-                    'label'      => 'Experiences, Projects (e.g. Internship, Holiday Jobs) (Max 5)',
+                    'label'      => 'Experiences, Projects (e.g. Internship, Holiday Jobs) (Max 4)',
                     'options'    => array(
                         'count'                  => 0,
                         'should_create_template' => true,
