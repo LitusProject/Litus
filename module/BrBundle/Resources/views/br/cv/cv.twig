@@ -102,7 +102,7 @@
         }
 
         function addLanguage() {
-            if (languageCount >= 5)
+            if (languageCount >= 4)
                 return;
             var template = $('#data-template-languages').data('template');
             template = template.replace(/__index__/g, languageCount);
@@ -116,7 +116,7 @@
         }
 
         function addExperience() {
-            if (experienceCount >= 5)
+            if (experienceCount >= 4)
                 return;
             var template = $('#data-template-capabilities\\[experiences\\]').data('template');
             template = template.replace(/__index__/g, experienceCount);
