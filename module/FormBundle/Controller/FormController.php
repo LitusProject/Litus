@@ -940,7 +940,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         /** @var \Zend\Http\Header\Cookie $cookies */
         $cookies = $this->getRequest()->getHeader('Cookie');
 
-        return isset($cookies) && $cookies->offsetExists(GuestInfo::$cookieNamespace);
+        return isset($cookies) && is_object($cookies) && $cookies->offsetExists(GuestInfo::$cookieNamespace);
     }
 
     /**
