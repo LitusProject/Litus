@@ -43,7 +43,8 @@ class Academic extends \CommonBundle\Hydrator\User\Person
 
         $data['roles'] = $this->rolesToData($object->getRoles(false));
 
-        $data['personal_email'] = $object->getEmail() === $object->getPersonalEmail();
+        $data['primary_email'] = $object->getEmail() === $object->getPersonalEmail();
+
         $data['birthday'] = $object->getBirthday() !== null
             ? $object->getBirthday()->format('d/m/Y')
             : '';
@@ -120,7 +121,6 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             ->getConfigValue('student_email_domain');
 
         $universityEmail = preg_replace('/[^a-z0-9\.@]/i', '', iconv('UTF-8', 'US-ASCII//TRANSLIT', $data['university']['email'])) . $studentDomain;
-
         if (isset($data['primary_email'])) {
             if ($data['primary_email']) {
                 $data['email'] = $data['personal_email'];
