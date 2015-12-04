@@ -19,8 +19,11 @@
 namespace ShiftBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Entity\User\Person,
     DateTime,
+    ShiftBundle\Component\Document\Generator\Counter\Csv as CsvGenerator,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -375,5 +378,34 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         return $person;
+    }
+
+    /**
+    * @return Array
+    */
+    public function exportAction()
+    {
+        $volunteers = $this->getEntityManager()
+            ->getRepository('ShiftBundle\Entity\Shift\Volunteer')
+            ->findAllNamesByAcademicYearQuery($this->getAcademicYear())->getResult();
+
+        $file = new CsvFile();
+        $document = new CsvGenerator($this->getEntityManager(), $volunteers);
+        $document->generateDocument($file);
+
+        $filename = 'Volunteers.csv';
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
     }
 }

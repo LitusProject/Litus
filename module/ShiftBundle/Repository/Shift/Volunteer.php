@@ -123,4 +123,32 @@ class Volunteer extends EntityRepository
 
         return $resultSet;
     }
+
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllNamesByAcademicYearQuery(AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('p.firstName', 'p.lastName')
+            ->from('ShiftBundle\Entity\Shift', 's')
+            ->innerJoin('s.volunteers', 'v')
+            ->innerJoin('v.person', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->gt('v.signupTime', ':startAcademicYear'),
+                    $query->expr()->lt('v.signupTime', ':endAcademicYear'),
+                    $query->expr()->lte('s.endDate', ':now')
+                )
+            )
+            ->distinct()
+            ->orderBy('p.firstName')
+            ->setParameter('startAcademicYear', $academicYear->getStartDate())
+            ->setParameter('endAcademicYear', $academicYear->getEndDate())
+            ->setParameter('now', new DateTime())
+            ->getQuery();
+
+        return $resultSet;
+    }
 }
