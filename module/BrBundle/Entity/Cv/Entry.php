@@ -776,8 +776,10 @@ class Entry
         while(!$sorted){
             $indexSmalest = 0;
             for($i = 0; $i < count($experiences); $i++){
-                if($experiences[$i]->getEndYear() > $experiences[$indexSmalest]->getEndYear()){
+                if($experiences[$i]->getEndYear() == $experiences[$indexSmalest]->getEndYear()){
                     if($experiences[$i]->getStartYear() > $experiences[$indexSmalest]->getStartYear()){
+                        $indexSmalest = $i;
+                    } else if($experiences[$i]->getEndYear() >= $experiences[$indexSmalest]->getEndYear()){
                         $indexSmalest = $i;
                     }
                 }
