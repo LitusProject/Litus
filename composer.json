@@ -28,14 +28,5 @@
         "psr-4": {
             "": "module/"
         }
-    },
-    "require": {
-        "litus/php-cs": "dev-master"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/LitusProject/PhpCodeStyle"
-        }
-    ],
+    }
 }
