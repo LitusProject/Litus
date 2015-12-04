@@ -58,6 +58,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
         $form = $this->getForm('cudi_prof_article_add');
 
+        $isInternal = false;
+
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
 
@@ -107,13 +109,14 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
                 return new ViewModel();
             }
+            $isInternal = isset($form->getData()['internal']) && $form->getData()['internal'] ? true : false;
         }
 
         return new ViewModel(
             array(
                 'form' => $form,
                 'isPost' => $this->getRequest()->isPost(),
-                'isInternalPost' => isset($form->getData()['internal']) && $form->getData()['internal'] ? true : false,
+                'isInternalPost' => $isInternal,
             )
         );
     }
