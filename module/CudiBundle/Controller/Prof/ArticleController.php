@@ -58,8 +58,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
         $form = $this->getForm('cudi_prof_article_add');
 
-        $isInternal = false;
-
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
 
@@ -109,14 +107,13 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
                 return new ViewModel();
             }
-            $isInternal = isset($form->getData()['internal']) && $form->getData()['internal'] ? true : false;
         }
 
         return new ViewModel(
             array(
                 'form' => $form,
                 'isPost' => $this->getRequest()->isPost(),
-                'isInternalPost' => $isInternal,
+                'isInternalPost' => isset($form->getData()['internal']) && $form->getData()['internal'] ? true : false,
             )
         );
     }
@@ -229,7 +226,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $edited = true;
                     } elseif ($article->getPublishers() != $duplicate->getPublishers()) {
                         $edited = true;
-                    } elseif ($article->getYearPublished() != $formData['year_published']) {
+                    } elseif ($article->getYearPublished() != $duplicate->getYearPublished()) {
                         $edited = true;
                     } elseif ($article->getIsbn() != $duplicate->getIsbn()) {
                         $edited = true;
