@@ -39,7 +39,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 
         $comments = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject\Comment')
-            ->findBySubject($subject);
+            ->findBySubjectAndType($subject, 'external');
 
         $commentForm = $this->getForm('cudi_prof_comment_add');
         $replyForm = $this->getForm('cudi_prof_comment_reply');

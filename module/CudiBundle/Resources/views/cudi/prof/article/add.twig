@@ -10,7 +10,7 @@
                 <li style="margin-bottom: 10px;">
                     <a class="thumbnail" id="external_article" href="#" style="padding: 20px;text-decoration: none;">
                         <span style="margin-right: 10px">
-                            <img src="/_cudi/img/icon-external.png" />
+                            <img src="/_cudi/img/icon-external.png"/>
                         </span>
                         <span>
                             {{ translate('Textbook from Other Publisher') }}
@@ -20,7 +20,7 @@
                 <li style="margin-bottom: 10px;">
                     <a class="thumbnail" id="internal_article" href="#" style="padding: 20px;text-decoration: none;">
                         <span style="margin-right: 10px">
-                            <img src="/_cudi/img/icon-internal.png" />
+                            <img src="/_cudi/img/icon-internal.png"/>
                         </span>
                         <span>
                             {{ translate('Published by {{ unionShortName }}')|replace({'{{ unionShortName }}': unionShortName}) }}
@@ -56,22 +56,21 @@
             });
 
             {% if isPost %}
-                {% if isInternalPost %}
-                    $('#internal_article').click();
-                {% else %}
-                    $('#external_article').click();
-                {% endif %}
+            {% if isInternalPost %}
+            $('#internal_article').click();
+            {% else %}
+            $('#external_article').click();
             {% endif %}
-
-            $('#subjectSearch').typeaheadRemote(
-                {
-                    source: '{{ url("cudi_prof_subject_typeahead")}}',
-                }
+            {% endif %}
+            $('#subject_form #subject\\[subject\\]').typeaheadRemote(
+                    {
+                        source: '{{ url("cudi_prof_subject_typeahead")}}',
+                    }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('#subjectId').val($(this).data('value').id);
+                    $('#subject_form input[name=subject\\[subject\\]\\[id\\]]').val($(this).data('value').id);
                 } else {
-                    $('#subjectId').val('');
+                    $('#subject_form input[name=subject\\[subject\\]\\[id\\]]').val('');
                 }
             });
         });

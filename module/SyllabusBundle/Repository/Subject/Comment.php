@@ -20,7 +20,8 @@ namespace SyllabusBundle\Repository\Subject;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person;
+    CommonBundle\Entity\User\Person,
+    SyllabusBundle\Entity\Subject;
 
 /**
  * Comment
@@ -40,6 +41,26 @@ class Comment extends EntityRepository
             )
             ->orderBy('c.date', 'DESC')
             ->setMaxResults($nb)
+            ->getQuery()
+            ->getResult();
+
+        return $resultSet;
+    }
+
+    public function findBySubjectAndType(Subject $subject, $type)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('c')
+            ->from('SyllabusBundle\Entity\Subject\Comment', 'c')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('c.subject', ':subject'),
+                    $query->expr()->eq('c.type', ':type')
+                )
+            )
+            ->setParameter('subject', $subject->getId())
+            ->setParameter('type', $type)
+            ->orderBy('c.date', 'DESC')
             ->getQuery()
             ->getResult();
 
