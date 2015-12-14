@@ -109,11 +109,19 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             }
         }
 
+        $isPost = false;
+        $isInternalPost = false;
+
+        if ($this->getRequest()->isPost()) {
+            $isPost = true;
+            $isInternalPost = isset($form->getData()['internal']) && $form->getData()['internal'] ? true : false;
+        }
+
         return new ViewModel(
             array(
                 'form' => $form,
-                'isPost' => $this->getRequest()->isPost(),
-                'isInternalPost' => isset($form->getData()['internal']) && $form->getData()['internal'] ? true : false,
+                'isPost' => $isPost,
+                'isInternalPost' => $isInternalPost,
             )
         );
     }
