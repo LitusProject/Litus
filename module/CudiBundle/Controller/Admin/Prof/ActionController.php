@@ -114,7 +114,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         $this->redirect()->toRoute(
             'cudi_admin_prof_action',
             array(
-                'action' => 'refused',
+                'action' => 'manage',
             )
         );
 
@@ -217,7 +217,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
         $this->redirect()->toRoute(
             'cudi_admin_prof_action',
             array(
-                'action' => 'completed',
+                'action' => 'manage',
             )
         );
 
@@ -275,7 +275,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'cudi_admin_prof_action',
                     array(
-                        'action' => 'completed',
+                        'action' => 'manage',
                     )
                 );
 
@@ -319,9 +319,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'cudi_admin_prof_action',
                     array(
-                        'action' => 'completed',
-                    )
-                );
+                        'action' => 'manage',
+                    )                );
 
                 return new ViewModel();
             }

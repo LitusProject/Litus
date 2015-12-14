@@ -18,16 +18,23 @@
         <h2>{{ translate('Comments') }}</h2>
     </div>
 
-    <div class="page-header">
-        <h2>{{ translate('Subject') }}</h2>
+    <div class = "row">
+        <div class = "col-md-9">
+            <p>
+                {{ translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
+                {{ translate('Name') }}: <b>{{ subject.getName() }}</b><br />
+                {{ translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
+                {{ translate('Credits') }}: <b>{{ subject.getCredits() }}</b><br />
+            </p>
+        </div>
+        <div class = "col-md-3">
+            <div class="pull-right">
+                {% if hasAccess('cudi_prof_subject', 'subject') %}
+                    <a href="{{ url("cudi_prof_subject", {"action": "subject", "id": subject.getId()}) }}" class="btn btn-primary">{{ translate('Back to subject') }}</a>
+                {% endif %}
+            </div>
+        </div>
     </div>
-
-    <p>
-        {{ translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
-        {{ translate('Name') }}: <b>{{ subject.getName() }}</b><br />
-        {{ translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
-        {{ translate('Credits') }}: <b>{{ subject.getCredits() }}</b><br />
-    </p>
 
     <table class="table table-striped">
         <thead>

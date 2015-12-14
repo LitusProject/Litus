@@ -204,4 +204,7 @@ return array(
     'Here you can change (nearly) everything you entered while creating the article.' => 'Here you can change (nearly) everything you entered while creating the article.',
     'You can also view and manage the comments of the article.' => 'You can also view and manage the comments of the article.',
     'If the article is an internal article, you also have the option to manage the files of the article.' => 'If the article is an internal article, you also have the option to manage the files of the article.',
+
+    'Not read' => 'Not read',
+    'Read' => 'Read',
 );

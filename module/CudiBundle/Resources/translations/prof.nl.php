@@ -202,4 +202,7 @@ return array(
     'Here you can change (nearly) everything you entered while creating the article.' => 'Hier kan u (bijna) alles wijzigen wat u invulde bij het aanmaken van het artikel.',
     'You can also view and manage the comments of the article.' => 'U kan ook commentaren van het artikel bekijken en beheren.',
     'If the article is an internal article, you also have the option to manage the files of the article.' => 'Als het artikel een intern artikel is, heeft u ook de mogelijkheid om de bestanden van het artikel te beheren.',
+
+    'Not read' => 'Niet gelezen',
+    'Read' => 'Gelezen',
 );

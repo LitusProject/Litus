@@ -36,15 +36,27 @@
         <h2>{{ translate('Subject') }}</h2>
     </div>
 
-    <p>
-        {{ translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
-        {{ translate('Name') }}: <b>{{ subject.getName() }}</b><br />
-        {{ translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
-        {{ translate('Credits') }}: <b>{{ subject.getCredits() }}</b><br />
-        {{ translate('Students') }}: <b>{{ subject.getNbEnrollment(academicYear) }}</b>
-    </p>
+    <div class = "row">
+        <div class = "col-md-9">
+            <p>
+                {{ translate('Code') }}: <b>{{ subject.getCode() }}</b><br />
+                {{ translate('Name') }}: <b>{{ subject.getName() }}</b><br />
+                {{ translate('Semester') }}: <b>{{ subject.getSemester() }}</b><br />
+                {{ translate('Credits') }}: <b>{{ subject.getCredits() }}</b><br />
+                {{ translate('Students') }}: <b>{{ subject.getNbEnrollment(academicYear) }}</b>
+            </p>
+        </div>
+        <div class = "col-md-3">
+            <div class="pull-right">
+                {% if hasAccess('cudi_prof_subject_comment', 'manage') %}
+                    <a href="{{ url("cudi_prof_subject_comment", {"action": "manage", "id": subject.getId()}) }}" class="btn btn-info">{{ translate('Comments') }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
     <h3>{{ translate('Number of students (Optional)') }}:</h3>
+    {{ translate('This helps us determine the amount of articles needed.') }}
     {% import 'site/partials/form.twig' as forms %}
     {{ forms.renderForm(enrollmentForm) }}
 
