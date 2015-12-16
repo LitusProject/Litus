@@ -335,8 +335,8 @@ class Util
                         'EuropeHeader' => $translator->translate('Mobility in Europe'),
                         'WorldHeader' => $translator->translate('Mobility in the World'),
                         'InterestContent' => $cv->getFutureInterest(),
-                        'EuropeContent' => $cv->getMobilityEurope(),
-                        'WorldContent' => $cv->getMobilityWorld(),
+                        'EuropeContent' => $translator->translate($cv->getMobilityEurope()),
+                        'WorldContent' => $translator->translate($cv->getMobilityWorld()),
                         ),
                     null
                     ),
