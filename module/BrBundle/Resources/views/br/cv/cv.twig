@@ -28,9 +28,9 @@
             <dd>{{ authenticatedPerson.getSex()|capitalize }}&nbsp;</dd>
             <dt>{{ translate('Phone Number') }}</dt>
             <dd>{{ authenticatedPerson.getPhoneNumber() }}&nbsp;</dd>
-            <dt>{{ translate('E-mail') }}</dt>
+            <dt>{{ translate('Email') }}</dt>
             <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>
-            <dt>{{ translate('Secondary Address&mdash;Home') }}</dt>
+            <dt>{{ translate('Address') }}</dt>
             <dd>
                 {{ authenticatedPerson.getSecondaryAddress().getStreet() }} {{ authenticatedPerson.getSecondaryAddress().getNumber() }}
                 {% if authenticatedPerson.getSecondaryAddress().getMailbox() %}
