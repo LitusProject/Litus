@@ -30,7 +30,7 @@ use CommonBundle\Entity\General\AcademicYear,
  * This is the entity for a cv entry.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Cv\Entry")
- * @ORM\Table(name="br.cv_entries")
+ * @ORM\Table(name="br.cv_entries", uniqueConstraints={@ORM\UniqueConstraint(name="year_academic_unique", columns={"year", "academic"})})
  */
 class Entry
 {
@@ -46,7 +46,7 @@ class Entry
     /**
      * @var \CommonBundle\Entity\User\Person\Academic The academic to whom this cv belongs
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
      */
     private $academic;
@@ -104,7 +104,7 @@ class Entry
     /**
      * @var \CommonBundle\Entity\General\Address The address of the cv entry
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="address", referencedColumnName="id")
      */
     private $address;
@@ -773,13 +773,13 @@ class Entry
         $result = array();
         $sorted = count($experiences) == 0;
 
-        while(!$sorted){
+        while (!$sorted) {
             $indexSmalest = 0;
-            for($i = 0; $i < count($experiences); $i++){
-                if($experiences[$i]->getEndYear() == $experiences[$indexSmalest]->getEndYear()){
-                    if($experiences[$i]->getStartYear() > $experiences[$indexSmalest]->getStartYear()){
+            for ($i = 0; $i < count($experiences); $i++) {
+                if ($experiences[$i]->getEndYear() == $experiences[$indexSmalest]->getEndYear()) {
+                    if ($experiences[$i]->getStartYear() > $experiences[$indexSmalest]->getStartYear()) {
                         $indexSmalest = $i;
-                    } else if($experiences[$i]->getEndYear() >= $experiences[$indexSmalest]->getEndYear()){
+                    } elseif ($experiences[$i]->getEndYear() >= $experiences[$indexSmalest]->getEndYear()) {
                         $indexSmalest = $i;
                     }
                 }
@@ -787,9 +787,10 @@ class Entry
             $result[] = $experiences[$indexSmalest];
             unset($experiences[$indexSmalest]);
             $experiences = array_values($experiences);
-            $sorted = count($experiences)==0;
-        }   
-        return $result; 
+            $sorted = count($experiences) == 0;
+        }
+
+        return $result;
     }
 
     /**
