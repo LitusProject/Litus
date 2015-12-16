@@ -26,7 +26,7 @@ class Person extends \CommonBundle\Component\Validator\Typeahead
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This person does not exits',
+        self::NOT_VALID => 'This person does not exist',
     );
 
     /**
