@@ -30,7 +30,7 @@ use CommonBundle\Entity\General\AcademicYear,
  * This is the entity for a cv entry.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Cv\Entry")
- * @ORM\Table(name="br.cv_entries")
+ * @ORM\Table(name="br.cv_entries", uniqueConstraints={@ORM\UniqueConstraint(name="year_academic_unique", columns={"year", "academic"})})
  */
 class Entry
 {
@@ -46,7 +46,7 @@ class Entry
     /**
      * @var \CommonBundle\Entity\User\Person\Academic The academic to whom this cv belongs
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
      */
     private $academic;
@@ -104,7 +104,7 @@ class Entry
     /**
      * @var \CommonBundle\Entity\General\Address The address of the cv entry
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="address", referencedColumnName="id")
      */
     private $address;
