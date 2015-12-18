@@ -105,7 +105,7 @@ return array(
     'Very good' => 'Zeer goed',
     'Mother tongue' => 'Moedertaal',
 
-    'volunteer' => 'vrijwilligerswerk',
+    'volunteer' => 'vrijwilliger',
     'other' => 'andere',
     'internship' => 'stage',
     'jobstudent' => 'jobstudent',
