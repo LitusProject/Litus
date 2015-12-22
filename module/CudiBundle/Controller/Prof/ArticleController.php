@@ -214,6 +214,20 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
         }
 
+        $history = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article\History')
+                    ->findOneByPrecursor($article);
+
+        if (isset($history)) {
+            $this->redirect()->toRoute(
+                'cudi_prof_article',
+                array(
+                    'action' => 'edit',
+                    'id' => $history->getArticle()->getId(),
+                )
+            );
+        }
+
         $duplicate = clone $article;
 
         $form = $this->getForm('cudi_prof_article_edit', $duplicate);
