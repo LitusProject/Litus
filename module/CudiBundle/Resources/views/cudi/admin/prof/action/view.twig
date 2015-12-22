@@ -98,8 +98,8 @@
                         </tr>
                         <tr>
                             <td>Recto Verso</td>
-                            <td>{% if action.getPreviousEntity().isRecoverso() %}Yes{% else %}No{% endif %}</td>
-                            <td>{% if action.getEntity().getBinding().isRecoverso() %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if action.getPreviousEntity().isRectoVerso() %}Yes{% else %}No{% endif %}</td>
+                            <td>{% if action.getEntity().isRectoVerso() %}Yes{% else %}No{% endif %}</td>
                         </tr>
                         <tr>
                             <td>Perforated</td>
