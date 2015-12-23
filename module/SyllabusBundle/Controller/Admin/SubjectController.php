@@ -265,6 +265,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
                 return $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Subject')
                     ->findAllByCodeQuery($this->getParam('string'));
+            case 'prof':
+                return $this->getEntityManager()
+                    ->getRepository('SyllabusBundle\Entity\Subject')
+                    ->findAllByProfQuery($this->getParam('string'));
         }
     }
 
