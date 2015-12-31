@@ -124,7 +124,7 @@
     {% else %}
         <div style="text-align: center;">
             <img src="/img/litus.png" alt="Litus" />
-            <h3>{{ translate('Please login to get access to these pages.') }}</h3>
+            <a href="{{ shibbolethUrl }}"><h3>{{ translate('Please login to get access to these pages.') }}</h3></a>
         </div>
     {% endif %}
 {% endblock %}
