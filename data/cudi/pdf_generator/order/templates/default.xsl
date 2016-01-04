@@ -254,6 +254,7 @@
 
     <xsl:template name="billing_address_block" match="billing_address_block">
         <fo:block text-align="left"><xsl:value-of select="/order/cudi/billing_address/name"/></fo:block>
+        <fo:block text-align="left"><xsl:value-of select="/order/cudi/billing_address/VAT"/></fo:block>
         <fo:block text-align="left"><xsl:value-of select="/order/cudi/billing_address/person"/></fo:block>
         <fo:block text-align="left"><xsl:value-of select="/order/cudi/billing_address/street"/></fo:block>
         <fo:block text-align="left"><xsl:value-of select="/order/cudi/billing_address/city"/></fo:block>

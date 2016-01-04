@@ -78,6 +78,11 @@ return array(
         'description' => 'The name of the billing organization of the cudi',
     ),
     array(
+        'key'         => 'cudi.billing_address_VAT',
+        'value'       => '',
+        'description' => 'The VAT number of the billing organization of the cudi (empty means none)',
+    ),
+    array(
         'key'         => 'cudi.reservation_expire_time',
         'value'       => 'P2W',
         'description' => 'The time after which a reservation expires',
