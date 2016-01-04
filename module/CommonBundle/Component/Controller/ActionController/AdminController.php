@@ -54,7 +54,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
 
             $result->createNewStockPeriod = (
                 null === $period
-                || $period->getStartDate()->format('Y') < date('Y')
+                || ($period->getStartDate()->format('Y') < date('Y') && (($period->getStartDate()->format('n') < 12) || ($period->getStartDate()->format('j') <= 15)))
                 || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate()
             );
         }
