@@ -24,7 +24,7 @@ use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
 class Academic extends \CommonBundle\Hydrator\User\Person
 {
     protected static $stdKeys = array(
-        'university_identification', 'personal_email',
+        'university_identification', 'personal_email', 'is_international',
     );
 
     public function doExtract($object = null)
@@ -44,6 +44,8 @@ class Academic extends \CommonBundle\Hydrator\User\Person
         $data['roles'] = $this->rolesToData($object->getRoles(false));
 
         $data['primary_email'] = $object->getEmail() === $object->getPersonalEmail();
+
+        $data['is_international'] = $object->isInternational();
 
         $data['birthday'] = $object->getBirthday() !== null
             ? $object->getBirthday()->format('d/m/Y')

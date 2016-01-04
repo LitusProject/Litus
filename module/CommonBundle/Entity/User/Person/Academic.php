@@ -69,6 +69,13 @@ class Academic extends \CommonBundle\Entity\User\Person
     private $photoPath;
 
     /**
+     * @var boolean Is user an international
+     *
+     * @ORM\Column(name="is_international", type="boolean", options={"default" = false})
+     */
+    private $isInternational;
+
+    /**
      * @var Address The primary address of the academic
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
@@ -188,6 +195,25 @@ class Academic extends \CommonBundle\Entity\User\Person
     public function getPhotoPath()
     {
         return $this->photoPath;
+    }
+
+    /**
+     * @param  boolean $isInternational
+     * @return self
+     */
+    public function setIsInternational($isInternational)
+    {
+        $this->isInternational = $isInternational;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isInternational()
+    {
+        return $this->isInternational;
     }
 
     /**

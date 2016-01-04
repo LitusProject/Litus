@@ -86,6 +86,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             ->findOneById($configs->getConfigValue('cudi.delivery_address'));
         $delivery_address_extra = $configs->getConfigValue('cudi.delivery_address_extra');
         $billing_address_name = $configs->getConfigValue('cudi.billing_address_name');
+        $billing_address_VAT = $configs->getConfigValue('cudi.billing_address_VAT');
         $billing_address = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Address')
             ->findOneById($configs->getConfigValue('cudi.billing_address'));
@@ -263,6 +264,11 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                                          'name',
                                          null,
                                          $billing_address_name
+                                     ),
+                                     new Object(
+                                         'VAT',
+                                         null,
+                                         $billing_address_VAT
                                      ),
                                      new Object(
                                          'person',
