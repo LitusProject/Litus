@@ -54,7 +54,7 @@ class File extends Field
     public function setMaxSize($maxSize)
     {
         if (!is_int($maxSize)) {
-            $maxSize = 4;
+            $maxSize = 25;
         }
         $this->maxSize = $maxSize;
 
