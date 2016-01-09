@@ -219,9 +219,10 @@ class Action extends EntityRepository
      * @param  string              $entity
      * @param  int                 $entityId
      * @param  string              $action
+     * @param  boolean             $includeRefused
      * @return \Doctrine\ORM\Query
      */
-    public function findAllByEntityAndEntityIdAndActionQuery($entity, $entityId, $action)
+    public function findAllByEntityAndEntityIdAndActionQuery($entity, $entityId, $action, $includeRefused = true)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('a')
@@ -230,7 +231,9 @@ class Action extends EntityRepository
                 $query->expr()->andX(
                     $query->expr()->eq('a.entity', ':entity'),
                     $query->expr()->eq('a.entityId', ':entityId'),
-                    $query->expr()->eq('a.action', ':action')
+                    $query->expr()->eq('a.action', ':action'),
+                    $includeRefused ? '1=1' : $query->expr()->isNull('a.refuseDate')
+
                 )
             )
             ->setParameter('entity', $entity)
