@@ -179,7 +179,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         foreach ($mappings as $mapping) {
             $actions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
-                ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'remove');
+                ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getArticle()->getId(), 'remove');
 
             $edited = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
@@ -187,7 +187,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
             $removed = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
-                ->findAllByEntityAndEntityIdAndAction('article', $mapping->getArticle()->getId(), 'delete');
+                ->findAllByEntityAndEntityIdAndAction('article', $mapping->getArticle()->getId(), 'delete', false);
 
             if ((!isset($actions[0]) || $actions[0]->isRefused()) && sizeof($removed) == 0) {
                 if (isset($edited[0]) && !$edited[0]->isRefused()) {
