@@ -80,6 +80,10 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         $booking->setStatus('canceled', $this->getEntityManager());
         $this->getEntityManager()->flush();
 
+        $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->assignAllByArticle($booking->getArticle(), $this->getMailTransport());
+
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
