@@ -475,4 +475,9 @@ VTK Cudi
         'value'       => 'default',
         'description' => 'Select the order export xml format choose: default, pmr',
     ),
+    array(
+        'key'         => 'cudi.dissable_registration_articles_2nd_stock_period',
+        'value'       => '0',
+        'description' => 'Dissable the assignment of registration articles in the second semester.',
+    ),
 );

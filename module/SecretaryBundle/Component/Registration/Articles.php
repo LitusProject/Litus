@@ -133,44 +133,50 @@ class Articles
             }
         }
 
-        $registrationArticles = unserialize(
-            $entityManager
+        $dissableAssignment = $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.registration_articles')
-        );
+                ->getConfigValue('cudi.dissable_registration_articles_2nd_stock_period');
 
-        foreach ($registrationArticles as $registrationArticle) {
-            $booking = $entityManager
-                ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
+        if (!($dissableAssignment == '1' && ($currentPeriod->getStartDate()->format('n') < 4 || $currentPeriod->getStartDate()->format('n') > 11))) {
+            $registrationArticles = unserialize(
+                $entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.registration_articles')
+            );
+
+            foreach ($registrationArticles as $registrationArticle) {
+                $booking = $entityManager
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
+                    ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
+                        $entityManager
+                            ->getRepository('CudiBundle\Entity\Sale\Article')
+                            ->findOneById($registrationArticle),
+                        $academic,
+                        $academicYear
+                    );
+
+                if (null !== $booking) {
+                    continue;
+                }
+
+                $booking = new Booking(
+                    $entityManager,
+                    $academic,
                     $entityManager
                         ->getRepository('CudiBundle\Entity\Sale\Article')
                         ->findOneById($registrationArticle),
-                    $academic,
-                    $academicYear
+                    'booked',
+                    1,
+                    true
                 );
+                $entityManager->persist($booking);
 
-            if (null !== $booking) {
-                continue;
-            }
-
-            $booking = new Booking(
-                $entityManager,
-                $academic,
-                $entityManager
-                    ->getRepository('CudiBundle\Entity\Sale\Article')
-                    ->findOneById($registrationArticle),
-                'booked',
-                1,
-                true
-            );
-            $entityManager->persist($booking);
-
-            if ($enableAssignment) {
-                $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
-                if ($available > 0) {
-                    if ($available >= $booking->getNumber()) {
-                        $booking->setStatus('assigned', $entityManager);
+                if ($enableAssignment) {
+                    $available = $booking->getArticle()->getStockValue() - $currentPeriod->getNbAssigned($booking->getArticle());
+                    if ($available > 0) {
+                        if ($available >= $booking->getNumber()) {
+                            $booking->setStatus('assigned', $entityManager);
+                        }
                     }
                 }
             }
