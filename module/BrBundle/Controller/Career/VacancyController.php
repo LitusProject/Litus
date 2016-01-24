@@ -35,7 +35,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 
         $query = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllActiveByTypeQuery('vacancy');
+            ->findAllActiveByTypeByDateQuery('vacancy');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
