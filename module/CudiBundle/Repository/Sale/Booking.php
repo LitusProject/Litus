@@ -1269,7 +1269,7 @@ class Booking extends EntityRepository
             if ($enableAssignment) {
                 $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
-                    ->assignAllByArticle($booking->getArticle(), $this->getMailTransport());
+                    ->assignAllByArticle($booking->getArticle(), $mailTransport);
                 $this->getEntityManager()->flush();
             }
         }
