@@ -17,7 +17,8 @@
  */
 namespace PromBundle\Entity;
 
-use DateTime,
+use CommonBundle\Entity\General\AcademicYear,
+    DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     Exception,
@@ -39,6 +40,14 @@ class Bus
      * @ORM\Column(type="bigint")
      */
     private $id;
+
+    /**
+     * @var AcademicYear The shift's academic year
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
 
     /**
      * @var DateTime The depature time of this bus
@@ -83,8 +92,9 @@ class Bus
     /**
      * Creates a new Bus with the given attributes
      */
-    public function __construct()
+    public function __construct(AcademicYear $academicYear)
     {
+        $this->academicYear = $academicYear;
     }
 
     /**
@@ -93,6 +103,14 @@ class Bus
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
     }
 
     /**

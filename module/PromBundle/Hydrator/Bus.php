@@ -43,7 +43,7 @@ class Bus extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            $object = new BusEntity();
+            $object = new BusEntity($this->getCurrentAcademicYear());
         }
 
         $object->setDepartureTime(self::loadDateTime($data['departure_time']));

@@ -36,7 +36,7 @@ class CodeUsed extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The code you entered is already used.',
+        self::NOT_VALID => 'The code you entered is not valid.',
     );
 
     /**
@@ -69,6 +69,10 @@ class CodeUsed extends \CommonBundle\Component\Validator\AbstractValidator
         $code = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus\ReservationCode')
             ->getRegistrationCodeByCode($value);
+
+        if ($code->getAcademicYear() != $this->getCurrentAcademicYear()) {
+            return false;
+        }
 
         if (null === $code) {
             return false;

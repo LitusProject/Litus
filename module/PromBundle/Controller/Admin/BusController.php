@@ -40,7 +40,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('PromBundle\Entity\Bus')
-                ->findAllBuses(),
+                ->findAllBussesByAcademicYear($this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
 
@@ -136,7 +136,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
     {
         $buses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
-            ->getGoBusses();
+            ->getGoBusses($this->getCurrentAcademicYear());
 
         $file = new CsvFile();
         $document = new CsvGenerator($this->getEntityManager(), $buses);
