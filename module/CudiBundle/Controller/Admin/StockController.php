@@ -539,6 +539,20 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                                 $booking->setStatus('booked', $this->getEntityManager());
                                 $nbToMuchAssigned -= $booking->getNumber();
                             }
+
+                            $enableAssignment = $this->getEntityManager()
+                                    ->getRepository('CommonBundle\Entity\General\Config')
+                                    ->getConfigValue('cudi.enable_automatic_assignment') &&
+                                $this->getEntityManager()
+                                    ->getRepository('CommonBundle\Entity\General\Config')
+                                    ->getConfigValue('cudi.enable_assign_after_stock_update');
+
+                            if ($enableAssignment) {
+                                $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Sale\Booking')
+                                    ->assignAllByArticle($article, $this->getMailTransport());
+                                $this->getEntityManager()->flush();
+                            }
                         }
                     }
 

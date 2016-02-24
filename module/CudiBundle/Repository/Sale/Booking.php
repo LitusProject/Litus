@@ -1261,6 +1261,17 @@ class Booking extends EntityRepository
             }
 
             $persons[$booking->getPerson()->getId()]['bookings'][] = $booking;
+
+            $enableAssignment = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.enable_automatic_assignment');
+
+            if ($enableAssignment) {
+                $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Sale\Booking')
+                    ->assignAllByArticle($booking->getArticle(), $mailTransport);
+                $this->getEntityManager()->flush();
+            }
         }
 
         $this->getEntityManager()->flush();
