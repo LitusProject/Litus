@@ -147,7 +147,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $busses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
-            ->getGoBusses();
+            ->getGoBusses($this->getCurrentAcademicYear());
 
         $array = array('0' => 'None Selected');
         foreach ($busses as $bus) {
@@ -167,7 +167,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $busses = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus')
-            ->getReturnBusses();
+            ->getReturnBusses($this->getCurrentAcademicYear());
 
         $array = array('0' => 'None Selected');
         foreach ($busses as $bus) {

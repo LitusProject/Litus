@@ -19,6 +19,7 @@
 namespace PromBundle\Repository\Bus;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
     PromBundle\Entity\Bus;
 
 /**
@@ -80,6 +81,27 @@ class Passenger extends EntityRepository
             ->setParameter('bus', $bus)
             ->orderBy('p.firstName','ASC')
             ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllPassengersByAcademicYearFirstBus(AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('p')
+            ->from('PromBundle\Entity\Bus\Passenger', 'p')
+            ->innerJoin('p.firstBus', 'b')
+            ->where(
+                $query->expr()->eq('b.academicYear', ':academicYear')
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->orderBy('p.firstName','ASC')
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }
