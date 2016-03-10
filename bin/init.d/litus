@@ -170,7 +170,8 @@ restart_sockets() {
 #
 
 PRINTERS_PID=/var/run/litus/printers.pid
-PRINTERS_SCR=/var/run/litus/printers.sh
+PRINTERS_SCR=/usr/local/sbin/printers.sh
+PRINTERS_LOG=/var/log/litus/printers.log
 
 have_printers() {
     [ -f /opt/litus/PrintDaemon.jar ] && return 0
@@ -178,7 +179,7 @@ have_printers() {
     # stay silent if printers are disabled
     [ $HAVE_PRINTERS -eq 0 ] && return 1
 
-    log_error_msg "Cannot find PrintDaemon.jar in /opt/litus, printer disabled"
+    log_error_msg "Cannot find PrintDaemon.jar in /opt/litus, printers disabled"
     HAVE_PRINTERS=0
     return 1
 }
@@ -235,14 +236,14 @@ init() {
         chmod 750 /var/log/litus
     fi
 
-    if have_printers && [ ! -f /var/run/litus/printers.sh ]; then
-        cat <<EOF > /var/run/litus/printers.sh
+    if have_printers && [ ! -f $PRINTERS_SCR ]; then
+        cat <<EOF > $PRINTERS_SCR
 #!/bin/bash
 set -e
 cd /opt/litus
-exec java -jar /opt/litus/PrintDaemon.jar 4444 4445 >/var/log/litus/printer.log 2>&1
+exec java -jar /opt/litus/PrintDaemon.jar 4444 4445 >> $PRINTERS_LOG 2>&1
 EOF
-        chmod +x /var/run/litus/printers.sh
+        chmod +x $PRINTERS_SCR
     fi
 }
 
