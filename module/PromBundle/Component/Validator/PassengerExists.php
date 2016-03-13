@@ -68,8 +68,7 @@ class PassengerExists extends \CommonBundle\Component\Validator\AbstractValidato
 
         $passenger = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus\Passenger')
-            ->findOneByEmail($value);
-
+            ->findPassengerByEmail($value, $this->getCurrentAcademicYear());
         if (null === $passenger) {
             return true;
         }
