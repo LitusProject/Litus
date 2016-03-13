@@ -81,7 +81,7 @@ class Bus extends EntityRepository
      * @param $academicYear AcademicYear
      * @return array
      */
-    public function findAllBuses($academicYear)
+    public function findAllBusesByAcademicYear($academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultArray = $query->select('b')
