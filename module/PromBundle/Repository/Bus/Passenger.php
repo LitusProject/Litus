@@ -50,18 +50,25 @@ class Passenger extends EntityRepository
 
     /**
      * @param  string              $email
+     * @param                      $academicYear AcademicYear
      * @return \Doctrine\ORM\Query
      */
-    public function findPassengerByEmailQuery($email)
+    public function findPassengerByEmail($email, $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p')
             ->from('PromBundle\Entity\Bus\Passenger', 'p')
+            ->join('p.code', 'c')
             ->where(
-                $query->expr()->eq('p.email', ':email')
+                $query->expr()->andX(
+                    $query->expr()->eq('p.email', ':email'),
+                    $query->expr()->eq('c.academicYear', ':year')
+                )
             )
+            ->setParameter('year', $academicYear)
             ->setParameter('email', $email)
-            ->getQuery();
+        ->getQuery()
+        ->getOneOrNullResult();
 
         return $resultSet;
     }
@@ -79,7 +86,7 @@ class Passenger extends EntityRepository
                 $query->expr()->eq('p.firstBus', ':bus')
             )
             ->setParameter('bus', $bus)
-            ->orderBy('p.firstName','ASC')
+            ->orderBy('p.firstName', 'ASC')
             ->getQuery();
 
         return $resultSet;
@@ -99,7 +106,7 @@ class Passenger extends EntityRepository
                 $query->expr()->eq('b.academicYear', ':academicYear')
             )
             ->setParameter('academicYear', $academicYear)
-            ->orderBy('p.firstName','ASC')
+            ->orderBy('p.firstName', 'ASC')
             ->getQuery()
             ->getResult();
 
