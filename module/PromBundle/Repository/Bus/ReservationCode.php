@@ -18,7 +18,8 @@
 
 namespace PromBundle\Repository\Bus;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear;
 
 /**
  * ReservationCode
@@ -65,5 +66,25 @@ class ReservationCode extends EntityRepository
             ->getOneOrNullResult();
 
         return $resultCode;
+    }
+
+    /**
+     * @param  AcademicYear $academicYear
+     * @return array
+     */
+    public function getAllCodesByAcademicYear($academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $result = $query->select('c')
+            ->from('PromBundle\Entity\Bus\ReservationCode', 'c')
+            ->where(
+                $query->expr()->eq('c.academicYear', ':year')
+            )
+            ->orderBy('c.id')
+            ->setParameter('year', $academicYear)
+            ->getQuery()
+        ->getResult();
+
+        return $result;
     }
 }

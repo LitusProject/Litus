@@ -36,7 +36,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('PromBundle\Entity\Bus\ReservationCode')
-                ->findByAcademicYear($this->getCurrentAcademicYear()),
+                ->getAllCodesByAcademicYear($this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
 
@@ -112,7 +112,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
     {
         $entries = $this->getEntityManager()
             ->getRepository('PromBundle\Entity\Bus\ReservationCode')
-            ->findByAcademicYear($this->getCurrentAcademicYear());
+            ->getAllCodesByAcademicYear($this->getCurrentAcademicYear());
 
         $file = new CsvFile();
         $heading = array('Code');
