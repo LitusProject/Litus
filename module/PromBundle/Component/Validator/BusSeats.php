@@ -84,7 +84,7 @@ class BusSeats extends \CommonBundle\Component\Validator\AbstractValidator
             return true;
         }
 
-        if ($newBus->getTotalSeats() - $newBus->getReservedSeats() >= 0) {
+        if ($newBus->getTotalSeats() - $newBus->getReservedSeats() > 0) {
             return true;
         }
 

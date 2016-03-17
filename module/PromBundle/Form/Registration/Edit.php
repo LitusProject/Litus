@@ -166,9 +166,7 @@ class Edit extends Add
         $array = array('0' => 'None Selected');
         foreach ($busses as $bus) {
             $seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
-            if($seatsLeft > 0){
-                $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') . ' | ' . $seatsLeft . ' seats left';
-            }
+            $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') . ' | ' . $seatsLeft . ' seats left';
         }
 
         return $array;
@@ -186,9 +184,7 @@ class Edit extends Add
         $array = array('0' => 'None Selected');
         foreach ($busses as $bus) {
             $seatsLeft = $bus->getTotalSeats() - $bus->getReservedSeats();
-            if($seatsLeft > 0) {
-                $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') . ' | ' . $seatsLeft . ' seats left';
-            }
+            $array[$bus->getId()] = $bus->getDepartureTime()->format('d/m/Y H:i') . ' | ' . $seatsLeft . ' seats left';
         }
 
         return $array;
