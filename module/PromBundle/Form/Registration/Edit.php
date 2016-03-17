@@ -41,6 +41,8 @@ class Edit extends Add
         $code = '';
         $firstBus = 0;
         $secondBus = 0;
+        $firstBusEntity = null;
+        $secondBusEntity = null;
 
         if (null !== $this->passenger) {
             $firstName = $this->passenger->getFirstName();
@@ -121,6 +123,9 @@ class Edit extends Add
                         ),
                         array(
                             'name' => 'prom_bus_seats',
+                            'options' => array(
+                                'bus' => $firstBusEntity,
+                            ),
                         ),
                     ),
                 ),
@@ -145,6 +150,9 @@ class Edit extends Add
                         ),
                         array(
                             'name' => 'prom_bus_seats',
+                            'options' => array(
+                                'bus' => $secondBusEntity,
+                            ),
                         ),
                     ),
                 ),
