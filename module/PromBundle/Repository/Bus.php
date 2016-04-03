@@ -30,22 +30,22 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
 class Bus extends EntityRepository
 {
     /**
-     * @param  AcademicYear $academicYear
+     * @param $academicYear AcademicYear
      * @return array
      */
-    public function getGoBusses(AcademicYear $academicYear)
+    public function getGoBusses($academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultArray = $query->select('b')
             ->from('PromBundle\Entity\Bus', 'b')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('b.direction', ':direction'),
-                    $query->expr()->eq('b.academicYear', ':academicYear')
+                $query->expr()->eq('b.direction', ':direction'),
+                    $query->expr()->eq('b.academicYear', ':year')
                 )
             )
             ->setParameter('direction', 'Go')
-            ->setParameter('academicYear', $academicYear)
+            ->setParameter('year', $academicYear)
             ->orderBy('b.departureTime', 'ASC')
             ->getQuery()
             ->getResult();
@@ -54,10 +54,10 @@ class Bus extends EntityRepository
     }
 
     /**
-     * @param  AcademicYear $academicYear
+     * @param $academicYear AcademicYear
      * @return array
      */
-    public function getReturnBusses(AcademicYear $academicYear)
+    public function getReturnBusses($academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultArray = $query->select('b')
@@ -65,11 +65,11 @@ class Bus extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.direction', ':direction'),
-                    $query->expr()->eq('b.academicYear', ':academicYear')
+                    $query->expr()->eq('b.academicYear', ':year')
                 )
             )
             ->setParameter('direction', 'Return')
-            ->setParameter('academicYear', $academicYear)
+            ->setParameter('year', $academicYear)
             ->orderBy('b.departureTime', 'ASC')
             ->getQuery()
             ->getResult();
@@ -78,16 +78,18 @@ class Bus extends EntityRepository
     }
 
     /**
-     * @param  AcademicYear $academicYear
+     * @param $academicYear AcademicYear
      * @return array
      */
-    public function findAllBussesByAcademicYear(AcademicYear $academicYear)
+    public function findAllBusesByAcademicYear($academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultArray = $query->select('b')
             ->from('PromBundle\Entity\Bus', 'b')
-            ->where($query->expr()->eq('b.academicYear', ':academicYear'))
-            ->setParameter('academicYear', $academicYear)
+            ->where(
+                $query->expr()->eq('b.academicYear', ':year')
+            )
+            ->setParameter('year', $academicYear)
             ->orderBy('b.departureTime', 'ASC')
             ->getQuery()
             ->getResult();

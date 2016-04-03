@@ -30,7 +30,8 @@ use CalendarBundle\Entity\Node\Event,
     Doctrine\ORM\Mapping as ORM,
     InvalidArgumentException,
     ShiftBundle\Entity\Shift\Responsible,
-    ShiftBundle\Entity\Shift\Volunteer;
+    ShiftBundle\Entity\Shift\Volunteer,
+    Zend\Mail\Message;
 
 /**
  * This entity stores a shift.
@@ -195,7 +196,7 @@ class Shift
     private $handledOnEvent;
 
     /**
-     * @var boolean wheter or not a ticket is needed to do ths shift
+     * @var boolean wheter or not a ticket is needed to do the shift
      *
      * @ORM\Column(name="ticket_needed", type="boolean",options={"default" = false})
      */
@@ -312,6 +313,10 @@ class Shift
     {
         $this->nbResponsibles = $nbResponsibles;
 
+        while($this->countResponsibles() > $nbResponsibles){
+            $this->responsibles->remove($this->countResponsibles()-1);
+        }
+
         return $this;
     }
 
@@ -404,6 +409,9 @@ class Shift
     {
         $this->nbVolunteers = $nbVolunteers;
 
+        while($this->countVolunteers() > $nbVolunteers){
+            $this->volunteers->remove($this->countVolunteers()-1);
+        }
         return $this;
     }
 

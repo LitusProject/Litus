@@ -40,7 +40,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('PromBundle\Entity\Bus')
-                ->findAllBussesByAcademicYear($this->getCurrentAcademicYear()),
+                ->findAllBusesByAcademicYear($this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
 

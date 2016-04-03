@@ -23,7 +23,8 @@
                         <td>{{ passenger.getSecondBus().getDepartureTime().format('d/m/Y H:i') }}</td>
                         <td class="actions">
                             {% if hasAccess('prom_admin_passenger', 'view') %}
-                                <a href="{{ url('prom_admin_bus', {"action": "view", "id": passenger.getBus().getId()}) }}" class="view">View Bus</a>
+                                <a href="{{ url('prom_admin_bus', {"action": "view", "id": passenger.getFirstBus().getId()}) }}" class="view">View First Bus</a>
+                                <a href="{{ url('prom_admin_bus', {"action": "view", "id": passenger.getSecondBus().getId()}) }}" class="view">View Second Bus</a>
                             {% endif %}
                             {% if hasAccess('prom_admin_bus', 'delete') %}
                                 <a href="{{ url('prom_admin_passenger', {"action": "removeBus", "id": passenger.getId()}) }}" class="delete">Remove From Bus</a>

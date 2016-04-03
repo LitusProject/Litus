@@ -136,9 +136,59 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
+            $volunteersBefore = $shift->getVolunteers();
+            $responsiblesBefore = $shift->getResponsibles();
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $volunteersAfter = $shift->getVolunteers();
+                $responsiblesAfter = $shift->getResponsibles();
+
+                $volunteerDiff = array_diff_key($volunteersBefore, $volunteersAfter);
+                $responsiblesDiff = array_diff_key($responsiblesBefore, $responsiblesAfter);
+
+                $mailAddress = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('shift.mail');
+
+                $mailName = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('shift.mail_name');
+
+                $language = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Language')
+                    ->findOneByAbbrev('en');
+
+                $mailData = unserialize(
+                    $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('shift.subscription_deleted_mail')
+                );
+
+                $message = $mailData[$language->getAbbrev()]['content'];
+                $subject = $mailData[$language->getAbbrev()]['subject'];
+
+                $shiftString = $shift->getName() . ' from ' . $shift->getStartDate()->format('d/m/Y h:i') . ' to ' . $shift->getEndDate()->format('d/m/Y h:i');
+
+                $mail = new Message();
+                $mail->setEncoding('UTF-8')
+                    ->setBody(str_replace('{{ shift }}', $shiftString, $message))
+                    ->setFrom($mailAddress, $mailName)
+                    ->setSubject($subject);
+
+                $mail->addTo($mailAddress, $mailName);
+
+                foreach ($volunteerDiff as $volunteer) {
+                    $mail->addBcc($volunteer->getPerson()->getEmail(), $volunteer->getPerson()->getFullName());
+                }
+
+                foreach ($responsiblesDiff as $responsible) {
+                    $mail->addBcc($responsible->getPerson()->getEmail(), $responsible->getPerson()->getFullName());
+                }
+
+                if ('development' != getenv('APPLICATION_ENV')) {
+                    $this->getMailTransport()->send($mail);
+                }
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
