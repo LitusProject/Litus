@@ -82,8 +82,31 @@
     <div class="section thesis-info">
         <div class="section-header">{{ translate('Capabilities') }}</div>
         <div class="section-content">
+            {% if entry.hasOldExperiences() %}
+                <div class="subsection"><span class="subsection-header">{{ translate('Experiences')|nl2br }}</span> <br> {{ entry.getExperiences()|nl2br }}  </div>
+            {% else %}
+                <div class="subsection"><span class="subsection-header">{{ translate('Experiences')|nl2br }}</span>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="col-sm-1"></th>
+                            <th class="col-sm-9"></th>
+                            <th class="col-sm-2"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for experience in entry.getExperiences() %}
+                        <tr>
+                            <td>{{ translate(experience.getType()) }}</td>
+                            <td>{{ experience.getFunction() }}</td>
+                            <td>{{ experience.getStartYear() }} - {{ experience.getEndYear() }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+            {% endif %}
             <div class="subsection"><span class="subsection-header">{{ translate('Computer Skills')|nl2br }}</span> <br> {{ entry.getComputerSkills()|nl2br }} </div>
-            <div class="subsection"><span class="subsection-header">{{ translate('Experiences')|nl2br }}</span> <br> {{ entry.getExperiences() }} </div>
         </div>
     </div>
 

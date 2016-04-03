@@ -38,9 +38,15 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
         }
 
-        $subjects = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
-            ->findAllByProfAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+        if ($this->hasAccess()->toResourceAction('cudi_prof_subject', 'all')) {
+            $subjects = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
+                ->findByAcademicYear($this->getCurrentAcademicYear());
+        } else {
+            $subjects = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
+                ->findAllByProfAndAcademicYear($this->getAuthentication()->getPersonObject(), $this->getCurrentAcademicYear());
+        }
 
         return new ViewModel(
             array(
@@ -173,7 +179,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
         foreach ($mappings as $mapping) {
             $actions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
-                ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getId(), 'remove');
+                ->findAllByEntityAndEntityIdAndAction('mapping', $mapping->getArticle()->getId(), 'remove');
 
             $edited = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
@@ -181,9 +187,9 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
             $removed = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Prof\Action')
-                ->findAllByEntityAndEntityIdAndAction('article', $mapping->getArticle()->getId(), 'delete');
+                ->findAllByEntityAndEntityIdAndAction('article', $mapping->getArticle()->getId(), 'delete', false);
 
-            if ((!isset($actions[0]) || !$actions[0]->isRefused()) && sizeof($removed) == 0) {
+            if ((!isset($actions[0]) || $actions[0]->isRefused()) && sizeof($removed) == 0) {
                 if (isset($edited[0]) && !$edited[0]->isRefused()) {
                     $edited[0]->setEntityManager($this->getEntityManager());
                     $article = $edited[0]->getEntity();
@@ -211,13 +217,24 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             return;
         }
 
-        $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
-            ->findOneBySubjectIdAndProfAndAcademicYear(
-                $this->getParam('id', 0),
-                $this->getAuthentication()->getPersonObject(),
-                $academicYear
-            );
+        $mapping = null;
+
+        if ($this->hasAccess()->toResourceAction('cudi_prof_subject', 'all')) {
+            $mapping = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
+                ->findOneBySubjectIdAndAcademicYear(
+                    $this->getParam('id', 0),
+                    $academicYear
+                );
+        } else {
+            $mapping = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
+                ->findOneBySubjectIdAndProfAndAcademicYear(
+                    $this->getParam('id', 0),
+                    $this->getAuthentication()->getPersonObject(),
+                    $academicYear
+                );
+        }
 
         if (!($mapping instanceof ProfMap)) {
             $this->flashMessenger()->error(

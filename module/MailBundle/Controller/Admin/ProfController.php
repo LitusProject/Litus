@@ -188,9 +188,13 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             ->findAllByProfAndAcademicYear($person, $academicYear);
 
         $subjects = array();
+        $subjectIds = array();
         foreach ($allSubjects as $subject) {
-            if ($subject->getSubject()->getSemester() == $semester || $subject->getSubject()->getSemester() == 3) {
-                $subjects[] = $subject->getSubject();
+            if (!in_array($subject->getSubject()->getId(), $subjectIds)) {
+                if ($subject->getSubject()->getSemester() == $semester || $subject->getSubject()->getSemester() == 3) {
+                    $subjects[] = $subject->getSubject();
+                    $subjectIds[] = $subject->getSubject()->getId();
+                }
             }
         }
 

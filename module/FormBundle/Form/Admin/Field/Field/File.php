@@ -33,7 +33,7 @@ class File extends \CommonBundle\Component\Form\Fieldset
             'type'    => 'text',
             'name'    => 'max_size',
             'label'   => 'Max. Size (in MB)',
-            'value'   => 4,
+            'value'   => 5,
             'options' => array(
                 'input' => array(
                     'filters'  => array(

@@ -109,11 +109,19 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             }
         }
 
+        $isPost = false;
+        $isInternalPost = false;
+
+        if ($this->getRequest()->isPost()) {
+            $isPost = true;
+            $isInternalPost = isset($form->getData()['internal']) && $form->getData()['internal'] ? true : false;
+        }
+
         return new ViewModel(
             array(
                 'form' => $form,
-                'isPost' => $this->getRequest()->isPost(),
-                'isInternalPost' => isset($form->getData()['internal']) && $form->getData()['internal'] ? true : false,
+                'isPost' => $isPost,
+                'isInternalPost' => $isInternalPost,
             )
         );
     }
@@ -206,6 +214,20 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel();
         }
 
+        $history = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article\History')
+                    ->findOneByPrecursor($article);
+
+        if (isset($history)) {
+            $this->redirect()->toRoute(
+                'cudi_prof_article',
+                array(
+                    'action' => 'edit',
+                    'id' => $history->getArticle()->getId(),
+                )
+            );
+        }
+
         $duplicate = clone $article;
 
         $form = $this->getForm('cudi_prof_article_edit', $duplicate);
@@ -226,7 +248,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                         $edited = true;
                     } elseif ($article->getPublishers() != $duplicate->getPublishers()) {
                         $edited = true;
-                    } elseif ($article->getYearPublished() != $formData['year_published']) {
+                    } elseif ($article->getYearPublished() != $duplicate->getYearPublished()) {
                         $edited = true;
                     } elseif ($article->getIsbn() != $duplicate->getIsbn()) {
                         $edited = true;
@@ -338,9 +360,17 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     {
         $id = $id === null ? $this->getParam('id', 0) : $id;
 
-        $article = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article')
-            ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
+        $article = null;
+
+        if ($this->hasAccess()->toResourceAction('cudi_prof_subject', 'all')) {
+            $article = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Article')
+                ->findOneById($id);
+        } else {
+            $article = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Article')
+                ->findOneByIdAndProf($id, $this->getAuthentication()->getPersonObject());
+        }
 
         if (!($article instanceof Article)) {
             $this->flashMessenger()->error(
@@ -371,13 +401,24 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             return;
         }
 
-        $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
-            ->findOneBySubjectIdAndProfAndAcademicYear(
-                $this->getParam('id', 0),
-                $this->getAuthentication()->getPersonObject(),
-                $academicYear
-            );
+        $mapping = null;
+
+        if ($this->hasAccess()->toResourceAction('cudi_prof_subject', 'all')) {
+            $mapping = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
+                ->findOneBySubjectIdAndAcademicYear(
+                    $this->getParam('id', 0),
+                    $academicYear
+                );
+        } else {
+            $mapping = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
+                ->findOneBySubjectIdAndProfAndAcademicYear(
+                    $this->getParam('id', 0),
+                    $this->getAuthentication()->getPersonObject(),
+                    $academicYear
+                );
+        }
 
         if (!($mapping instanceof ProfMap)) {
             $this->flashMessenger()->error(

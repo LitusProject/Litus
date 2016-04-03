@@ -227,6 +227,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'value' => true,
                 ),
                 array(
+                            'type'       => 'checkbox',
+                            'name'       => 'is_international',
+                            'label'      => 'I am an international student',
+                            'value'      => false,
+                        ),
+                array(
                     'type'     => 'common_address_add-primary',
                     'name'     => 'primary_address',
                     'label'    => 'Primary Address&mdash;Student Room or Home',

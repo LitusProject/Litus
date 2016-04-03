@@ -35,7 +35,7 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
 
         $query = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllActiveByTypeQuery('internship');
+            ->findAllActiveByTypeByDateQuery('internship');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

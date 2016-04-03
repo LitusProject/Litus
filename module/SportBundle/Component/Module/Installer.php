@@ -39,55 +39,61 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
     {
         $departments = array(
             array(
-                'name'       => 'Architectuur',
+                'name' => 'Architectuur',
                 'happyHours' => array(
                     '0809',
                 ),
             ),
             array(
-                'name'       => 'Bouwkunde',
+                'name' => 'Bouwkunde',
                 'happyHours' => array(
                     '1819',
                 ),
             ),
             array(
-                'name'       => 'Chemische Ingenieurstechnieken',
+                'name' => 'Chemische Ingenieurstechnieken',
                 'happyHours' => array(
                     '1415',
                 ),
             ),
             array(
-                'name'       => 'Computerwetenschappen',
+                'name' => 'Computerwetenschappen',
                 'happyHours' => array(
                     '1112',
                 ),
             ),
             array(
-                'name'       => 'Eerstejaars Burgies',
+                'name' => 'Eerstejaars Burgies A-groep',
                 'happyHours' => array(
-                    '1718',
+                    '0508',
                 ),
             ),
             array(
-                'name'       => 'Elektrotechniek',
+                'name' => 'Eerstejaars Burgies B-groep',
+                'happyHours' => array(
+                    '0508',
+                ),
+            ),
+            array(
+                'name' => 'Elektrotechniek',
                 'happyHours' => array(
                     '2300',
                 ),
             ),
             array(
-                'name'       => 'Materiaalkunde',
+                'name' => 'Materiaalkunde',
                 'happyHours' => array(
                     '1213',
                 ),
             ),
             array(
-                'name'       => 'Tweedejaars Burgies',
+                'name' => 'Tweedejaars Burgies',
                 'happyHours' => array(
                     '2223',
                 ),
             ),
             array(
-                'name'       => 'Werktuigkunde',
+                'name' => 'Werktuigkunde',
                 'happyHours' => array(
                     '1314',
                 ),

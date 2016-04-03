@@ -17,7 +17,7 @@
  */
 
 return array(
-    'This person does not exits' => 'Deze persoon bestaat niet',
+    'This person does not exist' => 'Deze persoon bestaat niet',
     'A driver already exists for that user' => 'Er bestaat reeds een bestuurder voor deze persoon',
     'No lease item with this barcode exists' => 'Er bestaat geen verhuur object met deze barcode',
     'This item is already leased' => 'Dit object is reeds verhuurd',

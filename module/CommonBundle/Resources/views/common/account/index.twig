@@ -32,6 +32,8 @@
                 <dd>{{ authenticatedPerson.getUniversityEmail() }}&nbsp;</dd>
                 <dt>{{ translate('Personal E-mail') }}</dt>
                 <dd>{{ authenticatedPerson.getPersonalEmail() }}&nbsp;</dd>
+                <dt>{{ translate('International Student') }}</dt>
+                <dd>{% if  authenticatedPerson.isInternational() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}&nbsp;</dd>
             </dl>
         </div>
         <div class="col-sm-3">

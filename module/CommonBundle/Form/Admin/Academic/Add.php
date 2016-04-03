@@ -163,6 +163,12 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                         ),
                     ),
                 ),
+                array(
+                    'type'       => 'checkbox',
+                    'name'       => 'is_international',
+                    'label'      => 'International',
+                    'value'      => false,
+                ),
             ),
         ));
 

@@ -79,4 +79,49 @@ class Subject extends EntityRepository
 
         return $resultSet;
     }
+
+    /**
+     * @param  string              $prof
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByProfQuery($prof)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('s')
+            ->from('SyllabusBundle\Entity\Subject', 's')
+            ->leftJoin(
+                'SyllabusBundle\Entity\Subject\ProfMap',
+                'm',
+                \Doctrine\ORM\Query\Expr\Join::WITH,
+                'm.subject = s.id'
+            )
+            ->innerJoin('m.prof', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+                                $query->expr()->lower('p.lastName')
+                            ),
+                            ':name'
+                        ),
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+                                $query->expr()->lower('p.firstName')
+                            ),
+                            ':name'
+                        ),
+                        $query->expr()->like('p.universityIdentification', ':name')
+                    ),
+                    $query->expr()->eq('p.canLogin', 'true')
+                )
+            )
+            ->setParameter('name', '%' . strtolower($prof) . '%')
+            ->orderBy('s.code')
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

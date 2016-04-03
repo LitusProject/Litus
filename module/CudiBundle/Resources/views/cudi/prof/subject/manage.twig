@@ -20,7 +20,11 @@
             {% for subject in subjects %}
                 <tr>
                     <td>{{ subject.getSubject().getCode() }}</td>
-                    <td>{{ subject.getSubject().getName() }}</td>
+                    <td>{{ subject.getSubject().getName() }}
+                        {% if hasAccess('cudi_prof_subject', 'subject') %}
+                            <br>{{ subject.getProf().getFullName() }}
+                        {% endif %}
+                    </td>
                     <td>{{ subject.getSubject().getSemester() }}</td>
                     <td>{{ subject.getSubject().getCredits() }}</td>
                     <td class="actions">

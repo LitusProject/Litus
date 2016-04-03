@@ -54,23 +54,30 @@ class GroupController extends \SportBundle\Component\Controller\RunController
 
         $groups = $this->getEntityManager()
             ->getRepository('SportBundle\Entity\Group')
-            ->findLast();
+            ->findAllByAcademicYearQuery($this->getCurrentAcademicYear())->getResult();
 
         return $this->cleanHappyHoursArray($optionsArray, $groups);
     }
 
     private function cleanHappyHoursArray(array $optionsArray, array $groups)
     {
-        $returnArray = $optionsArray;
+        $countArray = array();
+        foreach ($optionsArray as $key => $value) {
+            $countArray[$key] = 0;
+        }
         foreach ($groups as $group) {
             $happyHours = $group->getHappyHours();
-
-            if (isset($returnArray[$happyHours[0]])) {
-                unset($returnArray[$happyHours[0]]);
+            if (isset($countArray[$happyHours[0]])) {
+                $countArray[$happyHours[0]]++;
             }
-
-            if (isset($returnArray[$happyHours[1]])) {
-                unset($returnArray[$happyHours[1]]);
+            if (isset($countArray[$happyHours[1]])) {
+                $countArray[$happyHours[1]]++;
+            }
+        }
+        $returnArray = array();
+        foreach ($optionsArray as $key => $value) {
+            if ($countArray[$key] < 3) {
+                $returnArray[$key] = $value;
             }
         }
 

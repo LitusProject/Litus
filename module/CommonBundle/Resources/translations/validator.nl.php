@@ -18,7 +18,7 @@
 
 return array(
     'The academic barcode already exists' => 'De academische barcode bestaat reeds',
-    'This person does not exits' => 'Deze persoon bestaat niet',
+    'This person does not exist' => 'Deze persoon bestaat niet',
     'The date must be after %first_date%' => 'De datum moet na %first_date% zijn',
     'Invalid decimal number' => 'Ongeldig decimaal getal',
     'This field exceeds the maximum character count' => 'Dit veld overschrijdt zijn maximaal karakter aantal',

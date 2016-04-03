@@ -103,7 +103,7 @@ return array(
         'shop' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/shop[/:action[/:id]][/]',
+                'route' => '[/:language]/shop[/:action[/:id]][/]',
                 'constraints' => array(
                     'language' => '[a-z]{2}',
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',

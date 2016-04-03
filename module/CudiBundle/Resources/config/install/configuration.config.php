@@ -78,6 +78,11 @@ return array(
         'description' => 'The name of the billing organization of the cudi',
     ),
     array(
+        'key'         => 'cudi.billing_address_VAT',
+        'value'       => '',
+        'description' => 'The VAT number of the billing organization of the cudi (empty means none)',
+    ),
+    array(
         'key'         => 'cudi.reservation_expire_time',
         'value'       => 'P2W',
         'description' => 'The time after which a reservation expires',
@@ -469,5 +474,10 @@ Student IT Cudi
         'key'         => 'cudi.export_order_format',
         'value'       => 'default',
         'description' => 'Select the order export xml format choose: default, pmr',
+    ),
+    array(
+        'key'         => 'cudi.dissable_registration_articles_2nd_stock_period',
+        'value'       => '0',
+        'description' => 'Dissable the assignment of registration articles in the second semester.',
     ),
 );

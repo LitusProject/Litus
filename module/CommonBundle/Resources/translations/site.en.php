@@ -116,4 +116,6 @@ return array(
     'Privacy Policy' => 'Privacy Policy',
 
     'Wiki' => 'Exam wiki',
+    'International Student' => 'International Student',
+    'I am an international student' => 'I am an international student',
 );

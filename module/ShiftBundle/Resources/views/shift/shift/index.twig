@@ -42,6 +42,26 @@
         </div>
     </div>
 
+    <div id="modalSignInWarningWithTicket" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Sign In') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('You are about to sign yourself in for a shift. To do this shift you need to have a ticket for this activity. Do you want to continue?') }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default deny">{{ translate('No') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="modalInsurance" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -158,7 +178,6 @@
             $('.responsible').click(function () {
                 var button = $(this);
                 var count = parseInt(button.data('count'), 10);
-
                 if (!button.hasClass('disabled')) {
                     $('#modalSignInWarning').modal();
                     $('#modalSignInWarning .confirm').one('click', function () {
@@ -201,14 +220,20 @@
                 var count = parseInt($(this).data('count'));
 
                 if (!button.hasClass('disabled')) {
-                    $('#modalSignInWarning').modal();
-                    $('#modalSignInWarning .confirm').one('click', function () {
-                        $('#modalSignInWarning').modal('hide');
+                    var id;
+                    if(button.data('ticket')){
+                        id = '#modalSignInWarningWithTicket';
+                    }else{
+                        id = '#modalSignInWarning';
+                    }
+                    $(id).modal();
+                    $(id +' .confirm').one('click', function (){
+                        $(id).modal('hide');
 
                         if(!{{ hasReadInsurance }}) {
-                            $('#modalInsurance').modal();
-                            $('#modalInsurance .confirm').one('click', function () {
-                                $('#modalInsurance').modal('hide');
+                            $(id).modal();
+                            $(id +' .confirm').one('click', function () {
+                                $(id).modal('hide');
                                 volunteerSignIn(button, count);
                             });
                         } else {
@@ -221,8 +246,8 @@
                     $(this).addClass('disabled');
                 });
 
-                $('#modalSignInWarning .deny').one('click', function () {
-                    $('#modalSignInWarning').modal('hide');
+                $(id +' .deny').one('click', function () {
+                    $(id).modal('hide');
 
                     button.parent().find('button').each(function(i) {
                         $(this).removeClass('disabled');
@@ -469,7 +494,7 @@
             </button>
         {% endif %}
         {% if shift.canHaveAsVolunteer(entityManager, authenticatedPerson) and 0 != shift.getNbVolunteers() %}
-            <button class="btn btn-default btn-xs {{ _self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" data-max="{{ shift.getNbVolunteers() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
+            <button class="btn btn-default btn-xs {{ _self.buttonStyle(shift, 'volunteers') }} volunteer" data-id="{{ shift.getId() }}" data-count="{{ shift.countVolunteers() }}" data-max="{{ shift.getNbVolunteers() }}" data-ticket="{{ shift.getTicketNeeded() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
                 {{ translate('Volunteer') }} (<span class="count">{{ shift.countVolunteers() }}</span>/{{ shift.getNbVolunteers() }})
             </button>
         {% endif %}

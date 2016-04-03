@@ -37,7 +37,7 @@ class CacheResult extends \CommonBundle\Component\Console\Command
 The %command.name% command fetches the results of the competition and stores
 them in a cache.
 EOT
-        );
+            );
     }
 
     protected function executeCommand()
@@ -59,10 +59,12 @@ EOT
             if (false !== $fileContents && null !== $resultPage) {
                 file_put_contents('data/cache/run-' . md5('run_result_page'), $fileContents);
                 $this->writeln('Succesfully cached the result page');
-                sleep(10);
+
+                $delay = (int) $resultPage->update;
+                sleep($delay ? $delay : 3);
             } else {
                 $this->writeln('Failed to cache the result page');
-                sleep(10);
+                sleep(3);
             }
         }
     }
@@ -83,8 +85,8 @@ EOT
     }
 
     /**
-     * @param string $str
-     */
+	 * @param string $str
+	 */
     public function writeln($str, $raw = false)
     {
         $now = new DateTime();

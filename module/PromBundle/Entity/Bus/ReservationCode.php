@@ -17,7 +17,8 @@
  */
 namespace PromBundle\Entity\Bus;
 
-use Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for reservationcodes.
@@ -37,6 +38,14 @@ class ReservationCode
     private $id;
 
     /**
+     * @var AcademicYear The shift's academic year
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id")
+     */
+    private $academicYear;
+
+    /**
      * @var string The code for the passenger.
      *
      * @ORM\Column(type="string", length=10)
@@ -50,9 +59,10 @@ class ReservationCode
      */
     private $used;
 
-    public function __construct()
+    public function __construct(AcademicYear $academicYear)
     {
         $this->code = $this->generateCode();
+        $this->academicYear = $academicYear;
         $this->used = false;
     }
 
@@ -62,6 +72,14 @@ class ReservationCode
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return AcademicYear
+     */
+    public function getAcademicYear()
+    {
+        return $this->academicYear;
     }
 
     /**

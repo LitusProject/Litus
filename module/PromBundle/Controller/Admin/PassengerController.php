@@ -34,7 +34,7 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
         $paginator = $this->paginator()->createFromArray(
             $this->getEntityManager()
                 ->getRepository('PromBundle\Entity\Bus\Passenger')
-                ->findAll(),
+                ->findAllPassengersByAcademicYearFirstBus($this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
 

@@ -1,310 +1,402 @@
 {{ doctype() }}
-<html lang="en">
-    <head>
+<html lang="en" style="height:100%;">
+<head>
 
-        {{ headMeta() }}
-        {{ headTitle('24h Run', 'PREPEND') }}
+    {{ headMeta() }}
+    {{ headTitle('24h Run', 'PREPEND') }}
 
-        {{ headLink() }}
-    </head>
+    {{ headLink() }}
+</head>
 
-    <body class="screen-wall" style="background-image:url('/_run/img/asterix1.jpg'); background-repeat: no-repeat; background-size: 100% 800px;">
-        <div class="container">
-            {% include 'run/partials/flashMessenger.twig' %}
+<body class="screen-wall"
+      style="background-image:url('/_run/img/asterix1.jpg'); height:100%; background-position:center bottom; background-repeat: no-repeat; background-size: 100% auto;">
+<div class="container">
+    {% include 'run/partials/flashMessenger.twig' %}
 
-            <div id="loading_queue_error" class="flashmessage alert alert-danger fade in">
-                An error occurred while loading the queue.
+    <div id="loading_queue_error" class="flashmessage alert alert-danger fade in">
+        An error occurred while loading the queue.
+    </div>
+
+    <div id="noCurrentLap" class="flashmessage alert alert-danger fade">
+        <span style="font-size: 18px;">There is nobody running!</span>
+    </div>
+
+    <div id="officialMessage" class="alert alert-danger">
+    </div>
+    <div id="officialStatus" class="alert alert-warning">
+    </div>
+
+    <div id="content_controller">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="well">
+                    <h2>Record</h2>
+                    Fastest run : <span id="fastestTime" class="label label-success" style="font-size: 16px;">N/A</span>
+                    by <span id="fastestRunner" class="label label-success" style="font-size: 16px;">N/A</span><br><br>
+
+                    <h2>Laps</h2>
+
+                    <p style="margin-right: 20px;line-height: 30px;" id="laps">
+                        We have run <span id="nbLaps" class="label label-danger" style="font-size: 16px;">N/A</span>
+                        <span id="nbLapsText">laps</span>.<br>
+                        <span class="show-on-official-data">
+                            We are
+                            <span id="behindFirstOne">
+                                <span id="nbLapsBehind" class="label label-danger" style="font-size: 16px;">N/A</span>
+                                laps behind the first one
+                            </span>
+                            <span id="firstOne">
+                                <span class="label label-success" style="font-size: 16px;">first</span>!<br>
+                            </span>
+                            <span id="aheadSecondOne">
+                                We are <span id="nbLapsAhead" class="label label-success"
+                                             style="font-size: 16px;">N/A</span>
+                                laps ahead the second one!</span>
+                            <br>
+                        </span>
+                        We are averaging
+                        <span id="averageLapTime" class="label label-info" style="font-size: 16px;">N/A</span>
+                        for each lap.
+                    </p>
+
+                    <h2>Runners</h2>
+
+                    <p style="margin-right: 20px">
+                        There <span id="uniqueRunnersTextVerb">have</span> been <span id="uniqueRunners"
+                                                                                      class="label label-success"
+                                                                                      style="font-size: 16px;">N/A</span>
+                        unique <span id="uniqueRunnersText">runners</span>.
+                    </p>
+
+                    <h2>Groups of Friends</h2>
+
+                    <table class="table table-striped" style="width: 90%">
+                        <thead>
+                        <tr>
+                            <th width="80%">Name</th>
+                            <th width="20%">Points</th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="groupsOfFriends">
+                        <tr>
+                            <td colspan="3"><i>There are no groups of friends!</i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div id="noCurrentLap" class="flashmessage alert alert-danger fade">
-                <span style="font-size: 18px;">There is nobody running!</span>
-            </div>
+            <div class="col-md-8">
+                <div id="currentLap" class="well">
+                    <h2>Current Runner</h2>
+                    <h4 style="margin-top: 0;"><span id="currentLapRunnerName">Nobody</span> &nbsp; <span
+                                class="label label-info" id="currentRunnerLapCount"></span></h4>
 
-            <div id="content_controller">
+                    <div id="currentLapInfo" style="display: none">
+                        <span id="currentLapTime">N/A</span>
+                        <span class="show-on-official-data">,
+                            <span id="currentLapDistance">N/A</span>,
+                            <span id="officialSpeed">N/A</span> m/s
+                        </span>
+
+                        <div class="show-on-official-data progress progress-striped active" style="margin-bottom: 0;">
+                            <div class="progress-bar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="well">
-                            <h2>Record</h2>
-                                Fastest run : <span id="fastestTime" class="label label-success" style="font-size: 16px;">N/A</span> by <span id="fastestRunner" class="label label-success" style="font-size: 16px;">N/A</span><br><br>
-                            <h2>Laps</h2>
+                            <h3>Previous Runners</h3>
 
-                            <p style="margin-right: 20px;line-height: 30px;">
-                                We have run <span id="nbOfficialLaps" class="label label-danger" style="font-size: 16px;">N/A</span> <span id="nbOfficialLapsText">laps</span> and we are <span id="behindFirstOne"><span id="nbLapsBehind" class="label label-danger" style="font-size: 16px;">N/A</span> laps behind the first one</span><span id="firstOne" class="label label-success" style="font-size: 16px;display: none">first</span>!<br>
-                                <span id="aheadSecondOne">We are <span id="nbLapsAhead" class="label label-success" style="font-size: 16px;">N/A</span> laps ahead the second one!</span><br>
-                                We are averaging <span id="averageLapTime" class="label label-info" style="font-size: 16px;">N/A</span> for each lap.
-                            </p>
-
-                            <h2>Runners</h2>
-
-                            <p style="margin-right: 20px">
-                                There <span id="uniqueRunnersTextVerb">have</span> been <span id="uniqueRunners" class="label label-success" style="font-size: 16px;">N/A</span> unique <span id="uniqueRunnersText">runners</span>.
-                            </p>
-
-                            <h2>Groups of Friends</h2>
-
-                            <table class="table table-striped" style="width: 90%">
+                            <table class="table table-striped">
                                 <thead>
-                                    <tr>
-                                        <th width="80%">Name</th>
-                                        <th width="20%">Points</th>
-                                    </tr>
+                                <tr>
+                                    <th width="20px">#</th>
+                                    <th width="200px">Runner</th>
+                                    <th>Time</th>
+                                </tr>
                                 </thead>
 
-                                <tbody id="groupsOfFriends">
-                                    <tr>
-                                        <td colspan="3"><i>There are no groups of friends!</i></td>
-                                    </tr>
+                                <tbody id="previousRunners">
+                                <tr>
+                                    <td colspan="3"><i>There are no previous runners!</i></td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <h3>Most laps</h3>
+
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th width="20px">#</th>
+                                    <th width="200px">Runner</th>
+                                    <th>Laps</th>
+                                </tr>
+                                </thead>
+
+                                <tbody id="mostLaps">
+                                <tr>
+                                    <td colspan="3"><i>There are no runners!</i></td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <div class="col-md-8">
-                        <div id="currentLap" class="well">
-                            <h2>Current Runner</h2>
-                            <h4 style="margin-top: 0;"><span id="currentLapRunnerName">Nobody</span> &nbsp; <span class="label label-info" id="currentRunnerLapCount"></span></h4>
+                    <div class="col-md-6">
+                        <div class="well">
+                            <h3>Next Runners <span id="queueSize" class="label label-success" style="font-size: 16px;">N/A</span>
+                            </h3>
 
-                            <div id="currentLapInfo" style="display: none">
-                                <span id="currentLapTime">N/A</span>,
-                                <span id="currentLapDistance">N/A</span>,
-                                <span id="officialSpeed">N/A</span> km/h
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th width="20px">#</th>
+                                    <th>Runner</th>
+                                </tr>
+                                </thead>
 
-                                <div class="progress progress-striped active" style="margin-bottom: 0;">
-                                    <div class="progress-bar" style="width: 0%;"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="well">
-                                    <h3>Previous Runners</h3>
-
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th width="20px">#</th>
-                                                <th width="200px">Runner</th>
-                                                <th>Time</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody id="previousRunners">
-                                            <tr>
-                                                <td colspan="3"><i>There are no previous runners!</i></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-
-                                    <h3>Most laps</h3>
-
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th width="20px">#</th>
-                                                <th width="200px">Runner</th>
-                                                <th>Laps</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody id="mostLaps">
-                                            <tr>
-                                                <td colspan="3"><i>There are no runners!</i></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="well">
-                                    <h3>Next Runners <span id="queueSize" class="label label-success" style="font-size: 16px;">N/A</span></h3>
-
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th width="20px">#</th>
-                                                <th>Runner</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody id="nextRunners">
-                                            <tr>
-                                                <td colspan="3"><i>There are no next runners!</i></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                                <tbody id="nextRunners">
+                                <tr>
+                                    <td colspan="3"><i>There are no next runners!</i></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        {{ inlineScript() }}
+{{ inlineScript() }}
 
-        <script type="text/javascript">
-            var counter;
-            $(document).ready(function () {
-                $(document).runQueue({
-                    url: '{{ socketUrl }}',
-                    key: '{{ key }}',
-                    authSession: '{{ authSession.getId() }}',
-                    errorDialog: $('#loading_queue_error'),
-                    displayLaps: displayLaps
+<script type="text/javascript">
+    var counter;
+    $(document).ready(function () {
+        $(document).runQueue({
+            url: '{{ socketUrl }}',
+            key: '{{ key }}',
+            authSession: '{{ authSession.getId() }}',
+            errorDialog: $('#loading_queue_error'),
+            displayLaps: displayLaps
+        });
+
+        setInterval(updateLapInfo, 1000);
+        $('#officialMessage').hide();
+    });
+
+    function displayLaps(data) {
+        var officialResults = data.officialResults;
+        $('#officialMessage').hide();
+        $('#officialStatus').hide();
+        if (officialResults && officialResults.message) {
+            $('#officialMessage').text(officialResults.message).show();
+        }
+        if (officialResults && officialResults.status) {
+            var status = officialResults.status;
+            var message = null;
+            switch (status) {
+                case 'NoResults':
+                    message = 'The contest has not started yet!';
+                    break;
+                case 'PreResults':
+                    message = 'There are no official results available yet!';
+                    break;
+                case 'Ok':
+                    break;
+                case 'FinalScore':
+                    message = 'These scores are final!';
+                    break;
+                case 'FinalHour':
+                    message = 'During this final hour, the official results are not updated!';
+                    break;
+                case 'TempFailure':
+                    message = 'No results are available at the moment!';
+                    break;
+                case 'PermFailure':
+                    message = 'There won\'t be any official results available anymore.';
+                    break;
+                case 'Emergency':
+                    message = 'Something serious happened, so no official results will be available anymore!';
+                    break;
+                case 'ItsComplicated':
+                    message = 'Something complicated happened, go ask someone for more information!';
+                    break;
+            }
+            if (message != null) {
+                $('#officialStatus').text(message).show();
+            }
+        }
+
+        $('#queueSize').html(data.queueSize);
+        if (data.fastestTime != null) {
+            $('#fastestTime').html(data.fastestTime);
+        }
+        if (data.fastestRunner != null) {
+            $('#fastestRunner').html(data.fastestRunner);
+        }
+        $('#uniqueRunners').html(data.number.uniqueRunners);
+        $('#uniqueRunnersText').html((data.number.uniqueRunners == 1 ? 'runner' : 'runners'));
+        $('#uniqueRunnersTextVerb').html((data.number.uniqueRunners == 1 ? 'has' : 'have'));
+        var officialData = officialResults ? officialResults.data : null;
+        var nbLaps = data.number.own;
+        $('#laps .show-on-official-data').hide();
+        if (officialData) {
+            if (status == 'Ok' || status == 'FinalScore') {
+                $('#laps .show-on-official-data').show();
+                nbLaps = officialData.nbLaps;
+                if (officialData.place != 0) {
+                    $('#nbLapsBehind').html(officialData.difference);
+                    $('#behindFirstOne').show();
+                    $('#aheadSecondOne').hide();
+                    $('#firstOne').hide();
+                } else {
+                    $('#nbLapsAhead').html(officialData.difference);
+                    $('#behindFirstOne').hide();
+                    $('#aheadSecondOne').show();
+                    $('#firstOne').show();
+                }
+            }
+        }
+        $('#averageLapTime').html(data.averageLapTime);
+
+        $('#nbLaps').html(nbLaps);
+        $('#nbLapsText').html((nbLaps == 1 ? 'lap' : 'laps'));
+
+        var foundCurrent = false;
+        $('#previousRunners').html('');
+        $('#nextRunners').html('');
+        $('#groupsOfFriends').html('');
+        $('#mostLaps').html('');
+        $('#currentRunnerLapCount').hide();
+
+        var nextNum = 0;
+        $(data.laps).each(function (num, lap) {
+            if (undefined == lap)
+                return true;
+
+            if (lap.state == 'current') {
+                var lapTime = parseInt(lap.lapTime.substring(0, lap.lapTime.indexOf(':')), 10) * 60 + parseInt(lap.lapTime.substring(lap.lapTime.indexOf(':') + 1), 10);
+                var lapDistance;
+                if (officialData) {
+                    lapDistance = Math.round(officialData.lapsPerSecond * officialData.lapLength * lapTime);
+                    if (lapDistance > officialData.lapLength)
+                        lapDistance = officialData.lapLength;
+                }
+
+                $('#noCurrentLap').removeClass('in');
+                $('#currentLapRunnerName').html(lap.fullName);
+                $('#currentLapInfo').show().data({
+                    'officialDataAvailable': (officialData && (status == 'Ok' || status == 'FinalScore')) ? true : false,
+                    'lapTime': lapTime,
+                    'position': officialData ? officialData.position : 'N/A',
+                    'speed': officialData ? officialData.speed : 'N/A',
+                    'lapsPerSecond': officialData ? officialData.lapsPerSecond : 'N/A',
+                    'lapLength': officialData ? officialData.lapLength : 'N/A',
                 });
-
-                setInterval(updateLapInfo, 1000)
-            });
-
-            function displayLaps(data) {
-                $('#queueSize').html(data.queueSize);
-                if (data.fastestTime != null){
-                    $('#fastestTime').html(data.fastestTime);
+                $('#currentLapTime').html(Math.floor(lapTime / 60) + ':' + (lapTime % 60 < 10 ? "0" + lapTime % 60 : lapTime % 60));
+                $('#currentLapDistance').html(officialData ? lapDistance + ' m' : 'N/A');
+                if(lap.runnerLapCount){
+                    $('#currentRunnerLapCount').show();
+                    $('#currentRunnerLapCount').html('Lap ' + lap.runnerLapCount);
                 }
-                if (data.fastestRunner != null){
-                    $('#fastestRunner').html(data.fastestRunner);
-                }
-                $('#uniqueRunners').html(data.number.uniqueRunners);
-                $('#uniqueRunnersText').html((data.number.uniqueRunners == 1 ? 'runner' : 'runners'));
-                $('#uniqueRunnersTextVerb').html((data.number.uniqueRunners == 1 ? 'has' : 'have'));
+                $('#officialSpeed').html(officialData ? officialData.speed : 'N/A');
 
-                if (data.officialResults) {
-                    $('#nbOfficialLaps').html(data.officialResults.nbLaps);
-                    $('#nbOfficialLapsText').html((data.officialResults.nbLaps == 1 ? 'lap' : 'laps'));
+                if (officialData)
+                    $('#currentLapInfo .progress-bar').css('width', (officialData.lapsPerSecond * lapTime * 100 * 3.6) + '%');
 
-                    if (data.officialResults.place != 0) {
-                        $('#nbLapsBehind').html(data.officialResults.difference);
-                        $('#behindFirstOne').show();
-                        $('#aheadSecondOne').hide();
-                        $('#firstOne').hide();
-                    } else {
-                        $('#nbLapsAhead').html(data.officialResults.difference);
-                        $('#behindFirstOne').hide();
-                        $('#aheadSecondOne').show();
-                        $('#firstOne').show();
-                    }
-
-                    $('#averageLapTime').html(data.averageLapTime);
-                }
-
-                var foundCurrent = false;
-                $('#previousRunners').html('');
-                $('#nextRunners').html('');
-                $('#groupsOfFriends').html('');
-                $('#mostLaps').html('');
-
-                var nextNum = 0;
-                $(data.laps).each(function (num, lap) {
-                    if (undefined == lap)
-                        return true;
-
-                    if (lap.state == 'current') {
-                        var lapTime = parseInt(lap.lapTime.substring(0, lap.lapTime.indexOf(':')), 10) * 60 + parseInt(lap.lapTime.substring(lap.lapTime.indexOf(':') + 1), 10);
-                        var lapDistance;
-                        if (data.officialResults) {
-                            lapDistance = Math.round(data.officialResults.lapsPerSecond * data.officialResults.lapLength * lapTime);
-                            if (lapDistance > data.officialResults.lapLength)
-                                lapDistance = data.officialResults.lapLength;
-                        }
-
-                        $('#noCurrentLap').removeClass('in');
-                        $('#currentLapRunnerName').html(lap.fullName);
-                        $('#currentLapInfo').show().data({
-                            'startSimulationTime': lapTime,
-                            'lapTime': lapTime,
-                            'position': data.officialResults ? data.officialResults.position : 'N/A',
-                            'speed': data.officialResults ? data.officialResults.speed : 'N/A',
-                            'lapsPerSecond': data.officialResults ? data.officialResults.lapsPerSecond : 'N/A',
-                            'lapLength': data.officialResults ? data.officialResults.lapLength : 'N/A',
-                        });
-                        $('#currentLapTime').html(lapTime);
-                        $('#currentLapDistance').html(data.officialResults ? lapDistance + ' m' : 'N/A');
-                        $('#currentRunnerLapCount').html('Lap '+lap.runnerLapCount);
-                        $('#officialSpeed').html(data.officialResults ? data.officialResults.speed : 'N/A');
-
-                        if (data.officialResults)
-                            $('#currentLapInfo .progress-bar').css('width', (data.officialResults.lapsPerSecond * lapTime * 100) + '%');
-
-                        foundCurrent = true;
-                    } else if (lap.state == 'previous') {
-                        $('#previousRunners').prepend(
-                            $('<tr>').append(
+                foundCurrent = true;
+            } else if (lap.state == 'previous') {
+                $('#previousRunners').prepend(
+                        $('<tr>').append(
                                 $('<td>').html(0),
                                 $('<td>').html(lap.fullName),
                                 $('<td>').html(lap.lapTime)
-                            )
-                        );
-                    } else if (lap.state == 'next' && nextNum < 10) {
-                        nextNum++;
-                        $('#nextRunners').append(
-                            $('<tr>').append(
+                        )
+                );
+            } else if (lap.state == 'next' && nextNum < 10) {
+                nextNum++;
+                $('#nextRunners').append(
+                        $('<tr>').append(
                                 $('<td>').html($('#nextRunners tr').length + 1),
                                 $('<td>').html(lap.fullName)
-                            )
-                        );
-                    }
-                });
+                        )
+                );
+            }
+        });
 
-                var counter = 1;
-                $('#previousRunners tr').each(function () {
-                    $(this).find('td:first').html(counter++);
-                });
+        var counter = 1;
+        $('#previousRunners tr').each(function () {
+            $(this).find('td:first').html(counter++);
+        });
 
-                $(data.groupsOfFriends).each(function (num, group) {
-                    $('#groupsOfFriends').append(
-                        $('<tr>').append(
+        $(data.groupsOfFriends).each(function (num, group) {
+            $('#groupsOfFriends').append(
+                    $('<tr>').append(
                             $('<td>').html(group.name),
                             $('<td>').html(group.points)
-                        )
-                    );
-                });
+                    )
+            );
+        });
 
-                $(data.mostLaps).each(function (num, runner) {
-                    $('#mostLaps').append(
-                        $('<tr>').append(
+        $(data.mostLaps).each(function (num, runner) {
+            $('#mostLaps').append(
+                    $('<tr>').append(
                             $('<td>').html($('#mostLaps tr').length + 1),
                             $('<td>').html(runner.name),
                             $('<td>').html(runner.laps)
-                        )
-                    );
-                });
+                    )
+            );
+        });
 
-                if ($('#previousRunners tr').length == 0)
-                    $('#previousRunners').html('<tr><td colspan="3"><i>There are no previous runners!</i></td></tr>');
-                if ($('#nextRunners tr').length == 0)
-                    $('#nextRunners').html('<tr><td colspan="3"><i>There are no next runners!</i></td></tr>');
-                if ($('#groupsOfFriends tr').length == 0)
-                    $('#groupsOfFriends').html('<tr><td colspan="3"><i>There are no groups of friends!</i></td></tr>');
-                if ($('#mostLaps tr').length == 0)
-                    $('#mostLaps').html('<tr><td colspan="3"><i>There are no runners!</i></td></tr>');
+        if ($('#previousRunners tr').length == 0)
+            $('#previousRunners').html('<tr><td colspan="3"><i>There are no previous runners!</i></td></tr>');
+        if ($('#nextRunners tr').length == 0)
+            $('#nextRunners').html('<tr><td colspan="3"><i>There are no next runners!</i></td></tr>');
+        if ($('#groupsOfFriends tr').length == 0)
+            $('#groupsOfFriends').html('<tr><td colspan="3"><i>There are no groups of friends!</i></td></tr>');
+        if ($('#mostLaps tr').length == 0)
+            $('#mostLaps').html('<tr><td colspan="3"><i>There are no runners!</i></td></tr>');
 
-                if (!foundCurrent) {
-                    $('#currentLapRunnerName').html('Nobody');
-                    $('#noCurrentLap').addClass('in');
-                    $('#currentLapInfo').hide();
-                }
-            }
+        if (!foundCurrent) {
+            $('#currentLapRunnerName').html('Nobody');
+            $('#noCurrentLap').addClass('in');
+            $('#currentLapInfo').hide();
+        }
+        if (status == 'NoResults')
+            $('#noCurrentLap').removeClass('in');
+    }
 
-            function updateLapInfo() {
-                if (!$('#currentLapInfo').is(':visible'))
-                    return;
+    function updateLapInfo() {
+        var officialDataAvailable = $('#currentLapInfo').data('officialDataAvailable');
+        if (officialDataAvailable) {
+            $('#currentLapInfo .show-on-official-data').show();
 
-                var lapTime = $('#currentLapInfo').data('lapTime');
-                var lapDistance = Math.round($('#currentLapInfo').data('lapsPerSecond') * $('#currentLapInfo').data('lapLength') * lapTime);
-                if (lapDistance > $('#currentLapInfo').data('lapLength'))
-                    lapDistance = $('#currentLapInfo').data('lapLength');
+        } else {
+            $('#currentLapInfo .show-on-official-data').hide();
+        }
 
-                lapTime++;
-                $('#currentLapInfo').data('lapTime', lapTime);
-                $('#currentLapTime').html(Math.floor(lapTime / 60) + ':' + (lapTime % 60 < 10 ? "0" + lapTime % 60 : lapTime % 60));
-                $('#currentLapDistance').html(lapDistance + ' m');
+        var lapTime = $('#currentLapInfo').data('lapTime');
+        var position = $('#currentLapInfo').data('position');
+        var lapLength = $('#currentLapInfo').data('lapLength');
+        var lapsPerSecond = $('#currentLapInfo').data('lapsPerSecond');
+        var currentPosition = lapTime * lapsPerSecond * 3.6;
+        if (currentPosition > 1)
+            currentPosition = 1;
 
-                if ($('#currentLapInfo').data('lapsPerSecond') !== 'N/A')
-                    $('#currentLapInfo .bar').css('width', ($('#currentLapInfo').data('lapsPerSecond') * lapTime * 100) + '%');
-            }
-        </script>
+        lapTime++;
+        $('#currentLapInfo').data('lapTime', lapTime);
+        $('#currentLapTime').html(Math.floor(lapTime / 60) + ':' + (lapTime % 60 < 10 ? "0" + lapTime % 60 : lapTime % 60));
+        $('#currentLapDistance').html(Math.round((currentPosition * lapLength)) + ' m');
+        $('#currentLapInfo .progress-bar').css('width', (currentPosition * 100) + '%');
+    }
+</script>
 
-    </body>
+</body>
 </html>

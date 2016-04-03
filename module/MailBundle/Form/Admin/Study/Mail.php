@@ -126,7 +126,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         if (1 < count($storedMessages)) {
             $this->add(array(
                 'type'     => 'fieldset',
-                'name'     => 'select_message',
+                'name'     => 'selected_message',
                 'label'    => 'Select Message',
                 'elements' => array(
                     array(

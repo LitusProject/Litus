@@ -28,6 +28,14 @@ use BrBundle\Entity\Cv\Language as CvLanguage,
  */
 class Language extends Fieldset
 {
+    public static $writtenAndOralSkills = array(
+        'Notions' => 'Notions',
+        'Basis' => 'Basis',
+        'Good' => 'Good',
+        'Very good' => 'Very good',
+        'Mother tongue' => 'Mother tongue',
+    );
+
     public function init()
     {
         parent::init();
@@ -56,7 +64,7 @@ class Language extends Fieldset
             'label'      => 'Oral Skills',
             'required'   => true,
             'attributes' => array(
-                'options' => CvLanguage::$oralSkills,
+                'options' => self::$writtenAndOralSkills,
             ),
         ));
 
@@ -66,7 +74,7 @@ class Language extends Fieldset
             'label'      => 'Written Skills',
             'required'   => true,
             'attributes' => array(
-                'options' => CvLanguage::$writtenSkills,
+                'options' => self::$writtenAndOralSkills,
             ),
         ));
     }

@@ -30,6 +30,7 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
         'description',
         'reward',
         'handled_on_event',
+        'ticket_needed',
     );
 
     protected function doExtract($object = null)

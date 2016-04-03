@@ -30,7 +30,7 @@ use CommonBundle\Entity\General\AcademicYear,
  * This is the entity for a cv entry.
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Cv\Entry")
- * @ORM\Table(name="br.cv_entries")
+ * @ORM\Table(name="br.cv_entries", uniqueConstraints={@ORM\UniqueConstraint(name="year_academic_unique", columns={"year", "academic"})})
  */
 class Entry
 {
@@ -46,7 +46,7 @@ class Entry
     /**
      * @var \CommonBundle\Entity\User\Person\Academic The academic to whom this cv belongs
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", cascade={"persist"})
      * @ORM\JoinColumn(name="academic", referencedColumnName="id")
      */
     private $academic;
@@ -104,7 +104,7 @@ class Entry
     /**
      * @var \CommonBundle\Entity\General\Address The address of the cv entry
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="address", referencedColumnName="id")
      */
     private $address;
@@ -210,9 +210,10 @@ class Entry
     private $computerSkills;
 
     /**
-     * @var string Experiences.
+     * @var \Doctrine\Common\Collections\ArrayCollection The experiences added to this cv
      *
-     * @ORM\Column(type="text")
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Cv\Experience", mappedBy="entry", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
      */
     private $experiences;
 
@@ -747,25 +748,70 @@ class Entry
 
     /**
      * Retrieves the experiences of this entry.
+     * If the entry has old experience return string.
      *
-     * @return string
+     * @return array|string
      */
     public function getExperiences()
     {
-        return $this->experiences;
+        if ($this->hasOldExperiences()) {
+            $experiences = $this->experiences->toArray();
+
+            return $experiences[0]->getFunction();
+        } else {
+            return $this->sortNewExperiences($this->experiences->toArray());
+        }
     }
 
     /**
-     * Changes the experiences of this cv entry to the given value.
-     *
-     * @param  string $experiences The new value
-     * @return Entry
-     */
-    public function setExperiences($experiences)
+    * Sort the given list of experiences on start date
+    *
+    *@return array
+    */
+    private function sortNewExperiences(array $experiences)
     {
-        $this->experiences = $experiences;
+        $result = array();
+        $sorted = count($experiences) == 0;
 
-        return $this;
+        while (!$sorted) {
+            $indexSmalest = 0;
+            for ($i = 0; $i < count($experiences); $i++) {
+                if ($experiences[$i]->getEndYear() == $experiences[$indexSmalest]->getEndYear()) {
+                    if ($experiences[$i]->getStartYear() > $experiences[$indexSmalest]->getStartYear()) {
+                        $indexSmalest = $i;
+                    } elseif ($experiences[$i]->getEndYear() >= $experiences[$indexSmalest]->getEndYear()) {
+                        $indexSmalest = $i;
+                    }
+                }
+            }
+            $result[] = $experiences[$indexSmalest];
+            unset($experiences[$indexSmalest]);
+            $experiences = array_values($experiences);
+            $sorted = count($experiences) == 0;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Check if this entry has a single experience with only a function filled in.
+     * This experience is a result of the old structure of the CV.
+     *
+     * @return boolean
+     */
+    public function hasOldExperiences()
+    {
+        $experiences = $this->experiences->toArray();
+
+        if (count($experiences) != 1) {
+            return false;
+        }
+
+        if ($experiences[0]->getType() !== null || $experiences[0]->getStartYear() !== null || $experiences[0]->getEndYear() !== null) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

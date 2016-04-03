@@ -87,8 +87,22 @@
                             {% endif %}
                             <b>{{ dateLocalized(conversation['content'].getDate(), 'd MMM Y HH:mm') }}</b>
                             <div class="info">
-                                {{ translate('Subject') }}: <b>{{ conversation['content'].getSubject().getName() }}</b><br />
-                                <a class="btn btn-sm btn-default" href="{{ url("cudi_prof_subject_comment", {"action": "manage", "id": conversation['content'].getSubject().getId()}) }}">{{ translate('View') }}</a>
+                                <div class="row">
+                                    <div class="col-md-11">
+                                        {{ translate('Subject') }}: <b>{{ conversation['content'].getSubject().getName() }}</b><br />
+                                        {% if conversation['type'] == 'comment' %}
+                                            {{ translate('Status') }}:
+                                            {% if conversation['content'].isRead() %}
+                                                <span class="label label-success">{{ translate('Read') }}</span> <b>{{ translate('by %name%')|replace({'%name%': conversation['content'].getReadBy().getFullName()}) }}</b><br />
+                                            {% else %}
+                                                <span class="label label-warning">{{ translate('Not read') }}</span><br />
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a class="btn btn-sm btn-default" href="{{ url("cudi_prof_subject_comment", {"action": "manage", "id": conversation['content'].getSubject().getId()}) }}">{{ translate('View') }}</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -110,7 +124,7 @@
     {% else %}
         <div style="text-align: center;">
             <img src="/img/litus.png" alt="Litus" />
-            <h3>{{ translate('Please login to get access to these pages.') }}</h3>
+            <a href="{{ shibbolethUrl }}"><h3>{{ translate('Please login to get access to these pages.') }}</h3></a>
         </div>
     {% endif %}
 {% endblock %}

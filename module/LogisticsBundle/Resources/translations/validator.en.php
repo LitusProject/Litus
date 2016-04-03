@@ -17,7 +17,7 @@
  */
 
 return array(
-    'This person does not exits' => 'This person does not exits',
+    'This person does not exist' => 'This person does not exist',
     'A driver already exists for that user' => 'A driver already exists for that user',
     'No lease item with this barcode exists' => 'No lease item with this barcode exists',
     'This item is already leased' => 'This item is already leased',

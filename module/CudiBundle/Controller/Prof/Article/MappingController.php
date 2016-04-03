@@ -178,7 +178,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             return;
         }
 
-        $mapping = $this->getEntityById('CudiBundle\Entity\File\Mapping');
+        $mapping = $this->getEntityById('CudiBundle\Entity\Article\SubjectMap');
+
         $mappingProf = null;
 
         if (null !== $mapping) {

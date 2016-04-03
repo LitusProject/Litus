@@ -46,9 +46,67 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'newsItems' => $this->getNewsItems(),
                 'notifications' => $notifications,
                 'piwik' => $this->getPiwikInfo(),
+                'sportInfo' => $this->getSportResults(),
                 'myShifts' => $this->getMyShifts(),
             )
         );
+    }
+
+    /**
+     * @return array|null
+     */
+    private function getSportResults()
+    {
+        $showInfo = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.sport_info_on_homepage');
+
+        if ($showInfo != '1') {
+            return null;
+        }
+
+        $fileContents = @file_get_contents('data/cache/run-' . md5('run_result_page'));
+
+        $resultPage = null;
+        if (false !== $fileContents) {
+            $resultPage = (array) json_decode($fileContents);
+        }
+
+        $returnArray = null;
+        if (null !== $resultPage) {
+            $teamId = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('sport.run_team_id');
+
+            $currentPlace = null;
+            $teamData = null;
+            foreach ($resultPage['teams'] as $place => $team) {
+                if ($team->nb == $teamId) {
+                    $currentPlace = $place;
+                    $teamData = $team;
+                }
+            }
+
+            if (null !== $teamData) {
+                $behind = 0;
+                if (null !== $currentPlace && $currentPlace > 0) {
+                    $firstData = $resultPage['teams'][0];
+                    $behind = round(($firstData->laps + $firstData->position) - ($teamData->laps + $teamData->position), 2);
+                }
+
+                $returnArray = array(
+                    'nbLaps' => $teamData->laps,
+                    'position' => round($teamData->position * 100),
+                    'speed' => round($teamData->speed, 2),
+                    'behind' => $behind,
+                    'currentLap' => $this->getEntityManager()
+                        ->getRepository('SportBundle\Entity\Lap')
+                        ->findCurrent($this->getCurrentAcademicYear()),
+                );
+            }
+        }
+
+        return $returnArray;
     }
 
     /**
