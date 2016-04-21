@@ -71,7 +71,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     /**
      * @var boolean Is user an international
      *
-     * @ORM\Column(name="is_international", type="boolean", options={"default" = false})
+     * @ORM\Column(name="is_international", type="boolean", options={"default" = false}, nullable=true)
      */
     private $isInternational;
 
