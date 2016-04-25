@@ -82,7 +82,7 @@ return array(
             'add', 'edit', 'delete', 'manage', 'old',
         ),
         'cudi_admin_special_action' => array(
-            'manage','irreeel',
+            'manage', 'irreeel',
         ),
         'cudi_admin_stock' => array(
             'bulkUpdate', 'delta', 'download', 'edit', 'export', 'manage', 'notDelivered', 'search', 'searchNotDelivered', 'view',
@@ -104,6 +104,9 @@ return array(
         ),
         'cudi_admin_supplier_user' => array(
             'add', 'delete', 'edit', 'manage',
+        ),
+        'cudi_admin_syllabus' => array(
+            'manage', 'list',
         ),
         'cudi_prof_auth' => array(
             'login', 'logout', 'shibboleth',

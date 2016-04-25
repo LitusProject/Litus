@@ -72,6 +72,11 @@ return array(
                     'title' => 'Suppliers',
                     'help'  => 'Manage the available suppliers for cudi orders and deliveries.',
                 ),
+
+                'cudi_admin_syllabus' => array(
+                    'title' => 'Syllabus',
+                    'help'  => 'See overview of literature lists and total costs per study.',
+                ),
             ),
             'controllers' => array(
                 'cudi_admin_article_subject',
@@ -86,6 +91,7 @@ return array(
                 'cudi_admin_sales_financial_split',
                 'cudi_admin_sales_session_restriction',
                 'cudi_admin_supplier_user',
+                'cudi_admin_syllabus',
                 'cudi_admin_stock_period',
                 'cudi_admin_stock_order',
                 'cudi_admin_stock_delivery',
