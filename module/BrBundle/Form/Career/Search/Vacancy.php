@@ -31,9 +31,9 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
      * @var array The search posibilities
      */
     private static $possibleSearchTypes = array(
+        'mostRecent' => 'Most Recent',
         'company' => 'Company',
         'vacancy' => 'Vacancy',
-        'mostRecent' => 'Most Recent',
     );
 
     public function init()
