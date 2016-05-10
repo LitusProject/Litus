@@ -21,7 +21,9 @@
             <table class="full_width manage">
                 <tr>
                     <th width="30%">Subject</th>
+                    <th width="70px">Semester</th>
                     <th>Article</th>
+                    <th width="100px">Supplier</th>
                     <th width="80px">Mandatory</th>
                     <th width="60px">Price</th>
                 </tr>
@@ -29,7 +31,9 @@
                 {% for mapping in subject_mappings %}
                     <tr class="item">
                         <td>{{ mapping.getSubject().getName() }}</td>
+                        <td>{{ mapping.getSubject().getSemester() }}</td>
                         <td>{{ mapping.getArticle().getTitle() }}</td>
+                        <td>{{ mapping.getArticle().getSaleArticle().getSupplier().getName() }}</td>
                         <td>{% if mapping.isMandatory() %}x{% endif %}</td>
                         <td>€ {{ (mapping.getArticle().getSaleArticle().getSellPrice()/100) | number_format(2) }}</td>
                     </tr>
