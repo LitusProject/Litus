@@ -106,7 +106,7 @@ return array(
             'add', 'delete', 'edit', 'manage',
         ),
         'cudi_admin_syllabus' => array(
-            'manage', 'list',
+            'manage', 'list', 'articlescsv',
         ),
         'cudi_prof_auth' => array(
             'login', 'logout', 'shibboleth',

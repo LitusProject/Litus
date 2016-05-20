@@ -25,6 +25,10 @@
                                 <a href="{{ url('cudi_admin_syllabus', {'action': 'list', 'id': study.getId()}) }}"
                                    class="view">List</a>
                             {% endif %}
+                            {% if hasAccess('cudi_admin_syllabus', 'articlescsv') %}
+                                <a href="{{ url('cudi_admin_syllabus', {'action': 'articlescsv', 'id': study.getId()}) }}"
+                                   class="view">Articles CSV</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
