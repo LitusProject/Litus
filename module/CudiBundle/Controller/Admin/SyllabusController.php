@@ -102,7 +102,7 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
         }
 
         $file = new CsvFile();
-        $heading = array('CourseId', 'TextbookName', 'Mandatory');
+        $heading = array('CourseId', 'TextbookName', 'ISBN', 'Mandatory');
 
         $study_subject_maps = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
@@ -124,6 +124,7 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
                 $results[] = array(
                     $ssm->getSubject()->getCode(),
                     $sam->getArticle()->getTitle(),
+                    $sam->getArticle()->getIsbn(),
                     $sam->isMandatory() ? 'X' : ' ',
                 );
             }
