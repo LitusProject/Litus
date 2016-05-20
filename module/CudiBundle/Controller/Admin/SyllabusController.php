@@ -18,8 +18,11 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use Cudibundle\Entity\Article,
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
+    Cudibundle\Entity\Article,
     SyllabusBundle\Entity\Study,
+    Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
 /**
@@ -91,6 +94,58 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
             )
         );
     }
+
+    public function articlescsvAction()
+    {
+        if (!($study = $this->getStudyEntity())) {
+            return new ViewModel();
+        }
+
+        $file = new CsvFile();
+        $heading = array('CourseId', 'TextbookName', 'Mandatory');
+
+        $study_subject_maps = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+            ->findAllByStudyQuery($study)
+            ->getResult();
+
+        $results = array();
+        foreach ($study_subject_maps as $ssm) {
+            if (!$ssm->isMandatory()) {
+                continue;
+            }
+
+            $subject_article_maps = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+                ->findAllBySubjectAndAcademicYearQuery($ssm->getSubject(), $study->getAcademicYear())
+                ->getResult();
+
+            foreach ($subject_article_maps as $sam) {
+                $results[] = array(
+                    $ssm->getSubject()->getCode(),
+                    $sam->getArticle()->getTitle(),
+                    $sam->isMandatory() ? 'X' : ' ',
+                );
+            }
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="' . $study->getTitle() . '_books.csv"',
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
     /**
      * @param  AcademicYearEntity       $academicYear
      * @return \Doctrine\ORM\Query|null

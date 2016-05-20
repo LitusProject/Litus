@@ -155,7 +155,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                         new Object(
                             'isbn',
                             null,
-                            (string) $item->getArticle()->getBarcode()
+                            (string) $item->getArticle()->getMainArticle()->getIsbn()
                         ),
                         new Object(
                             'title',
