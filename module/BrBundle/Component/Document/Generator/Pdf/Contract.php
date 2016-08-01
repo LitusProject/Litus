@@ -86,7 +86,10 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $formatter = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::NONE);
         $date = $formatter->format($this->contract->getOrder()->getCreationTime());
 
+        $brgroco = $configs->getConfigValue('br.br_group_coordinator');
+
         $ourContactPerson = $this->contract->getOrder()->getCreationPerson()->getPerson()->getFullName();
+
         $entries = $this->contract->getEntries();
 
         $unionName = $configs->getConfigValue('organization_name');
@@ -141,6 +144,8 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
             $entry_s = XmlObject::fromString($p->getXml());
         }
 
+        $contact_person_signature = new XmlObject('entries', null, 'Empty Contract');
+
         $xml->append(
             new XmlObject(
                 'contract',
@@ -155,12 +160,18 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                         array(
                              'short_name' => $unionNameShort,
                              'contact_person' => $ourContactPerson,
+                             'coordinator' => $brgroco,
                         ),
                         array(
                             new XmlObject('name', null, $brName),
                             new XmlObject('logo', null, $logo),
                         )
                     ),
+                    // new XmlObject(
+                    //     'optional_for_u',
+                    //     null,
+                    //     "test"
+                    // ),
                     new XmlObject(
                         'company',
                         array(
@@ -258,6 +269,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                     new XmlObject('sub_entries', null, $sub_entries),
                     new XmlObject('footer'),
                     new XmlObject('sale_conditions_nl'),
+                    new XmlObject('for_contact_person', null, "test"),
                 )
             )
         );
