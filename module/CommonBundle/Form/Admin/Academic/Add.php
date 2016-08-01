@@ -95,6 +95,12 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                         ),
                     ),
                 ),
+                array(
+                    'type'       => 'checkbox',
+                    'name'       => 'is_in_workinggroup',
+                    'label'      => 'Working Group',
+                    'value'      => false,
+                ),
             ),
         ));
 

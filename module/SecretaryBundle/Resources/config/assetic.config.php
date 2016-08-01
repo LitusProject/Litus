@@ -63,6 +63,14 @@ return array(
             '@secretary_css',
             '@common_remote_typeahead',
         ),
+        'secretary_admin_working_group' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_remote_typeahead',
+        ),
     ),
 
     'collections' => array(

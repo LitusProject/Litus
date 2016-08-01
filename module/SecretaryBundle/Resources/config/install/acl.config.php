@@ -33,5 +33,8 @@ return array(
         'secretary_admin_promotion' => array(
             'add', 'delete', 'manage', 'search', 'update',
         ),
+        'secretary_admin_working_group' => array(
+            'manage', 'add', 'delete', 'search',
+        ),
     ),
 );

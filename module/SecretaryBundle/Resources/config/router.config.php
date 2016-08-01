@@ -99,6 +99,23 @@ return array(
                 ),
             ),
         ),
+        'secretary_admin_working_group' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/secretary/workinggroup[/:action[/:id][/:field/:string][/page/:page]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'secretary_admin_working_group',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
@@ -107,5 +124,6 @@ return array(
         'secretary_admin_promotion'      => 'SecretaryBundle\Controller\Admin\PromotionController',
         'secretary_admin_photos'         => 'SecretaryBundle\Controller\Admin\PhotosController',
         'secretary_registration'         => 'SecretaryBundle\Controller\RegistrationController',
+        'secretary_admin_working_group'   => 'SecretaryBundle\Controller\Admin\WorkingGroupController',
     ),
 );
