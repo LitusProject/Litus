@@ -265,7 +265,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     private function createDuplicatesArray()
     {
         $duplications = array();
-        for ($i = 1 ; $i <= 20 ; $i++) {
+        for ($i = 1; $i <= 20; $i++) {
             $duplications[$i] = $i;
         }
 

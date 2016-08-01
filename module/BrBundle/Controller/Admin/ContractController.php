@@ -142,7 +142,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             $invoice = new Invoice($contract->getOrder());
 
             foreach ($contract->getEntries() as $entry) {
-                $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(),0);
+                $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(), 0);
                 $this->getEntityManager()->persist($invoiceEntry);
             }
 

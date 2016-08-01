@@ -18,6 +18,13 @@
 
 namespace CudiBundle\Entity\Sale\Article\Restriction;
 
+
+
+
+
+
+
+
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Article,

@@ -18,6 +18,8 @@
 
 namespace BrBundle\Entity\Contract;
 
+
+
 use BrBundle\Entity\Contract,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;

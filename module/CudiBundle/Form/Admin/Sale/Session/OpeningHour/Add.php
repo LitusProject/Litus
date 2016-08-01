@@ -18,6 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Sale\Session\OpeningHour;
 
+
 use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language;
 

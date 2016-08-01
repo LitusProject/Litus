@@ -18,6 +18,7 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
+
 use SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration;
 

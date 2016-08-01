@@ -132,7 +132,7 @@ class Entry implements Node
     protected function nbSpacesLeadingLine($line)
     {
         $l = strlen($line);
-        for ($i = 0 ; $i < $l ; $i++) {
+        for ($i = 0; $i < $l; $i++) {
             if (' ' != $line[$i]) {
                 break;
             }

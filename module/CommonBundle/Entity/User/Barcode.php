@@ -20,7 +20,6 @@ namespace CommonBundle\Entity\User;
 
 use CommonBundle\Entity\User\Barcode\Ean12,
     CommonBundle\Entity\User\Barcode\Qr,
-    CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;
 

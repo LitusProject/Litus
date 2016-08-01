@@ -64,7 +64,7 @@ class Config extends EntityRepository
             $key = $config->getKey();
             $value = $config->getValue();
 
-            $key = str_replace($prefix . '.','', $key);
+            $key = str_replace($prefix . '.', '', $key);
 
             $result[$key] = $value;
         }

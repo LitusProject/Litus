@@ -18,6 +18,8 @@
 
 namespace OnBundle\Document;
 
+
+
 use CommonBundle\Entity\User\Person,
     Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
     Doctrine\ORM\EntityManager;

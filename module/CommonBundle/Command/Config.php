@@ -18,6 +18,7 @@
 
 namespace CommonBundle\Command;
 
+
 use RuntimeException,
     Symfony\Component\Console\Input\InputArgument;
 

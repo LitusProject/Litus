@@ -18,8 +18,8 @@
 
 namespace BrBundle\Entity\Product;
 
+
 use BrBundle\Entity\Product,
-    BrBundle\Entity\Product\Order,
     Doctrine\ORM\Mapping as ORM;
 
 /**
