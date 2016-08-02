@@ -18,6 +18,7 @@
 
 namespace BrBundle\Form\Admin\Order;
 
+use BrBundle\Entity\Product\Order;
 /**
  * generate a contract.
  *
@@ -27,6 +28,11 @@ namespace BrBundle\Form\Admin\Order;
 class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'BrBundle\Hydrator\Contract';
+
+    /**
+     * @var Order
+     */
+    private $order;
 
     public function init()
     {
@@ -125,8 +131,23 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
      */
     private function getAutoDiscountText()
     {
-        return $this->getEntityManager()
+        if ($this->order->getAutoDiscountPercentage() > 0) {
+            return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.contract_auto_discount_text');
+        }
+
+        return '';
+    }
+
+    /**
+     * @param  Order $order
+     * @return self
+     */
+    public function setOrder(Order $order)
+    {
+        $this->order = $order;
+
+        return $this;
     }
 }
