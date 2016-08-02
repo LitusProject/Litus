@@ -40,6 +40,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $this->addSubmit('Add', 'workingGroup_add');
+        $this->addSubmit('Add', 'user_add');
     }
 }
