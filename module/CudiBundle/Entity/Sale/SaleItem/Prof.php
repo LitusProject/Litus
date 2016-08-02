@@ -18,6 +18,8 @@
 
 namespace CudiBundle\Entity\Sale\SaleItem;
 
+
+
 use CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;

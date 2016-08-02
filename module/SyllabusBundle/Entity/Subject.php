@@ -18,6 +18,8 @@
 
 namespace SyllabusBundle\Entity;
 
+
+
 use CommonBundle\Entity\General\AcademicYear,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM;

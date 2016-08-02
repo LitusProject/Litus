@@ -18,6 +18,11 @@
 
 namespace BrBundle\Entity\Company;
 
+
+
+
+
+
 use BrBundle\Entity\Company,
     CommonBundle\Component\Util\String,
     DateTime,

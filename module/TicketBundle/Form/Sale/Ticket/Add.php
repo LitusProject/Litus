@@ -269,7 +269,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $numbers = array();
         $max = $this->event->getLimitPerPerson() == 0 ? 10 : $this->event->getLimitPerPerson();
 
-        for ($i = 0 ; $i <= $max ; $i++) {
+        for ($i = 0; $i <= $max; $i++) {
             $numbers[$i] = $i;
         }
 

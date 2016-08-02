@@ -18,6 +18,8 @@
 
 namespace ShiftBundle\Hydrator;
 
+
+
 use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
     ShiftBundle\Entity\Shift\Responsible as ResponsibleEntity,
     ShiftBundle\Entity\Shift\Volunteer as VolunteerEntity;

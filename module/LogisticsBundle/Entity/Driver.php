@@ -18,6 +18,9 @@
 
 namespace LogisticsBundle\Entity;
 
+
+
+
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person,
     Doctrine\Common\Collections\ArrayCollection,

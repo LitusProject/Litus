@@ -230,7 +230,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         $mailForm = $this->getForm('cudi_mail_send', array(
             'email' => $booking->getPerson()->getEmail(),
-            'name'  => $booking->getPerson()->getFullName(),
+            'name' => $booking->getPerson()->getFullName(),
         ));
         $mailForm->setAttribute('action', $this->url()->fromRoute('cudi_admin_mail'));
 
@@ -491,7 +491,6 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         } else {
             $booking->setStatus('returned', $this->getEntityManager());
         }
-
         for ($i = 0 ; $i < $number ; $i++) {
             $this->getEntityManager()->persist(new ReturnItem($booking->getArticle(), $price / 100, $queueItem));
         }
@@ -794,10 +793,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  Period                   $activePeriod
-     * @param  string                   $type
-     * @return \Doctrine\ORM\Query|null
-     */
+	 * @param  Period $activePeriod
+	 * @param  string $type
+	 * @return \Doctrine\ORM\Query|null
+	 */
     private function search(Period $activePeriod, $type)
     {
         switch ($this->getParam('field')) {
@@ -817,8 +816,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Period|null
-     */
+	 * @return Period|null
+	 */
     private function getPeriodEntity()
     {
         if (null === $this->getParam('period')) {
@@ -847,8 +846,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Booking|null
-     */
+	 * @return Booking|null
+	 */
     private function getBookingEntity()
     {
         $booking = $this->getEntityById('CudiBundle\Entity\Sale\Booking');
@@ -873,9 +872,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  bool          $nullable
-     * @return Academic|null
-     */
+	 * @param  bool $nullable
+	 * @return Academic|null
+	 */
     private function getAcademicEntity($nullable = false)
     {
         $academic = $this->getEntityById('CommonBundle\Entity\User\Person\Academic');
@@ -904,9 +903,9 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  bool             $nullable
-     * @return SaleArticle|null
-     */
+	 * @param  bool $nullable
+	 * @return SaleArticle|null
+	 */
     private function getSaleArticleEntity($nullable = false)
     {
         $article = $this->getEntityById('CudiBundle\Entity\Sale\Article');
@@ -935,8 +934,8 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Log|null
-     */
+	 * @return Log|null
+	 */
     private function getLogEntity()
     {
         $log = $this->getEntityById('CudiBundle\Entity\Log');

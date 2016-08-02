@@ -18,6 +18,9 @@
 
 namespace CommonBundle\Entity\General\Organization;
 
+
+
+
 use CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Organization,
     Doctrine\Common\Collections\ArrayCollection,

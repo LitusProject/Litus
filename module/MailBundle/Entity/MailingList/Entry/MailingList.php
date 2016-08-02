@@ -18,6 +18,7 @@
 
 namespace MailBundle\Entity\MailingList\Entry;
 
+
 use Doctrine\ORM\Mapping as ORM,
     MailBundle\Entity\MailingList as MailingListEntity;
 

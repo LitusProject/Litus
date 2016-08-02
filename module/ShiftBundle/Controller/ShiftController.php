@@ -140,7 +140,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                 if ($dateSearchForm->isValid() && '' != $formData['date']) {
                     $formData = $dateSearchForm->getData();
 
-                    $start_date = DateTime::createFromFormat('d/m/Y' , $formData['date']);
+                    $start_date = DateTime::createFromFormat('d/m/Y', $formData['date']);
                     if (!$start_date) {
                         $this->flashMessenger()->error(
                             'Error',

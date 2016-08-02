@@ -26,7 +26,6 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     Zend\InputFilter\InputFilterAwareInterface,
     Zend\InputFilter\InputFilterInterface,
     Zend\InputFilter\InputInterface,
-    Zend\InputFilter\InputProviderInterface,
     Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**

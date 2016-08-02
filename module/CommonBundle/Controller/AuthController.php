@@ -18,6 +18,8 @@
 
 namespace CommonBundle\Controller;
 
+
+
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Authentication\Authentication,
     Zend\View\Model\ViewModel;

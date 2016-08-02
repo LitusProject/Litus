@@ -18,8 +18,7 @@
 
 namespace BrBundle\Entity;
 
-use BrBundle\Entity\Product,
-    BrBundle\Entity\Product\Order,
+use BrBundle\Entity\Product\Order,
     DateInterval,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,

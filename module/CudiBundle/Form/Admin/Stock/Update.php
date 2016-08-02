@@ -18,6 +18,7 @@
 
 namespace CudiBundle\Form\Admin\Stock;
 
+
 use CudiBundle\Entity\Sale\Article,
     LogicException;
 

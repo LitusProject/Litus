@@ -18,7 +18,8 @@
 
 namespace CalendarBundle\Component\Validator;
 
-use CommonBundle\Component\Form\Form,
+use CalendarBundle\Entity\Node\Event,
+    CommonBundle\Component\Form\Form,
     CommonBundle\Component\Util\Url,
     CommonBundle\Component\Validator\FormAwareInterface,
     DateTime;

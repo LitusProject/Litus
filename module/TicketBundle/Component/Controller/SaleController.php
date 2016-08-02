@@ -18,6 +18,7 @@
 
 namespace TicketBundle\Component\Controller;
 
+
 use Exception,
     Zend\Mvc\MvcEvent;
 
