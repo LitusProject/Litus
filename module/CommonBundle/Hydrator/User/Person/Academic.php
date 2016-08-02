@@ -69,6 +69,10 @@ class Academic extends \CommonBundle\Hydrator\User\Person
                     : null,
         );
 
+        $data['organization'] = array(
+            'is_in_workinggroup' => $object->isInWorkingGroup(),
+        );
+
         $data['unit_roles'] = $this->rolesToData($object->getUnitRoles());
 
         return $data;
@@ -129,6 +133,10 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             } else {
                 $data['email'] = $universityEmail;
             }
+        }
+
+        if (isset($data['organization']) && is_array($data['organization']) && isset($data['organization']['is_in_workinggroup'])) {
+            $object->setIsInWorkingGroup($data['organization']['is_in_workinggroup']);
         }
 
         if (isset($data['birthday'])) {
