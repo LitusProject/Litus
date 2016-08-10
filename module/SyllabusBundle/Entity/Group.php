@@ -50,6 +50,14 @@ class Group
      * @ORM\Column(name="cv_book", type="boolean")
      */
     private $cvBook;
+    
+    /**
+     * @var boolean Whether to us this group as a POC group or not
+     * 
+     * @ORM\Column(name="poc_group", type="boolean")
+     */
+    private $pocGroup;
+    
 
     /**
      * @var boolean Whether this group is removed or not
@@ -117,6 +125,7 @@ class Group
         return $this->cvBook;
     }
 
+
     /**
      * @param  boolean $cvBook
      * @return self
@@ -127,6 +136,27 @@ class Group
 
         return $this;
     }
+    
+     /**
+     * @return boolean
+     */
+    public function getPocGroup()
+    {
+        return $this->pocGroup;
+    }
+
+    /**
+     * @param  boolean $pocGroup
+     * @return self
+     */
+    public function setPocGroup($pocGroup)
+    {
+        $this->pocGroup = $pocGroup;
+
+        return $this;
+    }
+    
+    
 
     /**
      * @return self

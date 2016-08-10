@@ -68,6 +68,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'  => 'cv_book',
             'label' => 'Show in CV Book',
         ));
+        
+        $this->add(array(
+            'type'  => 'checkbox',
+            'name'  => 'poc_group',
+            'label' => 'Is POC group ?',
+        ));
+        
+        
 
         $this->add(array(
             'type'    => 'textarea',

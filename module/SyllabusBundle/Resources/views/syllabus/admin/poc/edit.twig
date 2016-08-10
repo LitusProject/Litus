@@ -1,0 +1,46 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'syllabus/admin/poc/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'syllabus/admin/poc/partials/years.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    {% if hasAccess('syllabus_admin_poc', 'studies') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Manage Studies</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the studies of this group!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('syllabus_admin_group', {'action': 'studies', 'id': group.getId(), 'academicyear': currentAcademicYear.getCode()}) }}">&rarr; Manage Studies</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+
+    {% if hasAccess('syllabus_admin_group', 'export') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Export academics</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to export the academics in this group!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('syllabus_admin_group', {'action': 'export', 'id': group.getId(), 'academicyear': currentAcademicYear.getCode()}) }}">&rarr; Export</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+{% endblock %}
