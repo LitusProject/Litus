@@ -101,7 +101,7 @@ return array(
                 'cudi_admin_stock_order',
                 'cudi_admin_stock_delivery',
                 'cudi_admin_stock_retour',
-                'cudi_admin_isic'
+                'cudi_admin_isic',
             ),
         ),
     ),
