@@ -827,6 +827,15 @@ return array(
                 ),
             ),
         ),
+        'cudi_admin_isic' => array(
+            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => 'admin/cudi/isic',
+                'defaults' => array(
+                    'controller' => 'cudi_admin_isic',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
@@ -860,6 +869,7 @@ return array(
         'cudi_admin_special_action' => 'CudiBundle\Controller\Admin\SpecialActionController',
         'cudi_admin_syllabus' => 'CudiBundle\Controller\Admin\SyllabusController',
         'cudi_admin_mail' => 'CudiBundle\Controller\Admin\MailController',
+        'cudi_admin_isic' => 'CudiBundle\Controller\Admin\IsicController',
 
         'cudi_sale_sale' => 'CudiBundle\Controller\Sale\SaleController',
         'cudi_sale_queue' => 'CudiBundle\Controller\Sale\QueueController',
