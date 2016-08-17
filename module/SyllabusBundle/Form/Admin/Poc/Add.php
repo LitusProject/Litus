@@ -77,10 +77,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param  Group $group
+     * @param  Poc $poc
      * @return self
      */
-    public function setGroup(Poc $poc)
+    public function setPoc(Poc $poc)
     {
         $this->poc = $poc;
 

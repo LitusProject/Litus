@@ -33,19 +33,23 @@ use CommonBundle\Component\Util\AcademicYear,
 class PocController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
-    {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
+    {	
+         
+         if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
 
-        $paginator = $this->paginator()->createFromEntity(
-            'SyllabusBundle\Entity\Poc',
+      
+        $pocs = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Poc')
+                ->findAllByAcademicYearQuery($academicYear);
+        
+
+
+        $paginator = $this->paginator()->createFromQuery(
+            $pocs,
             $this->getParam('page')
         );
-
-        foreach ($paginator as $poc) {
-            $poc->setEntityManager($this->getEntityManager());
-        }
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -72,8 +76,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                //$this->getEntityManager()->persist($form->hydrateObject());
-                //$this->getEntityManager()->flush();
+               
 				
 				$poc = $form->hydrateObject();
                 $poc->setAcademicYear($academicYear);
@@ -85,7 +88,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 				
                 $this->flashMessenger()->success(
                     'Succes',
-                    'The group was successfully added!'
+                    'The poc was successfully added!'
                 );
 
                 $this->redirect()->toRoute(
@@ -119,11 +122,11 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel();
         }
 
-        if (!($group = $this->getGroupEntity())) {
+        if (!($poc = $this->getPocEntity())) {
             return new ViewModel();
         }
 
-        $form = $this->getForm('syllabus_group_edit', array('group' => $group));
+        $form = $this->getForm('syllabus_poc_edit', array('poc' => $poc));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -133,14 +136,13 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 
                 $this->flashMessenger()->success(
                     'Succes',
-                    'The group was successfully updated!'
+                    'The poc was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
-                    'syllabus_admin_group',
+                    'syllabus_admin_poc',
                     array(
-                        'action' => 'edit',
-                        'id' => $group->getId(),
+						'action' => 'manage',
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -158,104 +160,22 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
                 'academicYears' => $academicYears,
                 'currentAcademicYear' => $academicYear,
                 'form' => $form,
-                'group' => $group,
             )
         );
     }
 
-    public function studiesAction()
-    {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
-            return new ViewModel();
-        }
+  
 
-        if (!($group = $this->getGroupEntity())) {
-            return new ViewModel();
-        }
 
-        $studies = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Study')
-            ->findAllByAcademicYear($academicYear);
 
-        $form = $this->getForm('syllabus_group_study_add', array('studies' => $studies));
-
-        if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()->getPost());
-
-            if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $studyIds = $formData['studies'];
-
-                if ($studyIds) {
-                    foreach ($studyIds as $studyId) {
-                        $study = $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\Study')
-                            ->findOneById($studyId);
-
-                        $map = $this->getEntityManager()
-                            ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
-                            ->findOneByStudyGroup($study, $group);
-
-                        if (null === $map) {
-                            $this->getEntityManager()->persist(new StudyMap($study, $group));
-                        }
-                    }
-                } else {
-                    $this->flashMessenger()->error(
-                        'Error',
-                        'No studies were selected to add to the group!'
-                    );
-                }
-
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->success(
-                    'Succes',
-                    'The group study mapping was successfully added!'
-                );
-
-                $this->redirect()->toRoute(
-                    'syllabus_admin_group',
-                    array(
-                        'action' => 'studies',
-                        'id' => $group->getId(),
-                        'academicyear' => $academicYear->getCode(),
-                    )
-                );
-
-                return new ViewModel();
-            }
-        }
-
-        $studies = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
-            ->findAllByGroupAndAcademicYear($group, $academicYear);
-
-        $academicYears = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findAll();
-
-        return new ViewModel(
-            array(
-                'academicYears' => $academicYears,
-                'currentAcademicYear' => $academicYear,
-                'form' => $form,
-                'group' => $group,
-                'studies' => $studies,
-            )
-        );
-    }
-
-    public function deleteAction()
+	public function deleteAction()
     {
         $this->initAjax();
-
-        if (!($group = $this->getGroupEntity())) {
+        if (!($poc = $this->getPocEntity())) {
             return new ViewModel();
         }
 
-        $group->setRemoved();
+        $this->getEntityManager()->remove($poc);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -264,67 +184,22 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
             )
         );
     }
-
-    public function deleteStudyAction()
-    {
-        $this->initAjax();
-
-        if (!($mapping = $this->getStudyMapEntity())) {
-            return new ViewModel();
-        }
-
-        $this->getEntityManager()->remove($mapping);
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => (object) array('status' => 'success'),
-            )
-        );
-    }
-
-    public function exportAction()
-    {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
-            return new ViewModel();
-        }
-
-        if (!($group = $this->getGroupEntity())) {
-            return new ViewModel();
-        }
-
-        $exportFile = new CsvFile();
-        $csvGenerator = new CsvGenerator($this->getEntityManager(), $group, $academicYear);
-        $csvGenerator->generateDocument($exportFile);
-
-        $this->getResponse()->getHeaders()
-            ->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $group->getName() . '_' . $academicYear->getCode() . '.csv"',
-            'Content-Type' => 'text/csv',
-        ));
-
-        return new ViewModel(
-            array(
-                'result' => $exportFile->getContent(),
-            )
-        );
-    }
-
-    /**
-     * @return Group|null
+    
+     /**
+     * @return Study|null
      */
-    private function getGroupEntity()
+    private function getPocEntity()
     {
-        $group = $this->getEntityById('SyllabusBundle\Entity\Group');
+        $poc = $this->getEntityById('SyllabusBundle\Entity\Poc');
 
-        if (!($group instanceof Group)) {
+        if (!($poc instanceof Poc)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No group was found!'
+                'No poc was found!'
             );
 
             $this->redirect()->toRoute(
-                'syllabus_admin_group',
+                'syllabus_admin_poc',
                 array(
                     'action' => 'manage',
                 )
@@ -333,36 +208,12 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
             return;
         }
 
-        $group->setEntityManager($this->getEntityManager());
-
-        return $group;
+        return $poc;
     }
 
-    /**
-     * @return StudyMap|null
-     */
-    private function getStudyMapEntity()
-    {
-        $map = $this->getEntityById('SyllabusBundle\Entity\Group\StudyMap');
+   
 
-        if (!($map instanceof StudyMap)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No study group map was found!'
-            );
 
-            $this->redirect()->toRoute(
-                'syllabus_admin_group',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-
-        return $map;
-    }
 
     /**
      * @return AcademicYearEntity|null
@@ -382,7 +233,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
             );
 
             $this->redirect()->toRoute(
-                'syllabus_admin_group',
+                'syllabus_admin_poc',
                 array(
                     'action' => 'manage',
                 )

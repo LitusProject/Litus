@@ -54,7 +54,7 @@ class Group
     /**
      * @var boolean Whether to us this group as a POC group or not
      * 
-     * @ORM\Column(name="poc_group", type="boolean")
+     * @ORM\Column(name="poc_group", type="boolean",nullable = true)
      */
     private $pocGroup;
     

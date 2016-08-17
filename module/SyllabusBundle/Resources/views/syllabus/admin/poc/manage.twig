@@ -5,20 +5,20 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    <div class="flashmessage success_message full_width group_removed_success hide">
+    <div class="flashmessage success_message full_width poc_removed_success hide">
         <div class="title">Success</div>
         <div class="content">
-            <p>The group was successfully removed!</p>
+            <p>The poc was successfully removed!</p>
         </div>
     </div>
-    <div class="flashmessage error_message full_width group_removed_error hide">
+    <div class="flashmessage error_message full_width poc_removed_error hide">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while trying to delete the group.</p>
+            <p>An error occurred while trying to delete the poc.</p>
         </div>
     </div>
 
-    {% include 'syllabus/admin/group/partials/years.twig' %}
+    {% include 'syllabus/admin/poc/partials/years.twig' %}
 
     <div id="controller_action">
         <table class="full_width manage">
@@ -28,10 +28,10 @@
                 <th width="70px">Actions</th>
             </tr>
 
-            {% for group in paginator %}
-                <tr class="item item-{{ group.getId() }}">
-                    <td>{{ group.getName() }}</td>
-                    <td>{% if group.getPocGroup() %}&times;{% endif %}</td>
+            {% for poc in paginator %}
+                <tr class="item item-{{ poc.getId() }}">
+                    <td>{{ poc.getGroupId().getName() }}</td>
+                    <td>{{ poc.getAcademic().getFullName() }}</td>
                     <td class="actions">
                         {% if hasAccess('syllabus_admin_poc', 'edit') %}
                             <a href="{{ url('syllabus_admin_poc', {'action': 'edit', 'id': poc.getId(), 'academicyear': currentAcademicYear.getCode()}) }}" class="edit">Edit</a>
@@ -47,16 +47,16 @@
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
-    <div class="modal fade" id="removeGroup" tabindex="-1">
+    <div class="modal fade" id="removePoc" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <span>Litus Admin</span>
-                    /Delete Group
+                    /Delete Poc
                 </div>
                 <div class="modal-body">
                     <p>
-                        You are about to delete the following group: <b class="groupName"></b>!
+                        You are about to delete the following poc: <b class="title"></b>!
                         Please note that this operation cannot be undone!
                     </p>
                     <p>
@@ -80,30 +80,29 @@
 
         function openModal(e) {
             var $this = $(this);
-
             e.preventDefault();
-            var removeGroup = $('#removeGroup');
-            removeGroup.find('.groupName').html($(this).data('group'));
+            var removePoc = $('#removePoc');
+            removePoc.find('.title').html($(this).data('title'));
             var id = $this.data('id');
-            removeGroup.find('.delete').unbind('click').click(function () {
+            removePoc.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('syllabus_admin_poc', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
-                        $('.group_removed_success').removeClass('hide');
+                        $('.poc_removed_success').removeClass('hide');
                         $('.item-' + id).remove();
-                        removeGroup.modal('hide');
+                        removePoc.modal('hide');
                     } else {
                         errorRemove();
                     }
                 }, 'json').error(errorRemove);
             });
-            removeGroup.modal();
+            removePoc.modal();
         }
 
         function errorRemove() {
             $('.flashmessage').addClass('hide');
-            $('.group_removed_error').removeClass('hide');
-            $('#removeGroup').modal('hide');
+            $('.poc_removed_error').removeClass('hide');
+            $('#removePoc').modal('hide');
         }
     </script>
 {% endblock %}

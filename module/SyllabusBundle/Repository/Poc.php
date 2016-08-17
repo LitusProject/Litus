@@ -34,70 +34,39 @@ class Poc extends EntityRepository
      * @return \Doctrine\ORM\Query
      */
     public function findAllQuery()
-    {
+    {   
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p')
+        $resultSet = $query->select('p', 'g')
             ->from('SyllabusBundle\Entity\Poc', 'p')
-            ->where(
+             ->where(
             )
-            ->getQuery();
-
-        return $resultSet;
-    }
-
-    /**
-     * @param  GroupEntity  $group
-     * @param  AcademicYear $academicYear
-     * @return int
-     */
-    public function findNbStudentsByGroupAndAcademicYear(GroupEntity $group, AcademicYear $academicYear)
-    {
-        $studies = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
-            ->findAllByGroupAndAcademicYear($group, $academicYear);
-
-        $ids = array(0);
-        foreach ($studies as $study) {
-            $ids[] = $study->getStudy()->getId();
-        }
-
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select($query->expr()->count('e'))
-            ->from('SecretaryBundle\Entity\Syllabus\StudyEnrollment', 'e')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->in('e.study', $ids),
-                    $query->expr()->eq('e.academicYear', ':academicYear')
-                )
-            )
-            ->setParameter('academicYear', $academicYear)
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        if (null !== $resultSet) {
-            return $resultSet;
-        }
-
-        return 0;
-    }
-
-    /**
-     * @return \Doctrine\ORM\Query
-     */
-    public function findAllCvBookQuery()
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('g')
-            ->from('SyllabusBundle\Entity\Group', 'g')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('g.cvBook', 'true'),
-                    $query->expr()->eq('g.removed', 'false')
-                )
-            )
+            ->innerJoin('p.groupId', 'g')
             ->orderBy('g.name', 'ASC')
             ->getQuery();
 
         return $resultSet;
     }
+     /**
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
+    {	
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('p','g')
+            ->from('SyllabusBundle\Entity\poc', 'p')
+            ->where(
+                $query->expr()->eq('p.academicYear', ':academicYear')
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->innerJoin('p.groupId','g')
+            ->orderBy('g.name','ASC')
+            ->getQuery();
+        return $resultSet;
+    }
+  
+    
+
+
+  
 }

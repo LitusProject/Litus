@@ -11,36 +11,23 @@
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>
+{% endblock %}
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#person').typeaheadRemote(
+                {
+                    source: '{{ url('common_admin_academic_typeahead', {})}}',
+                    items: 20,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('[name="person[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="person[id]"]').val('');
+                }
+            });
+        });
 
-    {% if hasAccess('syllabus_admin_poc', 'studies') %}
-        <aside>
-            <div class="sidebox">
-                <div class="title">Manage Studies</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to manage the studies of this group!</i>
-                    </p>
-                    <p>
-                        <a href="{{ url('syllabus_admin_group', {'action': 'studies', 'id': group.getId(), 'academicyear': currentAcademicYear.getCode()}) }}">&rarr; Manage Studies</a>
-                    </p>
-                </div>
-            </div>
-        </aside>
-    {% endif %}
-
-    {% if hasAccess('syllabus_admin_group', 'export') %}
-        <aside>
-            <div class="sidebox">
-                <div class="title">Export academics</div>
-                <div class="content">
-                    <p>
-                        <i>Please hit the link below to export the academics in this group!</i>
-                    </p>
-                    <p>
-                        <a href="{{ url('syllabus_admin_group', {'action': 'export', 'id': group.getId(), 'academicyear': currentAcademicYear.getCode()}) }}">&rarr; Export</a>
-                    </p>
-                </div>
-            </div>
-        </aside>
-    {% endif %}
+    </script>
 {% endblock %}

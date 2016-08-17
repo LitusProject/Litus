@@ -27,7 +27,7 @@ use CommonBundle\Entity\General\AcademicYear,
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Poc")
  * @ORM\Table(name="syllabus.pocs")
  */
-class Poc
+class Poc 
 {
     /**
      * @var integer The ID of the poc
@@ -41,9 +41,9 @@ class Poc
 	/**
 	 * @var group
 	 * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Group")
-     * @ORM\JoinColumn(name="group", referencedColumnName="id")
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
      */
-     private $group;
+     private $groupId;
   
    /**
      * @var AcademicYear The year of the mapping
@@ -117,24 +117,42 @@ class Poc
     /**
      * @return BigInteger
      */
-    public function getGroup()
+    public function getGroupId()
     {
-        return $this->group;
+        return $this->groupId;
     }
     
     /**
      * @param $group
      * @return self
      */
-    public function setGroup($group)
+    public function setGroupId(Group $groupId)
      {
-		 $this->group = $group;
+		 $this->groupId = $groupId;
         return $this;
     }
     
     
+    
+    /**
+     * @var EntityManager The EntityManager instance
+     */
+    protected $entityManager;
 
+    
+    /**
+     * @param  EntityManager $entityManager
+     * @return self
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
 
+        return $this;
+    }
+    
+   
+   
    
     
 }

@@ -30,7 +30,7 @@ class Poc extends \CommonBundle\Component\Hydrator\Hydrator
         }
         
 		
-		$object->setGroup($this->dataToGroup(($data['poc_group'])));
+		$object->setGroupId($this->dataToGroup(($data['poc_group'])));
 		
 		$object -> setAcademic($this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')

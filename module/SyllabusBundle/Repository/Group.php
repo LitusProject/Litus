@@ -111,11 +111,13 @@ class Group extends EntityRepository
                 $query->expr()->eq('g.removed', 'false'),
                 $query->expr()->eq('g.pocGroup', 'true')
             )
-             ->orderBy('g.name', 'ASC')
+            ->orderBy('g.name', 'ASC')
             ->getQuery();
 		
        return $resultSet;
       }
+      
+
 
     
 }
