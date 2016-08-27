@@ -1,0 +1,41 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/supplier/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <div>
+            <table class="full_width manage">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th width="50px">Phase</th>
+                    <th width="70px">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for study in paginator %}
+                    <tr class="item item-{{ study.getId() }}">
+                        <td>{{ study.getTitle() }}</td>
+                        <td>{{ study.getPhase() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('cudi_admin_syllabus', 'list') %}
+                                <a href="{{ url('cudi_admin_syllabus', {'action': 'list', 'id': study.getId()}) }}"
+                                   class="view">List</a>
+                            {% endif %}
+                            {% if hasAccess('cudi_admin_syllabus', 'articlescsv') %}
+                                <a href="{{ url('cudi_admin_syllabus', {'action': 'articlescsv', 'id': study.getId()}) }}"
+                                   class="view">Articles CSV</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+{% endblock %}

@@ -116,6 +116,6 @@ return array(
     'Privacy Policy' => 'Privacybeleid',
 
     'Wiki' => 'Examenwiki',
-    'International Student' => 'Internatinale Student',
+    'International Student' => 'Internationale Student',
     'I am an international student' => 'Ik ben een internationale student',
 );

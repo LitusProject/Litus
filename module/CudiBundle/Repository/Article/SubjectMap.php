@@ -21,6 +21,7 @@ namespace CudiBundle\Repository\Article;
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear,
     CudiBundle\Entity\Article,
+    SyllabusBundle\Entity\Study,
     SyllabusBundle\Entity\Subject as SubjectEntity;
 
 /**
@@ -60,6 +61,23 @@ class SubjectMap extends EntityRepository
             ->getOneOrNullResult();
 
         return $resultSet;
+    }
+
+    public function findAllByStudyAndAcademicYearQuery(Study $study)
+    {
+        $subject_maps = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
+            ->findAllByStudyQuery($study)
+            ->getResult();
+        $all_subject_mappers = array();
+        foreach ($subject_maps as $subject_map) {
+            $subject_mappers = $this->findAllBySubjectAndAcademicYearQuery($subject_map->getSubject(), $study->getAcademicYear())->getResult();
+            foreach ($subject_mappers as $sm) {
+                $all_subject_mappers[] = $sm;
+            }
+        }
+
+        return $all_subject_mappers;
     }
 
     /**

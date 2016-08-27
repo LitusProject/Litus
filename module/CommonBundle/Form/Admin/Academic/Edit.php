@@ -138,6 +138,11 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                         ),
                     ),
                 ),
+                array(
+                    'type'       => 'checkbox',
+                    'name'       => 'is_in_workinggroup',
+                    'label'      => 'Working Group',
+                ),
             ),
         ));
 

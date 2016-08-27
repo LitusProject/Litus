@@ -99,10 +99,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'auto_discount',
-            'label'    => 'Automatic Discount',
-            'value'    => true,
+            'type'       => 'checkbox',
+            'name'       => 'auto_discount',
+            'label'      => 'Automatic Discount',
+            'value'      => true,
+            'attributes' => array(
+                'data-help' => "This checkbox can enable/disable the autodiscount even if an automated discount would be applicable. If no automated discount would be applied this checkbox doesn't matter",
+            ),
         ));
 
         $this->addSubmit('Add Products', 'product_add');

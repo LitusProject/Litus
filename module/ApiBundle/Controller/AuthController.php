@@ -54,6 +54,9 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             $result['organization_status'] = (null !== $academic->getOrganizationStatus($this->getCurrentAcademicYear(true)))
                 ? $academic->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus()
                 : '';
+            $result['in_workinggroup'] = (null !== $academic->isInWorkingGroup())
+                ? $academic->isInWorkingGroup()
+                : false;
         }
 
         return new ViewModel(

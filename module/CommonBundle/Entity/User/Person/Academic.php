@@ -71,9 +71,16 @@ class Academic extends \CommonBundle\Entity\User\Person
     /**
      * @var boolean Is user an international
      *
-     * @ORM\Column(name="is_international", type="boolean", options={"default" = false})
+     * @ORM\Column(name="is_international", type="boolean", options={"default" = false}, nullable=true)
      */
     private $isInternational;
+
+    /**
+     * @var boolean Is user in a working group
+     *
+     * @ORM\Column(name="is_in_workinggroup", type="boolean", options={"default" = false}, nullable=true)
+     */
+    private $isInWorkingGroup;
 
     /**
      * @var Address The primary address of the academic
@@ -214,6 +221,25 @@ class Academic extends \CommonBundle\Entity\User\Person
     public function isInternational()
     {
         return $this->isInternational;
+    }
+
+    /**
+     * @param  boolean $isInWorkingGroup
+     * @return self
+     */
+    public function setIsInWorkingGroup($isInWorkingGroup)
+    {
+        $this->isInWorkingGroup = $isInWorkingGroup;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isInWorkingGroup()
+    {
+        return $this->isInWorkingGroup;
     }
 
     /**

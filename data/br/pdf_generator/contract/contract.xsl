@@ -133,9 +133,9 @@
                             <xsl:apply-templates select="sub_entries"/>
                         </fo:block>
                         <fo:table table-layout="fixed" width="100%">
-                            <fo:table-column column-width="35%"/>
-                            <fo:table-column column-width="30%"/>
-                            <fo:table-column column-width="35%"/>
+                            <fo:table-column column-width="50%"/>
+                            <fo:table-column column-width="0%"/>
+                            <fo:table-column column-width="40%"/>
 
                             <fo:table-body>
                                 <fo:table-row>
@@ -150,10 +150,30 @@
                                        <fo:block/>
                                     </fo:table-cell>
                                     <fo:table-cell>
-                                        <fo:block>
+                                        <fo:block padding-after="30px">
                                             <xsl:call-template name="for_u"/><xsl:text> </xsl:text><xsl:value-of select="our_union/@short_name"/><xsl:text>,</xsl:text>
                                             <fo:block/>
-                                            <xsl:value-of select="our_union/@contact_person"/>
+                                            <xsl:value-of select="our_union/@coordinator"/>
+                                            <fo:block/>
+                                            <xsl:call-template name="responsible_br"/>
+                                        </fo:block>
+                                    </fo:table-cell>
+                                </fo:table-row>
+                                <fo:table-row>
+                                    <fo:table-cell>
+                                        <fo:block>
+                                        </fo:block>
+                                    </fo:table-cell>
+                                    <fo:table-cell>
+                                       <fo:block/>
+                                    </fo:table-cell>
+                                    <fo:table-cell>
+                                        <fo:block>
+                                            <xsl:if test="our_union/@contact_person != our_union/@coordinator">
+                                                <xsl:call-template name="for_u"/><xsl:text> </xsl:text><xsl:value-of select="our_union/@short_name"/><xsl:text>,</xsl:text>
+                                                <fo:block/>
+                                                <xsl:value-of select="our_union/@contact_person"/>
+                                            </xsl:if>
                                         </fo:block>
                                     </fo:table-cell>
                                 </fo:table-row>

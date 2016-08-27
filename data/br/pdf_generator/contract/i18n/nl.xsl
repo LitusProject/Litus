@@ -8,7 +8,7 @@
     </xsl:template>
 
     <xsl:template name="for_u">
-        <xsl:text>Voor</xsl:text>
+        <xsl:text>In naam en voor rekening van</xsl:text>
     </xsl:template>
 
     <xsl:template name="and">
@@ -31,6 +31,10 @@
 
     <xsl:template name="the_company">
         <xsl:text>het bedrijf</xsl:text>
+    </xsl:template>
+
+    <xsl:template name="responsible_br">
+        <xsl:text>Verantwoordelijke Bedrijvenrelaties</xsl:text>
     </xsl:template>
 
 </xsl:stylesheet>

@@ -23,6 +23,11 @@ return array(
         'description' => 'The path to the company files',
     ),
     array(
+        'key'         => 'br.br_group_coordinator',
+        'value'       => 'Evert Cuylen',
+        'description' => 'The name of the current group coordinator, used for generating contracts.',
+    ),
+    array(
         'key'         => 'br.public_logo_path',
         'value'       => '_br/img',
         'description' => 'The path to the public company logo files',

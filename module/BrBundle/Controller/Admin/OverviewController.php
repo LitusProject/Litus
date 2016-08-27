@@ -78,6 +78,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 'author' => $person,
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'em' => $this->getEntityManager(),
             )
         );
     }

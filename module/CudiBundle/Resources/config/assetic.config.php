@@ -181,6 +181,13 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'cudi_admin_syllabus' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'cudi_admin_stock' => array(
             '@common_jquery',
             '@admin_css',
