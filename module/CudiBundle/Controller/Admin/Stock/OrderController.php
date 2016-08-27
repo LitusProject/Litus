@@ -405,6 +405,23 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         $archive = new TmpFile();
         $document->generateArchive($archive);
 
+        if (filesize($archive->getFileName()) == 0) {
+            $this->flashMessenger()->notice(
+                'NOTICE',
+                'The order did not contain any exportable items, which means none of its articles were internal!'
+            );
+
+            $this->redirect()->toRoute(
+                'cudi_admin_stock_order',
+                array(
+                    'action' => 'edit',
+                    'id' => $order->getId(),
+                )
+            );
+
+            return new ViewModel();
+        }
+
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="order.zip"',
