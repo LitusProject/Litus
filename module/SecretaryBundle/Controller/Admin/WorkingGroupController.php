@@ -61,13 +61,13 @@ class WorkingGroupController extends \CommonBundle\Component\Controller\ActionCo
 
                 $this->flashMessenger()->success(
                     'Success',
-                    'The alias was succesfully created!'
+                    'The person was succesfully added!'
                 );
 
                 $this->redirect()->toRoute(
                     'secretary_admin_working_group',
                     array(
-                        'action' => 'manage',
+                        'action' => 'add',
                     )
                 );
 
