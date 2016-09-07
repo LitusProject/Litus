@@ -36,9 +36,15 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         $result = array();
 
-        $statuses = $this->getEntityManager()
+        $statuses1 = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Status\Organization')
             ->findAllByStatus('praesidium', $this->getCurrentAcademicYear());
+
+        $statuses2 = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Status\Organization')
+            ->findAllByStatus('praesidium', $this->getCurrentAcademicYear(true));
+
+        $statuses = array_merge($statuses1,$statuses2);
 
         foreach ($statuses as $status) {
             $identification = $status->getPerson()->getUniversityIdentification();
