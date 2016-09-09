@@ -539,16 +539,21 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         );
 
         $ranking = false;
-        $shiftsToNextRanking = $rankingCriteria[0]['limit'] - $shiftsAsVolunteerCount;
+        $shiftsToNextRanking = 0
 
-        for ($i = 0; isset($rankingCriteria[$i]); $i++) {
-            if ($rankingCriteria[$i]['limit'] <= $shiftsAsVolunteerCount) {
-                $ranking = $rankingCriteria[$i]['name'];
+        if (!empty($rankingCriteria)) {
+            $ranking = false;
+            $shiftsToNextRanking = $rankingCriteria[0]['limit'] - $shiftsAsVolunteerCount;
 
-                if (isset($rankingCriteria[$i + 1])) {
-                    $shiftsToNextRanking = $rankingCriteria[$i + 1]['limit'] - $shiftsAsVolunteerCount;
-                } else {
-                    $shiftsToNextRanking = 0;
+            for ($i = 0; isset($rankingCriteria[$i]); $i++) {
+                if ($rankingCriteria[$i]['limit'] <= $shiftsAsVolunteerCount) {
+                    $ranking = $rankingCriteria[$i]['name'];
+
+                    if (isset($rankingCriteria[$i + 1])) {
+                        $shiftsToNextRanking = $rankingCriteria[$i + 1]['limit'] - $shiftsAsVolunteerCount;
+                    } else {
+                        $shiftsToNextRanking = 0;
+                    }
                 }
             }
         }
