@@ -77,6 +77,11 @@ return array(
                     'title' => 'Syllabus',
                     'help'  => 'See overview of literature lists and total costs per study.',
                 ),
+
+                'cudi_admin_isic' => array(
+                    'title' => 'ISIC cards',
+                    'help'  => 'Manage the ISIC card reservations',
+                ),
             ),
             'controllers' => array(
                 'cudi_admin_article_subject',
@@ -96,6 +101,7 @@ return array(
                 'cudi_admin_stock_order',
                 'cudi_admin_stock_delivery',
                 'cudi_admin_stock_retour',
+                'cudi_admin_isic',
             ),
         ),
     ),

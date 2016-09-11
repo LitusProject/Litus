@@ -827,6 +827,35 @@ return array(
                 ),
             ),
         ),
+        'cudi_admin_isic' => array(
+            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/cudi/isic[/:action[/:id]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id' => '[%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'cudi_admin_isic',
+                    'action' => 'manage',
+                ),
+            ),
+        ),
+
+        'cudi_isic' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/cudi/isic[/:action][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '[a-z]{2}',
+                ),
+                'defaults' => array(
+                    'controller' => 'cudi_isic',
+                    'action'     => 'form',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
@@ -860,6 +889,7 @@ return array(
         'cudi_admin_special_action' => 'CudiBundle\Controller\Admin\SpecialActionController',
         'cudi_admin_syllabus' => 'CudiBundle\Controller\Admin\SyllabusController',
         'cudi_admin_mail' => 'CudiBundle\Controller\Admin\MailController',
+        'cudi_admin_isic' => 'CudiBundle\Controller\Admin\IsicController',
 
         'cudi_sale_sale' => 'CudiBundle\Controller\Sale\SaleController',
         'cudi_sale_queue' => 'CudiBundle\Controller\Sale\QueueController',
@@ -882,5 +912,7 @@ return array(
 
         'cudi_booking' => 'CudiBundle\Controller\BookingController',
         'cudi_opening_hour' => 'CudiBundle\Controller\OpeningHourController',
+
+        'cudi_isic' => 'CudiBundle\Controller\IsicController',
     ),
 );

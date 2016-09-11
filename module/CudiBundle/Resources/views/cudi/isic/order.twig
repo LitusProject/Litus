@@ -1,0 +1,18 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ page.getTitle(language) }}</h1>
+    </div>
+
+    {% if status == 'success' %}
+    {% autoescape false %}
+	        {{ info|json_encode }}
+	    {% endautoescape %}
+	{% else %}
+		<p>Something went wrong with your order.</p>
+	    {% autoescape false %}
+	        {{ form|json_encode }}
+	    {% endautoescape %}
+	{% endif %}
+{% endblock %}
