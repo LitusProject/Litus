@@ -108,6 +108,9 @@ return array(
         'cudi_admin_syllabus' => array(
             'manage', 'list', 'articlescsv',
         ),
+        'cudi_isic' => array(
+            'form', 'order',
+        ),
         'cudi_prof_auth' => array(
             'login', 'logout', 'shibboleth',
         ),

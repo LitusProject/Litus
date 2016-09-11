@@ -841,6 +841,21 @@ return array(
                 ),
             ),
         ),
+
+        'cudi_isic' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/cudi/isic[/:action][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '[a-z]{2}',
+                ),
+                'defaults' => array(
+                    'controller' => 'cudi_isic',
+                    'action'     => 'form',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
@@ -897,5 +912,7 @@ return array(
 
         'cudi_booking' => 'CudiBundle\Controller\BookingController',
         'cudi_opening_hour' => 'CudiBundle\Controller\OpeningHourController',
+
+        'cudi_isic' => 'CudiBundle\Controller\IsicController',
     ),
 );
