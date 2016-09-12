@@ -33,20 +33,39 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
     
     public function formAction()
     {
+        /*
         if (!$this->getAuthentication()->isAuthenticated()) {
-            return new ViewModel();
+            return new ViewModel(
+                array(
+                    'status' => 'noauth',
+                )
+            );
         }
 
-        $academic =$this->getAuthentication()->getPersonObject();
-
-        /*
-        $academic = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findOneById(8145);
-        */
+        $academic = $this->getAuthentication()->getPersonObject();
 
         if (!($academic instanceof Academic)) {
-            return new ViewModel();
+            return new ViewModel(
+                array(
+                    'status' => 'noauth',
+                )
+            );
+        }
+        */
+
+        $academic = $this->getEntityManager()
+        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+        ->findOneById(8145);
+
+        $articleID = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.isic_sale_article');
+        if ($articleID === '0') {
+            return new ViewModel(
+                array(
+                    'status' => 'disabled',
+                )
+            );
         }
 
         $form = $this->getForm('cudi_isic_order', $academic);
@@ -60,36 +79,72 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
             )
         );
 
-        $saleArticle = $this->getEntityManager()
+        $article = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\Article')
-                            ->findOneById($this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('cudi.isic_sale_article'));
+                            ->findOneById($articleID);
 
         return new ViewModel(
             array(
                 'form' => $form,
-                'price' => $saleArticle->getSellPrice() / 100 . '€',
+                'price' => $article->getSellPrice() / 100,
             )
         );
     }
 
     public function orderAction()
     {
+        /*
         if (!$this->getAuthentication()->isAuthenticated()) {
-            return new ViewModel();
+            $this->redirect()->toRoute(
+                'cudi_isic',
+                array(
+                    'action' => 'form',
+                )
+            );
+            return new ViewModel(
+                array(
+                    'status' => 'noauth',
+                )
+            );
         }
 
         $academic = $this->getAuthentication()->getPersonObject();
 
-        /*
-        $academic = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findOneById(8145);
+        if (!($academic instanceof Academic)) {
+            $this->redirect()->toRoute(
+                'cudi_isic',
+                array(
+                    'action' => 'form',
+                )
+            );
+            return new ViewModel(
+                array(
+                    'status' => 'noauth',
+                )
+            );
+        }
         */
 
-        if (!($academic instanceof Academic)) {
-            return new ViewModel();
+        $academic = $this->getEntityManager()
+        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+        ->findOneById(8145);
+
+        $config = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config');
+
+        $articleID = $config->getConfigValue('cudi.isic_sale_article');
+        if ($articleID === '0') {
+            $this->redirect()->toRoute(
+                'cudi_isic',
+                array(
+                    'action' => 'form',
+                )
+            );
+            return new ViewModel(
+                array(
+                    'status' => 'disabled',
+                )
+            );
         }
 
         $form = $this->getForm('cudi_isic_order');
@@ -101,11 +156,6 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
             ));
 
             if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $config = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config');
-
                 $arguments = $form->hydrateObject();
 
                 $arguments['Username'] = $config->getConfigValue('cudi.isic_username');
@@ -150,7 +200,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                         'info' => array(
                             'result' => $result,
                             'arguments' => $arguments,
-                            'file' => $formData['photo_group']['photo'],
+                            'file' => $form->getData()['photo_group']['photo'],
                         ),
                     )
                 );
@@ -166,13 +216,13 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
             }
         }
 
-        return new ViewModel(
+        $this->redirect()->toRoute(
+            'cudi_isic',
             array(
-                'status' => 'error',
-                'form' => array(
-                    'errors' => array(),
-                ),
+                'action' => 'form',
             )
         );
+
+        return $this->formAction();
     }
 }

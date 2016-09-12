@@ -9,6 +9,8 @@
     {% autoescape false %}
 	        {{ info|json_encode }}
 	    {% endautoescape %}
+	{% elseif status == 'noauth' %}
+		<p>{{translate('You do not have permission to view this page! Make sure you are logged in.')}}</p>
 	{% else %}
 		<p>Something went wrong with your order.</p>
 	    {% autoescape false %}

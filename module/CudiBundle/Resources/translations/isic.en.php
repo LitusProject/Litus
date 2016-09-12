@@ -29,8 +29,12 @@ return array(
     'Engineer - Architect' => 'Engineer - Architect',
     'Student City' => 'Student City',
     'Photo (140 x 200)' => 'Photo (140 x 200)',
+    'Order' => 'Order',
     
     'Receive ISIC/Club newsletter' => 'Receive ISIC/Club newsletter',
     'Receive ISIC/Club post' => 'Receive ISIC/Club post',
     'Receive ISIC/Club post from partners' => 'Receive ISIC/Club post from partners',
+
+    'You do not have permission to view this page! Make sure you are logged in.' => 'You do not have permission to view this page! Make sure you are logged in.',
+    'Orders for ISIC cards are currently disabled, please try again later.' => 'Orders for ISIC cards are currently disabled, please try again later.',
 );

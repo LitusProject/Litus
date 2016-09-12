@@ -852,7 +852,6 @@ return array(
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_isic',
-                    'action'     => 'form',
                 ),
             ),
         ),

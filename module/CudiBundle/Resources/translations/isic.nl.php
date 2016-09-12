@@ -29,8 +29,12 @@ return array(
     'Engineer - Architect' => 'Burgerlijk Ingenieur - Architect',
     'Student City' => 'Stad',
     'Photo (140 x 200)' => 'Foto (140 x 200)',
+    'Order' => 'Bestel',
     
     'Receive ISIC/Club newsletter' => 'Stuur mij de ISIC/Club newsletter',
     'Receive ISIC/Club post' => 'Stuur mij ISIC/Club post',
     'Receive ISIC/Club post from partners' => 'Stuur mij ISIC/Club post van partners',
+
+    'You do not have permission to view this page! Make sure you are logged in.' => 'U heeft geen toegang tot deze pagina! Check of je ingelogd bent.',
+    'Orders for ISIC cards are currently disabled, please try again later.' => 'Bestellingen van ISIC kaarten zijn op het moment gesloten. Probeer later opnieuw.',
 );
