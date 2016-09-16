@@ -40,7 +40,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $data = file_get_contents($file['tmp_name']);
         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
-        return $base64;
+        return base64_encode($data);
     }
 
     protected function doHydrate(array $data, $object = null)
@@ -50,24 +50,24 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object['ISICCardNumber'] = '';
-        $object['FirstName'] = $data['personal_info']['first_name'];
-        $object['LastName'] = $data['personal_info']['last_name'];
+        $object['Firstname'] = $data['personal_info']['first_name'];
+        $object['Lastname'] = $data['personal_info']['last_name'];
         $object['BirthDate'] = $data['personal_info']['birthday'];
         $object['BirthPlace'] = $data['personal_info']['birthplace'];
         $object['Gender'] = $data['personal_info']['sex'];
-        $object['Language'] = $data['personal_info']['language'];
+        $object['language'] = $data['personal_info']['language'];
         $object['Street'] = $data['address']['street'] . ' ' . $data['address']['number'];
         $object['PostalCode'] = $data['address']['postal'];
         $object['City'] = $data['address']['city'];
-        $object['Email'] = $data['contact_details']['email'];
+        $object['email'] = $data['contact_details']['email'];
         $object['PhoneNumber'] = $data['contact_details']['phone_number'];
         $object['Course'] = $data['studies']['course'];
         $object['School'] = $data['studies']['school'];
         $object['StudentCity'] = $data['studies']['student_city'];
         $object['Year'] = $data['studies']['year'];
         $object['Optin'] = $data['optins']['newsletter'] == true ? '1' : '0';
-        $object['PostOptOut'] = $data['optins']['post'] == true ? '1' : '0';
-        $object['PostOptOutThird'] = $data['optins']['post_third'] == true ? '1' : '0';
+        $object['postOptOut'] = $data['optins']['post'] == true ? '0' : '1';
+        $object['postOptOutThird'] = $data['optins']['post_third'] == true ? '0' : '1';
 
         $object['Photo'] = $this->convertBase64($data['photo_group']['photo']);
         $object['ImageExtension'] = pathinfo($data['photo_group']['photo']['name'], PATHINFO_EXTENSION);

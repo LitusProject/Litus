@@ -6,11 +6,15 @@
     </div>
 
     {% if status == 'success' %}
-    {% autoescape false %}
+    	{% autoescape false %}
 	        {{ info|json_encode }}
 	    {% endautoescape %}
 	{% elseif status == 'noauth' %}
-		<p>{{translate('You do not have permission to view this page! Make sure you are logged in.')}}</p>
+		<p>{{translate('You need to be logged in to view this page.')}}</p>
+	{% elseif status == 'noaccess' %}
+        <p>{{translate('You do not have permission to view this page.')}}</p>
+    {% elseif status == 'doubleorder' %}
+        <p>{{translate('You have ordered an ISIC card already.')}}</p>
 	{% else %}
 		<p>Something went wrong with your order.</p>
 	    {% autoescape false %}

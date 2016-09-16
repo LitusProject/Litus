@@ -20,6 +20,7 @@ namespace CudiBundle\Controller;
 
 use Zend\View\Model\ViewModel,
     CudiBundle\Entity\Sale\Booking,
+    CudiBundle\Entity\IsicCard,
     Zend\Soap\Client as SoapClient;
 
 class IsicController extends \CommonBundle\Component\Controller\ActionController\SiteController
@@ -30,10 +31,37 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
     {
         $this->client = new SoapClient('http://isicregistrations.guido.be/service.asmx?WSDL');
     }
-    
-    public function formAction()
+
+    private function isMember($academic)
     {
-        /*
+        $academicYear = $this->getCurrentAcademicYear();
+        return $academic->isMember($academicYear) || $academic->isPraesidium($academicYear);
+    }
+
+    private function isEnabled()
+    {
+        $articleID = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.isic_sale_article');
+        if ($articleID === '0') {
+            return new ViewModel(
+                array(
+                    'status' => 'disabled',
+                )
+            );
+        }
+
+        return $articleID;
+    }
+
+    private function checkAccess()
+    {
+        if ('development' == getenv('APPLICATION_ENV')) {
+            return $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                ->findOneById(8145);
+        }
+
         if (!$this->getAuthentication()->isAuthenticated()) {
             return new ViewModel(
                 array(
@@ -47,25 +75,51 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
         if (!($academic instanceof Academic)) {
             return new ViewModel(
                 array(
-                    'status' => 'noauth',
+                    'status' => 'noaccess',
                 )
             );
         }
-        */
 
-        $academic = $this->getEntityManager()
-        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-        ->findOneById(8145);
-
-        $articleID = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.isic_sale_article');
-        if ($articleID === '0') {
+        if (!$this->isMember($academic)) {
             return new ViewModel(
                 array(
-                    'status' => 'disabled',
+                    'status' => 'noaccess',
                 )
             );
+        }
+
+        return $academic;
+    }
+
+    private function hasPersonOrderedAlready($person)
+    {
+        if ($this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\IsicCard')
+                        ->findByPersonQuery($person)
+                        ->getResult()) {
+            return new ViewModel(
+                array(
+                    'status' => 'doubleorder',
+                )
+            );
+        }
+    }
+    
+    public function formAction()
+    {
+        $academic = $this->checkAccess();
+        if ($academic instanceof ViewModel) {
+            return $academic;
+        }
+
+        $articleID = $this->isEnabled();
+        if ($articleID instanceof ViewModel) {
+            return $articleID;
+        }
+
+        $hasOrderedAlready = $this->hasPersonOrderedAlready($academic);
+        if ($hasOrderedAlready) {
+            return $hasOrderedAlready;
         }
 
         $form = $this->getForm('cudi_isic_order', $academic);
@@ -93,58 +147,37 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
 
     public function orderAction()
     {
-        /*
-        if (!$this->getAuthentication()->isAuthenticated()) {
+        $academic = $this->checkAccess();
+        if ($academic instanceof ViewModel) {
             $this->redirect()->toRoute(
                 'cudi_isic',
                 array(
                     'action' => 'form',
                 )
             );
-            return new ViewModel(
-                array(
-                    'status' => 'noauth',
-                )
-            );
+            return $academic;
         }
 
-        $academic = $this->getAuthentication()->getPersonObject();
-
-        if (!($academic instanceof Academic)) {
+        $articleID = $this->isEnabled();
+        if ($articleID instanceof ViewModel) {
             $this->redirect()->toRoute(
                 'cudi_isic',
                 array(
                     'action' => 'form',
                 )
             );
-            return new ViewModel(
-                array(
-                    'status' => 'noauth',
-                )
-            );
+            return $articleID;
         }
-        */
 
-        $academic = $this->getEntityManager()
-        ->getRepository('CommonBundle\Entity\User\Person\Academic')
-        ->findOneById(8145);
-
-        $config = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config');
-
-        $articleID = $config->getConfigValue('cudi.isic_sale_article');
-        if ($articleID === '0') {
+        $hasOrderedAlready = $this->hasPersonOrderedAlready($academic);
+        if ($hasOrderedAlready) {
             $this->redirect()->toRoute(
                 'cudi_isic',
                 array(
                     'action' => 'form',
                 )
             );
-            return new ViewModel(
-                array(
-                    'status' => 'disabled',
-                )
-            );
+            return $hasOrderedAlready;
         }
 
         $form = $this->getForm('cudi_isic_order');
@@ -157,53 +190,92 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $arguments = $form->hydrateObject();
+                
+                $config = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config');
 
-                $arguments['Username'] = $config->getConfigValue('cudi.isic_username');
-                $arguments['Password'] = $config->getConfigValue('cudi.isic_password');
+                $arguments['username'] = $config->getConfigValue('cudi.isic_username');
+                $arguments['password'] = $config->getConfigValue('cudi.isic_password');
+                $arguments['ClientID'] = $config->getConfigValue('cudi.isic_client_id');
                 $arguments['MemberNumber'] = '';
                 $arguments['cardType'] = 'ISIC';
                 $arguments['Nationality'] = '';
                 $arguments['isStudent'] = '1';
                 $arguments['sendToHome'] = '0';
-                $arguments['ClientID'] = '';
                 $arguments['promotionCode'] = '';
                 $arguments['special'] = '0';
                 if ($arguments['ISICCardNumber'] == '') {
-                    $arguments['Type'] = 'REQUESTED';
+                    $arguments['type'] = 'REQUESTED';
                 } else {
-                    $arguments['Type'] = 'REVALIDATE';
+                    $arguments['type'] = 'REVALIDATE';
                 }
-
+                /*
                 $result = $this->client->addIsicRegistration($arguments);
+                if ('development' == getenv('APPLICATION_ENV') && $result->addIsicRegistrationResult === 'CARDNUMBERS ARE DEPLETED.') {
+                    $result->addIsicRegistrationResult = 'OKS 032 123 456 789 A';
+                }
+                */
+                $result = (object) array('addIsicRegistrationResult' => 'OKS 032 123 456 789 A');
+                $capture = array();
 
-                $arguments['Photo'] = '';
-
-                $article = $this->getEntityManager()
+                if (preg_match('/^OK(S 032 (\d{3} ){3}[A-Z])$/i', $result->addIsicRegistrationResult, $capture)) {
+                    $article = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\Article')
-                            ->findOneById($config->getConfigValue('cudi.isic_sale_article'));
+                            ->findOneById($articleID);
 
-                $booking = new Booking(
-                    $this->getEntityManager(),
-                    $academic,
-                    $article,
-                    'booked',
-                    1,
-                    true
-                );
+                    $booking = new Booking(
+                        $this->getEntityManager(),
+                        $academic,
+                        $article,
+                        'booked',
+                        1,
+                        true
+                    );
 
-                $this->getEntityManager()->persist($booking);
-                $this->getEntityManager()->flush();
+                    $this->getEntityManager()->persist($booking);
+                    $this->getEntityManager()->flush();
 
-                return new ViewModel(
-                    array(
-                        'status' => 'success',
-                        'info' => array(
-                            'result' => $result,
-                            'arguments' => $arguments,
-                            'file' => $form->getData()['photo_group']['photo'],
-                        ),
-                    )
-                );
+                    $isicCard = new IsicCard(
+                        $academic,
+                        $capture[1],
+                        $booking,
+                        $this->getCurrentAcademicYear()
+                    );
+
+                    $this->getEntityManager()->persist($isicCard);
+                    $this->getEntityManager()->flush();
+
+                    return new ViewModel(
+                        array(
+                            'status' => 'success',
+                            'info' => array(
+                                'result' => $result,
+                                'cardID' => $capture[1],
+                            ),
+                        )
+                    );
+                } else {
+                    if ('development' == getenv('APPLICATION_ENV')) {
+                        return new ViewModel(
+                            array(
+                                'status' => 'error',
+                                'form' => array(
+                                    'errors' => $result,
+                                ),
+                            )
+                        );
+                    }
+
+                    return new ViewModel(
+                        array(
+                            'status' => 'error',
+                            'form' => array(
+                                'errors' => 'Something went wrong ordering your ISIC card.',
+                            ),
+                        )
+                    );
+                }
+                
             } else {
                 return new ViewModel(
                     array(

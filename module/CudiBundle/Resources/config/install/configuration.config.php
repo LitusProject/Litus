@@ -491,6 +491,11 @@ VTK Cudi
         'description' => 'The password for the ISIC SOAP API.',
     ),
     array(
+        'key'         => 'cudi.isic_client_id',
+        'value'       => '',
+        'description' => 'The client ID for the ISIC SOAP API.',
+    ),
+    array(
         'key'         => 'cudi.isic_student_cities',
         'value'       => serialize(
             array(
@@ -507,6 +512,15 @@ VTK Cudi
             )
         ),
         'description' => 'The school for the ISIC SOAP API.',
+    ),
+    array(
+        'key'         => 'cudi.isic_studies',
+        'value'       => serialize(
+            array(
+                'Ingenieursstudies' => 'Engineering studies',
+            )
+        ),
+        'description' => 'The studies for the ISIC SOAP API.',
     ),
     array(
         'key'         => 'cudi.isic_sale_article',

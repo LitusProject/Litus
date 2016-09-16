@@ -10,8 +10,15 @@ namespace CudiBundle\Entity;
 
 
 use CommonBundle\Entity\General\AcademicYear,
-    DateTime;
+    CommonBundle\Entity\User\Person,
+    CudiBundle\Entity\Sale\Booking,
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity(repositoryClass="CudiBundle\Repository\IsicCard")
+ * @ORM\Table(name="cudi.isic_card")
+ */
 class IsicCard
 {
     /**
@@ -26,10 +33,25 @@ class IsicCard
     /**
      * @var The owner of the card
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;
+
+    /**
+     * @var integer The ID of the card
+     *
+     * @ORM\Column(type="string")
+     */
+    private $cardNumber;
+
+    /**
+     * @var The academic year the card is valid
+     *
+     * @ORM\OneToOne(targetEntity="CudiBundle\Entity\Sale\Booking")
+     * @ORM\JoinColumn(name="booking", referencedColumnName="id")
+     */
+    private $booking;
 
     /**
      * @var The academic year the card is valid
@@ -39,34 +61,12 @@ class IsicCard
      */
     private $academicYear;
 
-    /**
-     * @var The date the card was ordered
-     *
-     * @ORM\Column(name="orderdate", type="datetime", nullable=false)
-     */
-    private $orderDate;
-
-    /**
-     * @var Is the card delivered
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $delivered;
-
-    /**
-     * @var Did the person collect his card
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $retrieved;
-
-    public function __construct(Person $person, AcademicYear $academicYear)
+    public function __construct(Person $person, $cardNumber, Booking $booking, AcademicYear $academicYear)
     {
         $this->person = $person;
+        $this->cardNumber = $cardNumber;
+        $this->booking = $booking;
         $this->academicYear = $academicYear;
-        $this->orderDate = new DateTime();
-        $this->delivered = false;
-        $this->retrieved = false;
 
     }
 
@@ -80,33 +80,28 @@ class IsicCard
         return $this->person;
     }
 
+    public function getCardNumber()
+    {
+        return $this->cardNumber;
+    }
+
+    public function getBooking()
+    {
+        return $this->booking;
+    }
+
+    public function setBooking(Booking $booking)
+    {
+        $this->booking = $booking;
+    }
+
     public function getAcademicYear()
     {
         return $this->academicYear;
     }
 
-    public function getOrderDate()
+    public function setAcademicYear()
     {
-        return $this->orderDate;
-    }
-
-    public function getDelivered()
-    {
-        return $this->delivered;
-    }
-
-    public function getRetrieved()
-    {
-        return $this->retrieved;
-    }
-
-    public function setDelivered($delivered)
-    {
-        $this->delivered = $delivered;
-    }
-
-    public function setRetrieved($retrieved)
-    {
-        $this->retrieved = $retrieved;
+        $this->academicYear = $academicYear;
     }
 }

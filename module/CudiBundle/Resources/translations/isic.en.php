@@ -25,15 +25,14 @@ return array(
 
     'Birthplace' => 'Birthplace',
     'Course' => 'Course',
-    'Engineer' => 'Engineer',
-    'Engineer - Architect' => 'Engineer - Architect',
+    'Engineering studies' => 'Engineering studies',
     'Student City' => 'Student City',
     'Photo (140 x 200)' => 'Photo (140 x 200)',
     'Order' => 'Order',
     
-    'Receive ISIC/Club newsletter' => 'Receive ISIC/Club newsletter',
-    'Receive ISIC/Club post' => 'Receive ISIC/Club post',
-    'Receive ISIC/Club post from partners' => 'Receive ISIC/Club post from partners',
+    'Receive the ISIC newsletter' => 'Receive the ISIC newsletter',
+    'Receive post from VTK' => 'Receive post from VTK',
+    'Receive post from ISIC' => 'Receive post from ISIC',
 
     'You do not have permission to view this page! Make sure you are logged in.' => 'You do not have permission to view this page! Make sure you are logged in.',
     'Orders for ISIC cards are currently disabled, please try again later.' => 'Orders for ISIC cards are currently disabled, please try again later.',

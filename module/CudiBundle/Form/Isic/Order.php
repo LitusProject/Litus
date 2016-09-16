@@ -98,7 +98,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     'type'       => 'text',
                     'name'       => 'birthplace',
                     'label'      => 'Birthplace',
-                    'required'   => true,
+                    'required'   => false,
                     'options'    => array(
                         'input' => array(
                             'filters'  => array(
@@ -197,9 +197,10 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Course',
                     'required'   => true,
                     'attributes' => array(
-                        'options' => array(
-                            'Burgerlijk Ingenieur' => 'Engineer',
-                            'Burgerlijk Ingenieur - Architect' => 'Engineer - Architect',
+                        'options' => unserialize(
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('cudi.isic_studies')
                         ),
                     ),
                 ),
@@ -256,7 +257,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     'type'       => 'file',
                     'name'       => 'photo',
                     'label'      => 'Photo  (' . self::ISIC_PHOTO_WIDTH . ' x ' . self::ISIC_PHOTO_HEIGHT . ')',
-                    'required'   => true,
+                    'required'   => false,
                     'attributes'  => array(
                         'data-help' => 'The image for the photo on your card. The maximum file size is ' . self::ISIC_PHOTO_FILESIZE . '. This must be a valid image (jpg, png, ...). The image must have a width of  ' . self::ISIC_PHOTO_WIDTH . 'px and a height of ' . self::ISIC_PHOTO_HEIGHT . 'px.',
                     ),
@@ -296,17 +297,19 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                 array(
                     'type'       => 'checkbox',
                     'name'       => 'newsletter',
-                    'label'      => 'Receive ISIC/Club newsletter',
+                    'label'      => 'Receive the ISIC newsletter',
                 ),
                 array(
                     'type'       => 'checkbox',
                     'name'       => 'post',
-                    'label'      => 'Receive ISIC/Club post',
+                    'value'      => true,
+                    'label'      => 'Receive post from VTK',
                 ),
                 array(
                     'type'       => 'checkbox',
                     'name'       => 'post_third',
-                    'label'      => 'Receive ISIC/Club post from partners',
+                    'value'      => true,
+                    'label'      => 'Receive post from ISIC',
                 ),
             ),
                 
