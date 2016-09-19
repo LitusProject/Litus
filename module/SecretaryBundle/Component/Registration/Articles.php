@@ -77,6 +77,30 @@ class Articles
             }
         }
 
+        $tshirts = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.tshirt_article')
+        );
+
+        $hasShirt = false;
+        foreach ($tshirts as $tshirt) {
+            $booking = $entityManager
+                ->getRepository('CudiBundle\Entity\Sale\Booking')
+                ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
+                    $entityManager
+                        ->getRepository('CudiBundle\Entity\Sale\Article')
+                        ->findOneById($tshirt),
+                    $academic,
+                    $academicYear
+                );
+                
+            if (null !== $booking) {
+                $hasShirt = true;
+                break;
+            }
+        }
+
         $enableAssignment = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_automatic_assignment');
