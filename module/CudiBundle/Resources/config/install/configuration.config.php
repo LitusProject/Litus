@@ -414,6 +414,11 @@ Student IT Cudi
         'description' => 'The content of the mail send for catalog updates',
     ),
     array(
+        'key'         => 'cudi.catalog_update_mail_enabled',
+        'value'       => '1',
+        'description' => 'Flag whether to send the catalog update mails.',
+    ),
+    array(
         'key'         => 'cudi.sale_light_version',
         'value'       => '0',
         'description' => 'Flag whether to show the light version of the sale app (no queue)',
