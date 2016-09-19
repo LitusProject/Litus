@@ -94,7 +94,7 @@ class Articles
                     $academic,
                     $academicYear
                 );
-                
+
             if (null !== $booking) {
                 $hasShirt = true;
                 break;
@@ -109,7 +109,7 @@ class Articles
             ->findOneActive();
         $currentPeriod->setEntityManager($entityManager);
 
-        if (!empty($tshirts) && !$hasShirt && $options['tshirtSize']) {
+        if (!empty($tshirts) && !$hasShirt && isset($options['tshirtSize'])) {
             $booking = new Booking(
                 $entityManager,
                 $academic,
