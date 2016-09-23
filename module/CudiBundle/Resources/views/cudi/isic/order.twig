@@ -22,5 +22,7 @@
 		        {{ form|json_encode }}
 		    {% endautoescape %}
 		{% endif %}
+	{% else %}
+        <p>{{translate('You do not have permission to view this page.')}}</p>
 	{% endif %}
 {% endblock %}

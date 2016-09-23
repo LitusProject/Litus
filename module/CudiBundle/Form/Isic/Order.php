@@ -257,7 +257,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     'type'       => 'file',
                     'name'       => 'photo',
                     'label'      => 'Photo  (' . self::ISIC_PHOTO_WIDTH . ' x ' . self::ISIC_PHOTO_HEIGHT . ')',
-                    'required'   => false,
+                    'required'   => true,
                     'attributes'  => array(
                         'data-help' => 'The image for the photo on your card. The maximum file size is ' . self::ISIC_PHOTO_FILESIZE . '. This must be a valid image (jpg, png, ...). The image must have a width of  ' . self::ISIC_PHOTO_WIDTH . 'px and a height of ' . self::ISIC_PHOTO_HEIGHT . 'px.',
                     ),

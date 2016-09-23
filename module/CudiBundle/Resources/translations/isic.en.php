@@ -17,6 +17,7 @@
  */
 
 return array(
+    'ISIC Card Order Form' => 'ISIC Card Order Form',
     'Personal Info' => 'Personal Info',
     'Home Address' => 'Home Address',
     'Contact Details' => 'Contact Details',
@@ -36,4 +37,8 @@ return array(
 
     'You do not have permission to view this page! Make sure you are logged in.' => 'You do not have permission to view this page! Make sure you are logged in.',
     'Orders for ISIC cards are currently disabled, please try again later.' => 'Orders for ISIC cards are currently disabled, please try again later.',
+
+    'Fill in the form below to order your ISIC card for %s€. Once your card is available, you will receive an email and come pick it up at our bookstore. For more information about ISIC cards, check out ' => 'Fill in the form below to order your ISIC card for %s€. Once your card is available, you will receive an email and come pick it up at our bookstore. For more information about ISIC cards, check out ',
+    'this page' => 'this page',
+    'NOTE: you cannot cancel your order after you hit the order button!' => 'NOTE: you cannot cancel your order after you hit the order button!',
 );

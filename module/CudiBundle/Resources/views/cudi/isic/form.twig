@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>{{ page.getTitle(language) }}</h1>
+        <h1>{{ translate('ISIC Card Order Form') }}</h1>
     </div>
 
     {% if hasAccess('cudi_isic', 'order') %}
@@ -16,11 +16,13 @@
             <p>{{translate('You have ordered an ISIC card already.')}}</p>
         {% else %}
             <div id="controller_action">
-                <p>Fill in the form below to order your ISIC card for {{price}}€. Once your card is available, you will receive an email and come pick it up at our bookstore. For more information about ISIC cards, check out <a href="http://www.guido.be/isic">this page</a>.</p>
-                <p>NOTE: you cannot cancel your order after you hit the order button!</p>
+                <p>{{translate('Fill in the form below to order your ISIC card for %s€. Once your card is available, you will receive an email and come pick it up at our bookstore. For more information about ISIC cards, check out ')|format(price)}}<a href="http://www.guido.be/isic">{{translate('this page')}}</a>.</p>
+                <p>{{translate('NOTE: you cannot cancel your order after you hit the order button!')}}</p>
                 {% import 'site/partials/form.twig' as forms %}
                 {{ forms.renderForm(form) }}
             </div>
         {% endif %}
+    {% else %}
+        <p>{{translate('You do not have permission to view this page.')}}</p>
     {% endif %}
 {% endblock %}
