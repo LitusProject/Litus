@@ -195,6 +195,15 @@ EOT
         $counter = 0;
 
         $sendMails = $this->getOption('mail');
+        $mailEnabled = '1' === $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('cudi.catalog_update_mail_enabled');
+
+        if ($sendMails && !$mailEnabled) {
+            $sendMails = false;
+            $this->writeln('<error>WARNING:</error> The mails will not be sent because they are disabled.');
+        }
+
         if ($sendMails && 'development' == getenv('APPLICATION_ENV')) {
             $sendMails = false;
             $this->writeln('<error>WARNING:</error> The mails will not be sent because the application is running in development mode.');

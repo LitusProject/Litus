@@ -110,7 +110,7 @@ class Group extends \CommonBundle\Component\Document\Generator\Csv
                     $result[$ac->getId()]['academicSecondaryAddressCountry'] = '';
                 }
 
-                $result[$ac->getId()]['study'] = $study->getFullTitle();
+                $result[$ac->getId()]['study'] = $study->getTitle();
             }
         }
 
