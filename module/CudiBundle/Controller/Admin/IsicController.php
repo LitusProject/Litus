@@ -44,4 +44,98 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
+
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        if (!($isicCard = $this->getIsicCardEntity())) {
+            return new ViewModel();
+        }
+
+        if ($isicCard->getBooking()->getStatus() == 'assigned') {
+            $isicCard->getBooking()->getArticle()->addStockValue(-1);
+        }
+
+        $this->getEntityManager()->remove($isicCard->getBooking());
+        $this->getEntityManager()->remove($isicCard);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function assignAction()
+    {
+        $this->initAjax();
+
+        if (!($isicCard = $this->getIsicCardEntity())) {
+            return new ViewModel();
+        }
+
+        if ($isicCard->getBooking()->getStatus() !== 'booked') {
+            return new ViewModel();
+        }
+
+        $isicCard->getBooking()->setStatus('assigned', $this->getEntityManager());
+        $isicCard->getBooking()->getArticle()->addStockValue(1);
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function unassignAction()
+    {
+        $this->initAjax();
+
+        if (!($isicCard = $this->getIsicCardEntity())) {
+            return new ViewModel();
+        }
+
+        if ($isicCard->getBooking()->getStatus() !== 'assigned') {
+            return new ViewModel();
+        }
+
+        $isicCard->getBooking()->setStatus('booked', $this->getEntityManager());
+        $isicCard->getBooking()->getArticle()->addStockValue(-1);
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    private function getIsicCardEntity()
+    {
+        $item = $this->getEntityById('CudiBundle\Entity\IsicCard');
+
+        if (!($item instanceof IsicCard)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No ISIC Card was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'cudi_admin_isic',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $item;
+    }
 }

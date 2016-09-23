@@ -79,8 +79,8 @@ return array(
                 ),
 
                 'cudi_admin_isic' => array(
-                    'title' => 'ISIC cards',
-                    'help'  => 'Manage the ISIC card reservations',
+                    'title' => 'ISIC Cards',
+                    'help'  => 'Manage the ISIC Card reservations',
                 ),
             ),
             'controllers' => array(
