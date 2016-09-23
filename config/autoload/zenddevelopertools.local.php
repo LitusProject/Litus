@@ -19,7 +19,7 @@
 return array(
     'zenddevelopertools' => array(
         'profiler' => array(
-            'enabled'     => false,
+            'enabled'     => true,
             'strict'      => false,
             'flush_early' => false,
             'cache_dir'   => 'data/cache',
@@ -30,7 +30,7 @@ return array(
             ),
         ),
         'toolbar' => array(
-            'enabled'       => false,
+            'enabled'       => ('development' == getenv('APPLICATION_ENV')),
             'auto_hide'     => true,
             'position'      => 'bottom',
             'version_check' => false,
