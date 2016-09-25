@@ -18,10 +18,10 @@
 
 namespace CudiBundle\Controller;
 
-use Zend\View\Model\ViewModel,
+use CudiBundle\Entity\IsicCard,
     CudiBundle\Entity\Sale\Booking,
-    CudiBundle\Entity\IsicCard,
-    Zend\Soap\Client as SoapClient;
+    Zend\Soap\Client as SoapClient,
+    Zend\View\Model\ViewModel;
 
 class IsicController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
@@ -35,6 +35,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
     private function isMember($academic)
     {
         $academicYear = $this->getCurrentAcademicYear();
+
         return $academic->isMember($academicYear) || $academic->isPraesidium($academicYear);
     }
 
@@ -72,14 +73,6 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
 
         $academic = $this->getAuthentication()->getPersonObject();
 
-        if (!($academic instanceof Academic)) {
-            return new ViewModel(
-                array(
-                    'status' => 'noaccess',
-                )
-            );
-        }
-
         if (!$this->isMember($academic)) {
             return new ViewModel(
                 array(
@@ -104,7 +97,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
             );
         }
     }
-    
+
     public function formAction()
     {
         $academic = $this->checkAccess();
@@ -155,6 +148,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                     'action' => 'form',
                 )
             );
+
             return $academic;
         }
 
@@ -166,6 +160,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                     'action' => 'form',
                 )
             );
+
             return $articleID;
         }
 
@@ -177,6 +172,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                     'action' => 'form',
                 )
             );
+
             return $hasOrderedAlready;
         }
 
@@ -190,7 +186,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
 
             if ($form->isValid()) {
                 $arguments = $form->hydrateObject();
-                
+
                 $config = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config');
 
@@ -275,7 +271,6 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                         )
                     );
                 }
-                
             } else {
                 return new ViewModel(
                     array(
