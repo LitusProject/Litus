@@ -144,9 +144,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(array(
             'type'       => 'checkbox',
             'name'       => 'unbookable',
-            'label'      => 'Unbookable',
+            'label'      => 'Cancelable',
             'attributes' => array(
-                'data-help' => 'Enabling this option will allow students with bookings of this article to cancel there reservation.',
+                'data-help' => 'Enabling this option will allow students with bookings of this article to cancel their reservation.',
             ),
         ));
 

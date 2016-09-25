@@ -1,0 +1,28 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ page.getTitle(language) }}</h1>
+    </div>
+
+    {% if hasAccess('cudi_isic', 'order') %}
+	    {% if status == 'success' %}
+	    	{% autoescape false %}
+		        {{ info|json_encode }}
+		    {% endautoescape %}
+		{% elseif status == 'noauth' %}
+			<p>{{translate('You need to be logged in to view this page.')}}</p>
+		{% elseif status == 'noaccess' %}
+	        <p>{{translate('You do not have permission to view this page.')}}</p>
+	    {% elseif status == 'doubleorder' %}
+	        <p>{{translate('You have ordered an ISIC card already.')}}</p>
+		{% else %}
+			<p>Something went wrong with your order.</p>
+		    {% autoescape false %}
+		        {{ form|json_encode }}
+		    {% endautoescape %}
+		{% endif %}
+	{% else %}
+        <p>{{translate('You do not have permission to view this page.')}}</p>
+	{% endif %}
+{% endblock %}

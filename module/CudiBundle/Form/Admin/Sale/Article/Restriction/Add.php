@@ -61,6 +61,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     </ul>',
                 'options'   => array(
                     'amount' => 'Amount',
+                    'available' => 'Available',
                     'member' => 'Member',
                     'study'  => 'Study',
                 ),

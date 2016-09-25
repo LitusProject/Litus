@@ -30,6 +30,7 @@ use CommonBundle\Entity\User\Person,
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
  *      "amount"="CudiBundle\Entity\Sale\Article\Restriction\Amount",
+ *      "available"="CudiBundle\Entity\Sale\Article\Restriction\Available",
  *      "member"="CudiBundle\Entity\Sale\Article\Restriction\Member",
  *      "study"="CudiBundle\Entity\Sale\Article\Restriction\Study"
  * })
