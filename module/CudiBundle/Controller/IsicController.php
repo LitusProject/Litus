@@ -116,67 +116,6 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $form = $this->getForm('cudi_isic_order', $academic);
-        $form->setAttribute(
-            'action',
-            $this->url()->fromRoute(
-                'cudi_isic',
-                array(
-                    'action' => 'order',
-                )
-            )
-        );
-
-        $article = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sale\Article')
-                            ->findOneById($articleID);
-
-        return new ViewModel(
-            array(
-                'form' => $form,
-                'price' => $article->getSellPrice() / 100,
-            )
-        );
-    }
-
-    public function orderAction()
-    {
-        $academic = $this->checkAccess();
-        if ($academic instanceof ViewModel) {
-            $this->redirect()->toRoute(
-                'cudi_isic',
-                array(
-                    'action' => 'form',
-                )
-            );
-
-            return $academic;
-        }
-
-        $articleID = $this->isEnabled();
-        if ($articleID instanceof ViewModel) {
-            $this->redirect()->toRoute(
-                'cudi_isic',
-                array(
-                    'action' => 'form',
-                )
-            );
-
-            return $articleID;
-        }
-
-        $hasOrderedAlready = $this->hasPersonOrderedAlready($academic);
-        if ($hasOrderedAlready) {
-            $this->redirect()->toRoute(
-                'cudi_isic',
-                array(
-                    'action' => 'form',
-                )
-            );
-
-            return $hasOrderedAlready;
-        }
-
-        $form = $this->getForm('cudi_isic_order');
 
         if ($this->getRequest()->isPost()) {
             $form->setData(array_merge_recursive(
@@ -271,17 +210,64 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                         )
                     );
                 }
-            } else {
-                return new ViewModel(
-                    array(
-                        'status' => 'error',
-                        'form' => array(
-                            'errors' => $form->getMessages(),
-                        ),
-                    )
-                );
             }
         }
+
+        $article = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sale\Article')
+                            ->findOneById($articleID);
+
+        return new ViewModel(
+            array(
+                'status' => 'form',
+                'form' => $form,
+                'price' => $article->getSellPrice() / 100,
+            )
+        );
+    }
+
+    /*
+    public function orderAction()
+    {
+        $academic = $this->checkAccess();
+        if ($academic instanceof ViewModel) {
+            $this->redirect()->toRoute(
+                'cudi_isic',
+                array(
+                    'action' => 'form',
+                )
+            );
+
+            return $academic;
+        }
+
+        $articleID = $this->isEnabled();
+        if ($articleID instanceof ViewModel) {
+            $this->redirect()->toRoute(
+                'cudi_isic',
+                array(
+                    'action' => 'form',
+                )
+            );
+
+            return $articleID;
+        }
+
+        $hasOrderedAlready = $this->hasPersonOrderedAlready($academic);
+        if ($hasOrderedAlready) {
+            $this->redirect()->toRoute(
+                'cudi_isic',
+                array(
+                    'action' => 'form',
+                )
+            );
+
+            return $hasOrderedAlready;
+        }
+
+        $form = $this->getForm('cudi_isic_order');
+
+        
 
         $this->redirect()->toRoute(
             'cudi_isic',
@@ -291,5 +277,5 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
         );
 
         return $this->formAction();
-    }
+    } */
 }

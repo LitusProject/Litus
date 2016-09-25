@@ -14,13 +14,23 @@
             <p>{{translate('Orders for ISIC cards are currently disabled, please try again later.')}}</p>
         {% elseif status == 'doubleorder' %}
             <p>{{translate('You have ordered an ISIC card already.')}}</p>
-        {% else %}
+        {% elseif status == 'success' %}
+            <p> Your order was successful. You will get an email when your card is available at our bookstore.</p>
+            {% autoescape false %}
+                {{ info|json_encode }}
+            {% endautoescape %}
+        {% elseif status = 'form' %}
             <div id="controller_action">
                 <p>{{translate('Fill in the form below to order your ISIC card for %s€. Once your card is available, you will receive an email and come pick it up at our bookstore. For more information about ISIC cards, check out ')|format(price)}}<a href="http://www.guido.be/isic">{{translate('this page')}}</a>.</p>
                 <p>{{translate('NOTE: you cannot cancel your order after you hit the order button!')}}</p>
                 {% import 'site/partials/form.twig' as forms %}
                 {{ forms.renderForm(form) }}
             </div>
+        {% else %}
+            <p>Something went wrong with your order.</p>
+            {% autoescape false %}
+                {{ form|json_encode }}
+            {% endautoescape %}
         {% endif %}
     {% else %}
         <p>{{translate('You do not have permission to view this page.')}}</p>
