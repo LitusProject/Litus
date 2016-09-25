@@ -144,13 +144,11 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                 } else {
                     $arguments['type'] = 'REVALIDATE';
                 }
-                /*
+                
                 $result = $this->client->addIsicRegistration($arguments);
                 if ('development' == getenv('APPLICATION_ENV') && $result->addIsicRegistrationResult === 'CARDNUMBERS ARE DEPLETED.') {
                     $result->addIsicRegistrationResult = 'OKS 032 123 456 789 A';
                 }
-                */
-                $result = (object) array('addIsicRegistrationResult' => 'OKS 032 123 456 789 A');
                 $capture = array();
 
                 if (preg_match('/^OK(S 032 (\d{3} ){3}[A-Z])$/i', $result->addIsicRegistrationResult, $capture)) {
@@ -194,8 +192,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                         return new ViewModel(
                             array(
                                 'status' => 'error',
-                                'form' => array(
-                                    'errors' => $result,
+                                'error' => $result->addIsicRegistrationResult,
                                 ),
                             )
                         );
