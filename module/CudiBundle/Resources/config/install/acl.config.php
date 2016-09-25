@@ -109,10 +109,10 @@ return array(
             'manage', 'list', 'articlescsv',
         ),
         'cudi_admin_isic' => array(
-            'assign', 'unassign', 'delete',
+            'manage','assign', 'unassign', 'delete',
         ),
         'cudi_isic' => array(
-            'order',
+            'form','order',
         ),
         'cudi_prof_auth' => array(
             'login', 'logout', 'shibboleth',
