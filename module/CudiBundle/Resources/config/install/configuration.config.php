@@ -486,6 +486,11 @@ VTK Cudi
         'description' => 'Dissable the assignment of registration articles in the second semester.',
     ),
     array(
+        'key'         => 'cudi.isic_enable_info',
+        'value'       => '0',
+        'description' => 'Enable the isic info on the bookings page.',
+    ),
+    array(
         'key'         => 'cudi.isic_username',
         'value'       => '',
         'description' => 'The username for the ISIC SOAP API.',

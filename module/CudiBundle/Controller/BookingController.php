@@ -337,6 +337,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 'isSubscribed' => $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article\Notification\Subscription')
                     ->findOneByPerson($academic) !== null,
+                'isic' => $this->getIsic(),
             )
         );
     }
@@ -604,5 +605,17 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         return $booking;
+    }
+
+    /**
+     * @return array
+     */
+    private function getIsic()
+    {
+        return array(
+            'enable' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.isic_enable_info'),
+        );
     }
 }

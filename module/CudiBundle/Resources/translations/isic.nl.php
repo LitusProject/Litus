@@ -30,7 +30,7 @@ return array(
     'Student City' => 'Stad',
     'Photo (140 x 200)' => 'Foto (140 x 200)',
     'Order' => 'Bestel',
-    
+
     'Receive the ISIC newsletter' => 'Stuur mij de ISIC nieuwsbrief',
     'Receive post from VTK' => 'Stuur mij post van VTK',
     'Receive post from ISIC' => 'Stuur mij post van ISIC',
@@ -42,4 +42,7 @@ return array(
     'this page' => 'deze pagina',
     'NOTE: you cannot cancel your order after you hit the order button!' => 'OPMERKING: je kan je bestelling niet meer annuleren nadat je op de bestel knop klikt!',
     'order' => 'bestel',
+
+    'VTK provides you with ISIC cards.' => 'Sinds dit jaar biedt VTK jullie de ISIC kortingskaart aan voor binnen- en buitenland. klik snel door voor meer info!',
+    'click here' => 'Klik hier!',
 );
