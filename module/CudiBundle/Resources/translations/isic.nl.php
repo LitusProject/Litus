@@ -45,4 +45,7 @@ return array(
 
     'VTK provides you with ISIC cards.' => 'Sinds dit jaar biedt VTK jullie de ISIC kortingskaart aan voor binnen- en buitenland. klik snel door voor meer info!',
     'click here' => 'Klik hier!',
+
+    'Your order was successful. You will get an email when your card is available at our bookstore.' => 'Je bestelling is geslaagd. Je zal een email krijgen wanneer je kaart beschikbaar is aan onze cursusdienst.',
+    'You have ordered an ISIC card already.' => 'Je hebt reeds een ISIC kaart besteld.',
 );

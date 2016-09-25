@@ -15,7 +15,7 @@
         {% elseif status == 'doubleorder' %}
             <p>{{translate('You have ordered an ISIC card already.')}}</p>
         {% elseif status == 'success' %}
-            <p> Your order was successful. You will get an email when your card is available at our bookstore.</p>
+            <p>{{ translate('Your order was successful. You will get an email when your card is available at our bookstore.') }} </p>
             {% autoescape false %}
                 {{ info|json_encode }}
             {% endautoescape %}
