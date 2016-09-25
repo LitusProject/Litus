@@ -1,0 +1,31 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    <div id="controller_action">
+        <div id="default_page">
+            <table class="full_width manage">
+                <tr>
+                    <th>Card Number</th>
+                    <th width="200px">Owner</th>
+                    <th width="200px">Booking Status</th>
+                    <th width="100px">Year</th>
+                    <th width="70px">Action</th>
+                </tr>
+
+                {% for card in paginator %}
+                    <tr class="item item-{{ card.getId() }}">
+                        <td>{{ card.getCardNumber() }}</td>
+                        <td>{{ card.getPerson().getFullName() }}</td>
+                        <td>{{ card.getBooking().getStatus() }}</td>
+                        <td>{{ card.getAcademicYear().getStartDate().format('Y') }} - {{ card.getAcademicYear().getEndDate().format('Y') }}</td>
+                        <td class="actions">
+                            
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+{% endblock %}
