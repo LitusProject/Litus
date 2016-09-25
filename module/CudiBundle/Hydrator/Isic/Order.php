@@ -45,34 +45,33 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
-            $object = array();
-        }
 
-        $object['ISICCardNumber'] = '';
-        $object['Firstname'] = $data['personal_info']['first_name'];
-        $object['Lastname'] = $data['personal_info']['last_name'];
-        $object['BirthDate'] = $data['personal_info']['birthday'];
-        $object['BirthPlace'] = $data['personal_info']['birthplace'];
-        $object['Gender'] = $data['personal_info']['sex'];
-        $object['language'] = $data['personal_info']['language'];
-        $object['Street'] = $data['address']['street'] . ' ' . $data['address']['number'];
-        $object['PostalCode'] = $data['address']['postal'];
-        $object['City'] = $data['address']['city'];
-        $object['email'] = $data['contact_details']['email'];
-        $object['PhoneNumber'] = $data['contact_details']['phone_number'];
-        $object['Course'] = $data['studies']['course'];
-        $object['School'] = $data['studies']['school'];
-        $object['StudentCity'] = $data['studies']['student_city'];
-        $object['Year'] = $data['studies']['year'];
-        $object['Optin'] = $data['optins']['newsletter'] == true ? '1' : '0';
-        $object['postOptOut'] = $data['optins']['post'] == true ? '0' : '1';
-        $object['postOptOutThird'] = $data['optins']['post_third'] == true ? '0' : '1';
+        $result = array();
 
-        $object['Photo'] = $this->convertBase64($data['photo_group']['photo']);
-        $object['ImageExtension'] = pathinfo($data['photo_group']['photo']['name'], PATHINFO_EXTENSION);
+        $result['ISICCardNumber'] = '';
+        $result['Firstname'] = $data['personal_info']['first_name'];
+        $result['Lastname'] = $data['personal_info']['last_name'];
+        $result['BirthDate'] = $data['personal_info']['birthday'];
+        $result['BirthPlace'] = $data['personal_info']['birthplace'];
+        $result['Gender'] = $data['personal_info']['sex'];
+        $result['language'] = $data['personal_info']['language'];
+        $result['Street'] = $data['address']['street'] . ' ' . $data['address']['number'];
+        $result['PostalCode'] = $data['address']['postal'];
+        $result['City'] = $data['address']['city'];
+        $result['email'] = $data['contact_details']['email'];
+        $result['PhoneNumber'] = $data['contact_details']['phone_number'];
+        $result['Course'] = $data['studies']['course'];
+        $result['School'] = $data['studies']['school'];
+        $result['StudentCity'] = $data['studies']['student_city'];
+        $result['Year'] = $data['studies']['year'];
+        $result['Optin'] = $data['optins']['newsletter'] == true ? '1' : '0';
+        $result['postOptOut'] = $data['optins']['post'] == true ? '0' : '1';
+        $result['postOptOutThird'] = $data['optins']['post_third'] == true ? '0' : '1';
 
-        return $object;
+        $result['Photo'] = $this->convertBase64($data['photo_group']['photo']);
+        $result['ImageExtension'] = pathinfo($data['photo_group']['photo']['name'], PATHINFO_EXTENSION);
+
+        return $result;
     }
 
     protected function doExtract($object = null)
