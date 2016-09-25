@@ -150,7 +150,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                 }
                 $capture = array();
 
-                if (preg_match('/^OK(S 032 (\d{3} ){3}[A-Z])$/i', $result->addIsicRegistrationResult, $capture)) {
+                if (preg_match('/^OK(S 032 (\d{3} ){3}[A-Za-z])$/i', $result->addIsicRegistrationResult, $capture)) {
                     $article = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\Article')
                             ->findOneById($articleID);
@@ -187,21 +187,10 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                         )
                     );
                 } else {
-                    if ('development' == getenv('APPLICATION_ENV')) {
-                        return new ViewModel(
-                            array(
-                                'status' => 'error',
-                                'error' => $result->addIsicRegistrationResult,
-                            )
-                        );
-                    }
-
                     return new ViewModel(
                         array(
                             'status' => 'error',
-                            'form' => array(
-                                'errors' => 'Something went wrong ordering your ISIC card.',
-                            ),
+                            'error' => $result->addIsicRegistrationResult,
                         )
                     );
                 }
