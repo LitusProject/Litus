@@ -192,7 +192,6 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                             array(
                                 'status' => 'error',
                                 'error' => $result->addIsicRegistrationResult,
-                                ),
                             )
                         );
                     }
