@@ -53,10 +53,7 @@ class IsicCard extends EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('CudiBundle\Entity\IsicCard', 'c')
-            ->where($query->expr()->andX(
-                    $query->expr()->eq('c.person', ':person')
-                )
-            )
+            ->where($query->expr()->eq('c.person', ':person'))
             ->setParameter('person', $person->getID())
             ->orderBy('c.cardNumber', 'ASC')
             ->getQuery();
