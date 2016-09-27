@@ -78,7 +78,7 @@ class Printer
         if ($aArticle->isExternal() == $bArticle->isExternal()) {
             if ($aArticle->isExternal()) {
                 return strcasecmp($aArticle->getTitle(), $bArticle->getTitle());
-            } elseif {
+            } else {
                 return strcmp(substr($a->getArticle()->getBarcode(), 7), substr($b->getArticle()->getBarcode(), 7));
             }
         }
@@ -99,7 +99,7 @@ class Printer
             return;
         }
 
-        usort($bookings, array($this, 'articleSort'));
+        usort($bookings, array(__CLASS__, 'articleSort'));
 
         $articles = array();
         $totalPrice = 0;
