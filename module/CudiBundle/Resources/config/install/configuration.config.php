@@ -485,4 +485,56 @@ Student IT Cudi
         'value'       => '0',
         'description' => 'Dissable the assignment of registration articles in the second semester.',
     ),
+    array(
+        'key'         => 'cudi.isic_enable_info',
+        'value'       => '0',
+        'description' => 'Enable the isic info on the bookings page.',
+    ),
+    array(
+        'key'         => 'cudi.isic_username',
+        'value'       => '',
+        'description' => 'The username for the ISIC SOAP API.',
+    ),
+    array(
+        'key'         => 'cudi.isic_password',
+        'value'       => '',
+        'description' => 'The password for the ISIC SOAP API.',
+    ),
+    array(
+        'key'         => 'cudi.isic_client_id',
+        'value'       => '',
+        'description' => 'The client ID for the ISIC SOAP API.',
+    ),
+    array(
+        'key'         => 'cudi.isic_student_cities',
+        'value'       => serialize(
+            array(
+                'Leuven' => 'Leuven',
+            )
+        ),
+        'description' => 'The student city for the ISIC SOAP API.',
+    ),
+    array(
+        'key'         => 'cudi.isic_schools',
+        'value'       => serialize(
+            array(
+                'KU Leuven' => 'KU Leuven',
+            )
+        ),
+        'description' => 'The school for the ISIC SOAP API.',
+    ),
+    array(
+        'key'         => 'cudi.isic_studies',
+        'value'       => serialize(
+            array(
+                'Ingenieursstudies' => 'Engineering studies',
+            )
+        ),
+        'description' => 'The studies for the ISIC SOAP API.',
+    ),
+    array(
+        'key'         => 'cudi.isic_sale_article',
+        'value'       => '0',
+        'description' => 'The id of the ISIC sale article.',
+    ),
 );
