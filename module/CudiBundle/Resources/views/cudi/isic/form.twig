@@ -9,7 +9,7 @@
         {% if status == 'noauth'%}
             <p>{{translate('You need to be logged in to view this page.')}}</p>
         {% elseif status == 'noaccess' %}
-            <p>{{translate('You do not have permission to view this page.')}}</p>
+            <p>{{translate('You need to be a member to order an ISIC card.')}}</p>
         {% elseif status == 'disabled' %}
             <p>{{translate('Orders for ISIC cards are currently disabled, please try again later.')}}</p>
         {% elseif status == 'doubleorder' %}
@@ -19,9 +19,11 @@
         {% elseif status == 'form' %}
             <div id="controller_action">
                 <p>{{translate('Fill in the form below to order your ISIC card for %s€. Once your card is available, you will receive an email and come pick it up at our bookstore. For more information about ISIC cards, check out ')|format(price)}}<a href="http://vtk.be/page/name/isic">{{translate('this page')}}</a>.</p>
+                <p>{{translate('If you have trouble with with resizing your photo, check out this link:')}} <a href="https://vtk.be/nl/page/parent/isic/name/image-rescale/">Image Rescale</a></p>
                 <p>{{translate('NOTE: you cannot cancel your order after you hit the order button!')}}</p>
                 {% import 'site/partials/form.twig' as forms %}
                 {{ forms.renderForm(form) }}
+                <p>{{translate('If you have trouble with with resizing your photo, check out this link:')}} <a href="https://vtk.be/nl/page/parent/isic/name/image-rescale/">Image Rescale</a></p>
             </div>
         {% else %}
             <p>{{ translate('Something went wrong with your order. Please email isic@vtk.be with the following error:') }} {{error}}</p>
