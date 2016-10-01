@@ -99,7 +99,7 @@ class Printer
             return;
         }
 
-        usort($bookings, array('Printer', 'articleSort'));
+        usort($bookings, array(__CLASS__, 'articleSort'));
 
         $articles = array();
         $totalPrice = 0;
