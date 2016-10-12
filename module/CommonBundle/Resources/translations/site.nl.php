@@ -118,4 +118,8 @@ return array(
     'Wiki' => 'Examenwiki',
     'International Student' => 'Internatinale Student',
     'I am an international student' => 'Ik ben een internationale student',
+    
+    'The POC\'ers are elected! You can find your POC\'ers here!' => 'De POC\'ers zijn verkozen! Hieronder kan jij jouw POC\'ers vinden! ',
+    'We could not find any POC\'ers for you, try again later!' => 'We konden geen POC\'ers voor jou vinden, probeer later nog eens !',
+    'Please login to see your POC\'ers!' => 'Login om jouw POC\'ers te bekijken'
 );

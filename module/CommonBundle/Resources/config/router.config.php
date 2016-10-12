@@ -280,6 +280,20 @@ return array(
                 ),
             ),
         ),
+        'common_poc' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/poc[/:action[/:academicyear]][/]',
+                'constraints' => array(
+                    'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'academicyear' => '[0-9]{4}-[0-9]{4}',
+                ),
+                'defaults' => array(
+                    'controller' => 'common_poc',
+                    'action'     => 'overview',
+                ),
+            ),
+        ), 
         'common_privacy' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -293,6 +307,7 @@ return array(
                 ),
             ),
         ),
+    
     ),
 
     'controllers' => array(
@@ -314,6 +329,7 @@ return array(
         'common_auth'           => 'CommonBundle\Controller\AuthController',
         'common_robots'         => 'CommonBundle\Controller\RobotsController',
         'common_praesidium'     => 'CommonBundle\Controller\PraesidiumController',
+        'common_poc'			=> 'CommonBundle\Controller\PocController',
         'common_privacy'        => 'CommonBundle\Controller\PrivacyController',
     ),
 );

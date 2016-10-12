@@ -198,7 +198,9 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-
+                
+			
+				
                 <div class="col-md-6">
                     <div class="page-header" style="margin-top: 20px;">
                         <a class="heading" href="{{ url('news') }}">
@@ -223,7 +225,53 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% if myPocers.enable  %}
+                 <div class="col-md-6">
+                    <div class="page-header" style="margin-top: 20px;">
+                        <a class="heading" href="{{ url('news') }}">
+                            <h3>{{ translate('Poc') }}</h3>
+                        </a> 
+                    </div>
+                    
+                    <div class="heading-spacer"></div>	
+                    <div class="alert alert-warning">
+                    {{translate('The POC\'ers are elected! You can find your POC\'ers here!')}}
+                    {% if myPocers.pocItem is not null %}
+						 {% if not myPocers.pocItem is empty %}
+						 {% for pocStuff in myPocers.pocItem%}
+							<h3>{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small>{% endif %}</h3>
+							<div class="row">
+							{% set counter = 0 %}
+							{% for  poc in pocStuff['pocGroupList'] %}
+							<div class="col-xs-6 col-md-6">
+							      <div class="thumbnail" style="height: 250px; text-align: center">
+								  {% if poc.getAcademic().getPhotoPath() %}
+								 <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/180x135/auto/text:Image) no-repeat; width: 180px; height: 135px;" alt="">
+									{% else %}
+									<img data-src="holder.js/180x135/auto/text:Image" alt="">
+								{% endif %}
+								<h4>{{ poc.getAcademic().getFullName() }}</h4> 
+								<h6>{{ poc.getAcademic().getUniversityEmail() }}</h6> 
+								</div>
+							</div>
+							{% endfor %}
+							</div>
+						{% endfor %}
+					 
+                    </div>
+                    {% else %}                 
+					<p class="text-danger"> <br/>{{translate('We could not find any POC\'ers for you, try again later!')}} </p>                
+                    {% endif %}
+                    {% else %}
+                    <br/><br/>
+                    <a href="{{ shibbolethUrl }}"<p class="text-info">
+                    {{translate('Please login to see your POC\'ers!')}}
+                    </p></a>
+				{% endif %}
+                </div> 
             </div>
+            					{% endif %}
+
         </div>
     </div>
 {% endblock %}

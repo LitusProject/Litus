@@ -34,7 +34,6 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 {
     public function manageAction()
     {	
-         
          if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
@@ -43,9 +42,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         $pocs = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Poc')
                 ->findAllByAcademicYearQuery($academicYear);
-        
-
-
+       
         $paginator = $this->paginator()->createFromQuery(
             $pocs,
             $this->getParam('page')
@@ -125,12 +122,13 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         if (!($poc = $this->getPocEntity())) {
             return new ViewModel();
         }
-
+        
+      
         $form = $this->getForm('syllabus_poc_edit', array('poc' => $poc));
 
         if ($this->getRequest()->isPost()) {
+            
             $form->setData($this->getRequest()->getPost());
-
             if ($form->isValid()) {
                 $this->getEntityManager()->flush();
 
@@ -160,6 +158,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
                 'academicYears' => $academicYears,
                 'currentAcademicYear' => $academicYear,
                 'form' => $form,
+                'poc' => $poc,
             )
         );
     }
@@ -244,4 +243,5 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 
         return $academicYear;
     }
+     
 }

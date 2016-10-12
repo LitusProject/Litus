@@ -65,14 +65,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Poc Group',
             'required'   => true,
             'attributes' => array(
-                'multiple'  => true,
                 'options'   => $this->createPocsArray(),
+                
                 ),
             )
         );	
   
       
-
         $this->addSubmit('Add', 'user_add');
     }
 
