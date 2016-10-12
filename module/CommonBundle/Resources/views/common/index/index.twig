@@ -226,6 +226,8 @@
                     {% endfor %}
                 </div>
                 {% if myPocers.enable  %}
+                {% if myPocers.pocItem is not null %}
+				{% if not myPocers.pocItem is empty %}
                  <div class="col-md-6">
                     <div class="page-header" style="margin-top: 20px;">
                         <a class="heading" href="{{ url('news') }}">
@@ -236,8 +238,7 @@
                     <div class="heading-spacer"></div>	
                     <div class="alert alert-warning">
                     {{translate('The POC\'ers are elected! You can find your POC\'ers here!')}}
-                    {% if myPocers.pocItem is not null %}
-						 {% if not myPocers.pocItem is empty %}
+                    
 						 {% for pocStuff in myPocers.pocItem%}
 							<h3>{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small>{% endif %}</h3>
 							<div class="row">
@@ -257,20 +258,13 @@
 							{% endfor %}
 							</div>
 						{% endfor %}
-					 
-                    </div>
-                    {% else %}                 
-					<p class="text-danger"> <br/>{{translate('We could not find any POC\'ers for you, try again later!')}} </p>                
-                    {% endif %}
-                    {% else %}
-                    <br/><br/>
-                    <a href="{{ shibbolethUrl }}"<p class="text-info">
-                    {{translate('Please login to see your POC\'ers!')}}
-                    </p></a>
-				{% endif %}
+                    </div>	
+                 
                 </div> 
             </div>
-            					{% endif %}
+            {% endif %}
+            {% endif %}
+           {% endif %}
 
         </div>
     </div>
