@@ -19,7 +19,8 @@
 namespace SyllabusBundle\Repository;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYear,
+    ommonBundle\Entity\User\Person\Academic as Academic,
     SyllabusBundle\Entity\Group as GroupEntity;
 
 /**
@@ -102,6 +103,10 @@ class Group extends EntityRepository
         return $resultSet;
     }
     
+    
+     /**
+     * @return \Doctrine\ORM\Query
+     */
 	public function findAllPocGroupsQuery()
      {
 	    $query = $this->getEntityManager()->createQueryBuilder();
@@ -116,6 +121,8 @@ class Group extends EntityRepository
 		
        return $resultSet;
       }
+      
+      
       
 
 

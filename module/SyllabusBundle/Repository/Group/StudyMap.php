@@ -69,4 +69,26 @@ class StudyMap extends EntityRepository
 
         return $resultSet;
     }
+    
+    
+    public function findMapsFromStudyQuery(StudyEntity $study){
+		$query = $this->getEntityManager()->createQueryBuilder();
+		$resultSet = $query->select('m')
+            ->from('SyllabusBundle\Entity\Group\StudyMap','m')
+            ->where(
+               $query->expr()->andX(
+                    $query->expr()->eq('m.study', ':study')
+					)
+            )
+            ->setParameter('study', $study)
+            ->getQuery();
+
+        return $resultSet;
+    
+    }
+    
+    
+    
+    
+    
 }

@@ -20,6 +20,9 @@ namespace SyllabusBundle\Repository;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\User\Person\Academic,
+    SyllabusBundle\Entity\Group\StudyMap,
+    SyllabusBundle\Entity\Group as GroupEntity,
     SyllabusBundle\Entity\Poc as PocEntity;
 
 /**
@@ -64,6 +67,81 @@ class Poc extends EntityRepository
             ->getQuery();
         return $resultSet;
     }
+    /**
+     * @param  GroupEntity		   $groupId
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+	public function findPocersFromGroupAndAcademicYearQuery(GroupEntity $groupId,AcademicYear $academicYear)
+    {	
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('p','g')
+            ->from('SyllabusBundle\Entity\poc', 'p')
+            ->where(
+            $query->expr()->andX(
+                    $query->expr()->eq('p.groupId', ':groupId'),
+                    $query->expr()->eq('p.academicYear', ':academicYear')
+                ))
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('groupId',$groupId)
+            ->innerJoin('p.groupId','g')
+            ->orderBy('g.name','ASC')
+            ->getQuery();
+        return $resultSet;
+    }
+    /**
+     * @param  Academic		   	   $academic
+     * @param  AcademicYear        $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+	public function findPocersByAcademicAndAcademicYearQuery(Academic $academic,AcademicYear $academicYear)
+    {	
+		$studyEnrollments = $this->getEntityManager()
+            ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
+            ->findAllByAcademicAndAcademicYear($academic, $academicYear);
+		$idsOfStudiesOfEnrollment = array(0);
+		
+		foreach($studyEnrollments as $studyEnrollment){
+            $idsOfStudiesOfEnrollment[] = $studyEnrollment->getStudy()->getId();
+        }
+        $query = $this->getEntityManager()->createQueryBuilder();
+		$studyMaps = $query->select('m')
+			->from('SyllabusBundle\Entity\Group\StudyMap','m')
+            ->where(
+               (
+                    $query->expr()->in('m.study', $idsOfStudiesOfEnrollment)
+					)
+            )
+            ->getQuery()
+            ->getResult();
+     
+       $idsOfGroup = array(0);
+       foreach($studyMaps as $studyMap){
+            $idsOfGroup[] = $studyMap->getGroup()->getId();
+        }
+        
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('p','g')
+            ->from('SyllabusBundle\Entity\poc', 'p')
+            ->where(
+            $query->expr()->andX(
+                    $query->expr()->in('p.groupId', $idsOfGroup),
+                    $query->expr()->eq('p.academicYear', ':academicYear')
+                ))
+            ->setParameter('academicYear', $academicYear)
+            ->innerJoin('p.groupId','g')
+            ->orderBy('g.name','ASC')
+            ->getQuery();
+         
+        return $resultSet;
+    }
+    
+    
+    
+    
+    
+    
+    
   
     
 
