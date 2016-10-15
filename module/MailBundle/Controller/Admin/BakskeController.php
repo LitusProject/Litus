@@ -60,44 +60,49 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
                     ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
                     ->findAllBakskeByAcademicYear($this->getCurrentAcademicYear());
                 $totalRecipients = count($recipientGroups);
+                $recipientGroups = array_chunk($recipientGroups, 500);
 
-                $recipientGroups = array_chunk($recipientGroups, 1000);
+                $part = new Part($edition->getHtml());
+                $part->type = Mime::TYPE_HTML;
+                $message = new MimeMessage();
+                $message->addPart($part);
 
-                foreach ($recipientGroups as $recipients) {
+                $mail = new Message();
+                $mail->setEncoding('UTF-8')
+                    ->setBody($message)
+                    ->setFrom($mailAddress, $mailName)
+                    ->setSubject($formData['subject']);
 
-                    $part = new Part($edition->getHtml());
-                    $part->type = Mime::TYPE_HTML;
-                    $message = new MimeMessage();
-                    $message->addPart($part);
+                $mail->addTo($mailAddress, $mailName);
 
-                    $mail = new Message();
-                    $mail->setEncoding('UTF-8')
-                        ->setBody($message)
-                        ->setFrom($mailAddress, $mailName)
-                        ->setSubject($formData['subject']);
+                if ($formData['test']) {
+                    $mailAddress = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('system_administrator_mail');
 
-                    $mail->addTo($mailAddress, $mailName);
-
-                    if ($formData['test']) {
-                        $mailAddress = $this->getEntityManager()
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('system_administrator_mail');
-
-                        $mail->addTo($mailAddress, 'System Administrator');
-                    } else {
-                        foreach ($recipients as $recipient) {
-                            $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
-                        }
-                    }
+                    $mail->addTo($mailAddress, 'System Administrator');
 
                     if ('development' != getenv('APPLICATION_ENV')) {
                         $this->getMailTransport()->send($mail);
                     }
+                } else {
+                    foreach ($recipientGroups as $recipients) {
+                        foreach ($recipients as $recipient) {
+                            $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
+                        }
+
+                        if ('development' != getenv('APPLICATION_ENV')) {
+                            $this->getMailTransport()->send($mail);
+                        }
+
+                        $mail->setBcc(array());
+                    }
+
                 }
 
                 $this->flashMessenger()->success(
                     'Success',
-                    'The mail was successfully sent to ' + $totalRecipients + ' people! '
+                    'The mail was successfully sent to ' + $totalRecipients + ' people in ' + count($recipientGroups) + ' groups!'
                 );
 
                 $this->redirect()->toRoute(
