@@ -102,7 +102,7 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
 
                 $this->flashMessenger()->success(
                     'Success',
-                    'The mail was successfully sent to ' + $totalRecipients + ' people in ' + count($recipientGroups) + ' groups!'
+                    'The mail was successfully sent to ' . $totalRecipients . ' people in ' . count($recipientGroups) . ' groups!'
                 );
 
                 $this->redirect()->toRoute(
