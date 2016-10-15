@@ -56,42 +56,48 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('mail.bakske_mail_name');
 
-                $part = new Part($edition->getHtml());
-                $part->type = Mime::TYPE_HTML;
-                $message = new MimeMessage();
-                $message->addPart($part);
-
-                $mail = new Message();
-                $mail->setEncoding('UTF-8')
-                    ->setBody($message)
-                    ->setFrom($mailAddress, $mailName)
-                    ->setSubject($formData['subject']);
-
-                $recipients = $this->getEntityManager()
+                $recipientGroups = $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
                     ->findAllBakskeByAcademicYear($this->getCurrentAcademicYear());
+                $totalRecipients = count($recipientGroups);
 
-                $mail->addTo($mailAddress, $mailName);
+                $recipientGroups = array_chunk($recipientGroups, 1000);
 
-                if ($formData['test']) {
-                    $mailAddress = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('system_administrator_mail');
+                foreach ($recipientGroups as $recipients) {
 
-                    $mail->addTo($mailAddress, 'System Administrator');
-                } else {
-                    foreach ($recipients as $recipient) {
-                        $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
+                    $part = new Part($edition->getHtml());
+                    $part->type = Mime::TYPE_HTML;
+                    $message = new MimeMessage();
+                    $message->addPart($part);
+
+                    $mail = new Message();
+                    $mail->setEncoding('UTF-8')
+                        ->setBody($message)
+                        ->setFrom($mailAddress, $mailName)
+                        ->setSubject($formData['subject']);
+
+                    $mail->addTo($mailAddress, $mailName);
+
+                    if ($formData['test']) {
+                        $mailAddress = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('system_administrator_mail');
+
+                        $mail->addTo($mailAddress, 'System Administrator');
+                    } else {
+                        foreach ($recipients as $recipient) {
+                            $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
+                        }
                     }
-                }
 
-                if ('development' != getenv('APPLICATION_ENV')) {
-                    $this->getMailTransport()->send($mail);
+                    if ('development' != getenv('APPLICATION_ENV')) {
+                        $this->getMailTransport()->send($mail);
+                    }
                 }
 
                 $this->flashMessenger()->success(
                     'Success',
-                    'The mail was successfully sent!'
+                    'The mail was successfully sent to ' + $totalRecipients + ' people! '
                 );
 
                 $this->redirect()->toRoute(
