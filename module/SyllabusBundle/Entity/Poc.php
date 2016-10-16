@@ -45,7 +45,7 @@ class Poc
      */
      private $groupId;
   
-   /**
+	/**
      * @var AcademicYear The year of the mapping
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\AcademicYear")
@@ -53,7 +53,7 @@ class Poc
      */
     private $academicYear;
 
-  /**
+	/**
      * @var Academic The person of the metadata
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
@@ -150,6 +150,8 @@ class Poc
 
         return $this;
     }
+    
+    
     
    
    

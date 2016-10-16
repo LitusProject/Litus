@@ -19,6 +19,7 @@
 namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
+	SyllabusBundle\Entity\Poc,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
@@ -227,4 +228,18 @@ class Group
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findNbStudentsByGroupAndAcademicYear($this, $academicYear);
     }
+    
+    /**
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
+    public function getNbOfPocers(AcademicYear $academicYear)
+    {
+		
+        return $this->entityManager
+            ->getRepository('SyllabusBundle\Entity\Poc')
+            ->getNbOfPocersFromGroupEntity($this, $academicYear);
+    }
+    
+    
 }

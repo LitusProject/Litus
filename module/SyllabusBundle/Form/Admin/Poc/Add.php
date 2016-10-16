@@ -19,6 +19,7 @@
 namespace SyllabusBundle\Form\Admin\Poc;
 
 use SyllabusBundle\Entity\Poc,
+	 SyllabusBundle\Entity\Group,
 	SyllabusBundle\Repository\Group as GroupRepository;
 
 
@@ -34,7 +35,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var Group|null
      */
-    protected $poc = null;
+    protected $pocgroup = null;
 	
     public function init()
     {	
@@ -58,52 +59,36 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ),
             ),
         ));
-
-		$this->add(array(
-            'type'       => 'select',
-            'name'       => 'poc_group',
-            'label'      => 'Poc Group',
-            'required'   => true,
-            'attributes' => array(
-                'options'   => $this->createPocsArray(),
-                
-                ),
-            )
-        );	
-  
-      
+        
+        
+    
         $this->addSubmit('Add', 'user_add');
     }
 
     /**
-     * @param  Poc $poc
+     * @param  Group $pocGroup
      * @return self
      */
-    public function setPoc(Poc $poc)
+    public function setPocgroup(Group $pocgroup)
     {
-        $this->poc = $poc;
+        $this->pocgroup = $pocgroup;
 
         return $this;
     }
     
-       /**
-     * Returns an array that has all the Poc groups, so that they are available in the
-     * poc group multiselect.
-     *
-     * @return array
+    /**
+     * @return poc
      */
-    protected function createPocsArray($system = false)
+    public function getPocgroup(Group $pocgroup)
     {
-        $pocGroups = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Group')
-            ->findAllPocGroupsQuery()->getResult();
 
-        $pocGroupArray = array();
-        foreach ($pocGroups as $pocGroup) {
-            $pocGroupArray[$pocGroup->getName()] = $pocGroup->getName();
-        }
-
-        return $pocGroupArray;
+        return $this->pocgroup;
     }
+    
+   
+    
+    
+
+ 
     
 }

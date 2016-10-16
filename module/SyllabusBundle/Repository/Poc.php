@@ -136,6 +136,29 @@ class Poc extends EntityRepository
         return $resultSet;
     }
     
+     /**
+     * @param  GroupEntity  $group
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
+	  public function getNbOfPocersFromGroupEntity(GroupEntity $group, AcademicYear $academicYear)
+      {	
+	    $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select($query->expr()->count('p'))
+            ->from('SyllabusBundle\Entity\poc', 'p')
+            ->where(
+                $query->expr()->andX(
+                $query->expr()->eq('p.groupId', ':group'),
+                $query->expr()->eq('p.academicYear', ':academicYear')
+	)
+            )
+            ->setParameter('group',$group)
+            ->setParameter('academicYear', $academicYear)
+            ->getQuery()
+            ->getSingleScalarResult();
+       return $resultSet;
+      }
+    
     
     
     

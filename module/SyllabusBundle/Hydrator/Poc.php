@@ -22,7 +22,7 @@ use SyllabusBundle\Entity\Poc as PocEntity;
 
 class Poc extends \CommonBundle\Component\Hydrator\Hydrator
 {
-
+	//notice that the group is not hydrated here, the group will be set in the poccontroller.
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
@@ -30,7 +30,8 @@ class Poc extends \CommonBundle\Component\Hydrator\Hydrator
         }
         
 		
-		$object->setGroupId($this->dataToGroup(($data['poc_group'])));
+		
+		//$object->setGroupId($this->dataToGroup(($data['pocgroup'])));
 		
 		$object -> setAcademic($this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
@@ -39,8 +40,18 @@ class Poc extends \CommonBundle\Component\Hydrator\Hydrator
     }
 
     protected function doExtract($object = null)
-    {
-		return array();
+    {	/**
+		if (null === $object) {
+            return array();
+        }
+        
+        $data['poc_group'] = $object->getGroupId()->getName();
+        $data['person']['id'] = $object->getAcademic()->getId();
+        $data['person']['name'] = $object->getAcademic()->getFullName();
+
+
+        return $data;
+		*/
     }
     protected function dataToGroup($groupData) {
 		return $this->getEntityManager()
