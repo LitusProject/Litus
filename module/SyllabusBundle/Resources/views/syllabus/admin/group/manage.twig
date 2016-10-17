@@ -34,7 +34,8 @@
                 <tr class="item item-{{ group.getId() }}">
                     <td>{{ group.getName() }}</td>
                     <td>{% if group.getCvBook() %}&times;{% endif %}</td>
-                    <td>{% if group.getPocGroup() %}&times;{% endif %}</td>
+                     <td>{% if group.getIsPocGroup(currentAcademicYear) %}&times;{% endif %}</td>
+
                     <td>{{ group.getNbStudents(currentAcademicYear) }}</td>
                     <td class="actions">
                         {% if hasAccess('syllabus_admin_group', 'edit') %}

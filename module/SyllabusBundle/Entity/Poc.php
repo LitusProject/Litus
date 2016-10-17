@@ -61,12 +61,18 @@ class Poc
      */
     private $academic;
 
+	/**
+     * @var boolean whether or not this is just an indicator that there exists a poc group with this group this academic year
+	 * @ORM\Column(name="indicator", type="boolean",options={"default" : 0})
+	 */ 
+	private $indicator;
 	
 	
 	
 	
     public function __construct()
     {
+		$this->indicator=false;
     }
 
     /**
@@ -132,6 +138,24 @@ class Poc
         return $this;
     }
     
+     /**
+     * @return boolean
+     */
+    public function getIndicator()
+    {
+        return $this->indicator;
+    }
+    
+    /**
+     * @param $group
+     * @return self
+     */
+    public function setIndicator($indicator)
+     {
+		 $this->indicator = $indicator;
+        return $this;
+    }
+    
     
     
     /**
@@ -150,6 +174,8 @@ class Poc
 
         return $this;
     }
+    
+   
     
     
     

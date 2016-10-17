@@ -52,12 +52,7 @@ class Group
      */
     private $cvBook;
     
-    /**
-     * @var boolean Whether to us this group as a POC group or not
-     * 
-     * @ORM\Column(name="poc_group", type="boolean",nullable = true)
-     */
-    private $pocGroup;
+    
     
 
     /**
@@ -138,27 +133,7 @@ class Group
         return $this;
     }
     
-     /**
-     * @return boolean
-     */
-    public function getPocGroup()
-    {
-        return $this->pocGroup;
-    }
-
-    /**
-     * @param  boolean $pocGroup
-     * @return self
-     */
-    public function setPocGroup($pocGroup)
-    {
-        $this->pocGroup = $pocGroup;
-
-        return $this;
-    }
-    
-    
-
+  
     /**
      * @return self
      */
@@ -240,6 +215,18 @@ class Group
             ->getRepository('SyllabusBundle\Entity\Poc')
             ->getNbOfPocersFromGroupEntity($this, $academicYear);
     }
+    
+    /**
+     *returns boolean
+     */
+     public function getIsPocGroup(AcademicYear $academicYear)
+     {		
+		 return $this->entityManager
+		 ->getRepository('SyllabusBundle\Entity\Poc')
+         ->getIsPocGroup($this, $academicYear);
+		 
+	 }
+		 
     
     
 }

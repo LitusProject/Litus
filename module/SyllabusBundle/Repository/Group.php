@@ -107,27 +107,19 @@ class Group extends EntityRepository
      /**
      * @return \Doctrine\ORM\Query
      */
-	public function findAllPocGroupsQuery()
+	public function findAllPocGroupsByAcademicYear(AcademicYear $AcademicYear)
      {
 	    $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('g')
             ->from('SyllabusBundle\Entity\Group', 'g')
             ->where(
-                $query->expr()->eq('g.removed', 'false'),
-                $query->expr()->eq('g.pocGroup', 'true')
+                $query->expr()->eq('p.academicYear', ':academicYear'),
+                $query->expr()->eq('p.indicator', 'true')
             )
-            ->orderBy('g.name', 'ASC')
+            ->setParameter('academicYear', $academicYear)
+            ->innerJoin('p.groupId','g')
+            ->orderBy('g.name','ASC')
             ->getQuery();
-		
-       return $resultSet;
-      }
-     
-      
-      
-      
-
-      
-
-
-    
+        return $resultSet;
+      }    
 }

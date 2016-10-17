@@ -39,20 +39,16 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel();
         }
 
+		$pocsWithIndicator = $this->getEntityManager()
+                ->getRepository('SyllabusBundle\Entity\Poc')
+                ->findAllPocsWithIndicatorByAcademicYear($academicYear);
+        $groups = array();
+        foreach($pocsWithIndicator as $poc) {
+			$poc->getGroupId()->setEntityManager($this->getEntityManager());
+			$groups[]=$poc->getGroupId();
+        }
+		
       
-        $pocgroups = $this->getEntityManager()
-                ->getRepository('SyllabusBundle\Entity\Group')
-                ->findAllPocGroupsQuery();
-            
-       
-       
-        $paginator = $this->paginator()->createFromQuery(
-            $pocgroups,
-            $this->getParam('page')
-        );
-        foreach ($paginator as $group) {
-            $group->setEntityManager($this->getEntityManager());
-        }
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -63,62 +59,11 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 				
                 'academicYears' => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'groups' => $groups,
             )
         );
     }
 
-    public function addAction()
-    {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
-            return new ViewModel();
-        }
-        $form = $this->getForm('syllabus_poc_add');
-
-        if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()->getPost());
-
-            if ($form->isValid()) {
-               
-				
-				$poc = $form->hydrateObject();
-                $poc->setAcademicYear($academicYear);
-
-                $this->getEntityManager()->persist($poc);
-
-
-                $this->getEntityManager()->flush();
-				
-                $this->flashMessenger()->success(
-                    'Succes',
-                    'The poc was successfully added!'
-                );
-
-                $this->redirect()->toRoute(
-                    'syllabus_admin_poc',
-                    array(
-                        'action' => 'manage',
-                        'academicyear' => $academicYear->getCode(),
-                    )
-                );
-
-                return new ViewModel();
-            }
-        }
-
-        $academicYears = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findAll();
-
-        return new ViewModel(
-            array(
-                'academicYears' => $academicYears,
-                'currentAcademicYear' => $academicYear,
-                'form' => $form,
-            )
-        );
-    }
 
 
 	public function membersAction()
@@ -139,6 +84,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 				$poc = $form->hydrateObject();
                 $poc->setAcademicYear($academicYear);
 				$poc-> setGroupId($pocgroup);
+	
                 $this->getEntityManager()->persist($poc);
 
 
@@ -185,37 +131,17 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
-        
-		 $this->initAjax();
-		 /**
-		 $this->flashMessenger()->error(
-                'Error',
-                $academicYear->getId()
-            );
-            */
-		
+		 $this->initAjax();		
         if (!($pocgroup = $this->getGroupEntity())) {
             return new ViewModel();
         }
-
-		
-        
         $pocs = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
-            ->findPocersFromGroupAndAcademicYear($pocgroup,$academicYear);
-       
-       
-		
+            ->findPocersFromGroupAndAcademicYearWithIndicator($pocgroup,$academicYear);
         foreach($pocs as $poc) {
 			$this->getEntityManager()->remove($poc);
-		}
-	
-		
-		//TODO: uncheck poc group in group
-		$pocgroup->setPocGroup(0);
-	
+		}	
         $this->getEntityManager()->flush();
-
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
@@ -253,17 +179,14 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
                 'Error',
                 'No poc was found!'
             );
-
             $this->redirect()->toRoute(
                 'syllabus_admin_poc',
                 array(
                     'action' => 'manage',
                 )
             );
-
             return;
         }
-
         return $poc;
     }
 

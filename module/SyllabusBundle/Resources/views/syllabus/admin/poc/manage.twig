@@ -28,7 +28,7 @@
                 <th width="70px">Actions</th>
             </tr>
 
-            {% for pocgroup in paginator %}
+            {% for pocgroup in groups %}
                 <tr class="item item-{{ pocgroup.getId() }}">
                     <td>{{ pocgroup.getName() }}</td>
                     <td>{{ pocgroup.getNbOfPocers(currentAcademicYear) }}</td>
@@ -56,8 +56,7 @@
                 </div>
                 <div class="modal-body">
                     <p>	
-						EXTREME WARNING:
-                        You are about to delete the following group as a pocgroup and remove all the membes: <b class="title"></b>!
+                        You are about to delete the following group as a pocgroup and remove all its members: <b class="title"></b>!
                         Please note that this operation cannot be undone!
                     </p>
                     <p>

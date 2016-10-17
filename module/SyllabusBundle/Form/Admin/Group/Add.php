@@ -33,6 +33,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @var Group|null
      */
     protected $group = null;
+    /**
+     * @bool isPocGroup|null
+     */
+	protected $isPocGroup = 0;
+	
 
     public function init()
     {
@@ -69,12 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label' => 'Show in CV Book',
         ));
         
-        $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'poc_group',
-            'label' => 'Is POC group ?',
-        ));
-        
+     
         
 
         $this->add(array(
@@ -119,6 +119,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function setGroup(Group $group)
     {
         $this->group = $group;
+
+        return $this;
+    }
+    
+    public function setIsPocGroup($isPocGroup){
+        $this->isPocGroup = $isPocGroup;
 
         return $this;
     }
