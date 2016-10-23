@@ -43,6 +43,11 @@
                                 <a href="{{ url("sport_run_screen", {"language": language.getAbbrev()}) }}">{{ translate('Screen') }}</a>
                             </li>
                         {% endif %}
+                        {% if hasAccess('sport_run_screen', 'index') or hasAccess('sport_run_screen_outside') %}
+                            <li {% if 'index' == getParam('action') and 'sport_run_screen' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("sport_run_screen_outside", {"language": language.getAbbrev()}) }}">{{ translate('Screen (Outside)') }}</a>
+                            </li>
+                        {% endif %}
                     </ul>
                     <ul class="nav navbar-nav pull-right lang-nav hidden-sm hidden-xs">
                         <li class="dropdown">

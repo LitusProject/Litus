@@ -91,6 +91,20 @@ return array(
                 ),
             ),
         ),
+        'sport_run_screen_outside' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/run/screenoutside[/:action][/]',
+                'constraints' => array(
+                    'language' => '[a-z]{2}',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'sport_run_screen_outside',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
@@ -100,5 +114,6 @@ return array(
         'sport_run_group'  => 'SportBundle\Controller\Run\GroupController',
         'sport_run_queue'  => 'SportBundle\Controller\Run\QueueController',
         'sport_run_screen' => 'SportBundle\Controller\Run\ScreenController',
+        'sport_run_screen_outside' => 'SportBundle\Controller\Run\ScreenOutsideController',
     ),
 );
