@@ -269,7 +269,6 @@
         var officialDataAvailable = $('#currentLapInfo').data('officialDataAvailable');
         if (officialDataAvailable) {
             $('#currentLapInfo .show-on-official-data').show();
-
         } else {
             $('#currentLapInfo .show-on-official-data').hide();
         }
@@ -283,6 +282,7 @@
             currentPosition = 1;
 
         lapTime++;
+        $('#currentLapInfo').data('lapTime', lapTime);
         $('#currentLapInfo .progress-bar').css('width', (currentPosition * 100) + '%');
     }
 </script>
