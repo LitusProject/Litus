@@ -25,7 +25,7 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
 class Group extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
-    {
+    {	
         if (null === $object) {
             throw new InvalidObjectException();
         }
@@ -92,7 +92,14 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
     }
 
     protected function doExtract($object = null)
-    {
-        return array();
+    
+    {	
+		if (null === $object) {
+            return array();
+        }
+        
+        $data = array();
+        $data['isSpeedyGroup'] = $object->getIsSpeedyGroup();
+        return $data;
     }
 }

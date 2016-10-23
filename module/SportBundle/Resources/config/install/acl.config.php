@@ -19,7 +19,7 @@
 return array(
     'sportbundle' => array(
         'sport_admin_run' => array(
-            'edit', 'editGroup', 'departments', 'groups', 'identification', 'killSocket', 'laps', 'queue', 'reward', 'runner', 'update', 'next', 'delete',
+            'edit', 'editGroup', 'departments', 'groups', 'identification', 'killSocket', 'laps', 'queue', 'reward', 'runner', 'update', 'next', 'delete','editSpeedygroup',
         ),
         'sport_run_group' => array(
             'add', 'getName',

@@ -76,6 +76,13 @@ class Group
      * @var EntityManager
      */
     private $entityManager;
+    
+     /**
+     * @var boolean Whether to use this group in the cv book or not.
+     *
+     * @ORM\Column(name="is_speedy_group", type="boolean",nullable=true)
+     */
+    private $isSpeedyGroup;
 
     /**
      * @param AcademicYear $academicYear
@@ -84,6 +91,7 @@ class Group
     {
         $this->academicYear = $academicYear;
         $this->members = new ArrayCollection();
+        $this->isSpeedyGroup = 0;
     }
 
     /**
@@ -128,12 +136,31 @@ class Group
     {
         return $this->members->toArray();
     }
+    
+    /**
+     * @rparam boolean $isSpeedyGroup
+     * @return self
+     */
+     public function setIsSpeedyGroup($isSpeedyGroup) {
+        $this -> isSpeedyGroup = $isSpeedyGroup;
+        return $this;
+    }
+    
+    /**
+     * @return boolean
+     */
+    public function getIsSpeedyGroup()
+    {
+        return $this->isSpeedyGroup;
+    }
+    
+    
 
     /**
      * @return array
      */
     public function getHappyHours()
-    {
+    {	
         return unserialize($this->happyHours);
     }
 
@@ -166,7 +193,8 @@ class Group
      * @return integer
      */
     public function getPoints(AcademicYear $academicYear)
-    {
+    {	
+		
         $points = 0;
         foreach ($this->getMembers() as $member) {
             $member->setEntityManager($this->entityManager);
@@ -182,16 +210,38 @@ class Group
                 $endTime = $lap->getEndTime()->format('H');
 
                 $points += $lap->getPoints();
-
+				
                 $happyHours = $this->getHappyHours();
                 for ($i = 0; isset($happyHours[$i]); $i++) {
                     if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
                         $points += $lap->getPoints();
+                         if ($this -> getIsSpeedyGroup() && $this->isNightShift($happyHours[$i])){
+								$points += $lap->getPoints();
+						}
+							 
                     }
+                   
                 }
             }
         }
 
         return $points;
     }
+    
+    public function isNightShift($happyHour){
+		if ($happyHour === "0204"){
+			return true;
+		}
+		if ($happyHour==="0406"){
+			return true;
+		}
+		if ($happyHour==="0608"){
+			return true;
+		}
+		
+		return false;
+		
+    }
+    
+    
 }
