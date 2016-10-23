@@ -32,7 +32,11 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
     {
         $paginator = $this->paginator()->createFromDocument(
             'OnBundle\Document\Slug',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(),
+            array(
+                'name' => 'ASC',
+            )
         );
 
         return new ViewModel(

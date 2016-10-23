@@ -16,22 +16,16 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'shiftbundle' => array(
-        'shift_admin_shift' => array(
-            'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search',
-        ),
-        'shift_admin_shift_counter' => array(
-            'delete', 'export', 'index', 'payed', 'payout', 'search', 'units', 'view',
-        ),
-        'shift_admin_shift_ranking' => array(
-            'index',
-        ),
-        'shift_admin_shift_subscription' => array(
-            'manage', 'delete', 'superdelete',
-        ),
-        'shift' => array(
-            'export', 'history', 'index', 'responsible', 'signOut', 'volunteer',
-        ),
-    ),
-);
+namespace SportBundle\Controller\Run;
+
+use Zend\View\Model\ViewModel;
+
+/**
+ * ScreenController
+ *
+ * @author Pieter Maene <pieter.maene@litus.cc>
+ */
+class ScreenOutsideController extends ScreenController
+{
+
+}

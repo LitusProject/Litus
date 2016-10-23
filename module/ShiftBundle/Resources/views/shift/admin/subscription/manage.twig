@@ -41,7 +41,7 @@
                     <td>{{ responsible.getPerson().getFullName() }}</td>
                     <td>&times;</td>
                     <td class="actions">
-                        {% if shift.canBeEditedBy(authenticatedPerson) %}
+                        {% if shift.canBeEditedBy(authenticatedPerson) or hasAccess('shift_admin_shift_subscription', 'superdelete') %}
                             {% if hasAccess('shift_admin_shift_subscription', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ responsible.getId() }}" data-type="responsible" data-name="{{ responsible.getPerson().getFullName() }}">Delete</a>
                             {% endif %}
@@ -55,7 +55,7 @@
                     <td>{{ volunteer.getPerson().getFullName() }}</td>
                     <td></td>
                     <td class="actions">
-                        {% if shift.canBeEditedBy(authenticatedPerson) %}
+                        {% if shift.canBeEditedBy(authenticatedPerson) or hasAccess('shift_admin_shift_subscription', 'superdelete') %}
                             {% if hasAccess('shift_admin_shift_subscription', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ volunteer.getId() }}" data-type="volunteer" data-name="{{ volunteer.getPerson().getFullName() }}">Delete</a>
                             {% endif %}

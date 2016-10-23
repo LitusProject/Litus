@@ -77,8 +77,8 @@
             viewArticle.find('.title').html($(this).data('title'));
             viewArticle.find('.authors').html($(this).data('authors'));
             viewArticle.find('.barcode').html($(this).data('barcode'));
-            viewArticle.find('.purchasePrice').html('&euro; ' + $(this).data('purchaseprice').toFixed(2));
-            viewArticle.find('.sellPrice').html('&euro; ' + $(this).data('sellprice').toFixed(2));
+            viewArticle.find('.purchasePrice').html('&euro; ' + parseInt($(this).data('purchaseprice')).toFixed(2));
+            viewArticle.find('.sellPrice').html('&euro; ' + parseInt($(this).data('sellprice')).toFixed(2));
             viewArticle.find('.bookable').html($(this).data('bookable') ? 'Yes' : 'No');
             viewArticle.find('.unbookable').html($(this).data('unbookable') ? 'Yes' : 'No');
             viewArticle.find('.canExpire').html($(this).data('canexpire') ? 'Yes' : 'No');

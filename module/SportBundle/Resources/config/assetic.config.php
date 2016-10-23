@@ -62,6 +62,15 @@ return array(
             '@run_js',
             '@common_socket',
         ),
+        'sport_run_screen_outside' => array(
+            '@common_jquery',
+            '@bootstrap_css',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_alert',
+            '@run_css',
+            '@run_js',
+            '@common_socket',
+        ),
     ),
 
     'collections' => array(

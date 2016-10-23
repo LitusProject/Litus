@@ -22,6 +22,7 @@ use CommonBundle\Component\Controller\Exception\RuntimeException,
     CudiBundle\Entity\Sale\Article as SaleArticle,
     CudiBundle\Entity\Sale\Article\Restriction,
     CudiBundle\Entity\Sale\Article\Restriction\Amount as AmountRestriction,
+    CudiBundle\Entity\Sale\Article\Restriction\Available as AvailableRestriction,
     CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction,
     CudiBundle\Entity\Sale\Article\Restriction\Study as StudyRestriction,
     Zend\View\Model\ViewModel;
@@ -49,6 +50,8 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 
                 if ('amount' == $formData['type']) {
                     $restriction = new AmountRestriction($article, $formData['value']['amount']);
+                } elseif ('available' == $formData['type']) {
+                    $restriction = new AvailableRestriction($article);
                 } elseif ('member' == $formData['type']) {
                     $restriction = new MemberRestriction($article, isset($formData['value']['member']) && $formData['value']['member']);
                 } elseif ('study' == $formData['type']) {

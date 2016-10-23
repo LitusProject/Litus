@@ -16,22 +16,26 @@
  * @license http://litus.cc/LICENSE
  */
 
-return array(
-    'shiftbundle' => array(
-        'shift_admin_shift' => array(
-            'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search',
-        ),
-        'shift_admin_shift_counter' => array(
-            'delete', 'export', 'index', 'payed', 'payout', 'search', 'units', 'view',
-        ),
-        'shift_admin_shift_ranking' => array(
-            'index',
-        ),
-        'shift_admin_shift_subscription' => array(
-            'manage', 'delete', 'superdelete',
-        ),
-        'shift' => array(
-            'export', 'history', 'index', 'responsible', 'signOut', 'volunteer',
-        ),
-    ),
-);
+namespace CommonBundle\Component\Form\Bootstrap\Note;
+
+use CommonBundle\Component\Form\ElementTrait;
+
+/**
+ * Submit form element
+ *
+ * @author Kristof Mariën <kristof.marien@litus.cc>
+ */
+class Note extends \Zend\Form\Element implements \CommonBundle\Component\Form\ElementInterface
+{
+    use ElementTrait;
+
+    public function init()
+    {
+        $this->addClass('form-control');
+        $this->setLabelAttributes(
+            array(
+                'class' => 'col-sm-2 control-label',
+            )
+        );
+    }
+}

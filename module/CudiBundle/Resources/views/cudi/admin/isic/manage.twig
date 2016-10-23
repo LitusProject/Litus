@@ -1,0 +1,256 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width card_remove_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The ISIC Card was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width card_remove_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the ISIC Card.</p>
+        </div>
+    </div>
+
+    <div class="flashmessage success_message full_width card_assign_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The ISIC Card was successfully assigned!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width card_assign_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to assign the ISIC Card.</p>
+        </div>
+    </div>
+
+    <div class="flashmessage success_message full_width card_unassign_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The ISIC Card was successfully unassigned!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width card_unassign_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to unassign the ISIC Card.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <div id="default_page">
+            <table class="full_width manage">
+                <tr>
+                    <th>Card Number</th>
+                    <th width="200px">Owner</th>
+                    <th width="200px">Booking Status</th>
+                    <th width="100px">Year</th>
+                    <th width="70px">Action</th>
+                </tr>
+
+                {% for card in paginator %}
+                    <tr class="item item-{{ card.getId() }}">
+                        <td>{{ card.getCardNumber() }}</td>
+                        <td>{{ card.getPerson().getFullName() }}</td>
+                        <td>{{ card.getBooking().getStatus() }}</td>
+                        <td>{{ card.getAcademicYear().getStartDate().format('Y') }} - {{ card.getAcademicYear().getEndDate().format('Y') }}</td>
+                        <td class="actions">
+                            {% if hasAccess('cudi_admin_isic', 'assign') %}
+                                {% if card.getBooking().getStatus == 'booked' %}
+                                    <a href="#" class="add" data-id="{{ card.getId() }}" data-name="{{ card.getPerson().getFullName() }}">Assign</a>
+                                {% elseif card.getBooking().getStatus == 'assigned' %}
+                                    <a href="#" class="unassign" data-id="{{ card.getId() }}" data-name="{{ card.getPerson().getFullName() }}">Unassign</a>
+                                {% endif %}
+                            {% endif %}
+
+                            {% if hasAccess('cudi_admin_isic', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ card.getId() }}" data-name="{{ card.getPerson().getFullName() }}">Delete</a>
+                            {% endif %}
+
+                            {% if hasAccess('cudi_admin_sales_booking', 'edit') %}
+                                <a href="{{ url('cudi_admin_sales_booking', {'action': 'edit', 'id': card.getBooking.getId()}) }}" class="edit">Edit Booking</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="removeCard" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete ISIC Card
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following person's ISIC card: <b class="personName"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="assignCard" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Assign ISIC Card
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to assign the following person's ISIC card: <b class="personName"></b>!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="assign">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="unassignCard" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Unassign ISIC Card
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to unassign the following person's ISIC card: <b class="personName"></b>!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="unassign">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModalDelete);
+            $('.item .add').click(openModalAssign);
+            $('.item .unassign').click(openModalUnassign);
+        });
+
+        function openModalDelete(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeCard = $('#removeCard');
+            removeCard.find('.personName').html($(this).data('name'));
+            removeCard.find('.cancel').one('click', function () {
+                removeCard.modal('hide');
+            });
+            var id = $this.data('id');
+            removeCard.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('cudi_admin_isic', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.card_remove_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeCard.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeCard.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.card_remove_error').removeClass('hide');
+            $('#removeCard').modal('hide');
+        }
+
+        function openModalAssign(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var assignCard = $('#assignCard');
+            assignCard.find('.personName').html($(this).data('name'));
+            assignCard.find('.cancel').one('click', function () {
+                assignCard.modal('hide');
+            });
+            var id = $this.data('id');
+            assignCard.find('.assign').unbind('click').click(function () {
+                $.post('{{ url('cudi_admin_isic', {"action": "assign"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.card_assign_success').removeClass('hide');
+                        $('.item-' + id + ' td:eq(2)').text('assigned');
+                        assignCard.modal('hide');
+                    } else {
+                        errorAssign();
+                    }
+                }, 'json').error(errorAssign);
+            });
+            assignCard.modal();
+        }
+
+        function errorAssign() {
+            $('.flashmessage').addClass('hide');
+            $('.card_assign_error').removeClass('hide');
+            $('#assignCard').modal('hide');
+        }
+
+        function openModalUnassign(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var unassignCard = $('#unassignCard');
+            unassignCard.find('.personName').html($(this).data('name'));
+            unassignCard.find('.cancel').one('click', function () {
+                unassignCard.modal('hide');
+            });
+            var id = $this.data('id');
+            unassignCard.find('.unassign').unbind('click').click(function () {
+                $.post('{{ url('cudi_admin_isic', {"action": "unassign"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.card_unassign_success').removeClass('hide');
+                        $('.item-' + id + ' td:eq(2)').text('booked');
+                        unassignCard.modal('hide');
+                    } else {
+                        errorUnassign();
+                    }
+                }, 'json').error(errorUnassign);
+            });
+            unassignCard.modal();
+        }
+
+        function errorUnassign() {
+            $('.flashmessage').addClass('hide');
+            $('.card_unassign_error').removeClass('hide');
+            $('#unassignCard').modal('hide');
+        }
+    </script>
+{% endblock %}

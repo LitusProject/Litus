@@ -33,5 +33,8 @@ return array(
         'sport_run_screen' => array(
             'index',
         ),
+        'sport_run_screen_outside' => array(
+            'index',
+        ),
     ),
 );
