@@ -150,7 +150,7 @@ class Group
      * @return boolean
      */
     public function getIsSpeedyGroup()
-    {
+    {	
         return $this->isSpeedyGroup;
     }
     

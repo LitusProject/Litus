@@ -84,7 +84,6 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
 
         foreach ($paginator as $group) {
-			$this->testFunction($group);
             $group->setEntityManager($this->getEntityManager());
             
         }
@@ -103,7 +102,6 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
-        echo($group->getName());
 		
         $form = $this->getForm('sport_group_editspeedygroup', array('group' => $group));
         $form->setGroup($group);
@@ -513,17 +511,5 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
         return $group;
     }
-    public function testFunction($group){
-		 echo('testing group: ' .$group->getName());
-         $happyHours = $group->getHappyHours();
-                for ($i = 0; isset($happyHours[$i]); $i++) {
-                         if ($group -> getIsSpeedyGroup() && $group->isNightShift($happyHours[$i])){
-								echo('JA');
-						}
-						else{
-								echo('NEE');
-						}		 
-                    }
-                   
-    }
+
 }
