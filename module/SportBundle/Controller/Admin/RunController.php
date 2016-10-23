@@ -84,9 +84,11 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         );
 
         foreach ($paginator as $group) {
+			$this->testFunction($group);
             $group->setEntityManager($this->getEntityManager());
+            
         }
-
+		
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -95,15 +97,54 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             )
         );
     }
+	
+	public function editSpeedyGroupAction()
+	{	
+        if (!($group = $this->getGroupEntity())) {
+            return new ViewModel();
+        }
+        echo($group->getName());
+		
+        $form = $this->getForm('sport_group_editspeedygroup', array('group' => $group));
+        $form->setGroup($group);
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+            if ($form->isValid()) {
+                $formData = $form->getData();
+				$group->setIsSpeedyGroup($formData['isSpeedyGroup']);
+                $this->getEntityManager()->flush();
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The group was successfully edited!'
+                );
 
+                $this->redirect()->toRoute(
+                    'sport_admin_run',
+                    array(
+                        'action' => 'groups',
+                    )
+                );	
+                return new ViewModel();
+            }
+        }
+         return new ViewModel(
+            array(
+                'form' => $form,
+                'group' => $group,
+            )
+        );
+        }
+        
+	
     public function editGroupAction()
-    {
+    {	
         if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
 
-        $form = $this->getForm('sport_group_edit');
 
+        $form = $this->getForm('sport_group_edit');
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
@@ -114,7 +155,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                 $academic = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findOneById($formData['person']['id']);
-
+		
                 $repositoryCheck = $this->getEntityManager()
                     ->getRepository('SportBundle\Entity\Runner')
                     ->findOneByUniversityIdentification($academic->getUniversityIdentification());
@@ -471,5 +512,18 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         }
 
         return $group;
+    }
+    public function testFunction($group){
+		 echo('testing group: ' .$group->getName());
+         $happyHours = $group->getHappyHours();
+                for ($i = 0; isset($happyHours[$i]); $i++) {
+                         if ($group -> getIsSpeedyGroup() && $group->isNightShift($happyHours[$i])){
+								echo('JA');
+						}
+						else{
+								echo('NEE');
+						}		 
+                    }
+                   
     }
 }
