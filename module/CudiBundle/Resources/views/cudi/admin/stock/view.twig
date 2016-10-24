@@ -87,4 +87,34 @@
             </tr>
         </table>
     </div>
+
+    <aside>
+        {% if hasAccess('cudi_admin_sales_article', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Edit Sale Article</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the sale article for this!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('cudi_admin_sales_article', {"action": "edit", "id": article.getId()}) }}">&rarr; Edit Sale Article</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('cudi_admin_article', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Edit Article</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the common information of this article!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('cudi_admin_article', {"action": "edit", "id": article.getMainArticle().getId()}) }}">&rarr; Edit Article</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
 {% endblock %}

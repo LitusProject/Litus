@@ -53,9 +53,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     public function init()
-    {
+    {	
         parent::init();
-
         $this->add(array(
             'type' => 'fieldset',
             'name' => 'group_information',

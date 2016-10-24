@@ -28,7 +28,7 @@ return array(
             'index',
         ),
         'shift_admin_shift_subscription' => array(
-            'manage', 'delete',
+            'manage', 'delete', 'superdelete',
         ),
         'shift' => array(
             'export', 'history', 'index', 'responsible', 'signOut', 'volunteer',

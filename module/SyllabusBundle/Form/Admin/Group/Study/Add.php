@@ -41,7 +41,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required'   => true,
             'attributes' => array(
                 'multiple' => true,
-                'style'    => 'max-width: 100%;',
+                'style'    => 'max-width: 100%;height: 600px;',
                 'options'  => $this->getStudyNames(),
             ),
             'options'    => array(
