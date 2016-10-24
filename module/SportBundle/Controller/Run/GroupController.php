@@ -29,9 +29,9 @@ use SportBundle\Entity\Group,
 class GroupController extends \SportBundle\Component\Controller\RunController
 {
     /**
-	 * @param integer $startTime
-	 * @return array
-	 */
+     * @param  integer $startTime
+     * @return array
+     */
     private function generateHappyHours($startTime)
     {
         $optionsArray = array();
@@ -76,7 +76,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
         }
         $returnArray = array();
         foreach ($optionsArray as $key => $value) {
-            if ($countArray[$key] < 3) {
+            if ($countArray[$key] < 4) {
                 $returnArray[$key] = $value;
             }
         }
