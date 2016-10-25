@@ -1,0 +1,76 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>{{ translate('POC') }}</h1>
+    </div>
+    {# UNCOMMENT TO SHOW PERSONAL POCERS 
+	<h2> uw pocers </h2>
+	{% if isLoggedIn == true %}
+	{% for pocStuff in personalPocItem%}
+		 <h3>{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small>{% endif %}</h3>
+		 <div class="row">
+		 {% for  poc in pocStuff['pocGroupList'] %}
+                <div class="col-xs-6 col-md-3">
+                    <div class="thumbnail" style="height: 250px; text-align: center">
+                        {% if poc.getAcademic().getPhotoPath() %}
+                            <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/180x135/auto/text:Image) no-repeat; width: 180px; height: 135px;" alt="">
+                        {% else %}
+                            <img data-src="holder.js/180x135/auto/text:Image" alt="">
+                        {% endif %}
+                        <h4>{{ poc.getAcademic().getFullName() }}</h4> 
+                    </div>
+                </div>
+             {% endfor %}
+          </div>
+        {% endfor %}
+	{% endif %}
+	#}
+    <div class="navbar navbar-default"  role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#academicYearSubNav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="academicYearSubNav">
+                <ul class="nav navbar-nav">
+                    {% for academicYear in academicYears %}
+                        <li {% if academicYear.getCode() == activeAcademicYear.getCode() %}class="active"{% endif %}><a href="{{ url('common_poc', {'academicyear': academicYear.getCode()}) }}">{{ academicYear.getCode() }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% for pocStuff in pocItem%}
+		 <h3>{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small>{% endif %}</h3>
+		 <div class="row">
+		 {% for  poc in pocStuff['pocGroupList'] %}
+                <div class="col-xs-6 col-md-3">
+                    <div class="thumbnail" style="height: 250px; text-align: center">
+                        {% if poc.getAcademic().getPhotoPath() %}
+                            <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/180x135/auto/text:Image) no-repeat; width: 180px; height: 135px;" alt="">
+                        {% else %}
+                            <img data-src="holder.js/180x135/auto/text:Image" alt="">
+                        {% endif %}
+                        <h4>{{ poc.getAcademic().getFullName() }}</h4> 
+                    </div>
+                </div>
+             {% endfor %}
+          </div>
+        {% endfor %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.profileImagePreloaded').each(function () {
+                $(this).attr('src', $(this).data('url'));
+            });
+        });
+    </script>
+{% endblock %}

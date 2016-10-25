@@ -19,6 +19,7 @@
 namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
+	SyllabusBundle\Entity\Poc,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
 
@@ -50,6 +51,9 @@ class Group
      * @ORM\Column(name="cv_book", type="boolean")
      */
     private $cvBook;
+    
+    
+    
 
     /**
      * @var boolean Whether this group is removed or not
@@ -117,6 +121,7 @@ class Group
         return $this->cvBook;
     }
 
+
     /**
      * @param  boolean $cvBook
      * @return self
@@ -127,7 +132,8 @@ class Group
 
         return $this;
     }
-
+    
+  
     /**
      * @return self
      */
@@ -197,4 +203,30 @@ class Group
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findNbStudentsByGroupAndAcademicYear($this, $academicYear);
     }
+    
+    /**
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
+    public function getNbOfPocers(AcademicYear $academicYear)
+    {
+		
+        return $this->entityManager
+            ->getRepository('SyllabusBundle\Entity\Poc')
+            ->getNbOfPocersFromGroupEntity($this, $academicYear);
+    }
+    
+    /**
+     *returns boolean
+     */
+     public function getIsPocGroup(AcademicYear $academicYear)
+     {		
+		 return $this->entityManager
+		 ->getRepository('SyllabusBundle\Entity\Poc')
+         ->getIsPocGroup($this, $academicYear);
+		 
+	 }
+		 
+    
+    
 }

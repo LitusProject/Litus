@@ -29,6 +29,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
         if (null === $object) {
             $object = new GroupEntity();
         }
+        
 
         $extraMembers = preg_split('/[,;\s]+/', $data['extra_members']);
         $excludedMembers = preg_split('/[,;\s]+/', $data['excluded_members']);
@@ -60,7 +61,9 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data['extra_members'] = implode(',', $extraMembers);
         $data['excluded_members'] = implode(',', $excludedMembers);
-
+		
+		//$data['poc_group'] = $object->getIsPocGroup($academicYear);
+		
         return $data;
     }
 }

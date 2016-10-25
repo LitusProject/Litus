@@ -66,6 +66,23 @@ return array(
                 ),
             ),
         ),
+        'syllabus_admin_poc' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/syllabus/poc[/:action[/:id][/page/:page][/:academicyear]][/]',
+                'constraints' => array(
+                    'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'           => '[0-9]*',
+                    'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    'page'         => '[0-9]+',
+                ),
+                'defaults' => array(
+                    'controller' => 'syllabus_admin_poc',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        
         'syllabus_admin_study' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -239,6 +256,7 @@ return array(
         'syllabus_admin_update'               => 'SyllabusBundle\Controller\Admin\UpdateController',
         'syllabus_admin_academic'             => 'SyllabusBundle\Controller\Admin\AcademicController',
         'syllabus_admin_group'                => 'SyllabusBundle\Controller\Admin\GroupController',
+		'syllabus_admin_poc'				  => 'SyllabusBundle\Controller\Admin\PocController',	
         'syllabus_admin_study'                => 'SyllabusBundle\Controller\Admin\StudyController',
         'syllabus_admin_study_module_group'   => 'SyllabusBundle\Controller\Admin\Study\ModuleGroupController',
         'syllabus_admin_subject'              => 'SyllabusBundle\Controller\Admin\SubjectController',
