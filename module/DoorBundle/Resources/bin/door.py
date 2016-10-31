@@ -73,7 +73,7 @@ def getRules():
         rules = pickle.load(cacheFile)
 
     cacheFile.close()
-
+#TODO use build in logger
 def log(message):
     line = '[' +  datetime.datetime.now().strftime(LOG_TIME_FORMAT) + '] ' + message
     try:
@@ -93,6 +93,7 @@ def openDoor():
     GPIO.output(GPIO_PORT, GPIO.LOW)
 
 # Main
+#TODO get this called each hour
 getRules()
 
 while True:
