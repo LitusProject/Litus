@@ -132,7 +132,7 @@ return array(
             '@bootstrap_js_popover',
         ),
         'common_index' => array(
-            '@bootstrap_css',
+			'@bootstrap_css',
             '@site_css',
             '@common_jquery',
             '@bootstrap_js_dropdown',
@@ -144,6 +144,8 @@ return array(
 
             '@bootstrap_js_tooltip',
             '@bootstrap_js_popover',
+            '@common_holder_js',
+
         ),
         'common_praesidium' => array(
             '@bootstrap_css',
@@ -156,6 +158,18 @@ return array(
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
 
+            '@common_holder_js',
+        ),
+        'common_poc' => array(
+            '@bootstrap_css',
+            '@site_css',
+            '@common_jquery',
+            '@bootstrap_js_dropdown',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@bootstrap_js_carousel',
+            '@bootstrap_js_collapse',
+            '@bootstrap_js_alert',
             '@common_holder_js',
         ),
         'common_privacy' => array(

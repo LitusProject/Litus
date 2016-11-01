@@ -20,6 +20,7 @@ namespace CommonBundle\Controller;
 
 use DateInterval,
     DateTime,
+    CommonBundle\Entity\User\Person\Academic as Academic,
     Zend\View\Model\ViewModel;
 
 /**
@@ -48,6 +49,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'piwik' => $this->getPiwikInfo(),
                 'sportInfo' => $this->getSportResults(),
                 'myShifts' => $this->getMyShifts(),
+                'myPocers' => $this->getMyPocers(),
+                'pocUrl' => $this->getPocUrl(),
             )
         );
     }
@@ -133,7 +136,18 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         return $bookings;
     }
-
+	/**
+     * @return string|null
+     */
+     private function getPocUrl()
+     {
+		
+        return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.pocUrl');
+	 }
+		  
+		  
     /**
      * @return array
      */
@@ -260,4 +274,84 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getConfigValue('wiki.url'),
         );
     }
+    
+     /**
+     * @return array
+     */
+    private function getMyPocers()
+    
+    {	
+		if (!($academic = $this->getAcademicEntity())) {
+				return array(
+            'enable' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.poc'),
+            'pocItem' => null,
+			);	
+		}
+		$currentAcademicYear = $this->getCurrentAcademicYear();
+		
+        $pocers =  $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Poc')
+            ->findPocersByAcademicAndAcademicYear($academic, $currentAcademicYear);
+        $lastPocGroup = null;
+        $pocGroupList = array();
+        $pocItem = array();
+		foreach ($pocers as $pocer){
+		
+			if ($lastPocGroup === null){
+				  $pocGroupList[] = $pocer;
+			}
+
+			elseif ($lastPocGroup === $pocer ->getGroupId()){
+				$pocGroupList[] = $pocer;
+			}
+			elseif ($lastPocGroup !== $pocer ->getGroupId()){
+				$pocItem[] = array(
+                    'groupId' => $lastPocGroup,
+                    'pocGroupList' => $pocGroupList,);
+                unset($pocGroupList);
+                $pocGroupList = array();
+                $pocGroupList[] = $pocer;
+                    
+			}
+			$lastPocGroup = $pocer->getGroupId();
+			
+		 }
+		 if (!empty($pocGroupList)){
+			 $pocItem[] = array(
+                    'groupId' => $lastPocGroup,
+                    'pocGroupList' => $pocGroupList,);
+			
+		}
+		return 
+			array(
+            'enable' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.poc'),
+            'pocItem' => $pocItem,
+			);	
+			}
+		
+	/**
+     * @return Academic|null
+     */
+    private function getAcademicEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return null;
+        }
+
+        $academic = $this->getAuthentication()->getPersonObject();
+
+        if (!($academic instanceof Academic)) {
+            return;
+        }
+
+        return $academic;
+    }
+		    
+        
+        
+    
 }

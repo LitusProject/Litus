@@ -77,13 +77,12 @@ class Config extends EntityRepository
      * @return string
      */
     public function getConfigValue($key)
-    {
+    {	
         $config = $this->find($key);
 
         if ($config === null) {
             throw new RuntimeException('Configuration entry ' . $key . ' not found');
         }
-
         return $config->getValue();
     }
 }
