@@ -9,9 +9,11 @@
 
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
-        {{ forms.renderForm(form) }}
-    </div>
 
+        {{ forms.renderForm(form) }}
+        
+    </div>
+   
     {% if hasAccess('syllabus_admin_group', 'studies') %}
         <aside>
             <div class="sidebox">

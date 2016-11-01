@@ -43,6 +43,14 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'syllabus_admin_poc' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@common_remote_typeahead',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'syllabus_admin_study' => array(
             '@common_jquery',
             '@admin_css',
