@@ -163,7 +163,6 @@ class Poc extends EntityRepository
             ->innerJoin('p.groupId','g')
             ->orderBy('g.name','ASC')
             ->getQuery();
-         echo('3');
         return $resultSet;
     }
     
