@@ -238,6 +238,9 @@
                     <div class="heading-spacer"></div>	
                     <div class="alert alert-warning">
                     {{translate('The POC\'ers are elected! You can find your POC\'ers here!')}}
+                    {{translate('Visit the poc page for more ')}}
+                    <a href={{pocUrl}}>info</a>
+
                     
 						 {% for pocStuff in myPocers.pocItem%}
 							<h3>{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small>{% endif %}</h3>
@@ -251,6 +254,7 @@
 									{% else %}
 									<img data-src="holder.js/180x135/auto/text:Image" alt="">
 								{% endif %}
+								<br>
 								<h4>{{ poc.getAcademic().getFullName() }}</h4> 
 								<h6>{{ poc.getAcademic().getUniversityEmail() }}</h6> 
 								</div>

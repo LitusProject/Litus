@@ -463,8 +463,14 @@ You can remove any installed cookies from your computer or mobile device at any 
     array(
         'key'         => 'common.poc',
         'value'       => '0',
-        'description' => 'Boolean that displays the pocers button on the homepage',
+        'description' => 'Boolean that displays the pocers screen on the homepage',
     ),
+     array(
+        'key'         => 'common.pocUrl',
+        'value'       => '#',
+        'description' => 'The url to the poc info page',
+    ),
+    
     array(
         'key'         => 'common.save_visits',
         'value'       => '0',

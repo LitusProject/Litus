@@ -50,6 +50,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'sportInfo' => $this->getSportResults(),
                 'myShifts' => $this->getMyShifts(),
                 'myPocers' => $this->getMyPocers(),
+                'pocUrl' => $this->getPocUrl(),
             )
         );
     }
@@ -135,7 +136,18 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         return $bookings;
     }
-
+	/**
+     * @return string|null
+     */
+     private function getPocUrl()
+     {
+		
+        return $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.pocUrl');
+	 }
+		  
+		  
     /**
      * @return array
      */
