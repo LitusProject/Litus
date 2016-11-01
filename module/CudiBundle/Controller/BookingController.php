@@ -608,7 +608,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @return array
+     * @return array Returns wether isic info is enabled on the bookings page.
      */
     private function getIsic()
     {
