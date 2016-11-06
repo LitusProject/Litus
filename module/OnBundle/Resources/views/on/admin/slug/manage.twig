@@ -18,36 +18,58 @@
     </div>
 
     <div id="controller_action">
-        <table class="full_width manage">
-            <thead>
+        <div id="slug_search" style="display: none;">
+            <div style="padding: 4px; text-align: right">
+                Search:
+                <select id="searchField">
+                    <option value="name">Name</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
                 <tr>
                     <th>Name</th>
                     <th width="500px">URL</th>
                     <th width="70px">Hits</th>
                     <th width="70px">Actions</th>
                 </tr>
-            </thead>
+            </table>
+        </div>
 
-            <tbody>
-                {% for slug in paginator %}
-                    <tr class="item item-{{ slug.getId() }}">
-                        <td>{{ slug.getName() }}</td>
-                        <td>{{ slug.getUrl() }}</td>
-                        <td>{{ slug.getHits() }}</td>
-                        <td class="actions">
-                            {% if hasAccess('on_admin_slug', 'edit') %}
-                                <a href="{{ url('on_admin_slug', {"action": "edit", "id": slug.getId()}) }}" class="edit">Edit</a>
-                            {% endif %}
-                            {% if hasAccess('on_admin_slug', 'delete') %}
-                                <a href="#" data-id="{{ slug.getId() }}" data-url="{{ slug.getUrl() }}" class="delete">Delete</a>
-                            {% endif %}
-                        </td>
+        <div id="normal_page">
+            <table class="full_width manage">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th width="500px">URL</th>
+                        <th width="70px">Hits</th>
+                        <th width="70px">Actions</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
 
-        {% include 'admin/partials/paginationControl.twig' %}
+                <tbody>
+                    {% for slug in paginator %}
+                        <tr class="item item-{{ slug.getId() }}">
+                            <td>{{ slug.getName() }}</td>
+                            <td>{{ slug.getUrl() }}</td>
+                            <td>{{ slug.getHits() }}</td>
+                            <td class="actions">
+                                {% if hasAccess('on_admin_slug', 'edit') %}
+                                    <a href="{{ url('on_admin_slug', {"action": "edit", "id": slug.getId()}) }}" class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('on_admin_slug', 'delete') %}
+                                    <a href="#" data-id="{{ slug.getId() }}" data-url="{{ slug.getUrl() }}" class="delete">Delete</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
     </div>
 
     <div class="modal fade" id="removeSlug" tabindex="-1">
@@ -78,6 +100,37 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
+            $.searchDatabase({
+                defaultPage: $('#normal_page'),
+                searchDiv: $('#slug_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('on_admin_slug', {'action': 'manage'}) }}manage/',
+                url: '{{ url('on_admin_slug', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#slug_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#slug_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.url + '</td>')
+                            .append(
+                                $('<td>', {'class': 'actions'})
+                                    .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                                );
+                            deleteButton.data({
+                                id: this.id,
+                                slugName: this.slugName
+                            });
+                    });
+
+                    $('#slug_search .delete').click(openModal);
+                    $('#slug_search table').change();
+                },
+                clear: function () {
+                    $('#slug_search table').find('tr.item').remove();
+                }
+            });
+
             $('.item .delete').click(openModal);
         });
 
