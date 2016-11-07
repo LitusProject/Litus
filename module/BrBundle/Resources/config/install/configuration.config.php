@@ -214,4 +214,19 @@ Example content of this section.
             'value'       => 'Partnership: logo op www.vtk.be, wekelijks in \'t Bakske, 5% korting',
             'description' => 'The standard auto discount text that is displayed on the creation of a new invoice.',
     ),
+    array(
+            'key'         => 'br.vacancy_mail',
+            'value'       => 'bedrijvenrelaties@vtk.be',
+            'description' => 'The mail address to which notifications should be send when a company makes a new vacancy/internship request.',
+    ),
+    array(
+            'key'         => 'br.vacancy_mail_name',
+            'value'       => 'VTK Bedrijvenrelaties',
+            'description' => '',
+    ),
+    array(
+            'key'         => 'br.vacancy_link',
+            'value'       => 'https://vtk.be/admin/br/request/',
+            'description' => '',
+    ),
 );
