@@ -22,6 +22,7 @@ use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Job,
     BrBundle\Entity\Company\Request\RequestInternship,
     BrBundle\Entity\User\Person\Corporate,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
