@@ -71,6 +71,9 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 			'academicYears' => $academicYears,
             'activeAcademicYear' => $academicYear,
             'currentAcademicYear' => $this->getCurrentAcademicYear(),
+            'profilePath' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
             //'personalPocItem'	  => $personalPocItem,
             )
         );
@@ -123,19 +126,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         return AcademicYearUtil::getOrganizationYear($this->getEntityManager(), $date);
     }
     
-    /**
-     * @return CurrentAcademicYear
-     *
-    private function getCurrentAcademicYear()
-    {
-        $date = null;
-        $date = AcademicYearUtil::getDateTime($this->getParam('academicyear'));
-        return AcademicYearUtil::getOrganizationYear($this->getEntityManager(), $date);
-    }
-    */
-    
-    
-    
+
      /**
      * @return Academic|null
      */
