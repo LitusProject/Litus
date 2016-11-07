@@ -97,6 +97,28 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                 $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();
 
+                $mailAddress = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.vacancy_mail');
+
+                $mailName = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.vacancy_mail_name');
+
+                $link = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.vacancy_link');
+
+                $mail = new Message();
+                $mail->setBody($link)
+                    ->setFrom($mailAddress, $mailName)
+                    ->addTo($mailAddress, $mailName)
+                    ->setSubject("New Vacancy Request " . $person->getCompany()->getName());
+
+                if ('development' != getenv('APPLICATION_ENV')) {
+                    $this->getMailTransport()->send($mail);
+                }
+
                 $this->flashMessenger()->success(
                     'Success',
                     'The request has been sent to our administrators for approval.'
