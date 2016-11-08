@@ -51,6 +51,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'myShifts' => $this->getMyShifts(),
                 'myPocers' => $this->getMyPocers(),
                 'pocUrl' => $this->getPocUrl(),
+                'profilePath' => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
             )
         );
     }
