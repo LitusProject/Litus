@@ -22,6 +22,7 @@ use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Job,
     BrBundle\Entity\Company\Request\RequestInternship,
     BrBundle\Entity\User\Person\Corporate,
+    Zend\Mail\Message,
     Zend\View\Model\ViewModel;
 
 /**
@@ -95,6 +96,28 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
                 $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();
+
+                $mailAddress = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.vacancy_mail');
+
+                $mailName = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.vacancy_mail_name');
+
+                $link = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.vacancy_link');
+
+                $mail = new Message();
+                $mail->setBody($link)
+                    ->setFrom($mailAddress, $mailName)
+                    ->addTo($mailAddress, $mailName)
+                    ->setSubject("New Vacancy Request " . $person->getCompany()->getName());
+
+                if ('development' != getenv('APPLICATION_ENV')) {
+                    $this->getMailTransport()->send($mail);
+                }
 
                 $this->flashMessenger()->success(
                     'Success',

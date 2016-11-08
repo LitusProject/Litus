@@ -21,11 +21,13 @@ return array(
         'on_admin_slug' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/on/slug[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/on/slug[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[a-z0-9]*',
                     'page'    => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'on_admin_slug',
