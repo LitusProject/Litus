@@ -245,14 +245,13 @@
 						 {% for pocStuff in myPocers.pocItem%}
 							<h3>{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small>{% endif %}</h3>
 							<div class="row">
-							{% set counter = 0 %}
 							{% for  poc in pocStuff['pocGroupList'] %}
 							<div class="col-xs-6 col-md-6">
-							      <div class="thumbnail" style="height: 250px; text-align: center">
+							      <div class="thumbnail" style="height: 240px; text-align: center">
 								  {% if poc.getAcademic().getPhotoPath() %}
-								 <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/180x135/auto/text:Image) no-repeat; width: 180px; height: 135px;" alt="">
+								 <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/144x108/auto/text:Image) no-repeat; width: 144px; height: 108px;" alt="">
 									{% else %}
-									<img data-src="holder.js/180x135/auto/text:Image" alt="">
+									<img data-src="holder.js/144x108/auto/text:Image" alt="">
 								{% endif %}
 								<br>
 								<h4>{{ poc.getAcademic().getFullName() }}</h4> 
@@ -277,5 +276,12 @@
 {% block content_script %}
     <script type="text/javascript">
         $('a[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
+    </script>
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.profileImagePreloaded').each(function () {
+                $(this).attr('src', $(this).data('url'));
+            });
+        });
     </script>
 {% endblock %}
