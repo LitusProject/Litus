@@ -47,7 +47,8 @@
     </div>
 
     {% for pocStuff in pocItem%}
-		 <h3>{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small>{% endif %}</h3>
+		 
+		<h3>{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ pocStuff['pocExample'].getEmailAdress() ~ '">' ~ pocStuff['pocExample'].getEmailAdress() ~ '</a>') }}</small>{% endif %}</h3>
 		 <div class="row">
 		 {% for  poc in pocStuff['pocGroupList'] %}
                 <div class="col-xs-4 col-md-2">
@@ -55,7 +56,7 @@
                         {% if poc.getAcademic().getPhotoPath() %}
                             <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/90x67/auto/text:Image) no-repeat; width: 90px; height: 67px;" alt="">
                         {% else %}
-                            <img data-src="holder.js/90x67/auto/text:Image" alt="">
+                            <img data-src="holder.js/90x67/auto/text:Image"style="background:url(?holder.js/90x67/auto/text:Image) no-repeat; width: 90px; height: 67px;" alt="">
                         {% endif %}
                         <h4>{{ poc.getAcademic().getFullName() }}</h4> 
                     </div>

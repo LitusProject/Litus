@@ -25,7 +25,7 @@ return array(
             'add', 'delete', 'deleteStudy', 'edit', 'export', 'manage', 'studies',
         ),
         'syllabus_admin_poc' => array(
-           'members', 'delete', 'manage','deleteMember',
+           'members', 'delete', 'manage','deleteMember','editEmail',
         ),
         'syllabus_admin_study' => array(
             'add', 'delete', 'edit', 'manage', 'search', 'searchSubject', 'typeahead', 'view',

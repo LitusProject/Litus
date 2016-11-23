@@ -21,7 +21,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     SyllabusBundle\Component\Document\Generator\Group as CsvGenerator,
-    SyllabusBundle\Entity\Poc,
+    SyllabusBundle\Entity\Poc as Poc,
     SyllabusBundle\Entity\Group,
     SyllabusBundle\Entity\Group\StudyMap,
     Zend\View\Model\ViewModel;
@@ -38,7 +38,6 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
          if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
-
 		$pocsWithIndicator = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Poc')
                 ->findAllPocsWithIndicatorByAcademicYear($academicYear);
@@ -47,6 +46,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 			$poc->getGroupId()->setEntityManager($this->getEntityManager());
 			$groups[]=$poc->getGroupId();
         }
+        
 		
       
 
@@ -120,7 +120,61 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
             )
         );
 		
-     }  
+     }
+     
+     
+     	public function editEmailAction(){
+			
+			if (!($academicYear = $this->getAcademicYearEntity())) {
+				return new ViewModel();
+			}
+			if (!($pocgroup = $this->getGroupEntity())) {
+				return new ViewModel();
+			}
+			$pocIndicator = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Poc')
+            ->findIndicatorFromGroupAndAcademicYear($pocgroup,$academicYear);
+			
+		
+			$form = $this->getForm('syllabus_poc_editEmail',array('poc' => $pocIndicator));
+			if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+			
+            if ($form->isValid()) {
+               
+				$data = $form->getData();
+				
+				$pocIndicator->setEmailAdress($data['emailAdress']);
+					
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The email Adress was successfully updated!'
+                );
+                $this->redirect()->toRoute(
+                    'syllabus_admin_poc',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+       
+        
+		
+		return new ViewModel(
+            array(
+				'form' 	   => $form,
+                'pocIndicator'	=> $pocIndicator
+            )
+        );
+		
+     }
+				
+			
         
 
 	/**
@@ -149,7 +203,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 		
-		
+
 
 	public function deleteMemberAction()
     {	
