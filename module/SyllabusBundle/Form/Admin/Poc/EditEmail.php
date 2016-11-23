@@ -36,9 +36,7 @@ class EditEmail extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-		echo('EDIT EMAIL');
 		if (null === $this->poc) {
-			echo('hier');
             throw new LogicException('Cannot edit null poc');
         }
         

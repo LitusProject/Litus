@@ -41,7 +41,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
     }
 
     protected function doExtract($object = null)
-    {	echo('extract');
+    {	
         if (null === $object) {
             return array();
         }
