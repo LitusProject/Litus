@@ -40,18 +40,9 @@ class Poc extends \CommonBundle\Component\Hydrator\Hydrator
     }
 
     protected function doExtract($object = null)
-    {	/**
-		if (null === $object) {
-            return array();
-        }
-        
-        $data['poc_group'] = $object->getGroupId()->getName();
-        $data['person']['id'] = $object->getAcademic()->getId();
-        $data['person']['name'] = $object->getAcademic()->getFullName();
-
-
-        return $data;
-		*/
+    
+    {	
+		
     }
     protected function dataToGroup($groupData) {
 		return $this->getEntityManager()

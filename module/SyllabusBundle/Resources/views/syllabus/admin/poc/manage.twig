@@ -24,7 +24,8 @@
         <table class="full_width manage">
             <tr>
                 <th>Poc group name</th>
-                <th width="300px">nb pocers</th>
+                <th width="70px">nb pocers</th>
+                <th width= "250px">email</th>
                 <th width="70px">Actions</th>
             </tr>
 
@@ -32,10 +33,15 @@
                 <tr class="item item-{{ pocgroup.getId() }}">
                     <td>{{ pocgroup.getName() }}</td>
                     <td>{{ pocgroup.getNbOfPocers(currentAcademicYear) }}</td>
+                    <td>{{ pocgroup.getEmailAdressPoc(currentAcademicYear) }}</td>
                     <td class="actions">
                         {% if hasAccess('syllabus_admin_poc', 'members') %}
                                 <a href="{{ url('syllabus_admin_poc', {"action": "members", "id": pocgroup.getId(),"academicyear": currentAcademicYear.getCode()}) }}" class="role_edit">Members</a>
                         {% endif %}
+                        {% if hasAccess('syllabus_admin_poc', 'editEmailAdress') %}
+                                <a href="{{ url('syllabus_admin_poc', {"action": "editEmail", "id": pocgroup.getId(),"academicyear": currentAcademicYear.getCode()}) }}" class="edit">Edit email</a>
+                        {% endif %}
+                        
                          {% if hasAccess('syllabus_admin_poc', 'delete') %}
                                 <a href="#" data-id="{{ pocgroup.getId() }}" data-title="{{ pocgroup.getName() }}" class="delete">Delete</a>
                         {% endif %}

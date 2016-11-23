@@ -192,7 +192,7 @@ class Poc extends EntityRepository
       
     /**
      * @param  AcademicYear        $academicYear
-     * @return array of Groups
+     * @return array of Pocs
      */
     public function findAllPocsWithIndicatorByAcademicYearQuery(AcademicYear $academicYear)
     {	
@@ -235,6 +235,31 @@ class Poc extends EntityRepository
 		
 		
 	}
+	/**
+     * @param  AcademicYear        $academicYear
+     * @return array of Groups
+     */
+    public function findIndicatorFromGroupAndAcademicYear(GroupEntity $group, AcademicYear $academicYear)
+    {	
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $pocWithIndicator = $query->select('p')
+            ->from('SyllabusBundle\Entity\poc', 'p')
+            ->where($query->expr()->andX(
+                $query->expr()->eq('p.academicYear', ':academicYear'),
+                $query->expr()->eq('p.indicator', 'true'),
+                $query->expr()->eq('p.groupId', ':group')
+            ))
+            ->setParameter('academicYear', $academicYear)
+            ->setParameter('group',$group)
+            ->innerJoin('p.groupId','g')
+            ->orderBy('g.name','ASC')
+            ->getQuery()
+            ->getSingleResult();
+         
+        return $pocWithIndicator;
+    }
+	
+	
   
   
 	

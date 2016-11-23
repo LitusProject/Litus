@@ -68,7 +68,12 @@ class Poc
 	private $indicator;
 	
 	
-	
+	 /**
+     * @var the email adress of the poc. Only the indicator email adress is showed in the admin
+     *
+     * @ORM\Column(type="string",nullable=true)
+     */
+    private $emailAdress;
 	
     public function __construct()
     {
@@ -174,6 +179,34 @@ class Poc
 
         return $this;
     }
+    
+       /**
+     * @return string
+     */
+    public function getEmailAdress()
+    {	if ($this->getIndicator()) {
+        return $this->emailAdress;
+         }
+         else
+         {
+			 $pocIndicator = $this->entityManager
+            ->getRepository('SyllabusBundle\Entity\Poc')
+            ->findIndicatorFromGroupAndAcademicYear($this->getGroupId(),$this->getAcademicYear());
+			 return $pocIndicator->getEmailAdress();
+          }
+    }
+
+    /**
+     * @param  string $name
+     * @return self
+     */
+    public function setEmailAdress($emailAdress)
+    {
+        $this->emailAdress = $emailAdress;
+
+        return $this;
+    }
+
     
    
     

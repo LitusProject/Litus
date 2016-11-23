@@ -85,7 +85,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         $pocGroupList = array();
         $pocItem = array();
 		foreach ($pocs as $pocer){
-
+			$pocer->setEntityManager($this->getEntityManager());
 			if ($lastPocGroup === null){
 				  $pocGroupList[] = $pocer;
 			}
@@ -96,7 +96,9 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 			elseif ($lastPocGroup !== $pocer ->getGroupId()){
 				$pocItem[] = array(
                     'groupId' => $lastPocGroup,
-                    'pocGroupList' => $pocGroupList,);
+                    'pocGroupList' => $pocGroupList,
+                    'pocExample' => $pocGroupList[0],
+                    );
                 unset($pocGroupList);
                 $pocGroupList = array();
                 $pocGroupList[] = $pocer;
@@ -108,9 +110,11 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 		 if (!empty($pocGroupList)){
 			 $pocItem[] = array(
                     'groupId' => $lastPocGroup,
-                    'pocGroupList' => $pocGroupList,);
+                    'pocGroupList' => $pocGroupList,
+                    'pocExample' => $pocGroupList[0],);
 			
 		}
+		
 		return $pocItem;
 		}
 

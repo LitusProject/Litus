@@ -301,7 +301,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         $pocGroupList = array();
         $pocItem = array();
 		foreach ($pocers as $pocer){
-		
+			$pocer->setEntityManager($this->getEntityManager());
 			if ($lastPocGroup === null){
 				  $pocGroupList[] = $pocer;
 			}
@@ -312,7 +312,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 			elseif ($lastPocGroup !== $pocer ->getGroupId()){
 				$pocItem[] = array(
                     'groupId' => $lastPocGroup,
-                    'pocGroupList' => $pocGroupList,);
+                    'pocGroupList' => $pocGroupList,
+                     'pocExample' => $pocGroupList[0],);
                 unset($pocGroupList);
                 $pocGroupList = array();
                 $pocGroupList[] = $pocer;
@@ -324,7 +325,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 		 if (!empty($pocGroupList)){
 			 $pocItem[] = array(
                     'groupId' => $lastPocGroup,
-                    'pocGroupList' => $pocGroupList,);
+                    'pocGroupList' => $pocGroupList,
+                     'pocExample' => $pocGroupList[0],);
 			
 		}
 		return 

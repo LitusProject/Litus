@@ -243,11 +243,11 @@
 
                     
 						 {% for pocStuff in myPocers.pocItem%}
-							<h3>{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small>{% endif %}</h3>
+							<h3>{{ pocStuff['groupId'].getName() }}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ pocStuff['pocExample'].getEmailAdress() ~ '">' ~ pocStuff['pocExample'].getEmailAdress() ~ '</a>') }}</small></h3>
 							<div class="row">
 							{% for  poc in pocStuff['pocGroupList'] %}
 							<div class="col-xs-6 col-md-6">
-							      <div class="thumbnail" style="height: 240px; text-align: center">
+							      <div class="thumbnail" style="height: 200px; text-align: center">
 								  {% if poc.getAcademic().getPhotoPath() %}
 								 <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/144x108/auto/text:Image) no-repeat; width: 144px; height: 108px;" alt="">
 									{% else %}
@@ -255,7 +255,6 @@
 								{% endif %}
 								<br>
 								<h4>{{ poc.getAcademic().getFullName() }}</h4> 
-								<h6>{{ poc.getAcademic().getUniversityEmail() }}</h6> 
 								</div>
 							</div>
 							{% endfor %}

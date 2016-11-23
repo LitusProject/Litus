@@ -47,7 +47,8 @@
     </div>
 
     {% for pocStuff in pocItem%}
-		 <h3>{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ unit['unit'].getMail() ~ '">' ~ unit['unit'].getMail() ~ '</a>') }}</small>{% endif %}</h3>
+		 
+		<h3>{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ pocStuff['pocExample'].getEmailAdress() ~ '">' ~ pocStuff['pocExample'].getEmailAdress() ~ '</a>') }}</small>{% endif %}</h3>
 		 <div class="row">
 		 {% for  poc in pocStuff['pocGroupList'] %}
                 <div class="col-xs-4 col-md-2">
