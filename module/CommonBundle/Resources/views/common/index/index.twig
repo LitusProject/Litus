@@ -243,7 +243,8 @@
 
                     
 						 {% for pocStuff in myPocers.pocItem%}
-							<h3>{{ pocStuff['groupId'].getName() }}<small>&mdash;{{ hideEmail('<a href="mailto:' ~ pocStuff['pocExample'].getEmailAdress() ~ '">' ~ pocStuff['pocExample'].getEmailAdress() ~ '</a>') }}</small></h3>
+							<h3>{{ pocStuff['groupId'].getName() }}<small>&mdash;
+							<a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a>
 							<div class="row">
 							{% for  poc in pocStuff['pocGroupList'] %}
 							<div class="col-xs-6 col-md-6">
