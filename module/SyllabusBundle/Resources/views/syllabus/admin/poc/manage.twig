@@ -38,7 +38,7 @@
                         {% if hasAccess('syllabus_admin_poc', 'members') %}
                                 <a href="{{ url('syllabus_admin_poc', {"action": "members", "id": pocgroup.getId(),"academicyear": currentAcademicYear.getCode()}) }}" class="role_edit">Members</a>
                         {% endif %}
-                        {% if hasAccess('syllabus_admin_poc', 'editEmailAdress') %}
+                        {% if hasAccess('syllabus_admin_poc', 'editEmail') %}
                                 <a href="{{ url('syllabus_admin_poc', {"action": "editEmail", "id": pocgroup.getId(),"academicyear": currentAcademicYear.getCode()}) }}" class="edit">Edit email</a>
                         {% endif %}
                         
