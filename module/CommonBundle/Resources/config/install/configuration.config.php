@@ -470,6 +470,12 @@ You can remove any installed cookies from your computer or mobile device at any 
         'value'       => '#',
         'description' => 'The url to the poc info page',
     ),
+    array(
+        'key'         => 'common.pocUrlOverview',
+        'value'       => '#',
+        'description' => 'The url to the overview page',
+    ),
+    
     
     array(
         'key'         => 'common.save_visits',
