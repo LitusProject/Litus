@@ -595,9 +595,17 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('form.file_upload_path') . '/' . $this->getParam('id');
 
+        $fieldEntry = $this->getEntityManager()
+            ->getRepository('FormBundle\Entity\Entry')
+            ->findOneByValue($this->getParam('id'));
+
+        if (null === $fieldEntry || !$this->getAuthentication()->isAuthenticated() || $fieldEntry->getFormEntry()->getCreationPerson() != $this->getAuthentication()->getPersonObject()) {
+            return $this->notFoundAction();
+        }
+
         $headers = new Headers();
         $headers->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $this->getParam('id') . '"',
+            'Content-Disposition' => 'attachment; filename="' . $fieldEntry->getReadableValue() . '"',
             'Content-Type' => mime_content_type($filePath),
             'Content-Length' => filesize($filePath),
         ));
