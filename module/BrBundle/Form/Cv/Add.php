@@ -543,6 +543,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->addSubmit('Add');
+
+        $this->remove('csrf');
     }
 
     private function getStudyMap()

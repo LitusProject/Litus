@@ -78,12 +78,20 @@ class Group
     private $entityManager;
 
     /**
+     * @var boolean Whether to use this group in the cv book or not.
+     *
+     * @ORM\Column(name="is_speedy_group", type="boolean",nullable=true)
+     */
+    private $isSpeedyGroup;
+
+    /**
      * @param AcademicYear $academicYear
      */
     public function __construct(AcademicYear $academicYear)
     {
         $this->academicYear = $academicYear;
         $this->members = new ArrayCollection();
+        $this->isSpeedyGroup = 0;
     }
 
     /**
@@ -127,6 +135,25 @@ class Group
     public function getMembers()
     {
         return $this->members->toArray();
+    }
+
+     /**
+      * @rparam boolean $isSpeedyGroup
+      * @return self
+      */
+     public function setIsSpeedyGroup($isSpeedyGroup)
+     {
+         $this->isSpeedyGroup = $isSpeedyGroup;
+
+         return $this;
+     }
+
+    /**
+     * @return boolean
+     */
+    public function getIsSpeedyGroup()
+    {
+        return $this->isSpeedyGroup;
     }
 
     /**
@@ -187,11 +214,32 @@ class Group
                 for ($i = 0; isset($happyHours[$i]); $i++) {
                     if ($startTime >= substr($happyHours[$i], 0, 2) && $endTime <= substr($happyHours[$i], 2)) {
                         $points += $lap->getPoints();
+                        if ($this->getIsSpeedyGroup() && $this->isNightShift($happyHours[$i])) {
+                            $points += $lap->getPoints();
+                        }
                     }
                 }
             }
         }
 
         return $points;
+    }
+
+    public function isNightShift($happyHour)
+    {
+        if ($happyHour === "0204") {
+            return true;
+        }
+        if ($happyHour === "0406") {
+            return true;
+        }
+        if ($happyHour === "0608") {
+            return true;
+        }
+        if ($happyHour === "0810") {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -1,0 +1,115 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'syllabus/admin/poc/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width pocgroup_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The pocgroup was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width pocgroup_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the pocgroup.</p>
+        </div>
+    </div>
+
+    {% include 'syllabus/admin/poc/partials/years.twig' %}
+
+    <div id="controller_action">
+        <table class="full_width manage">
+            <tr>
+                <th>Poc group name</th>
+                <th width="70px">nb pocers</th>
+                <th width= "250px">email</th>
+                <th width="70px">Actions</th>
+            </tr>
+
+            {% for pocgroup in groups %}
+                <tr class="item item-{{ pocgroup.getId() }}">
+                    <td>{{ pocgroup.getName() }}</td>
+                    <td>{{ pocgroup.getNbOfPocers(currentAcademicYear) }}</td>
+                    <td>{{ pocgroup.getEmailAdressPoc(currentAcademicYear) }}</td>
+                    <td class="actions">
+                        {% if hasAccess('syllabus_admin_poc', 'members') %}
+                                <a href="{{ url('syllabus_admin_poc', {"action": "members", "id": pocgroup.getId(),"academicyear": currentAcademicYear.getCode()}) }}" class="role_edit">Members</a>
+                        {% endif %}
+                        {% if hasAccess('syllabus_admin_poc', 'editEmail') %}
+                                <a href="{{ url('syllabus_admin_poc', {"action": "editEmail", "id": pocgroup.getId(),"academicyear": currentAcademicYear.getCode()}) }}" class="edit">Edit email</a>
+                        {% endif %}
+                        
+                         {% if hasAccess('syllabus_admin_poc', 'delete') %}
+                                <a href="#" data-id="{{ pocgroup.getId() }}" data-title="{{ pocgroup.getName() }}" class="delete">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal fade" id="removePocgroup" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete pocgroup
+                </div>
+                <div class="modal-body">
+                    <p>	
+                        You are about to delete the following group as a pocgroup and remove all its members: <b class="title"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removePocgroup = $('#removePocgroup');
+            removePocgroup.find('.title').html($(this).data('title'));
+            var id = $this.data('id');
+            removePocgroup.find('.delete').unbind('click').click(function () {
+                    $.post('{{ url('syllabus_admin_poc', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.pocgroup_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removePocgroup.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removePocgroup.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.pocgroup_removed_error').removeClass('hide');
+            $('#removePocgroup').modal('hide');
+        }
+    </script>
+{% endblock %}

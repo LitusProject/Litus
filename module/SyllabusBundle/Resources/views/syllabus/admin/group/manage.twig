@@ -25,6 +25,7 @@
             <tr>
                 <th>Name</th>
                 <th width="100px">CV Book</th>
+                <th width="100px">POC Group</th>
                 <th width="100px">Students</th>
                 <th width="70px">Actions</th>
             </tr>
@@ -33,13 +34,15 @@
                 <tr class="item item-{{ group.getId() }}">
                     <td>{{ group.getName() }}</td>
                     <td>{% if group.getCvBook() %}&times;{% endif %}</td>
+                     <td>{% if group.getIsPocGroup(currentAcademicYear) %}&times;{% endif %}</td>
+
                     <td>{{ group.getNbStudents(currentAcademicYear) }}</td>
                     <td class="actions">
                         {% if hasAccess('syllabus_admin_group', 'edit') %}
                             <a href="{{ url('syllabus_admin_group', {'action': 'edit', 'id': group.getId(), 'academicyear': currentAcademicYear.getCode()}) }}" class="edit">Edit</a>
                         {% endif %}
                         {% if hasAccess('syllabus_admin_group', 'delete') %}
-                            <a href="#" data-id="{{ group.getId() }}" data-group="{{ group.getName() }}" class="delete">Delete</a>
+                            <a href="#" data-id="{{ group.getId() }}"  data-group="{{ group.getName()}}" class="delete">Delete</a>
                         {% endif %}
                     </td>
                 </tr>
@@ -59,7 +62,9 @@
                 <div class="modal-body">
                     <p>
                         You are about to delete the following group: <b class="groupName"></b>!
-                        Please note that this operation cannot be undone!
+                        Please note that this operation cannot be undone! 
+                         <p>WARNING: if this group is a poc group know what you're doing ! 
+                         </p>      
                     </p>
                     <p>
                         Are you sure you want to continue?

@@ -29,6 +29,10 @@ return array(
                     'action' => 'manage',
                     'title'  => 'Groups',
                 ),
+                'syllabus_admin_poc'    => array(
+                    'action' => 'manage',
+                    'title'  => 'POC',
+                ),
                 'syllabus_admin_study'    => array(
                     'action' => 'manage',
                     'title'  => 'Studies',

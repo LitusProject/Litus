@@ -6,24 +6,23 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-        <table class="full_width">
-            <thead>
+        <table class="full_width manage">
                 <tr>
                     <th>Name</th>
-                    <th width="500px">Runners</th>
+                    <th width="400px">Runners</th>
                     <th width="100px">Happy Hours</th>
-                    <th width="100px">Points</th>
-                    <th width="100px">Actions</th>
+                    <th width="50px">Points</th>
+                    <th width="50px">speedy?</th>
+                    <th width="50px">Actions</th>
                 </tr>
-            </thead>
 
-            <tbody>
+           
                 {% for group in paginator %}
-                    <tr>
+                    <tr class="item item-{{ group.getId() }}">
                         <td>{{ group.getName() }}</td>
                         <td>
                             {% for runner in group.getMembers() %}
-                                {{ runner.getFullName() }}{% if not loop.last %},{% endif %}
+								{{ runner.getFullName() }}{% if not loop.last %},{% endif %}
                             {% endfor %}
                         </td>
                         <td>
@@ -32,14 +31,20 @@
                             {% endfor %}
                         </td>
                         <td>{{ group.getPoints(academicYear) }}</td>
-                        <td>
+                        <td>{% if group.getIsSpeedyGroup()%} &times;{% endif %}</td>
+                        <td class="actions">
                             {% if hasAccess('sport_admin_run', 'editGroup') %}
                                 <a href="{{ url('sport_admin_run', {'action': 'editGroup', 'id': group.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
+                            {% if hasAccess('sport_admin_run', 'editSpeedyGroup') %}
+                               <a href="{{ url('sport_admin_run', {'action': 'editSpeedyGroup', 'id': group.getId()}) }}" class="edit">Edit speedy</a>
+                            {% endif %}
+
+                            
+                            
                         </td>
                     </tr>
                 {% endfor %}
-            </tbody>
         </table>
 
         {% include 'admin/partials/paginationControl.twig' %}

@@ -141,6 +141,46 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        $slugs = $this->search();
+
+        $result = array();
+        foreach ($slugs as $slug) {
+            $item = (object) array();
+            $item->id = $slug->getId();
+            $item->name = $slug->getName();
+            $item->url = $slug->getUrl();
+            $item->hits = $slug->getHits();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query|null
+     */
+    private function search()
+    {
+        switch ($this->getParam('field')) {
+            case 'name':
+                return $this->getDocumentManager()
+                    ->getRepository('OnBundle\Document\Slug')
+                    ->findAllByNameQuery($this->getParam('string'));
+        }
+    }
+
     /**
      * @return Slug|null
      */

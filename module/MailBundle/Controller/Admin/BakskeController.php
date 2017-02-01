@@ -56,6 +56,12 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('mail.bakske_mail_name');
 
+                $recipientGroups = $this->getEntityManager()
+                    ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
+                    ->findAllBakskeByAcademicYear($this->getCurrentAcademicYear());
+                $totalRecipients = count($recipientGroups);
+                $recipientGroups = array_chunk($recipientGroups, 500);
+
                 $part = new Part($edition->getHtml());
                 $part->type = Mime::TYPE_HTML;
                 $message = new MimeMessage();
@@ -67,10 +73,6 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
                     ->setFrom($mailAddress, $mailName)
                     ->setSubject($formData['subject']);
 
-                $recipients = $this->getEntityManager()
-                    ->getRepository('SecretaryBundle\Entity\Organization\MetaData')
-                    ->findAllBakskeByAcademicYear($this->getCurrentAcademicYear());
-
                 $mail->addTo($mailAddress, $mailName);
 
                 if ($formData['test']) {
@@ -79,20 +81,35 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
                         ->getConfigValue('system_administrator_mail');
 
                     $mail->addTo($mailAddress, 'System Administrator');
+
+                    if ('development' != getenv('APPLICATION_ENV')) {
+                        $this->getMailTransport()->send($mail);
+                    }
                 } else {
-                    foreach ($recipients as $recipient) {
-                        $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
+                    foreach ($recipientGroups as $recipients) {
+                        foreach ($recipients as $recipient) {
+                            $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
+                        }
+
+                        if ('development' != getenv('APPLICATION_ENV')) {
+                            $this->getMailTransport()->send($mail);
+                        }
+
+                        $mail->setBcc(array());
                     }
                 }
 
-                if ('development' != getenv('APPLICATION_ENV')) {
-                    $this->getMailTransport()->send($mail);
+                if ($formData['test']) {
+                    $this->flashMessenger()->success(
+                        'Success',
+                        '*TEST MAIL* The mail would have been sent to ' . $totalRecipients . ' people in ' . count($recipientGroups) . ' groups!'
+                    );
+                } else {
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The mail was successfully sent to ' . $totalRecipients . ' people in ' . count($recipientGroups) . ' groups!'
+                    );
                 }
-
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The mail was successfully sent!'
-                );
 
                 $this->redirect()->toRoute(
                     'mail_admin_bakske',

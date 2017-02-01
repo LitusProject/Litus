@@ -51,5 +51,5 @@ return array(
     'You have ordered an ISIC card already.' => 'Je hebt reeds een ISIC kaart besteld.',
     'Something went wrong with your order. Please email isic@vtk.be with the following error:' => 'Er is iets misgelopen bij het plaatsen van je order. Gelieve volgende error te mailen naar isic@vtk.be:',
     'You need to be a member to order an ISIC card.' => 'Je moet lid zijn om een ISIC kaart te bestellen.',
-    'If you have trouble with with resizing your photo, check out this link:' => 'Als je problemen hebt met het herschalen van je foto, kijk op deze link:'
+    'If you have trouble with with resizing your photo, check out this link:' => 'Als je problemen hebt met het herschalen van je foto, kijk op deze link:',
 );

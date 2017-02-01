@@ -186,7 +186,9 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-
+                
+			
+				
                 <div class="col-md-6">
                     <div class="page-header" style="margin-top: 20px;">
                         <a class="heading" href="{{ url('news') }}">
@@ -211,7 +213,50 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% if myPocers.enable  %}
+                {% if myPocers.pocItem is not null %}
+				{% if not myPocers.pocItem is empty %}
+                 <div class="col-md-6">
+                    <div class="page-header" style="margin-top: 20px;">
+                        <a class="heading" href={{pocUrlOverview}}>
+                            <h3>{{ translate('Poc') }}</h3>
+                        </a> 
+                    </div>
+                    
+                    <div class="heading-spacer"></div>	
+                    <div class="alert alert-warning">
+                    {{translate('The POC\'ers are elected! You can find your POC\'ers here!')}}
+                    {{translate('Visit the poc page for more ')}}
+                    <a href={{pocUrl}}>info</a>
+
+                    
+						 {% for pocStuff in myPocers.pocItem%}
+							<h3>{{ pocStuff['groupId'].getName() }}<small>&mdash;
+							<a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a>
+							<div class="row">
+							{% for  poc in pocStuff['pocGroupList'] %}
+							<div class="col-xs-6 col-md-6">
+							      <div class="thumbnail" style="height: 200px; text-align: center">
+								  {% if poc.getAcademic().getPhotoPath() %}
+								 <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}" style="background:url(?holder.js/144x108/auto/text:Image) no-repeat; width: 144px; height: 108px;" alt="">
+									{% else %}
+									<img data-src="holder.js/144x108/auto/text:Image" alt="">
+								{% endif %}
+								<br>
+								<h4>{{ poc.getAcademic().getFullName() }}</h4> 
+								</div>
+							</div>
+							{% endfor %}
+							</div>
+						{% endfor %}
+                    </div>	
+                 
+                </div> 
             </div>
+            {% endif %}
+            {% endif %}
+           {% endif %}
+
         </div>
     </div>
 {% endblock %}
@@ -219,5 +264,12 @@
 {% block content_script %}
     <script type="text/javascript">
         $('a[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
+    </script>
+     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.profileImagePreloaded').each(function () {
+                $(this).attr('src', $(this).data('url'));
+            });
+        });
     </script>
 {% endblock %}
