@@ -599,7 +599,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->getRepository('FormBundle\Entity\Entry')
             ->findOneByValue($this->getParam('id'));
 
-        if (null === $fieldEntry || !$this->getAuthentication()->isAuthenticated() || $fieldEntry->getFormEntry()->getCreationPerson() != $this->getAuthentication()->getPersonObject()) {
+        if (null === $fieldEntry || !$this->getAuthentication()->isAuthenticated()) {
             return $this->notFoundAction();
         }
 
