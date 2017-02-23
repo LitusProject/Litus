@@ -56,6 +56,13 @@ class VanReservation extends Reservation
      * @ORM\Column(type="text")
      */
     private $load;
+    
+    /**
+     * @var text Y or N to indicate whether this is a vtk car reservation, boolean could not be used for unkown reasons
+     *
+     * @ORM\Column(type="text",nullable=true)
+     */
+    private $car;
 
     /**
      * @return Driver
@@ -111,6 +118,27 @@ class VanReservation extends Reservation
     {
         $this->load = $load;
 
+        return $this;
+    }
+    
+   
+    
+    /**
+     * @return boolean
+     */
+    public function getCar()
+    {
+        return $this->car;
+    }
+
+
+    /**
+     * @param  boolean $car
+     * @return self
+     */
+    public function setCar($car)
+    {
+        $this->car = $car;
         return $this;
     }
 }

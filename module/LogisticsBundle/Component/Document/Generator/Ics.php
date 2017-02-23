@@ -142,11 +142,13 @@ class Ics
      * @return string
      */
     private function getEvent(VanReservation $reservation)
-    {
+    {	
         $summary = array();
         if (strlen($reservation->getLoad()) > 0) {
             $summary[] = str_replace("\n", '', $reservation->getLoad());
         }
+        
+        
         if (strlen($reservation->getAdditionalInfo()) > 0) {
             $summary[] = str_replace("\n", '', $reservation->getAdditionalInfo());
         }
