@@ -1,0 +1,19 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'syllabus/admin/group/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'syllabus/admin/group/partials/years.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+		<h1>Poc</h1>
+        <p>Name: <b>{{ pocIndicator.getGroupId().getName() }}</b></p>
+        {{ forms.renderForm(form) }}
+        
+        
+    </div>
+ {% endblock %}
+

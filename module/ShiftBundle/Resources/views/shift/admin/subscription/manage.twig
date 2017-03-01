@@ -22,7 +22,7 @@
 
         <p>Title: <b>{{ shift.getName() }}</b></p>
 
-        {% if shift.canBeEditedBy(authenticatedPerson) %}
+        {% if shift.canBeEditedBy(authenticatedPerson) or hasAccess('shift_admin_shift_subscription', 'superadd') %}
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
         {% endif %}

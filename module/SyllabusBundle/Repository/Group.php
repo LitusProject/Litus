@@ -19,7 +19,8 @@
 namespace SyllabusBundle\Repository;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\AcademicYear as AcademicYear,
+    ommonBundle\Entity\User\Person\Academic as Academic,
     SyllabusBundle\Entity\Group as GroupEntity;
 
 /**
@@ -101,4 +102,24 @@ class Group extends EntityRepository
 
         return $resultSet;
     }
+    
+    
+     /**
+     * @return \Doctrine\ORM\Query
+     */
+	public function findAllPocGroupsByAcademicYear(AcademicYear $AcademicYear)
+     {
+	    $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('g')
+            ->from('SyllabusBundle\Entity\Group', 'g')
+            ->where(
+                $query->expr()->eq('p.academicYear', ':academicYear'),
+                $query->expr()->eq('p.indicator', 'true')
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->innerJoin('p.groupId','g')
+            ->orderBy('g.name','ASC')
+            ->getQuery();
+        return $resultSet;
+      }    
 }

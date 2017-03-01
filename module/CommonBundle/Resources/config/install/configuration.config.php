@@ -461,6 +461,23 @@ You can remove any installed cookies from your computer or mobile device at any 
         'description' => 'Boolean that displays the wiki button on the homepage',
     ),
     array(
+        'key'         => 'common.poc',
+        'value'       => '0',
+        'description' => 'Boolean that displays the pocers screen on the homepage',
+    ),
+     array(
+        'key'         => 'common.pocUrl',
+        'value'       => '#',
+        'description' => 'The url to the poc info page',
+    ),
+    array(
+        'key'         => 'common.pocUrlOverview',
+        'value'       => '#',
+        'description' => 'The url to the overview page',
+    ),
+    
+    
+    array(
         'key'         => 'common.save_visits',
         'value'       => '0',
         'description' => 'Flag to log all visits in the database, will create a lot of data!',

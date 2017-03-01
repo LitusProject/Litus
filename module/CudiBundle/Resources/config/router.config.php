@@ -830,10 +830,11 @@ return array(
         'cudi_admin_isic' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/cudi/isic[/:action[/:id]][/]',
+                'route' => '/admin/cudi/isic[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id' => '[%a-zA-Z0-9:.,_-]*',
+                    'page' => '[0-9]*'
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_admin_isic',

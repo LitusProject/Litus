@@ -137,11 +137,12 @@ return array(
         'br_admin_contract' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/contract[/:action[/:id[/:signed]]][/]',
+                'route' => '/admin/br/contract[/:action[/:id[/:signed]][/page/:page]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
                     'signed'  => '(true|false)',
+                    'page'    => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_contract',
@@ -152,12 +153,13 @@ return array(
         'br_admin_invoice' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/invoice[/:action[/:id][/:payed][/date/:date]][/]',
+                'route' => '/admin/br/invoice[/:action[/:id][/:payed][/date/:date][/page/:page]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
-                    'payed'  => '(true|false)',
+                    'payed'   => '(true|false)',
                     'date'    => '[0-9]{2}/[0-9]{2}/[0-9]{4}',
+                    'page'    => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_invoice',
@@ -168,10 +170,11 @@ return array(
         'br_admin_order' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/order[/:action[/:id]][/]',
+                'route' => '/admin/br/order[/:action[/:id][/page/:page]][/]',
                 'constraints'   => array(
                     'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'        => '[0-9]*',
+                    'page'      => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_order',
@@ -196,10 +199,11 @@ return array(
         'br_admin_product' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/product[/:action[/:id]][/]',
+                'route' => '/admin/br/product[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'      => '[0-9]*',
+                    'page'    => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_product',

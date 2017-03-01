@@ -51,13 +51,10 @@ class Zip
             ->getConfigValue('form.file_upload_path') . '/';
 
         foreach ($entries as $entry) {
-            $extension = pathinfo($entry->getReadableValue(), PATHINFO_EXTENSION);
-            $extension = $extension ? '.' . $extension : '';
-
             $zip->open($tmpFile->getFileName(), ZIPARCHIVE::CREATE);
             $zip->addFile(
                 $filePath . $entry->getValue(),
-                $entry->getField()->getLabel($language) . '_' . $entry->getFormEntry()->getPersonInfo()->getFullName() . '_' . $entry->getFormEntry()->getId() . $extension
+                $entry->getField()->getLabel($language) . '_' . $entry->getFormEntry()->getPersonInfo()->getFullName() . '_' . $entry->getFormEntry()->getId() . '_' . $entry->getReadableValue()
             );
             $zip->close();
         }

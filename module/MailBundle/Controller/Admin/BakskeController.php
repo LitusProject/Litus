@@ -97,13 +97,19 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
 
                         $mail->setBcc(array());
                     }
-
                 }
 
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The mail was successfully sent to ' . $totalRecipients . ' people in ' . count($recipientGroups) . ' groups!'
-                );
+                if ($formData['test']) {
+                    $this->flashMessenger()->success(
+                        'Success',
+                        '*TEST MAIL* The mail would have been sent to ' . $totalRecipients . ' people in ' . count($recipientGroups) . ' groups!'
+                    );
+                } else {
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The mail was successfully sent to ' . $totalRecipients . ' people in ' . count($recipientGroups) . ' groups!'
+                    );
+                }
 
                 $this->redirect()->toRoute(
                     'mail_admin_bakske',

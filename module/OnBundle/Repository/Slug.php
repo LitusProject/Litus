@@ -28,4 +28,10 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
  */
 class Slug extends DocumentRepository
 {
+    public function findAllByNameQuery($name)
+    {
+        $resultSet = $this->findBy(array('name' => $name), array('name' => 'ASC'));
+
+        return $resultSet;
+    }
 }

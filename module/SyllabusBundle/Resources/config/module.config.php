@@ -37,6 +37,8 @@ return Config::create(
                 'syllabus_typeahead_study'                => 'SyllabusBundle\Component\Validator\Typeahead\Study',
                 'syllabus_typeahead_subject'              => 'SyllabusBundle\Component\Validator\Typeahead\Subject',
                 'syllabus_typeahead_study_module-group'   => 'SyllabusBundle\Component\Validator\Typeahead\ModuleGroup',
+                'typeahead_person'   					  => 'CommonBundle\Component\Validator\Typeahead\Person',
+
             ),
         ),
     )

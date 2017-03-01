@@ -79,4 +79,11 @@ class StudyMap
     {
         return $this->study;
     }
+    /**
+     * @return Group
+     */
+     public function getGroup() 
+     {
+        return $this->group;
+     }
 }

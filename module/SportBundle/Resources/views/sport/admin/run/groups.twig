@@ -36,7 +36,7 @@
                             {% if hasAccess('sport_admin_run', 'editGroup') %}
                                 <a href="{{ url('sport_admin_run', {'action': 'editGroup', 'id': group.getId()}) }}" class="edit">Edit</a>
                             {% endif %}
-                            {% if hasAccess('sport_admin_run', 'editSpeedygroup') %}
+                            {% if hasAccess('sport_admin_run', 'editSpeedyGroup') %}
                                <a href="{{ url('sport_admin_run', {'action': 'editSpeedyGroup', 'id': group.getId()}) }}" class="edit">Edit speedy</a>
                             {% endif %}
 
