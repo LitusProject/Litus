@@ -1975,6 +1975,15 @@ function getSkinCss(event, opt) {
     if (textColor) {
         statements.push('color:' + textColor);
     }
+    
+    if (event.car==true){
+		if (backgroundColor){
+		statements.push('background: repeating-linear-gradient(45deg,#000000,'+backgroundColor+' 10px,'+backgroundColor+' 10px,'+backgroundColor+' 20px');
+		}
+		else{
+		statements.push('background: repeating-linear-gradient(45deg,#000000,#444444 10px,#444444 10px,#444444 20px');
+		}
+	}	
     return statements.join(';');
 }
 

@@ -70,8 +70,10 @@ return array(
     'Additional Information' => 'Additional Information',
     'Driver' => 'Driver',
     'Passenger' => 'Passenger',
+    'Car' => 'Car',
     'Add' => 'Add',
     'New Reservation' => 'New Reservation',
+    'Edit Reservation' => 'Edit Reservation',
 
     'There was an error while loading the reservations.' => 'There was an error while loading the reservations.',
     'There was an error while deleting the reservation.' => 'There was an error while deleting the reservation.',

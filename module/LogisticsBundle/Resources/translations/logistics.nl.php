@@ -70,8 +70,10 @@ return array(
     'Additional Information' => 'Extra Informatie',
     'Driver' => 'Bestuurder',
     'Passenger' => 'Passagier',
+    'Car' => 'Auto',
     'Add' => 'Toevoegen',
     'New Reservation' => 'Nieuwe Reservatie',
+    'Edit Reservation' => 'Reservatie bewerken',
 
     'There was an error while loading the reservations.' => 'Er is een fout opgetreden tijdens het laden van de reservaties.',
     'There was an error while deleting the reservation.' => 'Er is een fout opgetreden tijdens het verwijderen van de reservatie.',

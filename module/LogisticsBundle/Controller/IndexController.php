@@ -100,6 +100,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     'passenger' => $passengerName,
                     'passengerId' => $passengerId,
                     'load' => $reservation->getLoad(),
+                    'car' => $reservation->getCar(),
                     'additionalInfo' => $reservation->getAdditionalInfo(),
                     'id' => $reservation->getId(),
                 );
@@ -140,16 +141,17 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         if (!($reservation = $this->getVanReservationEntity())) {
             return $this->notFoundAction();
         }
-
+     
         if ($this->getRequest()->isPost()) {
             $form = $this->getForm('logistics_van-reservation_add', array('reservation' => $reservation));
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+				
                 $this->getEntityManager()->flush();
 
                 $driver = $reservation->getDriver();
-
+				
                 $driverArray = array(
                     'color' => '#444444',
                     'name' => '',
@@ -177,6 +179,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     'passenger' => $passengerName,
                     'passengerId' => $passengerId,
                     'load' => $reservation->getLoad(),
+                    'car' => $reservation->getCar(),
                     'additionalInfo' => $reservation->getAdditionalInfo(),
                     'id' => $reservation->getId(),
                 );
@@ -294,6 +297,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 'passenger' => $passengerName,
                 'passengerId' => $passengerId,
                 'load' => $reservation->getLoad(),
+                'car' => $reservation->getCar(),
                 'additionalInfo' => $reservation->getAdditionalInfo(),
                 'id' => $reservation->getId(),
             );

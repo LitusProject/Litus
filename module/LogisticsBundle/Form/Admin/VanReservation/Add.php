@@ -60,19 +60,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'format' => 'd/m/Y H:i',
                             ),
                         ),
-                        array(
-                            'name' => 'logistics_reservation_conflict',
-                            'options' => array(
-                                'start_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
-                                'resource' => PianoReservation::VAN_RESOURCE_NAME,
-                                'reservation_id' => null === $this->reservation ? 0 : $this->reservation->getId(),
-                            ),
-                        ),
+                        
                     ),
                 ),
             ),
         ));
+        /**
+         * Copy paste this code in the validators above to check for reservation conflicts
+         * Was requested to remove by logistics in 2016-2017.
+         * array(
+                            'name' => 'logistics_reservation_conflict',
+                            'options' => array(
+                                'start_date' => 'start_date',
+                                'format' => 'd/m/Y H:i',
+                                'resource' => VanReservation::VAN_RESOURCE_NAME,
+                                'reservation_id' => null === $this->reservation ? 0 : $this->reservation->getId(),
+                            ),
+                        ),
+         */
 
         $this->add(array(
             'type'     => 'text',
@@ -136,6 +141,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ),
             ),
         ));
+        $this->add(array(
+            'type'  => 'select',
+            'name'  => 'car',
+            'label' => 'Car',
+            'attributes' => array(
+                'options' => $this->returnYesNoArray(),
+            ),
+        ));
 
         $this->addSubmit('Add', 'reservation_add');
 
@@ -169,5 +182,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         return $driversArray;
+    }
+    private function returnYesNoArray(){
+        return array("N","Y");
     }
 }
