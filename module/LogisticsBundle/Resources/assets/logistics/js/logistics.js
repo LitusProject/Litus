@@ -28,7 +28,7 @@
         tEndDate: 'End Date',
         tLoad: 'Load',
         tAdditionalInformation: 'Additional Information',
-        tVtkCar:'VTK car',
+        tCar:'Car',
         tDriver: 'Driver',
         tPassenger: 'Passenger',
         tDelete: 'Delete',
@@ -327,13 +327,13 @@
         
         if (event.car==true) {
             content.find('dl').append(
-                $('<dt>').html(settings.tVtkCar),
+                $('<dt>').html(settings.tCar),
                 $('<dd>').html("&#10004")
             );
         }
         else{
 			content.find('dl').append(
-			$('<dt>').html(settings.tVtkCar),
+			$('<dt>').html(settings.tCar),
             $('<dd>').html(" &#x2718")
             );
 		

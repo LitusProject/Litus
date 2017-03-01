@@ -58,7 +58,7 @@ class VanReservation extends Reservation
     private $load;
     
     /**
-     * @var text Y or N to indicate whether this is a vtk car reservation, boolean could not be used for unkown reasons
+     * @var text Y or N to indicate whether this is a car reservation, boolean could not be used for unkown reasons
      *
      * @ORM\Column(type="text",nullable=true)
      */

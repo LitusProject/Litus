@@ -191,7 +191,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add(array(
             'type'  => 'select',
             'name'  => 'car',
-            'label' => 'VTK car',
+            'label' => 'Car',
             'attributes' => array(
                 'class' => 'car',
                 'options' => $this->returnYesNoArray(),

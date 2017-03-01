@@ -70,7 +70,7 @@ return array(
     'Additional Information' => 'Additional Information',
     'Driver' => 'Driver',
     'Passenger' => 'Passenger',
-    'VTK car' => 'VTK car',
+    'Car' => 'Car',
     'Add' => 'Add',
     'New Reservation' => 'New Reservation',
     'Edit Reservation' => 'Edit Reservation',

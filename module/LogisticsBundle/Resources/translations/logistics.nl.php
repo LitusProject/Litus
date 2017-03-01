@@ -70,7 +70,7 @@ return array(
     'Additional Information' => 'Extra Informatie',
     'Driver' => 'Bestuurder',
     'Passenger' => 'Passagier',
-    'VTK car' => 'VTK auto',
+    'Car' => 'Auto',
     'Add' => 'Toevoegen',
     'New Reservation' => 'Nieuwe Reservatie',
     'Edit Reservation' => 'Reservatie bewerken',
