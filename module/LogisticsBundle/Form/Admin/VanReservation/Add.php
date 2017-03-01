@@ -144,7 +144,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(array(
             'type'  => 'select',
             'name'  => 'car',
-            'label' => 'VTK car',
+            'label' => 'Car',
             'attributes' => array(
                 'options' => $this->returnYesNoArray(),
             ),
