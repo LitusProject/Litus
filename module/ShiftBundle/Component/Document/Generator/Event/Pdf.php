@@ -65,6 +65,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
         $this->shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findBy(array('event' => $event), array('startDate' => 'ASC'));
+        
     }
 
     /**
@@ -106,6 +107,37 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                     )
                 );
             }
+             if (count($shift->getResponsibles())!= $shift->getNbResponsibles())
+            
+            {	
+				$y= $shift->getNbResponsibles()-count($shift->getResponsibles());
+				for ($x = 0; $x < $y; $x++) {
+                $people[] = new Object(
+                    'person',
+                    array(),
+                    array(
+                        new Object(
+                            'name',
+                            array(),
+                            ''
+                        ),
+                        new Object(
+                            'phone_number',
+                            array(),
+                            ''
+                        ),
+                        new Object(
+                            'responsible',
+                            array(),
+                            '1'
+                        ),
+                    )
+                );
+            }
+				
+				
+			}
+            
 
             foreach ($shift->getVolunteers() as $volunteer) {
                 $people[] = new Object(
@@ -130,7 +162,36 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                     )
                 );
             }
-
+            if (count($shift->getVolunteers())!= $shift->getNbVolunteers())
+            
+            {	
+				$y= $shift->getNbVolunteers()-count($shift->getVolunteers());
+				for ($x = 0; $x < $y; $x++) {
+                $people[] = new Object(
+                    'person',
+                    array(),
+                    array(
+                        new Object(
+                            'name',
+                            array(),
+                            ''
+                        ),
+                        new Object(
+                            'phone_number',
+                            array(),
+                            ''
+                        ),
+                        new Object(
+                            'responsible',
+                            array(),
+                            '0'
+                        ),
+                    )
+                );
+            }
+				
+				
+			}
             $shifts[] = new Object(
                 'shift',
                 array(),

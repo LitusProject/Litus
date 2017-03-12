@@ -320,7 +320,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     public function pdfAction()
-    {
+    {	
         if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
