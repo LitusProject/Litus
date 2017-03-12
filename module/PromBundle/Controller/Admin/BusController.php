@@ -112,7 +112,7 @@ class BusController extends \CommonBundle\Component\Controller\ActionController\
         $mail->setEncoding('UTF-8')
             ->setBody(str_replace('{{ busTime }}', $bus->getDepartureTime()->format('d/m/Y H:i'), $mailData['body']))
             ->setFrom($mailData['from'])
-            ->addBcc($mailData['from'])
+            ->addTo($mailData['from'])
             ->setSubject($mailData['subject']);
 
         if ('development' != getenv('APPLICATION_ENV')) {
