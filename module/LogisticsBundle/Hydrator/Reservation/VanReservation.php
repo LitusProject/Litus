@@ -22,7 +22,7 @@ use LogisticsBundle\Entity\Reservation\VanReservation as VanReservationEntity;
 
 class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('reason', 'load', 'additional_info');
+    private static $stdKeys = array('reason', 'load', 'additional_info', 'car');
 
     protected function doExtract($object = null)
     {
@@ -56,11 +56,14 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
 
             $object = new VanReservationEntity($resource, $this->getPersonEntity());
         }
-
+        
+        $driver = null;
+		if (array_key_exists('driver', $data)){
         $driver = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Driver')
             ->findOneById($data['driver']);
-
+		}
+		
         if ($data['passenger']['id'] != '') {
             $passenger = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')

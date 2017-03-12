@@ -92,7 +92,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'format' => 'd/m/Y H:i',
                             ),
                         ),
-                        array(
+                        
+                    ),
+                ),
+            ),
+        ));
+        /**
+         * Copy paste this code in the validators above to check for reservation conflicts
+         * Was requested to remove by logistics in 2016-2017.
+         array(
                             'name' => 'logistics_reservation_conflict',
                             'options' => array(
                                 'start_date' => 'start_date',
@@ -101,11 +109,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'reservation_id' => null === $this->reservation ? 0 : $this->reservation->getId(),
                             ),
                         ),
-                    ),
-                ),
-            ),
-        ));
-
+		*/
         $this->add(array(
             'type'       => 'text',
             'name'       => 'reason',
@@ -138,7 +142,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
             ),
         ));
-
+        
+       
         $this->add(array(
             'type'       => 'textarea',
             'name'       => 'additional_info',
@@ -182,10 +187,20 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
             ),
         ));
+       
+        $this->add(array(
+            'type'  => 'select',
+            'name'  => 'car',
+            'label' => 'Car',
+            'attributes' => array(
+                'class' => 'car',
+                'options' => $this->returnYesNoArray(),
+            ),
+        ));
 
         $this->addSubmit('Add', 'reservation_add btn btn-primary', 'add')
             ->addSubmit('Edit', 'reservation_edit btn btn-primary', 'edit');
-
+		
         if ($this->reservation != null) {
             $this->bind($this->reservation);
         }
@@ -196,6 +211,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->reservation = $reservation;
 
         return $this;
+    }
+    private function returnYesNoArray(){
+       
+
+        return array("N","Y");
     }
 
     private function getDriversArray()
