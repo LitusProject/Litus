@@ -99,6 +99,14 @@ class ReservationCode
     }
 
     /**
+     * Sets the code as used.
+     */
+    public function setUnUsed()
+    {
+        $this->used = false;
+    }
+
+    /**
      * @return string
      */
     public function getCode()

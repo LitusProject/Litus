@@ -93,31 +93,55 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                     ->getRepository('PromBundle\Entity\Bus')
                     ->findOneById($formData['second_bus']);
 
-                $passenger = new Passenger($formData['first_name'], $formData['last_name'], $formData['email'], $code, $firstBus, $secondBus);
-                $code->setUsed();
-
-                $this->getEntityManager()->persist($passenger);
-                $this->getEntityManager()->flush();
+                $firstLeft = 1;
+                $secondLeft = 1;
 
                 if (isset($firstBus)) {
-                    $this->sendConfirmationMail($passenger, $firstBus);
+                    $firstLeft = $firstBus->getTotalSeats() - $firstBus->getReservedSeats();
                 }
-
                 if (isset($secondBus)) {
-                    $this->sendConfirmationMail($passenger, $secondBus);
+                    $secondLeft = $secondBus->getTotalSeats() - $secondBus->getReservedSeats();
                 }
 
-                $this->flashMessenger()->success(
-                    'Success',
-                    'You have successfully registered your buses.'
-                );
+                if ($firstLeft>0 & $secondLeft>0) {
+                    $passenger = new Passenger($formData['first_name'], $formData['last_name'], $formData['email'], $code, $firstBus, $secondBus);
+                    $code->setUsed();
 
-                $this->redirect()->toRoute(
-                    'prom_registration_index',
-                    array(
-                        'action' => 'registration',
-                    )
-                );
+                    $this->getEntityManager()->persist($passenger);
+                    $this->getEntityManager()->flush();
+
+                    if (isset($firstBus)) {
+                        $this->sendConfirmationMail($passenger, $firstBus);
+                    }
+
+                    if (isset($secondBus)) {
+                        $this->sendConfirmationMail($passenger, $secondBus);
+                    }
+
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'You have successfully registered your buses.'
+                    );
+
+                    $this->redirect()->toRoute(
+                        'prom_registration_index',
+                        array(
+                            'action' => 'registration',
+                        )
+                    );
+                } else {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'One of the busses you selected has no seats left.'
+                    );
+
+                    $this->redirect()->toRoute(
+                        'prom_registration_index',
+                        array(
+                            'action' => 'create',
+                        )
+                    );
+                }
             }
         }
 
