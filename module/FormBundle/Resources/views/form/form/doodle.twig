@@ -54,9 +54,9 @@
                 <thead>
                     <tr>
                         <th>{{ translate('Date') }}</th>
-                        <th width="240px" class="hidden-xs">{{ translate('Location') }}</th>
-                        <th width="250px" class="hidden-xs hidden-sm">{{ translate('Info') }}</th>
-                        <th width="130px">{{ translate('Subscribe') }}</th>
+                        <th>{{ translate('Location') }}</th>
+                        <th width = 250px class="hidden-xs hidden-sm">{{ translate('Info') }}</th>
+                        <th>{{ translate('Subscribe') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,7 +65,7 @@
                             <td>
                                 {{ field.getLabel(language) }}
                             </td>
-                            <td class="hidden-xs">
+                            <td>
                                 {{ field.getLocation(language) }}
                             </td>
                             <td class="hidden-xs hidden-sm">
