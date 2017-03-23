@@ -139,11 +139,15 @@
                                 {% endfor %}
                             {% else %}
                                 <td>
-                                    {% for slot in entry.getFieldEntries() %}
-                                        {{ slot.getField().getLabel(language) }}
-                                        {% if slot.getField().getExtraInformation(language) %} ({{slot.getField().getExtraInformation(language)}}){% endif %}
-                                        {% if not loop.last %},{% endif %}
-                                    {% endfor %}
+									{% if entry.getFieldEntries %}
+										{% for slot in entry.getFieldEntries() %}	
+											{{ slot.getField().getLabel(language) }}
+											{% if slot.getField().getExtraInformation(language) %} ({{slot.getField().getExtraInformation(language)}}){% endif %}
+											{% if not loop.last %},{% endif %}
+										{% endfor %}
+									{% else %}
+										 <i>{{ translate('(empty)') }}</i>
+									{% endif %}
                                 </td>
                             {% endif %}
 
@@ -302,3 +306,4 @@
         }
     </script>
 {% endblock %}
+
