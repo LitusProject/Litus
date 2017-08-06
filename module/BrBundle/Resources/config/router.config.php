@@ -170,10 +170,11 @@ return array(
         'br_admin_order' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/order[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/br/order[/:action[/:id[/:entry]][/page/:page]][/]',
                 'constraints'   => array(
                     'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'        => '[0-9]*',
+                    'entry'     => '[0-9]*',
                     'page'      => '[0-9]*',
                 ),
                 'defaults' => array(

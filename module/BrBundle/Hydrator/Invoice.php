@@ -32,7 +32,7 @@ class Invoice extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('VATContext', 'reference', 'tax_free', 'discount_text', 'auto_discount_text');
+    private static $stdKeys = array('VATContext', 'company_reference', 'tax_free', 'discount_text', 'auto_discount_text');
 
     protected function doHydrate(array $data, $object = null)
     {

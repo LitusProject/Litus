@@ -9,6 +9,7 @@
         <h2><b>General overview</b></h2>
 
         <p>Total Number of contracts: <b>{{totals['amount']}}</b></p>
+        <p>Total Number of invoices: <b>{{totals['invoice']}}</b></p>
         <p>Total Contracted: <b>&euro; {{totals['contract']}}</b></p>
         <p>Total Signed: <b>&euro; {{totals['signed']}}</b></p>
         <p>Total Paid: <b>&euro; {{totals['paid']}}</b></p><br>
@@ -17,7 +18,8 @@
         <table class="full_width manage">
             <tr>
                 <th>Person</th>
-                <th>Number of Contracts</th>
+                <th>&#35; Contracts</th>
+                <th>&#35; Invoices</th>
                 <th>Contracted</th>
                 <th>Signed</th>
                 <th>Paid</th>
@@ -27,6 +29,7 @@
                 <tr class="item item-{{ entry['person'].getId() }}">
                     <td>{{entry['person'].getPerson().getFullName()}}</td>
                     <td>{{entry['amount']}}</td>
+                    <td>{{entry['invoice']}}</td>
                     <td>&euro; {{entry['contract']}}</td>
                     <td>&euro; {{entry['signed']}}</td>
                     <td>&euro; {{entry['paid']}}</td>

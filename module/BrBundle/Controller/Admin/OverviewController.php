@@ -249,6 +249,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
     {
         $contractNmbr = 0;
         $totalContracted = 0;
+        $totalInvoiced = 0;
         $totalSigned = 0;
         $totalPaid = 0;
 
@@ -267,6 +268,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 ->findAllNewOrSignedByPerson($person);
 
             $contracted = 0;
+            $invoiced = 0;
             $signed = 0;
             $paid = 0;
 
@@ -280,6 +282,8 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 if ($contract->isSigned()) {
                     $signed = $signed + $value;
                     $totalSigned = $totalSigned + $value;
+                    $invoiced = $invoiced + 1;
+                    $totalInvoiced = $totalInvoiced + 1;
 
                     if ($contract->getOrder()->getInvoice()->isPaid()) {
                         $paid = $paid + $value;
@@ -291,6 +295,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             $collection[] = array(
                 'person' => $person,
                 'amount' => sizeof($contracts),
+                'invoice' => $invoiced,
                 'contract' => $contracted,
                 'signed' => $signed,
                 'paid' => $paid,
@@ -300,6 +305,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $totals = array(
             'amount' => $contractNmbr,
             'contract' => $totalContracted,
+            'invoice' => $totalInvoiced,
             'paid' => $totalPaid,
             'signed' => $totalSigned,
         );

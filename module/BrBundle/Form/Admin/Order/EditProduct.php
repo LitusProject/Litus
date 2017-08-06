@@ -18,59 +18,53 @@
 
 namespace BrBundle\Form\Admin\Order;
 
+use BrBundle\Entity\Product\OrderEntry,
+    LogicException;
+
 /**
  * Add a product.
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class AddProduct extends Add
+class EditProduct extends AddProduct
 {
     /**
-     * @var array The currently used products
+     * @var entry|null The order entry to edit.
      */
-    protected $currentProducts;
-
-    /**
-     * The maximum number allowed to enter in the corporate order form.
-     */
-    const MAX_ORDER_NUMBER = 10;
+    private $entry;
 
     public function init()
     {
         parent::init();
 
-        $this->remove('submit');
-
-        foreach ($this->getElements() as $element) {
-            if (in_array($element->getName(), array('csrf'))) {
-                continue;
-            }
-            $this->remove($element->getName());
-            $this->add(array(
-                'type'     => 'hidden',
-                'name'     => $element->getName(),
-                'value'    => $element->getValue(),
-                'required' => $element->isRequired(),
-                'options'  => $element->getOptions(),
-            ));
+        if (null === $this->entry) {
+            throw new LogicException('Cannot edit a null order entry');
         }
+
+        $this->remove('new_product');
+        $this->remove('new_product_amount');
 
         $this->add(array(
             'type'     => 'select',
-            'name'     => 'new_product',
+            'name'     => 'edit_product',
             'label'    => 'Product',
             'required' => true,
+            'value'    => strval($this->entry->getProduct()->getId()),
             'attributes' => array(
                 'options' => $this->createProductArray(),
+                'disable' => 'disable',
             ),
         ));
 
         $this->add(array(
             'type'     => 'text',
-            'name'     => 'new_product_amount',
+            'name'     => 'edit_product_amount',
             'label'    => 'Amount',
             'required' => true,
+            'attributes' => array(
+                'value'    => $this->entry->getQuantity(),
+            ),
             'options'  => array(
                 'input' => array(
                     'filters'  => array(
@@ -92,35 +86,20 @@ class AddProduct extends Add
             ),
         ));
 
-        $this->addSubmit('Add', 'product_add');
+        $this->remove('product_add')
+            ->addSubmit('Save', 'product_edit');
+
+        $this->bind($this->order);
     }
 
     /**
-     * @param  array $currentProducts
+     * @param  OrderEntry $entry
      * @return self
      */
-    public function setCurrentProducts(array $currentProducts)
+    public function setEntry(OrderEntry $entry)
     {
-        $this->currentProducts = $currentProducts;
+        $this->entry = $entry;
 
         return $this;
-    }
-
-    protected function createProductArray()
-    {
-        $products = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Product')
-            ->findByOld(false);
-
-        $productArray = array(
-            '' => '',
-        );
-        foreach ($products as $product) {
-            if (!in_array($product, $this->currentProducts)) {
-                $productArray[$product->getId()] = $product->getName();
-            }
-        }
-
-        return $productArray;
     }
 }

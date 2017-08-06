@@ -125,6 +125,16 @@ Het VTK Bedrijvenrelaties Team',
         'description' => 'Payment information',
     ),
     array(
+        'key'         => 'br.contract_above_signatures',
+        'value'       => serialize(
+            array(
+                'en' => 'Contract opgemaakt in tweevoud te Heverlee op <date/>.',
+                'nl' => 'Contract opgemaakt in tweevoud te Heverlee op <date/>.',
+            )
+        ),
+        'description' => 'Payment information',
+    ),
+    array(
         'key'         => 'br.cv_book_foreword',
         'value'       => '<section title="Example section">
 <content>
