@@ -1,0 +1,16 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/order/partials/navigation.twig' %}
+
+    <div id="controller_action">
+        {% include 'admin/partials/flashMessenger.twig' %}
+
+        <h1>Order {{ order.getCompany().getName() }}</h1>
+        <h2>Edit product {{ entry.getProduct.getName() }}</h2>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(editProductForm) }}
+
+    </div>
+{% endblock %}

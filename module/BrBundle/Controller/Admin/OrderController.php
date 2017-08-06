@@ -189,6 +189,51 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function editProductAction()
+    {
+        if (!($order = $this->getOrderEntity(false))) {
+            return new ViewModel();
+        }
+
+        if ($order->hasContract() && $order->getContract()->isSigned()) {
+            return new ViewModel();
+        }
+
+        if (!($collaborator = $this->getCollaboratorEntity())) {
+            return new ViewModel();
+        }
+
+        $entry = $this->getEntityById('BrBundle\Entity\Product\OrderEntry', 'entry');
+
+        $currentProducts = array();
+
+        $form = $this->getForm('br_order_edit-product', array('order' => $order, 'entry' => $entry, 'current_products' => $currentProducts, 'current_year' => $this->getCurrentAcademicYear()));
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->flush();
+                $this->redirect()->toRoute(
+                    'br_admin_order',
+                    array(
+                        'action' => 'product',
+                        'id' => $order->getId(),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'order' => $order,
+                'entry' => $entry,
+                'editProductForm' => $form,
+            )
+        );
+    }
+
     public function deleteAction()
     {
         $this->initAjax();

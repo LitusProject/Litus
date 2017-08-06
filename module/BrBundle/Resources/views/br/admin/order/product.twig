@@ -26,6 +26,8 @@
 
         <br style="clear:both">
 
+        <h2>Current products</h2>
+
         <table class="full_width manage">
             <tr>
                 <th>Name</th>
@@ -38,9 +40,12 @@
                     <td>{{ entry.getProduct().getName() }}</td>
                     <td>{{ entry.getQuantity() }}</td>
                     <td>&euro; {{ (entry.getQuantity() * entry.getProduct().getPrice() / 100)|number_format(2) }}</td>
-                    <td>
+                    <td class="actions">
                         {% if hasAccess('br_admin_order', 'deleteProduct') %}
                             <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getProduct().getName() }}" class="delete">Delete</a>
+                        {% endif %}
+                        {% if hasAccess('br_admin_order', 'editProduct') %}
+                            <a href="{{ url('br_admin_order', {"action": "editProduct", "id": entry.getOrder().getId(), "entry": entry.getId()}) }}" class="edit">Edit</a>
                         {% endif %}
                     </td>
                 </tr>
