@@ -6,6 +6,9 @@
             {% if hasAccess('br_admin_order', 'add') %}
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_order', {"action": "add"}) }}">Add</a></li>
             {% endif %}
+            {% if hasAccess('br_admin_order', 'signed') %}
+                <li><a {% if 'signed' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_order', {"action": "signed"}) }}">Signed</a></li>
+            {% endif %}
             {% if hasAccess('br_admin_order', 'old') %}
                 <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_order', {"action": "old"}) }}">Old</a></li>
             {% endif %}

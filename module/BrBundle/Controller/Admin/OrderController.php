@@ -36,12 +36,32 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'BrBundle\Entity\Product\Order',
-            $this->getParam('page'),
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Product\Order')
+                ->findAllQuery(),
+            $this->getParam('page')
+        );
+
+        foreach ($paginator as $order) {
+            $order->setEntityManager($this->getEntityManager());
+        }
+
+        return new ViewModel(
             array(
-                'old' => false,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
+        );
+    }
+
+    public function signedAction()
+    {
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Product\Order')
+                ->findAllQuery(),
+            $this->getParam('page')
         );
 
         foreach ($paginator as $order) {
@@ -133,6 +153,14 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 );
             }
         }
+
+        if ($order->hasContract()){
+            $this->redirect()->toRoute(
+            'br_admin_order',
+            array(
+                'action' => 'manage',
+            )
+        );
 
         return new ViewModel(
             array(

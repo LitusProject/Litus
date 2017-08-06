@@ -62,7 +62,7 @@ return array(
             'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay',
         ),
         'br_admin_order' => array(
-            'product', 'edit', 'delete', 'deleteProduct', 'editProduct', 'view', 'add', 'old', 'manage', 'generate',
+            'product', 'edit', 'delete', 'deleteProduct', 'editProduct', 'view', 'add', 'old', 'manage', 'signed', 'generate',
         ),
         'br_admin_overview' => array(
             'person', 'company', 'view', 'personview', 'companyview', 'pdf', 'csv',

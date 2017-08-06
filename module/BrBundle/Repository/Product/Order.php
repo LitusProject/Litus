@@ -28,4 +28,20 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Order extends EntityRepository
 {
+	/**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('o')
+            ->from('BrBundle\Entity\Product\Order', 'o')
+            ->where(
+                $query->expr()->eq('o.old', 'false')
+            )
+            ->orderBy('o.creationTime', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
 }
