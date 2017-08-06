@@ -69,6 +69,8 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
             foreach ($entries as $entry) {
                 $orderEntry = new OrderEntryEntity($object, $entry->getProduct(), $entry->getQuantity());
                 $object->setEntry($orderEntry);
+
+                $this->getEntityManager()->persist($orderEntry);
             }
         }
 
@@ -82,6 +84,13 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setEntry($orderEntry);
         }
 
+        $object->setEntityManager($this->getEntityManager());
+        $object->setAutoDiscount($data['auto_discount']);
+        $object->setAutoDiscountPercentage();
+
+        $this->getEntityManager()->persist($object);
+        $this->getEntityManager()->flush();
+
         if (isset($data['edit_product'])) {
             $product = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Product')
@@ -93,13 +102,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
                 ->findOneByOrderAndProduct($object, $product);
 
             $entry->setQuantity($data['edit_product_amount']);
-
-            $this->getEntityManager()->persist($entry);
         }
-
-        $object->setEntityManager($this->getEntityManager());
-        $object->setAutoDiscount($data['auto_discount']);
-        $object->setAutoDiscountPercentage();
 
         $this->getEntityManager()->persist($object);
 

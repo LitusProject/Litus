@@ -143,24 +143,25 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $this->getEntityManager()->flush();
-                $this->redirect()->toRoute(
-                    'br_admin_order',
-                    array(
-                        'action' => 'product',
-                        'id' => $order->getId(),
-                    )
-                );
+                if ($order->hasContract()) {
+                    $this->redirect()->toRoute(
+                        'br_admin_order',
+                        array(
+                            'action' => 'manage',
+                        )
+                    );
+                } else {
+                    $this->getEntityManager()->flush();
+                    $this->redirect()->toRoute(
+                        'br_admin_order',
+                        array(
+                            'action' => 'product',
+                            'id' => $order->getId(),
+                        )
+                    );
+                }
             }
         }
-
-        if ($order->hasContract()){
-            $this->redirect()->toRoute(
-            'br_admin_order',
-            array(
-                'action' => 'manage',
-            )
-        );
 
         return new ViewModel(
             array(
@@ -243,13 +244,23 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
             if ($form->isValid()) {
                 $this->getEntityManager()->flush();
-                $this->redirect()->toRoute(
-                    'br_admin_order',
-                    array(
-                        'action' => 'product',
-                        'id' => $order->getId(),
-                    )
-                );
+
+                if ($order->hasContract()) {
+                    $this->redirect()->toRoute(
+                        'br_admin_order',
+                        array(
+                            'action' => 'manage',
+                        )
+                    );
+                } else {
+                    $this->redirect()->toRoute(
+                        'br_admin_order',
+                        array(
+                            'action' => 'product',
+                            'id' => $order->getId(),
+                        )
+                    );
+                }
             }
         }
 
@@ -282,7 +293,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function deleteProductAction()
     {
-        $this->initAjax();
+        //$this->initAjax();
 
         if (!($entry = $this->getEntryEntity(false))) {
             return new ViewModel();
