@@ -131,7 +131,7 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
      */
     private function getAutoDiscountText()
     {
-        if ($this->order->getAutoDiscountPercentage() > 0) {
+        if (isset($this->order) && $this->order->getAutoDiscountPercentage() > 0) {
             return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.contract_auto_discount_text');

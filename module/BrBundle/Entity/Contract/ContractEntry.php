@@ -142,7 +142,7 @@ class ContractEntry
      */
     public function getContractText()
     {
-        return $this->contractText;
+        return str_replace('<amount />', (String) $this->getOrderEntry()->getQuantity() ,$this->contractText);
     }
 
     /**
