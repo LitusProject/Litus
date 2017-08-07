@@ -77,7 +77,7 @@ class EditProduct extends AddProduct
                         array(
                             'name' => 'between',
                             'options' => array(
-                                'min' => 0,
+                                'min' => 1,
                                 'max' => self::MAX_ORDER_NUMBER,
                             ),
                         ),

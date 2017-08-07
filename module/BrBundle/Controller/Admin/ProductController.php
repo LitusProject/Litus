@@ -176,7 +176,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $file = new CsvFile();
-        $heading = array('Contract', 'Invoice', 'Company Name', 'Author', 'Contact Person', 'Contact Phone', 'Contact Email', 'Remarks');
+        $heading = array('Contract', 'Invoice', 'Quantity', 'Company Name', 'Author', 'Contact Person', 'Contact Phone', 'Contact Email', 'Remarks');
 
         $orderEntries = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Product\OrderEntry')
@@ -204,6 +204,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
             $results[] = array(
                 $contract->getFullContractNumber($this->getEntityManager()),
                 $order->getInvoice()->getInvoiceNumber($this->getEntityManager()),
+                $entry->getQuantity(),
                 $company->getName(),
                 $contract->getAuthor()->getPerson()->getFullName(),
                 $contactName,

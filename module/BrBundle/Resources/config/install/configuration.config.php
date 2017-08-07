@@ -63,11 +63,6 @@ return array(
         'description' => 'Payment information',
     ),
     array(
-            'key'         => 'br.contract_language',
-            'value'       => 'en',
-            'description' => 'The language the contracts are in',
-    ),
-    array(
         'key'         => 'br.account_activated_mail',
         'value'       => serialize(
             array(
@@ -128,11 +123,21 @@ Het VTK Bedrijvenrelaties Team',
         'key'         => 'br.contract_above_signatures',
         'value'       => serialize(
             array(
-                'en' => 'Contract opgemaakt in tweevoud te Heverlee op <date/>.',
-                'nl' => 'Contract opgemaakt in tweevoud te Heverlee op <date/>.',
+                'en' => 'Contract drawn up in in duplicate at ',
+                'nl' => 'Contract opgemaakt in tweevoud te ',
             )
         ),
-        'description' => 'Payment information',
+        'description' => 'Extra line contract first part',
+    ),
+    array(
+        'key'         => 'br.contract_above_signatures_middle',
+        'value'       => serialize(
+            array(
+                'en' => ' on ',
+                'nl' => ' op ',
+            )
+        ),
+        'description' => 'Extra line contract second part',
     ),
     array(
         'key'         => 'br.cv_book_foreword',

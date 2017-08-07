@@ -27,12 +27,18 @@
                     <fo:region-body margin-bottom="8mm"/>
                     <fo:region-after region-name="footer-block" extent="10mm"/>
                 </fo:simple-page-master>
+                <fo:simple-page-master master-name="page-master-rest" page-height="297mm" page-width="210mm" margin-top="15mm" margin-bottom="10mm" margin-left="20mm" margin-right="20mm">
+                    <fo:region-body margin-bottom="8mm"/>
+                    <fo:region-after region-name="footer-block" extent="10mm"/>
+                </fo:simple-page-master>
 
                 <fo:page-sequence-master master-name="document">
                    <fo:repeatable-page-master-alternatives>
-                       <fo:conditional-page-master-reference odd-or-even="even"
+                       <fo:conditional-page-master-reference page-position="first"
                          master-reference="page-master"/>
-                       <fo:conditional-page-master-reference odd-or-even="odd"
+                       <fo:conditional-page-master-reference page-position="rest"
+                         master-reference="page-master-rest"/>
+                       <fo:conditional-page-master-reference page-position="last"
                          master-reference="page-master"/>
                    </fo:repeatable-page-master-alternatives>
                 </fo:page-sequence-master>
@@ -132,13 +138,16 @@
                         <fo:block padding-after="8px">
                             <xsl:apply-templates select="sub_entries"/>
                         </fo:block>
+                        <fo:block padding-after="8px">
+                            <xsl:apply-templates select="above_sign"/>
+                        </fo:block>
                         <fo:table table-layout="fixed" width="100%">
                             <fo:table-column column-width="50%"/>
                             <fo:table-column column-width="0%"/>
                             <fo:table-column column-width="40%"/>
 
                             <fo:table-body>
-                                <fo:table-row>
+                                <fo:table-row height="3cm">
                                     <fo:table-cell>
                                         <fo:block>
                                             <xsl:call-template name="for_u"/><xsl:text> </xsl:text><xsl:call-template name="the_company"/><xsl:text>,</xsl:text>
@@ -159,7 +168,7 @@
                                         </fo:block>
                                     </fo:table-cell>
                                 </fo:table-row>
-                                <fo:table-row>
+                                <fo:table-row height="3cm">
                                     <fo:table-cell>
                                         <fo:block>
                                         </fo:block>
@@ -218,6 +227,14 @@
         </fo:list-item>
     </xsl:template>
 
+    <xsl:template name="date" match="date">
+        <xsl:value-of select="/contract/@date"/>
+    </xsl:template>
+
+    <xsl:template name="location" match="location">
+        <xsl:value-of select="/contract/@location"/>
+    </xsl:template>
+
     <xsl:template match="payment_details">
         <fo:block><xsl:apply-templates/></fo:block>
     </xsl:template>
@@ -236,6 +253,13 @@
         <fo:block><xsl:apply-templates/></fo:block>
     </xsl:template>
 
+    <xsl:template match="above_sign">
+        <xsl:value-of select="/contract/above_sign"/>
+        <xsl:call-template name="location"/>
+        <xsl:value-of select="/contract/above_sign/middle"/>
+        <xsl:call-template name="date"/>
+    </xsl:template>
+
     <xsl:template match="company_name">
         <xsl:value-of select="/contract/company/name"/>
     </xsl:template>
@@ -244,14 +268,6 @@
         <fo:block background-color="#DDDDDD" font-size="16pt" text-align="center" padding-top="5px" padding-bottom="5px" padding-left="0px" padding-right="0px" margin-left="0px" margin-right="0px">
             <xsl:apply-templates/>
         </fo:block>
-    </xsl:template>
-
-    <xsl:template name="date" match="date">
-        <xsl:value-of select="/contract/@date"/>
-    </xsl:template>
-
-    <xsl:template name="location" match="location">
-        <xsl:value-of select="/contract/@location"/>
     </xsl:template>
 
     <xsl:template name="payment_days" match="payment_days">

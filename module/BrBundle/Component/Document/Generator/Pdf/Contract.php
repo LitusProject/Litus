@@ -80,7 +80,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         $title = $this->contract->getTitle();
         $company = $this->contract->getOrder()->getCompany();
 
-        $locale = $configs->getConfigValue('br.contract_language');
+        $locale = 'nl'; //TODO make this possible in both english and dutch
         $this->translator->setLocale($locale);
 
         $formatter = new IntlDateFormatter($locale, IntlDateFormatter::FULL, IntlDateFormatter::NONE);
@@ -92,7 +92,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
         $entries = $this->contract->getEntries();
 
-        $unionName = $configs->getConfigValue('organization_name');
+        $unionName = $configs->getConfigValue('br.organization_name');
         $unionNameShort = $configs->getConfigValue('organization_short_name');
         $unionAddressArray = unserialize($configs->getConfigValue('organization_address_array'));
 
@@ -125,6 +125,8 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         }
 
         $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl']; //TODO make this possible in both english and dutch.
+        $above_sign = unserialize($configs->getConfigValue('br.contract_above_signatures'))['nl']; //TODO make this possible in both english and dutch.
+        $above_sign_middle = unserialize($configs->getConfigValue('br.contract_above_signatures_middle'))['nl']; //TODO make this possible in both english and dutch.
 
         $contractText = '';
         foreach ($entries as $entry) {
@@ -267,6 +269,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                         $paymentDetails
                     ),
                     new XmlObject('sub_entries', null, $sub_entries),
+                    new XmlObject('above_sign', array('middle' => $above_sign_middle), $above_sign),
                     new XmlObject('footer'),
                     new XmlObject('sale_conditions_nl'),
                     new XmlObject('for_contact_person', null, "test"),
