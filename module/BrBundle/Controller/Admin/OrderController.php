@@ -285,6 +285,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         $order->setOld();
 
+        $this->getEntityManager()->flush();
+
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),

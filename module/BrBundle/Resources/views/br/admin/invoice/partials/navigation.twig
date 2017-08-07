@@ -6,6 +6,9 @@
             {% if hasAccess('br_admin_invoice', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_invoice', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
+            {% if hasAccess('br_admin_invoice', 'payedList') %}
+                <li><a {% if 'payedList' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_invoice', {"action": "payedList"}) }}">Payed</a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>
