@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -26,41 +28,35 @@ use LogicException;
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
 class Edit extends Add
-{	
-
+{
     public function init()
-    {	
-		parent::init();
-		
+    {
+        parent::init();
+
         if (null === $this->group) {
             throw new LogicException('Cannot edit null group');
         }
-        
-    
-        if ((!$this->isPocGroup) or $this->isPocGroup === null){
-        $this->add(array(
+
+        if ((!$this->isPocGroup) or $this->isPocGroup === null) {
+            $this->add(array(
             'type'  => 'checkbox',
             'name'  => 'poc_group',
             'label' => 'Is POC group this year?',
-        ));}
-        else{
-			 $this->add(array(
+        ));
+        } else {
+            $this->add(array(
             'type'  => 'checkbox',
             'name'  => 'poc_group',
             'label' => 'Is POC group this year? ',
             'value'      => true,
             'attributes' => array(
-            'disabled'=>1),
-			));
-			}
-        
-		
+            'disabled' => 1,),
+            ));
+        }
+
         $this->remove('submit');
         $this->addSubmit('Save', 'edit');
-		
+
         $this->bind($this->group);
-        
     }
-    
-    
 }

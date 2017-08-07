@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -43,10 +45,10 @@ class Html extends \PublicationBundle\Entity\Edition
      *
      * @param Publication $publication The publication to which this edition belongs
      * @param AcademicYear
-     * @param string   $title    The title of this edition
-     * @param string   $html     The html of this edition
-     * @param DateTime $date     The date of this edition
-     * @param string   $fileName The file name of this edition
+     * @param string      $title       The title of this edition
+     * @param string      $html        The html of this edition
+     * @param DateTime    $date        The date of this edition
+     * @param string      $fileName    The file name of this edition
      */
     public function __construct(Publication $publication, AcademicYear $academicYear, $title, $html, DateTime $date, $fileName)
     {

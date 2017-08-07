@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -30,7 +32,7 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository,
 class Available extends EntityRepository
 {
     /**
-     * @param  Article                                                $article
+     * @param  Article                                                    $article
      * @return \CudiBundle\Entity\Sale\Article\Restriction\Available|null
      */
     public function findOneByArticle(Article $article)

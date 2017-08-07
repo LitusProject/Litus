@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -77,12 +79,13 @@ class Config extends EntityRepository
      * @return string
      */
     public function getConfigValue($key)
-    {	
+    {
         $config = $this->find($key);
 
         if ($config === null) {
             throw new RuntimeException('Configuration entry ' . $key . ' not found');
         }
+
         return $config->getValue();
     }
 }

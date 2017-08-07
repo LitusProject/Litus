@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -20,8 +22,8 @@ namespace SyllabusBundle\Repository;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear as AcademicYear,
-    ommonBundle\Entity\User\Person\Academic as Academic,
-    SyllabusBundle\Entity\Group as GroupEntity;
+    SyllabusBundle\Entity\Group as GroupEntity,
+    ommonBundle\Entity\User\Person\Academic as Academic;
 
 /**
  * Group
@@ -102,14 +104,13 @@ class Group extends EntityRepository
 
         return $resultSet;
     }
-    
-    
+
      /**
      * @return \Doctrine\ORM\Query
      */
-	public function findAllPocGroupsByAcademicYear(AcademicYear $AcademicYear)
-     {
-	    $query = $this->getEntityManager()->createQueryBuilder();
+    public function findAllPocGroupsByAcademicYear(AcademicYear $AcademicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('g')
             ->from('SyllabusBundle\Entity\Group', 'g')
             ->where(
@@ -120,6 +121,7 @@ class Group extends EntityRepository
             ->innerJoin('p.groupId','g')
             ->orderBy('g.name','ASC')
             ->getQuery();
+
         return $resultSet;
-      }    
+    }
 }

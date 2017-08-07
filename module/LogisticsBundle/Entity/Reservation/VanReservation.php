@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -56,7 +58,7 @@ class VanReservation extends Reservation
      * @ORM\Column(type="text")
      */
     private $load;
-    
+
     /**
      * @var text Y or N to indicate whether this is a car reservation, boolean could not be used for unkown reasons
      *
@@ -120,9 +122,7 @@ class VanReservation extends Reservation
 
         return $this;
     }
-    
-   
-    
+
     /**
      * @return boolean
      */
@@ -131,7 +131,6 @@ class VanReservation extends Reservation
         return $this->car;
     }
 
-
     /**
      * @param  boolean $car
      * @return self
@@ -139,6 +138,7 @@ class VanReservation extends Reservation
     public function setCar($car)
     {
         $this->car = $car;
+
         return $this;
     }
 }

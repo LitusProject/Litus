@@ -4,7 +4,7 @@
     <div class="page-header">
         <h1>{{ translate('POC') }}</h1>
     </div>
-   
+
     <div class="navbar navbar-default"  role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -26,12 +26,12 @@
     </div>
 
     {% for pocStuff in pocItem%}
-		 
+
 		<h3>{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;
-		
-		
+
+
 		 <a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a>
-		
+
 		</small>{% endif %}</h3>
 		<div class="row">
 		 {% for  poc in pocStuff['pocGroupList'] %}
@@ -42,7 +42,7 @@
                         {% else %}
                             <img data-src="holder.js/90x67/auto/text:Image"style="background:url(?holder.js/90x67/auto/text:Image) no-repeat; width: 90px; height: 67px;" alt="">
                         {% endif %}
-                        <h6>{{ poc.getAcademic().getFullName() }}</h6> 
+                        <h6>{{ poc.getAcademic().getFullName() }}</h6>
                     </div>
                 </div>
              {% endfor %}

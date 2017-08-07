@@ -12,16 +12,17 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace SyllabusBundle\Form\Admin\Poc;
 
-use SyllabusBundle\Entity\Poc,
-	 SyllabusBundle\Entity\Group,
-	SyllabusBundle\Repository\Group as GroupRepository;
-
+use SyllabusBundle\Entity\Group,
+    SyllabusBundle\Entity\Poc,
+    SyllabusBundle\Repository\Group as GroupRepository;
 
 /**
  * Add Poc
@@ -36,11 +37,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      * @var Group|null
      */
     protected $pocgroup = null;
-	
-    public function init()
-    {	
 
-		parent::init();
+    public function init()
+    {
+        parent::init();
 
         $this->add(array(
             'type'       => 'typeahead',
@@ -59,9 +59,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ),
             ),
         ));
-        
-        
-    
+
         $this->addSubmit('Add', 'user_add');
     }
 
@@ -75,20 +73,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         return $this;
     }
-    
+
     /**
      * @return poc
      */
     public function getPocgroup(Group $pocgroup)
     {
-
         return $this->pocgroup;
     }
-    
-   
-    
-    
-
- 
-    
 }

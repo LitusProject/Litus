@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -23,8 +25,8 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     SyllabusBundle\Component\Document\Generator\Group as CsvGenerator,
     SyllabusBundle\Entity\Group,
-    SyllabusBundle\Entity\Poc as PocEntity,
     SyllabusBundle\Entity\Group\StudyMap,
+    SyllabusBundle\Entity\Poc as PocEntity,
     Zend\View\Model\ViewModel;
 
 /**
@@ -35,11 +37,11 @@ use CommonBundle\Component\Util\AcademicYear,
 class GroupController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
-    {	
+    {
         if (!($academicYear = $this->getAcademicYearEntity())) {
             return new ViewModel();
         }
-		
+
         $paginator = $this->paginator()->createFromEntity(
             'SyllabusBundle\Entity\Group',
             $this->getParam('page'),
@@ -47,12 +49,10 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 'removed' => false,
             )
         );
-		
 
         foreach ($paginator as $group) {
             $group->setEntityManager($this->getEntityManager());
         }
-	
 
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
@@ -67,7 +67,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             )
         );
     }
-	
+
     public function addAction()
     {
         if (!($academicYear = $this->getAcademicYearEntity())) {
@@ -78,13 +78,12 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
-			
+
             if ($form->isValid()) {
                 $this->getEntityManager()->persist($form->hydrateObject());
-                
+
                 $this->getEntityManager()->flush();
-				
-				
+
                 $this->flashMessenger()->success(
                     'Succes',
                     'The group was successfully added!'
@@ -114,19 +113,16 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             )
         );
     }
-  
-    
-    
-    public function addPocGroup(Group $groupEntity,AcademicYearEntity $academicYear)
-	{	
-		$object = new PocEntity();
-		$object->setAcademicYear($academicYear);
-		$object->setGroupId($groupEntity);
-		$object->setIndicator(1);
-		$this->getEntityManager()->persist($object);
-		$this->getEntityManager()->flush();
 
-	}
+    public function addPocGroup(Group $groupEntity,AcademicYearEntity $academicYear)
+    {
+        $object = new PocEntity();
+        $object->setAcademicYear($academicYear);
+        $object->setGroupId($groupEntity);
+        $object->setIndicator(1);
+        $this->getEntityManager()->persist($object);
+        $this->getEntityManager()->flush();
+    }
     public function editAction()
     {
         if (!($academicYear = $this->getAcademicYearEntity())) {
@@ -136,33 +132,30 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
-		$isPocGroup = $group->getIsPocGroup($academicYear);
-		
+        $isPocGroup = $group->getIsPocGroup($academicYear);
+
         $form = $this->getForm('syllabus_group_edit', array('group' => $group,'academicYear' => $academicYear,'isPocGroup' => $isPocGroup));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-				$data = $form->getData();
-				
-				$isPocGroup = $group->getIsPocGroup($academicYear);
-				if ($data['poc_group']){
-					if (!$isPocGroup){
-						$this->addPocGroup($group,$academicYear);
-					}
-				}
-					
-				
-				
-				
+                $data = $form->getData();
+
+                $isPocGroup = $group->getIsPocGroup($academicYear);
+                if ($data['poc_group']) {
+                    if (!$isPocGroup) {
+                        $this->addPocGroup($group,$academicYear);
+                    }
+                }
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Succes',
                     'The group was successfully updated!'
                 );
-				
+
                 $this->redirect()->toRoute(
                     'syllabus_admin_group',
                     array(

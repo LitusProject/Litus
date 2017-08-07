@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -141,17 +143,16 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         if (!($reservation = $this->getVanReservationEntity())) {
             return $this->notFoundAction();
         }
-     
+
         if ($this->getRequest()->isPost()) {
             $form = $this->getForm('logistics_van-reservation_add', array('reservation' => $reservation));
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-				
                 $this->getEntityManager()->flush();
 
                 $driver = $reservation->getDriver();
-				
+
                 $driverArray = array(
                     'color' => '#444444',
                     'name' => '',

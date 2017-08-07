@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -25,7 +27,7 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
 class Group extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
-    {	
+    {
         if (null === $object) {
             throw new InvalidObjectException();
         }
@@ -92,14 +94,14 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
     }
 
     protected function doExtract($object = null)
-    
-    {	
-		if (null === $object) {
+    {
+        if (null === $object) {
             return array();
         }
-        
+
         $data = array();
         $data['isSpeedyGroup'] = $object->getIsSpeedyGroup();
+
         return $data;
     }
 }
