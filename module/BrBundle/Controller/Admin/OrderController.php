@@ -283,8 +283,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($order);
-        $this->getEntityManager()->flush();
+        $order->setOld();
 
         return new ViewModel(
             array(
@@ -295,10 +294,20 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function deleteProductAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         if (!($entry = $this->getEntryEntity(false))) {
             return new ViewModel();
+        }
+
+        if ($entry->getOrder()->hasContract()) {
+            $contract_entries = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract\ContractEntry')
+                ->findAllContractEntriesByOrderEntry($entry);
+
+            foreach ($contract_entries as $c_entry) {
+                $this->getEntityManager()->remove($c_entry);
+            }
         }
 
         $this->getEntityManager()->remove($entry);

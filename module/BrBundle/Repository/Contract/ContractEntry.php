@@ -20,7 +20,8 @@
 
 namespace BrBundle\Repository\Contract;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Product\OrderEntry,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * ContractEntry
@@ -84,6 +85,25 @@ class ContractEntry extends EntityRepository
             ->setParameter('version', $version)
             ->orderBy('c.position', 'ASC')
             ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  OrderEntry          $entry
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllContractEntriesByOrderEntry(OrderEntry $oentry)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('c')
+            ->from('BrBundle\Entity\Contract\ContractEntry', 'c')
+            ->where(
+                $query->expr()->eq('c.orderEntry', ':oentry')
+            )
+            ->setParameter('oentry', $oentry)
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }

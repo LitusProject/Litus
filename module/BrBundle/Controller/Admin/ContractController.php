@@ -42,7 +42,25 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
-                ->findAllNewOrSignedQuery(),
+                ->findAllNewUnsignedQuery(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'em' => $this->getEntityManager(),
+            )
+        );
+    }
+
+    public function signedListAction()
+    {
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findAllSignedQuery(),
             $this->getParam('page')
         );
 

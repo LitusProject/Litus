@@ -71,7 +71,7 @@ class OrderEntry
      */
     public function __construct(Order $order, Product $product, $quantity)
     {
-        $this->order = $order;
+        $this->setOrder($order);
         $this->product = $product;
         $this->setQuantity($quantity);
     }
@@ -90,6 +90,17 @@ class OrderEntry
     public function getOrder()
     {
         return $this->order;
+    }
+
+    /**
+     * @param  Order|null $order
+     * @return self
+     */
+    public function setOrder(Order $order)
+    {
+        $this->order = $order;
+
+        return $this;
     }
 
     /**

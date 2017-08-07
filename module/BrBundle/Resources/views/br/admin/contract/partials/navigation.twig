@@ -7,6 +7,9 @@
                 <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') or 'delete' == getParam('action') %} class="active" {% endif %}
                         href="{{ url('br_admin_contract', {"action": "manage"}) }}">Manage</a>
                 </li>
+                <li><a {% if 'signedList' == getParam('action') %} class="active" {% endif %}
+                        href="{{ url('br_admin_contract', {"action": "signedList"}) }}">Signed</a>
+                </li>
             {% endif %}
         </ul>
     </nav>

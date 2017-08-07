@@ -69,7 +69,7 @@ class Contract extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
 
         foreach ($object->getEntries() as $entry) {
-            $data['entry_' . $entry->getId()] = $entry->getContractText();
+            $data['entry_' . $entry->getId()] = $entry->getContractText(false);
         }
 
         return $data;
