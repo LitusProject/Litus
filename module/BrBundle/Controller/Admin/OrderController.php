@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -281,7 +283,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($order);
+        $order->setOld();
+
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -293,10 +296,20 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function deleteProductAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         if (!($entry = $this->getEntryEntity(false))) {
             return new ViewModel();
+        }
+
+        if ($entry->getOrder()->hasContract()) {
+            $contract_entries = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract\ContractEntry')
+                ->findAllContractEntriesByOrderEntry($entry);
+
+            foreach ($contract_entries as $c_entry) {
+                $this->getEntityManager()->remove($c_entry);
+            }
         }
 
         $this->getEntityManager()->remove($entry);

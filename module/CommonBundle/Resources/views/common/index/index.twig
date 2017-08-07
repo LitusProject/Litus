@@ -198,9 +198,9 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-                
-			
-				
+
+
+
                 <div class="col-md-6">
                     <div class="page-header" style="margin-top: 20px;">
                         <a class="heading" href="{{ url('news') }}">
@@ -232,16 +232,16 @@
                     <div class="page-header" style="margin-top: 20px;">
                         <a class="heading" href={{pocUrlOverview}}>
                             <h3>{{ translate('Poc') }}</h3>
-                        </a> 
+                        </a>
                     </div>
-                    
-                    <div class="heading-spacer"></div>	
+
+                    <div class="heading-spacer"></div>
                     <div class="alert alert-warning">
                     {{translate('The POC\'ers are elected! You can find your POC\'ers here!')}}
                     {{translate('Visit the poc page for more ')}}
                     <a href={{pocUrl}}>info</a>
 
-                    
+
 						 {% for pocStuff in myPocers.pocItem%}
 							<h3>{{ pocStuff['groupId'].getName() }}<small>&mdash;
 							<a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a>
@@ -255,15 +255,15 @@
 									<img data-src="holder.js/144x108/auto/text:Image" alt="">
 								{% endif %}
 								<br>
-								<h4>{{ poc.getAcademic().getFullName() }}</h4> 
+								<h4>{{ poc.getAcademic().getFullName() }}</h4>
 								</div>
 							</div>
 							{% endfor %}
 							</div>
 						{% endfor %}
-                    </div>	
-                 
-                </div> 
+                    </div>
+
+                </div>
             </div>
             {% endif %}
             {% endif %}

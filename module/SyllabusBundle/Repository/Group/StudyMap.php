@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -69,26 +71,20 @@ class StudyMap extends EntityRepository
 
         return $resultSet;
     }
-    
-    
-    public function findMapsFromStudyQuery(StudyEntity $study){
-		$query = $this->getEntityManager()->createQueryBuilder();
-		$resultSet = $query->select('m')
+
+    public function findMapsFromStudyQuery(StudyEntity $study)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('m')
             ->from('SyllabusBundle\Entity\Group\StudyMap','m')
             ->where(
                $query->expr()->andX(
                     $query->expr()->eq('m.study', ':study')
-					)
+                    )
             )
             ->setParameter('study', $study)
             ->getQuery();
 
         return $resultSet;
-    
     }
-    
-    
-    
-    
-    
 }

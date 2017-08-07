@@ -3,7 +3,7 @@
 
     <nav id="controller_nav">
         <ul>
-            
+
             {% if hasAccess('syllabus_admin_poc', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('syllabus_admin_poc', {'academicyear': currentAcademicYear.getCode()}) }}">Manage</a></li>
             {% endif %}

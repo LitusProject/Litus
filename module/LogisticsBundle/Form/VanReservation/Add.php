@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -92,7 +94,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'format' => 'd/m/Y H:i',
                             ),
                         ),
-                        
+
                     ),
                 ),
             ),
@@ -142,8 +144,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
             ),
         ));
-        
-       
+
         $this->add(array(
             'type'       => 'textarea',
             'name'       => 'additional_info',
@@ -187,7 +188,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
             ),
         ));
-       
+
         $this->add(array(
             'type'  => 'select',
             'name'  => 'car',
@@ -200,7 +201,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->addSubmit('Add', 'reservation_add btn btn-primary', 'add')
             ->addSubmit('Edit', 'reservation_edit btn btn-primary', 'edit');
-		
+
         if ($this->reservation != null) {
             $this->bind($this->reservation);
         }
@@ -212,9 +213,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         return $this;
     }
-    private function returnYesNoArray(){
-       
-
+    private function returnYesNoArray()
+    {
         return array("N","Y");
     }
 

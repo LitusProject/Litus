@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -19,11 +21,11 @@
 namespace CommonBundle\Controller;
 
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-	SyllabusBundle\Entity\Poc,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic as Academic,
-    SyllabusBundle\Entity\Group\StudyMap,
     SecretaryBundle\Entity\Syllabus\StudyEnrollment,
+    SyllabusBundle\Entity\Group\StudyMap,
+    SyllabusBundle\Entity\Poc,
     Zend\View\Model\ViewModel;
 
 /**
@@ -34,17 +36,17 @@ use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
 class PocController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
     public function overviewAction()
-    {	
-		//pocers 
-		
-		
+    {
+        //pocers
+
+
         $academicYears = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
         $academicYear = $this->getAcademicYear();
-		$currentAcademicYear = $this->getCurrentAcademicYear();
-		//UNCOMMENT THIS IN CASE YOU WANT TO SHOW THE POCERS OF THE LOGGED IN PERSON
-		/**
+        $currentAcademicYear = $this->getCurrentAcademicYear();
+        //UNCOMMENT THIS IN CASE YOU WANT TO SHOW THE POCERS OF THE LOGGED IN PERSON
+        /**
 		$isLoggedIn = true;
 		if (!($academic = $this->getAcademicEntity())) {
 			$isLoggedIn = false;
@@ -57,18 +59,17 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 		$personalPocItem = $this-> organisePocList($pocersFromAcademic);
 		}
 		*/
-		
+
         $pocList = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
             ->findAllByAcademicYear($academicYear);
         $pocItem = $this->organisePocList($pocList);
-		
 
         return new ViewModel(
             array(
             //'isLoggedIn'	=> $isLoggedIn,
             'pocItem'       => $pocItem,
-			'academicYears' => $academicYears,
+            'academicYears' => $academicYears,
             'activeAcademicYear' => $academicYear,
             'currentAcademicYear' => $this->getCurrentAcademicYear(),
             'profilePath' => $this->getEntityManager()
@@ -78,23 +79,20 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
             )
         );
     }
-    
-    public function organisePocList($pocs){
-	
-		$lastPocGroup = null;
+
+    public function organisePocList($pocs)
+    {
+        $lastPocGroup = null;
         $pocGroupList = array();
         $pocItem = array();
-		foreach ($pocs as $pocer){
-			$pocer->setEntityManager($this->getEntityManager());
-			if ($lastPocGroup === null){
-				  $pocGroupList[] = $pocer;
-			}
-
-			elseif ($lastPocGroup === $pocer ->getGroupId()){
-				$pocGroupList[] = $pocer;
-			}
-			elseif ($lastPocGroup !== $pocer ->getGroupId()){
-				$pocItem[] = array(
+        foreach ($pocs as $pocer) {
+            $pocer->setEntityManager($this->getEntityManager());
+            if ($lastPocGroup === null) {
+                $pocGroupList[] = $pocer;
+            } elseif ($lastPocGroup === $pocer->getGroupId()) {
+                $pocGroupList[] = $pocer;
+            } elseif ($lastPocGroup !== $pocer->getGroupId()) {
+                $pocItem[] = array(
                     'groupId' => $lastPocGroup,
                     'pocGroupList' => $pocGroupList,
                     'pocExample' => $pocGroupList[0],
@@ -102,21 +100,18 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
                 unset($pocGroupList);
                 $pocGroupList = array();
                 $pocGroupList[] = $pocer;
-                    
-			}
-			$lastPocGroup = $pocer->getGroupId();
-			
-		 }
-		 if (!empty($pocGroupList)){
-			 $pocItem[] = array(
+            }
+            $lastPocGroup = $pocer->getGroupId();
+        }
+        if (!empty($pocGroupList)) {
+            $pocItem[] = array(
                     'groupId' => $lastPocGroup,
                     'pocGroupList' => $pocGroupList,
                     'pocExample' => $pocGroupList[0],);
-			
-		}
-		
-		return $pocItem;
-		}
+        }
+
+        return $pocItem;
+    }
 
     /**
      * @return AcademicYear
@@ -127,9 +122,9 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         if (null !== $this->getParam('academicyear')) {
             $date = AcademicYearUtil::getDateTime($this->getParam('academicyear'));
         }
+
         return AcademicYearUtil::getOrganizationYear($this->getEntityManager(), $date);
     }
-    
 
      /**
      * @return Academic|null

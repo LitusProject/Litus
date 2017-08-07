@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -28,4 +30,37 @@ use Doctrine\ORM\EntityRepository;
  */
 class Invoice extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllUnPayedQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $result = $query->select('i')
+            ->from('BrBundle\Entity\Invoice', 'i')
+            ->where(
+                $query->expr()->isNull('i.paidTime')
+            )
+            ->orderBy('i.creationTime', 'DESC')
+            ->getQuery();
+
+        return $result;
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllPayedQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $result = $query->select('i')
+            ->from('BrBundle\Entity\Invoice', 'i')
+            ->where(
+                $query->expr()->isNotNull('i.paidTime')
+            )
+            ->orderBy('i.creationTime', 'DESC')
+            ->getQuery();
+
+        return $result;
+    }
 }

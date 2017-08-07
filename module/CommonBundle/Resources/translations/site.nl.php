@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -118,9 +120,9 @@ return array(
     'Wiki' => 'Examenwiki',
     'International Student' => 'Internationale Student',
     'I am an international student' => 'Ik ben een internationale student',
-    
+
     'The POC\'ers are elected! You can find your POC\'ers here!' => 'De POC\'ers zijn verkozen! Hieronder kan jij jouw POC\'ers vinden! ',
     'We could not find any POC\'ers for you, try again later!' => 'We konden geen POC\'ers voor jou vinden, probeer later nog eens !',
     'Please login to see your POC\'ers!' => 'Login om jouw POC\'ers te bekijken',
-    'Visit the poc page for more ' => 'Bezoek de poc pagina voor meer '
+    'Visit the poc page for more ' => 'Bezoek de poc pagina voor meer ',
 );

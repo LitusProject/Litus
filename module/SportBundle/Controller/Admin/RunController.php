@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -85,9 +87,8 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
         foreach ($paginator as $group) {
             $group->setEntityManager($this->getEntityManager());
-            
         }
-		
+
         return new ViewModel(
             array(
                 'paginator' => $paginator,
@@ -96,13 +97,13 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             )
         );
     }
-	
-	public function editSpeedyGroupAction()
-	{	
+
+    public function editSpeedyGroupAction()
+    {
         if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
-		
+
         $form = $this->getForm('sport_group_editspeedygroup', array('group' => $group));
         $form->setGroup($group);
         if ($this->getRequest()->isPost()) {
@@ -110,7 +111,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $form->setData($formData);
             if ($form->isValid()) {
                 $formData = $form->getData();
-				$group->setIsSpeedyGroup($formData['isSpeedyGroup']);
+                $group->setIsSpeedyGroup($formData['isSpeedyGroup']);
                 $this->getEntityManager()->flush();
                 $this->flashMessenger()->success(
                     'Success',
@@ -122,25 +123,25 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                     array(
                         'action' => 'groups',
                     )
-                );	
+                );
+
                 return new ViewModel();
             }
         }
-         return new ViewModel(
+
+        return new ViewModel(
             array(
                 'form' => $form,
                 'group' => $group,
             )
         );
-        }
-        
-	
+    }
+
     public function editGroupAction()
-    {	
+    {
         if (!($group = $this->getGroupEntity())) {
             return new ViewModel();
         }
-
 
         $form = $this->getForm('sport_group_edit');
         if ($this->getRequest()->isPost()) {
@@ -153,7 +154,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                 $academic = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findOneById($formData['person']['id']);
-		
+
                 $repositoryCheck = $this->getEntityManager()
                     ->getRepository('SportBundle\Entity\Runner')
                     ->findOneByUniversityIdentification($academic->getUniversityIdentification());
@@ -511,5 +512,4 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
         return $group;
     }
-
 }

@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -65,7 +67,6 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
         $this->shifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findBy(array('event' => $event), array('startDate' => 'ASC'));
-        
     }
 
     /**
@@ -107,12 +108,10 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                     )
                 );
             }
-             if (count($shift->getResponsibles())!= $shift->getNbResponsibles())
-            
-            {	
-				$y= $shift->getNbResponsibles()-count($shift->getResponsibles());
-				for ($x = 0; $x < $y; $x++) {
-                $people[] = new Object(
+            if (count($shift->getResponsibles()) != $shift->getNbResponsibles()) {
+                $y = $shift->getNbResponsibles()-count($shift->getResponsibles());
+                for ($x = 0; $x < $y; $x++) {
+                    $people[] = new Object(
                     'person',
                     array(),
                     array(
@@ -133,11 +132,8 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                         ),
                     )
                 );
+                }
             }
-				
-				
-			}
-            
 
             foreach ($shift->getVolunteers() as $volunteer) {
                 $people[] = new Object(
@@ -162,12 +158,10 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                     )
                 );
             }
-            if (count($shift->getVolunteers())!= $shift->getNbVolunteers())
-            
-            {	
-				$y= $shift->getNbVolunteers()-count($shift->getVolunteers());
-				for ($x = 0; $x < $y; $x++) {
-                $people[] = new Object(
+            if (count($shift->getVolunteers()) != $shift->getNbVolunteers()) {
+                $y = $shift->getNbVolunteers()-count($shift->getVolunteers());
+                for ($x = 0; $x < $y; $x++) {
+                    $people[] = new Object(
                     'person',
                     array(),
                     array(
@@ -188,10 +182,8 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                         ),
                     )
                 );
+                }
             }
-				
-				
-			}
             $shifts[] = new Object(
                 'shift',
                 array(),

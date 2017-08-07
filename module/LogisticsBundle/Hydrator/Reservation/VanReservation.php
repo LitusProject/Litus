@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -56,14 +58,14 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
 
             $object = new VanReservationEntity($resource, $this->getPersonEntity());
         }
-        
+
         $driver = null;
-		if (array_key_exists('driver', $data)){
-        $driver = $this->getEntityManager()
+        if (array_key_exists('driver', $data)) {
+            $driver = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Driver')
             ->findOneById($data['driver']);
-		}
-		
+        }
+
         if ($data['passenger']['id'] != '') {
             $passenger = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')

@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -140,9 +142,13 @@ class ContractEntry
     /**
      * @return string
      */
-    public function getContractText()
+    public function getContractText($replace = true)
     {
-        return str_replace('<amount />', (String) $this->getOrderEntry()->getQuantity() ,$this->contractText);
+        if ($replace === true) {
+            return str_replace('<amount />', (String) $this->getOrderEntry()->getQuantity() ,$this->contractText);
+        }
+
+        return $this->contractText;
     }
 
     /**

@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -69,7 +71,7 @@ class OrderEntry
      */
     public function __construct(Order $order, Product $product, $quantity)
     {
-        $this->order = $order;
+        $this->setOrder($order);
         $this->product = $product;
         $this->setQuantity($quantity);
     }
@@ -88,6 +90,17 @@ class OrderEntry
     public function getOrder()
     {
         return $this->order;
+    }
+
+    /**
+     * @param  Order|null $order
+     * @return self
+     */
+    public function setOrder(Order $order)
+    {
+        $this->order = $order;
+
+        return $this;
     }
 
     /**

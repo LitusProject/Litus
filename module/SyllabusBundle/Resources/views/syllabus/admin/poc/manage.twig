@@ -41,7 +41,7 @@
                         {% if hasAccess('syllabus_admin_poc', 'editEmail') %}
                                 <a href="{{ url('syllabus_admin_poc', {"action": "editEmail", "id": pocgroup.getId(),"academicyear": currentAcademicYear.getCode()}) }}" class="edit">Edit email</a>
                         {% endif %}
-                        
+
                          {% if hasAccess('syllabus_admin_poc', 'delete') %}
                                 <a href="#" data-id="{{ pocgroup.getId() }}" data-title="{{ pocgroup.getName() }}" class="delete">Delete</a>
                         {% endif %}
@@ -61,7 +61,7 @@
                     /Delete pocgroup
                 </div>
                 <div class="modal-body">
-                    <p>	
+                    <p>
                         You are about to delete the following group as a pocgroup and remove all its members: <b class="title"></b>!
                         Please note that this operation cannot be undone!
                     </p>
@@ -76,7 +76,7 @@
             </div>
         </div>
     </div>
-   
+
 {% endblock %}
 
 {% block content_script %}

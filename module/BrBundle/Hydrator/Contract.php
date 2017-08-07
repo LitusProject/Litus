@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -67,7 +69,7 @@ class Contract extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
 
         foreach ($object->getEntries() as $entry) {
-            $data['entry_' . $entry->getId()] = $entry->getContractText();
+            $data['entry_' . $entry->getId()] = $entry->getContractText(false);
         }
 
         return $data;
