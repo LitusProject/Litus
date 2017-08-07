@@ -34,7 +34,7 @@ class SignContract extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(array(
             'type'     => 'text',
-            'name'     => 'reference',
+            'name'     => 'company_reference',
             'label'    => 'Company Reference',
             'options'  => array(
                 'input' => array(
