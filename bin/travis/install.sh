@@ -19,4 +19,4 @@ sudo ln -s $(which node) /usr/local/bin/node
 sudo aptitude -y install npm
 
 # install lessc
-sudo $(which npm) install -g less
+sudo npm install -g less
