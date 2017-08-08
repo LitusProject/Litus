@@ -16,8 +16,7 @@ sudo ln -s $(which node) /usr/local/bin/node
 
 # install npm
 # I know, right?
-sudo ln -s $(which node) /usr/local/bin/npm
-sudo $(which npm) install npm@4.4.1
+sudo aptitude -y install npm
 
 # install lessc
 sudo $(which npm) install -g less
