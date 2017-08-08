@@ -21,4 +21,4 @@ echo "Should install updated npm version, but is not longer compatible with old 
 echo "The system should realy be updated in the near future!" >&2
 
 # install lessc
-sudo npm install -g less
+# sudo npm install -g less
