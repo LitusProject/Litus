@@ -17,6 +17,7 @@ sudo ln -s $(which node) /usr/local/bin/node
 # install npm
 # I know, right?
 sudo apt-get install npm
+sudo npm install
 npm --version
 
 # install lessc
