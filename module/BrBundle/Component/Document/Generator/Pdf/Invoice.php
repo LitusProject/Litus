@@ -159,7 +159,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $entries[] = new XmlObject('empty_line');
         $entries[] = new XmlObject('empty_line');
 
-        $discount = $this->invoide->getOrder()->getDiscount();
+        $discount = $this->invoide->getOrder()->getDiscount() / 100;
         if (0 != $discount) {
             if ('' == $this->invoide->getDiscountText()) {
                 $entries[] = new XmlObject('entry', null,
