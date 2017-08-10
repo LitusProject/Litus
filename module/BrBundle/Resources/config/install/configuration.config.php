@@ -156,9 +156,14 @@ Example content of this section.
             'description' => 'Name of corporate relations vzw',
     ),
     array(
-            'key'         => 'br.invoice_number',
+            'key'         => 'br.invoice_book_number',
             'value'       => '1',
             'description' => 'The default number that is used on an invoice created by BR',
+    ),
+    array(
+            'key'         => 'br.invoice_year_number',
+            'value'       => '2017',
+            'description' => 'The default year prefix used for invoice numbers',
     ),
     array(
         'key'         => 'br.vat_types',

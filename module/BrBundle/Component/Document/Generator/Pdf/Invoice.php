@@ -74,7 +74,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $clientVat = $this->vatFormat($this->invoide->getOrder()->getCompany()->getInvoiceVatNumber());
         $reference =  $this->invoide->getCompanyReference();
 
-        $invoiceNb = $this->invoide->getInvoiceNumber($this->getEntityManager());
+        $invoiceNb = $this->invoide->getInvoiceNumber();
 
         $unionName = $configs->getConfigValue('br.organization_name');
         $unionAddressArray = unserialize($configs->getConfigValue('organization_address_array'));

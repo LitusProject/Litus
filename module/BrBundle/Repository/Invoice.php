@@ -63,4 +63,18 @@ class Invoice extends EntityRepository
 
         return $result;
     }
+
+    /**
+     * @return int
+     */
+    public function findNextInvoiceNb()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $highestInvoiceNb = $query->select('MAX(i.invoiceNb)')
+            ->from('BrBundle\Entity\Invoice', 'i')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) ++$highestInvoiceNb;
+    }
 }

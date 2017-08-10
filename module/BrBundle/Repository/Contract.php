@@ -53,20 +53,6 @@ class Contract extends EntityRepository
     }
 
     /**
-     * @return int
-     */
-    public function findNextInvoiceNb()
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $highestInvoiceNb = $query->select('MAX(c.invoiceNb)')
-            ->from('BrBundle\Entity\Contract', 'c')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return (int) ++$highestInvoiceNb;
-    }
-
-    /**
      * @param  CollaboratorEntity $collaborator
      * @return int
      */

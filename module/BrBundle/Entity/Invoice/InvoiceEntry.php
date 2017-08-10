@@ -53,7 +53,7 @@ class InvoiceEntry
     /**
      * @var string The contract text of this product
      *
-     * @ORM\Column(name="contract_text", type="text")
+     * @ORM\Column(name="invoice_text", type="text")
      */
     private $invoiceText;
 

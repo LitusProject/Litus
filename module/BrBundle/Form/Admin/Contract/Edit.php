@@ -42,25 +42,6 @@ class Edit extends \BrBundle\Form\Admin\Order\GenerateContract
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'invoice_nb',
-            'label'    => 'Invoice Number',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
-
         foreach ($this->contract->getEntries() as $entry) {
             $this->add(array(
                 'type'     => 'textarea',

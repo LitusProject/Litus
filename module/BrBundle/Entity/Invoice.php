@@ -89,6 +89,20 @@ class Invoice
     private $invoiceEntries;
 
     /**
+     * @var int The invoice number;
+     *
+     * @ORM\Column(name="invoice_nb", type="integer")
+     */
+    private $invoiceNb;
+
+    /**
+     * @var string that represents the prefix which comes before the invoice number
+     *
+     * @ORM\Column(name="invoice_prefix", type="text")
+     */
+    private $invoiceNumberPrefix;
+
+    /**
      * @var int that resembles the version of this invoice.
      *
      * @ORM\Column(type="integer")
@@ -128,7 +142,7 @@ class Invoice
      *
      * @param Order $order The order to create the invoice for.
      */
-    public function __construct(Order $order)
+    public function __construct(Order $order, EntityManager $entityManager)
     {
         $this->setOrder($order);
         $this->creationTime = new DateTime();
@@ -136,16 +150,73 @@ class Invoice
         $this->setVatContext();
         $this->setTaxFree();
 
+        $this->setNewInvoiceNumber($entityManager);
+
         $this->invoiceEntries = new ArrayCollection();
     }
 
-    public function getInvoiceNumber(EntityManager $entityManager)
+    /**
+     * @return int
+     */
+    public function getInvoiceNb()
     {
-        $brNumber = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.invoice_number');
+        return $this->invoiceNb;
+    }
 
-        return $this->creationTime->format('Y') . $brNumber . str_pad($this->order->getContract()->getInvoiceNb(), 3, '0', STR_PAD_LEFT);
+    /**
+     * @return string
+     */
+    public function getInvoiceNumberPrefix()
+    {
+        return $this->invoiceNumberPrefix;
+    }
+
+    /**
+     * @param  string $prefix
+     * @return string
+     */
+    public function setInvoiceNumberPrefix($prefix)
+    {
+        $this->invoiceNumberPrefix = $prefix;
+
+        return $this;
+    }
+
+    public function setInvoiceNb($invoiceNb)
+    {
+        if (null === $invoiceNb || !is_numeric($invoiceNb)) {
+            throw new InvalidArgumentException('Invalid invoice number: ' . $invoiceNb);
+        }
+
+        $this->invoiceNb = (int) $invoiceNb;
+
+        return $this;
+    }
+
+    private function setNewInvoiceNumber(EntityManager $entityManager)
+    {
+        $bookNumber = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.invoice_book_number');
+
+        $yearNumber = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.invoice_year_number');
+
+        $this->setInvoiceNumberPrefix($yearNumber . $bookNumber);
+
+        $iNb = $entityManager
+            ->getRepository('BrBundle\Entity\Invoice')
+            ->findNextInvoiceNb();
+
+        $this->setInvoiceNb($iNb);
+
+        return $this;
+    }
+
+    public function getInvoiceNumber()
+    {
+        return $this->getInvoiceNumberPrefix() . str_pad($this->getInvoiceNb(), 3, '0', STR_PAD_LEFT);
     }
 
     public function setVatContext($text = '')

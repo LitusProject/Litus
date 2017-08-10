@@ -159,7 +159,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         if ('true' == $this->getParam('signed')) {
-            $invoice = new Invoice($contract->getOrder());
+            $invoice = new Invoice($contract->getOrder(), $this->getEntityManager());
 
             foreach ($contract->getEntries() as $entry) {
                 $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(),0);
@@ -202,7 +202,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
             if ($form->isValid()) {
                 $invoice = $form->hydrateObject(
-                    new Invoice($contract->getOrder())
+                    new Invoice($contract->getOrder(), $this->getEntityManager())
                 );
 
                 foreach ($contract->getEntries() as $entry) {
@@ -213,12 +213,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 $this->getEntityManager()->persist($invoice);
 
                 $contract->setSigned();
-
-                $contract->setInvoiceNb(
-                    $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Contract')
-                        ->findNextInvoiceNb()
-                );
 
                 $this->getEntityManager()->flush();
 

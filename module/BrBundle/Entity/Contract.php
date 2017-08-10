@@ -125,13 +125,6 @@ class Contract
     private $paymentDays;
 
     /**
-     * @var int The invoice number; -1 indicates that the contract hasn't been signed yet
-     *
-     * @ORM\Column(name="invoice_nb", type="integer")
-     */
-    private $invoiceNb;
-
-    /**
      * @var int The contract number. A form of identification that means something to the human users.
      *
      * @ORM\Column(name="contract_nb", type="integer")
@@ -175,7 +168,6 @@ class Contract
         $this->setVersion(0);
 
         $this->setDirty();
-        $this->setInvoiceNb();
 
         $this->contractEntries = new ArrayCollection();
         $this->signed = false;
@@ -424,30 +416,6 @@ class Contract
     public function setSigned($signed = true)
     {
         $this->signed = $signed;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getInvoiceNb()
-    {
-        return $this->invoiceNb;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     * @param  int                      $invoiceNb
-     * @return self
-     */
-    public function setInvoiceNb($invoiceNb = -1)
-    {
-        if (null === $invoiceNb || !is_numeric($invoiceNb)) {
-            throw new InvalidArgumentException('Invalid invoice number: ' . $invoiceNb);
-        }
-
-        $this->invoiceNb = (int) $invoiceNb;
 
         return $this;
     }

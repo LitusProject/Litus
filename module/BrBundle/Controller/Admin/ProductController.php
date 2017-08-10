@@ -205,7 +205,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
             }
             $results[] = array(
                 $contract->getFullContractNumber($this->getEntityManager()),
-                $order->getInvoice()->getInvoiceNumber($this->getEntityManager()),
+                $order->getInvoice()->getInvoiceNumber(),
                 $entry->getQuantity(),
                 $company->getName(),
                 $contract->getAuthor()->getPerson()->getFullName(),
