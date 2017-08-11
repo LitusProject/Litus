@@ -20,7 +20,7 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Invoice\Contract as InvoiceEntity,
+use BrBundle\Entity\Invoice\ContractInvoice as InvoiceEntity,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
     CommonBundle\Component\Util\Xml\Object as XmlObject,
@@ -41,8 +41,8 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
     private $invoide;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Invoice    $invoice       The invoice for which we want to generate a PDF
+     * @param \Doctrine\ORM\EntityManager              $entityManager The EntityManager instance
+     * @param \BrBundle\Entity\Invoice\ContractInvoice $invoice       The invoice for which we want to generate a PDF
      */
     public function __construct(EntityManager $entityManager, InvoiceEntity $invoice)
     {
@@ -55,7 +55,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.file_path') . '/invoices/'
                 . $invoice->getInvoiceNumberPrefix() . '/'
-                . $invoice->getInvoiceNumber()'.pdf'
+                . $invoice->getInvoiceNumber() . '.pdf'
         );
         $this->invoide = $invoice;
     }
