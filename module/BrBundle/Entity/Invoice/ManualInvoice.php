@@ -129,6 +129,14 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
      */
     public function getPrice()
     {
+        return $this->price;
+    }
+
+    /**
+     * @return int price in cents with sign
+     */
+    public function getSignedPrice()
+    {
         $sign = 1;
         if ($this->isRefund()) {
             $sign = -1;
@@ -142,7 +150,7 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
      */
     public function getExclusivePrice()
     {
-        return ((double) $this->getPrice()) / 100;
+        return ((double) $this->getSignedPrice()) / 100;
     }
 
     /**

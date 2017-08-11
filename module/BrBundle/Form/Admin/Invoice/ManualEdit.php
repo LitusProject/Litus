@@ -38,6 +38,37 @@ class ManualEdit extends ManualAdd
     {
         parent::init();
 
+        $this->remove('file');
+
+        $this->add(array(
+            'type'       => 'file',
+            'name'       => 'file',
+            'label'      => 'Change File',
+            'required'   => false,
+            'attributes' => array(
+                'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILESIZE . '.',
+                'size'      => 256,
+            ),
+            'options'    => array(
+                'input' => array(
+                    'validators' => array(
+                        array(
+                            'name' => 'filesize',
+                            'options' => array(
+                                'max' => self::FILESIZE,
+                            ),
+                        ),
+                        array(
+                            'name' => 'fileextension',
+                            'options' => array(
+                                'extension' => 'pdf',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ));
+
         $this->remove('submit');
 
         $this->addSubmit('Save', 'invoice_edit');

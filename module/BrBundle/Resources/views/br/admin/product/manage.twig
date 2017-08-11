@@ -32,7 +32,7 @@
                 {% if product.isOld() == false %}
                     <tr class="item item-{{ product.getId() }}">
                         <td>{{ product.getName() }}</td>
-                        <td> &euro; {{ (product.getPrice()/100) |number_format(2) }}</td>
+                        <td> &euro; {{ (product.getSignedPrice()/100) |number_format(2) }}</td>
                         <td>{{ product.getAuthor().getFullName() }}</td>
                         <td class="actions">
                             {% if hasAccess('br_admin_product', 'companies') %}

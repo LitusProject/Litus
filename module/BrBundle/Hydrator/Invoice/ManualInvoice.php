@@ -55,9 +55,9 @@ class ManualInvoice extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data['company'] = $object->getCompany()->getId();
-
         $data = $this->stdExtract($object, self::$stdKeys);
+
+        $data['company'] = $object->getCompany()->getId();
 
         return $data;
     }

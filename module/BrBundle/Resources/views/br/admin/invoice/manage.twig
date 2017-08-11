@@ -55,7 +55,7 @@
                         {% if hasAccess('br_admin_invoice', 'view') and invoice.hasContract() %}
                             <a href="{{ url('br_admin_invoice', {"action": "view", "id": invoice.getId()}) }}" class="view">View</a>
                         {% endif %}
-                        {% if hasAccess('br_admin_invoice', 'download') and invoice.hasContract() %}
+                        {% if hasAccess('br_admin_invoice', 'download') %}
                             <a href="{{ url('br_admin_invoice', {"action": "download", "id": invoice.getId()}) }}" class="download">Download</a>
                         {% endif %}
                     </td>

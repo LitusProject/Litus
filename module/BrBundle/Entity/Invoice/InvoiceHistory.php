@@ -68,7 +68,13 @@ class InvoiceHistory
     public function __construct(Invoice $invoice)
     {
         $this->invoice = $invoice;
-        $this->entries = new ArrayCollection($invoice->getEntries());
+
+        if ($invoice->hasContract()) {
+            $this->entries = new ArrayCollection($invoice->getEntries());
+        } else {
+            $this->entries = new ArrayCollection();
+        }
+
         $this->version = $invoice->getVersion();
     }
 

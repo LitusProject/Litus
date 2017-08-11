@@ -117,7 +117,11 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         $form = $this->getForm('br_invoice_manual-add');
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = array_merge(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            );
+
             $form->setData($formData);
 
             if ($form->isValid()) {
@@ -127,6 +131,17 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                         $collaborator
                     )
                 );
+
+                $filePath = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.file_path') . '/invoices/'
+                    . $invoice->getInvoiceNumberPrefix();
+
+                do {
+                    $fileName = '/' . $invoice->getInvoiceNumber() . '.pdf';
+                } while (file_exists($filePath . $fileName));
+
+                rename($formData['file']['tmp_name'], $filePath . $fileName);
 
                 $this->getEntityManager()->persist($invoice);
                 $this->getEntityManager()->flush();
@@ -167,10 +182,27 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = array_merge(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            );
+
             $form->setData($formData);
 
             if ($form->isValid()) {
+                if (!($formData['file']['tmp_name'] == '')) {
+                    $filePath = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.file_path') . '/invoices/'
+                    . $invoice->getInvoiceNumberPrefix();
+
+                    do {
+                        $fileName = '/' . $invoice->getInvoiceNumber() . '.pdf';
+                    } while (file_exists($filePath . $fileName));
+
+                    rename($formData['file']['tmp_name'], $filePath . $fileName);
+                }
+
                 $history = new InvoiceHistory($invoice);
                 $this->getEntityManager()->persist($history);
 

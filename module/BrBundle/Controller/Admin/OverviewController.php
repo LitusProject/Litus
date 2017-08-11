@@ -128,7 +128,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                         $contract->getAuthor()->getPerson()->getFullName(),
                         $entry->getProduct()->getName(),
                         $entry->getQuantity(),
-                        $entry->getProduct()->getPrice() / 100,
+                        $entry->getProduct()->getSignedPrice() / 100,
                         $totalContractValue,
                         $contract->isSigned() ? $invoice->getInvoiceNumber() : '/',
                     );

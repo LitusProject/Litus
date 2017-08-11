@@ -100,7 +100,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $entries = array();
         foreach ($this->invoide->getEntries() as $entry) {
             $product = $entry->getOrderEntry()->getProduct();
-            $price = $product->getPrice() / 100;
+            $price = $product->getSignedPrice() / 100;
 
             if (($price > 0) || (null !== $entry->getInvoiceDescription() && '' != $entry->getInvoiceDescription())) {
                 $tax = $this->invoide->getTaxFree() ? 0 : $vatTypes[$product->getVatType()];

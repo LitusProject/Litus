@@ -197,7 +197,7 @@ class Order
         foreach ($this->orderEntries as $orderEntry) {
             if (!$orderEntry->getProduct()->isRefund()) {
                 $orderEntry->getProduct()->setEntityManager($this->entityManager);
-                $costNoRefund = $costNoRefund + ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
+                $costNoRefund = $costNoRefund + ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
             }
         }
 
@@ -389,7 +389,7 @@ class Order
             $orderEntry->getProduct()->setEntityManager($this->entityManager);
 
             if ($orderEntry->getProduct()->getVatPercentage() == $vatType) {
-                $cost = $cost + (double) ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
+                $cost = $cost + (double) ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
             }
         }
 
@@ -405,7 +405,7 @@ class Order
 
         foreach ($this->orderEntries as $orderEntry) {
             $orderEntry->getProduct()->setEntityManager($this->entityManager);
-            $cost = $cost + ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
+            $cost = $cost + ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
         }
 
         return (double) $cost;
