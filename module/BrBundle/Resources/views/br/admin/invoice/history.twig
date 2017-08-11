@@ -19,9 +19,9 @@
             {% for invoiceHistory in paginator %}
                 <tr class="item item-{{ invoice.getId() }}">
                 	<td>{{ invoiceHistory.getVersion() }}</td>
-                    <td>{{ invoiceHistory.getInvoice().getOrder().getContract().getCompany().getName() }}</td>
-                    <td>{{ invoiceHistory.getInvoice().getOrder().getContract().getAuthor().getPerson().getFullName() }}</td>
-                    <td>{{ invoiceHistory.getInvoice().getOrder().getContract().getTitle() }}</td>
+                    <td>{{ invoiceHistory.getInvoice().getCompany().getName() }}</td>
+                    <td>{{ invoiceHistory.getInvoice().getAuthor().getPerson().getFullName() }}</td>
+                    <td>{{ invoiceHistory.getInvoice().getTitle() }}</td>
                     <td>{{ invoiceHistory.getInvoice().getCreationTime().format('j/m/Y') }}</td>
 
                     <td class="actions">

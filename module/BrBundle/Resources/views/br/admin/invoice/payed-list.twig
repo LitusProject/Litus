@@ -22,7 +22,7 @@
         <table class="full_width manage">
             <tr>
                 <th>Company</th>
-                <th>Order Description</th>
+                <th>Title</th>
                 <th>Creation Time</th>
                 <th>Invoice Number</th>
                 <th width="70px">Paid</th>
@@ -31,8 +31,8 @@
 
             {% for invoice in paginator %}
                 <tr class="item item-{{ invoice.getId() }}">
-                    <td>{{ invoice.getOrder().getCompany().getName()}}</td>
-                    <td>{{ invoice.getOrder().getDescription() }}</td>
+                    <td>{{ invoice.getCompany().getName()}}</td>
+                    <td>{{ invoice.getTitle() }}</td>
                     <td>{{ invoice.getCreationTime().format('j/m/Y') }}</td>
                     <td>{{ invoice.getInvoiceNumber() }}</td>
                     {% if invoice.isPayed() %}

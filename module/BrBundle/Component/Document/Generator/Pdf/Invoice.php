@@ -20,7 +20,7 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Invoice as InvoiceEntity,
+use BrBundle\Entity\Invoice\Contract as InvoiceEntity,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
     CommonBundle\Component\Util\Xml\Object as XmlObject,
@@ -53,8 +53,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                 ->getConfigValue('br.pdf_generator_path') . '/invoice/invoice.xsl',
             $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.file_path') . '/contracts/'
-                . $invoice->getOrder()->getContract()->getId() . '/invoice.pdf'
+                ->getConfigValue('br.file_path') . '/invoices/'
+                . $invoice->getInvoiceNumberPrefix() . '/'
+                . $invoice->getInvoiceNumber()'.pdf'
         );
         $this->invoide = $invoice;
     }

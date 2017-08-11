@@ -88,7 +88,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
     public function csvAction()
     {
         $file = new CsvFile();
-        $heading = array('Company Name', 'Contract Number', 'Author', 'Product', 'Parameters', 'Amount', 'Price', 'Numbers Only', 'Contract Total', 'Invoice');
+        $heading = array('Company Name', 'Contract Number', 'Author', 'Product', 'Amount', 'Price', 'Contract Total', 'Invoice');
 
         $ids = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
@@ -110,18 +110,20 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
                 $orderEntries = $contract->getOrder()->getEntries();
 
+                $invoice = $this->getEntityManager()
+                    ->getRepository('BrBundle\entity\Invoice\ContractInvoice')
+                    ->findAllByOrder($contract->getOrder());
+
                 foreach ($orderEntries as $entry) {
                     $results[] = array(
                         $company->getName(),
                         $contract->getFullContractNumber($this->getEntityManager()),
                         $contract->getAuthor()->getPerson()->getFullName(),
                         $entry->getProduct()->getName(),
-                        '?',
                         $entry->getQuantity(),
                         $entry->getProduct()->getPrice() / 100,
-                        $entry->getProduct()->getPrice() / 100,
                         $totalContractValue,
-                        $contract->isSigned() ? 1 : 0,
+                        $contract->isSigned() ? $invoice->getInvoiceNumber() : '/',
                     );
                 }
             }
@@ -211,7 +213,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             ++$companyNmbr;
 
             $contracted = 0;
-            $signed = 0;
+            $invoiced = 0;
             $paid = 0;
 
             foreach ($contracts as $contract) {
@@ -221,7 +223,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 $totalContracted = $totalContracted + $value;
 
                 if ($contract->isSigned()) {
-                    $signed = $signed + $value;
+                    $invoiced = $invoiced + $value;
                     $totalSigned = $totalSigned + $value;
 
                     if ($contract->getOrder()->getInvoice()->isPaid()) {
@@ -235,7 +237,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 'company' => $company,
                 'amount' => sizeof($contracts),
                 'contract' => $contracted,
-                'signed' => $signed,
+                'invoiced' => $invoiced,
                 'paid' => $paid,
             );
         }
@@ -251,8 +253,8 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
     {
         $contractNmbr = 0;
         $totalContracted = 0;
+        $invoiceNmbr = 0;
         $totalInvoiced = 0;
-        $totalSigned = 0;
         $totalPaid = 0;
 
         $ids = $this->getEntityManager()
@@ -270,8 +272,8 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 ->findAllNewOrSignedByPerson($person);
 
             $contracted = 0;
+            $invoiceN = 0;
             $invoiced = 0;
-            $signed = 0;
             $paid = 0;
 
             foreach ($contracts as $contract) {
@@ -282,10 +284,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 $totalContracted = $totalContracted + $value;
 
                 if ($contract->isSigned()) {
-                    $signed = $signed + $value;
-                    $totalSigned = $totalSigned + $value;
-                    $invoiced = $invoiced + 1;
-                    $totalInvoiced = $totalInvoiced + 1;
+                    $invoiced = $invoiced + $value;
+                    $totalInvoiced = $totalInvoiced + $value;
+                    $invoiceNmbr = $invoiceNmbr + 1;
+                    $invoiceN = $invoiceN + 1;
 
                     if ($contract->getOrder()->getInvoice()->isPaid()) {
                         $paid = $paid + $value;
@@ -296,20 +298,20 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
             $collection[] = array(
                 'person' => $person,
-                'amount' => sizeof($contracts),
-                'invoice' => $invoiced,
-                'contract' => $contracted,
-                'signed' => $signed,
+                'camount' => sizeof($contracts),
+                'iamount' => $invoiceN,
+                'invoiced' => $invoiced,
+                'contracted' => $contracted,
                 'paid' => $paid,
             );
         }
 
         $totals = array(
-            'amount' => $contractNmbr,
-            'contract' => $totalContracted,
-            'invoice' => $totalInvoiced,
+            'camount' => $contractNmbr,
+            'contracted' => $totalContracted,
+            'invoiced' => $totalInvoiced,
             'paid' => $totalPaid,
-            'signed' => $totalSigned,
+            'iamount' => $invoiceNmbr,
         );
 
         return [$collection, $totals];

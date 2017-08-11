@@ -22,6 +22,7 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
     BrBundle\Entity\Invoice,
+    BrBundle\Entity\Invoice\ContractInvoice,
     BrBundle\Entity\Invoice\InvoiceHistory,
     CommonBundle\Component\Util\File as FileUtil,
     DateTime,
@@ -38,7 +39,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function viewAction()
     {
-        if (!($invoice = $this->getInvoiceEntity())) {
+        if (!($invoice = $this->getInvoiceEntity()) && !$invoice->hasContract()) {
             return new ViewModel();
         }
 
@@ -110,7 +111,10 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $form = $this->getForm('br_invoice_edit', array('invoice' => $invoice));
+        if ($invoice->hasContract()) {
+            $form = $this->getForm('br_invoice_contract-edit', array('invoice' => $invoice));
+        } else {
+        }
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -151,20 +155,24 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $generator = new InvoiceGenerator($this->getEntityManager(), $invoice);
-        $generator->generate();
+        if ($invoice->hasContract()) {
+            $generator = new InvoiceGenerator($this->getEntityManager(), $invoice);
+            $generator->generate();
+        }
 
         $file = FileUtil::getRealFilename(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.file_path') . '/contracts/'
-                . $invoice->getOrder()->getContract()->getId() . '/invoice.pdf'
+                ->getConfigValue('br.file_path') . '/invoices/'
+                . $invoice->getInvoiceNumberPrefix() . '/'
+                . $invoice->getInvoiceNumber() . '.pdf'
         );
+
         $fileHandler = fopen($file, 'r');
         $content = fread($fileHandler, filesize($file));
 
         $invoiceNb = $invoice->getInvoiceNumber();
-        $companyName = $invoice->getOrder()->getCompany()->getName();
+        $companyName = $invoice->getCompany()->getName();
 
         $headers = new Headers();
         $headers->addHeaders(array(

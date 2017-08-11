@@ -18,7 +18,7 @@
                 <th>Company</th>
                 <th>Amount of contracts</th>
                 <th>Contracted</th>
-                <th>Signed</th>
+                <th>Invoiced</th>
                 <th>Paid</th>
                 <th width="70px">Actions</th>
             </tr>
@@ -27,7 +27,7 @@
                     <td>{{entry['company'].getName()}}</td>
                     <td>{{entry['amount']}}</td>
                     <td>&euro; {{entry['contract']}}</td>
-                    <td>&euro; {{entry['signed']}}</td>
+                    <td>&euro; {{entry['invoiced']}}</td>
                     <td>&euro; {{entry['paid']}}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_overview', 'view') %}

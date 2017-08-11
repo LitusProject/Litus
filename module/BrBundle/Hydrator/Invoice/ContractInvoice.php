@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Hydrator;
+namespace BrBundle\Hydrator\Invoice;
 
 use BrBundle\Entity\Invoice\InvoiceEntry as InvoiceEntryEntity,
     CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
@@ -29,7 +29,7 @@ use BrBundle\Entity\Invoice\InvoiceEntry as InvoiceEntryEntity,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Invoice extends \CommonBundle\Component\Hydrator\Hydrator
+class ContractInvoice extends \CommonBundle\Component\Hydrator\Hydrator
 {
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.

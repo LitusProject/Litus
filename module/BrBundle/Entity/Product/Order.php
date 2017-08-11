@@ -69,10 +69,10 @@ class Order
     private $contract;
 
     /**
-     * @var Invoice The invoice accompanying this order
+     * @var ContractInvoice The invoice accompanying this order
      *
      * @ORM\OneToOne(
-     *      targetEntity="BrBundle\Entity\Invoice",
+     *      targetEntity="BrBundle\Entity\Invoice\ContractInvoice",
      *      mappedBy="order",
      *      cascade={"all"},
      *      orphanRemoval=true
@@ -319,7 +319,7 @@ class Order
     }
 
     /**
-     * @return \BrBundle\Entity\Invoice
+     * @return \BrBundle\Entity\Invoice\ContractInvoice
      */
     public function getInvoice()
     {

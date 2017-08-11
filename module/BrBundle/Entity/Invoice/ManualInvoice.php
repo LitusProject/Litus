@@ -18,15 +18,33 @@
  * @license http://litus.cc/LICENSE
  */
 
-// Clear these tables (or columns)
-echo ' -> Clear all tables that will be updated' . PHP_EOL;
-pg_query($connection, 'DELETE FROM br.invoices_entries');
-pg_query($connection, 'DELETE FROM br.invoice_history');
-pg_query($connection, 'DELETE FROM br.contract_history');
-pg_query($connection, 'DELETE FROM br.contracts_entries');
-pg_query($connection, 'DELETE FROM br.orders_entries');
-pg_query($connection, 'DELETE FROM br.contracts');
-pg_query($connection, 'DELETE FROM br.invoices');
-pg_query($connection, 'DELETE FROM br.orders');
+namespace BrBundle\Entity\Invoice;
 
-exec('./bin/litus.sh orm:schema-tool:update --force', $output, $returnValue);
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Invoice\ManualInvoice")
+ * @ORM\Table(name="br.invoices_manual")
+ */
+class ManualInvoice extends \BrBundle\Entity\Invoice
+{
+    public function hasContract()
+    {
+        return false;
+    }
+
+    public function getCompany()
+    {
+        return null;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getExpirationTime()
+    {
+        $expireTime = 'P' . $this->getOrder()->getContract()->getPaymentDays() . 'D';
+
+        return $this->getCreationTime()->add(new DateInterval($expireTime));
+    }
+}

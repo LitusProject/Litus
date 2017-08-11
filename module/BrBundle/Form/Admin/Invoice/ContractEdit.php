@@ -27,9 +27,9 @@ use BrBundle\Entity\Invoice;
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  */
-class Edit extends \CommonBundle\Component\Form\Admin\Form
+class ContractEdit extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'BrBundle\Hydrator\Invoice';
+    protected $hydrator = 'BrBundle\Hydrator\Invoice\ContractInvoice';
 
     /**
      * @var Invoice
