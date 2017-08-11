@@ -10,8 +10,10 @@
 
         <p>Total Number of contracts: <b>{{totals['camount']}}</b></p>
         <p>Total Number of invoices: <b>{{totals['iamount']}}</b></p>
+        <p>Total Number of manual invoices: <b>{{totals['mamount']}}</b></p>
         <p>Total Contracted: <b>&euro; {{totals['contracted']}}</b></p>
         <p>Total Invoiced: <b>&euro; {{totals['invoiced']}}</b></p>
+        <p>Total Manual Invoiced: <b>&euro; {{totals['minvoiced']}}</b></p>
         <p>Total Paid: <b>&euro; {{totals['paid']}}</b></p><br>
 
         <h2><b>Individual overview</b></h2>
@@ -25,12 +27,36 @@
                 <th>Paid</th>
                 <th width="70px">Actions</th>
             </tr>
-            {% for entry in array %}
+            {% for entry in carray %}
                 <tr class="item item-{{ entry['person'].getId() }}">
                     <td>{{entry['person'].getPerson().getFullName()}}</td>
                     <td>{{entry['camount']}}</td>
                     <td>{{entry['iamount']}}</td>
                     <td>&euro; {{entry['contracted']}}</td>
+                    <td>&euro; {{entry['invoiced']}}</td>
+                    <td>&euro; {{entry['paid']}}</td>
+                    <td class="actions">
+                        {% if hasAccess('br_admin_overview', 'view') %}
+                            <a href="{{ url('br_admin_overview', {"action": "personview", "id": entry['person'].getId()}) }}" class="view">View</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        </br>
+        <h2><b>Individual Manual Invoices overview</b></h2>
+        <table class="full_width manage">
+            <tr>
+                <th>Person</th>
+                <th>&#35; Invoices</th>
+                <th>Invoiced</th>
+                <th>Paid</th>
+                <th width="70px">Actions</th>
+            </tr>
+            {% for entry in marray %}
+                <tr class="item item-{{ entry['person'].getId() }}">
+                    <td>{{entry['person'].getPerson().getFullName()}}</td>
+                    <td>{{entry['iamount']}}</td>
                     <td>&euro; {{entry['invoiced']}}</td>
                     <td>&euro; {{entry['paid']}}</td>
                     <td class="actions">

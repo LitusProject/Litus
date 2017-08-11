@@ -42,9 +42,9 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
      * @var Collaborator The person who created this node
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Collaborator")
-     * @ORM\JoinColumn(name="creation_person", referencedColumnName="id")
+     * @ORM\JoinColumn(name="author", referencedColumnName="id")
      */
-    private $creationPerson;
+    private $author;
 
     /**
      * @var Company The company used in this manual invoice
@@ -135,6 +135,14 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
         }
 
         return $sign * $this->price;
+    }
+
+    /**
+     * @return double price
+     */
+    public function getExclusivePrice()
+    {
+        return ((double) $this->getPrice()) / 100;
     }
 
     /**

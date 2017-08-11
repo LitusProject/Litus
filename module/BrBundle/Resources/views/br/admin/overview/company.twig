@@ -16,7 +16,8 @@
         <table class="full_width manage">
             <tr>
                 <th>Company</th>
-                <th>Amount of contracts</th>
+                <th>&#35; Contracts</th>
+                <th>&#35; Manual Invoices</th>
                 <th>Contracted</th>
                 <th>Invoiced</th>
                 <th>Paid</th>
@@ -26,6 +27,7 @@
                 <tr class="item item-{{ entry['company'].getId() }}">
                     <td>{{entry['company'].getName()}}</td>
                     <td>{{entry['amount']}}</td>
+                    <td>{{entry['invoiceN']}}</td>
                     <td>&euro; {{entry['contract']}}</td>
                     <td>&euro; {{entry['invoiced']}}</td>
                     <td>&euro; {{entry['paid']}}</td>

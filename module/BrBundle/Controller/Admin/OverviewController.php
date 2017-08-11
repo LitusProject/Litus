@@ -38,11 +38,12 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function personAction()
     {
-        list($array, $totals) = $this->getPersonOverview();
+        list($carray, $marray, $totals) = $this->getPersonOverview();
 
         return new ViewModel(
             array(
-                'array' => $array,
+                'carray' => $carray,
+                'marray' => $marray,
                 'totals' => $totals,
                 'em' => $this->getEntityManager(),
             )
@@ -90,9 +91,15 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $file = new CsvFile();
         $heading = array('Company Name', 'Contract Number', 'Author', 'Product', 'Amount', 'Price', 'Contract Total', 'Invoice');
 
-        $ids = $this->getEntityManager()
+        $ids1 = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
             ->findContractCompany();
+
+        $ids2 = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Invoice\ManualInvoice')
+            ->findInvoiceCompanies();
+
+        $ids = array_unique(array_merge($ids1, $ids2), SORT_REGULAR);
 
         $results = array();
         foreach ($ids as $id) {
@@ -126,6 +133,23 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                         $contract->isSigned() ? $invoice->getInvoiceNumber() : '/',
                     );
                 }
+            }
+
+            $invoices = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Invoice\ManualInvoice')
+                ->findAllByCompany($company);
+
+            foreach ($invoices as $invoice) {
+                $results[] = array(
+                    $company->getName(),
+                    'Manual',
+                    $invoice->getAuthor()->getPerson()->getFullName(),
+                    $invoice->getTitle(),
+                    1,
+                    $invoice->getPrice() / 100,
+                    $invoice->getPrice() / 100,
+                    $invoice->getInvoiceNumber(),
+                );
             }
         }
 
@@ -181,11 +205,12 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'company' => $company,
-                'paginator' => $paginator,
+                'cpaginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
+
     /**
      * @return array
      */
@@ -196,9 +221,15 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $totalSigned = 0;
         $totalPaid = 0;
 
-        $ids = $this->getEntityManager()
+        $ids1 = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
             ->findContractCompany();
+
+        $ids2 = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Invoice\ManualInvoice')
+            ->findInvoiceCompanies();
+
+        $ids = array_unique(array_merge($ids1, $ids2), SORT_REGULAR);
 
         $collection = array();
         foreach ($ids as $id) {
@@ -215,6 +246,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             $contracted = 0;
             $invoiced = 0;
             $paid = 0;
+            $invoiceN = 0;
 
             foreach ($contracts as $contract) {
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
@@ -233,9 +265,26 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 }
             }
 
+            $invoices = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Invoice\ManualInvoice')
+                ->findAllByCompany($company);
+
+            foreach ($invoices as $invoice) {
+                $value = $invoice->getExclusivePrice();
+                $totalSigned = $totalSigned + $value;
+                $invoiced = $invoiced + $value;
+                $invoiceN = $invoiceN + 1;
+
+                if ($invoice->isPaid()) {
+                    $paid = $paid + $value;
+                    $totalPaid = $totalPaid + $value;
+                }
+            }
+
             $collection[] = array(
                 'company' => $company,
                 'amount' => sizeof($contracts),
+                'invoiceN' => $invoiceN,
                 'contract' => $contracted,
                 'invoiced' => $invoiced,
                 'paid' => $paid,
@@ -252,16 +301,18 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
     private function getPersonOverview()
     {
         $contractNmbr = 0;
+        $manualNmbr = 0;
         $totalContracted = 0;
         $invoiceNmbr = 0;
         $totalInvoiced = 0;
+        $totalMInvoiced = 0;
         $totalPaid = 0;
 
         $ids = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
             ->findContractAuthors();
 
-        $collection = array();
+        $ccollection = array();
         foreach ($ids as $id) {
             $person = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Collaborator')
@@ -296,7 +347,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 }
             }
 
-            $collection[] = array(
+            $ccollection[] = array(
                 'person' => $person,
                 'camount' => sizeof($contracts),
                 'iamount' => $invoiceN,
@@ -306,15 +357,57 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             );
         }
 
+        $ids = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Invoice\ManualInvoice')
+            ->findInvoiceAuthors();
+
+        $mcollection = array();
+
+        foreach ($ids as $id) {
+            $person = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Collaborator')
+                ->findOneById($id);
+
+            $invoices = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Invoice\ManualInvoice')
+                ->findAllByAuthor($person);
+
+            $invoiceN = 0;
+            $invoiced = 0;
+            $paid = 0;
+
+            foreach ($invoices as $invoice) {
+                $value = $invoice->getExclusivePrice();
+                $totalMInvoiced = $totalMInvoiced + $value;
+                $invoiced = $invoiced + $value;
+                $manualNmbr = $manualNmbr + 1;
+                $invoiceN = $invoiceN + 1;
+
+                if ($invoice->isPaid()) {
+                    $paid = $paid + $value;
+                    $totalPaid = $totalPaid + $value;
+                }
+            }
+
+            $mcollection[] = array(
+                'person' => $person,
+                'iamount' => $invoiceN,
+                'invoiced' => $invoiced,
+                'paid' => $paid,
+            );
+        }
+
         $totals = array(
             'camount' => $contractNmbr,
             'contracted' => $totalContracted,
             'invoiced' => $totalInvoiced,
+            'minvoiced' => $totalMInvoiced,
             'paid' => $totalPaid,
             'iamount' => $invoiceNmbr,
+            'mamount' => $manualNmbr,
         );
 
-        return [$collection, $totals];
+        return [$ccollection, $mcollection, $totals];
     }
 
     /**

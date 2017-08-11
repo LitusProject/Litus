@@ -108,7 +108,9 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function manualAddAction()
     {
-        if (!($collaborator = $this->getCollaboratorEntity())) {
+        $collaborator = $this->getCollaboratorEntity();
+
+        if (!$collaborator) {
             return new ViewModel();
         }
 
@@ -122,7 +124,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                 $invoice = $form->hydrateObject(
                     new ManualInvoice(
                         $this->getEntityManager(),
-                        $this->getCollaboratorEntity()
+                        $collaborator
                     )
                 );
 
