@@ -20,7 +20,7 @@
 
 namespace BrBundle\Entity;
 
-use BrBundle\Entity\Product\Order,
+use BrBundle\Entity\Product,
     DateInterval,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,
@@ -33,8 +33,14 @@ use BrBundle\Entity\Product\Order,
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Invoice")
  * @ORM\Table(name="br.invoices")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "manual"="BrBundle\Entity\Invoice\ManualInvoice",
+ *      "contract"="BrBundle\Entity\Invoice\ContractInvoice"
+ * })
  */
-class Invoice
+abstract class Invoice
 {
     /**
      * @var int The invoice's ID
@@ -44,14 +50,6 @@ class Invoice
      * @ORM\GeneratedValue
      */
     private $id;
-
-    /**
-     * @var Order The order for which this invoice is meant
-     *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Product\Order")
-     * @ORM\JoinColumn(name="product_order", referencedColumnName="id")
-     */
-    private $order;
 
     /**
      * @var bool True if this invoice is tax free.
@@ -75,17 +73,18 @@ class Invoice
     private $paidTime;
 
     /**
-     * @var ArrayCollection The entries in this invoice
+     * @var int The invoice number;
      *
-     * @ORM\OneToMany(
-     *      targetEntity="BrBundle\Entity\Invoice\InvoiceEntry",
-     *      mappedBy="invoice",
-     *      cascade={"all"},
-     *      orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"position" = "ASC"})
+     * @ORM\Column(name="invoice_nb", type="integer")
      */
-    private $invoiceEntries;
+    private $invoiceNb;
+
+    /**
+     * @var string that represents the prefix which comes before the invoice number
+     *
+     * @ORM\Column(name="invoice_prefix", type="text")
+     */
+    private $invoiceNumberPrefix;
 
     /**
      * @var int that resembles the version of this invoice.
@@ -125,26 +124,80 @@ class Invoice
     /**
      * Creates a new invoice
      *
-     * @param Order $order The order to create the invoice for.
+     * @param EntityManager $entityManager The entityManager of the system.
      */
-    public function __construct(Order $order)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->setOrder($order);
         $this->creationTime = new DateTime();
         $this->setVersion(0);
         $this->setVatContext();
         $this->setTaxFree();
 
-        $this->invoiceEntries = new ArrayCollection();
+        $this->setNewInvoiceNumber($entityManager);
     }
 
-    public function getInvoiceNumber(EntityManager $entityManager)
+    /**
+     * @return int
+     */
+    public function getInvoiceNb()
     {
-        $brNumber = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.invoice_number');
+        return $this->invoiceNb;
+    }
 
-        return $this->creationTime->format('Y') . $brNumber . str_pad($this->order->getContract()->getInvoiceNb(), 3, '0', STR_PAD_LEFT);
+    /**
+     * @return string
+     */
+    public function getInvoiceNumberPrefix()
+    {
+        return $this->invoiceNumberPrefix;
+    }
+
+    /**
+     * @param  string $prefix
+     * @return string
+     */
+    public function setInvoiceNumberPrefix($prefix)
+    {
+        $this->invoiceNumberPrefix = $prefix;
+
+        return $this;
+    }
+
+    public function setInvoiceNb($invoiceNb)
+    {
+        if (null === $invoiceNb || !is_numeric($invoiceNb)) {
+            throw new InvalidArgumentException('Invalid invoice number: ' . $invoiceNb);
+        }
+
+        $this->invoiceNb = (int) $invoiceNb;
+
+        return $this;
+    }
+
+    private function setNewInvoiceNumber(EntityManager $entityManager)
+    {
+        $bookNumber = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.invoice_book_number');
+
+        $yearNumber = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.invoice_year_number');
+
+        $this->setInvoiceNumberPrefix($yearNumber . $bookNumber);
+
+        $iNb = $entityManager
+            ->getRepository('BrBundle\Entity\Invoice')
+            ->findNextInvoiceNb();
+
+        $this->setInvoiceNb($iNb);
+
+        return $this;
+    }
+
+    public function getInvoiceNumber()
+    {
+        return $this->getInvoiceNumberPrefix() . str_pad($this->getInvoiceNb(), 3, '0', STR_PAD_LEFT);
     }
 
     public function setVatContext($text = '')
@@ -271,25 +324,6 @@ class Invoice
     }
 
     /**
-     * @return Order
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
-
-    /**
-     * @param  Order $order
-     * @return self
-     */
-    public function setOrder(Order $order)
-    {
-        $this->order = $order;
-
-        return $this;
-    }
-
-    /**
      * @return DateTime
      */
     public function getCreationTime()
@@ -305,16 +339,6 @@ class Invoice
         $now = new DateTime();
 
         return !$this->isPaid() && $now > $this->getExpirationTime();
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getExpirationTime()
-    {
-        $expireTime = 'P' . $this->getOrder()->getContract()->getPaymentDays() . 'D';
-
-        return $this->getCreationTime()->add(new DateInterval($expireTime));
     }
 
     /**
@@ -346,32 +370,5 @@ class Invoice
     public function isPaid()
     {
         return null !== $this->paidTime;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAllEntries()
-    {
-        return $this->invoiceEntries->toArray();
-    }
-
-    /**
-     * @return array
-     * @note    Only the most recent entries get returned in the array.
-     */
-    public function getEntries()
-    {
-        $version = $this->getVersion();
-
-        $array = array();
-
-        foreach ($this->getAllEntries() as $entry) {
-            if ($entry->getVersion() == $version) {
-                array_push($array, $entry);
-            }
-        }
-
-        return $array;
     }
 }

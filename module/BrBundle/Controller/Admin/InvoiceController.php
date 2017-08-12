@@ -22,7 +22,9 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
     BrBundle\Entity\Invoice,
+    BrBundle\Entity\Invoice\ContractInvoice,
     BrBundle\Entity\Invoice\InvoiceHistory,
+    BrBundle\Entity\Invoice\ManualInvoice,
     CommonBundle\Component\Util\File as FileUtil,
     DateTime,
     Zend\Http\Headers,
@@ -38,7 +40,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function viewAction()
     {
-        if (!($invoice = $this->getInvoiceEntity())) {
+        if (!($invoice = $this->getInvoiceEntity()) && !$invoice->hasContract()) {
             return new ViewModel();
         }
 
@@ -62,7 +64,6 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'entityManager' => $this->getEntityManager(),
             )
         );
     }
@@ -80,7 +81,6 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'entityManager' => $this->getEntityManager(),
             )
         );
     }
@@ -106,19 +106,103 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function manualAddAction()
+    {
+        $collaborator = $this->getCollaboratorEntity();
+
+        if (!$collaborator) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('br_invoice_manual-add');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = array_merge(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            );
+
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $invoice = $form->hydrateObject(
+                    new ManualInvoice(
+                        $this->getEntityManager(),
+                        $collaborator
+                    )
+                );
+
+                $filePath = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.file_path') . '/invoices/'
+                    . $invoice->getInvoiceNumberPrefix();
+
+                do {
+                    $fileName = '/' . $invoice->getInvoiceNumber() . '.pdf';
+                } while (file_exists($filePath . $fileName));
+
+                rename($formData['file']['tmp_name'], $filePath . $fileName);
+
+                $this->getEntityManager()->persist($invoice);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The invoice was succesfully created!'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_invoice',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
     public function editAction()
     {
         if (!($invoice = $this->getInvoiceEntity(false))) {
             return new ViewModel();
         }
 
-        $form = $this->getForm('br_invoice_edit', array('invoice' => $invoice));
+        if ($invoice->hasContract()) {
+            $form = $this->getForm('br_invoice_contract-edit', array('invoice' => $invoice));
+        } else {
+            $form = $this->getForm('br_invoice_manual-edit', array('invoice' => $invoice));
+        }
 
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $formData = array_merge(
+                $this->getRequest()->getPost()->toArray(),
+                $this->getRequest()->getFiles()->toArray()
+            );
+
             $form->setData($formData);
 
             if ($form->isValid()) {
+                if (!($formData['file']['tmp_name'] == '')) {
+                    $filePath = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.file_path') . '/invoices/'
+                    . $invoice->getInvoiceNumberPrefix();
+
+                    do {
+                        $fileName = '/' . $invoice->getInvoiceNumber() . '.pdf';
+                    } while (file_exists($filePath . $fileName));
+
+                    rename($formData['file']['tmp_name'], $filePath . $fileName);
+                }
+
                 $history = new InvoiceHistory($invoice);
                 $this->getEntityManager()->persist($history);
 
@@ -153,20 +237,24 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        $generator = new InvoiceGenerator($this->getEntityManager(), $invoice);
-        $generator->generate();
+        if ($invoice->hasContract()) {
+            $generator = new InvoiceGenerator($this->getEntityManager(), $invoice);
+            $generator->generate();
+        }
 
         $file = FileUtil::getRealFilename(
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.file_path') . '/contracts/'
-                . $invoice->getOrder()->getContract()->getId() . '/invoice.pdf'
+                ->getConfigValue('br.file_path') . '/invoices/'
+                . $invoice->getInvoiceNumberPrefix() . '/'
+                . $invoice->getInvoiceNumber() . '.pdf'
         );
+
         $fileHandler = fopen($file, 'r');
         $content = fread($fileHandler, filesize($file));
 
-        $invoiceNb = $invoice->getInvoiceNumber($this->getEntityManager());
-        $companyName = $invoice->getOrder()->getCompany()->getName();
+        $invoiceNb = $invoice->getInvoiceNumber();
+        $companyName = $invoice->getCompany()->getName();
 
         $headers = new Headers();
         $headers->addHeaders(array(
@@ -268,5 +356,49 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         return $invoice;
+    }
+
+    /**
+     * @return Collaborator|null
+     */
+    private function getCollaboratorEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not a collaborator, so you cannot add or edit invoices.'
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_invoice',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        $collaborator = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Collaborator')
+            ->findCollaboratorByPersonId($this->getAuthentication()->getPersonObject()->getId());
+
+        if (null === $collaborator) {
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not a collaborator, so you cannot add or edit invoices.'
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_invoice',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $collaborator;
     }
 }

@@ -20,7 +20,7 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Invoice as InvoiceEntity,
+use BrBundle\Entity\Invoice\ContractInvoice as InvoiceEntity,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
     CommonBundle\Component\Util\Xml\Object as XmlObject,
@@ -41,8 +41,8 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
     private $invoide;
 
     /**
-     * @param \Doctrine\ORM\EntityManager $entityManager The EntityManager instance
-     * @param \BrBundle\Entity\Invoice    $invoice       The invoice for which we want to generate a PDF
+     * @param \Doctrine\ORM\EntityManager              $entityManager The EntityManager instance
+     * @param \BrBundle\Entity\Invoice\ContractInvoice $invoice       The invoice for which we want to generate a PDF
      */
     public function __construct(EntityManager $entityManager, InvoiceEntity $invoice)
     {
@@ -53,8 +53,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                 ->getConfigValue('br.pdf_generator_path') . '/invoice/invoice.xsl',
             $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.file_path') . '/contracts/'
-                . $invoice->getOrder()->getContract()->getId() . '/invoice.pdf'
+                ->getConfigValue('br.file_path') . '/invoices/'
+                . $invoice->getInvoiceNumberPrefix() . '/'
+                . $invoice->getInvoiceNumber() . '.pdf'
         );
         $this->invoide = $invoice;
     }
@@ -74,7 +75,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $clientVat = $this->vatFormat($this->invoide->getOrder()->getCompany()->getInvoiceVatNumber());
         $reference =  $this->invoide->getCompanyReference();
 
-        $invoiceNb = $this->invoide->getInvoiceNumber($this->getEntityManager());
+        $invoiceNb = $this->invoide->getInvoiceNumber();
 
         $unionName = $configs->getConfigValue('br.organization_name');
         $unionAddressArray = unserialize($configs->getConfigValue('organization_address_array'));
@@ -99,7 +100,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $entries = array();
         foreach ($this->invoide->getEntries() as $entry) {
             $product = $entry->getOrderEntry()->getProduct();
-            $price = $product->getPrice() / 100;
+            $price = $product->getSignedPrice() / 100;
 
             if (($price > 0) || (null !== $entry->getInvoiceDescription() && '' != $entry->getInvoiceDescription())) {
                 $tax = $this->invoide->getTaxFree() ? 0 : $vatTypes[$product->getVatType()];
@@ -159,7 +160,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $entries[] = new XmlObject('empty_line');
         $entries[] = new XmlObject('empty_line');
 
-        $discount = $this->invoide->getOrder()->getDiscount();
+        $discount = $this->invoide->getOrder()->getDiscount() / 100;
         if (0 != $discount) {
             if ('' == $this->invoide->getDiscountText()) {
                 $entries[] = new XmlObject('entry', null,

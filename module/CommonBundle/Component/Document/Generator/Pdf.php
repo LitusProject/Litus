@@ -133,7 +133,7 @@ abstract class Pdf
         $pdfDir = dirname($this->pdfPath);
 
         if (!file_exists($pdfDir)) {
-            if (!mkdir($pdfDir, 0770)) {
+            if (!mkdir($pdfDir, 0770, true)) {
                 throw new RuntimeException('Failed to create the PDF directory');
             }
         }

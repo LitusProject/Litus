@@ -39,7 +39,7 @@
                 <tr class="item item-{{ entry.getId() }}">
                     <td>{{ entry.getProduct().getName() }}</td>
                     <td>{{ entry.getQuantity() }}</td>
-                    <td>&euro; {{ (entry.getQuantity() * entry.getProduct().getPrice() / 100)|number_format(2) }}</td>
+                    <td>&euro; {{ (entry.getQuantity() * entry.getProduct().getSignedPrice() / 100)|number_format(2) }}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_order', 'deleteProduct') %}
                             <a href="#" data-id="{{ entry.getId() }}" data-name="{{ entry.getProduct().getName() }}" class="delete">Delete</a>

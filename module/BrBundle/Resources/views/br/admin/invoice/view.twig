@@ -30,7 +30,7 @@
             {% for entry in invoice.getEntries() %}
                 <tr class="item item-{{ entry.getId() }}">
                     <td>{{ entry.getInvoiceText() }}</td>
-                    <td>{{ entry.getOrderEntry().getProduct().getPrice() }}</td>
+                    <td>{{ entry.getOrderEntry().getProduct().getSignedPrice() }}</td>
                 </tr>
             {% endfor %}
         </table>

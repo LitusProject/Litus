@@ -18,28 +18,28 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Hydrator;
+namespace BrBundle\Hydrator\Invoice;
 
-use BrBundle\Entity\Contract\ContractEntry as ContractEntryEntity,
+use BrBundle\Entity\Invoice\InvoiceEntry as InvoiceEntryEntity,
     CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
- * This hydrator hydrates/extracts Contract data.
+ * This hydrator hydrates/extracts Invoice data.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Contract extends \CommonBundle\Component\Hydrator\Hydrator
+class ContractInvoice extends \CommonBundle\Component\Hydrator\Hydrator
 {
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('title', 'payment_details', 'payment_days', 'discount_text', 'auto_discount_text');
+    private static $stdKeys = array('VATContext', 'company_reference', 'tax_free', 'discount_text', 'auto_discount_text');
 
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            throw new InvalidObjectException('Cannot create a contract');
+            throw new InvalidObjectException('Cannot create an invoice');
         }
 
         $newVersionNb = 0;
@@ -47,11 +47,11 @@ class Contract extends \CommonBundle\Component\Hydrator\Hydrator
         foreach ($object->getEntries() as $entry) {
             if ($entry->getVersion() == $object->getVersion()) {
                 $newVersionNb = $entry->getVersion() + 1;
-                $newContractEntry = new ContractEntryEntity($object, $entry->getOrderEntry(), $entry->getPosition(), $newVersionNb);
+                $newInvoiceEntry = new InvoiceEntryEntity($object, $entry->getOrderEntry(), $entry->getPosition(), $newVersionNb);
 
-                $this->getEntityManager()->persist($newContractEntry);
+                $this->getEntityManager()->persist($newInvoiceEntry);
 
-                $newContractEntry->setContractText($data['entry_' . $entry->getId()]);
+                $newInvoiceEntry->setInvoiceText($data['entry_' . $entry->getId()]);
             }
         }
 
@@ -69,7 +69,7 @@ class Contract extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
 
         foreach ($object->getEntries() as $entry) {
-            $data['entry_' . $entry->getId()] = $entry->getContractText(false);
+            $data['entry_' . $entry->getId()] = $entry->getInvoiceText();
         }
 
         return $data;

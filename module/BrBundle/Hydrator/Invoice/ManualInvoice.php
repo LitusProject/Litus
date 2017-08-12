@@ -18,44 +18,33 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Hydrator;
+namespace BrBundle\Hydrator\Invoice;
 
-use BrBundle\Entity\Invoice\InvoiceEntry as InvoiceEntryEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
- * This hydrator hydrates/extracts Invoice data.
+ * This hydrator hydrates/extracts Manual Invoice data.
  *
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  */
-class Invoice extends \CommonBundle\Component\Hydrator\Hydrator
+class ManualInvoice extends \CommonBundle\Component\Hydrator\Hydrator
 {
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('VATContext', 'company_reference', 'tax_free', 'discount_text', 'auto_discount_text');
+    private static $stdKeys = array('title', 'price', 'payment_days', 'refund');
 
     protected function doHydrate(array $data, $object = null)
     {
         if (null === $object) {
-            throw new InvalidObjectException('Cannot create an invoice');
+            throw new InvalidObjectException('Cannot create a manual invoice');
         }
 
-        $newVersionNb = 0;
+        $company = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company')
+            ->findOneById($data['company']);
 
-        foreach ($object->getEntries() as $entry) {
-            if ($entry->getVersion() == $object->getVersion()) {
-                $newVersionNb = $entry->getVersion() + 1;
-                $newInvoiceEntry = new InvoiceEntryEntity($object, $entry->getOrderEntry(), $entry->getPosition(), $newVersionNb);
-
-                $this->getEntityManager()->persist($newInvoiceEntry);
-
-                $newInvoiceEntry->setInvoiceText($data['entry_' . $entry->getId()]);
-            }
-        }
-
-        $object->setVersion($newVersionNb);
+        $object->setCompany($company);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -68,9 +57,7 @@ class Invoice extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        foreach ($object->getEntries() as $entry) {
-            $data['entry_' . $entry->getId()] = $entry->getInvoiceText();
-        }
+        $data['company'] = $object->getCompany()->getId();
 
         return $data;
     }

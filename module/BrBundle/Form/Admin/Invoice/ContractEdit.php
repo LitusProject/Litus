@@ -18,17 +18,23 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Form\Admin\Contract;
+namespace BrBundle\Form\Admin\Invoice;
+
+use BrBundle\Entity\Invoice;
 
 /**
- * generate a contract.
+ * Edit Invoice
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class SignContract extends \CommonBundle\Component\Form\Admin\Form
+class ContractEdit extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'BrBundle\Hydrator\Invoice\ContractInvoice';
+
+    /**
+     * @var Invoice
+     */
+    private $invoice;
 
     public function init()
     {
@@ -47,17 +53,25 @@ class SignContract extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'tax_free',
-            'label'    => 'Tax Free',
-        ));
+        foreach ($this->invoice->getEntries() as $entry) {
+            $this->add(array(
+                'type'     => 'textarea',
+                'name'     => 'entry_' . $entry->getId(),
+                'label'    => $entry->getOrderEntry()->getProduct()->getName(),
+                'options'  => array(
+                    'input' => array(
+                        'filters'  => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            ));
+        }
 
         $this->add(array(
-            'type'     => 'text',
-            'name'     => 'auto_discount_text',
-            'label'    => 'Auto Discount Text',
-            'value'    => $this->getAutoDiscountText(),
+            'type'     => 'textarea',
+            'name'     => 'VATContext',
+            'label'    => 'VAT Context',
             'options'  => array(
                 'input' => array(
                     'filters'  => array(
@@ -67,29 +81,21 @@ class SignContract extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'discount_text',
-            'label'    => 'Discount Text',
-            'options'  => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
+        $this->addSubmit('Save', 'invoice_edit');
 
-        $this->addSubmit('Sign Contract', 'contract_edit');
+        if (null !== $this->invoice) {
+            $this->bind($this->invoice);
+        }
     }
 
     /**
-     * @return string
+     * @param  Invoice $invoice
+     * @return self
      */
-    private function getAutoDiscountText()
+    public function setInvoice(Invoice $invoice)
     {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('br.invoice_auto_discount_text');
+        $this->invoice = $invoice;
+
+        return $this;
     }
 }

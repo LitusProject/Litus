@@ -23,14 +23,12 @@ namespace BrBundle\Form\Admin\Invoice;
 use BrBundle\Entity\Invoice;
 
 /**
- * Edit Invoice
+ * Edit a manual invoice.
  *
- * @author Koen Certyn <koen.certyn@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  */
-class Edit extends \CommonBundle\Component\Form\Admin\Form
+class ManualEdit extends ManualAdd
 {
-    protected $hydrator = 'BrBundle\Hydrator\Invoice';
-
     /**
      * @var Invoice
      */
@@ -40,46 +38,38 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'company_reference',
-            'label'    => 'Company Reference',
-            'options'  => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
-            ),
-        ));
+        $this->remove('file');
 
-        foreach ($this->invoice->getEntries() as $entry) {
-            $this->add(array(
-                'type'     => 'textarea',
-                'name'     => 'entry_' . $entry->getId(),
-                'label'    => $entry->getOrderEntry()->getProduct()->getName(),
-                'options'  => array(
-                    'input' => array(
-                        'filters'  => array(
-                            array('name' => 'StringTrim'),
+        $this->add(array(
+            'type'       => 'file',
+            'name'       => 'file',
+            'label'      => 'Change File',
+            'required'   => false,
+            'attributes' => array(
+                'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILESIZE . '.',
+                'size'      => 256,
+            ),
+            'options'    => array(
+                'input' => array(
+                    'validators' => array(
+                        array(
+                            'name' => 'filesize',
+                            'options' => array(
+                                'max' => self::FILESIZE,
+                            ),
+                        ),
+                        array(
+                            'name' => 'fileextension',
+                            'options' => array(
+                                'extension' => 'pdf',
+                            ),
                         ),
                     ),
                 ),
-            ));
-        }
-
-        $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'VATContext',
-            'label'    => 'VAT Context',
-            'options'  => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
             ),
         ));
+
+        $this->remove('submit');
 
         $this->addSubmit('Save', 'invoice_edit');
 

@@ -326,6 +326,14 @@ class Product
      */
     public function getPrice()
     {
+        return $this->price;
+    }
+
+    /**
+     * @return int price in cents with sign
+     */
+    public function getSignedPrice()
+    {
         $sign = 1;
         if ($this->isRefund()) {
             $sign = -1;

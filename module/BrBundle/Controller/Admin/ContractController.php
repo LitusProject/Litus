@@ -23,7 +23,7 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
     BrBundle\Entity\Contract,
     BrBundle\Entity\Contract\ContractHistory,
-    BrBundle\Entity\Invoice,
+    BrBundle\Entity\Invoice\ContractInvoice,
     BrBundle\Entity\Invoice\InvoiceEntry,
     CommonBundle\Component\Util\File as FileUtil,
     Zend\Http\Headers,
@@ -159,7 +159,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         if ('true' == $this->getParam('signed')) {
-            $invoice = new Invoice($contract->getOrder());
+            $invoice = new ContractInvoice($contract->getOrder(), $this->getEntityManager());
 
             foreach ($contract->getEntries() as $entry) {
                 $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(), 0);
@@ -202,7 +202,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
             if ($form->isValid()) {
                 $invoice = $form->hydrateObject(
-                    new Invoice($contract->getOrder())
+                    new ContractInvoice($contract->getOrder(), $this->getEntityManager())
                 );
 
                 foreach ($contract->getEntries() as $entry) {
@@ -214,12 +214,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
                 $contract->setSigned();
 
-                $contract->setInvoiceNb(
-                    $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Contract')
-                        ->findNextInvoiceNb()
-                );
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -228,10 +222,10 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                    'br_admin_contract',
+                    'br_admin_invoice',
                     array(
-                        'action' => 'view',
-                        'id' => $contract->getId(),
+                        'action' => 'edit',
+                        'id' => $invoice->getId(),
                     )
                 );
             }
