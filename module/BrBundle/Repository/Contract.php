@@ -63,10 +63,7 @@ class Contract extends EntityRepository
             ->from('BrBundle\Entity\Contract', 'c')
             ->innerjoin('c.order','o')
             ->where(
-                $query->expr()->andX(
-                    $query->expr()->eq('c.author', ':person'),
-                    $query->expr()->eq('o.old', 'false')
-                )
+                $query->expr()->eq('c.author', ':person')
             )
             ->setParameter('person', $collaborator)
             ->getQuery()
