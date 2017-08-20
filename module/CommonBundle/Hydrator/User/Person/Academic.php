@@ -71,9 +71,13 @@ class Academic extends \CommonBundle\Hydrator\User\Person
                     : null,
         );
 
-        $data['organization'] = array(
-            'is_in_workinggroup' => $object->isInWorkingGroup(),
-        );
+        if (isset($data['organization'])) {
+            $data['organization']['is_in_workinggroup'] = $object->isInWorkingGroup();
+        } else {
+            $data['organization'] = array(
+                'is_in_workinggroup' => $object->isInWorkingGroup(),
+            );
+        }
 
         $data['unit_roles'] = $this->rolesToData($object->getUnitRoles());
 
