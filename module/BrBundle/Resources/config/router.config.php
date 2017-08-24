@@ -34,9 +34,10 @@ return array(
         'br_admin_collaborator' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/collaborator[/:action[/:id]][/]',
+                'route' => '/admin/br/collaborator[/:action[/:id][/page/:page]][/]',
                 'constraints'   => array(
                     'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'page'      => '[0-9]*',
                     'id'        => '[0-9]*',
                 ),
                 'defaults' => array(
