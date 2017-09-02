@@ -190,7 +190,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             $form->setData($formData);
 
             if ($form->isValid()) {
-                if (!($formData['file']['tmp_name'] == '')) {
+                if (isset($formData['file']) && !($formData['file']['tmp_name'] == '')) {
                     $filePath = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('br.file_path') . '/invoices/'
