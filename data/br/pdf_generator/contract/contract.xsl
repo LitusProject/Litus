@@ -256,8 +256,9 @@
     <xsl:template match="above_sign">
         <xsl:value-of select="/contract/above_sign"/>
         <xsl:call-template name="location"/>
-        <xsl:value-of select="/contract/above_sign/middle"/>
+        <xsl:value-of select="/contract/above_sign/@middle"/>
         <xsl:call-template name="date"/>
+        <xsl:value-of select="/contract/above_sign/@end"/>
     </xsl:template>
 
     <xsl:template match="company_name">
