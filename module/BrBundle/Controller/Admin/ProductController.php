@@ -261,7 +261,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         if (!($product instanceof Product)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No company was found!'
+                'No product was found!'
             );
 
             $this->redirect()->toRoute(
