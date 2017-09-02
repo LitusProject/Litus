@@ -271,7 +271,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                         $paymentDetails
                     ),
                     new XmlObject('sub_entries', null, $sub_entries),
-                    new XmlObject('above_sign', array('middle' => $above_sign_middle), $above_sign),
+                    new XmlObject('above_sign', array('middle' => $above_sign_middle, 'end' => '.'), $above_sign),
                     new XmlObject('footer'),
                     new XmlObject('sale_conditions_nl'),
                     new XmlObject('for_contact_person', null, "test"),

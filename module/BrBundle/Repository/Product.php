@@ -50,4 +50,26 @@ class Product extends EntityRepository
 
         return $result;
     }
+
+    /**
+     * @param  string              $name
+     * @return \Doctrine\ORM\Query
+     */
+    public function findProductByNameNotOld($name)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $result = $query->select('p')
+            ->from('BrBundle\Entity\Product', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('p.name', ':name'),
+                    $query->expr()->eq('p.old', 'FALSE')
+                )
+            )
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $result;
+    }
 }

@@ -70,7 +70,7 @@ class ProductName extends \CommonBundle\Component\Validator\AbstractValidator
 
         $product = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Product')
-            ->findOneByName($value);
+            ->findProductByNameNotOld($value);
 
         if (null === $product || ($this->options['product'] && ($product == $this->options['product']))) {
             return true;
