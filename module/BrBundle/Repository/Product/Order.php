@@ -33,13 +33,38 @@ class Order extends EntityRepository
     /**
      * @return \Doctrine\ORM\Query
      */
-    public function findAllQuery()
+    public function findAllNotOldUnsignedQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('BrBundle\Entity\Product\Order', 'o')
+            ->innerJoin('o.contract', 'c')
             ->where(
-                $query->expr()->eq('o.old', 'false')
+                $query->expr()->andx(
+                    $query->expr()->eq('o.old', 'false'),
+                    $query->expr()->eq('c.signed', 'false')
+                )
+            )
+            ->orderBy('o.creationTime', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllNotOldSignedQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('o')
+            ->from('BrBundle\Entity\Product\Order', 'o')
+            ->innerJoin('o.contract', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('o.old', 'false'),
+                    $query->expr()->eq('c.signed', 'true')
+                )
             )
             ->orderBy('o.creationTime', 'DESC')
             ->getQuery();
