@@ -39,7 +39,13 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
     {
         $paginator = $this->paginator()->createFromEntity(
             'BrBundle\Entity\Product',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(
+                'old' => false,
+            ),
+            array(
+                'name' => 'ASC',
+            )
         );
 
         return new ViewModel(
