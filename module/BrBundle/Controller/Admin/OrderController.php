@@ -41,7 +41,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Product\Order')
-                ->findAllQuery(),
+                ->findAllNotOldUnsignedQuery(),
             $this->getParam('page')
         );
 
@@ -62,7 +62,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Product\Order')
-                ->findAllQuery(),
+                ->findAllNotOldSignedQuery(),
             $this->getParam('page')
         );
 
