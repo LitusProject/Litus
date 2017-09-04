@@ -61,7 +61,7 @@ return array(
             'manage', 'delete', 'export', 'exportAcademics',
         ),
         'br_admin_invoice' => array(
-            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay',
+            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd',
         ),
         'br_admin_order' => array(
             'product', 'edit', 'delete', 'deleteProduct', 'editProduct', 'view', 'add', 'old', 'manage', 'signed', 'generate',
