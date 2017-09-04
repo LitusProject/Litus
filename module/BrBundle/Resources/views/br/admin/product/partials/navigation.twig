@@ -6,7 +6,7 @@
             {% if hasAccess('br_admin_product', 'add') %}
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_product', {"action": "add"}) }}">Add</a></li>
             {% endif %}
-            {% if hasAccess('br_admin_invoice', 'old') %}
+            {% if hasAccess('br_admin_product', 'old') %}
                 <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_product', {"action": "old"}) }}">Old</a></li>
             {% endif %}
             {% if hasAccess('br_admin_product', 'manage') %}
