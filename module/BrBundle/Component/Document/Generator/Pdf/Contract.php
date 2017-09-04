@@ -75,7 +75,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
      */
     protected function generateXml(TmpFile $tmpFile)
     {
-        $xml = new XmlGenerator($tmpFile);
+        $xml = new XmlGenerator($tmpFile, 'version="1.0" encoding="utf-8"');
 
         $configs = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config');
 

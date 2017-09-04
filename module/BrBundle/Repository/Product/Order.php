@@ -38,11 +38,14 @@ class Order extends EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('o')
             ->from('BrBundle\Entity\Product\Order', 'o')
-            ->innerJoin('o.contract', 'c')
+            ->leftJoin('o.contract', 'c')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('o.old', 'false'),
-                    $query->expr()->eq('c.signed', 'false')
+                    $query->expr()->orx(
+                        $query->expr()->eq('c.signed', 'false'),
+                        $query->expr()->isNull('c.signed')
+                    )
                 )
             )
             ->orderBy('o.creationTime', 'DESC')
