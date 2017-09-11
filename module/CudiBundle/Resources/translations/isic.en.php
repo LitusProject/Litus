@@ -46,4 +46,5 @@ return array(
 
     'VTK provides you with ISIC cards.' => 'From this year on VTK offers you the ISIC student card, available to use in many countries. For more info ',
     'click here' => 'click here!',
+    'Visit isic.vtk.be if you still need a picture, or want to resize a picture to the correct size!' => 'Visit <a href="http://isic.vtk.be" target="_blank">isic.vtk.be</a> if you still need a picture (smartphone with camera only), or want to resize a picture to the correct size!',
 );

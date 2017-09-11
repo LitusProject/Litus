@@ -539,4 +539,14 @@ VTK Cudi
         'value'       => '0',
         'description' => 'The id of the ISIC sale article.',
     ),
+    array(
+        'key'         => 'cudi.isic_newsletter_mandatory',
+        'value'       => '0',
+        'description' => 'Whether or not the ISIC newsletter is mandatory.',
+    ),
+    array(
+        'key'         => 'cudi.isic_print_on_sell',
+        'value'       => '0',
+        'description' => 'Whether or not an ISIC card should be printed when it is sold. This will also cause ordered ISIC cards to be immediately assigned.',
+    ),
 );

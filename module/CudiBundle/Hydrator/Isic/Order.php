@@ -64,7 +64,9 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $result['School'] = $data['studies']['school'];
         $result['StudentCity'] = $data['studies']['student_city'];
         $result['Year'] = $data['studies']['year'];
-        $result['Optin'] = $data['optins']['newsletter'] == true ? '1' : '0';
+        if (isset($data['optins']['newsletter'])) {
+            $result['Optin'] = $data['optins']['newsletter'] == true ? '1' : '0';
+        }
         $result['postOptOut'] = $data['optins']['post'] == true ? '0' : '1';
         $result['postOptOutThird'] = $data['optins']['post_third'] == true ? '0' : '1';
 

@@ -93,4 +93,9 @@ return array(
         'value'       => 'P15D',
         'description' => 'The date info message is displayed from this amount of days before the start of the new organizational year.',
     ),
+    array(
+        'key'         => 'secretary.isic_membership',
+        'value'       => '0',
+        'description' => 'Set this to 1 if ISIC cards are needed for membership. People who want to become member will be redirected to the ISIC form.',
+    ),
 );
