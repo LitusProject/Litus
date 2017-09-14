@@ -539,4 +539,14 @@ VTK Cudi
         'value'       => '0',
         'description' => 'The id of the ISIC sale article.',
     ),
+    array(
+        'key'         => 'cudi.isic_newsletter_mandatory',
+        'value'       => '0',
+        'description' => 'Whether or not the ISIC newsletter is mandatory.',
+    ),
+    array(
+        'key'         => 'cudi.isic_delay_order',
+        'value'       => '0',
+        'description' => 'Whether or not to delay an ISIC order until it has been paid for.',
+    ),
 );

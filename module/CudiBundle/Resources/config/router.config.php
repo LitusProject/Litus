@@ -848,13 +848,18 @@ return array(
         'cudi_isic' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/cudi/isic[/:action][/]',
+                'route' => '[/:language]/cudi/isic[/:action][/redirect/:redirect[/:rediraction]][/membership/:organization/:size][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '[a-z]{2}',
+                    'redirect' => '[a-zA-Z0-9_-]*',
+                    'rediraction' => '[a-zA-Z0-9]*',
+                    'organization' => '[a-zA-Z0-9]*',
+                    'size' => '[a-zA-Z_]*',
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_isic',
+                    'action' => 'form',
                 ),
             ),
         ),

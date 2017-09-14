@@ -52,7 +52,6 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $result['Firstname'] = $data['personal_info']['first_name'];
         $result['Lastname'] = $data['personal_info']['last_name'];
         $result['BirthDate'] = $data['personal_info']['birthday'];
-        $result['BirthPlace'] = $data['personal_info']['birthplace'];
         $result['Gender'] = $data['personal_info']['sex'];
         $result['language'] = $data['personal_info']['language'];
         $result['Street'] = $data['address']['street'] . ' ' . $data['address']['number'];
@@ -64,7 +63,9 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $result['School'] = $data['studies']['school'];
         $result['StudentCity'] = $data['studies']['student_city'];
         $result['Year'] = $data['studies']['year'];
-        $result['Optin'] = $data['optins']['newsletter'] == true ? '1' : '0';
+        if (isset($data['optins']['newsletter'])) {
+            $result['Optin'] = $data['optins']['newsletter'] == true ? '1' : '0';
+        }
         $result['postOptOut'] = $data['optins']['post'] == true ? '0' : '1';
         $result['postOptOutThird'] = $data['optins']['post_third'] == true ? '0' : '1';
 

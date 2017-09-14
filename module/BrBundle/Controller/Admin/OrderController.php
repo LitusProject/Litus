@@ -312,7 +312,16 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
+        if ($entry->getOrder()->getAutoDiscountPercentage() > 0) {
+            $order = $entry->getOrder();
+        }
+
         $this->getEntityManager()->remove($entry);
+        $this->getEntityManager()->flush();
+
+        if ($order) {
+            $order->setEntityManager($this->getEntityManager())->setAutoDiscountPercentage();
+        }
         $this->getEntityManager()->flush();
 
         return new ViewModel(

@@ -142,6 +142,14 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_article')
         );
+        $isicMembership = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.isic_membership') == 1;
+        $isicRedirect = false;
+        $isicOrder = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\IsicCard')
+                        ->findByPersonAndYearQuery($academic, $this->getCurrentAcademicYear())
+                        ->getResult();
 
         $membershipArticles = array();
         foreach ($ids as $organization => $id) {
@@ -254,7 +262,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     }
 
                     if ($metaData->becomeMember() && null !== $selectedOrganization) {
-                        $this->bookRegistrationArticles($academic, $organizationData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
+                        if ($isicMembership && $isicOrder == null) {
+                            $isicRedirect = true;
+                        } else {
+                            $this->bookRegistrationArticles($academic, $organizationData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
+                        }
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
@@ -265,7 +277,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                                     $this->getCurrentAcademicYear()
                                 );
 
-                            if (null !== $booking) {
+                            if (null !== $booking && $isicOrder->getBooking() !== $booking) {
                                 $this->getEntityManager()->remove($booking);
                             }
                         }
@@ -291,12 +303,24 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->success(
-                    'SUCCESS',
-                    'Your data was succesfully updated!'
-                );
+                if ($isicRedirect) {
+                    $this->redirect()->toRoute(
+                        'cudi_isic',
+                        array(
+                            'action' => 'form',
+                            'redirect' => $this->getParam('return') ? $this->getParam('return') : 'common_account',
+                            'organization' => $selectedOrganization->getId(),
+                            'size' => $organizationData['tshirt_size'],
+                        )
+                    );
+                } else {
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'Your data was succesfully updated!'
+                    );
 
-                $this->doRedirect();
+                    $this->doRedirect();
+                }
 
                 return new ViewModel();
             }
