@@ -151,9 +151,20 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.isic_membership') == 1;
 
-        $printOnSell = $this->getEntityManager()
+        if ($isicMembership) {
+            if ($this->getParam('organization') == null || $this->getParam('size') == null) {
+                $this->redirect()->toRoute(
+                    'secretary_registration',
+                    array()
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        $delayOrder = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.isic_print_on_sell') == 1;
+            ->getConfigValue('cudi.isic_delay_order') == 1;
 
         $form = $this->getForm('cudi_isic_order', $academic);
 
@@ -175,6 +186,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                 $arguments['MemberNumber'] = '';
                 $arguments['cardType'] = 'ISIC';
                 $arguments['Nationality'] = '';
+                $arguments['BirthPlace'] = '';
                 $arguments['isStudent'] = '1';
                 $arguments['sendToHome'] = '0';
                 $arguments['promotionCode'] = '';
@@ -190,15 +202,21 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                     $arguments['Optin'] = '1';
                 }
 
-                $result = new \stdClass();
+                $result = '';
+                $regex = '/^OK(S 032 (\d{3} ){3}[A-Za-z])$/i';
                 if ('development' == getenv('APPLICATION_ENV')) {
-                    $result->addIsicRegistrationResult = 'OKS 032 123 456 789 A';
+                    $result = 'OKS 032 123 456 789 A';
                 } else {
-                    $result = $this->client->addIsicRegistration($arguments);
+                    if ($delayOrder) {
+                        $result = $this->client->addUnpaidIsicRegistration($arguments)->addUnpaidIsicRegistrationResult;
+                        $regex = '/^OK(\d+)$/i';
+                    } else {
+                        $result = $this->client->addIsicRegistration($arguments)->addIsicRegistrationResult;
+                    }
                 }
 
                 $capture = array();
-                if (preg_match('/^OK(S 032 (\d{3} ){3}[A-Za-z])$/i', $result->addIsicRegistrationResult, $capture)) {
+                if (preg_match($regex, $result, $capture)) {
                     $article = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\Article')
                             ->findOneById($articleID);
@@ -207,7 +225,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                         $this->getEntityManager(),
                         $academic,
                         $article,
-                        $printOnSell ? 'assigned' : 'booked',
+                        $delayOrder ? 'assigned' : 'booked',
                         1,
                         true
                     );
@@ -219,6 +237,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                         $academic,
                         $capture[1],
                         $booking,
+                        !$delayOrder,
                         $this->getCurrentAcademicYear()
                     );
 
@@ -261,7 +280,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                     return new ViewModel(
                         array(
                             'status' => 'error',
-                            'error' => $result->addIsicRegistrationResult,
+                            'error' => $result,
                         )
                     );
                 }

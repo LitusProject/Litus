@@ -24,11 +24,13 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CudiBundle\Entity\IsicCard,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Sale\SaleItem,
     CudiBundle\Entity\User\Person\Sale\Acco as AccoCard,
     Doctrine\ORM\EntityManager,
-    SecretaryBundle\Entity\Registration;
+    SecretaryBundle\Entity\Registration,
+    Zend\Soap\Client as SoapClient;
 
 /**
  * QueueItem Object
@@ -209,6 +211,10 @@ class QueueItem
                 ->getConfigValue('secretary.membership_article')
         );
 
+        $isicArticle = $this->entityManager
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.isic_sale_article');
+
         $soldArticles = array();
 
         foreach ($bookings as $booking) {
@@ -231,6 +237,26 @@ class QueueItem
             } else {
                 $articles->{$booking->getArticle()->getId()} -= $booking->getNumber();
                 $booking->setStatus('sold', $this->entityManager);
+            }
+
+            if ($booking->getArticle()->getId() == $isicArticle) {
+                $isicCard = $this->entityManager
+                    ->getRepository('CudiBundle\Entity\IsicCard')
+                    ->findOneBy(array('booking' => $booking->getId()));
+
+                if (!$isicCard->hasPaid()) {
+                    $client = new SoapClient('http://isicregistrations.guido.be/service.asmx?WSDL');
+                    $config = $this->entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config');
+
+                    $arguments = array();
+                    $arguments['username'] = $config->getConfigValue('cudi.isic_username');
+                    $arguments['password'] = $config->getConfigValue('cudi.isic_password');
+                    $arguments['userID'] = $isicCard->getCardNumber();
+
+                    $client->hasPaid($arguments);
+                    $isicCard->setPaid(true);
+                }
             }
 
             if (isset($soldArticles[$booking->getArticle()->getId()])) {

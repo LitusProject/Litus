@@ -141,6 +141,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
+        $isicOrder = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\IsicCard')
+                        ->findByPersonAndYearQuery($academic, $this->getCurrentAcademicYear())
+                        ->getResult();
 
         $membershipArticles = array();
         foreach ($ids as $organization => $id) {
@@ -253,7 +257,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     }
 
                     if ($metaData->becomeMember() && null !== $selectedOrganization) {
-                        if ($isicMembership) {
+                        if ($isicMembership && $isicOrder == null) {
                             $isicRedirect = true;
                         } else {
                             $this->bookRegistrationArticles($academic, $organizationData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
@@ -268,7 +272,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                                     $this->getCurrentAcademicYear()
                                 );
 
-                            if (null !== $booking) {
+                            if (null !== $booking && $isicOrder->getBooking() !== $booking) {
                                 $this->getEntityManager()->remove($booking);
                             }
                         }

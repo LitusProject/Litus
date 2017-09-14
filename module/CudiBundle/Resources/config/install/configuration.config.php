@@ -545,8 +545,8 @@ VTK Cudi
         'description' => 'Whether or not the ISIC newsletter is mandatory.',
     ),
     array(
-        'key'         => 'cudi.isic_print_on_sell',
+        'key'         => 'cudi.isic_delay_order',
         'value'       => '0',
-        'description' => 'Whether or not an ISIC card should be printed when it is sold. This will also cause ordered ISIC cards to be immediately assigned.',
+        'description' => 'Whether or not to delay an ISIC order until it has been paid for.',
     ),
 );
