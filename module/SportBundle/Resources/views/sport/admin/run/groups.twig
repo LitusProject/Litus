@@ -16,7 +16,7 @@
                     <th width="50px">Actions</th>
                 </tr>
 
-           
+
                 {% for group in paginator %}
                     <tr class="item item-{{ group.getId() }}">
                         <td>{{ group.getName() }}</td>
@@ -40,8 +40,8 @@
                                <a href="{{ url('sport_admin_run', {'action': 'editSpeedyGroup', 'id': group.getId()}) }}" class="edit">Edit speedy</a>
                             {% endif %}
 
-                            
-                            
+
+
                         </td>
                     </tr>
                 {% endfor %}

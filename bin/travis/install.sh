@@ -16,7 +16,7 @@ sudo ln -s $(which node) /usr/local/bin/node
 
 # install npm
 # I know, right?
-curl -L http://npmjs.org/install.sh | sudo sh
+sudo aptitude -y install npm
 
 # install lessc
 sudo npm install -g less

@@ -12,14 +12,18 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CudiBundle\Controller;
 
-use CudiBundle\Entity\IsicCard,
+use CommonBundle\Entity\User\Person\Academic,
+    CudiBundle\Entity\IsicCard,
     CudiBundle\Entity\Sale\Booking,
+    SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
     Zend\Soap\Client as SoapClient,
     Zend\View\Model\ViewModel;
 
@@ -41,6 +45,18 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
 
     private function isEnabled()
     {
+        $bookingsEnabled = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_bookings');
+
+        if ($bookingsEnabled == 0) {
+            return new ViewModel(
+                array(
+                    'status' => 'disabled',
+                )
+            );
+        }
+
         $articleID = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('cudi.isic_sale_article');
@@ -57,12 +73,6 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
 
     private function checkAccess()
     {
-        if ('development' == getenv('APPLICATION_ENV')) {
-            return $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findOneById(8145);
-        }
-
         if (!$this->getAuthentication()->isAuthenticated()) {
             return new ViewModel(
                 array(
@@ -73,7 +83,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
 
         $academic = $this->getAuthentication()->getPersonObject();
 
-        if (!$this->isMember($academic)) {
+        if (!($academic instanceof Academic)) {
             return new ViewModel(
                 array(
                     'status' => 'noaccess',
@@ -88,7 +98,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
     {
         if ($this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\IsicCard')
-                        ->findByPersonQuery($person)
+                        ->findByPersonAndYearQuery($person, $this->getCurrentAcademicYear())
                         ->getResult()) {
             return new ViewModel(
                 array(
@@ -107,13 +117,43 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
 
         $articleID = $this->isEnabled();
         if ($articleID instanceof ViewModel) {
+            if ($this->getParam('redirect')) {
+                $this->redirect()->toRoute(
+                    $this->getParam('redirect'),
+                    array(
+                        'action' => $this->getParam('rediraction'),
+                    )
+                );
+
+                return new ViewModel();
+            }
+
             return $articleID;
         }
 
         $hasOrderedAlready = $this->hasPersonOrderedAlready($academic);
         if ($hasOrderedAlready) {
+            if ($this->getParam('redirect')) {
+                $this->redirect()->toRoute(
+                    $this->getParam('redirect'),
+                    array(
+                        'action' => $this->getParam('rediraction'),
+                    )
+                );
+
+                return new ViewModel();
+            }
+
             return $hasOrderedAlready;
         }
+
+        $isicMembership = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.isic_membership') == 1;
+
+        $printOnSell = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.isic_print_on_sell') == 1;
 
         $form = $this->getForm('cudi_isic_order', $academic);
 
@@ -144,12 +184,20 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                 } else {
                     $arguments['type'] = 'REVALIDATE';
                 }
-                $result = $this->client->addIsicRegistration($arguments);
-                if ('development' == getenv('APPLICATION_ENV') && $result->addIsicRegistrationResult === 'CARDNUMBERS ARE DEPLETED.') {
-                    $result->addIsicRegistrationResult = 'OKS 032 123 456 789 A';
-                }
-                $capture = array();
 
+                $newsletterMandatory = $config->getConfigValue('cudi.isic_newsletter_mandatory');
+                if ($newsletterMandatory == 1) {
+                    $arguments['Optin'] = '1';
+                }
+
+                $result = new \stdClass();
+                if ('development' == getenv('APPLICATION_ENV')) {
+                    $result->addIsicRegistrationResult = 'OKS 032 123 456 789 A';
+                } else {
+                    $result = $this->client->addIsicRegistration($arguments);
+                }
+
+                $capture = array();
                 if (preg_match('/^OK(S 032 (\d{3} ){3}[A-Za-z])$/i', $result->addIsicRegistrationResult, $capture)) {
                     $article = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -159,7 +207,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                         $this->getEntityManager(),
                         $academic,
                         $article,
-                        'booked',
+                        $printOnSell ? 'assigned' : 'booked',
                         1,
                         true
                     );
@@ -177,13 +225,36 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                     $this->getEntityManager()->persist($isicCard);
                     $this->getEntityManager()->flush();
 
+                    if ($isicMembership) {
+                        RegistrationArticles::book(
+                            $this->getEntityManager(),
+                            $academic,
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\General\Organization')
+                                ->findOneById($this->getParam('organization')),
+                            $this->getCurrentAcademicYear(),
+                            array(
+                                'payed' => false,
+                                'tshirtSize' => $this->getParam('size'),
+                            )
+                        );
+                    }
+
+                    if ($this->getParam('redirect')) {
+                        $this->redirect()->toRoute(
+                            $this->getParam('redirect'),
+                            array(
+                                'action' => $this->getParam('rediraction'),
+                            )
+                        );
+
+                        return new ViewModel();
+                    }
+
                     return new ViewModel(
                         array(
                             'status' => 'success',
-                            'info' => array(
-                                'result' => $result,
-                                'cardID' => $capture[1],
-                            ),
+                            'info' => $capture[1],
                         )
                     );
                 } else {

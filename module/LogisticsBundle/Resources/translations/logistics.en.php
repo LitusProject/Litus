@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -70,8 +72,10 @@ return array(
     'Additional Information' => 'Additional Information',
     'Driver' => 'Driver',
     'Passenger' => 'Passenger',
+    'Car' => 'Car',
     'Add' => 'Add',
     'New Reservation' => 'New Reservation',
+    'Edit Reservation' => 'Edit Reservation',
 
     'There was an error while loading the reservations.' => 'There was an error while loading the reservations.',
     'There was an error while deleting the reservation.' => 'There was an error while deleting the reservation.',

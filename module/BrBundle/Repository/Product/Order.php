@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -28,4 +30,48 @@ use CommonBundle\Component\Doctrine\ORM\EntityRepository;
  */
 class Order extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllNotOldUnsignedQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('o')
+            ->from('BrBundle\Entity\Product\Order', 'o')
+            ->leftJoin('o.contract', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('o.old', 'false'),
+                    $query->expr()->orx(
+                        $query->expr()->eq('c.signed', 'false'),
+                        $query->expr()->isNull('c.signed')
+                    )
+                )
+            )
+            ->orderBy('o.creationTime', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllNotOldSignedQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('o')
+            ->from('BrBundle\Entity\Product\Order', 'o')
+            ->innerJoin('o.contract', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('o.old', 'false'),
+                    $query->expr()->eq('c.signed', 'true')
+                )
+            )
+            ->orderBy('o.creationTime', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

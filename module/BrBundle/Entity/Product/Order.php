@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -67,10 +69,10 @@ class Order
     private $contract;
 
     /**
-     * @var Invoice The invoice accompanying this order
+     * @var ContractInvoice The invoice accompanying this order
      *
      * @ORM\OneToOne(
-     *      targetEntity="BrBundle\Entity\Invoice",
+     *      targetEntity="BrBundle\Entity\Invoice\ContractInvoice",
      *      mappedBy="order",
      *      cascade={"all"},
      *      orphanRemoval=true
@@ -195,7 +197,7 @@ class Order
         foreach ($this->orderEntries as $orderEntry) {
             if (!$orderEntry->getProduct()->isRefund()) {
                 $orderEntry->getProduct()->setEntityManager($this->entityManager);
-                $costNoRefund = $costNoRefund + ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
+                $costNoRefund = $costNoRefund + ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
             }
         }
 
@@ -317,7 +319,7 @@ class Order
     }
 
     /**
-     * @return \BrBundle\Entity\Invoice
+     * @return \BrBundle\Entity\Invoice\ContractInvoice
      */
     public function getInvoice()
     {
@@ -387,7 +389,7 @@ class Order
             $orderEntry->getProduct()->setEntityManager($this->entityManager);
 
             if ($orderEntry->getProduct()->getVatPercentage() == $vatType) {
-                $cost = $cost + (double) ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
+                $cost = $cost + (double) ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
             }
         }
 
@@ -403,7 +405,7 @@ class Order
 
         foreach ($this->orderEntries as $orderEntry) {
             $orderEntry->getProduct()->setEntityManager($this->entityManager);
-            $cost = $cost + ($orderEntry->getProduct()->getPrice() * $orderEntry->getQuantity());
+            $cost = $cost + ($orderEntry->getProduct()->getSignedPrice() * $orderEntry->getQuantity());
         }
 
         return (double) $cost;

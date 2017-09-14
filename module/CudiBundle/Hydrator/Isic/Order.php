@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -20,7 +22,6 @@ namespace CudiBundle\Hydrator\Isic;
 
 class Order extends \CommonBundle\Component\Hydrator\Hydrator
 {
-
     protected $entity = 'CommonBundle\Entity\User\Person\Academic';
 
     protected static $stdKeysPersonal = array(
@@ -45,7 +46,6 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-
         $result = array();
 
         $result['ISICCardNumber'] = '';
@@ -64,7 +64,9 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $result['School'] = $data['studies']['school'];
         $result['StudentCity'] = $data['studies']['student_city'];
         $result['Year'] = $data['studies']['year'];
-        $result['Optin'] = $data['optins']['newsletter'] == true ? '1' : '0';
+        if (isset($data['optins']['newsletter'])) {
+            $result['Optin'] = $data['optins']['newsletter'] == true ? '1' : '0';
+        }
         $result['postOptOut'] = $data['optins']['post'] == true ? '0' : '1';
         $result['postOptOutThird'] = $data['optins']['post_third'] == true ? '0' : '1';
 

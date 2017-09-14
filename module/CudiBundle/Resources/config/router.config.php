@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -834,7 +836,7 @@ return array(
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id' => '[%a-zA-Z0-9:.,_-]*',
-                    'page' => '[0-9]*'
+                    'page' => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_admin_isic',
@@ -846,13 +848,18 @@ return array(
         'cudi_isic' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/cudi/isic[/:action][/]',
+                'route' => '[/:language]/cudi/isic[/:action][/redirect/:redirect[/:rediraction]][/membership/:organization/:size][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '[a-z]{2}',
+                    'redirect' => '[a-zA-Z0-9_-]*',
+                    'rediraction' => '[a-zA-Z0-9]*',
+                    'organization' => '[a-zA-Z0-9]*',
+                    'size' => '[a-zA-Z_]*',
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_isic',
+                    'action' => 'form',
                 ),
             ),
         ),

@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -69,6 +71,8 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
             foreach ($entries as $entry) {
                 $orderEntry = new OrderEntryEntity($object, $entry->getProduct(), $entry->getQuantity());
                 $object->setEntry($orderEntry);
+
+                $this->getEntityManager()->persist($orderEntry);
             }
         }
 
@@ -85,6 +89,22 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setEntityManager($this->getEntityManager());
         $object->setAutoDiscount($data['auto_discount']);
         $object->setAutoDiscountPercentage();
+
+        $this->getEntityManager()->persist($object);
+        $this->getEntityManager()->flush();
+
+        if (isset($data['edit_product'])) {
+            $product = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Product')
+                ->findProductByIdQuery($data['edit_product'])
+                ->getResult()[0];
+
+            $entry = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Product\OrderEntry')
+                ->findOneByOrderAndProduct($object, $product);
+
+            $entry->setQuantity($data['edit_product_amount']);
+        }
 
         $this->getEntityManager()->persist($object);
 

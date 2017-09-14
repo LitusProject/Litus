@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -61,11 +63,6 @@ return array(
             )
         ),
         'description' => 'Payment information',
-    ),
-    array(
-            'key'         => 'br.contract_language',
-            'value'       => 'en',
-            'description' => 'The language the contracts are in',
     ),
     array(
         'key'         => 'br.account_activated_mail',
@@ -125,6 +122,26 @@ Het Student IT Bedrijvenrelaties Team',
         'description' => 'Payment information',
     ),
     array(
+        'key'         => 'br.contract_above_signatures',
+        'value'       => serialize(
+            array(
+                'en' => 'Contract drawn up in in duplicate at ',
+                'nl' => 'Contract opgemaakt in tweevoud te ',
+            )
+        ),
+        'description' => 'Extra line contract first part',
+    ),
+    array(
+        'key'         => 'br.contract_above_signatures_middle',
+        'value'       => serialize(
+            array(
+                'en' => ' on ',
+                'nl' => ' op ',
+            )
+        ),
+        'description' => 'Extra line contract second part',
+    ),
+    array(
         'key'         => 'br.cv_book_foreword',
         'value'       => '<section title="Example section">
 <content>
@@ -139,9 +156,14 @@ Example content of this section.
             'description' => 'Name of corporate relations vzw',
     ),
     array(
-            'key'         => 'br.invoice_number',
+            'key'         => 'br.invoice_book_number',
             'value'       => '1',
             'description' => 'The default number that is used on an invoice created by BR',
+    ),
+    array(
+            'key'         => 'br.invoice_year_number',
+            'value'       => '2017',
+            'description' => 'The default year prefix used for invoice numbers',
     ),
     array(
         'key'         => 'br.vat_types',

@@ -12,15 +12,17 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Controller;
 
-use DateInterval,
+use CommonBundle\Entity\User\Person\Academic as Academic,
+    DateInterval,
     DateTime,
-    CommonBundle\Entity\User\Person\Academic as Academic,
     Zend\View\Model\ViewModel;
 
 /**
@@ -140,28 +142,25 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         return $bookings;
     }
-	/**
-     * @return string|null
-     */
+     /**
+      * @return string|null
+      */
      private function getPocUrl()
      {
-		
-        return $this->getEntityManager()
+         return $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.pocUrl');
-	 }
-	 	/**
-     * @return string|null
-     */
+     }
+     /**
+      * @return string|null
+      */
      private function getPocUrlOverview()
      {
-		
-        return $this->getEntityManager()
+         return $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.pocUrlOverview');
-	 }
-		  
-		  
+     }
+
     /**
      * @return array
      */
@@ -288,68 +287,62 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getConfigValue('wiki.url'),
         );
     }
-    
-     /**
+
+    /**
      * @return array
      */
     private function getMyPocers()
-    
-    {	
-		if (!($academic = $this->getAcademicEntity())) {
-				return array(
+    {
+        if (!($academic = $this->getAcademicEntity())) {
+            return array(
             'enable' => $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('common.poc'),
             'pocItem' => null,
-			);	
-		}
-		$currentAcademicYear = $this->getCurrentAcademicYear();
-		
+            );
+        }
+        $currentAcademicYear = $this->getCurrentAcademicYear();
+
         $pocers =  $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
             ->findPocersByAcademicAndAcademicYear($academic, $currentAcademicYear);
         $lastPocGroup = null;
         $pocGroupList = array();
         $pocItem = array();
-		foreach ($pocers as $pocer){
-			$pocer->setEntityManager($this->getEntityManager());
-			if ($lastPocGroup === null){
-				  $pocGroupList[] = $pocer;
-			}
-
-			elseif ($lastPocGroup === $pocer ->getGroupId()){
-				$pocGroupList[] = $pocer;
-			}
-			elseif ($lastPocGroup !== $pocer ->getGroupId()){
-				$pocItem[] = array(
+        foreach ($pocers as $pocer) {
+            $pocer->setEntityManager($this->getEntityManager());
+            if ($lastPocGroup === null) {
+                $pocGroupList[] = $pocer;
+            } elseif ($lastPocGroup === $pocer->getGroupId()) {
+                $pocGroupList[] = $pocer;
+            } elseif ($lastPocGroup !== $pocer->getGroupId()) {
+                $pocItem[] = array(
                     'groupId' => $lastPocGroup,
                     'pocGroupList' => $pocGroupList,
                      'pocExample' => $pocGroupList[0],);
                 unset($pocGroupList);
                 $pocGroupList = array();
                 $pocGroupList[] = $pocer;
-                    
-			}
-			$lastPocGroup = $pocer->getGroupId();
-			
-		 }
-		 if (!empty($pocGroupList)){
-			 $pocItem[] = array(
+            }
+            $lastPocGroup = $pocer->getGroupId();
+        }
+        if (!empty($pocGroupList)) {
+            $pocItem[] = array(
                     'groupId' => $lastPocGroup,
                     'pocGroupList' => $pocGroupList,
                      'pocExample' => $pocGroupList[0],);
-			
-		}
-		return 
-			array(
+        }
+
+        return
+            array(
             'enable' => $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('common.poc'),
             'pocItem' => $pocItem,
-			);	
-			}
-		
-	/**
+            );
+    }
+
+    /**
      * @return Academic|null
      */
     private function getAcademicEntity()
@@ -366,8 +359,4 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         return $academic;
     }
-		    
-        
-        
-    
 }

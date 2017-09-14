@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -180,6 +182,7 @@ class Company
         'metal' => 'Metal',
         'telecom' => 'Telecom',
         'nonprofit' => 'Non-Profit',
+        'hr' => 'Human Resources',
     );
 
     public function __construct()

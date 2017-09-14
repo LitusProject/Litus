@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -29,19 +31,18 @@ class EditEmail extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'SyllabusBundle\Hydrator\Poc';
 
-     /**
+    /**
      * @var Group|null
      */
     protected $poc = null;
 
     public function init()
     {
-		if (null === $this->poc) {
+        if (null === $this->poc) {
             throw new LogicException('Cannot edit null poc');
         }
-        
+
         parent::init();
-        
 
         $this->add(array(
             'type'       => 'text',
@@ -51,18 +52,15 @@ class EditEmail extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'size' => 70,
                 'value' => $this->poc->getEmailAdress(),
-                
+
             ),)
             );
         $this->addSubmit('Save', 'edit');
-		
-      
-        }
-        public function setPoc(Poc $poc){
+    }
+    public function setPoc(Poc $poc)
+    {
         $this->poc = $poc;
 
         return $this;
     }
-     
-        
 }

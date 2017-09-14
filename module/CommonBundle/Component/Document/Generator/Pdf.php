@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -131,7 +133,7 @@ abstract class Pdf
         $pdfDir = dirname($this->pdfPath);
 
         if (!file_exists($pdfDir)) {
-            if (!mkdir($pdfDir, 0770)) {
+            if (!mkdir($pdfDir, 0770, true)) {
                 throw new RuntimeException('Failed to create the PDF directory');
             }
         }

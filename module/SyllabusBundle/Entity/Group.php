@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -19,9 +21,9 @@
 namespace SyllabusBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear,
-	SyllabusBundle\Entity\Poc,
     Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+    Doctrine\ORM\Mapping as ORM,
+    SyllabusBundle\Entity\Poc;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Group")
@@ -51,9 +53,6 @@ class Group
      * @ORM\Column(name="cv_book", type="boolean")
      */
     private $cvBook;
-    
-    
-    
 
     /**
      * @var boolean Whether this group is removed or not
@@ -121,7 +120,6 @@ class Group
         return $this->cvBook;
     }
 
-
     /**
      * @param  boolean $cvBook
      * @return self
@@ -132,8 +130,7 @@ class Group
 
         return $this;
     }
-    
-  
+
     /**
      * @return self
      */
@@ -192,16 +189,14 @@ class Group
 
         return $this;
     }
-    
-     /**
-     * @return  EntityManager
+
+    /**
+     * @return EntityManager
      */
     public function getEntityManager()
     {
-
         return $this->entityManager;
     }
-    
 
     /**
      * @param  AcademicYear $academicYear
@@ -213,43 +208,37 @@ class Group
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findNbStudentsByGroupAndAcademicYear($this, $academicYear);
     }
-    
+
     /**
      * @param  AcademicYear $academicYear
      * @return int
      */
     public function getNbOfPocers(AcademicYear $academicYear)
     {
-		
         return $this->entityManager
             ->getRepository('SyllabusBundle\Entity\Poc')
             ->getNbOfPocersFromGroupEntity($this, $academicYear);
     }
-    
-    /**
-     *returns boolean
-     */
+
+     /**
+      *returns boolean
+      */
      public function getIsPocGroup(AcademicYear $academicYear)
-     {		
-		 return $this->entityManager
-		 ->getRepository('SyllabusBundle\Entity\Poc')
+     {
+         return $this->entityManager
+         ->getRepository('SyllabusBundle\Entity\Poc')
          ->getIsPocGroup($this, $academicYear);
-		 
-	 }
-	   /**
+     }
+    /**
      * @param  AcademicYear $academicYear
      * @return string
      */
     public function getEmailAdressPoc(AcademicYear $academicYear)
     {
-		$pocIndicator = $this->getEntityManager()
+        $pocIndicator = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
             ->findIndicatorFromGroupAndAcademicYear($this,$academicYear);
-			 return $pocIndicator->getEmailAdress();
-  
+
+        return $pocIndicator->getEmailAdress();
     }
-	 
-		 
-    
-    
 }

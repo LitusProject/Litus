@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -83,7 +85,7 @@ class AddProduct extends Add
                         array(
                             'name' => 'between',
                             'options' => array(
-                                'min' => 0,
+                                'min' => 1,
                                 'max' => self::MAX_ORDER_NUMBER,
                             ),
                         ),
@@ -106,17 +108,17 @@ class AddProduct extends Add
         return $this;
     }
 
-    private function createProductArray()
+    protected function createProductArray()
     {
         $products = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Product')
-            ->findByAcademicYear($this->currentYear);
+            ->findByOld(false);
 
         $productArray = array(
             '' => '',
         );
         foreach ($products as $product) {
-            if (!in_array($product, $this->currentProducts) && $product->isOld() == false) {
+            if (!in_array($product, $this->currentProducts)) {
                 $productArray[$product->getId()] = $product->getName();
             }
         }

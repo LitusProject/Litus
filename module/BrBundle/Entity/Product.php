@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -323,6 +325,14 @@ class Product
      * @return int price in cents
      */
     public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @return int price in cents with sign
+     */
+    public function getSignedPrice()
     {
         $sign = 1;
         if ($this->isRefund()) {

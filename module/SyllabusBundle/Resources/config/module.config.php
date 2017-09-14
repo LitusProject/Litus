@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -37,7 +39,7 @@ return Config::create(
                 'syllabus_typeahead_study'                => 'SyllabusBundle\Component\Validator\Typeahead\Study',
                 'syllabus_typeahead_subject'              => 'SyllabusBundle\Component\Validator\Typeahead\Subject',
                 'syllabus_typeahead_study_module-group'   => 'SyllabusBundle\Component\Validator\Typeahead\ModuleGroup',
-                'typeahead_person'   					  => 'CommonBundle\Component\Validator\Typeahead\Person',
+                'typeahead_person'                      => 'CommonBundle\Component\Validator\Typeahead\Person',
 
             ),
         ),

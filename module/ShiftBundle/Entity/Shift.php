@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -313,8 +315,8 @@ class Shift
     {
         $this->nbResponsibles = $nbResponsibles;
 
-        while($this->countResponsibles() > $nbResponsibles){
-            $this->responsibles->remove($this->countResponsibles()-1);
+        while ($this->countResponsibles() > $nbResponsibles) {
+            $this->responsibles->remove($this->countResponsibles() - 1);
         }
 
         return $this;
@@ -409,9 +411,10 @@ class Shift
     {
         $this->nbVolunteers = $nbVolunteers;
 
-        while($this->countVolunteers() > $nbVolunteers){
-            $this->volunteers->remove($this->countVolunteers()-1);
+        while ($this->countVolunteers() > $nbVolunteers) {
+            $this->volunteers->remove($this->countVolunteers() - 1);
         }
+
         return $this;
     }
 
@@ -754,7 +757,7 @@ class Shift
     }
 
     /**
-     * @param boolean $ticketNeeded
+     * @param  boolean $ticketNeeded
      * @return self
      */
     public function setTicketNeeded($ticketNeeded)

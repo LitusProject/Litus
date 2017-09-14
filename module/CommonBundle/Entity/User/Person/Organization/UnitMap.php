@@ -12,15 +12,17 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Entity\User\Person\Organization;
 
-use CommonBundle\Entity\General\AcademicYear;
-use CommonBundle\Entity\General\Organization\Unit;
-use Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear,
+    CommonBundle\Entity\General\Organization\Unit,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * Specifying the mapping between organization and academic.

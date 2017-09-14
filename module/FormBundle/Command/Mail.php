@@ -12,17 +12,19 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace FormBundle\Command;
 
-use DateInterval;
-use DateTime;
-use FormBundle\Entity\Field\TimeSlot;
-use FormBundle\Entity\Node\Form\Doodle;
-use Zend\Mail\Message;
+use DateInterval,
+    DateTime,
+    FormBundle\Entity\Field\TimeSlot,
+    FormBundle\Entity\Node\Form\Doodle,
+    Zend\Mail\Message;
 
 /**
  * RenderMail

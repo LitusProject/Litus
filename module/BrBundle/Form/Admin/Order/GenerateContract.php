@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -131,7 +133,7 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
      */
     private function getAutoDiscountText()
     {
-        if ($this->order->getAutoDiscountPercentage() > 0) {
+        if (isset($this->order) && $this->order->getAutoDiscountPercentage() > 0) {
             return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.contract_auto_discount_text');

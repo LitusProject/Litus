@@ -12,16 +12,18 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace SportBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
-use CommonBundle\Entity\General\AcademicYear;
-use SportBundle\Entity\Department as DepartmentEntity;
-use SportBundle\Entity\Runner as RunnerEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear,
+    SportBundle\Entity\Department as DepartmentEntity,
+    SportBundle\Entity\Runner as RunnerEntity;
 
 /**
  * Lap
@@ -208,8 +210,8 @@ class Lap extends EntityRepository
     }
 
     /**
-     * @param RunnerEntity $runner
-     * @param AcademicYear $academicYear
+     * @param  RunnerEntity $runner
+     * @param  AcademicYear $academicYear
      * @return integer
      */
     public function getStartedLapsCountForRunner(RunnerEntity $runner, AcademicYear $academicYear)

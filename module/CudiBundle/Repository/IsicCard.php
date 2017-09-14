@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -48,14 +50,19 @@ class IsicCard extends EntityRepository
      * @param  Person              $person
      * @return \Doctrine\ORM\Query
      */
-    public function findByPersonQuery($person)
+    public function findByPersonAndYearQuery($person, $year)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('c')
             ->from('CudiBundle\Entity\IsicCard', 'c')
-            ->where($query->expr()->eq('c.person', ':person'))
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('c.person', ':person'),
+                    $query->expr()->eq('c.academicYear', ':year')
+                )
+            )
             ->setParameter('person', $person->getID())
-            ->orderBy('c.cardNumber', 'ASC')
+            ->setParameter('year', $year->getID())
             ->getQuery();
 
         return $resultSet;

@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -51,5 +53,5 @@ return array(
     'You have ordered an ISIC card already.' => 'Je hebt reeds een ISIC kaart besteld.',
     'Something went wrong with your order. Please email isic@vtk.be with the following error:' => 'Er is iets misgelopen bij het plaatsen van je order. Gelieve volgende error te mailen naar isic@vtk.be:',
     'You need to be a member to order an ISIC card.' => 'Je moet lid zijn om een ISIC kaart te bestellen.',
-    'If you have trouble with with resizing your photo, check out this link:' => 'Als je problemen hebt met het herschalen van je foto, kijk op deze link:',
+    'Visit isic.vtk.be if you still need a picture, or want to resize a picture to the correct size!' => 'Kijk op <a href="http://isic.vtk.be" target="_blank">isic.vtk.be</a> als je nog een foto nodig hebt (enkel smartphone met camera), of als je een foto wil herschalen naar het juiste formaat!',
 );

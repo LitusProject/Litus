@@ -12,16 +12,18 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace SportBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear,
+    Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents a group of friends.

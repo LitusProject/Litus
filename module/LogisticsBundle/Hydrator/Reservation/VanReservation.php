@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -22,7 +24,7 @@ use LogisticsBundle\Entity\Reservation\VanReservation as VanReservationEntity;
 
 class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('reason', 'load', 'additional_info');
+    private static $stdKeys = array('reason', 'load', 'additional_info', 'car');
 
     protected function doExtract($object = null)
     {
@@ -57,9 +59,12 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new VanReservationEntity($resource, $this->getPersonEntity());
         }
 
-        $driver = $this->getEntityManager()
+        $driver = null;
+        if (array_key_exists('driver', $data)) {
+            $driver = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Driver')
             ->findOneById($data['driver']);
+        }
 
         if ($data['passenger']['id'] != '') {
             $passenger = $this->getEntityManager()

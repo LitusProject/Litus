@@ -12,19 +12,21 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace LogisticsBundle\Controller;
 
-use CommonBundle\Entity\User\Person;
-use DateInterval;
-use DateTime;
-use IntlDateFormatter;
-use LogisticsBundle\Entity\Reservation\PianoReservation;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person,
+    DateInterval,
+    DateTime,
+    IntlDateFormatter,
+    LogisticsBundle\Entity\Reservation\PianoReservation,
+    Zend\Mail\Message,
+    Zend\View\Model\ViewModel;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>

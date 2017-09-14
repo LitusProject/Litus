@@ -12,15 +12,17 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace PromBundle\Controller\Admin;
 
-use PromBundle\Entity\Bus\Passenger;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use PromBundle\Entity\Bus\Passenger,
+    Zend\Mail\Message,
+    Zend\View\Model\ViewModel;
 
 /**
  * PassengerController

@@ -12,17 +12,19 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace CommonBundle\Component\Authentication\Action;
 
-use CommonBundle\Component\Authentication\Result;
-use CommonBundle\Entity\User\Code;
-use Doctrine\ORM\EntityManager;
-use Zend\Mail\Message;
-use Zend\Mail\Transport\TransportInterface;
+use CommonBundle\Component\Authentication\Result,
+    CommonBundle\Entity\User\Code,
+    Doctrine\ORM\EntityManager,
+    Zend\Mail\Message,
+    Zend\Mail\Transport\TransportInterface;
 
 /**
  * The action that should be taken after authentication.

@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -37,7 +39,13 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
     {
         $paginator = $this->paginator()->createFromEntity(
             'BrBundle\Entity\Product',
-            $this->getParam('page')
+            $this->getParam('page'),
+            array(
+                'old' => false,
+            ),
+            array(
+                'name' => 'ASC',
+            )
         );
 
         return new ViewModel(
@@ -176,7 +184,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $file = new CsvFile();
-        $heading = array('Contract', 'Invoice', 'Company Name', 'Author', 'Contact Person', 'Contact Phone', 'Contact Email', 'Remarks');
+        $heading = array('Contract', 'Invoice', 'Quantity', 'Company Name', 'Author', 'Contact Person', 'Contact Phone', 'Contact Email', 'Remarks');
 
         $orderEntries = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Product\OrderEntry')
@@ -203,7 +211,8 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
             }
             $results[] = array(
                 $contract->getFullContractNumber($this->getEntityManager()),
-                $order->getInvoice()->getInvoiceNumber($this->getEntityManager()),
+                $order->getInvoice()->getInvoiceNumber(),
+                $entry->getQuantity(),
                 $company->getName(),
                 $contract->getAuthor()->getPerson()->getFullName(),
                 $contactName,
@@ -258,7 +267,7 @@ class ProductController extends \CommonBundle\Component\Controller\ActionControl
         if (!($product instanceof Product)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No company was found!'
+                'No product was found!'
             );
 
             $this->redirect()->toRoute(

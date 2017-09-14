@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -51,20 +53,6 @@ class Contract extends EntityRepository
     }
 
     /**
-     * @return int
-     */
-    public function findNextInvoiceNb()
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $highestInvoiceNb = $query->select('MAX(c.invoiceNb)')
-            ->from('BrBundle\Entity\Contract', 'c')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return (int) ++$highestInvoiceNb;
-    }
-
-    /**
      * @param  CollaboratorEntity $collaborator
      * @return int
      */
@@ -73,6 +61,7 @@ class Contract extends EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         $highestContractNb = $query->select('MAX(c.contractNb)')
             ->from('BrBundle\Entity\Contract', 'c')
+            ->innerjoin('c.order','o')
             ->where(
                 $query->expr()->eq('c.author', ':person')
             )
@@ -324,6 +313,48 @@ class Contract extends EntityRepository
                     $query->expr()->eq('c.signed', 'true')
                 )
             )
+            ->getQuery();
+
+        return $result;
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllNewUnsignedQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $result = $query->select('c')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->innerJoin('c.order', 'o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('o.old', 'false'),
+                    $query->expr()->eq('c.signed', 'false')
+                )
+            )
+            ->orderBy('c.date', 'DESC')
+            ->getQuery();
+
+        return $result;
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllSignedQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $result = $query->select('c')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->innerJoin('c.order', 'o')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('o.old', 'false'),
+                    $query->expr()->eq('c.signed', 'true')
+                )
+            )
+            ->orderBy('c.date', 'DESC')
             ->getQuery();
 
         return $result;

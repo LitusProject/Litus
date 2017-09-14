@@ -12,17 +12,19 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace ShiftBundle\Controller\Admin;
 
-use ShiftBundle\Entity\Shift;
-use ShiftBundle\Entity\Shift\Responsible;
-use ShiftBundle\Entity\Shift\Volunteer;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use ShiftBundle\Entity\Shift,
+    ShiftBundle\Entity\Shift\Responsible,
+    ShiftBundle\Entity\Shift\Volunteer,
+    Zend\Mail\Message,
+    Zend\View\Model\ViewModel;
 
 /**
  * ShiftController

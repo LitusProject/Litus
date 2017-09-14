@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -155,6 +157,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 ->getConfigValue('secretary.membership_article')
         );
 
+        $isicMembership = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.isic_membership') == 1;
+        $isicRedirect = false;
+
         $membershipArticles = array();
         foreach ($ids as $organization => $id) {
             $membershipArticles[$organization] = $this->getEntityManager()
@@ -224,7 +231,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                     if ($organizationData['become_member']) {
                         if ($selectedOrganization) {
-                            $this->bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
+                            if ($isicMembership) {
+                                $isicRedirect = true;
+                            } else {
+                                $this->bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
+                            }
                         }
                     }
 
@@ -259,17 +270,30 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->getParam('identification'), '', true
                     );
 
-                    $this->flashMessenger()->success(
-                        'SUCCESS',
-                        'You are succesfully registered!'
-                    );
+                    if ($isicRedirect) {
+                        $this->redirect()->toRoute(
+                            'cudi_isic',
+                            array(
+                                'action' => 'form',
+                                'redirect' => 'secretary_registration',
+                                'rediraction' => 'studies',
+                                'organization' => $selectedOrganization->getId(),
+                                'size' => $organizationData['tshirt_size'],
+                            )
+                        );
+                    } else {
+                        $this->flashMessenger()->success(
+                            'SUCCESS',
+                            'You are succesfully registered!'
+                        );
 
-                    $this->redirect()->toRoute(
-                        'secretary_registration',
-                        array(
-                            'action' => 'studies',
-                        )
-                    );
+                        $this->redirect()->toRoute(
+                            'secretary_registration',
+                            array(
+                                'action' => 'studies',
+                            )
+                        );
+                    }
 
                     return new ViewModel();
                 }
@@ -315,7 +339,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
         return new ViewModel(
             array(
-                'registerShibbolethUrl' => $this->getRegisterhibbolethUrl(),
+                'registerShibbolethUrl' => $this->getRegisterShibbolethUrl(),
             )
         );
     }
@@ -366,6 +390,15 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('secretary.membership_article')
         );
+
+        $isicMembership = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.isic_membership') == 1;
+        $isicRedirect = false;
+        $isicAlreadyOrdered = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\IsicCard')
+                        ->findByPersonAndYearQuery($person, $this->getCurrentAcademicYear())
+                        ->getResult();
 
         $membershipArticles = array();
         foreach ($ids as $organization => $id) {
@@ -450,7 +483,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     }
 
                     if ($metaData->becomeMember() && null !== $selectedOrganization) {
-                        $this->bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
+                        if ($isicMembership and !$isicAlreadyOrdered) {
+                            $isicRedirect = true;
+                        } else {
+                            $this->bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
+                        }
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
                             $booking = $this->getEntityManager()
@@ -487,17 +524,30 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->success(
-                    'SUCCESS',
-                    'Your registration was succesfully updated!'
-                );
+                if ($isicRedirect) {
+                    $this->redirect()->toRoute(
+                        'cudi_isic',
+                        array(
+                            'action' => 'form',
+                            'redirect' => 'secretary_registration',
+                            'rediraction' => 'studies',
+                            'organization' => $selectedOrganization->getId(),
+                            'size' => $organizationData['tshirt_size'],
+                        )
+                    );
+                } else {
+                    $this->flashMessenger()->success(
+                        'SUCCESS',
+                        'You are succesfully registered!'
+                    );
 
-                $this->redirect()->toRoute(
-                    'secretary_registration',
-                    array(
-                        'action' => 'studies',
-                    )
-                );
+                    $this->redirect()->toRoute(
+                        'secretary_registration',
+                        array(
+                            'action' => 'studies',
+                        )
+                    );
+                }
 
                 return new ViewModel();
             } else {
@@ -694,7 +744,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
     /**
      * @return string
      */
-    private function getRegisterhibbolethUrl()
+    private function getRegisterShibbolethUrl()
     {
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

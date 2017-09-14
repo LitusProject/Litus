@@ -12,14 +12,16 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace SportBundle\Form\Admin\Group;
 
-use LogicException;
-use SportBundle\Entity\Group;
+use LogicException,
+    SportBundle\Entity\Group;
 /**
  * Edit to edit the boolean of speedygroup
  *
@@ -27,38 +29,34 @@ use SportBundle\Entity\Group;
  */
 class Editspeedygroup extends \CommonBundle\Component\Form\Admin\Form
 {
-	
-	  /**
+    /**
      * @var Group|null
      */
     protected $group = null;
-    
-	public function init(){
-		
+
+    public function init()
+    {
         parent::init();
-        
-        
+
         if (null === $this->group) {
             throw new LogicException('Cannot edit null group');
         }
-		$value = $this->group->getIsSpeedyGroup();
-		if ($value === null){
-			$value = false;
-		}
-			
-       
+        $value = $this->group->getIsSpeedyGroup();
+        if ($value === null) {
+            $value = false;
+        }
+
         $this->add(array(
             'type'  => 'checkbox',
             'name'  => 'isSpeedyGroup',
             'label' => 'Is this group a speedy group ?',
-            'value' =>$value,
+            'value' => $value,
         ));
-       
+
         $this->addSubmit('Edit speedygroup', 'edit');
-	}
-    
-    
-      /**
+    }
+
+    /**
      * @param  Group $group
      * @return self
      */
@@ -68,6 +66,4 @@ class Editspeedygroup extends \CommonBundle\Component\Form\Admin\Form
 
         return $this;
     }
-
-  
 }

@@ -22,7 +22,7 @@
         <table class="full_width manage">
             <tr>
                 <th>Company</th>
-                <th>Order Description</th>
+                <th>Title</th>
                 <th>Creation Time</th>
                 <th>Invoice Number</th>
                 <th width="70px">Paid</th>
@@ -31,10 +31,10 @@
 
             {% for invoice in paginator %}
                 <tr class="item item-{{ invoice.getId() }}">
-                    <td>{{ invoice.getOrder().getCompany().getName()}}</td>
-                    <td>{{ invoice.getOrder().getDescription() }}</td>
+                    <td>{{ invoice.getCompany().getName()}}</td>
+                    <td>{{ invoice.getTitle() }}</td>
                     <td>{{ invoice.getCreationTime().format('j/m/Y') }}</td>
-                    <td>{{ invoice.getInvoiceNumber(entityManager) }}</td>
+                    <td>{{ invoice.getInvoiceNumber() }}</td>
                     {% if invoice.isPayed() %}
                             <td style="text-align: center;">
                                 <input type="checkbox" disabled id="{{ invoice.getId() }}" checked="checked"/>
@@ -52,14 +52,11 @@
                         {% if hasAccess('br_admin_invoice', 'history') %}
                             <a href="{{ url('br_admin_invoice', {"action": "history", "id": invoice.getId()}) }}" class="history">History</a>
                         {% endif %}
-                        {% if hasAccess('br_admin_invoice', 'view') %}
+                        {% if hasAccess('br_admin_invoice', 'view') and invoice.hasContract() %}
                             <a href="{{ url('br_admin_invoice', {"action": "view", "id": invoice.getId()}) }}" class="view">View</a>
                         {% endif %}
                         {% if hasAccess('br_admin_invoice', 'download') %}
                             <a href="{{ url('br_admin_invoice', {"action": "download", "id": invoice.getId()}) }}" class="download">Download</a>
-                        {% endif %}
-                        {% if hasAccess('br_admin_invoice', 'delete') and invoice.isPayed() == false %}
-                            <a href="#" class="delete" data-id="{{ invoice.getId() }}" data-name="{{ invoice.getTitle() }}">Delete</a>
                         {% endif %}
                     </td>
                 </tr>

@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -45,6 +47,28 @@ class Product extends EntityRepository
             )
             ->setParameter('id', $id)
             ->getQuery();
+
+        return $result;
+    }
+
+    /**
+     * @param  string              $name
+     * @return \Doctrine\ORM\Query
+     */
+    public function findProductByNameNotOld($name)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $result = $query->select('p')
+            ->from('BrBundle\Entity\Product', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('p.name', ':name'),
+                    $query->expr()->eq('p.old', 'FALSE')
+                )
+            )
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult();
 
         return $result;
     }

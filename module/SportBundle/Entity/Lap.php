@@ -12,18 +12,20 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace SportBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear;
-use DateInterval;
-use DateTime;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping as ORM;
-use SportBundle\Entity\Department;
+use CommonBundle\Entity\General\AcademicYear,
+    DateInterval,
+    DateTime,
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Mapping as ORM,
+    SportBundle\Entity\Department;
 
 /**
  * This entity represents a lap.

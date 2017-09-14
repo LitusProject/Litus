@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -25,9 +27,9 @@ use BrBundle\Entity\Invoice;
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  */
-class Edit extends \CommonBundle\Component\Form\Admin\Form
+class ContractEdit extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'BrBundle\Hydrator\Invoice';
+    protected $hydrator = 'BrBundle\Hydrator\Invoice\ContractInvoice';
 
     /**
      * @var Invoice
@@ -40,7 +42,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(array(
             'type'     => 'text',
-            'name'     => 'reference',
+            'name'     => 'company_reference',
             'label'    => 'Company Reference',
             'options'  => array(
                 'input' => array(

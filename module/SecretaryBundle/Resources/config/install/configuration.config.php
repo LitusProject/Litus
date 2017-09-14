@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -90,5 +92,10 @@ return array(
         'key'         => 'secretary.date_info_message_interval',
         'value'       => 'P15D',
         'description' => 'The date info message is displayed from this amount of days before the start of the new organizational year.',
+    ),
+    array(
+        'key'         => 'secretary.isic_membership',
+        'value'       => '0',
+        'description' => 'Set this to 1 if ISIC cards are needed for membership. People who want to become member will be redirected to the ISIC form.',
     ),
 );

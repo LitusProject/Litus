@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -21,7 +23,7 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
     BrBundle\Entity\Contract,
     BrBundle\Entity\Contract\ContractHistory,
-    BrBundle\Entity\Invoice,
+    BrBundle\Entity\Invoice\ContractInvoice,
     BrBundle\Entity\Invoice\InvoiceEntry,
     CommonBundle\Component\Util\File as FileUtil,
     Zend\Http\Headers,
@@ -40,7 +42,25 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
-                ->findAllNewOrSignedQuery(),
+                ->findAllNewUnsignedQuery(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'em' => $this->getEntityManager(),
+            )
+        );
+    }
+
+    public function signedListAction()
+    {
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Contract')
+                ->findAllSignedQuery(),
             $this->getParam('page')
         );
 
@@ -139,7 +159,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         if ('true' == $this->getParam('signed')) {
-            $invoice = new Invoice($contract->getOrder());
+            $invoice = new ContractInvoice($contract->getOrder(), $this->getEntityManager());
 
             foreach ($contract->getEntries() as $entry) {
                 $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(),0);
@@ -182,7 +202,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
             if ($form->isValid()) {
                 $invoice = $form->hydrateObject(
-                    new Invoice($contract->getOrder())
+                    new ContractInvoice($contract->getOrder(), $this->getEntityManager())
                 );
 
                 foreach ($contract->getEntries() as $entry) {
@@ -194,12 +214,6 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
                 $contract->setSigned();
 
-                $contract->setInvoiceNb(
-                    $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Contract')
-                        ->findNextInvoiceNb()
-                );
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -208,10 +222,10 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 );
 
                 $this->redirect()->toRoute(
-                    'br_admin_contract',
+                    'br_admin_invoice',
                     array(
-                        'action' => 'view',
-                        'id' => $contract->getId(),
+                        'action' => 'edit',
+                        'id' => $invoice->getId(),
                     )
                 );
             }

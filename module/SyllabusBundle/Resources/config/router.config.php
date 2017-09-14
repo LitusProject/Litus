@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -82,7 +84,7 @@ return array(
                 ),
             ),
         ),
-        
+
         'syllabus_admin_study' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -256,7 +258,7 @@ return array(
         'syllabus_admin_update'               => 'SyllabusBundle\Controller\Admin\UpdateController',
         'syllabus_admin_academic'             => 'SyllabusBundle\Controller\Admin\AcademicController',
         'syllabus_admin_group'                => 'SyllabusBundle\Controller\Admin\GroupController',
-		'syllabus_admin_poc'				  => 'SyllabusBundle\Controller\Admin\PocController',	
+        'syllabus_admin_poc'                  => 'SyllabusBundle\Controller\Admin\PocController',
         'syllabus_admin_study'                => 'SyllabusBundle\Controller\Admin\StudyController',
         'syllabus_admin_study_module_group'   => 'SyllabusBundle\Controller\Admin\Study\ModuleGroupController',
         'syllabus_admin_subject'              => 'SyllabusBundle\Controller\Admin\SubjectController',

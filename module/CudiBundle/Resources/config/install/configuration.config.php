@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -536,5 +538,15 @@ Student IT Cudi
         'key'         => 'cudi.isic_sale_article',
         'value'       => '0',
         'description' => 'The id of the ISIC sale article.',
+    ),
+    array(
+        'key'         => 'cudi.isic_newsletter_mandatory',
+        'value'       => '0',
+        'description' => 'Whether or not the ISIC newsletter is mandatory.',
+    ),
+    array(
+        'key'         => 'cudi.isic_print_on_sell',
+        'value'       => '0',
+        'description' => 'Whether or not an ISIC card should be printed when it is sold. This will also cause ordered ISIC cards to be immediately assigned.',
     ),
 );

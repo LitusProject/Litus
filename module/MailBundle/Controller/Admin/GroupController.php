@@ -12,16 +12,18 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
-use CommonBundle\Entity\User\Status\University as UniversityStatus;
-use Zend\Mail\Message;
-use Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Status\University as UniversityStatus,
+    Zend\Mail\Message,
+    Zend\View\Model\ViewModel;
 
 /**
  * GroupController

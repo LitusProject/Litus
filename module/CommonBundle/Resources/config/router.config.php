@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -293,7 +295,7 @@ return array(
                     'action'     => 'overview',
                 ),
             ),
-        ), 
+        ),
         'common_privacy' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -307,7 +309,7 @@ return array(
                 ),
             ),
         ),
-    
+
     ),
 
     'controllers' => array(
@@ -329,7 +331,7 @@ return array(
         'common_auth'           => 'CommonBundle\Controller\AuthController',
         'common_robots'         => 'CommonBundle\Controller\RobotsController',
         'common_praesidium'     => 'CommonBundle\Controller\PraesidiumController',
-        'common_poc'			=> 'CommonBundle\Controller\PocController',
+        'common_poc'            => 'CommonBundle\Controller\PocController',
         'common_privacy'        => 'CommonBundle\Controller\PrivacyController',
     ),
 );

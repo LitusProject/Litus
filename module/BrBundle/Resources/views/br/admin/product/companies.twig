@@ -8,15 +8,16 @@
     <div id="controller_action">
 
         <p>
-            The following table shows all signed contracts including the product <b>{{ product.getName() }}</b>.
+            The following table shows all signed contracts including the product <b>{{ product.getName() }}</b></br>.
         </p>
 
         <table class="full_width companies">
             <tr>
-                <th width="10%">Contract</th>
-                <th width="10%">Invoice</th>
+                <th width="7%">Contract</th>
+                <th width="7%">Invoice</th>
+                <th width="8%">Quantity</th>
                 <th>Company</th>
-                <th width="15%">Author</th>
+                <th width="13%">Author</th>
                 <th width="15%">Contact</th>
                 <th width="10%">Contact Phone</th>
                 <th width="20%">Contact Email</th>
@@ -27,7 +28,8 @@
                     {% if entry.getOrder().getContract().isSigned() %}
                         <tr class="item item-{{ entry.getId() }}">
                             <td>{{ entry.getOrder().getContract().getFullContractNumber(em) }}</td>
-                            <td>{{ entry.getOrder().getInvoice().getInvoiceNumber(em) }}</td>
+                            <td>{{ entry.getOrder().getInvoice().getInvoiceNumber() }}</td>
+                            <td>{{ entry.getQuantity() }}</td>
                             <td>{{ entry.getOrder().getCompany().getName() }}</td>
                             <td>{{ entry.getOrder().getContract().getAuthor().getPerson().getFullName() }}</td>
                             <td>{{ entry.getOrder().getCompany().getContacts()[0].getFullName() }}</td>

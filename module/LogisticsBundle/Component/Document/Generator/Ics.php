@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -147,6 +149,7 @@ class Ics
         if (strlen($reservation->getLoad()) > 0) {
             $summary[] = str_replace("\n", '', $reservation->getLoad());
         }
+
         if (strlen($reservation->getAdditionalInfo()) > 0) {
             $summary[] = str_replace("\n", '', $reservation->getAdditionalInfo());
         }

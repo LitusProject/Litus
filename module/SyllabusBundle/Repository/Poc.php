@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -21,8 +23,8 @@ namespace SyllabusBundle\Repository;
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
-    SyllabusBundle\Entity\Group\StudyMap,
     SyllabusBundle\Entity\Group as GroupEntity,
+    SyllabusBundle\Entity\Group\StudyMap,
     SyllabusBundle\Entity\Poc as PocEntity;
 
 /**
@@ -37,12 +39,11 @@ class Poc extends EntityRepository
      * @return \Doctrine\ORM\Query
      */
     public function findAllQuery()
-    {   
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p', 'g')
             ->from('SyllabusBundle\Entity\Poc', 'p')
              ->where(
-             	
 
             )
             ->innerJoin('p.groupId', 'g')
@@ -51,42 +52,43 @@ class Poc extends EntityRepository
 
         return $resultSet;
     }
-     /**
+    /**
      * @param  AcademicYear        $academicYear
      * @return \Doctrine\ORM\Query
      */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
-    {	
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p','g')
             ->from('SyllabusBundle\Entity\poc', 'p')
             ->where(
-				$query->expr()->andX(
+                $query->expr()->andX(
                 $query->expr()->eq('p.academicYear', ':academicYear'),
-				$query->expr()->neq('p.indicator','true')
+                $query->expr()->neq('p.indicator','true')
 
             ))
             ->setParameter('academicYear', $academicYear)
             ->innerJoin('p.groupId','g')
             ->orderBy('g.name','ASC')
             ->getQuery();
+
         return $resultSet;
     }
     /**
-     * @param  GroupEntity		   $groupId
+     * @param  GroupEntity         $groupId
      * @param  AcademicYear        $academicYear
      * @return \Doctrine\ORM\Query
      */
-	public function findPocersFromGroupAndAcademicYearQuery(GroupEntity $groupId,AcademicYear $academicYear)
-    {	
+    public function findPocersFromGroupAndAcademicYearQuery(GroupEntity $groupId,AcademicYear $academicYear)
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
-		
+
         $resultSet = $query->select('p','g')
             ->from('SyllabusBundle\Entity\poc', 'p')
             ->where(
             $query->expr()->andX(
-					$query->expr()->neq('p.indicator','true'),
-					$query->expr()->eq('p.groupId', ':groupId'),
+                    $query->expr()->neq('p.indicator','true'),
+                    $query->expr()->eq('p.groupId', ':groupId'),
                     $query->expr()->eq('p.academicYear', ':academicYear')
                 ))
             ->setParameter('academicYear', $academicYear)
@@ -94,22 +96,23 @@ class Poc extends EntityRepository
             ->innerJoin('p.groupId','g')
             ->orderBy('g.name','ASC')
             ->getQuery();
+
         return $resultSet;
     }
     /**
-     * @param  GroupEntity		   $groupId
+     * @param  GroupEntity         $groupId
      * @param  AcademicYear        $academicYear
      * @return \Doctrine\ORM\Query
      */
-	public function findPocersFromGroupAndAcademicYearWithIndicatorQuery(GroupEntity $groupId,AcademicYear $academicYear)
-    {	
+    public function findPocersFromGroupAndAcademicYearWithIndicatorQuery(GroupEntity $groupId,AcademicYear $academicYear)
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
-		
+
         $resultSet = $query->select('p','g')
             ->from('SyllabusBundle\Entity\poc', 'p')
             ->where(
             $query->expr()->andX(
-					$query->expr()->eq('p.groupId', ':groupId'),
+                    $query->expr()->eq('p.groupId', ':groupId'),
                     $query->expr()->eq('p.academicYear', ':academicYear')
                 ))
             ->setParameter('academicYear', $academicYear)
@@ -117,45 +120,46 @@ class Poc extends EntityRepository
             ->innerJoin('p.groupId','g')
             ->orderBy('g.name','ASC')
             ->getQuery();
+
         return $resultSet;
     }
     /**
-     * @param  Academic		   	   $academic
+     * @param  Academic            $academic
      * @param  AcademicYear        $academicYear
      * @return \Doctrine\ORM\Query
      */
-	public function findPocersByAcademicAndAcademicYearQuery(Academic $academic,AcademicYear $academicYear)
-    {	
-		$studyEnrollments = $this->getEntityManager()
+    public function findPocersByAcademicAndAcademicYearQuery(Academic $academic,AcademicYear $academicYear)
+    {
+        $studyEnrollments = $this->getEntityManager()
             ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
             ->findAllByAcademicAndAcademicYear($academic, $academicYear);
-		$idsOfStudiesOfEnrollment = array(0);
-		
-		foreach($studyEnrollments as $studyEnrollment){
+        $idsOfStudiesOfEnrollment = array(0);
+
+        foreach ($studyEnrollments as $studyEnrollment) {
             $idsOfStudiesOfEnrollment[] = $studyEnrollment->getStudy()->getId();
         }
-        
+
         $query = $this->getEntityManager()->createQueryBuilder();
-        
-		$studyMaps = $query->select('m')
-			->from('SyllabusBundle\Entity\Group\StudyMap','m')
+
+        $studyMaps = $query->select('m')
+            ->from('SyllabusBundle\Entity\Group\StudyMap','m')
             ->where($query->expr()->andX(
                     $query->expr()->in('m.study', $idsOfStudiesOfEnrollment)
-					))
+                    ))
             ->getQuery()
             ->getResult();
-     
-       $idsOfGroup = array(0);
-       foreach($studyMaps as $studyMap){
+
+        $idsOfGroup = array(0);
+        foreach ($studyMaps as $studyMap) {
             $idsOfGroup[] = $studyMap->getGroup()->getId();
         }
-        
+
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('p','g')
             ->from('SyllabusBundle\Entity\poc', 'p')
             ->where(
             $query->expr()->andX(
-					$query->expr()->neq('p.indicator','true'),
+                    $query->expr()->neq('p.indicator','true'),
                     $query->expr()->in('p.groupId', $idsOfGroup),
                     $query->expr()->eq('p.academicYear', ':academicYear')
                 ))
@@ -163,39 +167,41 @@ class Poc extends EntityRepository
             ->innerJoin('p.groupId','g')
             ->orderBy('g.name','ASC')
             ->getQuery();
+
         return $resultSet;
     }
-    
-     /**
-     * @param  GroupEntity  $group
-     * @param  AcademicYear $academicYear
-     * @return int
-     */
-	  public function getNbOfPocersFromGroupEntity(GroupEntity $group, AcademicYear $academicYear)
-      {	
-	    $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select($query->expr()->count('p'))
+
+      /**
+       * @param  GroupEntity  $group
+       * @param  AcademicYear $academicYear
+       * @return int
+       */
+      public function getNbOfPocersFromGroupEntity(GroupEntity $group, AcademicYear $academicYear)
+      {
+          $query = $this->getEntityManager()->createQueryBuilder();
+          $resultSet = $query->select($query->expr()->count('p'))
             ->from('SyllabusBundle\Entity\poc', 'p')
             ->where(
                 $query->expr()->andX(
                 $query->expr()->eq('p.groupId', ':group'),
                 $query->expr()->eq('p.academicYear', ':academicYear'),
                 $query->expr()->neq('p.indicator','true')
-			)
+            )
             )
             ->setParameter('group',$group)
             ->setParameter('academicYear', $academicYear)
             ->getQuery()
             ->getSingleScalarResult();
-       return $resultSet;
+
+          return $resultSet;
       }
-      
+
     /**
-     * @param  AcademicYear        $academicYear
-     * @return array of Pocs
+     * @param  AcademicYear $academicYear
+     * @return array        of Pocs
      */
     public function findAllPocsWithIndicatorByAcademicYearQuery(AcademicYear $academicYear)
-    {	
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         $pocsWithIndicator = $query->select('p')
             ->from('SyllabusBundle\Entity\poc', 'p')
@@ -207,40 +213,37 @@ class Poc extends EntityRepository
             ->innerJoin('p.groupId','g')
             ->orderBy('g.name','ASC')
             ->getQuery();
-        
-         
+
         return $pocsWithIndicator;
     }
-    
+
     /**
      * returns boolean
      */
     public function getIsPocGroup(GroupEntity $group, AcademicYear $academicYear)
-    {	
-		        
-		$query = $this->getEntityManager()->createQueryBuilder();
-		$resultSet = $query->select($query->expr()->count('p'))
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select($query->expr()->count('p'))
             ->from('SyllabusBundle\Entity\poc', 'p')
             ->where(
                 $query->expr()->andX(
                 $query->expr()->eq('p.groupId', ':group'),
                 $query->expr()->eq('p.academicYear', ':academicYear')
-			)
+            )
             )
             ->setParameter('group',$group)
             ->setParameter('academicYear', $academicYear)
             ->getQuery()
             ->getSingleScalarResult();
-       return $resultSet>=1;
-		
-		
-	}
-	/**
-     * @param  AcademicYear        $academicYear
-     * @return array of Groups
+
+        return $resultSet >= 1;
+    }
+    /**
+     * @param  AcademicYear $academicYear
+     * @return array        of Groups
      */
     public function findIndicatorFromGroupAndAcademicYear(GroupEntity $group, AcademicYear $academicYear)
-    {	
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         $pocWithIndicator = $query->select('p')
             ->from('SyllabusBundle\Entity\poc', 'p')
@@ -255,23 +258,7 @@ class Poc extends EntityRepository
             ->orderBy('g.name','ASC')
             ->getQuery()
             ->getSingleResult();
-         
+
         return $pocWithIndicator;
     }
-	
-	
-  
-  
-	
-    
-    
-    
-    
-    
-    
-  
-    
-
-
-  
 }

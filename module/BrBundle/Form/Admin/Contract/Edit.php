@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -39,25 +41,6 @@ class Edit extends \BrBundle\Form\Admin\Order\GenerateContract
     public function init()
     {
         parent::init();
-
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'invoice_nb',
-            'label'    => 'Invoice Number',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters'  => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
-                    ),
-                ),
-            ),
-        ));
 
         foreach ($this->contract->getEntries() as $entry) {
             $this->add(array(

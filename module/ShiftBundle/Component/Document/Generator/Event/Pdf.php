@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -106,6 +108,32 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                     )
                 );
             }
+            if (count($shift->getResponsibles()) != $shift->getNbResponsibles()) {
+                $y = $shift->getNbResponsibles() - count($shift->getResponsibles());
+                for ($x = 0; $x < $y; $x++) {
+                    $people[] = new Object(
+                    'person',
+                    array(),
+                    array(
+                        new Object(
+                            'name',
+                            array(),
+                            ''
+                        ),
+                        new Object(
+                            'phone_number',
+                            array(),
+                            ''
+                        ),
+                        new Object(
+                            'responsible',
+                            array(),
+                            '1'
+                        ),
+                    )
+                );
+                }
+            }
 
             foreach ($shift->getVolunteers() as $volunteer) {
                 $people[] = new Object(
@@ -130,7 +158,32 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                     )
                 );
             }
-
+            if (count($shift->getVolunteers()) != $shift->getNbVolunteers()) {
+                $y = $shift->getNbVolunteers() - count($shift->getVolunteers());
+                for ($x = 0; $x < $y; $x++) {
+                    $people[] = new Object(
+                    'person',
+                    array(),
+                    array(
+                        new Object(
+                            'name',
+                            array(),
+                            ''
+                        ),
+                        new Object(
+                            'phone_number',
+                            array(),
+                            ''
+                        ),
+                        new Object(
+                            'responsible',
+                            array(),
+                            '0'
+                        ),
+                    )
+                );
+                }
+            }
             $shifts[] = new Object(
                 'shift',
                 array(),

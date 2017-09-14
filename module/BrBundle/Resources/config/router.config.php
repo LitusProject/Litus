@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -32,9 +34,10 @@ return array(
         'br_admin_collaborator' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/collaborator[/:action[/:id]][/]',
+                'route' => '/admin/br/collaborator[/:action[/:id][/page/:page]][/]',
                 'constraints'   => array(
                     'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'page'      => '[0-9]*',
                     'id'        => '[0-9]*',
                 ),
                 'defaults' => array(
@@ -170,10 +173,11 @@ return array(
         'br_admin_order' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/br/order[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/br/order[/:action[/:id[/:entry]][/page/:page]][/]',
                 'constraints'   => array(
                     'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'        => '[0-9]*',
+                    'entry'     => '[0-9]*',
                     'page'      => '[0-9]*',
                 ),
                 'defaults' => array(

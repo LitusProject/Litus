@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -36,8 +38,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @bool isPocGroup|null
      */
-	protected $isPocGroup = 0;
-	
+    protected $isPocGroup = 0;
 
     public function init()
     {
@@ -73,9 +74,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'  => 'cv_book',
             'label' => 'Show in CV Book',
         ));
-        
-     
-        
 
         $this->add(array(
             'type'    => 'textarea',
@@ -122,8 +120,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         return $this;
     }
-    
-    public function setIsPocGroup($isPocGroup){
+
+    public function setIsPocGroup($isPocGroup)
+    {
         $this->isPocGroup = $isPocGroup;
 
         return $this;

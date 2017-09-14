@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -66,7 +68,13 @@ class InvoiceHistory
     public function __construct(Invoice $invoice)
     {
         $this->invoice = $invoice;
-        $this->entries = new ArrayCollection($invoice->getEntries());
+
+        if ($invoice->hasContract()) {
+            $this->entries = new ArrayCollection($invoice->getEntries());
+        } else {
+            $this->entries = new ArrayCollection();
+        }
+
         $this->version = $invoice->getVersion();
     }
 

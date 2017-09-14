@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -764,10 +766,10 @@ class Entry
     }
 
     /**
-    * Sort the given list of experiences on start date
-    *
-    *@return array
-    */
+     * Sort the given list of experiences on start date
+     *
+     *@return array
+     */
     private function sortNewExperiences(array $experiences)
     {
         $result = array();

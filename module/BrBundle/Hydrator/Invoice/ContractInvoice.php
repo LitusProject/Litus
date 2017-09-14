@@ -12,11 +12,13 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Hydrator;
+namespace BrBundle\Hydrator\Invoice;
 
 use BrBundle\Entity\Invoice\InvoiceEntry as InvoiceEntryEntity,
     CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
@@ -27,12 +29,12 @@ use BrBundle\Entity\Invoice\InvoiceEntry as InvoiceEntryEntity,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Invoice extends \CommonBundle\Component\Hydrator\Hydrator
+class ContractInvoice extends \CommonBundle\Component\Hydrator\Hydrator
 {
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('VATContext', 'reference', 'tax_free', 'discount_text', 'auto_discount_text');
+    private static $stdKeys = array('VATContext', 'company_reference', 'tax_free', 'discount_text', 'auto_discount_text');
 
     protected function doHydrate(array $data, $object = null)
     {

@@ -12,13 +12,16 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
 
 namespace BrBundle\Repository\Contract;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Product\OrderEntry,
+    CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * ContractEntry
@@ -82,6 +85,25 @@ class ContractEntry extends EntityRepository
             ->setParameter('version', $version)
             ->orderBy('c.position', 'ASC')
             ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  OrderEntry          $entry
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllContractEntriesByOrderEntry(OrderEntry $oentry)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('c')
+            ->from('BrBundle\Entity\Contract\ContractEntry', 'c')
+            ->where(
+                $query->expr()->eq('c.orderEntry', ':oentry')
+            )
+            ->setParameter('oentry', $oentry)
+            ->getQuery()
+            ->getResult();
 
         return $resultSet;
     }

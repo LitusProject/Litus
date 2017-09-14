@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -53,16 +55,16 @@ return array(
             'manage', 'add', 'delete',
         ),
         'br_admin_contract' => array(
-            'manage', 'edit', 'view', 'history', 'sign', 'signed', 'download', 'delete',
+            'manage', 'edit', 'view', 'history', 'sign', 'signedList', 'download', 'delete',
         ),
         'br_admin_cv_entry' => array(
             'manage', 'delete', 'export', 'exportAcademics',
         ),
         'br_admin_invoice' => array(
-            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay',
+            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd',
         ),
         'br_admin_order' => array(
-            'product', 'edit', 'delete', 'view', 'add', 'old', 'manage', 'generate',
+            'product', 'edit', 'delete', 'deleteProduct', 'editProduct', 'view', 'add', 'old', 'manage', 'signed', 'generate',
         ),
         'br_admin_overview' => array(
             'person', 'company', 'view', 'personview', 'companyview', 'pdf', 'csv',
