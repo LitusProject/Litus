@@ -276,7 +276,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                             'action' => 'form',
                             'redirect' => $this->getParam('return') ? $this->getParam('return') : 'common_account',
                             'organization' => $selectedOrganization->getId(),
-                            'size' => $organizationData['tshirt_size'],
+                            'size' => null,
                         )
                     );
                 } else {
