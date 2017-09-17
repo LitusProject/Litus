@@ -52,7 +52,6 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $result['Firstname'] = $data['personal_info']['first_name'];
         $result['Lastname'] = $data['personal_info']['last_name'];
         $result['BirthDate'] = $data['personal_info']['birthday'];
-        $result['BirthPlace'] = $data['personal_info']['birthplace'];
         $result['Gender'] = $data['personal_info']['sex'];
         $result['language'] = $data['personal_info']['language'];
         $result['Street'] = $data['address']['street'] . ' ' . $data['address']['number'];

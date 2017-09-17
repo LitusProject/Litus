@@ -50,11 +50,18 @@ class IsicCard
     private $person;
 
     /**
-     * @var integer The ID of the card
+     * @var integer The ID of the card or the user (delayed orders get a userID, immediate orders a card number)
      *
      * @ORM\Column(type="string")
      */
     private $cardNumber;
+
+    /**
+     * @var boolean If a card number has already been paid
+     *
+     * @ORM\Column(type="boolean",options={"default":true})
+     */
+    private $hasPaid;
 
     /**
      * @var The academic year the card is valid
@@ -72,11 +79,12 @@ class IsicCard
      */
     private $academicYear;
 
-    public function __construct(Person $person, $cardNumber, Booking $booking, AcademicYear $academicYear)
+    public function __construct(Person $person, $cardNumber, Booking $booking, $hasPaid, AcademicYear $academicYear)
     {
         $this->person = $person;
         $this->cardNumber = $cardNumber;
         $this->booking = $booking;
+        $this->hasPaid = $hasPaid;
         $this->academicYear = $academicYear;
     }
 
@@ -103,6 +111,16 @@ class IsicCard
     public function setBooking(Booking $booking)
     {
         $this->booking = $booking;
+    }
+
+    public function hasPaid()
+    {
+        return $this->hasPaid;
+    }
+
+    public function setPaid($hasPaid)
+    {
+        $this->hasPaid = $hasPaid;
     }
 
     public function getAcademicYear()

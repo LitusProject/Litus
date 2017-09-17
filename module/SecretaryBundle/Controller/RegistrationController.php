@@ -395,9 +395,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
-        $isicAlreadyOrdered = $this->getEntityManager()
+        $isicOrder = $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\IsicCard')
-                        ->findByPersonAndYearQuery($person, $this->getCurrentAcademicYear())
+                        ->findByPersonAndYearQuery($academic, $this->getCurrentAcademicYear())
                         ->getResult();
 
         $membershipArticles = array();
@@ -483,7 +483,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     }
 
                     if ($metaData->becomeMember() && null !== $selectedOrganization) {
-                        if ($isicMembership and !$isicAlreadyOrdered) {
+                        if ($isicMembership && $isicOrder == null) {
                             $isicRedirect = true;
                         } else {
                             $this->bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
@@ -498,7 +498,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                                     $this->getCurrentAcademicYear()
                                 );
 
-                            if (null !== $booking) {
+                            if (null !== $booking && $isicOrder->getBooking() !== $booking) {
                                 $this->getEntityManager()->remove($booking);
                             }
                         }

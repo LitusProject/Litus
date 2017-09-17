@@ -97,19 +97,6 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'       => 'text',
-                    'name'       => 'birthplace',
-                    'label'      => 'Birthplace',
-                    'required'   => true,
-                    'options'    => array(
-                        'input' => array(
-                            'filters'  => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        ),
-                    ),
-                ),
-                array(
                     'type'       => 'select',
                     'name'       => 'sex',
                     'label'      => 'Sex',
