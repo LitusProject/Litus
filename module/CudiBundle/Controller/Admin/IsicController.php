@@ -22,6 +22,7 @@ namespace CudiBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\AcademicYear,
     Cudibundle\Entity\IsicCard,
+    Zend\Soap\Client as SoapClient,
     Zend\View\Model\ViewModel;
 
 /**
@@ -99,6 +100,55 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
         );
     }
 
+    public function printAction()
+    {
+        //$this->initAjax();
+
+        if (!($isicCard = $this->getIsicCardEntity())) {
+            return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'error'),
+            )
+        );
+        }
+
+        if ($isicCard->getBooking()->getStatus() !== 'sold') {
+            return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'error'),
+            )
+        );
+        }
+
+        if (!$isicCard->hasPaid()) {
+            $client = new SoapClient('http://isicregistrations.guido.be/service.asmx?WSDL');
+            $config = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config');
+
+            $arguments = array();
+            $arguments['username'] = $config->getConfigValue('cudi.isic_username');
+            $arguments['password'] = $config->getConfigValue('cudi.isic_password');
+            $arguments['userID'] = $isicCard->getCardNumber();
+
+            $client->hasPaid($arguments);
+            $isicCard->setPaid(true);
+
+            $this->getEntityManager()->flush();
+        } else {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        }
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
     public function unassignAction()
     {
         $this->initAjax();
@@ -147,6 +197,7 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
             $item->person = $card->getPerson()->getFullName();
             $item->status = $card->getBooking()->getStatus();
             $item->year = $card->getAcademicYear()->getStartDate()->format('Y') . " - " . $card->getAcademicYear()->getEndDate()->format('Y') ;
+            $item->isPaid = $card->hasPaid();
             $result[] = $item;
         }
 
