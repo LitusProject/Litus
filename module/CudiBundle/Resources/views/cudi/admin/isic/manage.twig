@@ -116,7 +116,7 @@
                             {% endif %}
 
                             {% if hasAccess('cudi_admin_sales_booking', 'edit') %}
-                                <a href="{{ url('cudi_admin_sales_booking', {'action': 'edit', 'id': card.getBooking.getId()}) }}" class="edit">Edit Booking</a>
+                                <a href="{{ url('cudi_admin_sales_booking', {'action': 'edit', 'id': card.getBooking().getId()}) }}" class="edit">Edit Booking</a>
                             {% endif %}
                         </td>
                     </tr>
