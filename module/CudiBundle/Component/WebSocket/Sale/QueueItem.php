@@ -245,7 +245,7 @@ class QueueItem
                     ->findOneBy(array('booking' => $booking->getId()));
 
                 if (!$isicCard->hasPaid()) {
-                    $client = new SoapClient('http://isicregistrations.guido.be/service.asmx?WSDL');
+                    //$client = new SoapClient('http://isicregistrations.guido.be/service.asmx?WSDL');
                     $config = $this->entityManager
                     ->getRepository('CommonBundle\Entity\General\Config');
 
@@ -254,8 +254,8 @@ class QueueItem
                     $arguments['password'] = $config->getConfigValue('cudi.isic_password');
                     $arguments['userID'] = $isicCard->getCardNumber();
 
-                    $client->hasPaid($arguments);
-                    $isicCard->setPaid(true);
+                    //$client->hasPaid($arguments);
+                    //$isicCard->setPaid(true);
                 }
             }
 

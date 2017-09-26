@@ -67,4 +67,58 @@ class IsicCard extends EntityRepository
 
         return $resultSet;
     }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findByPersonNameAndYearQuery($name, $year)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('c')
+            ->from('CudiBundle\Entity\IsicCard', 'c')
+            ->innerjoin('c.person', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
+                                $query->expr()->lower('p.lastName')
+                            ),
+                            ':name'
+                        ),
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
+                                $query->expr()->lower('p.firstName')
+                            ),
+                            ':name'
+                        )
+                    ),
+                    $query->expr()->eq('c.academicYear', ':year')
+                )
+            )
+            ->setParameter('name','%' . strtolower($name) . '%')
+            ->setParameter('year', $year->getID())
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findByYearQuery($year)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('c')
+            ->from('CudiBundle\Entity\IsicCard', 'c')
+            ->where(
+                $query->expr()->eq('c.academicYear', ':year')
+            )
+            ->setParameter('year', $year->getID())
+            ->getQuery();
+
+        return $resultSet;
+    }
 }

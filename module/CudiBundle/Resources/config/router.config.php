@@ -466,14 +466,31 @@ return array(
         'cudi_admin_syllabus' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/cudi/syllabus[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/cudi/syllabus[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id' => '[0-9]*',
+                    'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_\-\(\)]*',
+                    'page'         => '[0-9]+',
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_admin_syllabus',
                     'action' => 'manage',
+                ),
+            ),
+        ),
+        'cudi_admin_syllabus_typeahead' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '/admin/cudi/syllabus/typeahead/:academicyear[/:string][/]',
+                'constraints' => array(
+                    'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    'string'       => '[%a-zA-Z0-9:.,_\-\(\)]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'cudi_admin_syllabus',
+                    'action'     => 'typeahead',
                 ),
             ),
         ),
@@ -829,13 +846,16 @@ return array(
                 ),
             ),
         ),
+
         'cudi_admin_isic' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/cudi/isic[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/cudi/isic[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id' => '[%a-zA-Z0-9:.,_-]*',
+                    'field' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_\-\(\)]*',
                     'page' => '[0-9]*',
                 ),
                 'defaults' => array(
