@@ -431,6 +431,11 @@ VTK Cudi
         'description' => 'The job id for a XML exported order',
     ),
     array(
+        'key'         => 'cudi.booking_mails_to_sysadmin',
+        'value'       => '1',
+        'description' => 'Send the cudi booking mails (assigned, expired, warning) to the system administrator address',
+    ),
+    array(
         'key'         => 'cudi.booking_mails_to_cudi',
         'value'       => '1',
         'description' => 'Send the cudi booking mails (assigned, expired, warning) to the cudi address',
