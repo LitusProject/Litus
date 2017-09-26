@@ -111,7 +111,7 @@ return array(
             'manage', 'list', 'articlescsv', 'search',
         ),
         'cudi_admin_isic' => array(
-            'manage','assign', 'unassign', 'delete', 'search',
+            'manage','assign', 'unassign', 'delete', 'search', 'print',
         ),
         'cudi_isic' => array(
             'form','order',

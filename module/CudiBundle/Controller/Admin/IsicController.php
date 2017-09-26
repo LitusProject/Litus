@@ -102,7 +102,7 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
 
     public function printAction()
     {
-        //$this->initAjax();
+        $this->initAjax();
 
         if (!($isicCard = $this->getIsicCardEntity())) {
             return new ViewModel(
