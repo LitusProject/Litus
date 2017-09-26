@@ -846,13 +846,16 @@ return array(
                 ),
             ),
         ),
+
         'cudi_admin_isic' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/cudi/isic[/:action[/:id][/page/:page]][/]',
+                'route' => '/admin/cudi/isic[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id' => '[%a-zA-Z0-9:.,_-]*',
+                    'field' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_\-\(\)]*',
                     'page' => '[0-9]*',
                 ),
                 'defaults' => array(
