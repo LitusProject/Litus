@@ -276,6 +276,11 @@
 
                     });
                     $('#isic_search table').change();
+
+                    $('.item .remove').click(openModalDelete);
+                    $('.item .assign').click(openModalAssign);
+                    $('.item .unassign').click(openModalUnassign);
+                    $('.item .print').click(openModalPrint);
                 },
                 clear: function () {
                     $('#isic_search table').find('tr.item').remove();
@@ -389,8 +394,8 @@
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.card_print_success').removeClass('hide');
-                        $('.item-' + id + ' .print').addClass('hide');
                         printCard.modal('hide');
+                        $('.item .print').remove();
                     } else {
                         errorPrint();
                     }
@@ -401,7 +406,7 @@
 
         function errorPrint() {
             $('.flashmessage').addClass('hide');
-            $('.card_Print_error').removeClass('hide');
+            $('.card_print_error').removeClass('hide');
             $('#printCard').modal('hide');
         }
     </script>
