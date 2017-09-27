@@ -198,6 +198,7 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
             $item->status = $card->getBooking()->getStatus();
             $item->year = $card->getAcademicYear()->getStartDate()->format('Y') . " - " . $card->getAcademicYear()->getEndDate()->format('Y') ;
             $item->isPaid = $card->hasPaid();
+            $item->booking = $card->getBooking()->getId();
             $result[] = $item;
         }
 
