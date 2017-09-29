@@ -109,7 +109,7 @@ class Booking
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('system_administrator_mail'),
                 'System Administrator'
-            )
+            );
         }
 
         $sendMailsToCudi = $entityManager
@@ -201,7 +201,7 @@ class Booking
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('system_administrator_mail'),
                 'System Administrator'
-            )
+            );
         }
 
         $sendMailsToCudi = $entityManager
@@ -297,7 +297,7 @@ class Booking
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('system_administrator_mail'),
                 'System Administrator'
-            )
+            );
         }
 
         $sendMailsToCudi = $entityManager
