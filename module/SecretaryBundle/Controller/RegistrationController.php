@@ -229,7 +229,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         );
                     }
 
-                    if ($organizationData['become_member']) {
+                    if (isset($organizationData['become_member']) && $organizationData['become_member']) {
                         if ($selectedOrganization) {
                             if ($isicMembership) {
                                 $isicRedirect = true;
