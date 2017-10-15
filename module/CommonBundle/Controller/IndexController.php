@@ -142,18 +142,18 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         return $bookings;
     }
-     /**
-      * @return string|null
-      */
+    /**
+     * @return string|null
+     */
      private function getPocUrl()
      {
          return $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.pocUrl');
      }
-     /**
-      * @return string|null
-      */
+        /**
+     * @return string|null
+     */
      private function getPocUrlOverview()
      {
          return $this->getEntityManager()
@@ -288,7 +288,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    /**
+     /**
      * @return array
      */
     private function getMyPocers()

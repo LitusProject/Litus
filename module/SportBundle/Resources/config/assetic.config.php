@@ -14,7 +14,6 @@
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  * @author Floris Kint <floris.kint@vtk.be>
- * @author Hannes Vandecasteele <hannes.vandecasteele@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -48,15 +47,6 @@ return array(
             '@run_js',
         ),
         'sport_run_queue' => array(
-            '@common_jquery',
-            '@bootstrap_css',
-            '@bootstrap_js_dropdown',
-            '@bootstrap_js_alert',
-            '@run_css',
-            '@run_js',
-            '@common_socket',
-        ),
-        'sport_run_tombola' => array(
             '@common_jquery',
             '@bootstrap_css',
             '@bootstrap_js_dropdown',

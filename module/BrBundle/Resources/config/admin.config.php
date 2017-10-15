@@ -54,7 +54,7 @@ return array(
                 ),
                 'br_admin_product'  => array(
                     'title' => 'Products',
-                    'help'  => 'Here you can manage all the products Student IT has to offer to every company.',
+                    'help'  => 'Here you can manage all the products VTK has to offer to every company.',
                 ),
                 'br_admin_request'  => array(
                     'title' => 'Requests',

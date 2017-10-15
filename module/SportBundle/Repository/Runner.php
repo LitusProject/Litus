@@ -14,7 +14,6 @@
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  * @author Floris Kint <floris.kint@vtk.be>
- * @author Hannes Vandecasteele <hannes.vandecasteele@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -22,7 +21,7 @@
 namespace SportBundle\Repository;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear;
+    CommonBundle\Repository\General\AcademicYear;
 
 /**
  * Runner
@@ -60,20 +59,6 @@ class Runner extends EntityRepository
                     $query->expr()->isNull('r.academic')
                 )
             )
-            ->getQuery();
-
-        return $resultSet;
-    }
-
-    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('g')
-            ->from('SportBundle\Entity\Runner', 'g')
-            ->where(
-                $query->expr()->eq('g.academicYear', ':academicYear')
-            )
-            ->setParameter('academicYear', $academicYear)
             ->getQuery();
 
         return $resultSet;

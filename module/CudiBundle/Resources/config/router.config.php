@@ -466,31 +466,14 @@ return array(
         'cudi_admin_syllabus' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/cudi/syllabus[/:action[/:id][/:field/:string][/page/:page]][/]',
+                'route' => '/admin/cudi/syllabus[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id' => '[0-9]*',
-                    'field'        => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'string'       => '[a-zA-Z][%a-zA-Z0-9:.,_\-\(\)]*',
-                    'page'         => '[0-9]+',
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_admin_syllabus',
                     'action' => 'manage',
-                ),
-            ),
-        ),
-        'cudi_admin_syllabus_typeahead' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
-            'options' => array(
-                'route' => '/admin/cudi/syllabus/typeahead/:academicyear[/:string][/]',
-                'constraints' => array(
-                    'academicyear' => '[0-9]{4}-[0-9]{4}',
-                    'string'       => '[%a-zA-Z0-9:.,_\-\(\)]*',
-                ),
-                'defaults' => array(
-                    'controller' => 'cudi_admin_syllabus',
-                    'action'     => 'typeahead',
                 ),
             ),
         ),
@@ -846,16 +829,13 @@ return array(
                 ),
             ),
         ),
-
         'cudi_admin_isic' => array(
             'type' => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/cudi/isic[/:action[/:id][/:field/:string][/page/:page]][/]',
+                'route' => '/admin/cudi/isic[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id' => '[%a-zA-Z0-9:.,_-]*',
-                    'field' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_\-\(\)]*',
                     'page' => '[0-9]*',
                 ),
                 'defaults' => array(
@@ -868,13 +848,14 @@ return array(
         'cudi_isic' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/cudi/isic[/:action][/redirect/:redirect[/:rediraction]][/membership/:organization][/]',
+                'route' => '[/:language]/cudi/isic[/:action][/redirect/:redirect[/:rediraction]][/membership/:organization/:size][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '[a-z]{2}',
                     'redirect' => '[a-zA-Z0-9_-]*',
                     'rediraction' => '[a-zA-Z0-9]*',
                     'organization' => '[a-zA-Z0-9]*',
+                    'size' => '[a-zA-Z_]*',
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_isic',

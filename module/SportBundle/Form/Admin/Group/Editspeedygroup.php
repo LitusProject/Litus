@@ -56,7 +56,7 @@ class Editspeedygroup extends \CommonBundle\Component\Form\Admin\Form
         $this->addSubmit('Edit speedygroup', 'edit');
     }
 
-    /**
+      /**
      * @param  Group $group
      * @return self
      */

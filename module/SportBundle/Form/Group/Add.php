@@ -105,8 +105,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @param string $memberNb
-     */
+	 * @param string $memberNb
+	 */
     private function generateMemberForm($memberNb, $required = false)
     {
         $this->add(array(

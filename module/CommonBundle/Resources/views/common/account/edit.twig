@@ -171,7 +171,12 @@
                 .closest('.form-group')
                     .toggle($('#register_form').find('#organization').val() !== '0');
 
-            $form.find('#conditions')
+            if ($form.find('#become_member').is(':disabled'))
+                $form.find('#irreeel')
+                    .closest('.form-group')
+                        .show();
+
+            $form.find('#conditions, #bakske')
                 .closest('.form-group')
                     .show();
             $form.find('#organization')
