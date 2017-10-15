@@ -14,6 +14,7 @@
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  * @author Floris Kint <floris.kint@vtk.be>
+ * @author Hannes Vandecasteele <hannes.vandecasteele@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -39,7 +40,7 @@ return array(
             'index',
         ),
         'sport_run_tombola' => array(
-            'index',
+            'index', 'getName',
         ),
     ),
 );
