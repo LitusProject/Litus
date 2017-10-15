@@ -374,9 +374,17 @@ class Study
                     if (null !== $image) {
                         $prof->setPhotoPath($image);
                     }
-                    $this->profCache[$identification] = $prof;
                 }
+            } else {
+                $prof->setFirstName(trim($data->voornaam))
+                    ->setLastName(trim($data->familienaam))
+                    ->setEmail($info['email'])
+                    ->setPersonalEmail($info['email'])
+                    ->setUniversityEmail($info['email'])
+                    ->setPhoneNumber($info['phone']);
             }
+
+            $this->profCache[$identification] = $prof;
 
             if ($prof->canHaveUniversityStatus($this->academicYear)) {
                 $prof->addUniversityStatus(

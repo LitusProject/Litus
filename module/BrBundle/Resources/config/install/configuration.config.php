@@ -69,7 +69,7 @@ return array(
         'value'       => serialize(
             array(
                 'en' => array(
-                    'subject' => 'VTK Corporate Account',
+                    'subject' => 'Student IT Corporate Account',
                     'content' => 'Dear {{ name }},
 
 A corporate account was created for you with username {{ username }}.
@@ -78,10 +78,10 @@ You can use this account to view the CV Book at http://litus/corporate
 
 Kind regards,
 
-The VTK Corporate Relations Team',
+The Student IT Corporate Relations Team',
                 ),
                 'nl' => array(
-                    'subject' => 'VTK Bedrijfsaccount',
+                    'subject' => 'Student IT Bedrijfsaccount',
                     'content' => 'Beste {{ name }},
 
 Een bedrijfsaccount werd voor u aangemaakt met gebruikersnaam {{ username }}.
@@ -90,7 +90,7 @@ U kan dit account gebruiken om het CV Book te bekijken op http://litus/corporate
 
 Met vriendelijke groeten,
 
-Het VTK Bedrijvenrelaties Team',
+Het Student IT Bedrijvenrelaties Team',
                 ),
             )
         ),
@@ -103,7 +103,7 @@ Het VTK Bedrijvenrelaties Team',
     ),
     array(
             'key'         => 'br.contract_name',
-            'value'       => 'Vlaamse Technische Kring',
+            'value'       => 'Student IT',
             'description' => 'I have no idea',
     ),
     array(
@@ -115,8 +115,8 @@ Het VTK Bedrijvenrelaties Team',
         'key'         => 'br.contract_below_entries',
         'value'       => serialize(
             array(
-                'en' => 'Herewith I agree to the terms and conditions of VTK Leuven, found at the end of this contract.',
-                'nl' => 'Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van VTK Leuven, te vinden aan het einde van dit contract.',
+                'en' => 'Herewith I agree to the terms and conditions of Student IT, found at the end of this contract.',
+                'nl' => 'Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van Student IT, te vinden aan het einde van dit contract.',
             )
         ),
         'description' => 'Payment information',
@@ -152,7 +152,7 @@ Example content of this section.
     ),
     array(
             'key'         => 'br.organization_name',
-            'value'       => 'VTK Ondersteuning vzw',
+            'value'       => 'Student IT vzw',
             'description' => 'Name of corporate relations vzw',
     ),
     array(

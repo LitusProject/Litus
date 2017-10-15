@@ -52,7 +52,7 @@ class Poc extends EntityRepository
 
         return $resultSet;
     }
-     /**
+    /**
      * @param  AcademicYear        $academicYear
      * @return \Doctrine\ORM\Query
      */
@@ -171,11 +171,11 @@ class Poc extends EntityRepository
         return $resultSet;
     }
 
-     /**
-     * @param  GroupEntity  $group
-     * @param  AcademicYear $academicYear
-     * @return int
-     */
+      /**
+       * @param  GroupEntity  $group
+       * @param  AcademicYear $academicYear
+       * @return int
+       */
       public function getNbOfPocersFromGroupEntity(GroupEntity $group, AcademicYear $academicYear)
       {
           $query = $this->getEntityManager()->createQueryBuilder();

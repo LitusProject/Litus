@@ -14,6 +14,7 @@
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  * @author Floris Kint <floris.kint@vtk.be>
+ * @author Hannes Vandecasteele <hannes.vandecasteele@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -79,6 +80,21 @@ return array(
                 ),
             ),
         ),
+        'sport_run_tombola' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route' => '[/:language]/run/tombola[/:action[/:university_identification]][/]',
+                'constraints' => array(
+                    'language'                  => '[a-z]{2}',
+                    'action'                    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'university_identification' => '[a-z0-9]{1}[0-9]{7}',
+                ),
+                'defaults' => array(
+                    'controller' => 'sport_run_tombola',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
         'sport_run_screen' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -111,11 +127,11 @@ return array(
 
     'controllers' => array(
         'sport_admin_run'  => 'SportBundle\Controller\Admin\RunController',
-
         'sport_run_index'  => 'SportBundle\Controller\Run\IndexController',
         'sport_run_group'  => 'SportBundle\Controller\Run\GroupController',
         'sport_run_queue'  => 'SportBundle\Controller\Run\QueueController',
         'sport_run_screen' => 'SportBundle\Controller\Run\ScreenController',
         'sport_run_screen_outside' => 'SportBundle\Controller\Run\ScreenOutsideController',
+        'sport_run_tombola' => 'SportBundle\Controller\Run\TombolaController',
     ),
 );

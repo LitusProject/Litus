@@ -76,16 +76,6 @@
                 <dd>{{ authenticatedPerson.getOrganization(currentAcademicYear).getName() }}&nbsp;</dd>
                 <dt>{{ translate('Membership') }}</dt>
                 <dd>{% if authenticatedPerson.isMember(currentAcademicYear) or metaData.becomeMember() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
-                {% if authenticatedPerson.isMember(currentAcademicYear) %}
-                    <dt>{{ translate('I want to receive my Ir.Reëel at CuDi') }}</dt>
-                    <dd>{% if metaData.receiveIrReeelAtCudi() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
-                {% endif %}
-                <dt>{{ translate('I want to receive \'t Bakske by e-mail') }}</dt>
-                <dd>{% if metaData.bakskeByMail() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}</dd>
-                {% if authenticatedPerson.isMember(currentAcademicYear) and not authenticatedPerson.isPraesidium(currentAcademicYear) %}
-                    <dt>{{ translate('T-shirt Size')}}</dt>
-                    <dd>{{ metaData.getTshirtSizeName() }}&nbsp;</dd>
-                {% endif %}
             </dl>
         </div>
         <div class="col-sm-3" style="text-align: left;">

@@ -47,12 +47,6 @@ if (!file_exists($dumpFileName)) {
 }
 
 // Build the new units structure
-echo ' -> Build new cv structure' . PHP_EOL;
-exec('./bin/litus.sh orm:schema-tool:update --force', $output, $returnValue);
-if ($returnValue !== 0) {
-    echo ' Failed to update database, please try it manualy. This script can be run again afterwards.' . PHP_EOL;
-    exit(1);
-}
 echo ' -> Import old experiences into new structure' . PHP_EOL;
 foreach ($cvEntries as $entry) {
     $exp = $entry['experiences'];

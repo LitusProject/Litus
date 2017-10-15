@@ -33,11 +33,11 @@ return array(
         'key'         => 'mail.start_cudi_mail',
         'value'       => serialize(
             array(
-                'subject' => '[VTK Cursusdienst] Cursussen {{ semester }} Semester Academiejaar {{ academicYear }}',
+                'subject' => '[Student IT Cursusdienst] Cursussen {{ semester }} Semester Academiejaar {{ academicYear }}',
                 'message' => 'Geachte professor,
 Geachte docent,
 
-Net zoals elk jaar verdeelt VTK (studentenkring burgerlijk ingenieur(-architect)) studiemateriaal onder alle studenten aan de faculteit ingenieurswetenschappen. Meer informatie over onze werking kan u vinden op: http://praesidium.vtk.be/~tvandervoorde/brochure.pdf.
+Net zoals elk jaar verdeelt Student IT (studentenkring burgerlijk ingenieur(-architect)) studiemateriaal onder alle studenten aan de faculteit ingenieurswetenschappen. Meer informatie over onze werking kan u vinden op: http://praesidium.vtk.be/~tvandervoorde/brochure.pdf.
 U ontvangt deze mail omdat het belangrijk is dat we tijdig over de juiste informatie beschikken, zo kunnen we de studenten in het begin van het academiejaar zo snel mogelijk verder helpen. Ook indien wij uw cursus ongewijzigd mogen heruitgeven, wachten wij hiervoor op uw bericht.
 Het gaat om volgende vakken:
 

@@ -108,10 +108,10 @@ return array(
             'add', 'delete', 'edit', 'manage',
         ),
         'cudi_admin_syllabus' => array(
-            'manage', 'list', 'articlescsv',
+            'manage', 'list', 'articlescsv', 'search',
         ),
         'cudi_admin_isic' => array(
-            'manage','assign', 'unassign', 'delete',
+            'manage','assign', 'unassign', 'delete', 'search', 'print',
         ),
         'cudi_isic' => array(
             'form','order',

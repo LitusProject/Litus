@@ -220,28 +220,6 @@ class Articles
             }
         }
 
-        $tshirts = unserialize(
-            $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.tshirt_article')
-        );
-
-        foreach ($tshirts as $tshirt) {
-            $booking = $entityManager
-                ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findOneBookedOrAssignedByArticleAndPersonInAcademicYear(
-                    $entityManager
-                        ->getRepository('CudiBundle\Entity\Sale\Article')
-                        ->findOneById($tshirt),
-                    $academic,
-                    $academicYear
-                );
-
-            if (null !== $booking) {
-                $booking->setStatus('canceled', $entityManager);
-            }
-        }
-
         $registrationArticles = unserialize(
             $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')

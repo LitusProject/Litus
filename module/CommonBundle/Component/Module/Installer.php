@@ -109,7 +109,7 @@ class Installer extends AbstractInstaller
         }
 
         $organizations = array(
-            'VTK',
+            'Student IT',
         );
 
         foreach ($organizations as $name) {

@@ -14,6 +14,7 @@
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  * @author Floris Kint <floris.kint@vtk.be>
+ * @author Hannes Vandecasteele <hannes.vandecasteele@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -97,6 +98,13 @@ class Runner
     private $department;
 
     /**
+     * @var HappyHour The happy hour for the tombola
+     *
+     * @ORM\Column(name="happy_hour", type="string", nullable=true)
+     */
+    private $happyHour;
+
+    /**
      * @var EntityManager
      */
     private $entityManager;
@@ -107,8 +115,9 @@ class Runner
      * @param Academic|null   $academic
      * @param Group|null      $group
      * @param Department|null $department
+     * @param string|null     $happyHour
      */
-    public function __construct($firstName, $lastName, AcademicYear $academicYear, Academic $academic = null, Group $group = null, Department $department = null)
+    public function __construct($firstName, $lastName, AcademicYear $academicYear, Academic $academic = null, Group $group = null, Department $department = null, $happyHour = null)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -116,6 +125,7 @@ class Runner
         $this->academic = $academic;
         $this->group = $group;
         $this->department = $department;
+        $this->happyHour = $happyHour;
     }
 
     /**
@@ -243,6 +253,25 @@ class Runner
     }
 
     /**
+     * @return string $happyHour
+     */
+    public function getHappyHour()
+    {
+        return $this->happyHour;
+    }
+
+    /**
+     * @param  string $happyHour
+     * @return self
+     */
+    public function setHappyHour($happyHour)
+    {
+        $this->happyHour = $happyHour;
+
+        return $this;
+    }
+
+    /**
      * @param  EntityManager $entityManager
      * @return self
      */
@@ -300,9 +329,9 @@ class Runner
     }
 
     /**
-	 * @param AcademicYear $academicYear
-	 * @return integer
-	 */
+     * @param  AcademicYear $academicYear
+     * @return integer
+     */
     public function getStartedLapsCount(AcademicYear $academicYear)
     {
         return $this->entityManager

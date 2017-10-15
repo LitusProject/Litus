@@ -22,11 +22,11 @@
 
     {% include 'secretary/registration/partials/navigation.twig' %}
 
+    <div class="pull-right">
+        <a href="{{ url('secretary_registration', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
+    </div>
     <h2>
         {{ translate('Choose a Study') }}
-        <div class="pull-right">
-            <a href="{{ url('secretary_registration', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
-        </div>
     </h2>
     <div id="studies">
         {{ _self.displayStudies(studies, enrollments) }}
