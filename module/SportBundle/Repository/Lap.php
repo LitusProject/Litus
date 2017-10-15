@@ -201,7 +201,7 @@ class Lap extends EntityRepository
                 )
             )
             ->groupBy('l.runner')
-            ->orderBy('lapCount','DESC')
+            ->orderBy('lapCount', 'DESC')
             ->setParameter('academicYear', $academicYear)
             ->getQuery()
             ->getResult();
@@ -210,10 +210,10 @@ class Lap extends EntityRepository
     }
 
     /**
-	 * @param RunnerEntity $runner
-	 * @param AcademicYear $academicYear
-	 * @return integer
-	 */
+     * @param  RunnerEntity $runner
+     * @param  AcademicYear $academicYear
+     * @return integer
+     */
     public function getStartedLapsCountForRunner(RunnerEntity $runner, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
