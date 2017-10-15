@@ -78,7 +78,7 @@ class MetaData
     /**
      * @var boolean Whether the academic wants to receive 't Baske by email or not
      *
-     * @ORM\Column(name="bakske_by_mail", type="boolean")
+     * @ORM\Column(name="bakske_by_mail", type="boolean", options={"default":true})
      */
     private $bakskeByMail;
 
