@@ -14,6 +14,7 @@
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  * @author Floris Kint <floris.kint@vtk.be>
+ * @author Hannes Vandecasteele <hannes.vandecasteele@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -191,8 +192,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         if (!($user = $this->getCorporateEntity())) {
             return new ViewModel();
         }
-
-        $user->disableLogin();
+        $this->getEntityManager()
+             ->remove($user);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
