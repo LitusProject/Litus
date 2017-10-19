@@ -65,7 +65,7 @@ class Runner extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByAcademicYearQuery(AcademicYear $academicYear)
+    public function findAllByAcademicYearQuery(CommonBundleAcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('g')

@@ -194,6 +194,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         }
         $this->getEntityManager()
              ->remove($user);
+        //$user->disableLogin();
         $this->getEntityManager()->flush();
 
         return new ViewModel(
