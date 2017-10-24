@@ -78,7 +78,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
         }
         $returnArray = array();
         foreach ($optionsArray as $key => $value) {
-            if ($countArray[$key] < 4) {
+            if ($countArray[$key] < 6) {
                 $returnArray[$key] = $value;
             }
         }
