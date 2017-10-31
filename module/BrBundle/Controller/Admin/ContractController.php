@@ -25,6 +25,9 @@ use BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
     BrBundle\Entity\Contract\ContractHistory,
     BrBundle\Entity\Invoice\ContractInvoice,
     BrBundle\Entity\Invoice\InvoiceEntry,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Component\Util\File as FileUtil,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -115,6 +118,46 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             array(
                 'paginator' => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function csvAction()
+    {
+        $file = new CsvFile();
+        $heading = array('Company', 'Author', 'Title', 'Date', 'Contract Nb', 'Value');
+
+        $contracts = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Contract')
+            ->findAll();
+
+        $results = array();
+        
+        foreach($contracts as $contract){
+            $contract->getOrder()->setEntityManager($this->getEntityManager());
+            $value = $contract->getOrder()->getTotalCostExclusive();
+            
+            $results[] = array($contract->getCompany()->getName(), 
+                $contract->getAuthor()->getPerson()->getFullName(), 
+                $contract->getTitle(),
+                $contract->getDate()->format('j/m/Y'),
+                $contract->getFullContractNumber($this->getEntityManager()),
+                $value);
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="contracts.csv"',
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }
