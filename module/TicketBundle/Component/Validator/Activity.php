@@ -20,6 +20,8 @@
 
 namespace TicketBundle\Component\Validator;
 
+use TicketBundle\Entity\Event;
+
 /**
  * Check the activity has already a ticket system
  *

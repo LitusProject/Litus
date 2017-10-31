@@ -20,6 +20,8 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
+
+
 use CommonBundle\Entity\User\Barcode as BarcodeEntity,
     CommonBundle\Entity\User\Person,
     LogicException;

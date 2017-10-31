@@ -75,9 +75,9 @@ class PositiveNumber extends AbstractValidator
         }
 
         if ($this->options['strict'] && $intVal == 0) {
-            $this->error (self::NOT_STRICT_POSITIVE);
+            $this->error(self::NOT_STRICT_POSITIVE);
         } else {
-            $this->error (self::NOT_POSITIVE);
+            $this->error(self::NOT_POSITIVE);
         }
 
         return false;

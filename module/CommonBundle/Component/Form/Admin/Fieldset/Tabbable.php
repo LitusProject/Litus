@@ -20,9 +20,7 @@
 
 namespace CommonBundle\Component\Form\Admin\Fieldset;
 
-use CommonBundle\Component\Form\Admin\Fieldset\TabContent,
-    CommonBundle\Component\Form\Admin\Fieldset\TabPane,
-    CommonBundle\Component\Form\FieldsetInterface,
+use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language,
     Locale,
     RuntimeException,

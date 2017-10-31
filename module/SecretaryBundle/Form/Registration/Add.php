@@ -312,6 +312,32 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                     ),
                 ),
+                array(
+                    'type'  => 'checkbox',
+                    'name'  => 'receive_irreeel_at_cudi',
+                    'label' => 'I want to receive my Ir.Reëel at CuDi',
+                    'value' => true,
+                    'attributes' => array(
+                        'id' => 'irreeel',
+                    ),
+                ),
+                array(
+                    'type'       => 'checkbox',
+                    'name'       => 'bakske_by_mail',
+                    'label'      => 'I want to receive \'t Bakske by e-mail',
+                    'value'      => true,
+                    'attributes' => array(
+                        'id' => 'bakske',
+                    ),
+                ),
+                array(
+                    'type'       => 'select',
+                    'name'       => 'tshirt_size',
+                    'label'      => 'T-shirt Size',
+                    'attributes' => array(
+                        'options' => MetaData::$possibleSizes,
+                    ),
+                ),
             ),
         ));
 

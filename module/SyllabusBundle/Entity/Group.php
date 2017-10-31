@@ -190,7 +190,7 @@ class Group
         return $this;
     }
 
-    /**
+     /**
      * @return EntityManager
      */
     public function getEntityManager()
@@ -220,16 +220,16 @@ class Group
             ->getNbOfPocersFromGroupEntity($this, $academicYear);
     }
 
-     /**
-      *returns boolean
-      */
+    /**
+     *returns boolean
+     */
      public function getIsPocGroup(AcademicYear $academicYear)
      {
          return $this->entityManager
          ->getRepository('SyllabusBundle\Entity\Poc')
          ->getIsPocGroup($this, $academicYear);
      }
-    /**
+       /**
      * @param  AcademicYear $academicYear
      * @return string
      */

@@ -3,9 +3,10 @@
 <html lang="en">
 <head>
     {% do headLink({'rel': 'shortcut icon', 'href': '/img/favicon.ico'}) %}
+    {% do headLink({'rel': 'image_src', 'href': '/_site/img/schild.png'}) %}
 
     {{ headMeta() }}
-    {{ headTitle(translate('Student IT'), 'PREPEND') }}
+    {{ headTitle(translate('Vlaamse Technische Kring'), 'PREPEND') }}
 
     {{ headLink() }}
 
@@ -193,7 +194,8 @@
     <header>
         <div class="container">
             <a class="site-link" href="{{ url('common_index') }}">
-                <h1 class="site-name">{{ translate('Student IT') }}</h1>
+                <img class="site-logo" src="/_site/img/logo.png" />
+                <h1 class="site-name">{{ translate('Vlaamse Technische Kring') }}</h1>
             </a>
 
             {% if banners|length > 0 %}
@@ -233,16 +235,75 @@
         </div>
     </div>
 
-    <hr>
     <footer>
-        <p>&copy; {{ 'now'|date('Y') }} {{ translate('Student IT vzw') }}</p>
+        <div class="light">
+            <div class="container">
+                <div class="row light">
+                    <div class="col-md-3">
+                        <h3>{{ translate('Links') }}</h3>
+                        <div class="col-md-6">
+
+                             <ul class="nav-list">
+                                <li><a href="http://eng.kuleuven.be">FIrW</a></li>
+                                <li><a href="http://www.kuleuven.be">KU Leuven</a></li>
+                                <li><a href="http://alum.kuleuven.be/alumni-ingenieurs/">Alumni Ingenieurs</a></li>
+                                <li><a href="http://www.kviv.be">KVIV</a></li>
+                            </ul>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <ul class="nav-list">
+                                <li><a href="http://best.vtk.be">BEST</a></li>
+                                <li><a href="http://existenz.be">Existenz</a></li>
+                                <li><a href="http://www.iaeste.be">IAESTE</a></li>
+                                <li><a href="http://revue.vtk.be">Revue</a></li>
+                                <li><a href="http://statix.vtk.be">Statix</a></li>
+                            </ul>
+
+                            <ul class="nav-list">
+                                <li><a href="http://www.sturakuleuven.be/">Stura</a></li>
+                                <li><a href="http://www.loko.be">LOKO</a></li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-9">
+                        <h3>{{ translate('Partners') }}</h3>
+
+                        <p class="companies">
+                            {% for logo in logos %}
+                                <a href="{{ logo.getUrl() }}" target="_blank" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}');height: 40px;width: {{ (logo.getWidth()*40/logo.getHeight())|number_format(0) }}px;"></a>
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dark">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3>&copy; {{ 'now'|date('Y') }} {{ translate('Vlaamse Technische Kring vzw') }}</h3>
+                    </div>
+
+                    <div class="col-md-2 icons">
+                        <a href="http://facebook.com/VTKLeuven"><img src="/_site/img/facebook.png" /></a>
+                        <a href="http://twitter.com/VTKLeuven"><img src="/_site/img/twitter.png" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
 
     {% if showCookieBanner %}
         <div class="cookie-banner">
             <div class="container">
                 {% autoescape false %}
-                    <p>{{ translate('Student IT uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.')|replace({'%url%': url('common_privacy')}) }}</p>
+                    <p>{{ translate('VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.')|replace({'%url%': url('common_privacy')}) }}</p>
                     <button type="button" class="btn btn-default cookie-permission">{{ translate('Continue') }}</button>
                 {% endautoescape %}
             </div>

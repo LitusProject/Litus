@@ -20,6 +20,7 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
+
 use SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration;
 
@@ -64,6 +65,15 @@ class Edit extends Add
             ->setValue($this->getRegistration()->hasPayed());
 
         $metaData = $this->getMetaData();
+
+        if (null !== $metaData) {
+            $this->get('irreeel')
+                ->setValue($metaData->receiveIrReeelAtCudi());
+            $this->get('bakske')
+                ->setValue($metaData->bakskeByMail());
+            $this->get('tshirt_size')
+                ->setValue($metaData->getTshirtSize());
+        }
 
         $organization = $this->getRegistration()->getAcademic()->getOrganization($this->getRegistration()->getAcademicYear());
         $this->get('organization')->setValue($organization ? $organization->getId() : 0);

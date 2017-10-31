@@ -383,8 +383,8 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @return Array
-     */
+    * @return Array
+    */
     public function exportAction()
     {
         $volunteers = $this->getEntityManager()

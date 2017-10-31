@@ -105,7 +105,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
                     $secondLeft = $secondBus->getTotalSeats() - $secondBus->getReservedSeats();
                 }
 
-                if ($firstLeft > 0 & $secondLeft > 0) {
+                if ($firstLeft>0 & $secondLeft>0) {
                     $passenger = new Passenger($formData['first_name'], $formData['last_name'], $formData['email'], $code, $firstBus, $secondBus);
                     $code->setUsed();
 

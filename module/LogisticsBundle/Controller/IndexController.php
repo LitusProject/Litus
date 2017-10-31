@@ -94,7 +94,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     $passengerId = $passenger->getId();
                 }
 
-                $result = array (
+                $result = array(
                     'start' => $reservation->getStartDate()->getTimeStamp(),
                     'end' => $reservation->getEndDate()->getTimeStamp(),
                     'reason' => $reservation->getReason(),
@@ -172,7 +172,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     $passengerId = $passenger->getId();
                 }
 
-                $result = array (
+                $result = array(
                     'start' => $reservation->getStartDate()->getTimeStamp(),
                     'end' => $reservation->getEndDate()->getTimeStamp(),
                     'reason' => $reservation->getReason(),
@@ -290,7 +290,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 $passengerId = $passenger->getId();
             }
 
-            $result[] = array (
+            $result[] = array(
                 'start' => $reservation->getStartDate()->getTimeStamp(),
                 'end' => $reservation->getEndDate()->getTimeStamp(),
                 'reason' => $reservation->getReason(),

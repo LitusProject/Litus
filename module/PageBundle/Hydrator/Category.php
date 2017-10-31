@@ -20,6 +20,7 @@
 
 namespace PageBundle\Hydrator;
 
+
 use PageBundle\Entity\Category as CategoryEntity,
     PageBundle\Entity\Category\Translation as TranslationEntity;
 

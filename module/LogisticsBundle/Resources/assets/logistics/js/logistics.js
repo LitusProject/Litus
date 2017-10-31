@@ -135,7 +135,7 @@
     }
 
     function _getEvents($this, start, end, callback) {
-
+        
         var settings = $this.data('logisticsCalendar');
         settings.hideErrors();
 
@@ -152,7 +152,8 @@
                 for (var index in reservations) {
                     var reservation = reservations[index];
                     firstHour = Math.min(firstHour, new Date(reservation.start*1000).getHours());
-
+					
+					
                     events.push({
                         title: reservation.reason,
                         start: reservation.start,
@@ -289,7 +290,8 @@
                 $('<dd>').html(_formatDate(event.start)),
                 $('<dt>').html(settings.tEndDate),
                 $('<dd>').html(_formatDate(event.end))
-
+                
+                
             )
         );
 
@@ -299,6 +301,8 @@
                 $('<dd>').html(event.load)
             );
         }
+        
+ 
 
         if (event.additional) {
             content.find('dl').append(
@@ -320,7 +324,7 @@
                 $('<dd>').html(event.driver)
             );
         }
-
+        
         if (event.car==true) {
             content.find('dl').append(
                 $('<dt>').html(settings.tCar),
@@ -328,11 +332,13 @@
             );
         }
         else{
-            content.find('dl').append(
-            $('<dt>').html(settings.tCar),
+			content.find('dl').append(
+			$('<dt>').html(settings.tCar),
             $('<dd>').html(" &#x2718")
             );
-        }
+		
+		}
+		
 
         if (settings.editable) {
             content.append(
@@ -422,7 +428,7 @@
         $('.popover .additional').html(event.additional);
         $('.popover .driver').val(event.driverId);
         $('.popover [name="passenger[id]"]').val(event.passengerId);
-        $('.popover .car').val(event.car);
+        $('.popover .car').val(event.car); 
         $('.popover .passenger').val(event.passenger);
         $('.popover .reservation_add').hide();
 
@@ -497,3 +503,5 @@
         return placement;
     }
 }) (jQuery);
+
+

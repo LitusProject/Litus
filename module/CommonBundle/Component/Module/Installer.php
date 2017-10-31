@@ -20,6 +20,9 @@
 
 namespace CommonBundle\Component\Module;
 
+
+
+
 use CommonBundle\Entity\General\Address\City,
     CommonBundle\Entity\General\Address\Street,
     CommonBundle\Entity\General\Language,
@@ -106,7 +109,7 @@ class Installer extends AbstractInstaller
         }
 
         $organizations = array(
-            'Student IT',
+            'VTK',
         );
 
         foreach ($organizations as $name) {

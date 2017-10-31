@@ -109,7 +109,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                 );
             }
             if (count($shift->getResponsibles()) != $shift->getNbResponsibles()) {
-                $y = $shift->getNbResponsibles() - count($shift->getResponsibles());
+                $y = $shift->getNbResponsibles()-count($shift->getResponsibles());
                 for ($x = 0; $x < $y; $x++) {
                     $people[] = new Object(
                     'person',
@@ -159,7 +159,7 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                 );
             }
             if (count($shift->getVolunteers()) != $shift->getNbVolunteers()) {
-                $y = $shift->getNbVolunteers() - count($shift->getVolunteers());
+                $y = $shift->getNbVolunteers()-count($shift->getVolunteers());
                 for ($x = 0; $x < $y; $x++) {
                     $people[] = new Object(
                     'person',

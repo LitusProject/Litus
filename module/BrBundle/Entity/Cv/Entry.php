@@ -766,10 +766,10 @@ class Entry
     }
 
     /**
-     * Sort the given list of experiences on start date
-     *
-     *@return array
-     */
+    * Sort the given list of experiences on start date
+    *
+    *@return array
+    */
     private function sortNewExperiences(array $experiences)
     {
         $result = array();
