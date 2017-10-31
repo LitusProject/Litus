@@ -39,10 +39,22 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromQuery(
-            $this->getEntityManager()
+        
+        $contracts =  $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
-                ->findAllNewUnsignedQuery(),
+                ->findAllNewUnsignedQuery()
+                ->getResult();
+
+        $contractData = array();
+
+        foreach($contracts as $contract){
+            $contract->getOrder()->setEntityManager($this->getEntityManager());
+            $value = $contract->getOrder()->getTotalCostExclusive();
+            $contractData[] = array("contract" => $contract, "value" => $value);
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $contractData,
             $this->getParam('page')
         );
 
