@@ -72,10 +72,21 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
     public function signedListAction()
     {
-        $paginator = $this->paginator()->createFromQuery(
-            $this->getEntityManager()
+        $contracts =  $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
-                ->findAllSignedQuery(),
+                ->findAllSignedQuery()
+                ->getResult();
+
+        $contractData = array();
+
+        foreach($contracts as $contract){
+            $contract->getOrder()->setEntityManager($this->getEntityManager());
+            $value = $contract->getOrder()->getTotalCostExclusive();
+            $contractData[] = array("contract" => $contract, "value" => $value);
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $contractData,
             $this->getParam('page')
         );
 
@@ -125,7 +136,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     public function csvAction()
     {
         $file = new CsvFile();
-        $heading = array('Company', 'Author', 'Title', 'Date', 'Contract Nb', 'Value');
+        $heading = array('Company', 'Author', 'Title', 'Date', 'Contract Nb', 'Signed', 'Value');
 
         $contracts = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
@@ -142,6 +153,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 $contract->getTitle(),
                 $contract->getDate()->format('j/m/Y'),
                 $contract->getFullContractNumber($this->getEntityManager()),
+                $contract->isSigned(),
                 $value);
         }
 
