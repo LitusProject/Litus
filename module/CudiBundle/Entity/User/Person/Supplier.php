@@ -20,6 +20,7 @@
 
 namespace CudiBundle\Entity\User\Person;
 
+
 use CudiBundle\Entity\Supplier as SupplierEntity,
     Doctrine\ORM\Mapping as ORM;
 

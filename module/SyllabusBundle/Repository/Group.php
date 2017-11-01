@@ -105,7 +105,7 @@ class Group extends EntityRepository
         return $resultSet;
     }
 
-    /**
+     /**
      * @return \Doctrine\ORM\Query
      */
     public function findAllPocGroupsByAcademicYear(AcademicYear $AcademicYear)

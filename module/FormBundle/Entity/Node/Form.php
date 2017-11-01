@@ -28,7 +28,6 @@ use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
     FormBundle\Entity\Mail\Mail,
-    FormBundle\Entity\Node\Entry,
     Locale;
 
 /**

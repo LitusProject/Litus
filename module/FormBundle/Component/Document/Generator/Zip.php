@@ -52,13 +52,14 @@ class Zip
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('form.file_upload_path') . '/';
 
+        
+        $zip->open($tmpFile->getFileName(), ZIPARCHIVE::CREATE);
         foreach ($entries as $entry) {
-            $zip->open($tmpFile->getFileName(), ZIPARCHIVE::CREATE);
             $zip->addFile(
                 $filePath . $entry->getValue(),
                 $entry->getField()->getLabel($language) . '_' . $entry->getFormEntry()->getPersonInfo()->getFullName() . '_' . $entry->getFormEntry()->getId() . '_' . $entry->getReadableValue()
             );
-            $zip->close();
         }
+        $zip->close();
     }
 }

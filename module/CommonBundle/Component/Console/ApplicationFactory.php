@@ -20,6 +20,7 @@
 
 namespace CommonBundle\Component\Console;
 
+
 use Symfony\Component\Console\Application,
     Zend\ServiceManager\ServiceLocatorInterface;
 

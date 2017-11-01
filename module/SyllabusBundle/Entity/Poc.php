@@ -40,11 +40,11 @@ class Poc
      */
     private $id;
 
-     /**
-      * @var group
-      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Group")
-      * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
-      */
+    /**
+	 * @var group
+	 * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Group")
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
+     */
      private $groupId;
 
     /**
@@ -65,11 +65,11 @@ class Poc
 
     /**
      * @var boolean whether or not this is just an indicator that there exists a poc group with this group this academic year
-     * @ORM\Column(name="indicator", type="boolean",options={"default" : 0})
-     */
+	 * @ORM\Column(name="indicator", type="boolean",options={"default" : 0})
+	 */
     private $indicator;
 
-    /**
+     /**
      * @var the email adress of the poc. Only the indicator email adress is showed in the admin
      *
      * @ORM\Column(type="string",nullable=true)
@@ -89,7 +89,7 @@ class Poc
         return $this->id;
     }
 
-    /**
+     /**
      * @return AcademicYear
      */
     public function getAcademicYear()
@@ -108,14 +108,14 @@ class Poc
         return $this;
     }
 
-    /**
+      /**
      * @return Academic
      */
     public function getAcademic()
     {
         return $this->academic;
     }
-    /**
+     /**
      * @param  Academic $academic
      * @return self
      */
@@ -145,7 +145,7 @@ class Poc
         return $this;
     }
 
-    /**
+     /**
      * @return boolean
      */
     public function getIndicator()
@@ -180,7 +180,7 @@ class Poc
         return $this;
     }
 
-    /**
+       /**
      * @return string
      */
     public function getEmailAdress()

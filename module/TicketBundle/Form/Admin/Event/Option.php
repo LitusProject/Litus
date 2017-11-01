@@ -20,6 +20,7 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
+
 use CommonBundle\Component\Form\Fieldset,
     Zend\InputFilter\InputFilterProviderInterface;
 

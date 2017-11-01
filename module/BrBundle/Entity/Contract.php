@@ -20,9 +20,7 @@
 
 namespace BrBundle\Entity;
 
-use BrBundle\Entity\Collaborator,
-    BrBundle\Entity\Company,
-    BrBundle\Entity\Contract\ContractEntry,
+use BrBundle\Entity\Contract\ContractEntry,
     BrBundle\Entity\Product\Order,
     DateTime,
     Doctrine\Common\Collections\ArrayCollection,

@@ -20,6 +20,7 @@
 
 namespace CudiBundle\Component\Validator\Sale\Article\Barcode;
 
+use CudiBundle\Entity\Sale\Article;
 /**
  * Matches the given article barcode against the database to check whether it is unique or not.
  *

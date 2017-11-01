@@ -152,7 +152,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
             ->getConfigValue('secretary.isic_membership') == 1;
 
         if ($isicMembership) {
-            if ($this->getParam('organization') == null) {
+            if ($this->getParam('organization') == null || $this->getParam('size') == null) {
                 $this->redirect()->toRoute(
                     'secretary_registration',
                     array()
@@ -254,6 +254,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                             $this->getCurrentAcademicYear(),
                             array(
                                 'payed' => false,
+                                'tshirtSize' => $this->getParam('size'),
                             )
                         );
                     }

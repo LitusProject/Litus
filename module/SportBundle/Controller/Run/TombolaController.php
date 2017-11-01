@@ -66,7 +66,7 @@ class TombolaController extends \SportBundle\Component\Controller\RunController
         
         $returnArray = array();
         foreach ($optionsArray as $key => $value) {
-            if ($countArray[$key] < 40) {
+            if ($countArray[$key] < 35) {
                 $returnArray[$key] = $value;
             }
         }

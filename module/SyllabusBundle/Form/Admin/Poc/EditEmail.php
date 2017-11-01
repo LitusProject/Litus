@@ -31,7 +31,7 @@ class EditEmail extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'SyllabusBundle\Hydrator\Poc';
 
-    /**
+     /**
      * @var Group|null
      */
     protected $poc = null;

@@ -453,6 +453,28 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
+     * We want an easy method to retrieve the LDAP connection from
+     * the DI container.
+     *
+     * @return \Zend\Ldap\Ldap
+     */
+    public function getLdap()
+    {
+        return $this->getServiceLocator()->get('ldap');
+    }
+
+    /**
+     * We want an easy method to retrieve the Mail Transport from
+     * the DI container.
+     *
+     * @return \Zend\Mail\Transport\TransportInterface
+     */
+    public function getMailTransport()
+    {
+        return $this->getServiceLocator()->get('mail_transport');
+    }
+
+    /**
      * Gets a parameter from a GET request.
      *
      * @param  string $param   The parameter's key

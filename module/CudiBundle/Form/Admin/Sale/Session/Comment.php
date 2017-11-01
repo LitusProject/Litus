@@ -20,6 +20,7 @@
 
 namespace CudiBundle\Form\Admin\Sale\Session;
 
+
 use CudiBundle\Entity\Sale\Session,
     LogicException;
 

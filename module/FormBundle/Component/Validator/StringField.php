@@ -72,8 +72,8 @@ class StringField extends \CommonBundle\Component\Validator\AbstractValidator
         $this->setValue($value);
 
         if ($this->options['multiline']) {
-            if ( ($this->isSpecified($this->options['lines']) && !$this->isSpecified($value)) ||
-                (!$this->isSpecified($this->options['lines']) && $this->isSpecified($value)) ) {
+            if (($this->isSpecified($this->options['lines']) && !$this->isSpecified($value)) ||
+                (!$this->isSpecified($this->options['lines']) && $this->isSpecified($value))) {
                 $this->error(self::ML_BOTH);
 
                 return false;

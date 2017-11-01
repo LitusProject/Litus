@@ -8,8 +8,8 @@
 */
 
 body {
-    padding-top: 45px;
-    background: #fff;
+    padding-top: 50px;
+    background: #252525;
     word-wrap: break-word;
 
     &.oauth {
@@ -58,24 +58,28 @@ body {
 }
 
 header {
-    background: rgb(236, 240, 241);
+    background: @cHeaderLight;
+    #gradient > .vertical(@start-color: @cHeaderDark; @end-color: @cHeaderLight; @start-percent: 0%; @end-percent: 50%);
 
     .site-link {
         text-decoration: none;
 
         .site-logo {
             float: left;
-            margin: 7px 20px 0 20px;
+            margin: 17px 20px 0 20px;
             height: 41px;
         }
 
         .site-name {
             margin: 0px;
-            color: rgb(44, 62, 80);
-            font-size: 35px;
-            text-shadow: 0 1px 1px rgba(0,0,0,.2);
-            padding: 10px 0 20px 20px;
+            padding-top: 20px;
         }
+    }
+
+    h1 {
+        color: @white;
+        text-shadow: 0 1px 1px rgba(0,0,0,.3);
+        padding: 10px 0 20px 20px;
     }
 
     .container {
@@ -174,9 +178,65 @@ header {
 }
 
 footer {
-    margin-bottom: 20px;
+    color: @grayMiddleLight;
+    border-top: 1px solid @grayLighter;
 
-    text-align: center;
+    .light {
+        padding: 16px 0 16px 0;
+        background: @grayDark;
+
+        h3 {
+            color: @white;
+        }
+    }
+
+    .dark {
+        padding: 20px 0;
+
+        h3 {
+            line-height: 30px;
+            color: @gray
+        }
+
+        img {
+            height: 30px;
+        }
+    }
+
+    h3 {
+        margin: 0;
+
+        font-weight: normal;
+        font-size: 18px;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, .1);
+
+        line-height: 40px;
+    }
+
+    .nav-list {
+        margin: 0 0 10px 0;
+        padding-left: 20px;
+        list-style: none;
+
+        li {
+            margin: 0;
+            a {
+                padding-top: 0;
+                font-size: 14px;
+                color: @grayMiddleLight;
+            }
+
+            a:hover {
+                background: none;
+                text-decoration: none;
+                color: @grayLighter;
+            }
+        }
+    }
+
+    .icons {
+        text-align: right;
+    }
 }
 
 .alert {

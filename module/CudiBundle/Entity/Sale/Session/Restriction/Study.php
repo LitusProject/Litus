@@ -20,6 +20,13 @@
 
 namespace CudiBundle\Entity\Sale\Session\Restriction;
 
+
+
+
+
+
+
+
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\User\Person,
     CudiBundle\Entity\Sale\Session,
