@@ -63,7 +63,13 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
         $invoiceData = [];
         foreach($invoices as $invoice){
-            $value = $invoice->getPrice();
+            $value = 0;
+            if($invoice->hasContract()){
+                $invoice->getOrder()->setEntityManager($this->getEntityManager());
+                $value = $invoice->getOrder()->getTotalCostExclusive();
+            }else{
+                $value = $invoice->getPrice();
+            }
             $invoiceData[] = array("invoice" => $invoice, "value" => $value);
         }
 
@@ -92,7 +98,13 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         $results = array();
         
         foreach($invoices as $invoice){
-            $value = $invoice->getPrice()/100;
+            $value = 0;
+            if($invoice->hasContract()){
+                $invoice->getOrder()->setEntityManager($this->getEntityManager());
+                $value = $invoice->getOrder()->getTotalCostExclusive();
+            }else{
+                $value = $invoice->getPrice()/100;
+            }
             
             $results[] = array($invoice->getCompany()->getName(), 
                 $invoice->getAuthor()->getPerson()->getFullName(), 
@@ -129,7 +141,13 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
         $invoiceData = [];
         foreach($invoices as $invoice){
-            $value = $invoice->getPrice();
+            $value = 0;
+            if($invoice->hasContract()){
+                $invoice->getOrder()->setEntityManager($this->getEntityManager());
+                $value = $invoice->getOrder()->getTotalCostExclusive();
+            }else{
+                $value = $invoice->getPrice();
+            }
             $invoiceData[] = array("invoice" => $invoice, "value" => $value);
         }
 
