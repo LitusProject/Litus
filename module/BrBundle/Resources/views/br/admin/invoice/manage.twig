@@ -45,7 +45,7 @@
                                 <input type="checkbox" id="{{ row['invoice'].getId() }}"/>
                             </td>
                     {% endif %}
-                    <td>&euro; {{ row['value']/100}}</td>
+                    <td>&euro; {{ row['value']}}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_invoice', 'edit') and row['invoice'].isPayed() == false %}
                             <a href="{{ url('br_admin_invoice', {"action": "edit", "id": row['invoice'].getId()}) }}" class="edit">Edit</a>
