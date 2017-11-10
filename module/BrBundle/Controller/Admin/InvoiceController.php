@@ -68,7 +68,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                 $invoice->getOrder()->setEntityManager($this->getEntityManager());
                 $value = $invoice->getOrder()->getTotalCostExclusive();
             }else{
-                $value = $invoice->getPrice();
+                $value = $invoice->getPrice()/100;
             }
             $invoiceData[] = array("invoice" => $invoice, "value" => $value);
         }

@@ -72,7 +72,7 @@
                             <a href="{{ url('br_admin_contract', {"action": "history", "id": row['contract'].getId()}) }}" class="history">History</a>
                         {% endif %}
                         {% if hasAccess('br_admin_contract', 'sign') and row['contract'].isSigned() == false %}
-                            <a href="{{ url('br_admin_contract', {"action": "sign", "id": contract.getId()}) }}" class="contract_edit" value="Sign" >Sign</a>
+                            <a href="{{ url('br_admin_contract', {"action": "sign", "id": row['contract'].getId()}) }}" class="contract_edit" value="Sign" >Sign</a>
                         {% endif %}
                         {% if hasAccess('br_admin_invoice', 'view') and row['contract'].isSigned() == true %}
                             <a href="{{ url('br_admin_invoice', {"action": "view", "id": row['contract'].getOrder().getInvoice().getId()}) }}" class="invoice">Invoice</a>
