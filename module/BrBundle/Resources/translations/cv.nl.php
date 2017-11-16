@@ -26,7 +26,7 @@ return array(
     'Email' => 'E-mail',
     'The following data from your account will be updated in the CV Book:' => 'De volgende data uit je account zal vernieuwd worden in het CV Boek:',
     'Profile Picture' => 'Profielfoto',
-    'Please update your account data if necessary. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.' => 'Gelieve je account data bij te werken indien nodig. De bovenstaande data wordt onmiddellijk verwerkt nadat je het formulier hebt ingevuld. Toekomstige updates zullen dus niet automatisch effect hebben.',
+    'Please update your account data and profile picture if necessary via vtk.be/en/account/edit/ and vtk.be/en/account/. Note that the data above will be retrieved immediately after creating the entry, so future updates to your profile will not be reflected automatically.' => 'Gelieve je account data en profielfoto bij te werken indien nodig via <a href="https://vtk.be/nl/account/edit" target="_blank">vtk.be/nl/account/edit/</a> en <a href="https://vtk.be/nl/account" target="_blank">vtk.be/nl/account/</a> . De bovenstaande data wordt onmiddellijk verwerkt nadat je het formulier hebt ingevuld. Toekomstige updates zullen dus niet automatisch effect hebben.',
     'Education' => 'Opleiding',
     'Primary Degree' => 'Afstudeerrichting',
     'Started Prior Degree In' => 'Vorig Diploma Begonnen In',
