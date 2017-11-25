@@ -72,7 +72,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 
         $original = clone $image;
 
-        $image->setImageColorspace(Imagick::COLORSPACE_GRAY);
+        $image->modulateImage(100, 0, 100);
 
         $color = 0;
         $iterator = $image->getPixelIterator();
@@ -93,8 +93,8 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $all = new Imagick();
-        $all->addImage($image);
         $all->addImage($original);
+        $all->addImage($image);
         $all->resetIterator();
         $combined = $all->appendImages(true);
         $combined->setImageFormat('png');
