@@ -46,7 +46,10 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             'SyllabusBundle\Entity\Group',
             $this->getParam('page'),
             array(
-                //'removed' => false,
+                'removed' => false,
+            ),
+            array(
+                'name' => 'ASC',
             )
         );
 
