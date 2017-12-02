@@ -31,7 +31,7 @@
                     <tr>
                         <td class="col-sm-8">{{ entry.getStudy().getTitle() }}</td>
                         <td class="col-sm-2">{{ entry.getMasterStart() }} &mdash; {{  entry.getMasterEnd() }}</td>
-                        <td class="col-sm-2">{{ entry.getGrade() / 100 }}%</td>
+                        <td class="col-sm-2">{%if entry.getGrade() != 0%}{{entry.getGrade()/100}}%{%else%}&mdash;{%endif%}</td>
                     </tr>
                     <tr>
                         <td>{{ entry.getPriorStudy() }}</td>
