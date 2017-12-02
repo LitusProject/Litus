@@ -47,6 +47,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             $this->getParam('page'),
             array(
                 'removed' => false,
+            ),
+            array(
+                'name' => 'ASC',
             )
         );
 
