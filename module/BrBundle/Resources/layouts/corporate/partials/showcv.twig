@@ -36,7 +36,7 @@
                     <tr>
                         <td>{{ entry.getPriorStudy() }}</td>
                         <td>{{ entry.getBachelorStart() }} &mdash; {{  entry.getBachelorEnd() }}</td>
-                        <td>{{ entry.getPriorGrade() / 100 }}%</td>
+                        <td>{%if entry.getPriorGrade() != 0%}{{entry.getPriorGrade()/100}}%{%else%}&mdash;{%endif%}</td>
                     </tr>
                 </tbody>
             </table>
