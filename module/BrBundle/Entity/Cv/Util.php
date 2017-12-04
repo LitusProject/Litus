@@ -127,11 +127,11 @@ class Util
         //Grades may be 0 in the database
         $masterGrade = (string) ($cv->getGrade() / 100);
         if($cv->getGrade() == 0){
-            $masterGrade = "&mdash;";
+            $masterGrade = "-";
         }
         $bachelorGrade = (string) ($cv->getPriorGrade() / 100);
         if($cv->getPriorGrade() == 0){
-            $bachelorGrade = "&mdash;";
+            $bachelorGrade = "-";
         }
 
         $result[] = new Object(
