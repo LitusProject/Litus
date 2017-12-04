@@ -124,6 +124,16 @@ class Util
             )
         );
 
+        //Grades may be 0 in the database
+        $masterGrade = (string) ($cv->getGrade() / 100);
+        if($cv->getGrade() == 0){
+            $masterGrade = "&mdash;";
+        }
+        $bachelorGrade = (string) ($cv->getPriorGrade() / 100);
+        if($cv->getPriorGrade() == 0){
+            $bachelorGrade = "&mdash;";
+        }
+
         $result[] = new Object(
             'section',
             array(
@@ -135,11 +145,11 @@ class Util
                     array(
                         'start_master'          => (string) $cv->getMasterStart(),
                         'end_master'            => (string) $cv->getMasterEnd(),
-                        'percentage_master'     => (string) ($cv->getGrade() / 100),
+                        'percentage_master'     => $masterGrade,
                         'title_master'          => $cv->getStudy()->getTitle(),
                         'start_bach'            => (string) $cv->getBachelorStart(),
                         'end_bach'              => (string) $cv->getBachelorEnd(),
-                        'percentage_bach'       => (string) ($cv->getPriorGrade() / 100),
+                        'percentage_bach'       => $bachelorGrade,
                         'title_bach'            => $cv->getPriorStudy(),
                     ),
                     null

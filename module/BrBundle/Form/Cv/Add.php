@@ -95,7 +95,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'type'       => 'text',
                     'name'       => 'prior_grade',
                     'label'      => 'Grade for the Prior Degree (e.g. 65.48)',
-                    'required'   => true,
+                    'required'   => false,
+                    'empty-data' => '0',
                     'options'    => array(
                         'input' => array(
                             'filters'  => array(
@@ -145,7 +146,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'type'       => 'text',
                     'name'       => 'grade',
                     'label'      => '(Provisional) Grade for the Current Degree (e.g. 65.48)',
-                    'required'   => true,
+                    'required'   => false,
+                    'empty-data' => '0',
                     'options'    => array(
                         'input' => array(
                             'filters'  => array(
