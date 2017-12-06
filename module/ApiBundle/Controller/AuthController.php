@@ -38,7 +38,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         if (!($person = $this->getPersonEntity())) {
             return $this->error(404, 'The person was not found');
         }
-
+        print_r("Person found");
         $result = array(
             'username' => $person->getUsername(),
             'full_name' => $person->getFullName(),
@@ -47,6 +47,10 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findOneById($person->getId());
+
+        $corporate = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\User\Person\Corporate')
             ->findOneById($person->getId());
 
         if (null !== $academic) {
@@ -59,6 +63,12 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             $result['in_workinggroup'] = (null !== $academic->isInWorkingGroup())
                 ? $academic->isInWorkingGroup()
                 : false;
+        }
+
+        if (null !== $corporate) {
+            $result['corporate_id'] = (null !== $corporate->getCompany())
+                ? $academic->getCompany()->getId()
+                : "-1";
         }
 
         return new ViewModel(
