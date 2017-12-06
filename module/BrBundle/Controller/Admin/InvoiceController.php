@@ -25,6 +25,9 @@ use BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
     BrBundle\Entity\Invoice\ContractInvoice,
     BrBundle\Entity\Invoice\InvoiceHistory,
     BrBundle\Entity\Invoice\ManualInvoice,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CommonBundle\Component\Util\File as FileUtil,
     DateTime,
     Zend\Http\Headers,
@@ -53,10 +56,25 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromQuery(
-            $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Invoice')
-                ->findAllUnPayedQuery(),
+        $invoices = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Invoice')
+                        ->findAllUnPayedQuery()
+                        ->getResult();
+
+        $invoiceData = [];
+        foreach($invoices as $invoice){
+            $value = 0;
+            if($invoice->hasContract()){
+                $invoice->getOrder()->setEntityManager($this->getEntityManager());
+                $value = $invoice->getOrder()->getTotalCostExclusive();
+            }else{
+                $value = $invoice->getPrice()/100;
+            }
+            $invoiceData[] = array("invoice" => $invoice, "value" => $value);
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $invoiceData,
             $this->getParam('page')
         );
 
@@ -68,12 +86,73 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function csvAction()
+    {
+        $file = new CsvFile();
+        $heading = array('Company', 'Author', 'Title', 'Date', 'Invoice Nb', 'Paid', 'Value');
+
+        $invoices = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Invoice')
+            ->findAll();
+
+        $results = array();
+        
+        foreach($invoices as $invoice){
+            $value = 0;
+            if($invoice->hasContract()){
+                $invoice->getOrder()->setEntityManager($this->getEntityManager());
+                $value = $invoice->getOrder()->getTotalCostExclusive();
+            }else{
+                $value = $invoice->getPrice()/100;
+            }
+            
+            $results[] = array($invoice->getCompany()->getName(), 
+                $invoice->getAuthor()->getPerson()->getFullName(), 
+                $invoice->getTitle(),
+                $invoice->getCreationTime()->format('j/m/Y'),
+                $invoice->getInvoiceNumber(),
+                $invoice->isPayed(),
+                $value);
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename="contracts.csv"',
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
     public function payedListAction()
     {
-        $paginator = $this->paginator()->createFromQuery(
-            $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Invoice')
-                ->findAllPayedQuery(),
+        $invoices = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Invoice')
+                        ->findAllPayedQuery()
+                        ->getResult();
+
+        $invoiceData = [];
+        foreach($invoices as $invoice){
+            $value = 0;
+            if($invoice->hasContract()){
+                $invoice->getOrder()->setEntityManager($this->getEntityManager());
+                $value = $invoice->getOrder()->getTotalCostExclusive();
+            }else{
+                $value = $invoice->getPrice();
+            }
+            $invoiceData[] = array("invoice" => $invoice, "value" => $value);
+        }
+
+        $paginator = $this->paginator()->createFromArray(
+            $invoiceData,
             $this->getParam('page')
         );
 

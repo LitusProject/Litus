@@ -55,13 +55,13 @@ return array(
             'manage', 'add', 'delete',
         ),
         'br_admin_contract' => array(
-            'manage', 'edit', 'view', 'history', 'sign', 'signedList', 'download', 'delete',
+            'manage', 'edit', 'view', 'history', 'sign', 'signedList', 'download', 'delete', 'csv'
         ),
         'br_admin_cv_entry' => array(
             'manage', 'delete', 'export', 'exportAcademics',
         ),
         'br_admin_invoice' => array(
-            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd',
+            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd', 'csv'
         ),
         'br_admin_order' => array(
             'product', 'edit', 'delete', 'deleteProduct', 'editProduct', 'view', 'add', 'old', 'manage', 'signed', 'generate',

@@ -26,37 +26,38 @@
                 <th>Creation Time</th>
                 <th>Invoice Number</th>
                 <th width="70px">Paid</th>
+                <th>Value</th>
                 <th width="70px">Actions</th>
             </tr>
 
-            {% for invoice in paginator %}
-                <tr class="item item-{{ invoice.getId() }}">
-                    <td>{{ invoice.getCompany().getName()}}</td>
-                    <td>{{ invoice.getTitle() }}</td>
-                    <td>{{ invoice.getCreationTime().format('j/m/Y') }}</td>
-                    <td>{{ invoice.getInvoiceNumber() }}</td>
-                    {% if invoice.isPayed() %}
+            {% for row in paginator %}
+                <tr class="item item-{{ row['invoice'].getId() }}">
+                    <td>{{ row['invoice'].getCompany().getName()}}</td>
+                    <td>{{ row['invoice'].getTitle() }}</td>
+                    <td>{{ row['invoice'].getCreationTime().format('j/m/Y') }}</td>
+                    <td>{{ row['invoice'].getInvoiceNumber() }}</td>
+                    {% if row['invoice'].isPayed() %}
                             <td style="text-align: center;">
-                                <input type="checkbox" disabled id="{{ invoice.getId() }}" checked="checked"/>
+                                <input type="checkbox" disabled id="{{ row['invoice'].getId() }}" checked="checked"/>
                             </td>
                     {% else %}
                             <td style="text-align: center;">
-                                <input type="checkbox" id="{{ invoice.getId() }}"/>
+                                <input type="checkbox" id="{{ row['invoice'].getId() }}"/>
                             </td>
                     {% endif %}
-
+                    <td>&euro; {{ row['value']}}</td>
                     <td class="actions">
-                        {% if hasAccess('br_admin_invoice', 'edit') and invoice.isPayed() == false %}
-                            <a href="{{ url('br_admin_invoice', {"action": "edit", "id": invoice.getId()}) }}" class="edit">Edit</a>
+                        {% if hasAccess('br_admin_invoice', 'edit') and row['invoice'].isPayed() == false %}
+                            <a href="{{ url('br_admin_invoice', {"action": "edit", "id": row['invoice'].getId()}) }}" class="edit">Edit</a>
                         {% endif %}
                         {% if hasAccess('br_admin_invoice', 'history') %}
-                            <a href="{{ url('br_admin_invoice', {"action": "history", "id": invoice.getId()}) }}" class="history">History</a>
+                            <a href="{{ url('br_admin_invoice', {"action": "history", "id": row['invoice'].getId()}) }}" class="history">History</a>
                         {% endif %}
-                        {% if hasAccess('br_admin_invoice', 'view') and invoice.hasContract() %}
-                            <a href="{{ url('br_admin_invoice', {"action": "view", "id": invoice.getId()}) }}" class="view">View</a>
+                        {% if hasAccess('br_admin_invoice', 'view') and row['invoice'].hasContract() %}
+                            <a href="{{ url('br_admin_invoice', {"action": "view", "id": row['invoice'].getId()}) }}" class="view">View</a>
                         {% endif %}
                         {% if hasAccess('br_admin_invoice', 'download') %}
-                            <a href="{{ url('br_admin_invoice', {"action": "download", "id": invoice.getId()}) }}" class="download">Download</a>
+                            <a href="{{ url('br_admin_invoice', {"action": "download", "id": row['invoice'].getId()}) }}" class="download">Download</a>
                         {% endif %}
                     </td>
                 </tr>

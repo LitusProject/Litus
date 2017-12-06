@@ -31,12 +31,12 @@
                     <tr>
                         <td class="col-sm-8">{{ entry.getStudy().getTitle() }}</td>
                         <td class="col-sm-2">{{ entry.getMasterStart() }} &mdash; {{  entry.getMasterEnd() }}</td>
-                        <td class="col-sm-2">{{ entry.getGrade() / 100 }}%</td>
+                        <td class="col-sm-2">{%if entry.getGrade() != 0%}{{entry.getGrade()/100}}%{%else%}&mdash;{%endif%}</td>
                     </tr>
                     <tr>
                         <td>{{ entry.getPriorStudy() }}</td>
                         <td>{{ entry.getBachelorStart() }} &mdash; {{  entry.getBachelorEnd() }}</td>
-                        <td>{{ entry.getPriorGrade() / 100 }}%</td>
+                        <td>{%if entry.getPriorGrade() != 0%}{{entry.getPriorGrade()/100}}%{%else%}&mdash;{%endif%}</td>
                     </tr>
                 </tbody>
             </table>

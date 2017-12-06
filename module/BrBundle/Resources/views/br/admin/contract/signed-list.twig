@@ -40,45 +40,46 @@
                 <th>Date</th>
                 <th width="90px">Contract Nb</th>
                 <th width="70px">Signed</th>
+                <th>Value</th>
                 <th width="70px">Actions</th>
             </tr>
 
-            {% for contract in paginator %}
-                <tr class="item item-{{ contract.getId() }}">
-                    <td>{{ contract.getCompany().getName() }}</td>
-                    <td>{{ contract.getAuthor().getPerson().getFullName() }}</td>
-                    <td>{{ contract.getTitle() }}</td>
-                    <td>{{ contract.getDate().format('j/m/Y') }}</td>
-                    <td>{{ contract.getFullContractNumber(em) }}</td>
+            {% for row in paginator %}
+                <tr class="item item-{{ row['contract'].getId() }}">
+                    <td>{{ row['contract'].getCompany().getName() }}</td>
+                    <td>{{ row['contract'].getAuthor().getPerson().getFullName() }}</td>
+                    <td>{{ row['contract'].getTitle() }}</td>
+                    <td>{{ row['contract'].getDate().format('j/m/Y') }}</td>
+                    <td>{{ row['contract'].getFullContractNumber(em) }}</td>
 
-                    {% if contract.isSigned() %}
+                    {% if row['contract'].isSigned() %}
                         <td style="text-align: center;">
-                            <input type="checkbox" disabled id="{{ contract.getId() }}" checked="checked"/>
+                            <input type="checkbox" disabled id="{{ row['contract'].getId() }}" checked="checked"/>
                         </td>
                     {% else %}
                         <td style="text-align: center;">
-                            <input type="checkbox" disabled id="{{ contract.getId() }}"/>
+                            <input type="checkbox" disabled id="{{ row['contract'].getId() }}"/>
                         </td>
                     {% endif %}
-
+                    <td>&euro; {{row['value']}}</d>
                     <td class="actions">
-                        {% if hasAccess('br_admin_contract', 'edit') and contract.isSigned() == false %}
-                            <a href="{{ url('br_admin_contract', {"action": "edit", "id": contract.getId()}) }}" class="edit">Edit</a>
+                        {% if hasAccess('br_admin_contract', 'edit') and row['contract'].isSigned() == false %}
+                            <a href="{{ url('br_admin_contract', {"action": "edit", "id": row['contract'].getId()}) }}" class="edit">Edit</a>
                         {% endif %}
                         {% if hasAccess('br_admin_contract', 'view') %}
-                            <a href="{{ url('br_admin_contract', {"action": "view", "id": contract.getId()}) }}" class="view">View</a>
+                            <a href="{{ url('br_admin_contract', {"action": "view", "id": row['contract'].getId()}) }}" class="view">View</a>
                         {% endif %}
                         {% if hasAccess('br_admin_contract', 'history') %}
-                            <a href="{{ url('br_admin_contract', {"action": "history", "id": contract.getId()}) }}" class="history">History</a>
+                            <a href="{{ url('br_admin_contract', {"action": "history", "id": row['contract'].getId()}) }}" class="history">History</a>
                         {% endif %}
-                        {% if hasAccess('br_admin_contract', 'sign') and contract.isSigned() == false %}
-                            <a href="{{ url('br_admin_contract', {"action": "sign", "id": contract.getId()}) }}" class="contract_edit" value="Sign" >Sign</a>
+                        {% if hasAccess('br_admin_contract', 'sign') and row['contract'].isSigned() == false %}
+                            <a href="{{ url('br_admin_contract', {"action": "sign", "id": row['contract'].getId()}) }}" class="contract_edit" value="Sign" >Sign</a>
                         {% endif %}
-                        {% if hasAccess('br_admin_invoice', 'view') and contract.isSigned() == true %}
-                            <a href="{{ url('br_admin_invoice', {"action": "view", "id": contract.getOrder().getInvoice().getId()}) }}" class="invoice">Invoice</a>
+                        {% if hasAccess('br_admin_invoice', 'view') and row['contract'].isSigned() == true %}
+                            <a href="{{ url('br_admin_invoice', {"action": "view", "id": row['contract'].getOrder().getInvoice().getId()}) }}" class="invoice">Invoice</a>
                         {% endif %}
                         {% if hasAccess('br_admin_contract', 'download') %}
-                            <a href="{{ url('br_admin_contract', {"action": "download", "id": contract.getId()}) }}" class="download" value="Download">Download</a>
+                            <a href="{{ url('br_admin_contract', {"action": "download", "id": row['contract'].getId()}) }}" class="download" value="Download">Download</a>
                         {% endif %}
                     </td>
                 </tr>
