@@ -68,8 +68,9 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         if (null !== $corporate) {
             print_r("This is a corporate account");
+            print_r($corporate->getCompany()->getId());
             $result['corporate_id'] = (null !== $corporate->getCompany())
-                ? $academic->getCompany()->getId()
+                ? $corporate->getCompany()->getId()
                 : "-1";
         }
 
