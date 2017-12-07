@@ -39,7 +39,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         if (!($person = $this->getPersonEntity())) {
             return $this->error(404, 'The person was not found');
         }
-        print_r("Person found");
+
         $result = array(
             'username' => $person->getUsername(),
             'full_name' => $person->getFullName(),
@@ -67,14 +67,11 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         }
 
         if (null !== $corporate) {
-            print_r("This is a corporate account");
-            print_r($corporate->getCompany()->getId());
             $result['corporate_id'] = (null !== $corporate->getCompany())
                 ? $corporate->getCompany()->getId()
                 : "-1";
         }
 
-        print_r($result);
         return new ViewModel(
             array(
                 'result' => (object) $result,
