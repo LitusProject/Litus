@@ -14,6 +14,7 @@
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  * @author Floris Kint <floris.kint@vtk.be>
+ * @author Hannes Vandecasteele <hannes.vandecasteele@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -63,15 +64,6 @@ class Add extends \CommonBundle\Component\Form\Fieldset
                 'input' => array(
                     'filters'  => array(
                         array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'alnum',
-                            'options' => array(
-                                'allowWhiteSpace' => true,
-                            ),
-                        ),
-                        array('name' => 'not_zero'),
                     ),
                 ),
             ),
