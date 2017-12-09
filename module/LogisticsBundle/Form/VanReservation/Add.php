@@ -199,6 +199,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
         ));
 
+        $this->add(array(
+            'type'  => 'select',
+            'name'  => 'bike',
+            'label' => 'Cargo bike',
+            'attributes' => array(
+                'class' => 'bike',
+                'options' => $this->returnYesNoArray(),
+            ),
+        ));
+
         $this->addSubmit('Add', 'reservation_add btn btn-primary', 'add')
             ->addSubmit('Edit', 'reservation_edit btn btn-primary', 'edit');
 
