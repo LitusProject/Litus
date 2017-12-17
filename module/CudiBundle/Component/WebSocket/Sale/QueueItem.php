@@ -386,9 +386,6 @@ class QueueItem
                         if (!$discount->canBeApplied($item->getPerson(), $this->getCurrentAcademicYear(), $this->entityManager)) {
                             continue;
                         }
-                        if ($discount->alreadyApplied($soldArticle['article'], $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear())) {
-                            continue;
-                        }
                         $newPrice = $discount->apply($soldArticle['article']->getSellPrice());
                         if ($newPrice < $price) {
                             $price = $newPrice;
@@ -475,8 +472,7 @@ class QueueItem
                 );
 
                 foreach ($booking->getArticle()->getDiscounts() as $discount) {
-                    if (!$discount->alreadyApplied($booking->getArticle(), $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear()) &&
-                            $discount->canBeApplied($item->getPerson(), $this->getCurrentAcademicYear(), $this->entityManager)) {
+                    if ($discount->canBeApplied($booking->getArticle(), $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear())) {
                         $result['discounts'][] = array(
                             'type' => $discount->getRawType(),
                             'value' => $discount->apply($booking->getArticle()->getSellPrice()),
@@ -516,8 +512,7 @@ class QueueItem
                 );
 
                 foreach ($article->getDiscounts() as $discount) {
-                    if (!$discount->alreadyApplied($article, $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear()) &&
-                            $discount->canBeApplied($item->getPerson(), $this->getCurrentAcademicYear(), $this->entityManager)) {
+                    if ($discount->canBeApplied($article, $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear())) {
                         $result['discounts'][] = array(
                             'type' => $discount->getRawType(),
                             'value' => $discount->apply($article->getSellPrice()),
