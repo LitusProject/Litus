@@ -330,10 +330,7 @@ class SaleItem extends EntityRepository
     public function findNumberByArticleAndAcademicYearAndMember(ArticleEntity $article, AcademicYear $academicYear, Organization $organization = null)
     {
         if (null !== $organization) {
-            $ids = $this->selectOnlyMembers(
-                $this->personsByAcademicYearAndOrganization($academicYear, $organization),
-                $academicYear
-            );
+            $ids = $this->personsByAcademicYearAndOrganization($academicYear, $organization);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.number)')
@@ -345,19 +342,18 @@ class SaleItem extends EntityRepository
                         $query->expr()->eq('i.article', ':article'),
                         $query->expr()->gt('s.openDate', ':start'),
                         $query->expr()->lt('s.openDate', ':end'),
+                        $query->expr()->eq('i.discountType', ':member'),
                         $query->expr()->in('q.person', $ids)
                     )
                 )
                 ->setParameter('article', $article)
+                ->setParameter('member', "member")
                 ->setParameter('start', $academicYear->getStartDate())
                 ->setParameter('end', $academicYear->getEndDate())
                 ->getQuery()
                 ->getSingleScalarResult();
         } else {
-            $ids = $this->selectOnlyMembers(
-                $this->personsByAcademicYearAndOrganization($academicYear),
-                $academicYear
-            );
+            $ids = $this->personsByAcademicYearAndOrganization($academicYear);
 
             $query = $this->getEntityManager()->createQueryBuilder();
             $resultSet = $query->select('SUM(i.number)')
@@ -369,10 +365,12 @@ class SaleItem extends EntityRepository
                         $query->expr()->eq('i.article', ':article'),
                         $query->expr()->gt('s.openDate', ':start'),
                         $query->expr()->lt('s.openDate', ':end'),
+                        $query->expr()->eq('i.discountType', ':member'),
                         $query->expr()->in('q.person', $ids)
                     )
                 )
                 ->setParameter('article', $article)
+                ->setParameter('member', "member")
                 ->setParameter('start', $academicYear->getStartDate())
                 ->setParameter('end', $academicYear->getEndDate())
                 ->getQuery()

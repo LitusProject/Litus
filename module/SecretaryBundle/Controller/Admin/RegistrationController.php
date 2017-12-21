@@ -237,6 +237,43 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     $this->getCurrentAcademicYear()
                 );
                 $registration->setPayed($formData['payed']);
+
+                if ($formData['payed'] == true) {
+                    $status = $registration->getAcademic()
+                        ->getOrganizationStatus($this->getCurrentAcademicYear());
+                    if (null === $status) {
+                        $registration->getAcademic()
+                            ->addOrganizationStatus(
+                                new OrganizationStatus(
+                                    $registration->getAcademic(),
+                                    'member',
+                                    $this->getCurrentAcademicYear()
+                                )
+                            );
+                    } else {
+                        if ('non_member' === $status->getStatus()) {
+                            $status->setStatus('member');
+                        }
+                    }
+                } else {
+                    $status = $registration->getAcademic()
+                        ->getOrganizationStatus($this->getCurrentAcademicYear());
+                    if (null === $status) {
+                        $registration->getAcademic()
+                            ->addOrganizationStatus(
+                                new OrganizationStatus(
+                                    $registration->getAcademic(),
+                                    'non_member',
+                                    $this->getCurrentAcademicYear()
+                                )
+                            );
+                    } else {
+                        if ('non_member' === $status->getStatus()) {
+                            $status->setStatus('non_member');
+                        }
+                    }
+                }
+
                 $this->getEntityManager()->persist($registration);
 
                 $this->getEntityManager()->flush();
@@ -295,6 +332,42 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             if ($form->isValid()) {
                 $registration->setPayed($formData['payed'])
                     ->setCancelled($formData['cancel']);
+
+                if ($formData['payed'] == true && !$formData['cancel']) {
+                    $status = $registration->getAcademic()
+                        ->getOrganizationStatus($this->getCurrentAcademicYear());
+                    if (null === $status) {
+                        $registration->getAcademic()
+                            ->addOrganizationStatus(
+                                new OrganizationStatus(
+                                    $registration->getAcademic(),
+                                    'member',
+                                    $this->getCurrentAcademicYear()
+                                )
+                            );
+                    } else {
+                        if ('non_member' === $status->getStatus()) {
+                            $status->setStatus('member');
+                        }
+                    }
+                } else {
+                    $status = $registration->getAcademic()
+                        ->getOrganizationStatus($this->getCurrentAcademicYear());
+                    if (null === $status) {
+                        $booking->getAcademic()
+                            ->addOrganizationStatus(
+                                new OrganizationStatus(
+                                    $registration->getAcademic(),
+                                    'non_member',
+                                    $this->getCurrentAcademicYear()
+                                )
+                            );
+                    } else {
+                        if ('member' === $status->getStatus()) {
+                            $status->setStatus('non_member');
+                        }
+                    }
+                }
 
                 $organization = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Organization')
