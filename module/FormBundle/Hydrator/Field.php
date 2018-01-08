@@ -82,8 +82,6 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
             }
         } elseif ($object instanceof FileFieldEntity) {
             $fileData = $data['file_form'];
-            print_r($fileData);
-            //exit();
             $object->setMaxSize($fileData['max_size'] === '' ? 25 : intval($fileData['max_size']));
         } elseif ($object instanceof TimeslotFieldEntity) {
             $timeslotData = $data['timeslot_form'];

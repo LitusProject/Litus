@@ -119,8 +119,6 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
                 continue;
             }
 
-            print_r($experienceData);
-
             $experience = new CvExperienceEntity(
                 $object,
                 $experienceData['experience_function'],
