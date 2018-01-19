@@ -13,6 +13,7 @@
 #
 
 USER='www-data'
+GROUP='www-data'
 LITUS=$(cd $(dirname $(readlink -f "$0"))/../.. && pwd)
 HAVE_PRINTERS=0
 
@@ -226,13 +227,13 @@ restart_printers() {
 init() {
     if [ ! -d /var/run/litus ]; then
         mkdir -p /var/run/litus
-        chown $USER:admin /var/run/litus
+        chown $USER:$GROUP /var/run/litus
         chmod 700 /var/run/litus
     fi
 
     if [ ! -d /var/log/litus ]; then
         mkdir -p /var/log/litus
-        chown $USER:admin /var/log/litus
+        chown $USER:$GROUP /var/log/litus
         chmod 750 /var/log/litus
     fi
 
