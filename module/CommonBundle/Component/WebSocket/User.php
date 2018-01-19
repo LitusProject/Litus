@@ -85,21 +85,24 @@ class User
 
         $requestHeaders = array();
 
+        $key = null;
         foreach (explode("\r\n", $data) as $line) {
             @list($k, $v) = explode(':', $line, 2);
-            $requestHeaders[$k] = ltrim($v);
+            $requestHeaders[strtolower($k)] = ltrim($v);
+            if (strtolower($k) == 'sec-websocket-key') {
+                $key = ltrim($v);
+                break;
+            }
         }
 
-        if (empty($requestHeaders['Sec-WebSocket-Key'])) {
+        if (null === $key) {
             return;
         }
-
-        $key = base64_encode(sha1($requestHeaders['Sec-WebSocket-Key'] . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true));
 
         $response = "HTTP/1.1 101 Switching Protocols\r\n"
             . "Upgrade: WebSocket\r\n"
             . "Connection: Upgrade\r\n"
-            . 'Sec-WebSocket-Accept: ' . $key . "\r\n"
+            . 'Sec-WebSocket-Accept: ' . base64_encode(sha1($key . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11', true)) . "\r\n"
             . "\r\n";
 
         if ($this->write($response)) {

@@ -18,11 +18,9 @@
                 url = document.location.host + url;
             }
 
-            if ($(document).data(settings.name + '_options') && $(document).data(settings.name + '_options').ssl_enabled) {
-                $(document).data(settings.name + '_options', {'ssl_enabled': false});
+            if (location.protocol != 'https:') {
                 var ws = new WebSocket('ws://' + url);
             } else {
-                $(document).data(settings.name + '_options', {'ssl_enabled': true});
                 var ws = new WebSocket('wss://' + url);
             }
 
