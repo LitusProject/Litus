@@ -24,7 +24,7 @@ use BrBundle\Entity\Cv\Entry,
     BrBundle\Entity\Cv\Util,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Object,
+    CommonBundle\Component\Util\Xml\Node,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
     Zend\Mvc\I18n\Translator;
@@ -75,7 +75,7 @@ class Cv extends \CommonBundle\Component\Document\Generator\Pdf
         $xml = new Generator($tmpFile);
 
         $xml->append(
-            new Object(
+            new Node(
                 'singlecv',
                 null,
                 Util::getCvXML($this->getEntityManager(), $this->entry, $this->translator)

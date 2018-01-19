@@ -21,7 +21,7 @@
 namespace BrBundle\Entity\Cv;
 
 use BrBundle\Entity\Cv\Entry,
-    CommonBundle\Component\Util\Xml\Object,
+    CommonBundle\Component\Util\Xml\Node,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
     Zend\Mvc\I18n\Translator;
@@ -87,7 +87,7 @@ class Util
         $birthday = $cv->getBirthDay()->format('d F Y');
         $birthday = str_ireplace($monthsEnglish, $monthsDutch, $birthday);
 
-        return new Object(
+        return new Node(
             'cv',
             array(
                 'id'        => $cv->getId(),
@@ -106,18 +106,18 @@ class Util
     {
         $result = array();
 
-        $result[] = new Object(
+        $result[] = new Node(
             'address',
             Util::getAddressArray($cv),
             null
         );
 
-        $result[] = new Object(
+        $result[] = new Node(
             'subsection',
             array(
                 'title' => $translator->translate('About Myself'),
             ),
-            new Object(
+            new Node(
                 'content',
                 null,
                 $cv->getAbout()
@@ -134,13 +134,13 @@ class Util
             $bachelorGrade = "-";
         }
 
-        $result[] = new Object(
+        $result[] = new Node(
             'section',
             array(
                 'title' => $translator->translate('Studies'),
             ),
             array(
-                new Object(
+                new Node(
                     'sec-special-studies',
                     array(
                         'start_master'          => (string) $cv->getMasterStart(),
@@ -154,12 +154,12 @@ class Util
                     ),
                     null
                 ),
-                new Object(
+                new Node(
                     'subsection',
                     array(
                         'title' => $translator->translate('Additional Diplomas'),
                     ),
-                    new Object(
+                    new Node(
                         'content',
                         null,
                         $cv->getAdditionalDiplomas()
@@ -172,22 +172,22 @@ class Util
             (null !== $cv->getErasmusLocation() && '' !== $cv->getErasmusLocation())
             || (null !== $cv->getErasmusPeriod() && '' !== $cv->getErasmusPeriod())
         ) {
-            $result[] = new Object(
+            $result[] = new Node(
                 'section',
                 array(
                     'title' => $translator->translate('Erasmus'),
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'sec-special-erasmus',
                         null,
                         array(
-                            new Object(
+                            new Node(
                                 'location',
                                 null,
                                 $cv->getErasmusLocation()
                             ),
-                            new Object(
+                            new Node(
                                 'period',
                                 null,
                                 $cv->getErasmusPeriod()
@@ -210,13 +210,13 @@ class Util
             $index++;
         }
 
-        $result[] = new Object(
+        $result[] = new Node(
             'section',
             array(
                 'title' => $translator->translate('Languages'),
             ),
             array(
-                new Object(
+                new Node(
                     'sec-special-languages',
                     array_merge(
                         array(
@@ -227,13 +227,13 @@ class Util
                     ),
                     null
                 ),
-                new Object(
+                new Node(
                     'subsection',
                     array(
                         'title' => $translator->translate('Additional Info'),
                     ),
                     array(
-                        new Object(
+                        new Node(
                             'content',
                             null,
                             $cv->getLanguageExtra()
@@ -244,29 +244,29 @@ class Util
         );
 
         if ($cv->hasOldExperiences()) {
-            $result[] = new Object(
+            $result[] = new Node(
                 'section',
                 array(
                     'title' => $translator->translate('Capabilities'),
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'subsection',
                         array(
                             'title' => $translator->translate('Computer Skills'),
                         ),
-                        new Object(
+                        new Node(
                             'content',
                             null,
                             $cv->getComputerSkills()
                         )
                     ),
-                    new Object(
+                    new Node(
                         'subsection',
                         array(
                             'title' => $translator->translate('Experiences'),
                         ),
-                        new Object(
+                        new Node(
                             'content',
                             null,
                             $cv->getExperiences()
@@ -288,29 +288,29 @@ class Util
                 $index++;
             }
 
-            $result[] = new Object(
+            $result[] = new Node(
                 'section',
                 array(
                     'title' => $translator->translate('Capabilities'),
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'subsection',
                         array(
                             'title' => $translator->translate('Experiences'),
                         ),
-                        new Object(
+                        new Node(
                             'sec-special-experiences',
                             $experiences,
                             null
                         )
                     ),
-                    new Object(
+                    new Node(
                         'subsection',
                         array(
                             'title' => $translator->translate('Computer Skills'),
                         ),
-                        new Object(
+                        new Node(
                             'content',
                             null,
                             $cv->getComputerSkills()
@@ -320,13 +320,13 @@ class Util
             );
         }
 
-        $result[] = new Object(
+        $result[] = new Node(
             'section',
             array(
                 'title' => $translator->translate('Thesis'),
             ),
             array(
-                new Object(
+                new Node(
                     'content',
                     null,
                     $cv->getThesisSummary()
@@ -334,13 +334,13 @@ class Util
             )
         );
 
-        $result[] = new Object(
+        $result[] = new Node(
             'section',
             array(
                 'title' => $translator->translate('Career'),
             ),
             array(
-                new Object(
+                new Node(
                     'sec-special-career',
                     array(
                         'InterestHeader' => $translator->translate('Future Interest'),
@@ -353,12 +353,12 @@ class Util
                     null
                     ),
 
-                new Object(
+                new Node(
                     'subsection',
                     array(
                         'title' => $translator->translate('Career Expectations'),
                     ),
-                    new Object(
+                    new Node(
                         'content',
                         null,
                         $cv->getCareerExpectations()
@@ -367,12 +367,12 @@ class Util
             )
         );
 
-        $result[] = new Object(
+        $result[] = new Node(
             'section',
             array(
                 'title' => $translator->translate('Hobbies'),
             ),
-            new Object(
+            new Node(
                 'content',
                 null,
                 $cv->getHobbies()

@@ -21,11 +21,11 @@
 namespace FormBundle\Component\Validator;
 
 /**
- * Checks whether the string field was specified correctly.
+ * Checks whether the text field was specified correctly.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class StringField extends \CommonBundle\Component\Validator\AbstractValidator
+class TextField extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const ML_BOTH = 'mlboth';
     const NON_ML_LINES = 'nonmllines';

@@ -22,7 +22,7 @@ namespace CudiBundle\Component\Document\Generator\Order;
 
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Object,
+    CommonBundle\Component\Util\Xml\Node,
     CudiBundle\Entity\Stock\Order\Order,
     Doctrine\ORM\EntityManager;
 
@@ -108,41 +108,41 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
 
         foreach ($items as $item) {
             if ($item->getArticle()->getMainArticle()->isInternal()) {
-                $internal_items[] = new Object(
+                $internal_items[] = new Node(
                     'internal_item',
                     null,
                     array(
-                        new Object(
+                        new Node(
                             'barcode',
                             null,
                             (string) $item->getArticle()->getBarcode()
                         ),
-                        new Object(
+                        new Node(
                             'title',
                             null,
                             $item->getArticle()->getMainArticle()->getTitle()
                         ),
-                        new Object(
+                        new Node(
                             'recto_verso',
                             null,
                             $item->getArticle()->getMainArticle()->isRectoVerso() ? '1' : '0'
                         ),
-                        new Object(
+                        new Node(
                             'colored',
                             null,
                             $item->getArticle()->getMainArticle()->isColored() ? '1' : '0'
                         ),
-                        new Object(
+                        new Node(
                             'binding',
                             null,
                             $item->getArticle()->getMainArticle()->getBinding()->getName()
                         ),
-                        new Object(
+                        new Node(
                             'nb_pages',
                             null,
                             (string) ($item->getArticle()->getMainArticle()->getNbBlackAndWhite() + $item->getArticle()->getMainArticle()->getNbColored())
                         ),
-                        new Object(
+                        new Node(
                             'amount',
                             null,
                             (string) $item->getNumber()
@@ -150,31 +150,31 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                     )
                 );
             } else {
-                $external_items[] = new Object(
+                $external_items[] = new Node(
                     'external_item',
                     null,
                     array(
-                        new Object(
+                        new Node(
                             'isbn',
                             null,
                             (string) $item->getArticle()->getMainArticle()->getIsbn()
                         ),
-                        new Object(
+                        new Node(
                             'title',
                             null,
                             $item->getArticle()->getMainArticle()->getTitle()
                         ),
-                        new Object(
+                        new Node(
                             'author',
                             null,
                             $item->getArticle()->getMainArticle()->getAuthors()
                         ),
-                        new Object(
+                        new Node(
                             'publisher',
                             null,
                             $item->getArticle()->getMainArticle()->getPublishers()
                         ),
-                        new Object(
+                        new Node(
                             'amount',
                             null,
                             (string) $item->getNumber()
@@ -187,102 +187,102 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
         $xml = new Generator($tmpFile);
 
         $xml->append(
-            new Object(
+            new Node(
                 'order',
                 array(
                     'date' => $this->order->getDateOrdered()->format('d F Y'),
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'comment',
                         array(),
                         $this->order->getComment()
                     ),
-                    new Object(
+                    new Node(
                         'our_union',
                         array(
                             'short_name' => $organization_short_name,
                         ),
                         array(
-                            new Object(
+                            new Node(
                                 'name',
                                 null,
                                 $organization_name
                             ),
-                            new Object(
+                            new Node(
                                 'logo',
                                 null,
                                 $organization_logo
                             ),
                         )
                     ),
-                    new Object(
+                    new Node(
                         'cudi',
                         array(
                             'name' => $cudi_name,
                         ),
                         array(
-                             new Object(
+                             new Node(
                                  'mail',
                                  null,
                                  $cudi_mail
                              ),
-                             new Object(
+                             new Node(
                                  'phone',
                                  null,
                                  $person->getPhoneNumber()
                              ),
-                             new Object(
+                             new Node(
                                  'delivery_address',
                                  null,
                                  array(
-                                     new Object(
+                                     new Node(
                                          'name',
                                          null,
                                          $delivery_address_name
                                      ),
-                                     new Object(
+                                     new Node(
                                          'street',
                                          null,
                                          $delivery_address->getStreet() . ' ' . $delivery_address->getNumber() . (null === $delivery_address->getMailbox() ? '' : '/' . $delivery_address->getMailbox())
                                      ),
-                                     new Object(
+                                     new Node(
                                          'city',
                                          null,
                                          $delivery_address->getPostal() . ' ' . $delivery_address->getCity()
                                      ),
-                                     new Object(
+                                     new Node(
                                          'extra',
                                          null,
                                          $delivery_address_extra
                                      ),
                                  )
                              ),
-                             new Object(
+                             new Node(
                                  'billing_address',
                                  null,
                                  array(
-                                     new Object(
+                                     new Node(
                                          'name',
                                          null,
                                          $billing_address_name
                                      ),
-                                     new Object(
+                                     new Node(
                                          'VAT',
                                          null,
                                          $billing_address_VAT
                                      ),
-                                     new Object(
+                                     new Node(
                                          'person',
                                          null,
                                          $person->getFullname()
                                      ),
-                                     new Object(
+                                     new Node(
                                          'street',
                                          null,
                                          $billing_address->getStreet() . ' ' . $billing_address->getNumber() . (null === $billing_address->getMailbox() ? '' : '/' . $billing_address->getMailbox())
                                      ),
-                                     new Object(
+                                     new Node(
                                          'city',
                                          null,
                                          $billing_address->getPostal() . ' ' . $billing_address->getCity()
@@ -291,12 +291,12 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                              ),
                         )
                     ),
-                    new Object(
+                    new Node(
                         'external_items',
                         null,
                         $external_items
                     ),
-                    new Object(
+                    new Node(
                         'internal_items',
                         null,
                         $internal_items

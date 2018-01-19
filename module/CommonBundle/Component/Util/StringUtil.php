@@ -25,7 +25,7 @@ namespace CommonBundle\Component\Util;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class String
+class StringUtil
 {
     /**
      * Truncates a string preserving HTML tags

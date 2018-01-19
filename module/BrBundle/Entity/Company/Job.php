@@ -21,7 +21,7 @@
 namespace BrBundle\Entity\Company;
 
 use BrBundle\Entity\Company,
-    CommonBundle\Component\Util\String,
+    CommonBundle\Component\Util\StringUtil,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
     InvalidArgumentException,
@@ -379,7 +379,7 @@ class Job
         $parser = new Markdown_Parser();
         $summary = $parser->transform($this->getDescription());
 
-        return String::truncate($summary, $length, '...');
+        return StringUtil::truncate($summary, $length, '...');
     }
 
     /**

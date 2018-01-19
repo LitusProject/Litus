@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\Util\String as StringUtil,
+use CommonBundle\Component\Util\StringUtil,
     RuntimeException,
     Zend\Form\FormFactoryAwareInterface,
     Zend\ServiceManager\ConfigInterface,
@@ -162,7 +162,7 @@ class FormElementManager extends \Zend\Form\FormElementManager
 
         $bundle = StringUtil::underscoredToCamelCase($matches[1]) . 'Bundle\Form\\';
         $type = $this->isAdmin ? 'Admin\\' : '';
-        $form = implode('\\', array_map('CommonBundle\Component\Util\String::underscoredToCamelCase', explode('_', $matches[3])));
+        $form = implode('\\', array_map('CommonBundle\Component\Util\StringUtil::underscoredToCamelCase', explode('_', $matches[3])));
 
         $this->setInvokableClass($name, $bundle . $type . $form);
 

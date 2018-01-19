@@ -34,7 +34,7 @@ use CommonBundle\Entity\General\Language,
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *      "string"="FormBundle\Entity\Field\String",
+ *      "text"="FormBundle\Entity\Field\Text",
  *      "options"="FormBundle\Entity\Field\OptionSelector",
  *      "dropdown"="FormBundle\Entity\Field\Dropdown",
  *      "checkbox"="FormBundle\Entity\Field\Checkbox",

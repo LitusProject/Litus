@@ -20,7 +20,7 @@
 
 namespace CalendarBundle\Entity\Node;
 
-use CommonBundle\Component\Util\String as StringUtil,
+use CommonBundle\Component\Util\StringUtil,
     CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM,
     Markdown_Parser;

@@ -21,11 +21,11 @@
 namespace FormBundle\Form\Admin\Field\Field;
 
 /**
- * Add String Field
+ * Add Text Field
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class String extends \CommonBundle\Component\Form\Fieldset
+class Text extends \CommonBundle\Component\Form\Fieldset
 {
     public function init()
     {
@@ -102,7 +102,7 @@ class String extends \CommonBundle\Component\Form\Fieldset
         $lineValue = $this->get('lines')->getValue();
 
         $specs['charsperline']['validators'][] = array(
-            'name' => 'form_string_field',
+            'name' => 'form_text_field',
             'options' => array(
                 'multiline' => !empty($multilineValue) ? $this->get('multiline')->getValue() : false,
                 'lines' => !empty($lineValue) ? $this->get('lines')->getValue() : null,

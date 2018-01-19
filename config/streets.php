@@ -21,800 +21,800 @@
 return array(
     array(
         'name'    => 'Heverlee',
-        'postal'  => '3001',
+        'postal'  => '31',
         'streets' => array(
             array(
-                'register' => 0001,
+                'register' => 1,
                 'name' => 'Abdij van Park',
             ),
             array(
-                'register' => 0002,
+                'register' => 2,
                 'name' => 'Abdijstraat',
             ),
             array(
-                'register' => 0003,
+                'register' => 3,
                 'name' => 'Adjudant Harboortstraat',
             ),
             array(
-                'register' => 0156,
+                'register' => 156,
                 'name' => 'Alaudastraat',
             ),
             array(
-                'register' => 0063,
+                'register' => 63,
                 'name' => 'Albert Stainierstraat',
             ),
             array(
-                'register' => 0021,
+                'register' => 21,
                 'name' => 'Alfred Delaunoislaan',
             ),
             array(
-                'register' => 0004,
+                'register' => 4,
                 'name' => 'Alsembergstraat',
             ),
             array(
-                'register' => 0205,
+                'register' => 205,
                 'name' => 'Ambachtenlaan',
             ),
             array(
-                'register' => 0131,
+                'register' => 131,
                 'name' => 'Antonius Rodolphestraat',
             ),
             array(
-                'register' => 0006,
+                'register' => 6,
                 'name' => 'Armand Thiérylaan',
             ),
             array(
-                'register' => 0141,
+                'register' => 141,
                 'name' => 'Arthur Meulemanslaan',
             ),
             array(
-                'register' => 0125,
+                'register' => 125,
                 'name' => 'Beeklaan',
             ),
             array(
-                'register' => 0007,
+                'register' => 7,
                 'name' => 'Berkenhoflaan',
             ),
             array(
-                'register' => 0160,
+                'register' => 160,
                 'name' => 'Bertembosstraat',
             ),
             array(
-                'register' => 0008,
+                'register' => 8,
                 'name' => 'Bertemstraat',
             ),
             array(
-                'register' => 0212,
+                'register' => 212,
                 'name' => 'Berthe Gottignystraat',
             ),
             array(
-                'register' => 0009,
+                'register' => 9,
                 'name' => 'Beukenlaan',
             ),
             array(
-                'register' => 0120,
+                'register' => 120,
                 'name' => 'Bierbeekpleindreef',
             ),
             array(
-                'register' => 0010,
+                'register' => 10,
                 'name' => 'Bierbeekstraat',
             ),
             array(
-                'register' => 0011,
+                'register' => 11,
                 'name' => 'Bloemenlaan',
             ),
             array(
-                'register' => 0012,
+                'register' => 12,
                 'name' => 'Boogschuttersstraat',
             ),
             array(
-                'register' => 0013,
+                'register' => 13,
                 'name' => 'Boskantlaan',
             ),
             array(
-                'register' => 0206,
+                'register' => 206,
                 'name' => 'Brabantlaan',
             ),
             array(
-                'register' => 0117,
+                'register' => 117,
                 'name' => 'Bredeweg',
             ),
             array(
-                'register' => 0014,
+                'register' => 14,
                 'name' => 'Bremstraat',
             ),
             array(
-                'register' => 0015,
+                'register' => 15,
                 'name' => 'Broekstraat',
             ),
             array(
-                'register' => 0016,
+                'register' => 16,
                 'name' => 'Bronlaan',
             ),
             array(
-                'register' => 0017,
+                'register' => 17,
                 'name' => 'Brugstraat',
             ),
             array(
-                'register' => 0126,
+                'register' => 126,
                 'name' => 'Burgemeester Stanislas De Rijcklaan',
             ),
             array(
-                'register' => 0018,
+                'register' => 18,
                 'name' => 'Celestijnenlaan',
             ),
             array(
-                'register' => 0161,
+                'register' => 161,
                 'name' => 'Damendreef',
             ),
             array(
-                'register' => 0128,
+                'register' => 128,
                 'name' => 'Dellenhof',
             ),
             array(
-                'register' => 0169,
+                'register' => 169,
                 'name' => 'Dennendreef',
             ),
             array(
-                'register' => 0164,
+                'register' => 164,
                 'name' => 'Dodendreef',
             ),
             array(
-                'register' => 0023,
+                'register' => 23,
                 'name' => 'Doleegstraat',
             ),
             array(
-                'register' => 0024,
+                'register' => 24,
                 'name' => 'Dreefstraat',
             ),
             array(
-                'register' => 0114,
+                'register' => 114,
                 'name' => 'Duinberglaan',
             ),
             array(
-                'register' => 0129,
+                'register' => 129,
                 'name' => 'Duisburgsestraat',
             ),
             array(
-                'register' => 0027,
+                'register' => 27,
                 'name' => 'Eburonenlaan',
             ),
             array(
-                'register' => 0025,
+                'register' => 25,
                 'name' => 'Egenhovenweg',
             ),
             array(
-                'register' => 0140,
+                'register' => 140,
                 'name' => 'Emiel Hullebroecklaan',
             ),
             array(
-                'register' => 0111,
+                'register' => 111,
                 'name' => 'Erasme Ruelenspark',
             ),
             array(
-                'register' => 0079,
+                'register' => 79,
                 'name' => 'Erasme Ruelensvest',
             ),
             array(
-                'register' => 0151,
+                'register' => 151,
                 'name' => 'Esperantolaan',
             ),
             array(
-                'register' => 0208,
+                'register' => 208,
                 'name' => 'Evementenlaan',
             ),
             array(
-                'register' => 0068,
+                'register' => 68,
                 'name' => 'Ferdinand Verbiestlaan',
             ),
             array(
-                'register' => 0127,
+                'register' => 127,
                 'name' => 'Filosofenbaan',
             ),
             array(
-                'register' => 0168,
+                'register' => 168,
                 'name' => 'Filosofendreef',
             ),
             array(
-                'register' => 0155,
+                'register' => 155,
                 'name' => 'Frans Cnopslaan',
             ),
             array(
-                'register' => 0138,
+                'register' => 138,
                 'name' => 'Gaston Feremanslaan',
             ),
             array(
-                'register' => 0030,
+                'register' => 30,
                 'name' => 'Geldenaaksebaan',
             ),
             array(
-                'register' => 0031,
+                'register' => 31,
                 'name' => 'Goede Haardlaan',
             ),
             array(
-                'register' => 0032,
+                'register' => 32,
                 'name' => 'Goswin III-laan',
             ),
             array(
-                'register' => 0122,
+                'register' => 122,
                 'name' => 'Goudfazantenlaan',
             ),
             array(
-                'register' => 0020,
+                'register' => 20,
                 'name' => 'Graaf de Grunnelaan',
             ),
             array(
-                'register' => 0201,
+                'register' => 201,
                 'name' => 'Grauwmeer',
             ),
             array(
-                'register' => 0170,
+                'register' => 170,
                 'name' => 'Grezweg',
             ),
             array(
-                'register' => 0033,
+                'register' => 33,
                 'name' => 'Groeneweg',
             ),
             array(
-                'register' => 0034,
+                'register' => 34,
                 'name' => 'Groenstraat',
             ),
             array(
-                'register' => 0036,
+                'register' => 36,
                 'name' => 'Groenveldstraat',
             ),
             array(
-                'register' => 0152,
+                'register' => 152,
                 'name' => 'Haanhofweg',
             ),
             array(
-                'register' => 0038,
+                'register' => 38,
                 'name' => 'Heidelaan',
             ),
             array(
-                'register' => 0029,
+                'register' => 29,
                 'name' => 'Henri Geeraertlaan',
             ),
             array(
-                'register' => 0118,
+                'register' => 118,
                 'name' => 'Herendreef',
             ),
             array(
-                'register' => 0039,
+                'register' => 39,
                 'name' => 'Hertog Engelbertlaan',
             ),
             array(
-                'register' => 0041,
+                'register' => 41,
                 'name' => 'Hertogstraat',
             ),
             array(
-                'register' => 0043,
+                'register' => 43,
                 'name' => 'Hollestraat',
             ),
             array(
-                'register' => 0067,
+                'register' => 67,
                 'name' => 'Hoveniersdreef',
             ),
             array(
-                'register' => 0044,
+                'register' => 44,
                 'name' => 'Huttelaan',
             ),
             array(
-                'register' => 0110,
+                'register' => 110,
                 'name' => 'Idalaan',
             ),
             array(
-                'register' => 0105,
+                'register' => 105,
                 'name' => 'Ijzerenmolenstraat',
             ),
             array(
-                'register' => 0154,
+                'register' => 154,
                 'name' => 'Industrieweg',
             ),
             array(
-                'register' => 0202,
+                'register' => 202,
                 'name' => 'Interleuvenlaan',
             ),
             array(
-                'register' => 0157,
+                'register' => 157,
                 'name' => 'Jachthorenstraat',
             ),
             array(
-                'register' => 0123,
+                'register' => 123,
                 'name' => 'Jachtlaan',
             ),
             array(
-                'register' => 0143,
+                'register' => 143,
                 'name' => 'Jef Van Hooflaan',
             ),
             array(
-                'register' => 0142,
+                'register' => 142,
                 'name' => 'Jef Vanden Eyndelaan',
             ),
             array(
-                'register' => 0139,
+                'register' => 139,
                 'name' => 'Joos Florquinlaan',
             ),
             array(
-                'register' => 0136,
+                'register' => 136,
                 'name' => 'Jos De Haeslaan',
             ),
             array(
-                'register' => 0145,
+                'register' => 145,
                 'name' => 'Jozef Eerdekensstraat',
             ),
             array(
-                'register' => 0094,
+                'register' => 94,
                 'name' => 'Jules Vandenbemptlaan',
             ),
             array(
-                'register' => 0134,
+                'register' => 134,
                 'name' => 'Kantineplein',
             ),
             array(
-                'register' => 0109,
+                'register' => 109,
                 'name' => 'Kapelberg',
             ),
             array(
-                'register' => 0045,
+                'register' => 45,
                 'name' => 'Kapeldreef',
             ),
             array(
-                'register' => 0046,
+                'register' => 46,
                 'name' => 'Kardinaal Mercierlaan',
             ),
             array(
-                'register' => 0162,
+                'register' => 162,
                 'name' => 'Karrendreef',
             ),
             array(
-                'register' => 0116,
+                'register' => 116,
                 'name' => 'Kastanjelaan',
             ),
             array(
-                'register' => 0215,
+                'register' => 215,
                 'name' => 'Kasteelpark Arenberg',
             ),
             array(
-                'register' => 0047,
+                'register' => 47,
                 'name' => 'Keibergstraat',
             ),
             array(
-                'register' => 0048,
+                'register' => 48,
                 'name' => 'Kerkhofdreef',
             ),
             array(
-                'register' => 0049,
+                'register' => 49,
                 'name' => 'Kerspelstraat',
             ),
             array(
-                'register' => 0050,
+                'register' => 50,
                 'name' => 'Kloosterlaan',
             ),
             array(
-                'register' => 0209,
+                'register' => 209,
                 'name' => 'Kneuterweg',
             ),
             array(
-                'register' => 0056,
+                'register' => 56,
                 'name' => 'Koning Leopold III-laan',
             ),
             array(
-                'register' => 0051,
+                'register' => 51,
                 'name' => 'Korbeek-Losestraat',
             ),
             array(
-                'register' => 0147,
+                'register' => 147,
                 'name' => 'Korbeekhof',
             ),
             array(
-                'register' => 0052,
+                'register' => 52,
                 'name' => 'Kriekenboslaan',
             ),
             array(
-                'register' => 0042,
+                'register' => 42,
                 'name' => 'Krommelaan',
             ),
             array(
-                'register' => 0148,
+                'register' => 148,
                 'name' => 'Lange Hagen',
             ),
             array(
-                'register' => 0053,
+                'register' => 53,
                 'name' => 'Langendaallaan',
             ),
             array(
-                'register' => 0171,
+                'register' => 171,
                 'name' => 'Langestaart',
             ),
             array(
-                'register' => 0054,
+                'register' => 54,
                 'name' => 'Leeuwerikenstraat',
             ),
             array(
-                'register' => 0055,
+                'register' => 55,
                 'name' => 'Leo Dartelaan',
             ),
             array(
-                'register' => 0057,
+                'register' => 57,
                 'name' => 'Lievevrouweplein',
             ),
             array(
-                'register' => 0115,
+                'register' => 115,
                 'name' => 'Lindelaan',
             ),
             array(
-                'register' => 0172,
+                'register' => 172,
                 'name' => 'Lissenweg',
             ),
             array(
-                'register' => 0137,
+                'register' => 137,
                 'name' => 'Lodewijk De Vochtlaan',
             ),
             array(
-                'register' => 0005,
+                'register' => 5,
                 'name' => 'Lodewijk Engelbertus Van Arenbergplein',
             ),
             array(
-                'register' => 0081,
+                'register' => 81,
                 'name' => 'Léon Schreursvest',
             ),
             array(
-                'register' => 0091,
+                'register' => 91,
                 'name' => 'Matadilaan',
             ),
             array(
-                'register' => 0058,
+                'register' => 58,
                 'name' => 'Mezenlaan',
             ),
             array(
-                'register' => 0059,
+                'register' => 59,
                 'name' => 'Middelweg',
             ),
             array(
-                'register' => 0214,
+                'register' => 214,
                 'name' => 'Mijlboomweg',
             ),
             array(
-                'register' => 0106,
+                'register' => 106,
                 'name' => 'Milseweg',
             ),
             array(
-                'register' => 0061,
+                'register' => 61,
                 'name' => 'Naamsesteenweg',
             ),
             array(
-                'register' => 0062,
+                'register' => 62,
                 'name' => 'Nachtegalenstraat',
             ),
             array(
-                'register' => 0207,
+                'register' => 207,
                 'name' => 'Neringenweg',
             ),
             array(
-                'register' => 0174,
+                'register' => 174,
                 'name' => 'Nieuwe Kerkhofdreef',
             ),
             array(
-                'register' => 0166,
+                'register' => 166,
                 'name' => 'Nieuwedreef',
             ),
             array(
-                'register' => 0211,
+                'register' => 211,
                 'name' => 'Ondernemingenweg',
             ),
             array(
-                'register' => 0213,
+                'register' => 213,
                 'name' => 'Ormendaalpad',
             ),
             array(
-                'register' => 0028,
+                'register' => 28,
                 'name' => 'Oud-Heverleestraat',
             ),
             array(
-                'register' => 0119,
+                'register' => 119,
                 'name' => 'Oude Nijvelseweg',
             ),
             array(
-                'register' => 0064,
+                'register' => 64,
                 'name' => 'Pakenstraat',
             ),
             array(
-                'register' => 0065,
+                'register' => 65,
                 'name' => 'Parkbosstraat',
             ),
             array(
-                'register' => 0066,
+                'register' => 66,
                 'name' => 'Parkdallaan',
             ),
             array(
-                'register' => 0163,
+                'register' => 163,
                 'name' => 'Parnassusbergdreef',
             ),
             array(
-                'register' => 0069,
+                'register' => 69,
                 'name' => 'Pater Perquylaan',
             ),
             array(
-                'register' => 0037,
+                'register' => 37,
                 'name' => 'Paul van Ostaijenlaan',
             ),
             array(
-                'register' => 0203,
+                'register' => 203,
                 'name' => 'Petrusberg',
             ),
             array(
-                'register' => 0217,
+                'register' => 217,
                 'name' => 'Philipssite',
             ),
             array(
-                'register' => 0075,
+                'register' => 75,
                 'name' => 'Pieter De Somerlaan',
             ),
             array(
-                'register' => 0070,
+                'register' => 70,
                 'name' => 'Pleinstraat',
             ),
             array(
-                'register' => 0072,
+                'register' => 72,
                 'name' => 'Populierenlaan',
             ),
             array(
-                'register' => 0175,
+                'register' => 175,
                 'name' => 'Praegeweg',
             ),
             array(
-                'register' => 0022,
+                'register' => 22,
                 'name' => 'Prins de Lignestraat',
             ),
             array(
-                'register' => 0071,
+                'register' => 71,
                 'name' => 'Prinses Lydialaan',
             ),
             array(
-                'register' => 0073,
+                'register' => 73,
                 'name' => 'Priorijlaan',
             ),
             array(
-                'register' => 0074,
+                'register' => 74,
                 'name' => 'Prosperdreef',
             ),
             array(
-                'register' => 0076,
+                'register' => 76,
                 'name' => 'Raalbeeklaan',
             ),
             array(
-                'register' => 0124,
+                'register' => 124,
                 'name' => 'Reeboklaan',
             ),
             array(
-                'register' => 0144,
+                'register' => 144,
                 'name' => 'Renaat Veremanslaan',
             ),
             array(
-                'register' => 0135,
+                'register' => 135,
                 'name' => 'René De Clercqlaan',
             ),
             array(
-                'register' => 0210,
+                'register' => 210,
                 'name' => 'Romeinse straat',
             ),
             array(
-                'register' => 0077,
+                'register' => 77,
                 'name' => 'Rotspoel',
             ),
             array(
-                'register' => 0078,
+                'register' => 78,
                 'name' => 'Rotspoelstraat',
             ),
             array(
-                'register' => 0176,
+                'register' => 176,
                 'name' => 'Rozenberg',
             ),
             array(
-                'register' => 0080,
+                'register' => 80,
                 'name' => 'Saffranenbergstraat',
             ),
             array(
-                'register' => 0177,
+                'register' => 177,
                 'name' => 'Settekensstraat',
             ),
             array(
-                'register' => 0082,
+                'register' => 82,
                 'name' => 'Sint-Jansbergsesteenweg',
             ),
             array(
-                'register' => 0083,
+                'register' => 83,
                 'name' => 'Sint-Jorislaan',
             ),
             array(
-                'register' => 0060,
+                'register' => 60,
                 'name' => 'Sint-Lambertusstraat',
             ),
             array(
-                'register' => 0112,
+                'register' => 112,
                 'name' => 'Sint-Reneldislaan',
             ),
             array(
-                'register' => 0113,
+                'register' => 113,
                 'name' => 'Sint-Reneldisplein',
             ),
             array(
-                'register' => 0130,
+                'register' => 130,
                 'name' => 'Slagmaaldelle',
             ),
             array(
-                'register' => 0084,
+                'register' => 84,
                 'name' => 'Sparrendreef',
             ),
             array(
-                'register' => 0104,
+                'register' => 104,
                 'name' => 'Spoorwegstraat',
             ),
             array(
-                'register' => 0035,
+                'register' => 35,
                 'name' => 'Steengroevenlaan',
             ),
             array(
-                'register' => 0204,
+                'register' => 204,
                 'name' => 'Stenenkruis',
             ),
             array(
-                'register' => 0216,
+                'register' => 216,
                 'name' => 'Studentenwijk Arenberg',
             ),
             array(
-                'register' => 0153,
+                'register' => 153,
                 'name' => 'Technologielaan',
             ),
             array(
-                'register' => 0085,
+                'register' => 85,
                 'name' => 'Ter Elstlaan',
             ),
             array(
-                'register' => 0040,
+                'register' => 40,
                 'name' => 'Terbankstraat',
             ),
             array(
-                'register' => 0026,
+                'register' => 26,
                 'name' => 'Tereikenlaan',
             ),
             array(
-                'register' => 0178,
+                'register' => 178,
                 'name' => 'Termunckdreef',
             ),
             array(
-                'register' => 0086,
+                'register' => 86,
                 'name' => 'Termunckstraat',
             ),
             array(
-                'register' => 0087,
+                'register' => 87,
                 'name' => 'Tervuursesteenweg',
             ),
             array(
-                'register' => 0088,
+                'register' => 88,
                 'name' => 'Tervuursevest',
             ),
             array(
-                'register' => 0089,
+                'register' => 89,
                 'name' => 'Tiensesteenweg',
             ),
             array(
-                'register' => 0090,
+                'register' => 90,
                 'name' => 'Tivolistraat',
             ),
             array(
-                'register' => 0149,
+                'register' => 149,
                 'name' => 'Toverberg',
             ),
             array(
-                'register' => 0150,
+                'register' => 150,
                 'name' => 'Twaalfbunder',
             ),
             array(
-                'register' => 0092,
+                'register' => 92,
                 'name' => 'Tweekleinewegenstraat',
             ),
             array(
-                'register' => 0167,
+                'register' => 167,
                 'name' => 'Valseweg',
             ),
             array(
-                'register' => 0165,
+                'register' => 165,
                 'name' => 'Van Harcourtdreef',
             ),
             array(
-                'register' => 0146,
+                'register' => 146,
                 'name' => 'Veilingweg',
             ),
             array(
-                'register' => 0095,
+                'register' => 95,
                 'name' => 'Veldstraat',
             ),
             array(
-                'register' => 0096,
+                'register' => 96,
                 'name' => 'Verbindingslaan',
             ),
             array(
-                'register' => 0158,
+                'register' => 158,
                 'name' => 'Vijfbunderstraat',
             ),
             array(
-                'register' => 0159,
+                'register' => 159,
                 'name' => 'Vinkenbosstraat',
             ),
             array(
-                'register' => 0097,
+                'register' => 97,
                 'name' => 'Vinkenlaan',
             ),
             array(
-                'register' => 0098,
+                'register' => 98,
                 'name' => 'Vlietstraat',
             ),
             array(
-                'register' => 0173,
+                'register' => 173,
                 'name' => 'Vloedgracht',
             ),
             array(
-                'register' => 0132,
+                'register' => 132,
                 'name' => 'Voervalleilaan',
             ),
             array(
-                'register' => 0179,
+                'register' => 179,
                 'name' => 'Vogelzang',
             ),
             array(
-                'register' => 0099,
+                'register' => 99,
                 'name' => 'Volhardingslaan',
             ),
             array(
-                'register' => 0100,
+                'register' => 100,
                 'name' => 'Voordelaan',
             ),
             array(
-                'register' => 0101,
+                'register' => 101,
                 'name' => 'Waversebaan',
             ),
             array(
-                'register' => 0103,
+                'register' => 103,
                 'name' => 'Wijngaardlaan',
             ),
             array(
-                'register' => 0093,
+                'register' => 93,
                 'name' => 'Willem Vanden Abeelelaan',
             ),
             array(
-                'register' => 0019,
+                'register' => 19,
                 'name' => 'Willem de Croylaan',
             ),
             array(
-                'register' => 0102,
+                'register' => 102,
                 'name' => 'Withoflaan',
             ),
             array(
-                'register' => 0180,
+                'register' => 180,
                 'name' => 'Zeepweg',
             ),
             array(
-                'register' => 0107,
+                'register' => 107,
                 'name' => 'Zegelaan',
             ),
             array(
-                'register' => 0108,
+                'register' => 108,
                 'name' => 'Zwaluwenlaan',
             ),
         ),
     ),
     array(
         'name'    => 'Kessel-Lo',
-        'postal'  => '3010',
+        'postal'  => '310',
         'streets' => array(
             array(
-                'register' => 3001,
+                'register' => 31,
                 'name' => 'Aarschotsesteenweg',
             ),
             array(
-                'register' => 2003,
+                'register' => 23,
                 'name' => 'Abdij Vlierbeek',
             ),
             array(
@@ -826,7 +826,7 @@ return array(
                 'name' => 'Acaciastraat',
             ),
             array(
-                'register' => 1004,
+                'register' => 14,
                 'name' => 'Achturenstraat',
             ),
             array(
@@ -838,11 +838,11 @@ return array(
                 'name' => 'Albert De Jonghestraat',
             ),
             array(
-                'register' => 2095,
+                'register' => 295,
                 'name' => 'Albrecht Rodenbachstraat',
             ),
             array(
-                'register' => 2096,
+                'register' => 296,
                 'name' => 'Alfons Roelandtsstraat',
             ),
             array(
@@ -850,43 +850,43 @@ return array(
                 'name' => 'August Vermeylenlaan',
             ),
             array(
-                'register' => 2044,
+                'register' => 244,
                 'name' => 'Bareelweg',
             ),
             array(
-                'register' => 1023,
+                'register' => 123,
                 'name' => 'Baron August de Becker-Remyplein',
             ),
             array(
-                'register' => 1063,
+                'register' => 163,
                 'name' => 'Beemdenpad',
             ),
             array(
-                'register' => 2008,
+                'register' => 28,
                 'name' => 'Beemdenstraat',
             ),
             array(
-                'register' => 3068,
+                'register' => 368,
                 'name' => 'Begijnenberg',
             ),
             array(
-                'register' => 2009,
+                'register' => 29,
                 'name' => 'Benedictijnenlaan',
             ),
             array(
-                'register' => 3073,
+                'register' => 373,
                 'name' => 'Bergpad',
             ),
             array(
-                'register' => 3011,
+                'register' => 311,
                 'name' => 'Bergstraat',
             ),
             array(
-                'register' => 5045,
+                'register' => 545,
                 'name' => 'Beverloopad',
             ),
             array(
-                'register' => 1018,
+                'register' => 118,
                 'name' => 'Bijendreef',
             ),
             array(
@@ -894,43 +894,43 @@ return array(
                 'name' => 'Blokweg',
             ),
             array(
-                'register' => 2043,
+                'register' => 243,
                 'name' => 'Boerenkrijglaan',
             ),
             array(
-                'register' => 2012,
+                'register' => 212,
                 'name' => 'Borstelsstraat',
             ),
             array(
-                'register' => 3013,
+                'register' => 313,
                 'name' => 'Boskouter',
             ),
             array(
-                'register' => 4014,
+                'register' => 414,
                 'name' => 'Boulevardstraat',
             ),
             array(
-                'register' => 5101,
+                'register' => 511,
                 'name' => 'Bovenloweg',
             ),
             array(
-                'register' => 1015,
+                'register' => 115,
                 'name' => 'Broederlijkheidstraat',
             ),
             array(
-                'register' => 2018,
+                'register' => 218,
                 'name' => 'Broekweg',
             ),
             array(
-                'register' => 1027,
+                'register' => 127,
                 'name' => 'Brugbergpad',
             ),
             array(
-                'register' => 2017,
+                'register' => 217,
                 'name' => 'Bruineveld',
             ),
             array(
-                'register' => 2019,
+                'register' => 219,
                 'name' => 'Bruineveldpad',
             ),
             array(
@@ -942,11 +942,11 @@ return array(
                 'name' => 'Dennenboslaan',
             ),
             array(
-                'register' => 1024,
+                'register' => 124,
                 'name' => 'Diestsesteenweg',
             ),
             array(
-                'register' => 1025,
+                'register' => 125,
                 'name' => 'Dijledreef',
             ),
             array(
@@ -954,11 +954,11 @@ return array(
                 'name' => 'Distelvinkenstraat',
             ),
             array(
-                'register' => 3016,
+                'register' => 316,
                 'name' => 'Domeinstraat',
             ),
             array(
-                'register' => 4026,
+                'register' => 426,
                 'name' => 'Don Boscolaan',
             ),
             array(
@@ -974,11 +974,11 @@ return array(
                 'name' => 'Duchesnelaan',
             ),
             array(
-                'register' => 4027,
+                'register' => 427,
                 'name' => 'Duivenstraat',
             ),
             array(
-                'register' => 1070,
+                'register' => 170,
                 'name' => 'Désiré Mellaertsstraat',
             ),
             array(
@@ -990,15 +990,15 @@ return array(
                 'name' => 'Eendenpad',
             ),
             array(
-                'register' => 4029,
+                'register' => 429,
                 'name' => 'Eeuwfeeststraat',
             ),
             array(
-                'register' => 5030,
+                'register' => 530,
                 'name' => 'Eikenboslaan',
             ),
             array(
-                'register' => 1031,
+                'register' => 131,
                 'name' => 'Elfnovemberlaan',
             ),
             array(
@@ -1006,15 +1006,15 @@ return array(
                 'name' => 'Emiel Vlieberghlaan',
             ),
             array(
-                'register' => 1109,
+                'register' => 119,
                 'name' => 'Ernest Solvaystraat',
             ),
             array(
-                'register' => 4093,
+                'register' => 493,
                 'name' => 'Eugeen Vanhoorenbekelaan',
             ),
             array(
-                'register' => 1028,
+                'register' => 128,
                 'name' => 'Eénmeilaan',
             ),
             array(
@@ -1026,71 +1026,71 @@ return array(
                 'name' => 'Formatie',
             ),
             array(
-                'register' => 2073,
+                'register' => 273,
                 'name' => 'Frans Nackaertsplein',
             ),
             array(
-                'register' => 2074,
+                'register' => 274,
                 'name' => 'Frans Nackaertsstraat',
             ),
             array(
-                'register' => 4102,
+                'register' => 412,
                 'name' => 'Franz Schollaertstraat',
             ),
             array(
-                'register' => 2076,
+                'register' => 276,
                 'name' => 'Garestalaan',
             ),
             array(
-                'register' => 4089,
+                'register' => 489,
                 'name' => 'Gaston Eyskenslaan',
             ),
             array(
-                'register' => 1033,
+                'register' => 133,
                 'name' => 'Gelijkheidstraat',
             ),
             array(
-                'register' => 2034,
+                'register' => 234,
                 'name' => 'Gemeenteplein',
             ),
             array(
-                'register' => 1035,
+                'register' => 135,
                 'name' => 'Gemeentestraat',
             ),
             array(
-                'register' => 3012,
+                'register' => 312,
                 'name' => 'Genadeweg',
             ),
             array(
-                'register' => 1037,
+                'register' => 137,
                 'name' => 'Gezondheidstraat',
             ),
             array(
-                'register' => 4038,
+                'register' => 438,
                 'name' => 'Grensstraat',
             ),
             array(
-                'register' => 3038,
+                'register' => 338,
                 'name' => 'Groddeveldweg',
             ),
             array(
-                'register' => 3039,
+                'register' => 339,
                 'name' => 'Groddeweg',
             ),
             array(
-                'register' => 4036,
+                'register' => 436,
                 'name' => 'Guido Gezellelaan',
             ),
             array(
-                'register' => 2042,
+                'register' => 242,
                 'name' => 'Guldensporenlaan',
             ),
             array(
-                'register' => 5043,
+                'register' => 543,
                 'name' => 'Heidebergstraat',
             ),
             array(
-                'register' => 5044,
+                'register' => 544,
                 'name' => 'Heidebloempad',
             ),
             array(
@@ -1098,11 +1098,11 @@ return array(
                 'name' => 'Heikneuterlaan',
             ),
             array(
-                'register' => 2021,
+                'register' => 221,
                 'name' => 'Herbeemdpad',
             ),
             array(
-                'register' => 2045,
+                'register' => 245,
                 'name' => 'Herfstlaan',
             ),
             array(
@@ -1110,19 +1110,19 @@ return array(
                 'name' => 'Herman Teirlincklaan',
             ),
             array(
-                'register' => 3066,
+                'register' => 366,
                 'name' => 'Hertendries',
             ),
             array(
-                'register' => 2046,
+                'register' => 246,
                 'name' => 'Heuvelhof',
             ),
             array(
-                'register' => 1047,
+                'register' => 147,
                 'name' => 'Heuvelstraat',
             ),
             array(
-                'register' => 2048,
+                'register' => 248,
                 'name' => 'Holsbeeksesteenweg',
             ),
             array(
@@ -1138,11 +1138,11 @@ return array(
                 'name' => 'Ijzerenwegstraat',
             ),
             array(
-                'register' => 2022,
+                'register' => 222,
                 'name' => 'Jan Davidtsstraat',
             ),
             array(
-                'register' => 3201,
+                'register' => 321,
                 'name' => 'Jan Van Bouwelstraat',
             ),
             array(
@@ -1150,19 +1150,19 @@ return array(
                 'name' => 'Jan Vandeveldelaan',
             ),
             array(
-                'register' => 1049,
+                'register' => 149,
                 'name' => 'Jeugdplein',
             ),
             array(
-                'register' => 1050,
+                'register' => 150,
                 'name' => 'Jeugdstraat',
             ),
             array(
-                'register' => 4021,
+                'register' => 421,
                 'name' => 'Jozef Deveusterlaan',
             ),
             array(
-                'register' => 1087,
+                'register' => 187,
                 'name' => 'Jozef Pierrestraat',
             ),
             array(
@@ -1186,7 +1186,7 @@ return array(
                 'name' => 'Karekietenlaan',
             ),
             array(
-                'register' => 1105,
+                'register' => 115,
                 'name' => 'Karel Schurmansstraat',
             ),
             array(
@@ -1194,15 +1194,15 @@ return array(
                 'name' => 'Katjeswilgenlaan',
             ),
             array(
-                'register' => 1051,
+                'register' => 151,
                 'name' => 'Kerkstraat',
             ),
             array(
-                'register' => 4051,
+                'register' => 451,
                 'name' => 'Kerselarenstraat',
             ),
             array(
-                'register' => 3014,
+                'register' => 314,
                 'name' => 'Kesselbergpad',
             ),
             array(
@@ -1214,7 +1214,7 @@ return array(
                 'name' => 'Kesseldallaan',
             ),
             array(
-                'register' => 3074,
+                'register' => 374,
                 'name' => 'Kesselpad',
             ),
             array(
@@ -1226,15 +1226,15 @@ return array(
                 'name' => 'Kesselveld',
             ),
             array(
-                'register' => 4052,
+                'register' => 452,
                 'name' => 'Klaverstraat',
             ),
             array(
-                'register' => 4041,
+                'register' => 441,
                 'name' => 'Klein-Rijselstraat',
             ),
             array(
-                'register' => 3052,
+                'register' => 352,
                 'name' => 'Kloosterbosstraat',
             ),
             array(
@@ -1246,39 +1246,39 @@ return array(
                 'name' => 'Kluisdelle',
             ),
             array(
-                'register' => 3069,
+                'register' => 369,
                 'name' => 'Koestaart',
             ),
             array(
-                'register' => 4053,
+                'register' => 453,
                 'name' => 'Koetsweg',
             ),
             array(
-                'register' => 4005,
+                'register' => 45,
                 'name' => 'Koning Albertlaan',
             ),
             array(
-                'register' => 4006,
+                'register' => 46,
                 'name' => 'Koning Albertplein',
             ),
             array(
-                'register' => 4007,
+                'register' => 47,
                 'name' => 'Koningin Astridlaan',
             ),
             array(
-                'register' => 2032,
+                'register' => 232,
                 'name' => 'Koningin Fabiolalaan',
             ),
             array(
-                'register' => 3054,
+                'register' => 354,
                 'name' => 'Koningsstraat',
             ),
             array(
-                'register' => 4055,
+                'register' => 455,
                 'name' => 'Korenstraat',
             ),
             array(
-                'register' => 2057,
+                'register' => 257,
                 'name' => 'Kortrijksestraat',
             ),
             array(
@@ -1294,19 +1294,19 @@ return array(
                 'name' => 'Kriekenbergweg',
             ),
             array(
-                'register' => 1058,
+                'register' => 158,
                 'name' => 'Landbouwstraat',
             ),
             array(
-                'register' => 5059,
+                'register' => 559,
                 'name' => 'Lange Lostraat',
             ),
             array(
-                'register' => 2078,
+                'register' => 278,
                 'name' => 'Laurent-Benoit Dewezlaan',
             ),
             array(
-                'register' => 3061,
+                'register' => 361,
                 'name' => 'Leming',
             ),
             array(
@@ -1314,19 +1314,19 @@ return array(
                 'name' => 'Lemingberg',
             ),
             array(
-                'register' => 1062,
+                'register' => 162,
                 'name' => 'Lentedreef',
             ),
             array(
-                'register' => 2010,
+                'register' => 210,
                 'name' => 'Leopold Beosierlaan',
             ),
             array(
-                'register' => 2098,
+                'register' => 298,
                 'name' => 'Leopold Ruelensstraat',
             ),
             array(
-                'register' => 1064,
+                'register' => 164,
                 'name' => 'Leuvensestraat',
             ),
             array(
@@ -1334,15 +1334,15 @@ return array(
                 'name' => 'Libelpad',
             ),
             array(
-                'register' => 3040,
+                'register' => 340,
                 'name' => 'Liemingenstraat',
             ),
             array(
-                'register' => 4072,
+                'register' => 472,
                 'name' => 'Lijsterlaan',
             ),
             array(
-                'register' => 1066,
+                'register' => 166,
                 'name' => 'Lindensestraat',
             ),
             array(
@@ -1350,7 +1350,7 @@ return array(
                 'name' => 'Lobergenbos',
             ),
             array(
-                'register' => 5067,
+                'register' => 567,
                 'name' => 'Lodreef',
             ),
             array(
@@ -1358,7 +1358,7 @@ return array(
                 'name' => 'Lolanden',
             ),
             array(
-                'register' => 5047,
+                'register' => 547,
                 'name' => 'Lopad',
             ),
             array(
@@ -1366,11 +1366,11 @@ return array(
                 'name' => 'Losbergenlaan',
             ),
             array(
-                'register' => 4084,
+                'register' => 484,
                 'name' => 'Louis Pasteurwijk',
             ),
             array(
-                'register' => 5048,
+                'register' => 548,
                 'name' => 'Loveldpad',
             ),
             array(
@@ -1378,23 +1378,23 @@ return array(
                 'name' => 'Lovenarenbroek',
             ),
             array(
-                'register' => 5068,
+                'register' => 568,
                 'name' => 'Lovensevoetpad',
             ),
             array(
-                'register' => 1068,
+                'register' => 168,
                 'name' => 'Lovensveldstraat',
             ),
             array(
-                'register' => 2058,
+                'register' => 258,
                 'name' => 'Lovensvoetpad',
             ),
             array(
-                'register' => 2093,
+                'register' => 293,
                 'name' => 'Marie-Elisabeth Belpairestraat',
             ),
             array(
-                'register' => 1069,
+                'register' => 169,
                 'name' => 'Martelarenlaan',
             ),
             array(
@@ -1402,19 +1402,19 @@ return array(
                 'name' => 'Martellekensweg',
             ),
             array(
-                'register' => 3065,
+                'register' => 365,
                 'name' => 'Meesbergpad',
             ),
             array(
-                'register' => 2077,
+                'register' => 277,
                 'name' => 'Meugenslaan Meugenslaan',
             ),
             array(
-                'register' => 2016,
+                'register' => 216,
                 'name' => 'Molenbeekpad',
             ),
             array(
-                'register' => 2071,
+                'register' => 271,
                 'name' => 'Molenstraat',
             ),
             array(
@@ -1426,7 +1426,7 @@ return array(
                 'name' => 'Molenveldplein',
             ),
             array(
-                'register' => 3067,
+                'register' => 367,
                 'name' => 'Musbergpad',
             ),
             array(
@@ -1434,15 +1434,15 @@ return array(
                 'name' => 'Negenbunderspad',
             ),
             array(
-                'register' => 4076,
+                'register' => 476,
                 'name' => 'Onafhankelijkheidsstraat',
             ),
             array(
-                'register' => 4077,
+                'register' => 477,
                 'name' => 'Ontvoogdingstraat',
             ),
             array(
-                'register' => 1078,
+                'register' => 178,
                 'name' => 'Onze-Toevluchtstraat',
             ),
             array(
@@ -1450,7 +1450,7 @@ return array(
                 'name' => 'Op de Vliet',
             ),
             array(
-                'register' => 1079,
+                'register' => 179,
                 'name' => 'Opvoedingstraat',
             ),
             array(
@@ -1458,19 +1458,19 @@ return array(
                 'name' => 'Ortolanenstraat',
             ),
             array(
-                'register' => 1056,
+                'register' => 156,
                 'name' => 'Oude Diestsesteenweg',
             ),
             array(
-                'register' => 4080,
+                'register' => 480,
                 'name' => 'Overwinningstraat',
             ),
             array(
-                'register' => 1082,
+                'register' => 182,
                 'name' => 'Partisanenstraat',
             ),
             array(
-                'register' => 5083,
+                'register' => 583,
                 'name' => 'Pasteelsblokweg',
             ),
             array(
@@ -1478,11 +1478,11 @@ return array(
                 'name' => 'Pastoor Eeckelaerslaan',
             ),
             array(
-                'register' => 4065,
+                'register' => 465,
                 'name' => 'Pater Lievenslaan',
             ),
             array(
-                'register' => 1085,
+                'register' => 185,
                 'name' => 'Paternosterstraat',
             ),
             array(
@@ -1490,35 +1490,35 @@ return array(
                 'name' => 'Patrijzenlaan',
             ),
             array(
-                'register' => 1086,
+                'register' => 186,
                 'name' => 'Patroonschapstraat',
             ),
             array(
-                'register' => 4201,
+                'register' => 421,
                 'name' => 'Pellenbergstraat',
             ),
             array(
-                'register' => 4009,
+                'register' => 49,
                 'name' => 'Peter Benoitlaan',
             ),
             array(
-                'register' => 2079,
+                'register' => 279,
                 'name' => 'Peter Scribslaan',
             ),
             array(
-                'register' => 4075,
+                'register' => 475,
                 'name' => 'Pieter Nollekensstraat',
             ),
             array(
-                'register' => 2075,
+                'register' => 275,
                 'name' => 'Pieter Paradaenslaan',
             ),
             array(
-                'register' => 4088,
+                'register' => 488,
                 'name' => 'Platte Lostraat',
             ),
             array(
-                'register' => 4087,
+                'register' => 487,
                 'name' => 'Ploegstaart',
             ),
             array(
@@ -1526,27 +1526,27 @@ return array(
                 'name' => 'Poortveldstraat',
             ),
             array(
-                'register' => 4090,
+                'register' => 490,
                 'name' => 'Predikherenberg',
             ),
             array(
-                'register' => 4020,
+                'register' => 420,
                 'name' => 'Priester Daensstraat',
             ),
             array(
-                'register' => 1092,
+                'register' => 192,
                 'name' => 'Prins-Regentlaan',
             ),
             array(
-                'register' => 1093,
+                'register' => 193,
                 'name' => 'Prins-Regentplein',
             ),
             array(
-                'register' => 2091,
+                'register' => 291,
                 'name' => 'Raadhuislaan',
             ),
             array(
-                'register' => 2094,
+                'register' => 294,
                 'name' => 'Rerum Novarumlaan',
             ),
             array(
@@ -1562,59 +1562,59 @@ return array(
                 'name' => 'Romain Rollandstraat',
             ),
             array(
-                'register' => 1097,
+                'register' => 197,
                 'name' => 'Rondestraat',
             ),
             array(
-                'register' => 5042,
+                'register' => 542,
                 'name' => 'Rozenpad',
             ),
             array(
-                'register' => 2099,
+                'register' => 299,
                 'name' => 'Ruiterslaan',
             ),
             array(
-                'register' => 2081,
+                'register' => 281,
                 'name' => 'Rustoordlaan',
             ),
             array(
-                'register' => 1100,
+                'register' => 110,
                 'name' => 'Schakellaan',
             ),
             array(
-                'register' => 5046,
+                'register' => 546,
                 'name' => 'Scheivoorpad',
             ),
             array(
-                'register' => 2103,
+                'register' => 213,
                 'name' => 'Schoolbergenstraat',
             ),
             array(
-                'register' => 4104,
+                'register' => 414,
                 'name' => 'Schoolstraat',
             ),
             array(
-                'register' => 4202,
+                'register' => 422,
                 'name' => 'Sint-Martinusberg',
             ),
             array(
-                'register' => 3105,
+                'register' => 315,
                 'name' => 'Slangenpad',
             ),
             array(
-                'register' => 3106,
+                'register' => 316,
                 'name' => 'Slangenstraat',
             ),
             array(
-                'register' => 1107,
+                'register' => 117,
                 'name' => 'Smidsestraat',
             ),
             array(
-                'register' => 3072,
+                'register' => 372,
                 'name' => 'Smokkelweg',
             ),
             array(
-                'register' => 3108,
+                'register' => 318,
                 'name' => 'Sneppenstraat',
             ),
             array(
@@ -1630,15 +1630,15 @@ return array(
                 'name' => 'Sportpleinpad',
             ),
             array(
-                'register' => 4091,
+                'register' => 491,
                 'name' => 'Spreeuwenstraat',
             ),
             array(
-                'register' => 2063,
+                'register' => 263,
                 'name' => 'Stadionlaan',
             ),
             array(
-                'register' => 4092,
+                'register' => 492,
                 'name' => 'Steenbakkerijstraat',
             ),
             array(
@@ -1646,11 +1646,11 @@ return array(
                 'name' => 'Stijn Streuvelslaan',
             ),
             array(
-                'register' => 3070,
+                'register' => 370,
                 'name' => 'Sukkelpad',
             ),
             array(
-                'register' => 3055,
+                'register' => 355,
                 'name' => 'Sypestraat',
             ),
             array(
@@ -1690,7 +1690,7 @@ return array(
                 'name' => 'Tweebunders',
             ),
             array(
-                'register' => 4203,
+                'register' => 423,
                 'name' => 'Uitbreidingslaan',
             ),
             array(
@@ -1714,11 +1714,11 @@ return array(
                 'name' => 'Veldovenweg',
             ),
             array(
-                'register' => 3037,
+                'register' => 337,
                 'name' => 'Veldweg',
             ),
             array(
-                'register' => 3071,
+                'register' => 371,
                 'name' => 'Verbrandenbos',
             ),
             array(
@@ -1726,7 +1726,7 @@ return array(
                 'name' => 'Verenigingstraat',
             ),
             array(
-                'register' => 4204,
+                'register' => 424,
                 'name' => 'Vertommensberg',
             ),
             array(
@@ -1742,7 +1742,7 @@ return array(
                 'name' => 'Vlierbeekgang',
             ),
             array(
-                'register' => 2002,
+                'register' => 22,
                 'name' => 'Vlierbeeklaan',
             ),
             array(
@@ -1810,11 +1810,11 @@ return array(
                 'name' => 'Wildvogelpad',
             ),
             array(
-                'register' => 3200,
+                'register' => 320,
                 'name' => 'Wilgenhof',
             ),
             array(
-                'register' => 1019,
+                'register' => 119,
                 'name' => 'Willem Coosemansstraat',
             ),
             array(
@@ -1838,7 +1838,7 @@ return array(
                 'name' => 'Wipstraat',
             ),
             array(
-                'register' => 2020,
+                'register' => 220,
                 'name' => 'Witte-Vrouwenpad',
             ),
             array(
@@ -1853,7 +1853,7 @@ return array(
     ),
     array(
         'name'    => 'Korbeek-Lo',
-        'postal'  => '3000',
+        'postal'  => '30',
         'streets' => array(
             array(
                 'register' => 7111,
@@ -1863,22 +1863,22 @@ return array(
     ),
     array(
         'name'    => 'Leuven',
-        'postal'  => '3000',
+        'postal'  => '30',
         'streets' => array(
             array(
-                'register' => 6014,
+                'register' => 614,
                 'name' => 'Achter de Latten',
             ),
             array(
-                'register' => 4020,
+                'register' => 420,
                 'name' => 'Adolphe Bastinstraat',
             ),
             array(
-                'register' => 4071,
+                'register' => 471,
                 'name' => 'Albert Giraudstraat',
             ),
             array(
-                'register' => 4010,
+                'register' => 410,
                 'name' => 'Albrechtplein',
             ),
             array(
@@ -1886,7 +1886,7 @@ return array(
                 'name' => 'Alfons Smetsplein',
             ),
             array(
-                'register' => 6012,
+                'register' => 612,
                 'name' => 'Amerikalaan',
             ),
             array(
@@ -1894,11 +1894,11 @@ return array(
                 'name' => 'Andreas Vesaliusstraat',
             ),
             array(
-                'register' => 1010,
+                'register' => 110,
                 'name' => 'Ankerstraat',
             ),
             array(
-                'register' => 2010,
+                'register' => 210,
                 'name' => 'Arendstraat',
             ),
             array(
@@ -1906,111 +1906,111 @@ return array(
                 'name' => 'Arnould Nobelstraat',
             ),
             array(
-                'register' => 4041,
+                'register' => 441,
                 'name' => 'Arthur De Greefstraat',
             ),
             array(
-                'register' => 1011,
+                'register' => 111,
                 'name' => 'Asstraat',
             ),
             array(
-                'register' => 1012,
+                'register' => 112,
                 'name' => 'Augustijnenstraat',
             ),
             array(
-                'register' => 6020,
+                'register' => 620,
                 'name' => 'Balsembloemhof',
             ),
             array(
-                'register' => 5020,
+                'register' => 520,
                 'name' => 'Bankstraat',
             ),
             array(
-                'register' => 1051,
+                'register' => 151,
                 'name' => 'Baron d\'Eynattenstraat',
             ),
             array(
-                'register' => 5300,
+                'register' => 530,
                 'name' => 'Beursgang',
             ),
             array(
-                'register' => 6022,
+                'register' => 622,
                 'name' => 'Bieststraat',
             ),
             array(
-                'register' => 5022,
+                'register' => 522,
                 'name' => 'Biezenstraat',
             ),
             array(
-                'register' => 1300,
+                'register' => 130,
                 'name' => 'Blauwputgang',
             ),
             array(
-                'register' => 2020,
+                'register' => 220,
                 'name' => 'Blijde-Inkomststraat',
             ),
             array(
-                'register' => 5301,
+                'register' => 531,
                 'name' => 'Bloemenberggang',
             ),
             array(
-                'register' => 3020,
+                'register' => 320,
                 'name' => 'Boekhandelstraat',
             ),
             array(
-                'register' => 2021,
+                'register' => 221,
                 'name' => 'Bogaardenstraat',
             ),
             array(
-                'register' => 2022,
+                'register' => 222,
                 'name' => 'Bondgenotenlaan',
             ),
             array(
-                'register' => 3021,
+                'register' => 321,
                 'name' => 'Brabançonnestraat',
             ),
             array(
-                'register' => 6023,
+                'register' => 623,
                 'name' => 'Brouwersstraat',
             ),
             array(
-                'register' => 6024,
+                'register' => 624,
                 'name' => 'Brusselsesteenweg',
             ),
             array(
-                'register' => 5023,
+                'register' => 523,
                 'name' => 'Brusselsestraat',
             ),
             array(
-                'register' => 6025,
+                'register' => 625,
                 'name' => 'Burchtstraat',
             ),
             array(
-                'register' => 2023,
+                'register' => 223,
                 'name' => 'Burgemeestersstraat',
             ),
             array(
-                'register' => 1301,
+                'register' => 131,
                 'name' => 'Busleidengang',
             ),
             array(
-                'register' => 3300,
+                'register' => 330,
                 'name' => 'Cansgang',
             ),
             array(
-                'register' => 0000,
+                'register' => 0,
                 'name' => 'Cardenberch',
             ),
             array(
-                'register' => 7030,
+                'register' => 730,
                 'name' => 'Casablancalaan',
             ),
             array(
-                'register' => 3041,
+                'register' => 341,
                 'name' => 'Charles Deberiotstraat',
             ),
             array(
-                'register' => 4031,
+                'register' => 431,
                 'name' => 'Collegeberg',
             ),
             array(
@@ -2018,59 +2018,59 @@ return array(
                 'name' => 'Constantin Meunierstraat',
             ),
             array(
-                'register' => 6031,
+                'register' => 631,
                 'name' => 'Craenendonck',
             ),
             array(
-                'register' => 2040,
+                'register' => 240,
                 'name' => 'Dagobertstraat',
             ),
             array(
-                'register' => 7040,
+                'register' => 740,
                 'name' => 'Dalemhof',
             ),
             array(
-                'register' => 5303,
+                'register' => 533,
                 'name' => 'Daneelsgang',
             ),
             array(
-                'register' => 3042,
+                'register' => 342,
                 'name' => 'Dekenstraat',
             ),
             array(
-                'register' => 6043,
+                'register' => 643,
                 'name' => 'Den Boschsingel',
             ),
             array(
-                'register' => 1043,
+                'register' => 143,
                 'name' => 'Diestsepoort',
             ),
             array(
-                'register' => 1040,
+                'register' => 140,
                 'name' => 'Diestsestraat',
             ),
             array(
-                'register' => 1041,
+                'register' => 141,
                 'name' => 'Diestsevest',
             ),
             array(
-                'register' => 6010,
+                'register' => 610,
                 'name' => 'Dirk Boutslaan',
             ),
             array(
-                'register' => 6042,
+                'register' => 642,
                 'name' => 'Donkerstraat',
             ),
             array(
-                'register' => 4042,
+                'register' => 442,
                 'name' => 'Drie-Engelenberg',
             ),
             array(
-                'register' => 5040,
+                'register' => 540,
                 'name' => 'Drinkwaterstraat',
             ),
             array(
-                'register' => 7041,
+                'register' => 741,
                 'name' => 'Duivelsweg',
             ),
             array(
@@ -2082,11 +2082,11 @@ return array(
                 'name' => 'Edward Van Evenstraat',
             ),
             array(
-                'register' => 3050,
+                'register' => 350,
                 'name' => 'Eikstraat',
             ),
             array(
-                'register' => 4304,
+                'register' => 434,
                 'name' => 'Elzasgang',
             ),
             array(
@@ -2098,7 +2098,7 @@ return array(
                 'name' => 'Emile Van Arenberghstraat',
             ),
             array(
-                'register' => 1050,
+                'register' => 150,
                 'name' => 'Engels Plein',
             ),
             array(
@@ -2106,19 +2106,19 @@ return array(
                 'name' => 'Erasmusplein',
             ),
             array(
-                'register' => 7051,
+                'register' => 751,
                 'name' => 'Escoriallaan',
             ),
             array(
-                'register' => 7052,
+                'register' => 752,
                 'name' => 'Esplanadelaan',
             ),
             array(
-                'register' => 4070,
+                'register' => 470,
                 'name' => 'Eugène Gilbertstraat',
             ),
             array(
-                'register' => 3040,
+                'register' => 340,
                 'name' => 'Familie de Bayostraat',
             ),
             array(
@@ -2126,7 +2126,7 @@ return array(
                 'name' => 'Ferdinand Smoldersplein',
             ),
             array(
-                'register' => 6060,
+                'register' => 660,
                 'name' => 'Fonteinstraat',
             ),
             array(
@@ -2138,7 +2138,7 @@ return array(
                 'name' => 'Frans Vermeylenstraat',
             ),
             array(
-                'register' => 6013,
+                'register' => 613,
                 'name' => 'Franz Tielemanslaan',
             ),
             array(
@@ -2146,15 +2146,15 @@ return array(
                 'name' => 'Frederik Lintsstraat',
             ),
             array(
-                'register' => 6070,
+                'register' => 670,
                 'name' => 'Galgebergstraat',
             ),
             array(
-                'register' => 3070,
+                'register' => 370,
                 'name' => 'Geldenaaksevest',
             ),
             array(
-                'register' => 5070,
+                'register' => 570,
                 'name' => 'Gijzelaarsstraat',
             ),
             array(
@@ -2162,35 +2162,35 @@ return array(
                 'name' => 'Gildenstraat',
             ),
             array(
-                'register' => 6071,
+                'register' => 671,
                 'name' => 'Glasblazerijstraat',
             ),
             array(
-                'register' => 5071,
+                'register' => 571,
                 'name' => 'Goudsbloemstraat',
             ),
             array(
-                'register' => 4050,
+                'register' => 450,
                 'name' => 'Grasmushof',
             ),
             array(
-                'register' => 5304,
+                'register' => 534,
                 'name' => 'Groefgang',
             ),
             array(
-                'register' => 5073,
+                'register' => 573,
                 'name' => 'Groefplein',
             ),
             array(
-                'register' => 5072,
+                'register' => 572,
                 'name' => 'Groefstraat',
             ),
             array(
-                'register' => 4021,
+                'register' => 421,
                 'name' => 'Groot Begijnhof',
             ),
             array(
-                'register' => 6073,
+                'register' => 673,
                 'name' => 'Grote Markt',
             ),
             array(
@@ -2198,19 +2198,19 @@ return array(
                 'name' => 'Gérard Vander Lindenstraat',
             ),
             array(
-                'register' => 3301,
+                'register' => 331,
                 'name' => 'Haaggang',
             ),
             array(
-                'register' => 1080,
+                'register' => 180,
                 'name' => 'Halfmaartstraat',
             ),
             array(
-                'register' => 4300,
+                'register' => 430,
                 'name' => 'Hallengang',
             ),
             array(
-                'register' => 6080,
+                'register' => 680,
                 'name' => 'Halvestraat',
             ),
             array(
@@ -2218,15 +2218,15 @@ return array(
                 'name' => 'Hambrugpad',
             ),
             array(
-                'register' => 2300,
+                'register' => 230,
                 'name' => 'Hanengang',
             ),
             array(
-                'register' => 5080,
+                'register' => 580,
                 'name' => 'Heilige-Geeststraat',
             ),
             array(
-                'register' => 4032,
+                'register' => 432,
                 'name' => 'Hendrik Consciencestraat',
             ),
             array(
@@ -2234,47 +2234,47 @@ return array(
                 'name' => 'Henri Regastraat',
             ),
             array(
-                'register' => 2080,
+                'register' => 280,
                 'name' => 'Herbert Hooverplein',
             ),
             array(
-                'register' => 5081,
+                'register' => 581,
                 'name' => 'Herestraat',
             ),
             array(
-                'register' => 5082,
+                'register' => 582,
                 'name' => 'Hertstraat',
             ),
             array(
-                'register' => 6305,
+                'register' => 635,
                 'name' => 'Het Torentje',
             ),
             array(
-                'register' => 7080,
+                'register' => 780,
                 'name' => 'Hoegaardsestraat',
             ),
             array(
-                'register' => 3302,
+                'register' => 332,
                 'name' => 'Hofgang',
             ),
             array(
-                'register' => 3080,
+                'register' => 380,
                 'name' => 'Hogeschoolplein',
             ),
             array(
-                'register' => 5083,
+                'register' => 583,
                 'name' => 'Hogestraat',
             ),
             array(
-                'register' => 7081,
+                'register' => 781,
                 'name' => 'Hoogland',
             ),
             array(
-                'register' => 5305,
+                'register' => 535,
                 'name' => 'Horengang',
             ),
             array(
-                'register' => 5090,
+                'register' => 590,
                 'name' => 'Ierse-Predikherenstraat',
             ),
             array(
@@ -2282,7 +2282,7 @@ return array(
                 'name' => 'Ijzerenpoortstraat',
             ),
             array(
-                'register' => 4090,
+                'register' => 490,
                 'name' => 'Isabellaplein',
             ),
             array(
@@ -2294,15 +2294,15 @@ return array(
                 'name' => 'Jan-Pieter Minckelersstraat',
             ),
             array(
-                'register' => 4022,
+                'register' => 422,
                 'name' => 'Janseniusstraat',
             ),
             array(
-                'register' => 5302,
+                'register' => 532,
                 'name' => 'Jean Bulenswijk',
             ),
             array(
-                'register' => 5021,
+                'register' => 521,
                 'name' => 'Jean-Baptiste Ectorsstraat',
             ),
             array(
@@ -2310,15 +2310,15 @@ return array(
                 'name' => 'Jean-Baptiste Van Monsstraat',
             ),
             array(
-                'register' => 6015,
+                'register' => 615,
                 'name' => 'Joanna-Maria Artoisplein',
             ),
             array(
-                'register' => 1100,
+                'register' => 110,
                 'name' => 'Jodenstraat',
             ),
             array(
-                'register' => 2100,
+                'register' => 210,
                 'name' => 'Jozef II-straat',
             ),
             array(
@@ -2326,7 +2326,7 @@ return array(
                 'name' => 'Jozef Vounckplein',
             ),
             array(
-                'register' => 2101,
+                'register' => 211,
                 'name' => 'Justus Lipsiusstraat',
             ),
             array(
@@ -2370,7 +2370,7 @@ return array(
                 'name' => 'Kiekenstraat',
             ),
             array(
-                'register' => 6021,
+                'register' => 621,
                 'name' => 'Klein Begijnhof',
             ),
             array(
@@ -2378,7 +2378,7 @@ return array(
                 'name' => 'Kolveniershof',
             ),
             array(
-                'register' => 4023,
+                'register' => 423,
                 'name' => 'Koning Boudewijnlaan',
             ),
             array(
@@ -2386,7 +2386,7 @@ return array(
                 'name' => 'Koning Leopold I--straat',
             ),
             array(
-                'register' => 7050,
+                'register' => 750,
                 'name' => 'Koningin Elisabethlaan',
             ),
             array(
@@ -2442,11 +2442,11 @@ return array(
                 'name' => 'Lepelstraat',
             ),
             array(
-                'register' => 3303,
+                'register' => 333,
                 'name' => 'Liergang',
             ),
             array(
-                'register' => 1020,
+                'register' => 120,
                 'name' => 'Lombaardenstraat',
             ),
             array(
@@ -2458,7 +2458,7 @@ return array(
                 'name' => 'Ludovicus Zamenhofstraat',
             ),
             array(
-                'register' => 4030,
+                'register' => 430,
                 'name' => 'Léon Colinslaan',
             ),
             array(
@@ -2466,7 +2466,7 @@ return array(
                 'name' => 'Lüdenscheidsingel',
             ),
             array(
-                'register' => 2060,
+                'register' => 260,
                 'name' => 'Maarschalk Fochplein',
             ),
             array(
@@ -2486,15 +2486,15 @@ return array(
                 'name' => 'Martelarenplein',
             ),
             array(
-                'register' => 1021,
+                'register' => 121,
                 'name' => 'Mathias Van den Gheynlaan',
             ),
             array(
-                'register' => 6040,
+                'register' => 640,
                 'name' => 'Mathieu de Layensplein',
             ),
             array(
-                'register' => 2302,
+                'register' => 232,
                 'name' => 'Mathildegang',
             ),
             array(
@@ -2526,7 +2526,7 @@ return array(
                 'name' => 'Minneveld',
             ),
             array(
-                'register' => 6301,
+                'register' => 631,
                 'name' => 'Mispelaarsgang',
             ),
             array(
@@ -2598,7 +2598,7 @@ return array(
                 'name' => 'Oostertunnel',
             ),
             array(
-                'register' => 1302,
+                'register' => 132,
                 'name' => 'Oppendorpgang',
             ),
             array(
@@ -2626,11 +2626,11 @@ return array(
                 'name' => 'Parkstraat',
             ),
             array(
-                'register' => 4040,
+                'register' => 440,
                 'name' => 'Pater Damiaanplein',
             ),
             array(
-                'register' => 6041,
+                'register' => 641,
                 'name' => 'Paul Delvauxwijk',
             ),
             array(
@@ -2658,7 +2658,7 @@ return array(
                 'name' => 'Petermannenstraat',
             ),
             array(
-                'register' => 6302,
+                'register' => 632,
                 'name' => 'Peterseliegang',
             ),
             array(
@@ -2674,7 +2674,7 @@ return array(
                 'name' => 'Pierre Joseph Verhaghenstraat',
             ),
             array(
-                'register' => 5030,
+                'register' => 530,
                 'name' => 'Pieter Coutereelstraat',
             ),
             array(
@@ -2682,7 +2682,7 @@ return array(
                 'name' => 'Pieter Van Dalepad',
             ),
             array(
-                'register' => 5306,
+                'register' => 536,
                 'name' => 'Pioengang',
             ),
             array(
@@ -2698,7 +2698,7 @@ return array(
                 'name' => 'Prelatenstraat',
             ),
             array(
-                'register' => 5307,
+                'register' => 537,
                 'name' => 'Prentengang',
             ),
             array(
@@ -2726,15 +2726,15 @@ return array(
                 'name' => 'Ramenstraatje',
             ),
             array(
-                'register' => 6030,
+                'register' => 630,
                 'name' => 'Raoul Claesstraat',
             ),
             array(
-                'register' => 3304,
+                'register' => 334,
                 'name' => 'Rapengang',
             ),
             array(
-                'register' => 4301,
+                'register' => 431,
                 'name' => 'Rattemanspoort',
             ),
             array(
@@ -2774,7 +2774,7 @@ return array(
                 'name' => 'Rijschoolstraat',
             ),
             array(
-                'register' => 4029,
+                'register' => 429,
                 'name' => 'Rixvonderendijk',
             ),
             array(
@@ -2842,7 +2842,7 @@ return array(
                 'name' => 'Sint-Michielsstraat',
             ),
             array(
-                'register' => 4302,
+                'register' => 432,
                 'name' => 'Sint-Quintensberg',
             ),
             array(
@@ -2882,7 +2882,7 @@ return array(
                 'name' => 'Stapelhuisstraat',
             ),
             array(
-                'register' => 2303,
+                'register' => 233,
                 'name' => 'Straatjesgang',
             ),
             array(
@@ -2890,47 +2890,47 @@ return array(
                 'name' => 'Strijdersstraat',
             ),
             array(
-                'register' => 4200,
+                'register' => 420,
                 'name' => 'Ten Hovelaan',
             ),
             array(
-                'register' => 6201,
+                'register' => 621,
                 'name' => 'Ten Wijngaard',
             ),
             array(
-                'register' => 6200,
+                'register' => 620,
                 'name' => 'Ter Boelhage',
             ),
             array(
-                'register' => 5200,
+                'register' => 520,
                 'name' => 'Tervuursesteenweg',
             ),
             array(
-                'register' => 5201,
+                'register' => 521,
                 'name' => 'Tervuursestraat',
             ),
             array(
-                'register' => 5202,
+                'register' => 522,
                 'name' => 'Tervuursevest',
             ),
             array(
-                'register' => 5203,
+                'register' => 523,
                 'name' => 'Tessenstraat',
             ),
             array(
-                'register' => 2304,
+                'register' => 234,
                 'name' => 'Theresianengang',
             ),
             array(
-                'register' => 7200,
+                'register' => 720,
                 'name' => 'Tiensesteenweg',
             ),
             array(
-                'register' => 2200,
+                'register' => 220,
                 'name' => 'Tiensestraat',
             ),
             array(
-                'register' => 2201,
+                'register' => 221,
                 'name' => 'Tiensevest',
             ),
             array(
@@ -2942,15 +2942,15 @@ return array(
                 'name' => 'Tomveldstraat',
             ),
             array(
-                'register' => 6026,
+                'register' => 626,
                 'name' => 'Tramweg',
             ),
             array(
-                'register' => 4303,
+                'register' => 433,
                 'name' => 'Trapgang',
             ),
             array(
-                'register' => 1042,
+                'register' => 142,
                 'name' => 'Tweewatersstraat',
             ),
             array(
@@ -2966,7 +2966,7 @@ return array(
                 'name' => 'Valkenplein',
             ),
             array(
-                'register' => 6306,
+                'register' => 636,
                 'name' => 'Valkerijgang',
             ),
             array(
@@ -3006,7 +3006,7 @@ return array(
                 'name' => 'Vissersstraat',
             ),
             array(
-                'register' => 2041,
+                'register' => 241,
                 'name' => 'Vital Decosterstraat',
             ),
             array(
@@ -3082,7 +3082,7 @@ return array(
                 'name' => 'Wittehoevelaan',
             ),
             array(
-                'register' => 1303,
+                'register' => 133,
                 'name' => 'Wolvengang',
             ),
             array(
@@ -3090,7 +3090,7 @@ return array(
                 'name' => 'Wolvepoortpad',
             ),
             array(
-                'register' => 6309,
+                'register' => 639,
                 'name' => 'Zandgang',
             ),
             array(
@@ -3145,280 +3145,280 @@ return array(
     ),
     array(
         'name'    => 'Wijgmaal',
-        'postal'  => '3018',
+        'postal'  => '318',
         'streets' => array(
             array(
-                'register' => 6001,
+                'register' => 61,
                 'name' => 'Acht-Meistraat',
             ),
             array(
-                'register' => 6002,
+                'register' => 62,
                 'name' => 'Baron Descampslaan',
             ),
             array(
-                'register' => 6038,
+                'register' => 638,
                 'name' => 'Bloemersweg',
             ),
             array(
-                'register' => 6004,
+                'register' => 64,
                 'name' => 'Casinolaan',
             ),
             array(
-                'register' => 6005,
+                'register' => 65,
                 'name' => 'Dijlebrug',
             ),
             array(
-                'register' => 6006,
+                'register' => 66,
                 'name' => 'Dongelsplein',
             ),
             array(
-                'register' => 6007,
+                'register' => 67,
                 'name' => 'Driesstraat',
             ),
             array(
-                'register' => 6008,
+                'register' => 68,
                 'name' => 'Gebroeders Tassetstraat',
             ),
             array(
-                'register' => 6009,
+                'register' => 69,
                 'name' => 'Groeningestraat',
             ),
             array(
-                'register' => 6010,
+                'register' => 610,
                 'name' => 'Hambosstraat',
             ),
             array(
-                'register' => 6011,
+                'register' => 611,
                 'name' => 'Haverstraat',
             ),
             array(
-                'register' => 6013,
+                'register' => 613,
                 'name' => 'Korte Dolagestraat',
             ),
             array(
-                'register' => 6014,
+                'register' => 614,
                 'name' => 'Kroonstraat',
             ),
             array(
-                'register' => 6015,
+                'register' => 615,
                 'name' => 'Langenbos',
             ),
             array(
-                'register' => 6037,
+                'register' => 637,
                 'name' => 'Lentelaan + gedeelte',
             ),
             array(
-                'register' => 6016,
+                'register' => 616,
                 'name' => 'Meerstraat',
             ),
             array(
-                'register' => 6017,
+                'register' => 617,
                 'name' => 'Michielstraat',
             ),
             array(
-                'register' => 6019,
+                'register' => 619,
                 'name' => 'Nieuwstraat',
             ),
             array(
-                'register' => 6020,
+                'register' => 620,
                 'name' => 'Pastoor Bellonstraat',
             ),
             array(
-                'register' => 6021,
+                'register' => 621,
                 'name' => 'Pikkelstraat',
             ),
             array(
-                'register' => 6022,
+                'register' => 622,
                 'name' => 'Privaatweg',
             ),
             array(
-                'register' => 6003,
+                'register' => 63,
                 'name' => 'Remy Alloingstraat',
             ),
             array(
-                'register' => 6023,
+                'register' => 623,
                 'name' => 'Remylaan',
             ),
             array(
-                'register' => 6024,
+                'register' => 624,
                 'name' => 'Rietensplein',
             ),
             array(
-                'register' => 6025,
+                'register' => 625,
                 'name' => 'Rotselaarsesteenweg',
             ),
             array(
-                'register' => 6026,
+                'register' => 626,
                 'name' => 'Rozengaard',
             ),
             array(
-                'register' => 6027,
+                'register' => 627,
                 'name' => 'Sint-Hadrianusstraat',
             ),
             array(
-                'register' => 6012,
+                'register' => 612,
                 'name' => 'Spoorstraat',
             ),
             array(
-                'register' => 6028,
+                'register' => 628,
                 'name' => 'Stationsstraat',
             ),
             array(
-                'register' => 6029,
+                'register' => 629,
                 'name' => 'Steenakkerstraat',
             ),
             array(
-                'register' => 6030,
+                'register' => 630,
                 'name' => 'Torenstraat',
             ),
             array(
-                'register' => 6031,
+                'register' => 631,
                 'name' => 'Ursulinenstraat',
             ),
             array(
-                'register' => 6032,
+                'register' => 632,
                 'name' => 'Vaartdijk',
             ),
             array(
-                'register' => 6033,
+                'register' => 633,
                 'name' => 'Wakkerzeelsebaan',
             ),
             array(
-                'register' => 6039,
+                'register' => 639,
                 'name' => 'Watermolenpad',
             ),
             array(
-                'register' => 6018,
+                'register' => 618,
                 'name' => 'Watermolenstraat',
             ),
             array(
-                'register' => 6034,
+                'register' => 634,
                 'name' => 'Weduwenrij',
             ),
             array(
-                'register' => 6035,
+                'register' => 635,
                 'name' => 'Wijgmaalbroek',
             ),
             array(
-                'register' => 6036,
+                'register' => 636,
                 'name' => 'Wijveld',
             ),
         ),
     ),
     array(
         'name'    => 'Wilsele',
-        'postal'  => '3012',
+        'postal'  => '312',
         'streets' => array(
             array(
-                'register' => 0095,
+                'register' => 95,
                 'name' => 'Aambeeldstraat',
             ),
             array(
-                'register' => 0001,
+                'register' => 1,
                 'name' => 'Aarschotsesteenweg',
             ),
             array(
-                'register' => 0003,
+                'register' => 3,
                 'name' => 'Achttienaprillaan',
             ),
             array(
-                'register' => 0148,
+                'register' => 148,
                 'name' => 'Achttienaprilpad',
             ),
             array(
-                'register' => 0119,
+                'register' => 119,
                 'name' => 'Albert Woutersstraat',
             ),
             array(
-                'register' => 0036,
+                'register' => 36,
                 'name' => 'Alfons Fierensstraat',
             ),
             array(
-                'register' => 0089,
+                'register' => 89,
                 'name' => 'Alfons Stesselstraat',
             ),
             array(
-                'register' => 0112,
+                'register' => 112,
                 'name' => 'Alfons Van Geelstraat',
             ),
             array(
-                'register' => 0108,
+                'register' => 108,
                 'name' => 'Alfons Verbovenstraat',
             ),
             array(
-                'register' => 0034,
+                'register' => 34,
                 'name' => 'André Emondstraat',
             ),
             array(
-                'register' => 0064,
+                'register' => 64,
                 'name' => 'Armand Meyswijk',
             ),
             array(
-                'register' => 0004,
+                'register' => 4,
                 'name' => 'Bavenhofstraat',
             ),
             array(
-                'register' => 0006,
+                'register' => 6,
                 'name' => 'Berg Bogaertlaan',
             ),
             array(
-                'register' => 0007,
+                'register' => 7,
                 'name' => 'Berghoekstraat',
             ),
             array(
-                'register' => 0140,
+                'register' => 140,
                 'name' => 'Bermpad',
             ),
             array(
-                'register' => 0008,
+                'register' => 8,
                 'name' => 'Bleydenberglaan',
             ),
             array(
-                'register' => 0147,
+                'register' => 147,
                 'name' => 'Bleydenbergpad',
             ),
             array(
-                'register' => 0009,
+                'register' => 9,
                 'name' => 'Boomgaardstraat',
             ),
             array(
-                'register' => 0010,
+                'register' => 10,
                 'name' => 'Bornestraat',
             ),
             array(
-                'register' => 0011,
+                'register' => 11,
                 'name' => 'Bosstraat',
             ),
             array(
-                'register' => 0012,
+                'register' => 12,
                 'name' => 'Braambessenlaan',
             ),
             array(
-                'register' => 0013,
+                'register' => 13,
                 'name' => 'Brandenstraat',
             ),
             array(
-                'register' => 0122,
+                'register' => 122,
                 'name' => 'Brandweg / Tunnelstraat (deel)',
             ),
             array(
-                'register' => 0132,
+                'register' => 132,
                 'name' => 'Broekhout',
             ),
             array(
-                'register' => 0016,
+                'register' => 16,
                 'name' => 'Brugveldstraat',
             ),
             array(
-                'register' => 0017,
+                'register' => 17,
                 'name' => 'Bunsbeekstraat',
             ),
             array(
-                'register' => 0018,
+                'register' => 18,
                 'name' => 'Bunswijkstraat',
             ),
             array(
-                'register' => 0125,
+                'register' => 125,
                 'name' => 'Centrumstraat',
             ),
             array(
@@ -3426,419 +3426,419 @@ return array(
                 'name' => 'Compostweg',
             ),
             array(
-                'register' => 0139,
+                'register' => 139,
                 'name' => 'Crabeelsweg',
             ),
             array(
-                'register' => 0024,
+                'register' => 24,
                 'name' => 'De Roestestraat',
             ),
             array(
-                'register' => 0138,
+                'register' => 138,
                 'name' => 'Dijkstraat',
             ),
             array(
-                'register' => 0025,
+                'register' => 25,
                 'name' => 'Draaklaan',
             ),
             array(
-                'register' => 0015,
+                'register' => 15,
                 'name' => 'Durasstraat',
             ),
             array(
-                'register' => 0027,
+                'register' => 27,
                 'name' => 'Eegstraat',
             ),
             array(
-                'register' => 0134,
+                'register' => 134,
                 'name' => 'Eegveld',
             ),
             array(
-                'register' => 0028,
+                'register' => 28,
                 'name' => 'Eendebroekstraat',
             ),
             array(
-                'register' => 0091,
+                'register' => 91,
                 'name' => 'Egelantierlaan',
             ),
             array(
-                'register' => 0029,
+                'register' => 29,
                 'name' => 'Eikenbergstraat',
             ),
             array(
-                'register' => 0014,
+                'register' => 14,
                 'name' => 'Eksterveldstraat',
             ),
             array(
-                'register' => 0030,
+                'register' => 30,
                 'name' => 'Elektriciteitswijk',
             ),
             array(
-                'register' => 0019,
+                'register' => 19,
                 'name' => 'Englebert Carleerlaan',
             ),
             array(
-                'register' => 0085,
+                'register' => 85,
                 'name' => 'Ferdinand Perdieusstraat',
             ),
             array(
-                'register' => 0113,
+                'register' => 113,
                 'name' => 'Fortlaan',
             ),
             array(
-                'register' => 0023,
+                'register' => 23,
                 'name' => 'François Demarsinstraat',
             ),
             array(
-                'register' => 0038,
+                'register' => 38,
                 'name' => 'Gasthuisbosstraat',
             ),
             array(
-                'register' => 0048,
+                'register' => 48,
                 'name' => 'Hagelandstraat',
             ),
             array(
-                'register' => 0040,
+                'register' => 40,
                 'name' => 'Hasselbroekbaan',
             ),
             array(
-                'register' => 0021,
+                'register' => 21,
                 'name' => 'Henri Corbeelsplein',
             ),
             array(
-                'register' => 0032,
+                'register' => 32,
                 'name' => 'Henri Elsenwijk',
             ),
             array(
-                'register' => 0061,
+                'register' => 61,
                 'name' => 'Henricus Bosmanslaan',
             ),
             array(
-                'register' => 0041,
+                'register' => 41,
                 'name' => 'Herentsesteenweg',
             ),
             array(
-                'register' => 0043,
+                'register' => 43,
                 'name' => 'Hoge-Berglaan',
             ),
             array(
-                'register' => 0045,
+                'register' => 45,
                 'name' => 'Hoogveldweg',
             ),
             array(
-                'register' => 0046,
+                'register' => 46,
                 'name' => 'Invalidenlaan',
             ),
             array(
-                'register' => 0146,
+                'register' => 146,
                 'name' => 'Jaagpad',
             ),
             array(
-                'register' => 0106,
+                'register' => 106,
                 'name' => 'Jan Van Avondtstraat',
             ),
             array(
-                'register' => 0099,
+                'register' => 99,
                 'name' => 'Jan-Baptist Vanderelststraat',
             ),
             array(
-                'register' => 0137,
+                'register' => 137,
                 'name' => 'Jef Scherensstraat',
             ),
             array(
-                'register' => 0087,
+                'register' => 87,
                 'name' => 'Joseph Ravoetstraat',
             ),
             array(
-                'register' => 0079,
+                'register' => 79,
                 'name' => 'Jules Persoonsstraat',
             ),
             array(
-                'register' => 0069,
+                'register' => 69,
                 'name' => 'Juliaan Haestweg',
             ),
             array(
-                'register' => 0047,
+                'register' => 47,
                 'name' => 'Kapellelaan',
             ),
             array(
-                'register' => 0049,
+                'register' => 49,
                 'name' => 'Kerkhofweg',
             ),
             array(
-                'register' => 0051,
+                'register' => 51,
                 'name' => 'Kessel-Losesteenweg',
             ),
             array(
-                'register' => 0052,
+                'register' => 52,
                 'name' => 'Kleine-Huizenstraat',
             ),
             array(
-                'register' => 0141,
+                'register' => 141,
                 'name' => 'Koksijdepad',
             ),
             array(
-                'register' => 0022,
+                'register' => 22,
                 'name' => 'Koksijdewijk',
             ),
             array(
-                'register' => 0005,
+                'register' => 5,
                 'name' => 'Kolonel Begaultlaan',
             ),
             array(
-                'register' => 0044,
+                'register' => 44,
                 'name' => 'Korte Holsbeeksesteenweg',
             ),
             array(
-                'register' => 0053,
+                'register' => 53,
                 'name' => 'Kwadenhoekstraat',
             ),
             array(
-                'register' => 0054,
+                'register' => 54,
                 'name' => 'Lange-Beemdenlaan',
             ),
             array(
-                'register' => 0055,
+                'register' => 55,
                 'name' => 'Langekant',
             ),
             array(
-                'register' => 0056,
+                'register' => 56,
                 'name' => 'Langenhofstraat',
             ),
             array(
-                'register' => 0057,
+                'register' => 57,
                 'name' => 'Langerijlaan',
             ),
             array(
-                'register' => 0060,
+                'register' => 60,
                 'name' => 'Leibeekstraat',
             ),
             array(
-                'register' => 0142,
+                'register' => 142,
                 'name' => 'Lijnloperspad',
             ),
             array(
-                'register' => 0145,
+                'register' => 145,
                 'name' => 'Limburglaan',
             ),
             array(
-                'register' => 0100,
+                'register' => 100,
                 'name' => 'Louis Tielemanswijk',
             ),
             array(
-                'register' => 0120,
+                'register' => 120,
                 'name' => 'Louis Woutersstraat',
             ),
             array(
-                'register' => 0026,
+                'register' => 26,
                 'name' => 'Marguerite Lefèvrelaan',
             ),
             array(
-                'register' => 0020,
+                'register' => 20,
                 'name' => 'Marie Clootsstraat',
             ),
             array(
-                'register' => 0062,
+                'register' => 62,
                 'name' => 'Mechelsesteenweg',
             ),
             array(
-                'register' => 0063,
+                'register' => 63,
                 'name' => 'Meibloemweg',
             ),
             array(
-                'register' => 0066,
+                'register' => 66,
                 'name' => 'Mothstraat',
             ),
             array(
-                'register' => 0068,
+                'register' => 68,
                 'name' => 'Natuurvriendenlaan',
             ),
             array(
-                'register' => 0070,
+                'register' => 70,
                 'name' => 'Nieuwe Bornestraat',
             ),
             array(
-                'register' => 0071,
+                'register' => 71,
                 'name' => 'Nieuwe Prinsstraat',
             ),
             array(
-                'register' => 0058,
+                'register' => 58,
                 'name' => 'Oosterhemstraat',
             ),
             array(
-                'register' => 0072,
+                'register' => 72,
                 'name' => 'Oude Aarschotseweg',
             ),
             array(
-                'register' => 0074,
+                'register' => 74,
                 'name' => 'Oude Wakkerzeelsebaan',
             ),
             array(
-                'register' => 0075,
+                'register' => 75,
                 'name' => 'Oudstrijderslaan',
             ),
             array(
-                'register' => 0076,
+                'register' => 76,
                 'name' => 'Overloopstraat',
             ),
             array(
-                'register' => 0077,
+                'register' => 77,
                 'name' => 'Panoramalaan',
             ),
             array(
-                'register' => 0035,
+                'register' => 35,
                 'name' => 'Pastoor Eralystraat',
             ),
             array(
-                'register' => 0059,
+                'register' => 59,
                 'name' => 'Pastoor Legrandstraat',
             ),
             array(
-                'register' => 0078,
+                'register' => 78,
                 'name' => 'Pastorijweg',
             ),
             array(
-                'register' => 0127,
+                'register' => 127,
                 'name' => 'Perkstraat',
             ),
             array(
-                'register' => 0067,
+                'register' => 67,
                 'name' => 'Petrus Geeraertslaan',
             ),
             array(
-                'register' => 0080,
+                'register' => 80,
                 'name' => 'Plankenbosstraat',
             ),
             array(
-                'register' => 0126,
+                'register' => 126,
                 'name' => 'Poelstraat',
             ),
             array(
-                'register' => 0081,
+                'register' => 81,
                 'name' => 'Politieke-Gevangenenlaan',
             ),
             array(
-                'register' => 0086,
+                'register' => 86,
                 'name' => 'Pompstraat',
             ),
             array(
-                'register' => 0082,
+                'register' => 82,
                 'name' => 'Prinsstraat',
             ),
             array(
-                'register' => 0083,
+                'register' => 83,
                 'name' => 'Processiestraat',
             ),
             array(
-                'register' => 0107,
+                'register' => 107,
                 'name' => 'Prosper Vanlangendoncklaan',
             ),
             array(
-                'register' => 0084,
+                'register' => 84,
                 'name' => 'Puttebroekstraat',
             ),
             array(
-                'register' => 0135,
+                'register' => 135,
                 'name' => 'René Verbeeckstraat',
             ),
             array(
-                'register' => 0131,
+                'register' => 131,
                 'name' => 'Ristweg',
             ),
             array(
-                'register' => 0088,
+                'register' => 88,
                 'name' => 'Roeselbergdal',
             ),
             array(
-                'register' => 0128,
+                'register' => 128,
                 'name' => 'Rooistraat',
             ),
             array(
-                'register' => 0092,
+                'register' => 92,
                 'name' => 'Schmaesveldstraat',
             ),
             array(
-                'register' => 0093,
+                'register' => 93,
                 'name' => 'Schoonzichtlaan',
             ),
             array(
-                'register' => 0133,
+                'register' => 133,
                 'name' => 'Schorenshof',
             ),
             array(
-                'register' => 0094,
+                'register' => 94,
                 'name' => 'Schotelveldstraat',
             ),
             array(
-                'register' => 0096,
+                'register' => 96,
                 'name' => 'Spaarzaamheidstraat',
             ),
             array(
-                'register' => 0097,
+                'register' => 97,
                 'name' => 'Stadsvest',
             ),
             array(
-                'register' => 0129,
+                'register' => 129,
                 'name' => 'Straetmanshof',
             ),
             array(
-                'register' => 0098,
+                'register' => 98,
                 'name' => 'Streekstraat',
             ),
             array(
-                'register' => 0101,
+                'register' => 101,
                 'name' => 'Tuinstraat',
             ),
             array(
-                'register' => 0102,
+                'register' => 102,
                 'name' => 'Tunnelstraat',
             ),
             array(
-                'register' => 0144,
+                'register' => 144,
                 'name' => 'Tunnelweg',
             ),
             array(
-                'register' => 0103,
+                'register' => 103,
                 'name' => 'Twaalfmeistraat',
             ),
             array(
-                'register' => 0105,
+                'register' => 105,
                 'name' => 'Valleistraat',
             ),
             array(
-                'register' => 0124,
+                'register' => 124,
                 'name' => 'Van Calsterenstraat',
             ),
             array(
-                'register' => 0118,
+                'register' => 118,
                 'name' => 'Van Den Steenstraat',
             ),
             array(
-                'register' => 0039,
+                'register' => 39,
                 'name' => 'Van der Nootstraat',
             ),
             array(
-                'register' => 0109,
+                'register' => 109,
                 'name' => 'Verbroederingstraat',
             ),
             array(
-                'register' => 0111,
+                'register' => 111,
                 'name' => 'Vergezichtlaan',
             ),
             array(
-                'register' => 0090,
+                'register' => 90,
                 'name' => 'Vierhuizenstraat',
             ),
             array(
-                'register' => 0136,
+                'register' => 136,
                 'name' => 'Vuntcomplex',
             ),
             array(
-                'register' => 0114,
+                'register' => 114,
                 'name' => 'Vuntlaan',
             ),
             array(
-                'register' => 0143,
+                'register' => 143,
                 'name' => 'Vuntpad',
             ),
             array(
@@ -3846,35 +3846,35 @@ return array(
                 'name' => 'Vuntrotonde',
             ),
             array(
-                'register' => 0115,
+                'register' => 115,
                 'name' => 'Wakkerzeelsebaan',
             ),
             array(
-                'register' => 0116,
+                'register' => 116,
                 'name' => 'Watervloedstraat',
             ),
             array(
-                'register' => 0117,
+                'register' => 117,
                 'name' => 'Weggevoerdenstraat',
             ),
             array(
-                'register' => 0121,
+                'register' => 121,
                 'name' => 'Wijgmaalsesteenweg',
             ),
             array(
-                'register' => 0073,
+                'register' => 73,
                 'name' => 'Wijk Ouderenvreugd',
             ),
             array(
-                'register' => 0130,
+                'register' => 130,
                 'name' => 'Woudluchtstraat',
             ),
             array(
-                'register' => 0123,
+                'register' => 123,
                 'name' => 'Zavelputstraat',
             ),
             array(
-                'register' => 0042,
+                'register' => 42,
                 'name' => 'Zwanenberglaan',
             ),
         ),

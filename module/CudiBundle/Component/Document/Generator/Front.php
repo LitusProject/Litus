@@ -23,7 +23,7 @@ namespace CudiBundle\Component\Document\Generator;
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Object,
+    CommonBundle\Component\Util\Xml\Node,
     CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\Sale\Article,
     Doctrine\ORM\EntityManager;
@@ -132,16 +132,16 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             ->getRepository('CudiBundle\Entity\Article\SubjectMap')
             ->findAllByArticleAndAcademicYear($mainArticle, $academicYear);
         foreach ($mappings as $mapping) {
-            $subjects[] = new Object(
+            $subjects[] = new Node(
                 'subject',
                 null,
                 array(
-                    new Object(
+                    new Node(
                         'code',
                         null,
                         $mapping->getSubject()->getCode()
                     ),
-                    new Object(
+                    new Node(
                         'name',
                         null,
                         $mapping->getSubject()->getName()
@@ -151,16 +151,16 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
         }
 
         if (sizeof($subjects) == 0) {
-            $subjects[] = new Object(
+            $subjects[] = new Node(
                 'subject',
                 null,
                 array(
-                    new Object(
+                    new Node(
                         'code',
                         null,
                         ''
                     ),
-                    new Object(
+                    new Node(
                         'name',
                         null,
                         ''
@@ -172,97 +172,97 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
         $xml = new Generator($tmpFile);
 
         $xml->append(
-            new Object(
+            new Node(
                 'article',
                 array(
                     'binding' => $mainArticle->getBinding()->getCode(),
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'our_union',
                         array(
                             'short_name' => $organization_short_name,
                         ),
                         array(
-                            new Object(
+                            new Node(
                                 'name',
                                 null,
                                 $organization_name
                             ),
-                            new Object(
+                            new Node(
                                 'logo',
                                 null,
                                 $organization_logo
                             ),
                         )
                     ),
-                    new Object(
+                    new Node(
                         'academic_year',
                         null,
                         $academicYear->getCode()
                     ),
-                    new Object(
+                    new Node(
                         'university',
                         null,
                         strtoupper($university)
                     ),
-                    new Object(
+                    new Node(
                         'faculty',
                         null,
                         strtoupper($faculty)
                     ),
-                    new Object(
+                    new Node(
                         'address',
                         null,
                         array(
-                            new Object(
+                            new Node(
                                 'name',
                                 null,
                                 $address_name
                             ),
-                            new Object(
+                            new Node(
                                 'street',
                                 null,
                                 $address->getStreet() . ' ' . $address->getNumber() . (null === $address->getMailbox() ? '' : '/' . $address->getMailbox())
                             ),
-                            new Object(
+                            new Node(
                                 'city',
                                 null,
                                 $address->getCountry() . '-' . $address->getPostal() . ' ' . $address->getCity()
                             ),
-                            new Object(
+                            new Node(
                                 'site',
                                 null,
                                 $organization_url
                             ),
-                            new Object(
+                            new Node(
                                 'email',
                                 null,
                                 $organization_mail
                             ),
                         )
                     ),
-                    new Object(
+                    new Node(
                         'title',
                         null,
                         $mainArticle->getTitle()
                     ),
-                    new Object(
+                    new Node(
                         'authors',
                         null,
                         $mainArticle->getAuthors()
                     ),
-                    new Object(
+                    new Node(
                         'subjects',
                         null,
                         $subjects
                     ),
-                    new Object(
+                    new Node(
                         'price',
                         null,
                         (string) number_format($this->article->getSellPrice() / 100, 2)
                     ),
-                    new Object(
+                    new Node(
                         'barcode',
                         null,
                         substr((string) str_pad($this->article->getBarcode(), 12, '0', STR_PAD_LEFT), 0, 12)

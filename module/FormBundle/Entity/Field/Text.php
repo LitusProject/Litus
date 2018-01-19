@@ -27,13 +27,13 @@ use CommonBundle\Entity\General\Language,
 /**
  * This entity stores the node item.
  *
- * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\String")
- * @ORM\Table(name="forms.fields_strings")
+ * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\Text")
+ * @ORM\Table(name="forms.fields_texts")
  */
-class String extends Field
+class Text extends Field
 {
     /**
-     * @var int The maximum length per line of this string field.
+     * @var int The maximum length per line of this field.
      *
      * @ORM\Column(name="line_length", type="bigint", nullable=true)
      */
@@ -47,7 +47,7 @@ class String extends Field
     private $lines;
 
     /**
-     * @var boolean Whether this is a multiline text field.
+     * @var boolean Whether this is a multiline field.
      *
      * @ORM\Column(name="multiline", type="boolean")
      */

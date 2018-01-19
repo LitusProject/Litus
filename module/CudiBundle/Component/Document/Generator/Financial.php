@@ -22,7 +22,7 @@ namespace CudiBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Object,
+    CommonBundle\Component\Util\Xml\Node,
     CommonBundle\Entity\General\AcademicYear,
     DateTime,
     Doctrine\ORM\EntityManager;
@@ -93,46 +93,46 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
         foreach ($articles as $article) {
             $virtualOrdered = $period->getNbVirtualOrdered($article);
 
-            $object = new Object(
+            $node = new Node(
                 'item',
                 null,
                 array(
-                    new Object(
+                    new Node(
                         'barcode',
                         null,
                         (string) $article->getBarcode()
                     ),
-                    new Object(
+                    new Node(
                         'title',
                         null,
                         $article->getMainArticle()->getTitle()
                     ),
-                    new Object(
+                    new Node(
                         'author',
                         null,
                         $article->getMainArticle()->getAuthors()
                     ),
-                    new Object(
+                    new Node(
                         'publisher',
                         null,
                         $article->getMainArticle()->getPublishers()
                     ),
-                    new Object(
+                    new Node(
                         'ordered',
                         null,
                         (string) $period->getNbOrdered($article) . ($virtualOrdered > 0 ? '(+ ' . $virtualOrdered . ')' : '')
                     ),
-                    new Object(
+                    new Node(
                         'delivered',
                         null,
                         (string) $period->getNbDelivered($article)
                     ),
-                    new Object(
+                    new Node(
                         'sold',
                         null,
                         (string) $period->getNbSold($article)
                     ),
-                    new Object(
+                    new Node(
                         'stock',
                         null,
                         (string) $article->getStockValue()
@@ -141,9 +141,9 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
             );
 
             if ($article->getMainArticle()->isInternal()) {
-                $internal[$article->getBarcode()] = $object;
+                $internal[$article->getBarcode()] = $node;
             } else {
-                $external[] = $object;
+                $external[] = $node;
             }
         }
 
@@ -152,54 +152,54 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
         $xml = new Generator($tmpFile);
 
         $xml->append(
-            new Object(
+            new Node(
                 'financial',
                 array(
                     'date' => $now->format('d F Y'),
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'our_union',
                         array(
                             'short_name' => $organization_short_name,
                         ),
                         array(
-                            new Object(
+                            new Node(
                                 'name',
                                 null,
                                 $organization_name
                             ),
-                            new Object(
+                            new Node(
                                 'logo',
                                 null,
                                 $organization_logo
                             ),
                         )
                     ),
-                    new Object(
+                    new Node(
                         'cudi',
                         array(
                             'name' => $cudi_name,
                         ),
                         array(
-                             new Object(
+                             new Node(
                                  'mail',
                                  null,
                                  $cudi_mail
                              ),
-                             new Object(
+                             new Node(
                                  'phone',
                                  null,
                                  $person->getPhoneNumber()
                              ),
                         )
                     ),
-                    new Object(
+                    new Node(
                         'external_items',
                         null,
                         $external
                     ),
-                    new Object(
+                    new Node(
                         'internal_items',
                         null,
                         $internal

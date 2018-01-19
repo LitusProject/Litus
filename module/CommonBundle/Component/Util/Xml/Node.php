@@ -23,21 +23,22 @@ namespace CommonBundle\Component\Util\Xml;
 use CommonBundle\Component\Util\Utf8;
 
 /**
- * This class represents an XML object.
+ * This class represents an XML node.
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Object
+class Node
 {
     /**
-     * @var string The object's content
+     * @var string The node's content
      */
     private $content;
 
     /**
-     * @param  string                                                              $tag     The object's tag
-     * @param  array|null                                                          $params  The object's paramters
-     * @param  mixed|null                                                          $content The object's content
+     * @param  string                                                              $tag     The node's tag
+     * @param  array|null                                                          $params  The node's paramters
+     * @param  mixed|null                                                          $content The node's content
      * @throws \CommonBundle\Component\Util\Xml\Exception\InvalidArugmentException The given content was invalid
      */
     public function __construct($tag, array $params = null, $content = null)
@@ -69,13 +70,13 @@ class Object
 
             if (is_string($content)) {
                 $this->content .= $this->escape($content);
-            } elseif ($content instanceof Object) {
+            } elseif ($content instanceof Node) {
                 $this->content .= $content->__toString();
             } elseif (is_array($content)) {
                 foreach ($content as $part) {
                     if (is_string($part)) {
                         $this->content .= $this - _escape($part);
-                    } elseif ($part instanceof Object) {
+                    } elseif ($part instanceof Node) {
                         $this->content .= $part->__toString();
                     } else {
                         throw new Exception\InvalidArgumentException('The given content was invalid');
@@ -90,14 +91,14 @@ class Object
     }
 
     /**
-     * Creates an XML object directly from a given XML string.
+     * Creates an XML node directly from a given XML string.
      *
-     * @param  string $xmlString The content of the object
-     * @return Object
+     * @param  string $xmlString The content of the node
+     * @return Node
      */
     public static function fromString($xmlString)
     {
-        $result = new Object('tag');
+        $result = new Node('tag');
         $result->content = $xmlString;
 
         return $result;
