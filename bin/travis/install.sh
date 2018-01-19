@@ -16,6 +16,7 @@ sudo aptitude -y install npm
 
 # link node to /usr/bin
 sudo ln -s $(which node) /usr/bin/node
+sudo ln -s /usr/local/lib/node_modules /usr/lib/node_modules
 
 # install lessc
 sudo npm install -g less@1.7.5
