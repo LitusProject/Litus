@@ -14,5 +14,8 @@ cp config/database.config.php.dist config/database.config.php
 # I know, right?
 sudo aptitude -y install npm
 
+# link node to /usr/bin
+sudo ln -s $(which node) /usr/bin/node
+
 # install lessc
-sudo npm install -g less
+sudo npm install -g less@1.7.5
