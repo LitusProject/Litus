@@ -28,6 +28,7 @@ fi
 
 if [[ "${1:-n}" =~ -d|--daemon ]]; then
     _LOGFILE=$(php public/index.php common:config get socket_log)
+    mkdir -p $(dirname $_LOGFILE)
 else
     _LOGFILE=0
 fi
