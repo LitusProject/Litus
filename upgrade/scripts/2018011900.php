@@ -18,5 +18,5 @@
  * @license http://litus.cc/LICENSE
  */
 
-pg_query($connection, 'ALTER TABLE forms.fields_strings RENAME TO forms.fields_texts');
+pg_query($connection, 'ALTER TABLE forms.fields_strings RENAME TO fields_texts');
 pg_query($connection, 'UPDATE forms.fields SET inheritance_type = \'text\' WHERE inheritance_type = \'string\'');
