@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8b75fa2c365c1e0df7b33112f27e1f84",
-    "content-hash": "69bb806efa80a22c3d452d4a5d64fccf",
+    "hash": "6271795b01ad29e9738200fe3f208321",
+    "content-hash": "36396c34c0279a4c25a2410bf2fa60ee",
     "packages": [
         {
             "name": "EvanDotPro/EdpMarkdown",
@@ -1917,16 +1917,16 @@
         },
         {
             "name": "zf-commons/zfc-twig",
-            "version": "dev-master",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ZF-Commons/ZfcTwig.git",
-                "reference": "f9f18a48930169998a687fc767ea85a607f0c34f"
+                "reference": "0235932354b9c25b1a492e8921d3b2bfedcdba42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ZF-Commons/ZfcTwig/zipball/f9f18a48930169998a687fc767ea85a607f0c34f",
-                "reference": "f9f18a48930169998a687fc767ea85a607f0c34f",
+                "url": "https://api.github.com/repos/ZF-Commons/ZfcTwig/zipball/0235932354b9c25b1a492e8921d3b2bfedcdba42",
+                "reference": "0235932354b9c25b1a492e8921d3b2bfedcdba42",
                 "shasum": ""
             },
             "require": {
@@ -1962,7 +1962,7 @@
                 "twig",
                 "zf2"
             ],
-            "time": "2016-04-16 16:37:14"
+            "time": "2014-04-29 17:40:31"
         }
     ],
     "packages-dev": [
@@ -2724,12 +2724,12 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "zendframework/zend-developer-tools": 0,
+        "alcaeus/mongo-php-adapter": 0,
         "doctrine/doctrine-orm-module": 0,
         "doctrine/doctrine-mongo-odm-module": 0,
-        "alcaeus/mongo-php-adapter": 0,
         "evandotpro/edpmarkdown": 20,
-        "zf-commons/zfc-twig": 20,
         "packagist/yuicompressor-bin": 0,
+        "zf-commons/zfc-twig": 0,
         "litus/php-cs": 20
     },
     "prefer-stable": false,
