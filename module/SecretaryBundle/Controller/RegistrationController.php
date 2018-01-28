@@ -763,10 +763,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             // No load balancer active
         }
 
-        if ('%2F' != substr($shibbolethUrl, 0, -3)) {
-            $shibbolethUrl .= '%2F';
-        }
-
         return $shibbolethUrl . '?source=register';
     }
 
