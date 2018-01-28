@@ -44,7 +44,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'EmailAddress',
+                            'name' => 'email_address',
                         ),
                     ),
                 ),

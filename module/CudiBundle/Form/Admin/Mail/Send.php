@@ -53,7 +53,7 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'emailaddress',
+                            'name' => 'email_address',
                         ),
                     ),
                 ),

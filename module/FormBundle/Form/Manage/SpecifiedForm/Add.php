@@ -108,7 +108,7 @@ class Add extends \FormBundle\Form\SpecifiedForm\Add
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array('name' => 'EmailAddress'),
+                                array('name' => 'email_address'),
                             ),
                         ),
                     ),

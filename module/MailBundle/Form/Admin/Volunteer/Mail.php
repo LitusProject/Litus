@@ -47,7 +47,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'emailAddress'),
+                        array('name' => 'email_address'),
                     ),
                 ),
             ),

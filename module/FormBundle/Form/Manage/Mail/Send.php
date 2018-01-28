@@ -46,7 +46,7 @@ class Send extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'EmailAddress',
+                            'name' => 'email_address',
                         ),
                     ),
                 ),
