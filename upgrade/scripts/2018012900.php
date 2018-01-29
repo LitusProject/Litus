@@ -18,5 +18,4 @@
  * @license http://litus.cc/LICENSE
  */
 
-pg_query($connection, 'TRUNCATE TABLE general.address_streets;');
-pg_query($connection, 'TRUNCATE TABLE general.address_cities;');
+pg_query($connection, 'TRUNCATE TABLE general.address_cities, general.address_streets;');
