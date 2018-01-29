@@ -254,7 +254,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                                 $amount = sizeof(
                                     $this->getEntityManager()
                                         ->getRepository('CudiBundle\Entity\Sale\Booking')
-                                        ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
+                                        ->findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
                                             $saleArticle,
                                             $academic,
                                             $this->getCurrentAcademicYear()
