@@ -22,7 +22,7 @@ namespace NewsBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Controller\Plugin\Url,
     CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Object as XmlObject,
+    CommonBundle\Component\Util\Xml\Node as XmlNode,
     CommonBundle\Entity\General\Language,
     Doctrine\ORM\EntityManager,
     Locale,
@@ -72,13 +72,13 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
         $this->language = $language;
         $this->url = $url;
 
-        $feed = new XmlObject(
+        $feed = new XmlNode(
             'rss',
             array(
                 'version' => '2.0',
             ),
             array(
-                new XmlObject(
+                new XmlNode(
                     'channel',
                     array(),
                     $this->generateContent()
@@ -90,7 +90,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     }
 
     /**
-     * @return XmlObject[]
+     * @return XmlNode[]
      */
     private function generateContent()
     {
@@ -108,7 +108,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     }
 
     /**
-     * @return XmlObject[]
+     * @return XmlNode[]
      */
     private function generateHeader()
     {
@@ -122,22 +122,22 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
         }
 
         return array(
-            new XmlObject(
+            new XmlNode(
                 'title',
                 array(),
                 $config->getConfigValue('news.rss_title')
             ),
-            new XmlObject(
+            new XmlNode(
                 'description',
                 array(),
                 $description
             ),
-            new XmlObject(
+            new XmlNode(
                 'language',
                 array(),
                 $this->language->getAbbrev()
             ),
-            new XmlObject(
+            new XmlNode(
                 'link',
                 array(),
                 $this->serverName . $this->url->fromRoute(
@@ -147,21 +147,21 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                     )
                 )
             ),
-            new XmlObject(
+            new XmlNode(
                 'image',
                 array(),
                 array(
-                    new XmlObject(
+                    new XmlNode(
                         'title',
                         array(),
                         $config->getConfigValue('news.rss_title')
                     ),
-                    new XmlObject(
+                    new XmlNode(
                         'url',
                         array(),
                         $this->serverName . $config->getConfigValue('news.rss_image_link')
                     ),
-                    new XmlObject(
+                    new XmlNode(
                         'link',
                         array(),
                         $this->serverName . $this->url->fromRoute(
@@ -178,25 +178,25 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
 
     /**
      * @param  News      $item
-     * @return XmlObject
+     * @return XmlNode
      */
     private function generateItemXml(News $item)
     {
-        return new XmlObject(
+        return new XmlNode(
             'item',
             array(),
             array(
-                new XmlObject(
+                new XmlNode(
                     'title',
                     array(),
                     $item->getTitle($this->language)
                 ),
-                new XmlObject(
+                new XmlNode(
                     'description',
                     array(),
                     $item->getSummary(200, $this->language)
                 ),
-                new XmlObject(
+                new XmlNode(
                     'link',
                     array(),
                     $this->serverName . $this->url->fromRoute(
@@ -207,7 +207,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                         )
                     )
                 ),
-                new XmlObject(
+                new XmlNode(
                     'guid',
                     array(),
                     $this->serverName . $this->url->fromRoute(
@@ -218,7 +218,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                         )
                     )
                 ),
-                new XmlObject(
+                new XmlNode(
                     'pubDate',
                     array(),
                     $item->getCreationTime()->format('D, d M Y H:i:s O')

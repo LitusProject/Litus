@@ -23,7 +23,7 @@ namespace BrBundle\Component\Document\Generator\Pdf;
 use BrBundle\Entity\Invoice\ContractInvoice as InvoiceEntity,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
-    CommonBundle\Component\Util\Xml\Object as XmlObject,
+    CommonBundle\Component\Util\Xml\Node as XmlNode,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -105,16 +105,16 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             if (($price > 0) || (null !== $entry->getInvoiceDescription() && '' != $entry->getInvoiceDescription())) {
                 $tax = $this->invoide->getTaxFree() ? 0 : $vatTypes[$product->getVatType()];
 
-                $entries[] = new XmlObject('entry', null,
+                $entries[] = new XmlNode('entry', null,
                     array(
-                        new XmlObject('description', null,
+                        new XmlNode('description', null,
                             (null === $entry->getInvoiceDescription() || '' == $entry->getInvoiceDescription())
                                     ? $product->getName()
                                     : $entry->getInvoiceDescription()
                         ),
-                        new XmlObject('price', null, XmlObject::fromString('<euro/> ' . number_format($price, 2))),
-                        new XmlObject('amount', null, $entry->getOrderEntry()->getQuantity() . ''),
-                        new XmlObject('vat_type', null,  $tax . '%'),
+                        new XmlNode('price', null, XmlNode::fromString('<euro/> ' . number_format($price, 2))),
+                        new XmlNode('amount', null, $entry->getOrderEntry()->getQuantity() . ''),
+                        new XmlNode('vat_type', null,  $tax . '%'),
                     )
                 );
 
@@ -134,16 +134,16 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $discountTax = $this->invoide->getTaxFree() ? 0 : 21;
 
         if ( $percentage > 0) {
-            $entries[] = new XmlObject('entry', null,
+            $entries[] = new XmlNode('entry', null,
                     array(
-                        new XmlObject('description', null,
+                        new XmlNode('description', null,
                             (null === $this->invoide->getAutoDiscountText() || '' == $this->invoide->getAutoDiscountText())
                                     ? 'Korting: ' . $percentage . '%'
                                     : $this->invoide->getAutoDiscountText()
                         ),
-                        new XmlObject('price', null, XmlObject::fromString('<euro/> ' . number_format($autoDiscount, 2))),
-                        new XmlObject('amount', null, '1'),
-                        new XmlObject('vat_type', null,  $discountTax . '%'),
+                        new XmlNode('price', null, XmlNode::fromString('<euro/> ' . number_format($autoDiscount, 2))),
+                        new XmlNode('amount', null, '1'),
+                        new XmlNode('vat_type', null,  $discountTax . '%'),
                     )
                 );
 
@@ -153,31 +153,31 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         }
 
         while ($count < 8) {
-            $entries[] = new XmlObject('empty_line');
+            $entries[] = new XmlNode('empty_line');
             $count++;
         }
 
-        $entries[] = new XmlObject('empty_line');
-        $entries[] = new XmlObject('empty_line');
+        $entries[] = new XmlNode('empty_line');
+        $entries[] = new XmlNode('empty_line');
 
         $discount = $this->invoide->getOrder()->getDiscount() / 100;
         if (0 != $discount) {
             if ('' == $this->invoide->getDiscountText()) {
-                $entries[] = new XmlObject('entry', null,
+                $entries[] = new XmlNode('entry', null,
                 array(
-                    new XmlObject('description', null, 'Korting'),
-                    new XmlObject('price', null, XmlObject::fromString('<euro/> -' . number_format($discount, 2))),
-                    new XmlObject('amount', null, '1'),
-                    new XmlObject('vat_type', null, $discountTax . '%'),
+                    new XmlNode('description', null, 'Korting'),
+                    new XmlNode('price', null, XmlNode::fromString('<euro/> -' . number_format($discount, 2))),
+                    new XmlNode('amount', null, '1'),
+                    new XmlNode('vat_type', null, $discountTax . '%'),
                 )
             );
             } else {
-                $entries[] = new XmlObject('entry', null,
+                $entries[] = new XmlNode('entry', null,
                     array(
-                        new XmlObject('description', null,$this->invoide->getDiscountText()),
-                        new XmlObject('price', null, XmlObject::fromString('<euro/> -' . number_format($discount, 2))),
-                        new XmlObject('amount', null, '1'),
-                        new XmlObject('vat_type', null, $discountTax . '%'),
+                        new XmlNode('description', null,$this->invoide->getDiscountText()),
+                        new XmlNode('price', null, XmlNode::fromString('<euro/> -' . number_format($discount, 2))),
+                        new XmlNode('amount', null, '1'),
+                        new XmlNode('vat_type', null, $discountTax . '%'),
                     )
                 );
             }
@@ -189,98 +189,98 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $total = $totalExclusive + $totalVat;
 
-        $xml->append(new XmlObject('invoice',
+        $xml->append(new XmlNode('invoice',
             array(
                 'payment_days' => (String) $paymentDays,
                 ),
             array(
-                new XmlObject('title', null,
+                new XmlNode('title', null,
                     array(
-                        new XmlObject('invoice_number', null, $invoiceNb),
-                        new XmlObject('invoice_date', null, $invoiceDate),
-                        new XmlObject('expiration_date', null, $dueDate),
-                        new XmlObject('vat_client', null, $clientVat),
-                        new XmlObject('reference', null, $reference),
+                        new XmlNode('invoice_number', null, $invoiceNb),
+                        new XmlNode('invoice_date', null, $invoiceDate),
+                        new XmlNode('expiration_date', null, $dueDate),
+                        new XmlNode('vat_client', null, $clientVat),
+                        new XmlNode('reference', null, $reference),
                     )
                 ),
 
-                new XmlObject('our_union', null,
+                new XmlNode('our_union', null,
                     array(
-                        new XmlObject('name', null, $unionName),
-                        new XmlObject(
+                        new XmlNode('name', null, $unionName),
+                        new XmlNode(
                             'address',
                             null,
                             array(
-                                new XmlObject(
+                                new XmlNode(
                                     'street',
                                     null,
                                     $unionAddressArray['street']
                                 ),
-                                new XmlObject(
+                                new XmlNode(
                                     'number',
                                     null,
                                     $unionAddressArray['number']
                                 ),
-                                new XmlObject(
+                                new XmlNode(
                                     'mailbox',
                                     null,
                                     $unionAddressArray['mailbox']
                                 ),
-                                new XmlObject(
+                                new XmlNode(
                                     'postal',
                                     null,
                                     $unionAddressArray['postal']
                                 ),
-                                new XmlObject(
+                                new XmlNode(
                                     'city',
                                     null,
                                     $unionAddressArray['city']
                                 ),
-                                new XmlObject(
+                                new XmlNode(
                                     'country',
                                     null,
                                     $unionAddressArray['country']
                                 ),
                             )
                         ),
-                        new XmlObject('logo', null, $logo),
-                        new XmlObject('vat_number', null, $unionVat),
+                        new XmlNode('logo', null, $logo),
+                        new XmlNode('vat_number', null, $unionVat),
                     )
                 ),
 
-                new XmlObject('company', array('contact_person' => $companyContactPerson),
+                new XmlNode('company', array('contact_person' => $companyContactPerson),
                     array(
-                        new XmlObject('name', null, $companyName),
-                        new XmlObject(
+                        new XmlNode('name', null, $companyName),
+                        new XmlNode(
                             'address',
                             null,
                             array(
-                                new XmlObject(
+                                new XmlNode(
                                     'street',
                                     null,
                                     $company->getInvoiceAddress()->getStreet()
                                 ),
-                                new XmlObject(
+                                new XmlNode(
                                     'number',
                                     null,
                                     $company->getInvoiceAddress()->getNumber()
                                 ),
-                                new XmlObject(
+                                new XmlNode(
                                     'mailbox',
                                     null,
                                     $company->getInvoiceAddress()->getMailbox()
                                 ),
-                                new XmlObject(
+                                new XmlNode(
                                     'postal',
                                     null,
                                     $company->getInvoiceAddress()->getPostal()
                                 ),
-                                new XmlObject(
+                                new XmlNode(
                                     'city',
                                     null,
                                     $company->getInvoiceAddress()->getCity()
                                 ),
-                                new XmlObject(
+                                new XmlNode(
                                     'country',
                                     null,
                                     $company->getInvoiceAddress()->getCountry()
@@ -290,22 +290,22 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                     )
                 ),
 
-                new XmlObject('entries', null, $entries),
+                new XmlNode('entries', null, $entries),
 
-                new XmlObject('total', null,
+                new XmlNode('total', null,
                     array(
-                        new XmlObject('vat_type_explanation', null, $vatTypeExplanation),
-                        new XmlObject('price_excl', null, XmlObject::fromString('<euro/>' . number_format($totalExclusive, 2))),
-                        new XmlObject('price_vat', null, XmlObject::fromString('<euro/>' . number_format($totalVat, 2))),
-                        new XmlObject('price_incl', null, XmlObject::fromString('<euro/>' . number_format($total, 2))),
+                        new XmlNode('vat_type_explanation', null, $vatTypeExplanation),
+                        new XmlNode('price_excl', null, XmlNode::fromString('<euro/>' . number_format($totalExclusive, 2))),
+                        new XmlNode('price_vat', null, XmlNode::fromString('<euro/>' . number_format($totalVat, 2))),
+                        new XmlNode('price_incl', null, XmlNode::fromString('<euro/>' . number_format($total, 2))),
                     )
                 ),
 
-                new XmlObject('sub_entries', null, $subEntries),
+                new XmlNode('sub_entries', null, $subEntries),
 
-                new XmlObject('footer'),
+                new XmlNode('footer'),
 
-                new XmlObject('sale_conditions_nl'),
+                new XmlNode('sale_conditions_nl'),
             )
         ));
     }

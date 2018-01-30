@@ -24,7 +24,7 @@ use BrBundle\Component\ContractParser\Parser as BulletParser,
     BrBundle\Entity\Contract as ContractEntity,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
-    CommonBundle\Component\Util\Xml\Object as XmlObject,
+    CommonBundle\Component\Util\Xml\Node as XmlNode,
     Doctrine\ORM\EntityManager,
     IntlDateFormatter,
     Zend\I18n\Translator\TranslatorInterface;
@@ -123,7 +123,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         if ($paymentDetailsText != '') {
             $p = new BulletParser();
             $p->parse($paymentDetailsText);
-            $paymentDetails[] = XmlObject::fromString($p->getXml());
+            $paymentDetails[] = XmlNode::fromString($p->getXml());
         }
 
         $sub_entries = unserialize($configs->getConfigValue('br.contract_below_entries'))['nl']; //TODO make this possible in both english and dutch.
@@ -141,25 +141,25 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
             $contractText = $contractText . "\n" . $this->contract->getDiscountText();
         }
 
-        $entry_s = new XmlObject('entries', null, 'Empty Contract');
+        $entry_s = new XmlNode('entries', null, 'Empty Contract');
         if ($contractText != '') {
             $p = new BulletParser();
             $p->parse($contractText);
-            $entry_s = XmlObject::fromString($p->getXml());
+            $entry_s = XmlNode::fromString($p->getXml());
         }
 
-        $contact_person_signature = new XmlObject('entries', null, 'Empty Contract');
+        $contact_person_signature = new XmlNode('entries', null, 'Empty Contract');
 
         $xml->append(
-            new XmlObject(
+            new XmlNode(
                 'contract',
                 array(
                     'location' => $location,
                     'date' => $date,
                 ),
                 array(
-                    new XmlObject('title', null, $title),
-                    new XmlObject(
+                    new XmlNode('title', null, $title),
+                    new XmlNode(
                         'our_union',
                         array(
                              'short_name' => $unionNameShort,
@@ -167,52 +167,52 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                              'coordinator' => $brgroco,
                         ),
                         array(
-                            new XmlObject('name', null, $brName),
-                            new XmlObject('logo', null, $logo),
+                            new XmlNode('name', null, $brName),
+                            new XmlNode('logo', null, $logo),
                         )
                     ),
-                    // new XmlObject(
+                    // new XmlNode(
                     //     'optional_for_u',
                     //     null,
                     //     "test"
                     // ),
-                    new XmlObject(
+                    new XmlNode(
                         'company',
                         array(
                             'contact_person' => $this->contract->getOrder()->getContact()->getFullName(),
                         ),
                         array(
-                            new XmlObject('name', null, $company->getName()),
-                            new XmlObject(
+                            new XmlNode('name', null, $company->getName()),
+                            new XmlNode(
                                 'address',
                                 null,
                                 array(
-                                    new XmlObject(
+                                    new XmlNode(
                                         'street',
                                         null,
                                         $company->getAddress()->getStreet()
                                     ),
-                                    new XmlObject(
+                                    new XmlNode(
                                         'number',
                                         null,
                                         $company->getAddress()->getNumber()
                                     ),
-                                    new XmlObject(
+                                    new XmlNode(
                                         'mailbox',
                                         null,
                                         $company->getAddress()->getMailbox()
                                     ),
-                                    new XmlObject(
+                                    new XmlNode(
                                         'postal',
                                         null,
                                         $company->getAddress()->getPostal()
                                     ),
-                                    new XmlObject(
+                                    new XmlNode(
                                         'city',
                                         null,
                                         $company->getAddress()->getCity()
                                     ),
-                                    new XmlObject(
+                                    new XmlNode(
                                         'country',
                                         null,
                                         $this->translator->translate($company->getAddress()->getCountry())
@@ -221,41 +221,41 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                             ),
                         )
                     ),
-                    new XmlObject(
+                    new XmlNode(
                         'union_address',
                         null,
                         array(
-                            new XmlObject('name', null, $unionName),
-                            new XmlObject(
+                            new XmlNode('name', null, $unionName),
+                            new XmlNode(
                                 'address',
                                 null,
                                 array(
-                                    new XmlObject(
+                                    new XmlNode(
                                         'street',
                                         null,
                                         $unionAddressArray['street']
                                     ),
-                                    new XmlObject(
+                                    new XmlNode(
                                         'number',
                                         null,
                                         $unionAddressArray['number']
                                     ),
-                                    new XmlObject(
+                                    new XmlNode(
                                         'mailbox',
                                         null,
                                         $unionAddressArray['mailbox']
                                     ),
-                                    new XmlObject(
+                                    new XmlNode(
                                         'postal',
                                         null,
                                         $unionAddressArray['postal']
                                     ),
-                                    new XmlObject(
+                                    new XmlNode(
                                         'city',
                                         null,
                                         $unionAddressArray['city']
                                     ),
-                                    new XmlObject(
+                                    new XmlNode(
                                         'country',
                                         null,
                                         $unionAddressArray['country']
@@ -265,16 +265,16 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                         )
                     ),
                     $entry_s,
-                    new XmlObject(
+                    new XmlNode(
                         'payment_details',
                         array('payment_days' => (String) $this->contract->getPaymentDays()),
                         $paymentDetails
                     ),
-                    new XmlObject('sub_entries', null, $sub_entries),
-                    new XmlObject('above_sign', array('middle' => $above_sign_middle, 'end' => '.'), $above_sign),
-                    new XmlObject('footer'),
-                    new XmlObject('sale_conditions_nl'),
-                    new XmlObject('for_contact_person', null, "test"),
+                    new XmlNode('sub_entries', null, $sub_entries),
+                    new XmlNode('above_sign', array('middle' => $above_sign_middle, 'end' => '.'), $above_sign),
+                    new XmlNode('footer'),
+                    new XmlNode('sale_conditions_nl'),
+                    new XmlNode('for_contact_person', null, "test"),
                 )
             )
         );
