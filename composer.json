@@ -8,10 +8,14 @@
         {
             "type": "vcs",
             "url": "https://github.com/LitusProject/EdpMarkdown"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/LitusProject/zendframework"
         }
     ],
     "require": {
-        "zendframework/zendframework" : "2.4.13",
+        "zendframework/zendframework": "dev-master as 2.4.13",
         "zendframework/zend-developer-tools": "@stable",
 
         "alcaeus/mongo-php-adapter": "@stable",
