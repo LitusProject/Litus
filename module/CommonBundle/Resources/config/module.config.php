@@ -216,7 +216,6 @@ return Config::create(
                 'typeahead_person'   => 'CommonBundle\Component\Validator\Typeahead\Person',
                 'date_compare'       => 'CommonBundle\Component\Validator\DateCompare',
                 'decimal'            => 'CommonBundle\Component\Validator\Decimal',
-                'email_address'      => 'CommonBundle\Component\Validator\EmailAddress',
                 'field_length'       => 'CommonBundle\Component\Validator\FieldLength',
                 'field_line_length'  => 'CommonBundle\Component\Validator\FieldLineLength',
                 'not_zero'           => 'CommonBundle\Component\Validator\NotZero',

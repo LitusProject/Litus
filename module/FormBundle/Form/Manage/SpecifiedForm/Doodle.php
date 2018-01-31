@@ -108,7 +108,7 @@ class Doodle extends \FormBundle\Form\SpecifiedForm\Doodle
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array('name' => 'email_address'),
+                                array('name' => 'EmailAddress'),
                             ),
                         ),
                     ),

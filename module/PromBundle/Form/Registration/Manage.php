@@ -48,7 +48,7 @@ class Manage extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'email_address',
+                                    'name' => 'EmailAddress',
                                 ),
                                 array(
                                     'name' => 'prom_code_email',

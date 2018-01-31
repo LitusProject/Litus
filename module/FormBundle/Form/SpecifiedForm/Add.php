@@ -121,7 +121,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                         'validators' => array(
                             array(
-                                'name' => 'email_address',
+                                'name' => 'EmailAddress',
                             ),
                         ),
                     ),
