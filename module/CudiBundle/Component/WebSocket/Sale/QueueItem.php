@@ -383,7 +383,7 @@ class QueueItem
                 $bestDiscount = null;
                 foreach ($soldArticle['article']->getDiscounts() as $discount) {
                     if (in_array($discount->getRawType(), $discounts)) {
-                        if (!$discount->canBeApplied($item->getPerson(), $this->getCurrentAcademicYear(), $this->entityManager)) {
+                        if (!$discount->canBeApplied($soldArticle, $item->getPerson(), $this->getCurrentAcademicYear(), $this->entityManager)) {
                             continue;
                         }
                         $newPrice = $discount->apply($soldArticle['article']->getSellPrice());
