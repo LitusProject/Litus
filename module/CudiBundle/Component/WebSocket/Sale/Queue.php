@@ -524,7 +524,7 @@ class Queue
         );
 
         foreach ($article->getDiscounts() as $discount) {
-            if ($discount->canBeApplied($article, $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear())) {
+            if ($discount->canBeApplied($this->entityManager, $article, $item->getPerson(), $this->getCurrentAcademicYear())) {
                 $result['discounts'][] = array(
                     'type' => $discount->getRawType(),
                     'value' => $discount->apply($article->getSellPrice()),

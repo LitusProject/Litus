@@ -389,28 +389,30 @@ class Discount
     }
 
     /**
+     * @param EntityManager $entityManager
      * @param Article       $article
      * @param Person        $person
-     * @param EntityManager $entityManager
+     * @param AcademicYear  $academicYear
      *
      * @return boolean
      */
-    private function alreadyApplied(Article $article, Person $person, EntityManager $entityManager, AcademicYear $academicYear)
+    private function alreadyApplied(EntityManager $entityManager, Article $article, Person $person, AcademicYear $academicYear)
     {
         return $entityManager->getRepository('CudiBundle\Entity\Sale\SaleItem')
             ->findOneByArticleAndPersonAndDiscountType($article, $person, $this->getRawType(), $academicYear) != null;
     }
 
     /**
+     * @param EntityManager $entityManager
+     * @param Article       $article
      * @param Person        $person
      * @param AcademicYear  $academicYear
-     * @param EntityManager $entityManager
      *
      * @return boolean
      */
-    public function canBeApplied(Article $article, Person $person, EntityManager $entityManager, AcademicYear $academicYear)
+    public function canBeApplied(EntityManager $entityManager, Article $article, Person $person, AcademicYear $academicYear)
     {
-        if ($this->applyOnce() && $this->alreadyApplied($article, $person, $entityManager, $academicYear)) {
+        if ($this->applyOnce() && $this->alreadyApplied($entityManager, $article, $person, $academicYear)) {
             return false;
         }
         if ($this->getType() == 'member') {

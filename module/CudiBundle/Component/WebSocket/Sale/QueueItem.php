@@ -383,7 +383,7 @@ class QueueItem
                 $bestDiscount = null;
                 foreach ($soldArticle['article']->getDiscounts() as $discount) {
                     if (in_array($discount->getRawType(), $discounts)) {
-                        if (!$discount->canBeApplied($soldArticle['article'], $item->getPerson(), $this->getCurrentAcademicYear(), $this->entityManager)) {
+                        if (!$discount->canBeApplied($this->entityManager, $soldArticle['article'], $item->getPerson(), $this->getCurrentAcademicYear())) {
                             continue;
                         }
                         $newPrice = $discount->apply($soldArticle['article']->getSellPrice());
@@ -472,7 +472,7 @@ class QueueItem
                 );
 
                 foreach ($booking->getArticle()->getDiscounts() as $discount) {
-                    if ($discount->canBeApplied($booking->getArticle(), $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear())) {
+                    if ($discount->canBeApplied($this->entityManager, $booking->getArticle(), $item->getPerson(), $this->getCurrentAcademicYear())) {
                         $result['discounts'][] = array(
                             'type' => $discount->getRawType(),
                             'value' => $discount->apply($booking->getArticle()->getSellPrice()),
@@ -512,7 +512,7 @@ class QueueItem
                 );
 
                 foreach ($article->getDiscounts() as $discount) {
-                    if ($discount->canBeApplied($article, $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear())) {
+                    if ($discount->canBeApplied($this->entityManager, $article, $item->getPerson(), $this->getCurrentAcademicYear())) {
                         $result['discounts'][] = array(
                             'type' => $discount->getRawType(),
                             'value' => $discount->apply($article->getSellPrice()),
