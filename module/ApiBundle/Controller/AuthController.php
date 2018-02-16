@@ -53,7 +53,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         $corporate = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\User\Person\Corporate')
             ->findOneById($person->getId());
-
+        print_r($corporate);
         if (null !== $academic) {
             $result['university_status'] = (null !== $academic->getUniversityStatus($this->getCurrentAcademicYear()))
                 ? $academic->getUniversityStatus($this->getCurrentAcademicYear())->getStatus()
