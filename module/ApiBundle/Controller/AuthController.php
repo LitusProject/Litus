@@ -68,7 +68,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
 
         if (null !== $corporate) {
             $result['corporate_id'] = (null !== $corporate->getCompany())
-                ? $academic->getCompany()->getId()
+                ? $corporate->getCompany()->getId()
                 : "-1";
         }
         
