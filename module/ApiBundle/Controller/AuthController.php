@@ -49,6 +49,10 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($person->getId());
+        
+        $corporate = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\User\Person\Corporate')
+            ->findOneById($person->getId());
 
         if (null !== $academic) {
             $result['university_status'] = (null !== $academic->getUniversityStatus($this->getCurrentAcademicYear()))
@@ -62,6 +66,12 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
                 : false;
         }
 
+        if (null !== $corporate) {
+            $result['corporate_id'] = (null !== $corporate->getCompany())
+                ? $academic->getCompany()->getId()
+                : "-1";
+        }
+        
         return new ViewModel(
             array(
                 'result' => (object) $result,
