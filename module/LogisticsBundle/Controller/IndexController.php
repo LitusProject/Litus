@@ -103,7 +103,6 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     'passengerId' => $passengerId,
                     'load' => $reservation->getLoad(),
                     'car' => $reservation->getCar(),
-                    'bike' => $reservation->getBike(),
                     'additionalInfo' => $reservation->getAdditionalInfo(),
                     'id' => $reservation->getId(),
                 );
@@ -182,7 +181,6 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     'passengerId' => $passengerId,
                     'load' => $reservation->getLoad(),
                     'car' => $reservation->getCar(),
-                    'bike' => $reservation->getBike(),
                     'additionalInfo' => $reservation->getAdditionalInfo(),
                     'id' => $reservation->getId(),
                 );
