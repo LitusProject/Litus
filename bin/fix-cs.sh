@@ -8,4 +8,4 @@ if [[ "x$1" =~ x(-v|--verbose) ]]; then
     VERBOSE=-vvv
 fi
 
-vendor/bin/php-cs-fixer fix $VERBOSE . || exit $?
+vendor/bin/php-cs-fixer fix $VERBOSE || exit $?
