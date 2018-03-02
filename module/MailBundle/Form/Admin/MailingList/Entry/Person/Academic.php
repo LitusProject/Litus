@@ -41,15 +41,15 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'person',
-            'label'      => 'Name',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'typeahead',
+            'name'     => 'person',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'mail_entry_academic',
+                            'name'    => 'mail_entry_academic',
                             'options' => array(
                                 'list' => $this->getList(),
                             ),

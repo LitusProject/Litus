@@ -43,14 +43,14 @@ class Poster extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'data-help' => 'The poster must be an image of max ' . self::FILESIZE . '.',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
                             'name' => 'fileisimage',
                         ),
                         array(
-                            'name' => 'filesize',
+                            'name'    => 'filesize',
                             'options' => array(
                                 'max' => self::FILESIZE,
                             ),

@@ -52,25 +52,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Type',
             'required'   => true,
             'attributes' => array(
-                'id'     => 'restriction_type',
+                'id'        => 'restriction_type',
                 'data-help' => 'Limit the sale of this article on user base:
                     <ul>
                         <li><b>Amount:</b> restrict the number of this article sold to this user</li>
                         <li><b>Member:</b> restrict this article to members only</li>
                         <li><b>Study:</b> restrict this article to students of one ore more studies</li>
                     </ul>',
-                'options'   => array(
-                    'amount' => 'Amount',
+                'options' => array(
+                    'amount'    => 'Amount',
                     'available' => 'Available',
-                    'member' => 'Member',
-                    'study'  => 'Study',
+                    'member'    => 'Member',
+                    'study'     => 'Study',
                 ),
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'sale_article_restriction_exists',
+                            'name'    => 'sale_article_restriction_exists',
                             'options' => array(
                                 'article' => $this->article,
                             ),
@@ -86,7 +86,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'class' => 'values',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
                     'type'       => 'text',
                     'name'       => 'amount',
@@ -95,9 +95,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'class' => 'value_amount',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validator' => array(

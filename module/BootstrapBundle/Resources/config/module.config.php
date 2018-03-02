@@ -22,7 +22,7 @@ return array(
     'assetic_configuration' => array(
         'modules' => array(
             'bootstrapbundle' => array(
-                'root_path' => __DIR__ . '/../assets',
+                'root_path'   => __DIR__ . '/../assets',
                 'collections' => array(
                     'bootstrap_css' => array(
                         'assets' => array(

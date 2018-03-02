@@ -63,14 +63,14 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'options' => $this->getNumberOptions(),
                 ),
-                'options'    => array(
+                'options' => array(
                     'input' => array(
-                        'required' => true,
+                        'required'   => true,
                         'validators' => array(
                             array(
-                                'name' => 'ticket_number_tickets',
+                                'name'    => 'ticket_number_tickets',
                                 'options' => array(
-                                    'event' => $this->event,
+                                    'event'  => $this->event,
                                     'person' => $this->person,
                                 ),
                             ),
@@ -87,14 +87,14 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'options' => $this->getNumberOptions(),
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'required' => true,
+                            'required'   => true,
                             'validators' => array(
                                 array(
-                                    'name' => 'ticket_number_tickets',
+                                    'name'    => 'ticket_number_tickets',
                                     'options' => array(
-                                        'event' => $this->event,
+                                        'event'  => $this->event,
                                         'person' => $this->person,
                                     ),
                                 ),
@@ -112,14 +112,14 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'options' => $this->getNumberOptions(),
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'required' => true,
+                            'required'   => true,
                             'validators' => array(
                                 array(
-                                    'name' => 'ticket_number_tickets',
+                                    'name'    => 'ticket_number_tickets',
                                     'options' => array(
-                                        'event' => $this->event,
+                                        'event'  => $this->event,
                                         'person' => $this->person,
                                     ),
                                 ),
@@ -136,14 +136,14 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'options' => $this->getNumberOptions(),
                         ),
-                        'options'    => array(
+                        'options' => array(
                             'input' => array(
-                                'required' => true,
+                                'required'   => true,
                                 'validators' => array(
                                     array(
-                                        'name' => 'ticket_number_tickets',
+                                        'name'    => 'ticket_number_tickets',
                                         'options' => array(
-                                            'event' => $this->event,
+                                            'event'  => $this->event,
                                             'person' => $this->person,
                                         ),
                                     ),

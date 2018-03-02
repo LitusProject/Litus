@@ -37,13 +37,13 @@ class Lease extends \CommonBundle\Component\Validator\Typeahead
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'No lease item with this barcode exists',
-        self::ITEM_LEASED => 'This item is already leased',
+        self::NOT_VALID     => 'No lease item with this barcode exists',
+        self::ITEM_LEASED   => 'This item is already leased',
         self::ITEM_RETURNED => 'This item is already returned',
     );
 
     protected $options = array(
-        'entity' => '',
+        'entity'         => '',
         'must_be_leased' => false,
     );
 

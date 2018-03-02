@@ -45,9 +45,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'label'      => 'Category',
             'required'   => true,
             'attributes' => array(
-                'id'      => 'category',
+                'id' => 'category',
             ),
-            'options'    => array(
+            'options' => array(
                 'options' => $this->createCategoriesArray(),
             ),
         ));
@@ -65,7 +65,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     'id'    => 'parent_' . $category->getId(),
                     'class' => 'parent',
                 ),
-                'options'    => array(
+                'options' => array(
                     'options' => $this->createPagesArray($category),
                 ),
             ));
@@ -77,11 +77,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
         $container->add(array(
-            'type'       => 'text',
-            'name'       => 'name',
-            'label'      => 'Name',
-            'required'   => $isDefault,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'name',
+            'label'    => 'Name',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -91,11 +91,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
 
         $container->add(array(
-            'type'       => 'text',
-            'name'       => 'url',
-            'label'      => 'URL',
-            'required'   => $isDefault,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'url',
+            'label'    => 'URL',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),

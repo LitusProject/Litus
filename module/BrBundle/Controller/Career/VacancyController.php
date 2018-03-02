@@ -78,9 +78,9 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'logoPath' => $logoPath,
+                'logoPath'          => $logoPath,
                 'vacancySearchForm' => $vacancySearchForm,
             )
         );
@@ -98,7 +98,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'vacancy' => $vacancy,
+                'vacancy'  => $vacancy,
                 'logoPath' => $logoPath,
             )
         );

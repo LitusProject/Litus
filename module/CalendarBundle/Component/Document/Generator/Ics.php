@@ -151,7 +151,7 @@ class Ics
                 'calendar',
                 array(
                     'action' => 'view',
-                    'name' => $event->getName(),
+                    'name'   => $event->getName(),
                 )
             ) . PHP_EOL;
         $result .= 'CLASS:PUBLIC' . PHP_EOL;

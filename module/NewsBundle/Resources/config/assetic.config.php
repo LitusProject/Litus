@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'news_admin_news' => array(
             '@common_jquery',
             '@admin_css',

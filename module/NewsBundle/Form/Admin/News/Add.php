@@ -43,9 +43,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'label'      => 'End Date',
             'required'   => false,
             'attributes' => array(
-                'placeholder'     => 'dd/mm/yyyy hh:mm',
+                'placeholder' => 'dd/mm/yyyy hh:mm',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -67,7 +67,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'attributes' => array(
                 'width' => '400px',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -77,11 +77,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
 
         $container->add(array(
-            'type'       => 'textarea',
-            'name'       => 'content',
-            'label'      => 'Content',
-            'required'   => $isDefault,
-            'options'    => array(
+            'type'     => 'textarea',
+            'name'     => 'content',
+            'label'    => 'Content',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),

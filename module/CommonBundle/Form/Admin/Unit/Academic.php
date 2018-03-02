@@ -33,11 +33,11 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'person',
-            'label'      => 'Name',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'typeahead',
+            'name'     => 'person',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'validators' => array(
                         array('name' => 'typeahead_person'),
@@ -53,14 +53,14 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'description',
-            'label'      => 'Description',
+            'type'  => 'text',
+            'name'  => 'description',
+            'label' => 'Description',
         ));
 
         $this->add(array(
-            'type' => 'hidden',
-            'name' => 'mapType',
+            'type'  => 'hidden',
+            'name'  => 'mapType',
             'value' => 'academic',
         ));
 

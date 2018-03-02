@@ -84,10 +84,10 @@ EOT
                     $subjects[$mapping->getSubject()->getId()] = array(
                         'subject' => $mapping->getSubject(),
                         'updates' => array(
-                            'bookable' => array(),
+                            'bookable'   => array(),
                             'unbookable' => array(),
-                            'added' => array(),
-                            'removed' => array(),
+                            'added'      => array(),
+                            'removed'    => array(),
                         ),
                     );
                 }
@@ -115,10 +115,10 @@ EOT
                     $subjects[$mapping->getSubject()->getId()] = array(
                         'subject' => $mapping->getSubject(),
                         'updates' => array(
-                            'bookable' => array(),
+                            'bookable'   => array(),
                             'unbookable' => array(),
-                            'added' => array(),
-                            'removed' => array(),
+                            'added'      => array(),
+                            'removed'    => array(),
                         ),
                     );
                 }
@@ -142,10 +142,10 @@ EOT
                 $subjects[$subjectMap->getSubject()->getId()] = array(
                     'subject' => $subjectMap->getSubject(),
                     'updates' => array(
-                        'bookable' => array(),
+                        'bookable'   => array(),
                         'unbookable' => array(),
-                        'added' => array(),
-                        'removed' => array(),
+                        'added'      => array(),
+                        'removed'    => array(),
                     ),
                 );
             }
@@ -168,10 +168,10 @@ EOT
                 $subjects[$subjectMap->getSubject()->getId()] = array(
                     'subject' => $subjectMap->getSubject(),
                     'updates' => array(
-                        'bookable' => array(),
+                        'bookable'   => array(),
                         'unbookable' => array(),
-                        'added' => array(),
-                        'removed' => array(),
+                        'added'      => array(),
+                        'removed'    => array(),
                     ),
                 );
             }

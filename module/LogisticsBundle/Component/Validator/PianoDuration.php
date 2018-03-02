@@ -32,8 +32,8 @@ class PianoDuration extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * @const string The error codes
      */
-    const TO_LONG        = 'toLong';
-    const NO_START_DATE  = 'noStartDate';
+    const TO_LONG = 'toLong';
+    const NO_START_DATE = 'noStartDate';
     const INVALID_FORMAT = 'invalidFormat';
 
     /**
@@ -47,7 +47,7 @@ class PianoDuration extends \CommonBundle\Component\Validator\AbstractValidator
 
     protected $options = array(
         'start_date' => '',
-        'format' => false,
+        'format'     => false,
     );
 
     /**

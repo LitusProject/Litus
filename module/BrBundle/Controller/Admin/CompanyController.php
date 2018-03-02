@@ -61,7 +61,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -137,7 +137,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'    => $form,
                 'company' => $company,
             )
         );
@@ -248,7 +248,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     'br_admin_company',
                     array(
                         'action' => 'editLogo',
-                        'id' => $company->getId(),
+                        'id'     => $company->getId(),
                     )
                 );
 
@@ -258,8 +258,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'company' => $company,
-                'form' => $form,
+                'company'  => $company,
+                'form'     => $form,
                 'logoPath' => $filePath,
             )
         );
@@ -307,8 +307,8 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
             $company_users = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\User\Person\Corporate')
                 ->findBy(array(
-                    'canLogin'  => 'true',
-                    'company'   => $company->getId(),
+                    'canLogin' => 'true',
+                    'company'  => $company->getId(),
                 ));
 
             foreach ($company_users as $user) {

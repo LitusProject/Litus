@@ -59,10 +59,10 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginator'           => $paginator,
+                'paginationControl'   => $this->paginator()->createControl(true),
             )
         );
     }
@@ -94,7 +94,7 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
                     'syllabus_admin_study_module_group',
                     array(
                         'action' => 'edit',
-                        'id' => $moduleGroup->getId(),
+                        'id'     => $moduleGroup->getId(),
                     )
                 );
             }
@@ -106,9 +106,9 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'form' => $form,
+                'form'                => $form,
             )
         );
     }
@@ -139,10 +139,10 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'moduleGroup' => $moduleGroup,
-                'mappings' => $mappings,
+                'moduleGroup'         => $moduleGroup,
+                'mappings'            => $mappings,
             )
         );
     }
@@ -184,7 +184,7 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
                     'syllabus_admin_study_module_group',
                     array(
                         'action' => 'edit',
-                        'id' => $moduleGroup->getId(),
+                        'id'     => $moduleGroup->getId(),
                     )
                 );
             }
@@ -196,11 +196,11 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'moduleGroup' => $moduleGroup,
-                'mappings' => $mappings,
-                'form' => $form,
+                'moduleGroup'         => $moduleGroup,
+                'mappings'            => $mappings,
+                'form'                => $form,
             )
         );
     }

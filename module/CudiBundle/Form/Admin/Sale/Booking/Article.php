@@ -37,12 +37,12 @@ class Article extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Article',
             'required'   => true,
             'attributes' => array(
-                'id'           => 'article',
-                'style'        => 'width: 400px;',
+                'id'    => 'article',
+                'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'validators'  => array(
+                    'validators' => array(
                         array('name' => 'typeahead_sale_article'),
                     ),
                 ),

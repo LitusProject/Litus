@@ -64,8 +64,8 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'formSpecification' => $formSpecification,
-                'viewers' => $viewers,
-                'hasGroup' => $group !== null,
+                'viewers'           => $viewers,
+                'hasGroup'          => $group !== null,
             )
         );
     }
@@ -106,7 +106,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                 'form_admin_form_viewer',
                 array(
                     'action' => 'manage',
-                    'id' => $formSpecification->getId(),
+                    'id'     => $formSpecification->getId(),
                 )
             );
 
@@ -130,7 +130,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                     ->getRepository('FormBundle\Entity\ViewerMap')
                     ->findOneBy(
                         array(
-                            'form' => $formSpecification,
+                            'form'   => $formSpecification,
                             'person' => $person,
                         )
                     );
@@ -157,7 +157,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                     'form_admin_form_viewer',
                     array(
                         'action' => 'manage',
-                        'id' => $formSpecification->getId(),
+                        'id'     => $formSpecification->getId(),
                     )
                 );
 
@@ -168,7 +168,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'formSpecification' => $formSpecification,
-                'form' => $form,
+                'form'              => $form,
             )
         );
     }
@@ -211,7 +211,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                 'form_admin_form_viewer',
                 array(
                     'action' => 'manage',
-                    'id' => $viewer->getForm()->getId(),
+                    'id'     => $viewer->getForm()->getId(),
                 )
             );
 

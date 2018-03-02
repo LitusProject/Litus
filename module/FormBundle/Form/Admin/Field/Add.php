@@ -79,7 +79,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'id'        => 'order',
                 'data-help' => 'The display order of the fields, lower numbers are displayed first.',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -100,7 +100,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'attributes' => array(
                 'id' => 'required',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array('name' => 'form_field_required'),
@@ -128,7 +128,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
 
         $this->add(array(
-            'type'      => 'form_field_field_file',
+            'type'       => 'form_field_field_file',
             'name'       => 'file_form',
             'label'      => 'File Options',
             'attributes' => array(
@@ -152,7 +152,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'attributes' => array(
                 'id' => 'visibility',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
                     'type'       => 'select',
                     'name'       => 'if',
@@ -213,7 +213,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'attributes' => array(
                 'class' => 'field_label',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -236,33 +236,33 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
             if ($field instanceof StringFieldEntity) {
                 $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
+                    'label'      => $field->getLabel(),
+                    'value'      => $field->getId(),
                     'attributes' => array(
                         'data-type' => 'string',
                     ),
                 );
             } elseif ($field instanceof DropdownFieldEntity) {
                 $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
+                    'label'      => $field->getLabel(),
+                    'value'      => $field->getId(),
                     'attributes' => array(
-                        'data-type' => 'dropdown',
+                        'data-type'   => 'dropdown',
                         'data-values' => $field->getOptions(),
                     ),
                 );
             } elseif ($field instanceof CheckboxFieldEntity) {
                 $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
+                    'label'      => $field->getLabel(),
+                    'value'      => $field->getId(),
                     'attributes' => array(
                         'data-type' => 'checkbox',
                     ),
                 );
             } elseif ($field instanceof FileFieldEntity) {
                 $options[] = array(
-                    'label' => $field->getLabel(),
-                    'value' => $field->getId(),
+                    'label'      => $field->getLabel(),
+                    'value'      => $field->getId(),
                     'attributes' => array(
                         'data-type' => 'file',
                     ),

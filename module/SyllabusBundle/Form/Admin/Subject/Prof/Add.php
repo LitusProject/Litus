@@ -37,9 +37,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Prof',
             'required'   => true,
             'attributes' => array(
-                'size'         => 70,
+                'size' => 70,
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array('name' => 'typeahead_person'),

@@ -37,11 +37,11 @@ class Create extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'    => '',
             'elements' => array(
                 array(
-                    'type'       => 'text',
-                    'name'       => 'ticket_code',
-                    'label'      => 'Ticket Code',
-                    'required'   => true,
-                    'options'    => array(
+                    'type'     => 'text',
+                    'name'     => 'ticket_code',
+                    'label'    => 'Ticket Code',
+                    'required' => true,
+                    'options'  => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),

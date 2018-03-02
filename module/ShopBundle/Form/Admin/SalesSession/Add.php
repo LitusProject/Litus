@@ -39,25 +39,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type' => 'datetime',
-            'name' => 'start_date',
-            'label' => 'Start Date',
+            'type'     => 'datetime',
+            'name'     => 'start_date',
+            'label'    => 'Start Date',
             'required' => true,
         ));
 
         $this->add(array(
-            'type' => 'datetime',
-            'name' => 'end_date',
-            'label' => 'End Date',
+            'type'     => 'datetime',
+            'name'     => 'end_date',
+            'label'    => 'End Date',
             'required' => true,
-            'options' => array(
+            'options'  => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'date_compare',
+                            'name'    => 'date_compare',
                             'options' => array(
                                 'first_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
                     ),
@@ -66,35 +66,35 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type' => 'checkbox',
-            'name' => 'reservations_possible',
-            'label' => 'Reservations Possible',
+            'type'       => 'checkbox',
+            'name'       => 'reservations_possible',
+            'label'      => 'Reservations Possible',
             'attributes' => array(
                 'data-help' => 'Enabling this option will allow clients to reserve articles for this sales session.',
-                'value' => true,
+                'value'     => true,
             ),
         ));
 
         foreach ($this->products as $product) {
             $this->add(array(
-                'type' => 'number',
-                'name' => $product->getId() . '-quantity',
+                'type'    => 'number',
+                'name'    => $product->getId() . '-quantity',
                 'options' => array(
                     'label' => $product->getName(),
                 ),
                 'attributes' => array(
-                    'min' => '0',
-                    'max' => '100',
+                    'min'   => '0',
+                    'max'   => '100',
                     'value' => 0,
                 ),
             ));
         }
 
         $this->add(array(
-            'type' => 'textarea',
-            'name' => 'remarks',
-            'label' => 'Remarks',
-            'required' => false,
+            'type'       => 'textarea',
+            'name'       => 'remarks',
+            'label'      => 'Remarks',
+            'required'   => false,
             'attributes' => array(
                 'rows' => 5,
             ),

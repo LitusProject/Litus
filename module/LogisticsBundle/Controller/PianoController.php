@@ -123,7 +123,7 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'         => $form,
                 'reservations' => $reservations,
             )
         );

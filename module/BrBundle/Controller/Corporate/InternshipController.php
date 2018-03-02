@@ -64,10 +64,10 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'logoPath' => $logoPath,
-                'requests' => $requests,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'logoPath'           => $logoPath,
+                'requests'           => $requests,
                 'unfinishedRequests' => $unfinishedRequestsJobs,
             )
         );

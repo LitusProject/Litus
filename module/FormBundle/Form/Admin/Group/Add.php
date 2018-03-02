@@ -52,11 +52,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
         $container->add(array(
-            'type'       => 'text',
-            'name'       => 'title',
-            'label'      => 'Title',
-            'required'   => $isDefault,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'title',
+            'label'    => 'Title',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -74,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'class' => 'md',
                 'rows'  => 20,
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),

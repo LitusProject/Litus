@@ -102,7 +102,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         $form = $this->getForm(
             'br_cv_add',
             array(
-                'academic' => $person,
+                'academic'     => $person,
                 'academicYear' => $this->getCurrentAcademicYear(),
             )
         );
@@ -135,7 +135,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'        => $form,
                 'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
@@ -210,9 +210,9 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         $form = $this->getForm(
             'br_cv_edit',
             array(
-                'academic' => $person,
+                'academic'     => $person,
                 'academicYear' => $this->getCurrentAcademicYear(),
-                'entry' => $entry,
+                'entry'        => $entry,
             )
         );
 
@@ -236,7 +236,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'        => $form,
                 'profilePath' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),

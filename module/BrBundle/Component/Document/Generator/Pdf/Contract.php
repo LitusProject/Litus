@@ -155,16 +155,16 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                 'contract',
                 array(
                     'location' => $location,
-                    'date' => $date,
+                    'date'     => $date,
                 ),
                 array(
                     new XmlNode('title', null, $title),
                     new XmlNode(
                         'our_union',
                         array(
-                             'short_name' => $unionNameShort,
+                             'short_name'     => $unionNameShort,
                              'contact_person' => $ourContactPerson,
-                             'coordinator' => $brgroco,
+                             'coordinator'    => $brgroco,
                         ),
                         array(
                             new XmlNode('name', null, $brName),

@@ -41,7 +41,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'x',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -63,7 +63,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'y',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -85,7 +85,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'x2',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -107,7 +107,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'y2',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -129,7 +129,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'w',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -151,7 +151,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'h',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -172,17 +172,17 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'data-type' => 'small',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'fileextension',
+                            'name'    => 'fileextension',
                             'options' => array(
                                 'extension' => 'jpg,png',
                             ),
                         ),
                         array(
-                            'name' => 'filesize',
+                            'name'    => 'filesize',
                             'options' => array(
                                 'max' => '2MB',
                             ),

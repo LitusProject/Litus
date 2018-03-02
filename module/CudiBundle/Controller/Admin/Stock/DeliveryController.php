@@ -47,9 +47,9 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'suppliers' => $suppliers,
+                'suppliers'         => $suppliers,
             )
         );
     }
@@ -77,10 +77,10 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'supplier' => $supplier,
-                'paginator' => $paginator,
+                'supplier'          => $supplier,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
-                'suppliers' => $suppliers,
+                'suppliers'         => $suppliers,
             )
         );
     }
@@ -171,9 +171,9 @@ class DeliveryController extends \CudiBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'deliveries' => $deliveries,
-                'suppliers' => $suppliers,
+                'form'                => $form,
+                'deliveries'          => $deliveries,
+                'suppliers'           => $suppliers,
                 'currentAcademicYear' => $academicYear,
             )
         );

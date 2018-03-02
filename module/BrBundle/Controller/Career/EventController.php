@@ -42,7 +42,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -60,7 +60,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'event' => $event,
+                'event'    => $event,
                 'logoPath' => $logoPath,
             )
         );

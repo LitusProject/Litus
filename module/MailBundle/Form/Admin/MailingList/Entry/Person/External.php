@@ -41,11 +41,11 @@ class External extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'first_name',
-            'label'      => 'First Name',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'first_name',
+            'label'    => 'First Name',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -55,11 +55,11 @@ class External extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'last_name',
-            'label'      => 'Last Name',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'last_name',
+            'label'    => 'Last Name',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -69,11 +69,11 @@ class External extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'email_address',
-            'label'      => 'Email',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'email_address',
+            'label'    => 'Email',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -81,7 +81,7 @@ class External extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         array('name' => 'EmailAddress'),
                         array(
-                            'name' => 'mail_entry_external',
+                            'name'    => 'mail_entry_external',
                             'options' => array(
                                 'list' => $this->getList(),
                             ),

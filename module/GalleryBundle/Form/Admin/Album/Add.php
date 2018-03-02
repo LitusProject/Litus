@@ -45,12 +45,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'required' => $isDefault,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'gallery_album_name',
+                            'name'    => 'gallery_album_name',
                             'options' => array(
                                 'album' => $this->album,
                             ),
@@ -64,10 +64,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     protected function initAfterTabs()
     {
         $this->add(array(
-            'type'       => 'date',
-            'name'       => 'date',
-            'label'      => 'Date',
-            'required'   => true,
+            'type'     => 'date',
+            'name'     => 'date',
+            'label'    => 'Date',
+            'required' => true,
         ));
 
         $this->add(array(

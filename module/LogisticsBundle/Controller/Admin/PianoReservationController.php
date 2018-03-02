@@ -38,7 +38,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -55,7 +55,7 @@ class PianoReservationController extends \CommonBundle\Component\Controller\Acti
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

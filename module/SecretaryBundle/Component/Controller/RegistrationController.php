@@ -79,11 +79,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'studies' => $studies,
-                'enrollments' => $studyIds,
-                'academicYear' => $academicYear,
+                'studies'                => $studies,
+                'enrollments'            => $studyIds,
+                'academicYear'           => $academicYear,
                 'startNewUniversityYear' => $startNewUniversityYear,
-                'dateInfoMessage' => $dateInfoMessage,
+                'dateInfoMessage'        => $dateInfoMessage,
             )
         );
     }
@@ -223,7 +223,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 ->findAllByStudy($enrollment->getStudy());
             $mappings[] = array(
                 'enrollment' => $enrollment,
-                'subjects' => $subjects,
+                'subjects'   => $subjects,
             );
             foreach ($subjects as $subject) {
                 $studySubjects[] = $subject->getSubject()->getId();
@@ -246,11 +246,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'mappings' => $mappings,
-                'enrollments' => $subjectIds,
+                'form'                => $form,
+                'mappings'            => $mappings,
+                'enrollments'         => $subjectIds,
                 'currentAcademicYear' => $academicYear,
-                'otherSubjects' => $otherSubjects,
+                'otherSubjects'       => $otherSubjects,
             )
         );
     }

@@ -171,15 +171,15 @@ class Poc extends EntityRepository
         return $resultSet;
     }
 
-      /**
-       * @param  GroupEntity  $group
-       * @param  AcademicYear $academicYear
-       * @return int
-       */
-      public function getNbOfPocersFromGroupEntity(GroupEntity $group, AcademicYear $academicYear)
-      {
-          $query = $this->getEntityManager()->createQueryBuilder();
-          $resultSet = $query->select($query->expr()->count('p'))
+    /**
+     * @param  GroupEntity  $group
+     * @param  AcademicYear $academicYear
+     * @return int
+     */
+    public function getNbOfPocersFromGroupEntity(GroupEntity $group, AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select($query->expr()->count('p'))
             ->from('SyllabusBundle\Entity\poc', 'p')
             ->where(
                 $query->expr()->andX(
@@ -193,8 +193,8 @@ class Poc extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-          return $resultSet;
-      }
+        return $resultSet;
+    }
 
     /**
      * @param  AcademicYear $academicYear

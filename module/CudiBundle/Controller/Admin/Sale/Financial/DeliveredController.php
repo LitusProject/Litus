@@ -56,9 +56,9 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );
@@ -144,9 +144,9 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );
@@ -236,10 +236,10 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'article' => $article,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'article'            => $article,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );
@@ -266,9 +266,9 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );
@@ -303,10 +303,10 @@ class DeliveredController extends \CudiBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'supplier' => $supplier,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'supplier'           => $supplier,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );

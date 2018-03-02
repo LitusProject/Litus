@@ -21,21 +21,21 @@
 return array(
     'submenus' => array(
         'Syllabus' => array(
-            'subtitle'    => array('Groups', 'Studies', 'Subjects'),
-            'items'       => array(
+            'subtitle' => array('Groups', 'Studies', 'Subjects'),
+            'items'    => array(
                 'syllabus_admin_academic' => array(
                     'action' => 'manage',
                     'title'  => 'Academics',
                 ),
-                'syllabus_admin_group'    => array(
+                'syllabus_admin_group' => array(
                     'action' => 'manage',
                     'title'  => 'Groups',
                 ),
-                'syllabus_admin_poc'    => array(
+                'syllabus_admin_poc' => array(
                     'action' => 'manage',
                     'title'  => 'POC',
                 ),
-                'syllabus_admin_study'    => array(
+                'syllabus_admin_study' => array(
                     'action' => 'manage',
                     'title'  => 'Studies',
                 ),
@@ -43,11 +43,11 @@ return array(
                     'action' => 'manage',
                     'title'  => 'Module Groups',
                 ),
-                'syllabus_admin_subject'  => array(
+                'syllabus_admin_subject' => array(
                     'action' => 'manage',
                     'title'  => 'Subjects',
                 ),
-                'syllabus_admin_update'   => array(
+                'syllabus_admin_update' => array(
                     'action' => 'index',
                     'title'  => 'Update',
                 ),

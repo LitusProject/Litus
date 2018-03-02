@@ -89,7 +89,7 @@ class Logo
      */
     public static $possibleTypes = array(
         'homepage' => 'Homepage',
-        'cudi' => 'Cudi',
+        'cudi'     => 'Cudi',
     );
 
     /**

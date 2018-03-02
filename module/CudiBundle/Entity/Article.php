@@ -154,13 +154,13 @@ abstract class Article
      * @var array The possible types of an article
      */
     public static $possibleTypes = array(
-        'common' => 'Common',
-        'other' => 'Other',
+        'common'    => 'Common',
+        'other'     => 'Other',
         'exercises' => 'Exercises',
-        'notes' => 'Notes',
-        'slides' => 'Slides',
-        'student' => 'Student',
-        'textbook' => 'Textbook',
+        'notes'     => 'Notes',
+        'slides'    => 'Slides',
+        'student'   => 'Student',
+        'textbook'  => 'Textbook',
     );
 
     public function __construct()

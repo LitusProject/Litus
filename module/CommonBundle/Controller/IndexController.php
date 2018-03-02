@@ -42,19 +42,19 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'bookings' => $this->getBookings(),
-                'calendarItems' => $this->getCalendarItems(),
-                'wiki' => $this->getWiki(),
-                'cudi' => $this->getCudiInfo(),
-                'newsItems' => $this->getNewsItems(),
-                'notifications' => $notifications,
-                'piwik' => $this->getPiwikInfo(),
-                'sportInfo' => $this->getSportResults(),
-                'myShifts' => $this->getMyShifts(),
-                'myPocers' => $this->getMyPocers(),
-                'pocUrl' => $this->getPocUrl(),
+                'bookings'       => $this->getBookings(),
+                'calendarItems'  => $this->getCalendarItems(),
+                'wiki'           => $this->getWiki(),
+                'cudi'           => $this->getCudiInfo(),
+                'newsItems'      => $this->getNewsItems(),
+                'notifications'  => $notifications,
+                'piwik'          => $this->getPiwikInfo(),
+                'sportInfo'      => $this->getSportResults(),
+                'myShifts'       => $this->getMyShifts(),
+                'myPocers'       => $this->getMyPocers(),
+                'pocUrl'         => $this->getPocUrl(),
                 'pocUrlOverview' => $this->getPocUrlOverview(),
-                'profilePath' => $this->getEntityManager()
+                'profilePath'    => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
             )
@@ -104,10 +104,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 }
 
                 $returnArray = array(
-                    'nbLaps' => $teamData->laps,
-                    'position' => round($teamData->position * 100),
-                    'speed' => round($teamData->speed, 2),
-                    'behind' => $behind,
+                    'nbLaps'     => $teamData->laps,
+                    'position'   => round($teamData->position * 100),
+                    'speed'      => round($teamData->speed, 2),
+                    'behind'     => $behind,
                     'currentLap' => $this->getEntityManager()
                         ->getRepository('SportBundle\Entity\Lap')
                         ->findCurrent($this->getCurrentAcademicYear()),
@@ -142,24 +142,24 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         return $bookings;
     }
-     /**
-      * @return string|null
-      */
-     private function getPocUrl()
-     {
-         return $this->getEntityManager()
+    /**
+     * @return string|null
+     */
+    private function getPocUrl()
+    {
+        return $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.pocUrl');
-     }
-     /**
-      * @return string|null
-      */
-     private function getPocUrlOverview()
-     {
-         return $this->getEntityManager()
+    }
+    /**
+     * @return string|null
+     */
+    private function getPocUrlOverview()
+    {
+        return $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.pocUrlOverview');
-     }
+    }
 
     /**
      * @return array
@@ -194,7 +194,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             $date = $event->getStartDate()->format('d-M');
             if (!isset($calendarItems[$date])) {
                 $calendarItems[$date] = (object) array(
-                    'date' => $event->getStartDate(),
+                    'date'   => $event->getStartDate(),
                     'events' => array(),
                 );
             }
@@ -303,7 +303,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         }
         $currentAcademicYear = $this->getCurrentAcademicYear();
 
-        $pocers =  $this->getEntityManager()
+        $pocers = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
             ->findPocersByAcademicAndAcademicYear($academic, $currentAcademicYear);
         $lastPocGroup = null;
@@ -317,9 +317,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 $pocGroupList[] = $pocer;
             } elseif ($lastPocGroup !== $pocer->getGroupId()) {
                 $pocItem[] = array(
-                    'groupId' => $lastPocGroup,
+                    'groupId'      => $lastPocGroup,
                     'pocGroupList' => $pocGroupList,
-                     'pocExample' => $pocGroupList[0],);
+                     'pocExample'  => $pocGroupList[0],);
                 unset($pocGroupList);
                 $pocGroupList = array();
                 $pocGroupList[] = $pocer;
@@ -328,9 +328,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         }
         if (!empty($pocGroupList)) {
             $pocItem[] = array(
-                    'groupId' => $lastPocGroup,
+                    'groupId'      => $lastPocGroup,
                     'pocGroupList' => $pocGroupList,
-                     'pocExample' => $pocGroupList[0],);
+                     'pocExample'  => $pocGroupList[0],);
         }
 
         return

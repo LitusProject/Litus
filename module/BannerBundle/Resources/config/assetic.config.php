@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'banner_admin_banner' => array(
             '@common_jquery',
             '@admin_css',

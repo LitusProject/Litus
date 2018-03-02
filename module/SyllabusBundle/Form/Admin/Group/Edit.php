@@ -45,9 +45,9 @@ class Edit extends Add
         ));
         } else {
             $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'poc_group',
-            'label' => 'Is POC group this year? ',
+            'type'       => 'checkbox',
+            'name'       => 'poc_group',
+            'label'      => 'Is POC group this year? ',
             'value'      => true,
             'attributes' => array(
             'disabled' => 1,),

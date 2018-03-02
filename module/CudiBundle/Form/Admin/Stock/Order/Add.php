@@ -43,12 +43,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required'   => true,
             'value'      => $this->barcodePrefix,
             'attributes' => array(
-                'id'           => 'article',
-                'style'        => 'width: 400px;',
+                'id'    => 'article',
+                'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'validators'  => array(
+                    'validators' => array(
                         array('name' => 'typeahead_sale_article'),
                     ),
                 ),
@@ -64,9 +64,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'autocomplete' => 'off',
                 'id'           => 'order_number',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -74,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             'name' => 'int',
                         ),
                         array(
-                            'name' => 'greaterthan',
+                            'name'    => 'greaterthan',
                             'options' => array(
                                 'min' => 0,
                             ),
@@ -87,7 +87,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->addSubmit('Add', 'stock_add', 'add', array(
             'data-help' => '<p>The article will be added to the order queue. This way a group of articles can be ordered for the same supplier.<p>
                 <p>To finish the order, you have to \'place\' it, this can be done by editing the order.</p>',
-            'id'        => 'stock_add',
+            'id' => 'stock_add',
         ));
     }
 

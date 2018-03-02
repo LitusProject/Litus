@@ -65,16 +65,13 @@ return array(
             'odm_default' => array(
                   'generate_proxies'   => true,
                   'proxy_dir'          => 'data/proxies',
-
                   'generate_hydrators' => true,
                   'hydrator_dir'       => 'data/hydrators',
-
                   'default_db'         => $databaseConfig['document']['dbname'],
             ),
             'orm_default' => array(
                 'generate_proxies' => ('development' == getenv('APPLICATION_ENV')),
                 'proxyDir'         => 'data/proxies/',
-
                 'metadataCache'    => 'orm_default',
                 'queryCache'       => 'orm_default',
                 'resultCache'      => 'orm_default',
@@ -91,7 +88,7 @@ return array(
             ),
             'orm_default' => array(
                 'driverClass' => $databaseConfig['relational']['driver'],
-                'params' => array(
+                'params'      => array(
                     'host'     => $databaseConfig['relational']['host'],
                     'port'     => $databaseConfig['relational']['port'],
                     'user'     => $databaseConfig['relational']['user'],

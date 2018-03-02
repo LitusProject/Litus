@@ -49,7 +49,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -77,7 +77,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
                     'gallery_admin_gallery',
                     array(
                         'action' => 'addPhotos',
-                        'id' => $album->getId(),
+                        'id'     => $album->getId(),
                     )
                 );
 
@@ -167,10 +167,10 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'album' => $album,
-                'paginator' => $paginator,
+                'album'             => $album,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
-                'filePath' => $filePath,
+                'filePath'          => $filePath,
             )
         );
     }

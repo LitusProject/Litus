@@ -40,12 +40,12 @@ class Poc
      */
     private $id;
 
-     /**
-      * @var group
-      * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Group")
-      * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
-      */
-     private $groupId;
+    /**
+     * @var group
+     * @ORM\ManyToOne(targetEntity="SyllabusBundle\Entity\Group")
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
+     */
+    private $groupId;
 
     /**
      * @var AcademicYear The year of the mapping

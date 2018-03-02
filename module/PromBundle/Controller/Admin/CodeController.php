@@ -44,7 +44,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
         );
@@ -160,7 +160,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'passenger' => $passenger[0],
-                'code' => $code,
+                'code'      => $code,
             )
         );
     }

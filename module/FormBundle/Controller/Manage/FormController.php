@@ -107,7 +107,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 'form_manage_mail',
                 array(
                     'action' => 'send',
-                    'id' => $form->getId(),
+                    'id'     => $form->getId(),
                 )
             )
         );
@@ -137,8 +137,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action'   => 'doodleAdd',
-                    'id'       => $formSpecification->getId(),
+                    'action' => 'doodleAdd',
+                    'id'     => $formSpecification->getId(),
                 )
             );
 
@@ -169,7 +169,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
         $form = $this->getForm(
             'form_manage_specified-form_add',
             array(
-                'form' => $formSpecification,
+                'form'     => $formSpecification,
                 'language' => $this->getLanguage(),
             )
         );
@@ -219,7 +219,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'              => $form,
                 'formSpecification' => $formSpecification,
             )
         );
@@ -241,8 +241,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action'   => 'doodle',
-                    'id'       => $formEntry->getId(),
+                    'action' => 'doodle',
+                    'id'     => $formEntry->getId(),
                 )
             );
 
@@ -273,12 +273,12 @@ class FormController extends \FormBundle\Component\Controller\FormController
         $form = $this->getForm(
             'form_specified-form_edit',
             array(
-                'form' => $formSpecification,
-                'person' => $formEntry->getCreationPerson(),
-                'language' => $this->getLanguage(),
-                'entry' => $formEntry,
+                'form'       => $formSpecification,
+                'person'     => $formEntry->getCreationPerson(),
+                'language'   => $this->getLanguage(),
+                'entry'      => $formEntry,
                 'guest_info' => $formEntry->getGuestInfo(),
-                'is_draft' => false,
+                'is_draft'   => false,
             )
         );
 
@@ -310,9 +310,9 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'              => $form,
                 'formSpecification' => $formSpecification,
-                'entry' => $formEntry,
+                'entry'             => $formEntry,
             )
         );
     }
@@ -327,8 +327,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action'   => 'add',
-                    'id'       => $formSpecification->getId(),
+                    'action' => 'add',
+                    'id'     => $formSpecification->getId(),
                 )
             );
 
@@ -338,7 +338,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
         $form = $this->getForm(
             'form_manage_specified-form_doodle',
             array(
-                'form' => $formSpecification,
+                'form'     => $formSpecification,
                 'language' => $this->getLanguage(),
             )
         );
@@ -377,8 +377,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 $this->redirect()->toRoute(
                     'form_manage',
                     array(
-                        'action'   => 'view',
-                        'id'       => $formSpecification->getId(),
+                        'action' => 'view',
+                        'id'     => $formSpecification->getId(),
                     )
                 );
             }
@@ -386,7 +386,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'              => $form,
                 'formSpecification' => $formSpecification,
             )
         );
@@ -409,8 +409,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
             $this->redirect()->toRoute(
                 'form_manage',
                 array(
-                    'action'   => 'edit',
-                    'id'       => $formEntry->getId(),
+                    'action' => 'edit',
+                    'id'     => $formEntry->getId(),
                 )
             );
 
@@ -442,11 +442,11 @@ class FormController extends \FormBundle\Component\Controller\FormController
         $form = $this->getForm(
             'form_specified-form_doodle',
             array(
-                'form' => $formSpecification,
-                'person' => $formEntry->getCreationPerson(),
+                'form'      => $formSpecification,
+                'person'    => $formEntry->getCreationPerson(),
                 'guestInfo' => $formEntry->getGuestInfo(),
-                'language' => $this->getLanguage(),
-                'entry' => $formEntry,
+                'language'  => $this->getLanguage(),
+                'entry'     => $formEntry,
                 'forceEdit' => true,
             )
         );
@@ -465,8 +465,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 $this->redirect()->toRoute(
                     'form_manage',
                     array(
-                        'action'   => 'doodle',
-                        'id'       => $formEntry->getId(),
+                        'action' => 'doodle',
+                        'id'     => $formEntry->getId(),
                     )
                 );
 
@@ -608,8 +608,8 @@ class FormController extends \FormBundle\Component\Controller\FormController
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="' . $fieldEntry->getReadableValue() . '"',
-            'Content-Type' => mime_content_type($filePath),
-            'Content-Length' => filesize($filePath),
+            'Content-Type'        => mime_content_type($filePath),
+            'Content-Length'      => filesize($filePath),
         ));
         $this->getResponse()->setHeaders($headers);
 

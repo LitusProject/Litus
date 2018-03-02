@@ -43,7 +43,7 @@ class Values extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array The message variables
      */
     protected $messageVariables = array(
-        'start_value'  => array('options' => 'startValue'),
+        'start_value' => array('options' => 'startValue'),
     );
 
     protected $options = array(

@@ -43,11 +43,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
 
         $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'person',
-            'label'      => 'Name',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'typeahead',
+            'name'     => 'person',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'validators' => array(
                         array('name' => 'logistics_typeahead_driver'),
@@ -64,14 +64,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'id' => 'color',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'regex',
+                            'name'    => 'regex',
                             'options' => array(
                                 'pattern' => '/^#([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$/',
                             ),

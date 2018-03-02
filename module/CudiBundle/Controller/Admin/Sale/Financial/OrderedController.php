@@ -57,9 +57,9 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );
@@ -141,9 +141,9 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );
@@ -224,10 +224,10 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'order' => $order,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'order'              => $order,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );
@@ -305,9 +305,9 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );
@@ -342,10 +342,10 @@ class OrderedController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'supplier' => $supplier,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'supplier'           => $supplier,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );

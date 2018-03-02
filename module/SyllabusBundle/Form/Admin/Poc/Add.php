@@ -48,12 +48,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'POC\'er',
             'required'   => true,
             'attributes' => array(
-                'id'           => 'person',
-                'style'        => 'width: 400px;',
+                'id'    => 'person',
+                'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'validators'  => array(
+                    'validators' => array(
                         array('name' => 'typeahead_person'),
                     ),
                 ),

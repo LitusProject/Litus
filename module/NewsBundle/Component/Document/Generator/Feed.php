@@ -177,7 +177,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     }
 
     /**
-     * @param  News      $item
+     * @param  News    $item
      * @return XmlNode
      */
     private function generateItemXml(News $item)
@@ -203,7 +203,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                         'news',
                         array(
                             'action' => 'view',
-                            'name' => $item->getName(),
+                            'name'   => $item->getName(),
                         )
                     )
                 ),
@@ -214,7 +214,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
                         'news',
                         array(
                             'action' => 'view',
-                            'name' => $item->getName(),
+                            'name'   => $item->getName(),
                         )
                     )
                 ),

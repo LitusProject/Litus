@@ -55,7 +55,7 @@ class ModuleGroup extends \CommonBundle\Component\Hydrator\Hydrator
 
         if ($parent = $object->getParent()) {
             $data['parent'] = array(
-                'id' => $parent->getId(),
+                'id'    => $parent->getId(),
                 'value' => 'Phase ' . $parent->getPhase() . ' - ' . $parent->getTitle(),
             );
         }

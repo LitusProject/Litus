@@ -93,10 +93,10 @@ class Queue
         $json = json_encode(
             (object) array(
                 'queue' => array(
-                    'selling' => $selling,
-                    'collected' => $collected,
+                    'selling'    => $selling,
+                    'collected'  => $collected,
                     'collecting' => $collecting,
-                    'signed_in' => $signed_in,
+                    'signed_in'  => $signed_in,
                 ),
             )
         );
@@ -509,16 +509,16 @@ class Queue
         }
 
         $result = array(
-            'id' => 0,
+            'id'        => 0,
             'articleId' => $article->getId(),
-            'price' => $article->getSellPrice(),
-            'title' => $article->getMainArticle()->getTitle(),
-            'barcode' => $article->getBarcode(),
-            'barcodes' => $barcodes,
-            'author' => $article->getMainArticle()->getAuthors(),
-            'number' => 1,
-            'status' => 'assigned',
-            'sellable' => $article->isSellable(),
+            'price'     => $article->getSellPrice(),
+            'title'     => $article->getMainArticle()->getTitle(),
+            'barcode'   => $article->getBarcode(),
+            'barcodes'  => $barcodes,
+            'author'    => $article->getMainArticle()->getAuthors(),
+            'number'    => 1,
+            'status'    => 'assigned',
+            'sellable'  => $article->isSellable(),
             'collected' => 0,
             'discounts' => array(),
         );
@@ -526,8 +526,8 @@ class Queue
         foreach ($article->getDiscounts() as $discount) {
             if ($discount->canBeApplied($this->entityManager, $article, $item->getPerson(), $this->getCurrentAcademicYear())) {
                 $result['discounts'][] = array(
-                    'type' => $discount->getRawType(),
-                    'value' => $discount->apply($article->getSellPrice()),
+                    'type'      => $discount->getRawType(),
+                    'value'     => $discount->apply($article->getSellPrice()),
                     'applyOnce' => $discount->applyOnce(),
                 );
             }
@@ -562,7 +562,7 @@ class Queue
             if (!isset($articles[$saleItem->getArticle()->getId()])) {
                 $articles[$saleItem->getArticle()->getId()] = array(
                     'article' => $saleItem->getArticle(),
-                    'number' => $saleItem->getNumber(),
+                    'number'  => $saleItem->getNumber(),
                 );
             } else {
                 $articles[$saleItem->getArticle()->getId()]['number'] += $saleItem->getNumber();

@@ -30,7 +30,7 @@ class FieldLength extends AbstractValidator
     const NOT_VALID = 'notValid';
 
     protected $options = array(
-        'max_length' => 0,
+        'max_length'      => 0,
         'new_line_length' => 0,
     );
 

@@ -38,11 +38,11 @@ class Sessions extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
         $this->add(array(
-            'type' => 'select',
-            'name' => 'salesSession',
-            'label' => 'Sales Session',
-            'required' => true,
-            'escape' => false,
+            'type'       => 'select',
+            'name'       => 'salesSession',
+            'label'      => 'Sales Session',
+            'required'   => true,
+            'escape'     => false,
             'attributes' => array(
                 'options' => $this->createSalesSessionsArray(),
             ),

@@ -80,7 +80,7 @@ class Study extends \CommonBundle\Component\Hydrator\Hydrator
         foreach ($object->getCombination()->getModuleGroups() as $group) {
             $data['module_groups'][] = array(
                 'module_group' => array(
-                    'id' => $group->getId(),
+                    'id'    => $group->getId(),
                     'value' => 'Phase ' . $group->getPhase() . ' - ' . $group->getTitle(),
                 ),
             );

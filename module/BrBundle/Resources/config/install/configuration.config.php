@@ -55,8 +55,8 @@ return array(
             'description' => 'Explains what the VAT',
     ),
     array(
-        'key'         => 'br.invoice_below_entries',
-        'value'       => serialize(
+        'key'   => 'br.invoice_below_entries',
+        'value' => serialize(
             array(
                 'en' => 'Please pay at the latest <payment_days/> days after the invoice date, as agreed in the contract. For information of a financial nature, you can always contact beheer@vtk.be.',
                 'nl' => 'Gelieve het bovenstaande factuurbedrag te betalen ten laatste <payment_days/> dagen na factuurdatum, zoals overeengekomen in het contract. Voor inlichtingen van financiële aard kan u steeds terecht bij beheer@vtk.be .',
@@ -65,8 +65,8 @@ return array(
         'description' => 'Payment information',
     ),
     array(
-        'key'         => 'br.account_activated_mail',
-        'value'       => serialize(
+        'key'   => 'br.account_activated_mail',
+        'value' => serialize(
             array(
                 'en' => array(
                     'subject' => 'Student IT Corporate Account',
@@ -112,8 +112,8 @@ Het Student IT Bedrijvenrelaties Team',
             'description' => 'I have no idea contract_final_entry',
     ),
     array(
-        'key'         => 'br.contract_below_entries',
-        'value'       => serialize(
+        'key'   => 'br.contract_below_entries',
+        'value' => serialize(
             array(
                 'en' => 'Herewith I agree to the terms and conditions of Student IT, found at the end of this contract.',
                 'nl' => 'Hiermede ga ik akkoord met de algemene verkoopsvoorwaarden van Student IT, te vinden aan het einde van dit contract.',
@@ -122,8 +122,8 @@ Het Student IT Bedrijvenrelaties Team',
         'description' => 'Payment information',
     ),
     array(
-        'key'         => 'br.contract_above_signatures',
-        'value'       => serialize(
+        'key'   => 'br.contract_above_signatures',
+        'value' => serialize(
             array(
                 'en' => 'Contract drawn up in in duplicate at ',
                 'nl' => 'Contract opgemaakt in tweevoud te ',
@@ -132,8 +132,8 @@ Het Student IT Bedrijvenrelaties Team',
         'description' => 'Extra line contract first part',
     ),
     array(
-        'key'         => 'br.contract_above_signatures_middle',
-        'value'       => serialize(
+        'key'   => 'br.contract_above_signatures_middle',
+        'value' => serialize(
             array(
                 'en' => ' on ',
                 'nl' => ' op ',
@@ -142,8 +142,8 @@ Het Student IT Bedrijvenrelaties Team',
         'description' => 'Extra line contract second part',
     ),
     array(
-        'key'         => 'br.cv_book_foreword',
-        'value'       => '<section title="Example section">
+        'key'   => 'br.cv_book_foreword',
+        'value' => '<section title="Example section">
 <content>
 Example content of this section.
 </content>
@@ -166,8 +166,8 @@ Example content of this section.
             'description' => 'The default year prefix used for invoice numbers',
     ),
     array(
-        'key'         => 'br.vat_types',
-        'value'       => serialize(
+        'key'   => 'br.vat_types',
+        'value' => serialize(
             array(
                 6,
                 11,
@@ -177,8 +177,8 @@ Example content of this section.
         'description' => 'The possible amounts of VAT',
     ),
     array(
-        'key'         => 'br.cv_archive_years',
-        'value'       => serialize(
+        'key'   => 'br.cv_archive_years',
+        'value' => serialize(
             array(
                 /*
                 Structure:
@@ -191,8 +191,8 @@ Example content of this section.
         'description' => 'The cv archive years',
     ),
     array(
-            'key'         => 'br.product_contract_text',
-            'value'       => '* You have to start every line with a *.
+            'key'   => 'br.product_contract_text',
+            'value' => '* You have to start every line with a *.
 * Also the second bullet.
   * You can also make a sub bullet only use spaces before the bullet. It must be lined up with the text above.
   * The next sub bullet most be lined up with the one above.
@@ -200,29 +200,29 @@ Example content of this section.
             'description' => 'The standard text that is displayed on the creation of a new product.',
     ),
     array(
-        'key'         => 'br.contract_number_codes',
-        'value'       => serialize(
+        'key'   => 'br.contract_number_codes',
+        'value' => serialize(
             array(
-                '1415'  => '22',
-                '1516'  => '33',
-                '1617'  => '44',
-                '1718'  => '55',
+                '1415' => '22',
+                '1516' => '33',
+                '1617' => '44',
+                '1718' => '55',
             )
         ),
         'description' => 'The codes to use for contract number generation.',
     ),
     array(
-        'key'         => 'br.automatic_discounts',
-        'value'       => serialize(
+        'key'   => 'br.automatic_discounts',
+        'value' => serialize(
             array(
-                '400000'  => '5',
+                '400000' => '5',
             )
         ),
         'description' => 'The automatic discount: (money value (in cents, discount percentage)',
     ),
     array(
-            'key'         => 'br.contract_payment_details',
-            'value'       => '* Het Bedrijf verklaart de volgende betalingsvoorwaarden na te leven:
+            'key'   => 'br.contract_payment_details',
+            'value' => '* Het Bedrijf verklaart de volgende betalingsvoorwaarden na te leven:
   <total_price/> te betalen uiterlijk <payment_days/> dagen na facturatiedatum. De storting dient te gebeuren op het rekeningnummer 745-0175900-11 van VTK Ondersteuning vzw met vermelding van het factuurnummer.',
             'description' => 'The standard payment details text that is displayed on the creation of a new contract.',
     ),

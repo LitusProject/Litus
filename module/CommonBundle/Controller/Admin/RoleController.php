@@ -46,7 +46,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
         );
@@ -103,7 +103,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'role' => $role,
+                'role'    => $role,
                 'members' => $members,
             )
         );

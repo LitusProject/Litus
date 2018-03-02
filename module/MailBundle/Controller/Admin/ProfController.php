@@ -151,7 +151,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'semester' => $semester,
-                'form' => $form,
+                'form'     => $form,
             )
         );
     }

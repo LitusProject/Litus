@@ -40,9 +40,9 @@ class Ticket
      * @var array The possible states of a ticket
      */
     public static $possibleStatuses = array(
-        'empty' => 'Empty',
+        'empty'  => 'Empty',
         'booked' => 'Booked',
-        'sold' => 'Sold',
+        'sold'   => 'Sold',
     );
 
     /**

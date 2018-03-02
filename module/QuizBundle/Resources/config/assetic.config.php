@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'quiz_admin_quiz' => array(
             '@common_jquery',
             '@admin_css',

@@ -21,7 +21,7 @@
 return array(
     'submenus' => array(
         'Site' => array(
-            'items'       => array(
+            'items' => array(
                 'form_admin_form' => array('title' => 'Forms'),
             ),
             'controllers' => array(

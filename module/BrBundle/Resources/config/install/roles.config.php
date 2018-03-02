@@ -20,7 +20,7 @@
 
 return array(
     'corporate' => array(
-        'system' => true,
+        'system'  => true,
         'parents' => array(
             'guest',
         ),

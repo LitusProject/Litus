@@ -64,7 +64,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'formSpecification' => $formSpecification,
-                'fields' => $fields,
+                'fields'            => $fields,
             )
         );
     }
@@ -98,8 +98,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         $form = $this->getForm(
             'form_field_add',
             array(
-                'form' => $formSpecification,
-                'field' => $this->getParam('repeat') ? $latestField : null,
+                'form'   => $formSpecification,
+                'field'  => $this->getParam('repeat') ? $latestField : null,
                 'repeat' => $this->getParam('repeat') == '1',
             )
         );
@@ -148,7 +148,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         'form_admin_form_field',
                         array(
                             'action' => 'add',
-                            'id' => $formSpecification->getId(),
+                            'id'     => $formSpecification->getId(),
                             'repeat' => 1,
                         )
                     );
@@ -157,7 +157,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                         'form_admin_form_field',
                         array(
                             'action' => 'manage',
-                            'id' => $formSpecification->getId(),
+                            'id'     => $formSpecification->getId(),
                         )
                     );
                 }
@@ -169,7 +169,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'formSpecification' => $formSpecification,
-                'form' => $form,
+                'form'              => $form,
             )
         );
     }
@@ -199,8 +199,8 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         $form = $this->getForm(
             'form_field_edit',
             array(
-                'form' => $field->getForm(),
-                'field' => $field,
+                'form'   => $field->getForm(),
+                'field'  => $field,
                 'repeat' => false,
             )
         );
@@ -221,7 +221,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     'form_admin_form_field',
                     array(
                         'action' => 'manage',
-                        'id' => $field->getForm()->getId(),
+                        'id'     => $field->getForm()->getId(),
                     )
                 );
 
@@ -232,7 +232,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'formSpecification' => $field->getForm(),
-                'form' => $form,
+                'form'              => $form,
             )
         );
     }

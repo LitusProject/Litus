@@ -71,7 +71,7 @@ class External extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('MailBundle\Entity\MailingList\Entry\Person\External')
             ->findOneBy(
                 array(
-                    'list' => $this->options['list'],
+                    'list'  => $this->options['list'],
                     'email' => $value,
                 )
             );

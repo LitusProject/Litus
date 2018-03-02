@@ -287,7 +287,7 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
         );
 
         return array(
-            'totals' => $totals,
+            'totals'    => $totals,
             'companies' => $collection,
         );
     }

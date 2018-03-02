@@ -75,8 +75,8 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
     private function installBinding()
     {
         $bindings = array(
-            'glued' => 'Glued',
-            'none' => 'None',
+            'glued'   => 'Glued',
+            'none'    => 'None',
             'stapled' => 'Stapled',
         );
 

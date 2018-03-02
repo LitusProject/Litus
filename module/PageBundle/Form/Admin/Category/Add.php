@@ -44,7 +44,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'attributes' => array(
                 'id' => 'parent',
             ),
-            'options'    => array(
+            'options' => array(
                 'options' => $this->createPagesArray(),
             ),
         ));
@@ -55,11 +55,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
         $container->add(array(
-            'type'       => 'text',
-            'name'       => 'name',
-            'label'      => 'Name',
-            'required'   => $isDefault,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'name',
+            'label'    => 'Name',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),

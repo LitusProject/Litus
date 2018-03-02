@@ -38,7 +38,7 @@ class PositiveNumber extends AbstractValidator
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_POSITIVE => 'The value may not be negative',
+        self::NOT_POSITIVE        => 'The value may not be negative',
         self::NOT_STRICT_POSITIVE => 'The value may not be negative or zero',
     );
 

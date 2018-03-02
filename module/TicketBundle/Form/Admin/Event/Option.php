@@ -42,7 +42,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
             'required' => false,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -55,13 +55,13 @@ class Option extends Fieldset implements InputFilterProviderInterface
         ));
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'option',
-            'label'      => 'Name',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'option',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -75,7 +75,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -93,9 +93,9 @@ class Option extends Fieldset implements InputFilterProviderInterface
             'attributes' => array(
                 'class' => 'price_non_members',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(

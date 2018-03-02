@@ -51,14 +51,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'data-help' => 'The logo must be an image of max ' . self::FILESIZE . '.',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
                             'name' => 'fileisimage',
                         ),
                         array(
-                            'name' => 'filesize',
+                            'name'    => 'filesize',
                             'options' => array(
                                 'max' => self::FILESIZE,
                             ),
@@ -75,7 +75,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -93,18 +93,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Type',
             'required'   => true,
             'attributes' => array(
-                'options' => Logo::$possibleTypes,
+                'options'   => Logo::$possibleTypes,
                 'data-help' => 'The location where the logo will be used:
                     <ul>
                         <li><b>Homepage:</b> In the footer of the website</li>
                         <li><b>Cudi:<br> In the footer of the queue screen at Cudi</li>
                     </ul>',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'company_logo_type',
+                            'name'    => 'company_logo_type',
                             'options' => array(
                                 'company' => $this->company,
                             ),

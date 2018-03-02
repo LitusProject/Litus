@@ -58,7 +58,7 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
                     'cudi_admin_sales_article_barcode',
                     array(
                         'action' => 'manage',
-                        'id' => $article->getId(),
+                        'id'     => $article->getId(),
                     )
                 );
 
@@ -75,9 +75,9 @@ class BarcodeController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'article' => $article,
-                'paginator' => $paginator,
+                'form'              => $form,
+                'article'           => $article,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

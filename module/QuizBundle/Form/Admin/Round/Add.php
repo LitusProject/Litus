@@ -97,9 +97,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'int'),
                         array('name' => 'positive_number'),
                         array(
-                            'name' => 'quiz_round_unique',
+                            'name'    => 'quiz_round_unique',
                             'options' => array(
-                                'quiz' => $this->quiz,
+                                'quiz'  => $this->quiz,
                                 'round' => $this->round,
                             ),
                         ),

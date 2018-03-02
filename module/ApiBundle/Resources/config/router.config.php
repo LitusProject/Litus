@@ -21,26 +21,26 @@
 return array(
     'routes' => array(
         'api_admin_key' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/api/key[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/api/key[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id' => '[0-9]*',
-                    'page' => '[0-9]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'api_admin_key',
-                    'action' => 'manage',
+                    'action'     => 'manage',
                 ),
             ),
         ),
         'api_auth' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/api/auth[/:action][/]',
+                'route'       => '[/:language]/api/auth[/:action][/]',
                 'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '[a-z]{2}',
                 ),
                 'defaults' => array(
@@ -49,11 +49,11 @@ return array(
             ),
         ),
         'api_calendar' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/api/calendar[/:action][/]',
+                'route'       => '[/:language]/api/calendar[/:action][/]',
                 'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '[a-z]{2}',
                 ),
                 'defaults' => array(
@@ -62,11 +62,11 @@ return array(
             ),
         ),
         'api_config' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/api/config[/:action][/]',
+                'route'       => '[/:language]/api/config[/:action][/]',
                 'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '[a-z]{2}',
                 ),
                 'defaults' => array(
@@ -75,11 +75,11 @@ return array(
             ),
         ),
         'api_cudi' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/api/cudi[/:action][/]',
+                'route'       => '[/:language]/api/cudi[/:action][/]',
                 'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '[a-z]{2}',
                 ),
                 'defaults' => array(
@@ -88,11 +88,11 @@ return array(
             ),
         ),
         'api_door' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/api/door[/:action][/]',
+                'route'       => '[/:language]/api/door[/:action][/]',
                 'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '[a-z]{2}',
                 ),
                 'defaults' => array(
@@ -101,13 +101,13 @@ return array(
             ),
         ),
         'api_mail' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/api/mail[/:action[/type/:type]][/]',
+                'route'       => '[/:language]/api/mail[/:action[/type/:type]][/]',
                 'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '[a-z]{2}',
-                    'type' => '(tar|zip)',
+                    'type'     => '(tar|zip)',
                 ),
                 'defaults' => array(
                     'controller' => 'api_mail',
@@ -115,25 +115,25 @@ return array(
             ),
         ),
         'api_member' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/api/members[/:action][/]',
+                'route'       => '[/:language]/api/members[/:action][/]',
                 'constraints' => array(
                     'language' => '[a-z]{2}',
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'api_member',
-                    'action' => 'all',
+                    'action'     => 'all',
                 ),
             ),
         ),
         'api_news' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/api/news[/:action][/]',
+                'route'       => '[/:language]/api/news[/:action][/]',
                 'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '[a-z]{2}',
                 ),
                 'defaults' => array(
@@ -142,27 +142,27 @@ return array(
             ),
         ),
         'api_oauth' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/api/oauth[/:action[/identification/:identification[/hash/:hash]]][/]',
+                'route'       => '[/:language]/api/oauth[/:action[/identification/:identification[/hash/:hash]]][/]',
                 'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'identification' => '[mrsu][0-9]{7}',
-                    'hash' => '[a-zA-Z0-9_-]*',
-                    'language' => '[a-z]{2}',
+                    'hash'           => '[a-zA-Z0-9_-]*',
+                    'language'       => '[a-z]{2}',
                 ),
                 'defaults' => array(
                     'controller' => 'api_oauth',
-                    'action' => 'authorize',
+                    'action'     => 'authorize',
                 ),
             ),
         ),
         'api_shift' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/api/shift[/:action][/]',
+                'route'       => '[/:language]/api/shift[/:action][/]',
                 'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '[a-z]{2}',
                 ),
                 'defaults' => array(
@@ -175,15 +175,15 @@ return array(
     'controllers' => array(
         'api_admin_key' => 'ApiBundle\Controller\Admin\KeyController',
 
-        'api_auth' => 'ApiBundle\Controller\AuthController',
+        'api_auth'     => 'ApiBundle\Controller\AuthController',
         'api_calendar' => 'ApiBundle\Controller\CalendarController',
-        'api_config' => 'ApiBundle\Controller\ConfigController',
-        'api_cudi' => 'ApiBundle\Controller\CudiController',
-        'api_door' => 'ApiBundle\Controller\DoorController',
-        'api_mail' => 'ApiBundle\Controller\MailController',
-        'api_member' => 'ApiBundle\Controller\MemberController',
-        'api_news' => 'ApiBundle\Controller\NewsController',
-        'api_oauth' => 'ApiBundle\Controller\OAuthController',
-        'api_shift' => 'ApiBundle\Controller\ShiftController',
+        'api_config'   => 'ApiBundle\Controller\ConfigController',
+        'api_cudi'     => 'ApiBundle\Controller\CudiController',
+        'api_door'     => 'ApiBundle\Controller\DoorController',
+        'api_mail'     => 'ApiBundle\Controller\MailController',
+        'api_member'   => 'ApiBundle\Controller\MemberController',
+        'api_news'     => 'ApiBundle\Controller\NewsController',
+        'api_oauth'    => 'ApiBundle\Controller\OAuthController',
+        'api_shift'    => 'ApiBundle\Controller\ShiftController',
     ),
 );

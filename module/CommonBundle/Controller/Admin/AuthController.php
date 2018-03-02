@@ -80,8 +80,8 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'isAuthenticated' => $isAuthenticated,
-                'form' => $this->getForm('common_auth_login'),
-                'shibbolethUrl' => $this->getShibbolethUrl(),
+                'form'            => $this->getForm('common_auth_login'),
+                'shibbolethUrl'   => $this->getShibbolethUrl(),
             )
         );
     }

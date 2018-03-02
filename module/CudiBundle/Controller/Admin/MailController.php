@@ -71,7 +71,7 @@ class MailController extends \CudiBundle\Component\Controller\ActionController
                 return new ViewModel(
                     array(
                         'status' => 'error',
-                        'form' => array(
+                        'form'   => array(
                             'errors' => $form->getMessages(),
                         ),
                     )

@@ -48,12 +48,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'id' => 'academic',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
-                    'type'       => 'typeahead',
-                    'name'       => 'academic',
-                    'required'   => true,
-                    'options'    => array(
+                    'type'     => 'typeahead',
+                    'name'     => 'academic',
+                    'required' => true,
+                    'options'  => array(
                         'input' => array(
                             'validators' => array(
                                 array('name' => 'typeahead_person'),
@@ -71,41 +71,41 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'id' => 'external',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
-                    'type'       => 'text',
-                    'name'       => 'external_first_name',
-                    'label'      => 'First Name',
-                    'required'   => true,
-                    'options'    => array(
+                    'type'     => 'text',
+                    'name'     => 'external_first_name',
+                    'label'    => 'First Name',
+                    'required' => true,
+                    'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
                     ),
                 ),
                 array(
-                    'type'       => 'text',
-                    'name'       => 'external_last_name',
-                    'label'      => 'Last Name',
-                    'required'   => true,
-                    'options'    => array(
+                    'type'     => 'text',
+                    'name'     => 'external_last_name',
+                    'label'    => 'Last Name',
+                    'required' => true,
+                    'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
                     ),
                 ),
                 array(
-                    'type'       => 'text',
-                    'name'       => 'external_email',
-                    'label'      => 'Email',
-                    'required'   => true,
-                    'options'    => array(
+                    'type'     => 'text',
+                    'name'     => 'external_email',
+                    'label'    => 'Email',
+                    'required' => true,
+                    'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(

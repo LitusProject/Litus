@@ -45,7 +45,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'article_form',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
                     'type'     => 'text',
                     'name'     => 'title',
@@ -53,7 +53,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'required' => true,
                     'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
@@ -66,7 +66,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'required' => true,
                     'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
@@ -79,7 +79,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'required' => true,
                     'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
@@ -91,7 +91,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'   => 'Publish Year',
                     'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -107,12 +107,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'   => 'ISBN',
                     'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'isbn',
+                                    'name'    => 'isbn',
                                     'options' => array(
                                         'type' => 'auto',
                                     ),
@@ -127,7 +127,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'   => 'URL',
                     'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -173,7 +173,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'internal_form',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
                     'type'       => 'select',
                     'name'       => 'binding',
@@ -208,18 +208,18 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'subject_form',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
                     'type'       => 'typeahead',
                     'name'       => 'subject',
                     'label'      => 'Subject',
                     'required'   => true,
                     'attributes' => array(
-                        'id'           => 'subjectSearch',
+                        'id' => 'subjectSearch',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'validators'  => array(
+                            'validators' => array(
                                 array('name' => 'syllabus_typeahead_subject'),
                             ),
                         ),

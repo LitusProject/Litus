@@ -88,9 +88,9 @@ class Edit extends Add
         ));
 
         $this->add(array(
-            'type'     => 'text',
-            'name'     => 'email',
-            'label'    => 'Email',
+            'type'       => 'text',
+            'name'       => 'email',
+            'label'      => 'Email',
             'value'      => $email,
             'attributes' => array(
                 'disabled' => true,
@@ -117,14 +117,14 @@ class Edit extends Add
                 'id'      => 'first_bus',
                 'options' => $this->getFirstBusses(),
             ),
-            'options'  => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
                             'name' => 'prom_bus_selected',
                         ),
                         array(
-                            'name' => 'prom_bus_seats',
+                            'name'    => 'prom_bus_seats',
                             'options' => array(
                                 'bus' => $firstBusEntity,
                             ),
@@ -144,14 +144,14 @@ class Edit extends Add
                 'id'      => 'second_bus',
                 'options' => $this->getSecondBusses(),
             ),
-            'options'  => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
                             'name' => 'prom_bus_selected',
                         ),
                         array(
-                            'name' => 'prom_bus_seats',
+                            'name'    => 'prom_bus_seats',
                             'options' => array(
                                 'bus' => $secondBusEntity,
                             ),

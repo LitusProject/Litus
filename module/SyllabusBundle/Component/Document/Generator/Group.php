@@ -75,9 +75,9 @@ class Group extends \CommonBundle\Component\Document\Generator\Csv
                 $secondaryAddress = $ac->getSecondaryAddress();
 
                 $result[$ac->getId()] = array(
-                    'academicFirstName'               => $ac->getFirstName(),
-                    'academicLastName'                => $ac->getLastName(),
-                    'academicEmail'                   => $ac->getEmail(),
+                    'academicFirstName' => $ac->getFirstName(),
+                    'academicLastName'  => $ac->getLastName(),
+                    'academicEmail'     => $ac->getEmail(),
                 );
 
                 if (null !== $primaryAddress) {

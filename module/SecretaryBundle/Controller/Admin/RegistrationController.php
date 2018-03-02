@@ -67,11 +67,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
-                'activeAcademicYear' => $academicYear,
-                'academicYears' => $academicYears,
-                'organizations' => $organizations,
+                'paginator'           => $paginator,
+                'paginationControl'   => $this->paginator()->createControl(),
+                'activeAcademicYear'  => $academicYear,
+                'academicYears'       => $academicYears,
+                'organizations'       => $organizations,
                 'currentOrganization' => $this->getOrganizationEntity(),
             )
         );
@@ -139,11 +139,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'registration' => $registration,
-                'activeAcademicYear' => $registration->getAcademicYear(),
-                'academicYears' => $academicYears,
-                'form' => $form,
-                'organizations' => $organizations,
+                'registration'        => $registration,
+                'activeAcademicYear'  => $registration->getAcademicYear(),
+                'academicYears'       => $academicYears,
+                'form'                => $form,
+                'organizations'       => $organizations,
                 'currentOrganization' => $this->getOrganizationEntity(),
             )
         );
@@ -194,7 +194,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                         'secretary_admin_registration',
                         array(
                             'action' => 'edit',
-                            'id' => $registration->getId(),
+                            'id'     => $registration->getId(),
                         )
                     );
 
@@ -292,10 +292,10 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'activeAcademicYear' => $academicYear,
-                'academicYears' => $academicYears,
-                'organizations' => $organizations,
+                'form'                => $form,
+                'activeAcademicYear'  => $academicYear,
+                'academicYears'       => $academicYears,
+                'organizations'       => $organizations,
                 'currentOrganization' => $this->getOrganizationEntity(),
             )
         );
@@ -415,7 +415,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     'secretary_admin_registration',
                     array(
                         'action' => 'edit',
-                        'id' => $registration->getId(),
+                        'id'     => $registration->getId(),
                     )
                 );
 
@@ -425,11 +425,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'registration' => $registration,
-                'activeAcademicYear' => $registration->getAcademicYear(),
-                'academicYears' => $academicYears,
-                'form' => $form,
-                'organizations' => $organizations,
+                'registration'        => $registration,
+                'activeAcademicYear'  => $registration->getAcademicYear(),
+                'academicYears'       => $academicYears,
+                'form'                => $form,
+                'organizations'       => $organizations,
                 'currentOrganization' => $this->getOrganizationEntity(),
             )
         );

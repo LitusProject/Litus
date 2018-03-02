@@ -43,7 +43,7 @@ class Log extends \CommonBundle\Component\Lilo\Data
     {
         $this->data = array(
             'message' => $message,
-            'tags' => $tags,
+            'tags'    => $tags,
         );
     }
 

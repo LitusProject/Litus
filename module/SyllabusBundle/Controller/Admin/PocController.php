@@ -57,9 +57,9 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         return new ViewModel(
             array(
 
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'groups' => $groups,
+                'groups'              => $groups,
             )
         );
     }
@@ -94,9 +94,9 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
                 $this->redirect()->toRoute(
                     'syllabus_admin_poc',
                     array(
-                        'action' => 'members',
+                        'action'       => 'members',
                         'academicyear' => $academicYear->getCode(),
-                        'id' => $pocgroup->getId(),
+                        'id'           => $pocgroup->getId(),
                     )
                 );
 
@@ -110,9 +110,9 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'form'       => $form,
+                'form'     => $form,
                 'pocgroup' => $pocgroup,
-                'pocers' => $pocers,
+                'pocers'   => $pocers,
             )
         );
     }
@@ -157,8 +157,8 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'form'       => $form,
-                'pocIndicator'    => $pocIndicator,
+                'form'         => $form,
+                'pocIndicator' => $pocIndicator,
             )
         );
     }

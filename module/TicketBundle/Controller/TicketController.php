@@ -55,7 +55,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 $formData = $form->getData();
 
                 $numbers = array(
-                    'member' => isset($formData['number_member']) ? $formData['number_member'] : 0,
+                    'member'     => isset($formData['number_member']) ? $formData['number_member'] : 0,
                     'non_member' => isset($formData['number_non_member']) ? $formData['number_non_member'] : 0,
                 );
 
@@ -84,7 +84,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     'ticket',
                     array(
                         'action' => 'event',
-                        'id' => $event->getId(),
+                        'id'     => $event->getId(),
                     )
                 );
             }
@@ -94,11 +94,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'event' => $event,
-                'tickets' => $tickets,
-                'form' => $form,
+                'event'                 => $event,
+                'tickets'               => $tickets,
+                'form'                  => $form,
                 'canRemoveReservations' => $event->canRemoveReservation($this->getEntityManager()),
-                'isPraesidium' => $organizationStatus ? $organizationStatus->getStatus() == 'praesidium' : false,
+                'isPraesidium'          => $organizationStatus ? $organizationStatus->getStatus() == 'praesidium' : false,
             )
         );
     }

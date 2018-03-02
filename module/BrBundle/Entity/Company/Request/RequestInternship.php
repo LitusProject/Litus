@@ -68,10 +68,10 @@ class RequestInternship extends \BrBundle\Entity\Company\Request
      * @var array All the possible requests allowed
      */
     public static $possibleRequests = array(
-        'edit' => 'edit',
+        'edit'        => 'edit',
         'edit reject' => 'edit reject',
-        'add' => 'add',
-        'delete' => 'delete',
+        'add'         => 'add',
+        'delete'      => 'delete',
     );
 
     /**

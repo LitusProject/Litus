@@ -33,8 +33,8 @@ class PianoReservationConflict extends \CommonBundle\Component\Validator\Abstrac
      * @const string The error codes
      */
     const CONFLICT_EXISTS = 'conflictExists';
-    const INVALID_FORMAT  = 'invalidFormat';
-    const NO_START_DATE   = 'noStartDate';
+    const INVALID_FORMAT = 'invalidFormat';
+    const NO_START_DATE = 'noStartDate';
 
     /**
      * @var array The error messages
@@ -46,9 +46,9 @@ class PianoReservationConflict extends \CommonBundle\Component\Validator\Abstrac
     );
 
     protected $options = array(
-        'start_date' => '',
-        'format' => false,
-        'resource' => null,
+        'start_date'     => '',
+        'format'         => false,
+        'resource'       => null,
         'reservation_id' => -1,
     );
 

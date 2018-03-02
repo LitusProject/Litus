@@ -47,8 +47,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'form_view',
                 array(
-                    'action'   => 'doodle',
-                    'id'       => $formSpecification->getId(),
+                    'action' => 'doodle',
+                    'id'     => $formSpecification->getId(),
                 )
             );
 
@@ -108,8 +108,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_view',
                     array(
-                        'action'   => 'index',
-                        'id'       => $progressBarInfo['first_uncompleted_id'],
+                        'action' => 'index',
+                        'id'     => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
 
@@ -127,9 +127,9 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         } elseif (!$formSpecification->isMultiple() && count($entries) > 0 && !isset($draftVersion)) {
             return new ViewModel(
                 array(
-                    'message'       => 'You can\'t fill this form more than once.',
-                    'specification' => $formSpecification,
-                    'entries'       => $entries,
+                    'message'         => 'You can\'t fill this form more than once.',
+                    'specification'   => $formSpecification,
+                    'entries'         => $entries,
                     'group'           => $group,
                     'progressBarInfo' => $progressBarInfo,
                 )
@@ -153,10 +153,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $form = $this->getForm(
             'form_specified-form_add',
             array(
-                'form' => $formSpecification,
-                'person' => $person,
-                'language' => $this->getLanguage(),
-                'entry' => $draftVersion,
+                'form'       => $formSpecification,
+                'person'     => $person,
+                'language'   => $this->getLanguage(),
+                'entry'      => $draftVersion,
                 'guest_info' => $guestInfo,
             )
         );
@@ -168,7 +168,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     'form_view',
                     array(
                         'action' => 'edit',
-                        'id' => $draftVersion->getId(),
+                        'id'     => $draftVersion->getId(),
                     )
                 )
             );
@@ -254,8 +254,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_view',
                     array(
-                        'action'   => 'index',
-                        'id'       => $progressBarInfo['first_uncompleted_id'],
+                        'action' => 'index',
+                        'id'     => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
 
@@ -284,8 +284,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'form_view',
                 array(
-                    'action'   => 'index',
-                    'id'       => $formSpecification->getId(),
+                    'action' => 'index',
+                    'id'     => $formSpecification->getId(),
                 )
             );
 
@@ -328,8 +328,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_view',
                     array(
-                        'action'   => 'index',
-                        'id'       => $progressBarInfo['first_uncompleted_id'],
+                        'action' => 'index',
+                        'id'     => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
 
@@ -360,10 +360,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $form = $this->getForm(
             'form_specified-form_doodle',
             array(
-                'form' => $formSpecification,
-                'person' => $person,
-                'language' => $this->getLanguage(),
-                'entry' => $formEntry,
+                'form'       => $formSpecification,
+                'person'     => $person,
+                'language'   => $this->getLanguage(),
+                'entry'      => $formEntry,
                 'guest_info' => $guestInfo,
             )
         );
@@ -424,8 +424,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'form_view',
                 array(
-                    'action'   => 'doodle',
-                    'id'       => $formSpecification->getId(),
+                    'action' => 'doodle',
+                    'id'     => $formSpecification->getId(),
                 )
             );
 
@@ -487,10 +487,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $form = $this->getForm(
             'form_specified-form_doodle',
             array(
-                'form' => $formSpecification,
-                'person' => $person,
-                'language' => $this->getLanguage(),
-                'entry' => $formEntry,
+                'form'       => $formSpecification,
+                'person'     => $person,
+                'language'   => $this->getLanguage(),
+                'entry'      => $formEntry,
                 'guest_info' => $guestInfo,
             )
         );
@@ -575,8 +575,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_view',
                     array(
-                        'action'   => 'index',
-                        'id'       => $progressBarInfo['first_uncompleted_id'],
+                        'action' => 'index',
+                        'id'     => $progressBarInfo['first_uncompleted_id'],
                     )
                 );
 
@@ -608,12 +608,12 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $form = $this->getForm(
             'form_specified-form_edit',
             array(
-                'form' => $formEntry->getForm(),
-                'person' => $person,
-                'language' => $this->getLanguage(),
-                'entry' => $formEntry,
+                'form'       => $formEntry->getForm(),
+                'person'     => $person,
+                'language'   => $this->getLanguage(),
+                'entry'      => $formEntry,
                 'guest_info' => $guestInfo,
-                'is_draft' => isset($draftVersion) && $draftVersion != $formEntry,
+                'is_draft'   => isset($draftVersion) && $draftVersion != $formEntry,
             )
         );
 
@@ -682,8 +682,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $this->redirect()->toRoute(
             'form_view',
             array(
-                'action'   => 'index',
-                'id'       => $form->getId(),
+                'action' => 'index',
+                'id'     => $form->getId(),
             )
         );
 
@@ -707,8 +707,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="' . $fieldEntry->getReadableValue() . '"',
-            'Content-Type' => mime_content_type($filePath),
-            'Content-Length' => filesize($filePath),
+            'Content-Type'        => mime_content_type($filePath),
+            'Content-Length'      => filesize($filePath),
         ));
         $this->getResponse()->setHeaders($headers);
 
@@ -803,15 +803,15 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     {
         $data = array(
             'uncompleted_before_current' => 0,
-            'first_uncompleted_id' => 0,
-            'completed_before_current' => 0,
-            'previous_form' => 0,
-            'current_form' => $group->getFormNumber($form),
-            'current_completed' => false,
-            'current_draft' => false,
-            'next_form' => 0,
-            'completed_after_current' => 0,
-            'total_forms' => sizeof($group->getForms()),
+            'first_uncompleted_id'       => 0,
+            'completed_before_current'   => 0,
+            'previous_form'              => 0,
+            'current_form'               => $group->getFormNumber($form),
+            'current_completed'          => false,
+            'current_draft'              => false,
+            'next_form'                  => 0,
+            'completed_after_current'    => 0,
+            'total_forms'                => sizeof($group->getForms()),
         );
 
         if ($this->getAuthentication()->isAuthenticated()) {
@@ -910,16 +910,16 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'form_group',
                     array(
-                        'action'   => 'view',
-                        'id'       => $group->getId(),
+                        'action' => 'view',
+                        'id'     => $group->getId(),
                     )
                 );
             } else {
                 $this->redirect()->toRoute(
                     'form_view',
                     array(
-                        'action'   => 'index',
-                        'id'       => $progressBarInfo['next_form'],
+                        'action' => 'index',
+                        'id'     => $progressBarInfo['next_form'],
                     )
                 );
             }
@@ -927,8 +927,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->redirect()->toRoute(
                 'form_view',
                 array(
-                    'action'   => 'index',
-                    'id'       => $formSpecification->getId(),
+                    'action' => 'index',
+                    'id'     => $formSpecification->getId(),
                 )
             );
         }

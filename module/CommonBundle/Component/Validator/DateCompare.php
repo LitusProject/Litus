@@ -46,7 +46,7 @@ class DateCompare extends AbstractValidator
      * @var array The message variables
      */
     protected $messageVariables = array(
-        'first_date'  => array('options' => 'first_date'),
+        'first_date' => array('options' => 'first_date'),
     );
 
     protected $options = array(

@@ -47,8 +47,8 @@ class Util
 
             if (count($entries) > 0) {
                 $result[] = array(
-                    'id' => 'group-' . $group->getId(),
-                    'name' => $group->getName(),
+                    'id'      => 'group-' . $group->getId(),
+                    'name'    => $group->getName(),
                     'entries' => $entries,
                 );
             }
@@ -65,8 +65,8 @@ class Util
 
             if (count($entries) > 0) {
                 $result[] = array(
-                    'id' => 'study-' . $study->getId(),
-                    'name' => $study->getTitle(),
+                    'id'      => 'study-' . $study->getId(),
+                    'name'    => $study->getTitle(),
                     'entries' => $entries,
                 );
             }
@@ -126,11 +126,11 @@ class Util
 
         //Grades may be 0 in the database
         $masterGrade = (string) ($cv->getGrade() / 100);
-        if($cv->getGrade() == 0){
+        if ($cv->getGrade() == 0) {
             $masterGrade = "-";
         }
         $bachelorGrade = (string) ($cv->getPriorGrade() / 100);
-        if($cv->getPriorGrade() == 0){
+        if ($cv->getPriorGrade() == 0) {
             $bachelorGrade = "-";
         }
 
@@ -143,14 +143,14 @@ class Util
                 new Node(
                     'sec-special-studies',
                     array(
-                        'start_master'          => (string) $cv->getMasterStart(),
-                        'end_master'            => (string) $cv->getMasterEnd(),
-                        'percentage_master'     => $masterGrade,
-                        'title_master'          => $cv->getStudy()->getTitle(),
-                        'start_bach'            => (string) $cv->getBachelorStart(),
-                        'end_bach'              => (string) $cv->getBachelorEnd(),
-                        'percentage_bach'       => $bachelorGrade,
-                        'title_bach'            => $cv->getPriorStudy(),
+                        'start_master'      => (string) $cv->getMasterStart(),
+                        'end_master'        => (string) $cv->getMasterEnd(),
+                        'percentage_master' => $masterGrade,
+                        'title_master'      => $cv->getStudy()->getTitle(),
+                        'start_bach'        => (string) $cv->getBachelorStart(),
+                        'end_bach'          => (string) $cv->getBachelorEnd(),
+                        'percentage_bach'   => $bachelorGrade,
+                        'title_bach'        => $cv->getPriorStudy(),
                     ),
                     null
                 ),
@@ -202,9 +202,9 @@ class Util
         $languages = array();
         foreach ($cv->getLanguages() as $language) {
             $tmp = array(
-                'name' . $index      => $language->getName(),
-                'oral' . $index      => $translator->translate($language->getOralSkill()),
-                'written' . $index   => $translator->translate($language->getWrittenSkill()),
+                'name' . $index    => $language->getName(),
+                'oral' . $index    => $translator->translate($language->getOralSkill()),
+                'written' . $index => $translator->translate($language->getWrittenSkill()),
             );
             $languages = array_merge($languages,$tmp);
             $index++;
@@ -220,7 +220,7 @@ class Util
                     'sec-special-languages',
                     array_merge(
                         array(
-                        'oral' => $translator->translate('Oral Skills'),
+                        'oral'    => $translator->translate('Oral Skills'),
                         'written' => $translator->translate('Written Skills'),
                         ),
                         $languages
@@ -279,10 +279,10 @@ class Util
             $experiences = array();
             foreach ($cv->getExperiences() as $experience) {
                 $tmp = array(
-                    'experience_type' . $index      => $translator->translate($experience->getType()),
-                    'experience_function' . $index      => $experience->getFunction(),
-                    'experience_start' . $index   => strval($experience->getStartYear()),
-                    'experience_end' . $index   => strval($experience->getEndYear()),
+                    'experience_type' . $index     => $translator->translate($experience->getType()),
+                    'experience_function' . $index => $experience->getFunction(),
+                    'experience_start' . $index    => strval($experience->getStartYear()),
+                    'experience_end' . $index      => strval($experience->getEndYear()),
                 );
                 $experiences = array_merge($experiences,$tmp);
                 $index++;
@@ -343,12 +343,12 @@ class Util
                 new Node(
                     'sec-special-career',
                     array(
-                        'InterestHeader' => $translator->translate('Future Interest'),
-                        'EuropeHeader' => $translator->translate('Mobility in Europe'),
-                        'WorldHeader' => $translator->translate('Mobility in the World'),
+                        'InterestHeader'  => $translator->translate('Future Interest'),
+                        'EuropeHeader'    => $translator->translate('Mobility in Europe'),
+                        'WorldHeader'     => $translator->translate('Mobility in the World'),
                         'InterestContent' => $cv->getFutureInterest(),
-                        'EuropeContent' => $translator->translate($cv->getMobilityEurope()),
-                        'WorldContent' => $translator->translate($cv->getMobilityWorld()),
+                        'EuropeContent'   => $translator->translate($cv->getMobilityEurope()),
+                        'WorldContent'    => $translator->translate($cv->getMobilityWorld()),
                         ),
                     null
                     ),
@@ -385,11 +385,11 @@ class Util
     private static function getAddressArray(Entry $cv)
     {
         $result = array(
-            'street'    => $cv->getAddress()->getStreet(),
-            'nr'        => $cv->getAddress()->getNumber(),
-            'postal'    => $cv->getAddress()->getPostal(),
-            'city'      => $cv->getAddress()->getCity(),
-            'country'   => $cv->getAddress()->getCountry(),
+            'street'  => $cv->getAddress()->getStreet(),
+            'nr'      => $cv->getAddress()->getNumber(),
+            'postal'  => $cv->getAddress()->getPostal(),
+            'city'    => $cv->getAddress()->getCity(),
+            'country' => $cv->getAddress()->getCountry(),
         );
         if (null !== $cv->getAddress()->getMailbox() && '' !== $cv->getAddress()->getMailbox()) {
             $result['bus'] = $cv->getAddress()->getMailbox();

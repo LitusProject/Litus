@@ -86,8 +86,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
                 $this->redirect()->toRoute(
                     'cudi_prof_subject',
                     array(
-                        'action' => 'subject',
-                        'id' => $subject->getId(),
+                        'action'   => 'subject',
+                        'id'       => $subject->getId(),
                         'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
@@ -102,8 +102,8 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 
         return new ViewModel(
             array(
-                'subject' => $subject,
-                'form' => $form,
+                'subject'    => $subject,
+                'form'       => $form,
                 'nbArticles' => $nbArticles,
             )
         );
@@ -199,7 +199,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             $this->redirect()->toRoute(
                 'cudi_prof_subject',
                 array(
-                    'action' => 'manage',
+                    'action'   => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
@@ -236,7 +236,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             $this->redirect()->toRoute(
                 'cudi_prof_subject',
                 array(
-                    'action' => 'manage',
+                    'action'   => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
@@ -268,7 +268,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
             $this->redirect()->toRoute(
                 'cudi_prof_subject',
                 array(
-                    'action' => 'manage',
+                    'action'   => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );

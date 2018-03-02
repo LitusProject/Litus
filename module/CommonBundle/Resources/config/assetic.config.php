@@ -189,14 +189,14 @@ return array(
 
     'collections' => array(
         'common_jquery' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/jquery.min.js',
                 'common/js/bootstrap-fileinput.min.js',
             ),
             'filters' => array('js'),
         ),
         'common_jqueryui' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/jquery-ui.min.js',
             ),
             'filters' => array('js'),
@@ -232,61 +232,61 @@ return array(
             'filters' => array('js'),
         ),
         'common_jquery_form' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/jquery.form.js',
             ),
             'filters' => array('js'),
         ),
         'common_form_upload_progress' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/formUploadProgress.js',
             ),
             'filters' => array('js'),
         ),
         'common_permanent_modal' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/permanentModal.js',
             ),
             'filters' => array('js'),
         ),
         'common_socket' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/socket.js',
             ),
             'filters' => array('js'),
         ),
         'common_fieldcount' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/fieldcount.js',
             ),
             'filters' => array('js'),
         ),
         'common_remote_typeahead' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/typeaheadRemote.js',
             ),
             'filters' => array('js'),
         ),
         'common_spin_js' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/spin.min.js',
             ),
             'filters' => array('js'),
         ),
         'common_holder_js' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/holder.js',
             ),
             'filters' => array('js'),
         ),
         'common_chart_js' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/chart.min.js',
             ),
             'filters' => array('js'),
         ),
         'common_serialize_js' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/serialize.js',
                 'common/js/unserialize.js',
             ),
@@ -303,7 +303,7 @@ return array(
             ),
         ),
         'admin_js' => array(
-            'assets'  => array(
+            'assets' => array(
                 'admin/js/*.js',
             ),
             'filters' => array('js'),
@@ -327,7 +327,7 @@ return array(
         ),
 
         'bootstrap_js_rowlink' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/bootstrap-rowlink.js',
             ),
             'filters' => array('js'),

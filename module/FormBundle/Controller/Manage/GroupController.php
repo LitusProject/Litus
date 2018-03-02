@@ -79,7 +79,7 @@ class GroupController extends \FormBundle\Component\Controller\FormController
 
         return new ViewModel(
             array(
-                'group' => $group,
+                'group'            => $group,
                 'completedEntries' => $this->getEntityManager()
                     ->getRepository('FormBundle\Entity\Node\Entry')
                     ->findCompletedByGroup($group),

@@ -371,7 +371,7 @@ class Study
                         ->activate($this->getEntityManager(), $this->mailTransport, true);
                 }
             } else {
-		        $info = $this->getProfInfo(trim($data->attributes()->persno));
+                $info = $this->getProfInfo(trim($data->attributes()->persno));
 
                 $prof->setFirstName(trim($data->voornaam))
                     ->setLastName(trim($data->familienaam))
@@ -613,7 +613,7 @@ class Study
                         foreach ($classification->graad as $grade) {
                             foreach ($grade->opleidingen->children() as $study) {
                                 $studies[] = array(
-                                    'id' => (string) $study->attributes()->id,
+                                    'id'       => (string) $study->attributes()->id,
                                     'language' => $study->taal,
                                 );
                             }

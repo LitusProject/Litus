@@ -20,7 +20,7 @@
 
 return array(
     'guest' => array(
-        'system' => true,
+        'system'  => true,
         'parents' => array(
         ),
         'actions' => array(

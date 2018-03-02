@@ -52,7 +52,7 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'options' => BarcodeEntity::$possibleTypes,
             ),
-            'value'      => $this->getPerson()->getBarcode() ? $this->getPerson()->getBarcode()->getType() : '',
+            'value' => $this->getPerson()->getBarcode() ? $this->getPerson()->getBarcode()->getType() : '',
         ));
 
         $this->add(array(
@@ -60,19 +60,19 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
             'name'       => 'barcode',
             'label'      => 'Barcode',
             'required'   => true,
-            'attributes'  => array(
+            'attributes' => array(
                 'class'     => 'disableEnter',
                 'autofocus' => true,
             ),
-            'value'      => $this->getPerson()->getBarcode() ? $this->getPerson()->getBarcode()->getBarcode() : '',
-            'options'    => array(
+            'value'   => $this->getPerson()->getBarcode() ? $this->getPerson()->getBarcode()->getBarcode() : '',
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'person_barcode',
+                            'name'    => 'person_barcode',
                             'options' => array(
                                 'person' => $this->getPerson(),
                             ),

@@ -126,7 +126,7 @@ class Xml
                 'Attachment',
                 array(
                     'AttachmentKey' => 'File' . ($num++),
-                    'FileName' => 'front_' . $item->getArticle()->getId() . '.pdf',
+                    'FileName'      => 'front_' . $item->getArticle()->getId() . '.pdf',
                 ),
                 null
             ),
@@ -140,7 +140,7 @@ class Xml
                 'Attachment',
                 array(
                     'AttachmentKey' => 'File' . ($num++),
-                    'FileName' => $mapping->getFile()->getName(),
+                    'FileName'      => $mapping->getFile()->getName(),
                 ),
                 null
             );

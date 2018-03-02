@@ -48,9 +48,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'label'      => 'Start Date',
             'required'   => true,
             'attributes' => array(
-                'placeholder'     => 'dd/mm/yyyy hh:mm',
+                'placeholder' => 'dd/mm/yyyy hh:mm',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -65,19 +65,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'label'      => 'End Date',
             'required'   => false,
             'attributes' => array(
-                'placeholder'     => 'dd/mm/yyyy hh:mm',
+                'placeholder' => 'dd/mm/yyyy hh:mm',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'date_compare',
+                            'name'    => 'date_compare',
                             'options' => array(
                                 'first_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
                     ),
@@ -95,18 +95,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
         $container->add(array(
-            'type'       => 'text',
-            'name'       => 'title',
-            'label'      => 'Title',
-            'required'   => $isDefault,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'title',
+            'label'    => 'Title',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'calendar_event_name',
+                            'name'    => 'calendar_event_name',
                             'options' => array(
                                 'event' => $this->getEvent(),
                             ),
@@ -117,11 +117,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
 
         $container->add(array(
-            'type'       => 'text',
-            'name'       => 'location',
-            'label'      => 'Location',
-            'required'   => $isDefault,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'location',
+            'label'    => 'Location',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -131,11 +131,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
 
         $container->add(array(
-            'type'       => 'textarea',
-            'name'       => 'content',
-            'label'      => 'Content',
-            'required'   => $isDefault,
-            'options'    => array(
+            'type'     => 'textarea',
+            'name'     => 'content',
+            'label'    => 'Content',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),

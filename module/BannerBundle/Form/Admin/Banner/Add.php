@@ -49,7 +49,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'data-help' => 'The name of the banner (only shown in the admin).',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -74,16 +74,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'End Date',
             'required'   => true,
             'attributes' => array(
-                'data-help'       => 'The end date for showing this banner, overrulled by "active".',
+                'data-help' => 'The end date for showing this banner, overrulled by "active".',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'date_compare',
+                            'name'    => 'date_compare',
                             'options' => array(
                                 'first_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
                     ),
@@ -104,15 +104,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'type'       => 'file',
             'name'       => 'file',
             'label'      => 'Image  (' . self::BANNER_WIDTH . ' x ' . self::BANNER_HEIGHT . ')',
-            'attributes'  => array(
+            'attributes' => array(
                 'data-help' => 'The image for the banner. The maximum file size is ' . self::BANNER_FILESIZE . '. This must be a valid image (jpg, png, ...). The image must have a width of  ' . self::BANNER_WIDTH . 'px and a height of ' . self::BANNER_HEIGHT . 'px.',
             ),
-            'required'   => $fileRequired,
-            'options'    => array(
+            'required' => $fileRequired,
+            'options'  => array(
                 'input' => array(
-                    'validators'  => array(
+                    'validators' => array(
                         array(
-                            'name' => 'filesize',
+                            'name'    => 'filesize',
                             'options' => array(
                                 'max' => self::BANNER_FILESIZE,
                             ),
@@ -121,7 +121,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             'name' => 'fileisimage',
                         ),
                         array(
-                            'name' => 'fileimagesize',
+                            'name'    => 'fileimagesize',
                             'options' => array(
                                 'minwidth'  => self::BANNER_WIDTH,
                                 'maxwidth'  => self::BANNER_WIDTH,
@@ -141,7 +141,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'data-help' => 'The url to open after clicking on the banner.',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),

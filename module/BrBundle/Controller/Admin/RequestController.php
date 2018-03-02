@@ -42,7 +42,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'vacancyRequests' => $vacancyRequests,
+                'vacancyRequests'    => $vacancyRequests,
                 'internshipRequests' => $internshipRequests,
             )
         );
@@ -110,7 +110,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'    => $form,
                 'request' => $request,
             ));
     }

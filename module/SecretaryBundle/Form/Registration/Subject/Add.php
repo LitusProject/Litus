@@ -32,13 +32,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'subject',
-            'label'      => 'Subject',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'typeahead',
+            'name'     => 'subject',
+            'label'    => 'Subject',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
-                    'validators'  => array(
+                    'validators' => array(
                         array('name' => 'syllabus_typeahead_subject'),
                     ),
                 ),

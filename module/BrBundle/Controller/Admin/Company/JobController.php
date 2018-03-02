@@ -50,9 +50,9 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'company' => $company,
+                'company'           => $company,
             )
         );
     }
@@ -89,7 +89,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                     'br_admin_company_job',
                     array(
                         'action' => 'manage',
-                        'id' => $company->getId(),
+                        'id'     => $company->getId(),
                     )
                 );
 
@@ -100,7 +100,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
         return new ViewModel(
             array(
                 'company' => $company,
-                'form' => $form,
+                'form'    => $form,
             )
         );
     }
@@ -129,7 +129,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                     'br_admin_company_job',
                     array(
                         'action' => 'manage',
-                        'id' => $job->getCompany()->getId(),
+                        'id'     => $job->getCompany()->getId(),
                     )
                 );
 
@@ -140,7 +140,7 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
         return new ViewModel(
             array(
                 'company' => $job->getCompany(),
-                'form' => $form,
+                'form'    => $form,
             )
         );
     }

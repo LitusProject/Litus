@@ -71,8 +71,8 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
                 $this->redirect()->toRoute(
                     'cudi_prof_subject',
                     array(
-                        'action' => 'subject',
-                        'id' => $subject->getId(),
+                        'action'   => 'subject',
+                        'id'       => $subject->getId(),
                         'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
@@ -84,7 +84,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
         return new ViewModel(
             array(
                 'subject' => $subject,
-                'form' => $form,
+                'form'    => $form,
             )
         );
     }
@@ -167,7 +167,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             $this->redirect()->toRoute(
                 'cudi_prof_article',
                 array(
-                    'action' => 'manage',
+                    'action'   => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
@@ -202,7 +202,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
             $this->redirect()->toRoute(
                 'cudi_prof_article',
                 array(
-                    'action' => 'manage',
+                    'action'   => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );

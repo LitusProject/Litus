@@ -46,9 +46,9 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'suppliers' => $suppliers,
+                'suppliers'         => $suppliers,
             )
         );
     }
@@ -76,10 +76,10 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'supplier' => $supplier,
-                'paginator' => $paginator,
+                'supplier'          => $supplier,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
-                'suppliers' => $suppliers,
+                'suppliers'         => $suppliers,
             )
         );
     }
@@ -146,9 +146,9 @@ class RetourController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'retours' => $retours,
-                'suppliers' => $suppliers,
+                'form'                => $form,
+                'retours'             => $retours,
+                'suppliers'           => $suppliers,
                 'currentAcademicYear' => $academicYear,
             )
         );

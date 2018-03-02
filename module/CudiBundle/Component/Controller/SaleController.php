@@ -51,9 +51,9 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     $this->getParam('controller'),
                     array(
-                        'action' => $this->getParam('action'),
+                        'action'   => $this->getParam('action'),
                         'language' => $this->getLanguage()->getAbbrev(),
-                        'session' => $sessions[0]->getId(),
+                        'session'  => $sessions[0]->getId(),
                     )
                 );
             }
@@ -107,8 +107,8 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     public function getAuthenticationHandler()
     {
         return array(
-            'action'         => 'index',
-            'controller'     => 'common_index',
+            'action'     => 'index',
+            'controller' => 'common_index',
 
             'auth_route'     => 'cudi_sale_auth',
             'redirect_route' => 'cudi_sale_sale',

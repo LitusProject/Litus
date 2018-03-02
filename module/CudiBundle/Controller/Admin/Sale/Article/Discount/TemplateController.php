@@ -42,7 +42,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -85,7 +85,7 @@ class TemplateController extends \CudiBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'templates' => $templates,
-                'form' => $form,
+                'form'      => $form,
             )
         );
     }

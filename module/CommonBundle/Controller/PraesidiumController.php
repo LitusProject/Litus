@@ -50,7 +50,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
                     ->findAllByUnitAndAcademicYear($unit, $academicYear);
             if (isset($members[0])) {
                 $list[] = array(
-                    'unit' => $unit,
+                    'unit'    => $unit,
                     'members' => $members,
                 );
             }
@@ -77,12 +77,12 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
 
         return new ViewModel(
             array(
-                'units' => $list,
-                'extraUnits' => $extra,
-                'academicYears' => $academicYears,
-                'activeAcademicYear' => $academicYear,
+                'units'               => $list,
+                'extraUnits'          => $extra,
+                'academicYears'       => $academicYears,
+                'activeAcademicYear'  => $academicYear,
                 'currentAcademicYear' => $this->getCurrentAcademicYear(),
-                'profilePath' => $this->getEntityManager()
+                'profilePath'         => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
             )

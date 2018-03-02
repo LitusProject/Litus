@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'secretary_admin_registration' => array(
             '@common_jquery',
             '@admin_css',

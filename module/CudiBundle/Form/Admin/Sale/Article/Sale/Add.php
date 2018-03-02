@@ -52,9 +52,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 75px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -62,7 +62,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             'name' => 'int',
                         ),
                         array(
-                            'name' => 'greaterthan',
+                            'name'    => 'greaterthan',
                             'options' => array(
                                 'min' => 0,
                             ),
@@ -80,9 +80,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 75px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -100,9 +100,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 300px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

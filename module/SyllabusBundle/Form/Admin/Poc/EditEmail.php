@@ -50,7 +50,7 @@ class EditEmail extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Email adress of this years poc',
             'required'   => true,
             'attributes' => array(
-                'size' => 70,
+                'size'  => 70,
                 'value' => $this->poc->getEmailAdress(),
 
             ),)

@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'br_admin_collaborator' => array(
             '@common_jquery',
             '@admin_css',

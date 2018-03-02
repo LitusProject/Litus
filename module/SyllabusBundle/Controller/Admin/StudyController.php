@@ -59,10 +59,10 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginator'           => $paginator,
+                'paginationControl'   => $this->paginator()->createControl(true),
             )
         );
     }
@@ -95,8 +95,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'syllabus_admin_study',
                     array(
-                        'action' => 'edit',
-                        'id' => $study->getId(),
+                        'action'       => 'edit',
+                        'id'           => $study->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -109,8 +109,8 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
-                'form' => $form,
+                'academicYears'       => $academicYears,
+                'form'                => $form,
                 'currentAcademicYear' => $academicYear,
             )
         );
@@ -138,10 +138,10 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'study' => $study,
-                'mappings' => $mappings,
+                'study'               => $study,
+                'mappings'            => $mappings,
                 'currentAcademicYear' => $study->getAcademicYear(),
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
             )
         );
     }
@@ -179,7 +179,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
                     'syllabus_admin_study',
                     array(
                         'action' => 'edit',
-                        'id' => $study->getId(),
+                        'id'     => $study->getId(),
                     )
                 );
             }
@@ -191,11 +191,11 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'study' => $study,
-                'mappings' => $mappings,
+                'study'               => $study,
+                'mappings'            => $mappings,
                 'currentAcademicYear' => $study->getAcademicYear(),
-                'academicYears' => $academicYears,
-                'form' => $form,
+                'academicYears'       => $academicYears,
+                'form'                => $form,
             )
         );
     }

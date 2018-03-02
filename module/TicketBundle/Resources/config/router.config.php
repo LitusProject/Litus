@@ -23,11 +23,11 @@ return array(
         'ticket_admin_event' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/ticket/event[/:action[/:id]][/page/:page][/]',
+                'route'       => '/admin/ticket/event[/:action[/:id]][/page/:page][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'ticket_admin_event',
@@ -38,13 +38,13 @@ return array(
         'ticket_admin_ticket' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/ticket/ticket[/:action[/:id][/page/:page][/:field/:string]][/]',
+                'route'       => '/admin/ticket/ticket[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
-                    'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'string'  => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'ticket_admin_ticket',
@@ -55,10 +55,10 @@ return array(
         'ticket_sale_index' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/ticket/sale[/:action[/:id]][/]',
+                'route'       => '/ticket/sale[/:action[/:id]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'ticket_sale_index',
@@ -69,12 +69,12 @@ return array(
         'ticket_sale_ticket' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/ticket/sale/ticket[/:action[/:id[/:ticket]][/page/:page]][/]',
+                'route'       => '/ticket/sale/ticket[/:action[/:id[/:ticket]][/page/:page]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'ticket'  => '[0-9]*',
-                    'page'    => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'ticket' => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'ticket_sale_ticket',
@@ -83,11 +83,11 @@ return array(
             ),
         ),
         'ticket_sale_person_typeahead' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/ticket/person/typeahead[/:string][/]',
+                'route'       => '/ticket/person/typeahead[/:string][/]',
                 'constraints' => array(
-                    'string'   => '[%a-zA-Z0-9:.,_-]*',
+                    'string' => '[%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'ticket_sale_person',
@@ -96,9 +96,9 @@ return array(
             ),
         ),
         'ticket' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/ticket[/:action[/:id]][/]',
+                'route'       => '[/:language]/ticket[/:action[/:id]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'       => '[0-9]*',
@@ -113,13 +113,13 @@ return array(
     ),
 
     'controllers' => array(
-        'ticket_admin_event'           => 'TicketBundle\Controller\Admin\EventController',
-        'ticket_admin_ticket'          => 'TicketBundle\Controller\Admin\TicketController',
+        'ticket_admin_event'  => 'TicketBundle\Controller\Admin\EventController',
+        'ticket_admin_ticket' => 'TicketBundle\Controller\Admin\TicketController',
 
-        'ticket_sale_index'            => 'TicketBundle\Controller\Sale\IndexController',
-        'ticket_sale_ticket'           => 'TicketBundle\Controller\Sale\TicketController',
-        'ticket_sale_person'           => 'TicketBundle\Controller\Sale\PersonController',
+        'ticket_sale_index'  => 'TicketBundle\Controller\Sale\IndexController',
+        'ticket_sale_ticket' => 'TicketBundle\Controller\Sale\TicketController',
+        'ticket_sale_person' => 'TicketBundle\Controller\Sale\PersonController',
 
-        'ticket'                       => 'TicketBundle\Controller\TicketController',
+        'ticket' => 'TicketBundle\Controller\TicketController',
     ),
 );

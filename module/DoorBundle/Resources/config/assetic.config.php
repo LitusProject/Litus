@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'door_admin_rule' => array(
             '@common_jquery',
             '@admin_css',

@@ -118,7 +118,7 @@ class Message
                 );
 
                 $body[] = array(
-                    'type' => array_search($this->getPartContentType($part), $bodyTypes),
+                    'type'    => array_search($this->getPartContentType($part), $bodyTypes),
                     'content' => $content,
                 );
             }

@@ -40,7 +40,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     {
         return new ViewModel(
             array(
-                'socketUrl' => $this->getSocketUrl(),
+                'socketUrl'   => $this->getSocketUrl(),
                 'authSession' => $this->getAuthentication()
                     ->getSessionObject(),
                 'key' => $this->getEntityManager()
@@ -65,9 +65,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'academicYear' => $this->getAcademicYearEntity(),
+                'academicYear'      => $this->getAcademicYearEntity(),
             )
         );
     }
@@ -91,9 +91,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'academicYear' => $this->getAcademicYearEntity(),
+                'academicYear'      => $this->getAcademicYearEntity(),
             )
         );
     }
@@ -131,7 +131,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'  => $form,
                 'group' => $group,
             )
         );
@@ -198,7 +198,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'  => $form,
                 'group' => $group,
             )
         );
@@ -221,9 +221,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'academicYear' => $this->getAcademicYearEntity(),
+                'academicYear'      => $this->getAcademicYearEntity(),
             )
         );
     }
@@ -269,9 +269,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'timeLimit' => $timeLimit,
+                'timeLimit'         => $timeLimit,
             )
         );
     }
@@ -322,7 +322,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
         return new ViewModel(
             array(
                 'runner' => $runner,
-                'form' => $form,
+                'form'   => $form,
             )
         );
     }
@@ -342,7 +342,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
     {
         return new ViewModel(
             array(
-                'socketUrl' => $this->getSocketUrl(),
+                'socketUrl'   => $this->getSocketUrl(),
                 'authSession' => $this->getAuthentication()
                     ->getSessionObject(),
                 'key' => $this->getEntityManager()
@@ -383,9 +383,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
             array_push($runnersList,
                 array(
-                    'name' => $name,
-                    'laps' => count($laps),
-                    'points' => $points,
+                    'name'    => $name,
+                    'laps'    => count($laps),
+                    'points'  => $points,
                     'avarage' => $avarage,
                 )
             );
@@ -398,9 +398,9 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'academicYear' => $this->getAcademicYearEntity(),
+                'academicYear'      => $this->getAcademicYearEntity(),
             )
         );
     }

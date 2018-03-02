@@ -56,9 +56,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'class'        => 'moneyunit',
                     'data-value'   => $unit->getUnit(),
                 ),
-                'options'    => array(
+                'options' => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
@@ -92,9 +92,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'autocomplete' => 'off',
                     'class'        => 'device',
                 ),
-                'options'    => array(
+                'options' => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(

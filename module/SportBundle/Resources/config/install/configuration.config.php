@@ -50,8 +50,8 @@ return array(
         'description' => 'Whether the sport run queue socket is enabled',
     ),
     array(
-        'key'         => 'sport.points_criteria',
-        'value'       => serialize(
+        'key'   => 'sport.points_criteria',
+        'value' => serialize(
             array(
                 array(
                     'limit'  => '90',

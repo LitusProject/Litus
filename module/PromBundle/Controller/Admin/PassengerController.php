@@ -42,7 +42,7 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

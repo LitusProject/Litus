@@ -52,7 +52,7 @@ class Comment extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'height: 50px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'required' => false,
                     'filters'  => array(

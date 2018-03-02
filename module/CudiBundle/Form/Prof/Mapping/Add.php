@@ -39,9 +39,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'article',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'validators'  => array(
+                    'validators' => array(
                         array('name' => 'typeahead_article'),
                     ),
                 ),

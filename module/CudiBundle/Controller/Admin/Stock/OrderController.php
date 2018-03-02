@@ -53,9 +53,9 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'suppliers' => $suppliers,
+                'suppliers'         => $suppliers,
             )
         );
     }
@@ -87,10 +87,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'suppliers' => $suppliers,
-                'period' => $period,
+                'suppliers'         => $suppliers,
+                'period'            => $period,
             )
         );
     }
@@ -156,10 +156,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'supplier' => $supplier,
-                'paginator' => $paginator,
+                'supplier'          => $supplier,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
-                'suppliers' => $suppliers,
+                'suppliers'         => $suppliers,
             )
         );
     }
@@ -195,7 +195,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_stock_order',
                     array(
                         'action' => 'edit',
-                        'id' => $order->getId(),
+                        'id'     => $order->getId(),
                     )
                 );
 
@@ -205,10 +205,10 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'order' => $order,
-                'supplier' => $order->getSupplier(),
+                'order'     => $order,
+                'supplier'  => $order->getSupplier(),
                 'suppliers' => $suppliers,
-                'form' => $form,
+                'form'      => $form,
             )
         );
     }
@@ -250,7 +250,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_stock_order',
                     array(
                         'action' => 'edit',
-                        'id' => $item->getOrder()->getId(),
+                        'id'     => $item->getOrder()->getId(),
                     )
                 );
 
@@ -264,8 +264,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'suppliers' => $suppliers,
+                'form'                => $form,
+                'suppliers'           => $suppliers,
                 'currentAcademicYear' => $academicYear,
             )
         );
@@ -300,7 +300,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_stock_order',
                     array(
                         'action' => 'edit',
-                        'id' => $item->getOrder()->getId(),
+                        'id'     => $item->getOrder()->getId(),
                     )
                 );
 
@@ -314,11 +314,11 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'order' => $item->getOrder(),
-                'item' => $item,
-                'form' => $form,
+                'order'     => $item->getOrder(),
+                'item'      => $item,
+                'form'      => $form,
                 'suppliers' => $suppliers,
-                'supplier' => $item->getOrder()->getSupplier(),
+                'supplier'  => $item->getOrder()->getSupplier(),
             )
         );
     }
@@ -360,7 +360,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             'cudi_admin_stock_order',
             array(
                 'action' => 'edit',
-                'id' => $order->getId(),
+                'id'     => $order->getId(),
             )
         );
 
@@ -417,7 +417,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'cudi_admin_stock_order',
                 array(
                     'action' => 'edit',
-                    'id' => $order->getId(),
+                    'id'     => $order->getId(),
                 )
             );
 
@@ -458,7 +458,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             'cudi_admin_stock_order',
             array(
                 'action' => 'edit',
-                'id' => $order->getId(),
+                'id'     => $order->getId(),
             )
         );
 

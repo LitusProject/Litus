@@ -45,7 +45,7 @@ class Ticket extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $numbers = array(
-            'member' => isset($data['options_form']['number_member']) ? $data['options_form']['number_member'] : 0,
+            'member'     => isset($data['options_form']['number_member']) ? $data['options_form']['number_member'] : 0,
             'non_member' => isset($data['options_form']['number_non_member']) ? $data['options_form']['number_non_member'] : 0,
         );
 

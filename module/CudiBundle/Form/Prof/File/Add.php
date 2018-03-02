@@ -40,7 +40,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -56,7 +56,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'filesize',
+                            'name'    => 'filesize',
                             'options' => array(
                                 'max' => '256MB',
                             ),

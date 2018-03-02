@@ -65,10 +65,10 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'logoPath' => $logoPath,
-                'requests' => $requests,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'logoPath'           => $logoPath,
+                'requests'           => $requests,
                 'unfinishedRequests' => $unfinishedRequestsJobs,
             )
         );

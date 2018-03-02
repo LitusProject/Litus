@@ -20,7 +20,7 @@
 
 return array(
     'editor' => array(
-        'system' => true,
+        'system'  => true,
         'parents' => array(),
         'actions' => array(
             'page_admin_page' => array(
@@ -29,7 +29,7 @@ return array(
         ),
     ),
     'guest' => array(
-        'system' => true,
+        'system'  => true,
         'parents' => array(),
         'actions' => array(
             'page_link' => array(

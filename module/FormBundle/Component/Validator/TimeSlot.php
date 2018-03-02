@@ -43,7 +43,7 @@ class TimeSlot extends \CommonBundle\Component\Validator\AbstractValidator
 
     protected $options = array(
         'timeslot' => null,
-        'person' => null,
+        'person'   => null,
     );
 
     /**

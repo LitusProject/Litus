@@ -66,12 +66,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'currentSemester' => $semester,
-                'academicYears' => $academicYears,
-                'activeAcademicYear' => $academicYear,
+                'currentSemester'     => $semester,
+                'academicYears'       => $academicYears,
+                'activeAcademicYear'  => $academicYear,
                 'currentAcademicYear' => $this->getCurrentAcademicYear(),
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginator'           => $paginator,
+                'paginationControl'   => $this->paginator()->createControl(true),
             )
         );
     }
@@ -116,7 +116,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->addHeaders(
                     array(
                         'Content-Disposition' => 'attachment; filename="sale_articles_' . $semester . '_' . $academicYear->getCode() . '.csv"',
-                        'Content-Type' => 'text/csv',
+                        'Content-Type'        => 'text/csv',
                     )
                 );
 
@@ -177,7 +177,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     'cudi_admin_sales_article',
                     array(
                         'action' => 'edit',
-                        'id' => $saleArticle->getId(),
+                        'id'     => $saleArticle->getId(),
                     )
                 );
 
@@ -187,9 +187,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'article' => $article,
-                'precalculatedSellPrice' => $precalculatedSellPrice,
+                'form'                       => $form,
+                'article'                    => $article,
+                'precalculatedSellPrice'     => $precalculatedSellPrice,
                 'precalculatedPurchasePrice' => $precalculatedPurchasePrice,
             )
         );
@@ -253,7 +253,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     'cudi_admin_sales_article',
                     array(
                         'action' => 'edit',
-                        'id' => $saleArticle->getId(),
+                        'id'     => $saleArticle->getId(),
                     )
                 );
 
@@ -263,9 +263,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'article' => $saleArticle,
-                'precalculatedSellPrice' => $precalculatedSellPrice,
+                'form'                       => $form,
+                'article'                    => $saleArticle,
+                'precalculatedSellPrice'     => $precalculatedSellPrice,
                 'precalculatedPurchasePrice' => $precalculatedPurchasePrice,
             )
         );
@@ -281,7 +281,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'    => $form,
                 'article' => $saleArticle,
             )
         );
@@ -326,7 +326,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             'cudi_admin_sales_article',
             array(
                 'action' => 'edit',
-                'id' => $saleArticle->getId(),
+                'id'     => $saleArticle->getId(),
             )
         );
 
@@ -479,7 +479,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     'cudi_admin_sales_article',
                     array(
                         'action' => 'edit',
-                        'id' => $saleArticle->getId(),
+                        'id'     => $saleArticle->getId(),
                     )
                 );
             }
@@ -488,7 +488,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'article' => $saleArticle,
-                'form' => $form,
+                'form'    => $form,
             )
         );
     }
@@ -522,7 +522,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             'cudi_admin_sales_article',
             array(
                 'action' => 'edit',
-                'id' => $saleArticle->getId(),
+                'id'     => $saleArticle->getId(),
             )
         );
 

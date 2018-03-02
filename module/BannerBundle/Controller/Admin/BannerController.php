@@ -41,7 +41,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
         );
@@ -80,7 +80,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 'banner_admin_banner',
                 array(
                     'action' => 'upload',
-                    'id' => $banner->getId(),
+                    'id'     => $banner->getId(),
                 )
             )
         );
@@ -144,7 +144,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                     return new ViewModel(
                         array(
                             'status' => 'success',
-                            'info' => array(
+                            'info'   => array(
                                 'info' => (object) array(
                                     'name' => $banner->getName(),
                                 ),
@@ -166,7 +166,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                     return new ViewModel(
                         array(
                             'status' => 'success',
-                            'info' => array(
+                            'info'   => array(
                                 'info' => (object) array(
                                     'name' => $banner->getName(),
                                 ),
@@ -178,7 +178,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
                 return new ViewModel(
                     array(
                         'status' => 'error',
-                        'form' => array(
+                        'form'   => array(
                             'errors' => $form->getMessages(),
                         ),
                     )
@@ -189,7 +189,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'status' => 'error',
-                'form' => array(
+                'form'   => array(
                     'errors' => array(),
                 ),
             )

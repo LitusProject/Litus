@@ -51,8 +51,8 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'supplier' => $supplier,
-                'paginator' => $paginator,
+                'supplier'          => $supplier,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
         );
@@ -92,7 +92,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_supplier_user',
                     array(
                         'action' => 'manage',
-                        'id' => $supplier->getId(),
+                        'id'     => $supplier->getId(),
                     )
                 );
 
@@ -103,7 +103,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'supplier' => $supplier,
-                'form' => $form,
+                'form'     => $form,
             )
         );
     }
@@ -131,7 +131,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_supplier_user',
                     array(
                         'action' => 'manage',
-                        'id' => $user->getSupplier()->getId(),
+                        'id'     => $user->getSupplier()->getId(),
                     )
                 );
 
@@ -142,7 +142,7 @@ class UserController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'supplier' => $user->getSupplier(),
-                'form' => $form,
+                'form'     => $form,
             )
         );
     }

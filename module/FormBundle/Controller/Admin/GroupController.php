@@ -47,7 +47,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
         );
@@ -68,7 +68,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -156,7 +156,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                     'form_admin_group',
                     array(
                         'action' => 'edit',
-                        'id' => $group->getId(),
+                        'id'     => $group->getId(),
                     )
                 );
 
@@ -166,7 +166,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'  => $form,
                 'group' => $group,
             )
         );
@@ -294,7 +294,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                     'form_admin_group',
                     array(
                         'action' => 'forms',
-                        'id' => $group->getId(),
+                        'id'     => $group->getId(),
                     )
                 );
 
@@ -304,7 +304,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'  => $form,
                 'group' => $group,
             )
         );

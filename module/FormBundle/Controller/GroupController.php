@@ -42,8 +42,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         if ($now < $group->getStartDate() || $now > $group->getEndDate() || !$group->isActive() || sizeof($group->getForms()) == 0) {
             return new ViewModel(
                 array(
-                    'message'   => 'This form group is currently closed.',
-                    'group'     => $group,
+                    'message' => 'This form group is currently closed.',
+                    'group'   => $group,
                 )
             );
         }
@@ -51,8 +51,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         if (!$this->getAuthentication()->isAuthenticated() && !$group->isNonMember()) {
             return new ViewModel(
                 array(
-                    'message'   => 'Please login to view this group.',
-                    'group'     => $group,
+                    'message' => 'Please login to view this group.',
+                    'group'   => $group,
                 )
             );
         }
@@ -104,9 +104,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'group' => $group,
-                'entries' => $entries,
-                'startForm' => $startForm,
+                'group'       => $group,
+                'entries'     => $entries,
+                'startForm'   => $startForm,
                 'isFirstForm' => $startForm->getId() == $firstForm->getId(),
             )
         );

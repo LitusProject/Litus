@@ -30,11 +30,11 @@ return array(
                     return \Zend\Cache\StorageFactory::factory(
                         array(
                             'adapter' => array(
-                                'name' => 'memcached',
+                                'name'    => 'memcached',
                                 'options' => array(
-                                    'ttl' => 0,
+                                    'ttl'       => 0,
                                     'namespace' => getenv('ORGANIZATION') . '_LITUS',
-                                    'servers' => array(
+                                    'servers'   => array(
                                         array('localhost', 11211),
                                     ),
                                 ),
@@ -45,7 +45,7 @@ return array(
                     return \Zend\Cache\StorageFactory::factory(
                         array(
                             'adapter' => array(
-                                'name' => 'memory',
+                                'name'    => 'memory',
                                 'options' => array(
                                     'ttl' => 0,
                                 ),

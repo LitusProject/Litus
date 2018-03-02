@@ -23,11 +23,11 @@ return array(
         'news_admin_news' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/site/news[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/site/news[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'news_admin_news',
@@ -38,7 +38,7 @@ return array(
         'news' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/news[/:action[/:name][/page/:page]][/]',
+                'route'       => '[/:language]/news[/:action[/:name][/page/:page]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z0-9_-]*',
                     'name'     => '[a-zA-Z0-9_-]*',
@@ -56,6 +56,6 @@ return array(
     'controllers' => array(
         'news_admin_news' => 'NewsBundle\Controller\Admin\NewsController',
 
-        'news'            => 'NewsBundle\Controller\NewsController',
+        'news' => 'NewsBundle\Controller\NewsController',
     ),
 );

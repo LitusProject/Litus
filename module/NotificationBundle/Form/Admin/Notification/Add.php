@@ -39,25 +39,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         parent::init();
 
         $this->add(array(
-            'type'       => 'datetime',
-            'name'       => 'start_date',
-            'label'      => 'Start Date',
-            'required'   => true,
+            'type'     => 'datetime',
+            'name'     => 'start_date',
+            'label'    => 'Start Date',
+            'required' => true,
         ));
 
         $this->add(array(
-            'type'       => 'datetime',
-            'name'       => 'end_date',
-            'label'      => 'End Date',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'datetime',
+            'name'     => 'end_date',
+            'label'    => 'End Date',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'date_compare',
+                            'name'    => 'date_compare',
                             'options' => array(
                                 'first_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
                     ),
@@ -66,10 +66,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
 
         $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'active',
-            'label'      => 'Active',
-            'required'   => true,
+            'type'     => 'checkbox',
+            'name'     => 'active',
+            'label'    => 'Active',
+            'required' => true,
         ));
 
         $this->addSubmit('Add', 'notification_add');
@@ -78,11 +78,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
     {
         $container->add(array(
-            'type'       => 'textarea',
-            'name'       => 'content',
-            'label'      => 'Content',
-            'required'   => $isDefault,
-            'options'    => array(
+            'type'     => 'textarea',
+            'name'     => 'content',
+            'label'    => 'Content',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),

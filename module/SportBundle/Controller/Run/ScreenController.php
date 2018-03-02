@@ -33,7 +33,7 @@ class ScreenController extends \SportBundle\Component\Controller\RunController
     {
         return new ViewModel(
             array(
-                'socketUrl' => $this->getSocketUrl(),
+                'socketUrl'   => $this->getSocketUrl(),
                 'authSession' => $this->getAuthentication()
                     ->getSessionObject(),
                 'key' => $this->getEntityManager()

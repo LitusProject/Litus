@@ -64,10 +64,10 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
             )
         );
     }
@@ -144,7 +144,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
                         $this->redirect()->toRoute(
                             'secretary_admin_promotion',
                             array(
-                                'action' => 'manage',
+                                'action'       => 'manage',
                                 'academicyear' => $academicYear->getCode(),
                             )
                         );
@@ -169,7 +169,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
                         $this->redirect()->toRoute(
                             'secretary_admin_promotion',
                             array(
-                                'action' => 'manage',
+                                'action'       => 'manage',
                                 'academicyear' => $academicYear->getCode(),
                             )
                         );
@@ -197,7 +197,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
                 $this->redirect()->toRoute(
                     'secretary_admin_promotion',
                     array(
-                        'action' => 'manage',
+                        'action'       => 'manage',
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -208,9 +208,9 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
-                'form' => $form,
+                'form'               => $form,
             )
         );
     }
@@ -281,7 +281,7 @@ class PromotionController extends \CommonBundle\Component\Controller\ActionContr
         $this->redirect()->toRoute(
             'secretary_admin_promotion',
             array(
-                'action' => 'manage',
+                'action'       => 'manage',
                 'academicyear' => $academicYear->getCode(),
             )
         );

@@ -39,7 +39,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'information',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
                     'type'       => 'text',
                     'name'       => 'university_identification',
@@ -48,9 +48,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'id'           => 'university_identification',
                         'autocomplete' => 'off',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
@@ -65,9 +65,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'id'           => 'first_name',
                         'autocomplete' => 'off',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
@@ -82,9 +82,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'id'           => 'last_name',
                         'autocomplete' => 'off',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),

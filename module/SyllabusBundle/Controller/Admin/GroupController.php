@@ -63,10 +63,10 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginator'           => $paginator,
+                'paginationControl'   => $this->paginator()->createControl(true),
             )
         );
     }
@@ -95,7 +95,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'syllabus_admin_group',
                     array(
-                        'action' => 'manage',
+                        'action'       => 'manage',
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -110,9 +110,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'form' => $form,
+                'form'                => $form,
             )
         );
     }
@@ -162,8 +162,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'syllabus_admin_group',
                     array(
-                        'action' => 'edit',
-                        'id' => $group->getId(),
+                        'action'       => 'edit',
+                        'id'           => $group->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -178,10 +178,10 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'form' => $form,
-                'group' => $group,
+                'form'                => $form,
+                'group'               => $group,
             )
         );
     }
@@ -241,8 +241,8 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'syllabus_admin_group',
                     array(
-                        'action' => 'studies',
-                        'id' => $group->getId(),
+                        'action'       => 'studies',
+                        'id'           => $group->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -261,11 +261,11 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'form' => $form,
-                'group' => $group,
-                'studies' => $studies,
+                'form'                => $form,
+                'group'               => $group,
+                'studies'             => $studies,
             )
         );
     }
@@ -323,7 +323,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         $this->getResponse()->getHeaders()
             ->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="' . $group->getName() . '_' . $academicYear->getCode() . '.csv"',
-            'Content-Type' => 'text/csv',
+            'Content-Type'        => 'text/csv',
         ));
 
         return new ViewModel(

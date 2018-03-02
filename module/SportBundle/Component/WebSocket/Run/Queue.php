@@ -315,17 +315,17 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $data = (object) array(
             'laps' => (object) array(
                 'number' => (object) array(
-                    'own' => $nbLaps,
+                    'own'           => $nbLaps,
                     'uniqueRunners' => $uniqueRunners,
                 ),
-                'queueSize' => $queueSize,
-                'fastestRunner' => $fastestLap['runner'],
-                'fastestTime' => $fastestLap['time'],
-                'laps' => $laps,
+                'queueSize'       => $queueSize,
+                'fastestRunner'   => $fastestLap['runner'],
+                'fastestTime'     => $fastestLap['time'],
+                'laps'            => $laps,
                 'officialResults' => $officialResults,
-                'averageLapTime' => $averageLapTime,
+                'averageLapTime'  => $averageLapTime,
                 'groupsOfFriends' => $groupsOfFriends,
-                'mostLaps' => $mostLaps,
+                'mostLaps'        => $mostLaps,
             ),
         );
 
@@ -347,15 +347,15 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         $lap->getRunner()->setEntityManager($this->entityManager);
 
         return (object) array(
-            'id' => $lap->getId(),
-            'fullName' => $lap->getRunner()->getFullName(),
-            'firstName' => $lap->getRunner()->getFirstName(),
-            'lastName' => $lap->getRunner()->getLastName(),
+            'id'               => $lap->getId(),
+            'fullName'         => $lap->getRunner()->getFullName(),
+            'firstName'        => $lap->getRunner()->getFirstName(),
+            'lastName'         => $lap->getRunner()->getLastName(),
             'registrationTime' => $lap->getRegistrationTime()->format('d/m/Y H:i:s'),
-            'lapTime' => (null !== $lap->getStartTime()) ? $lap->getLapTime()->format('%i:%S') : '',
-            'points' => $lap->getPoints(),
-            'runnerLapCount' => $lap->getRunner()->getStartedLapsCount($this->getAcademicYear()),
-            'state' => $state,
+            'lapTime'          => (null !== $lap->getStartTime()) ? $lap->getLapTime()->format('%i:%S') : '',
+            'points'           => $lap->getPoints(),
+            'runnerLapCount'   => $lap->getRunner()->getStartedLapsCount($this->getAcademicYear()),
+            'state'            => $state,
         );
     }
 
@@ -435,7 +435,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
         }
         if ($fastestLap !== null) {
             return array(
-                'time' => $fastestLap->getLapTime()->format('%i:%S'),
+                'time'   => $fastestLap->getLapTime()->format('%i:%S'),
                 'runner' => $fastestLap->getRunner()->getFullName(),
             );
         }
@@ -508,8 +508,8 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 }
             }
             $result = array(
-                'time' => $resultPage['time'],
-                'status' => $resultPage['status'],
+                'time'    => $resultPage['time'],
+                'status'  => $resultPage['status'],
                 'message' => $resultPage['message'],
             );
             if (null !== $teamData) {
@@ -527,13 +527,13 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
                 $lapsPerSecond = 1 / $resultPage['lap'] * ($teamData->speed / 3.6);
 
                 $result['data'] = array(
-                    'lapLength' => $resultPage['lap'],
-                    'nbLaps' => $teamData->laps,
-                    'position' => $teamData->position,
-                    'speed' => round($teamData->speed, 2),
+                    'lapLength'     => $resultPage['lap'],
+                    'nbLaps'        => $teamData->laps,
+                    'position'      => $teamData->position,
+                    'speed'         => round($teamData->speed, 2),
                     'lapsPerSecond' => round($lapsPerSecond, 4),
-                    'difference' => $difference,
-                    'place' => $currentPlace,
+                    'difference'    => $difference,
+                    'place'         => $currentPlace,
                 );
             }
 
@@ -559,7 +559,7 @@ class Queue extends \CommonBundle\Component\WebSocket\Server
             $group->setEntityManager($this->entityManager);
 
             $array = (object) array(
-                'name' => $group->getName(),
+                'name'   => $group->getName(),
                 'points' => $group->getPoints($this->getAcademicYear()),
             );
 

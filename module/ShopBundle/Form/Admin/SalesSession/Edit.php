@@ -51,14 +51,14 @@ class Edit extends Add
                 ->getProductAvailability($product, $this->salesSession);
 
             $this->add(array(
-                'type' => 'number',
-                'name' => $product->getId() . '-quantity',
+                'type'    => 'number',
+                'name'    => $product->getId() . '-quantity',
                 'options' => array(
                     'label' => $product->getName(),
                 ),
                 'attributes' => array(
-                    'min' => '0',
-                    'max' => '100',
+                    'min'   => '0',
+                    'max'   => '100',
                     'value' => $currentAvailability,
                 ),
             ));

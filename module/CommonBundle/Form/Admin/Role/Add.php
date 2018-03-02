@@ -47,7 +47,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -139,7 +139,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             foreach ($resourceChildren as $resourceChild) {
                 $childActions = $resourceChild->getActions($this->getEntityManager());
                 $actions[$resourceChild->getName()] = array(
-                    'label' => $resourceChild->getName(),
+                    'label'   => $resourceChild->getName(),
                     'options' => array(),
                 );
                 foreach ($childActions as $childAction) {

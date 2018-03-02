@@ -43,12 +43,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'StringLength',
+                            'name'    => 'StringLength',
                             'options' => array(
                                 'max' => '100',
                             ),
@@ -74,10 +74,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'date_compare',
+                            'name'    => 'date_compare',
                             'options' => array(
                                 'first_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
                     ),
@@ -101,7 +101,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -115,7 +115,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -129,7 +129,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -143,7 +143,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -157,7 +157,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

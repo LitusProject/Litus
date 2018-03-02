@@ -82,9 +82,9 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 350px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -99,9 +99,9 @@ class Send extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

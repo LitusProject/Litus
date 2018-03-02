@@ -31,9 +31,9 @@ class Module
 {
     public function onBootstrap(MvcEvent $event)
     {
-        $application  = $event->getApplication();
-        $services     = $application->getServiceManager();
-        $events       = $application->getEventManager();
+        $application = $event->getApplication();
+        $services = $application->getServiceManager();
+        $events = $application->getEventManager();
         $sharedEvents = $events->getSharedManager();
 
         if ('production' == getenv('APPLICATION_ENV')) {

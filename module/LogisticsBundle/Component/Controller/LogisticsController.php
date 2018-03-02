@@ -68,8 +68,8 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
     public function getAuthenticationHandler()
     {
         return array(
-            'action'         => 'index',
-            'controller'     => 'common_index',
+            'action'     => 'index',
+            'controller' => 'common_index',
 
             'auth_route'     => 'logistics_index',
             'redirect_route' => 'logistics_index',

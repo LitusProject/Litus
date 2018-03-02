@@ -68,9 +68,9 @@ class Rule extends \CommonBundle\Component\Hydrator\Hydrator
 
         return array(
             'start_date' => $object->getStartDate()->format('d/m/Y'),
-            'end_date' => $object->getEndDate()->format('d/m/Y'),
+            'end_date'   => $object->getEndDate()->format('d/m/Y'),
             'start_time' => $startTime,
-            'end_time' => $endTime,
+            'end_time'   => $endTime,
         );
     }
 

@@ -34,11 +34,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'name',
-            'label'      => 'Name',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'name',
+            'label'    => 'Name',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -51,11 +51,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'person',
-            'label'      => 'Admin',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'typeahead',
+            'name'     => 'person',
+            'label'    => 'Admin',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),

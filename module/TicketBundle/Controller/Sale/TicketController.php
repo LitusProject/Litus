@@ -45,7 +45,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

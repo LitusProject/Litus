@@ -71,7 +71,7 @@ class AdminMap extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('MailBundle\Entity\MailingList\AdminMap')
             ->findOneBy(
                 array(
-                    'list' => $this->options['list'],
+                    'list'     => $this->options['list'],
                     'academic' => $context['id'],
                 )
             );

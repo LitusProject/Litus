@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'cudi_admin_article' => array(
             '@common_jquery',
             '@admin_css',

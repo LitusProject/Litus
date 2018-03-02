@@ -70,7 +70,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         if (!$canReserve) {
             return new ViewModel(
                 array(
-                    'shopName' => $this->getShopName(),
+                    'shopName'   => $this->getShopName(),
                     'canReserve' => $canReserve,
                 )
             );
@@ -133,9 +133,9 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'canReserve' => $canReserve,
-                'form' => $reserveForm,
-                'shopName' => $this->getShopName(),
+                'canReserve'   => $canReserve,
+                'form'         => $reserveForm,
+                'shopName'     => $this->getShopName(),
                 'stockEntries' => $stockEntries,
             )
         );
@@ -147,7 +147,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         if (!$canReserve) {
             return new ViewModel(
                 array(
-                    'shopName' => $this->getShopName(),
+                    'shopName'   => $this->getShopName(),
                     'canReserve' => $canReserve,
                 )
             );
@@ -167,7 +167,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                     'shop',
                     array(
                         'action' => 'reserveproducts',
-                        'id' => $formData['salesSession'],
+                        'id'     => $formData['salesSession'],
                     )
                 );
 
@@ -178,9 +178,9 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'salesSessionsAvailable' => count($salesSessions) > 0,
-                'canReserve' => $canReserve,
-                'form' => $sessionsForm,
-                'shopName' => $this->getShopName(),
+                'canReserve'             => $canReserve,
+                'form'                   => $sessionsForm,
+                'shopName'               => $this->getShopName(),
             )
         );
     }
@@ -195,9 +195,9 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'canReserve' => $canReserve,
+                'canReserve'   => $canReserve,
                 'reservations' => $reservations,
-                'shopName' => $this->getShopName(),
+                'shopName'     => $this->getShopName(),
             )
         );
     }

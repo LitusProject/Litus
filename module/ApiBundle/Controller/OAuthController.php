@@ -97,7 +97,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'          => $form,
                 'shibbolethUrl' => $this->getShibbolethUrl($this->getRequest()->getQuery('redirect_uri')),
             )
         );

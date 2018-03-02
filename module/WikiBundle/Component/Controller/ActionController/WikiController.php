@@ -39,8 +39,8 @@ class WikiController extends \CommonBundle\Component\Controller\ActionController
     public function getAuthenticationHandler()
     {
         return array(
-            'action'         => 'login',
-            'controller'     => 'wiki_auth',
+            'action'     => 'login',
+            'controller' => 'wiki_auth',
 
             'auth_route'     => 'wiki_auth',
             'redirect_route' => 'wiki_auth',

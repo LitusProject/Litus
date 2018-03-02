@@ -35,13 +35,13 @@ class Language
      * @var array The possible written skills.
      */
     public static $writtenSkills = array(
-        'none' => 'None_skills',
-        'active' => 'Active (Writing)',
-        'passive' => 'Passive (Reading)',
-        'Notions' => 'Notions',
-        'Basis' => 'Basis',
-        'Good' => 'Good',
-        'Very good' => 'Very good',
+        'none'          => 'None_skills',
+        'active'        => 'Active (Writing)',
+        'passive'       => 'Passive (Reading)',
+        'Notions'       => 'Notions',
+        'Basis'         => 'Basis',
+        'Good'          => 'Good',
+        'Very good'     => 'Very good',
         'Mother tongue' => 'Mother tongue',
     );
 
@@ -49,13 +49,13 @@ class Language
      * @var array The possible oral skills.
      */
     public static $oralSkills = array(
-        'none' => 'None_skills',
-        'active' => 'Active (Speaking)',
-        'passive' => 'Passive (Listening)',
-        'Notions' => 'Notions',
-        'Basis' => 'Basis',
-        'Good' => 'Good',
-        'Very good' => 'Very good',
+        'none'          => 'None_skills',
+        'active'        => 'Active (Speaking)',
+        'passive'       => 'Passive (Listening)',
+        'Notions'       => 'Notions',
+        'Basis'         => 'Basis',
+        'Good'          => 'Good',
+        'Very good'     => 'Very good',
         'Mother tongue' => 'Mother tongue',
     );
 

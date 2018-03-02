@@ -43,7 +43,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -60,7 +60,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -77,7 +77,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -137,7 +137,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_prof_action',
                     array(
                         'action' => 'confirmArticle',
-                        'id' => $action->getId(),
+                        'id'     => $action->getId(),
                     )
                 );
 
@@ -197,7 +197,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_prof_action',
                     array(
                         'action' => 'confirmFile',
-                        'id' => $action->getId(),
+                        'id'     => $action->getId(),
                     )
                 );
 

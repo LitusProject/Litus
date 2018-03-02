@@ -49,7 +49,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
         }
 
         if (!$editor) {
-            $lists =  $this->getEntityManager()
+            $lists = $this->getEntityManager()
                 ->getRepository('MailBundle\Entity\MailingList\Named')
                 ->findBy(array(), array('name' => 'ASC'));
 
@@ -77,8 +77,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
         return new ViewModel(
             array(
-                'person' => $person,
-                'paginator' => $paginator,
+                'person'            => $person,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -169,7 +169,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                     'mail_admin_list',
                     array(
                         'action' => 'entries',
-                        'id' => $list->getId(),
+                        'id'     => $list->getId(),
                     )
                 );
 
@@ -183,11 +183,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
         return new ViewModel(
             array(
-                'list' => $list,
-                'academicForm' => $academicForm,
-                'externalForm' => $externalForm,
+                'list'            => $list,
+                'academicForm'    => $academicForm,
+                'externalForm'    => $externalForm,
                 'mailingListForm' => $mailingListForm,
-                'entries' => $entries,
+                'entries'         => $entries,
             )
         );
     }
@@ -227,7 +227,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                     'mail_admin_list',
                     array(
                         'action' => 'admins',
-                        'id' => $list->getId(),
+                        'id'     => $list->getId(),
                     )
                 );
 
@@ -251,7 +251,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                     'mail_admin_list',
                     array(
                         'action' => 'admins',
-                        'id' => $list->getId(),
+                        'id'     => $list->getId(),
                     )
                 );
 
@@ -269,11 +269,11 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
         return new ViewModel(
             array(
-                'list' => $list,
-                'adminForm' => $adminForm,
+                'list'          => $list,
+                'adminForm'     => $adminForm,
                 'adminRoleForm' => $adminRoleForm,
-                'admins' => $admins,
-                'adminRoles' => $adminRoles,
+                'admins'        => $admins,
+                'adminRoles'    => $adminRoles,
             )
         );
     }
@@ -347,7 +347,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
             'mail_admin_list',
             array(
                 'action' => 'entries',
-                'id' => $list->getId(),
+                'id'     => $list->getId(),
             )
         );
 

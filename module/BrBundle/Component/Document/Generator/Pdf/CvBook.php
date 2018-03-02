@@ -92,9 +92,9 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             new Node(
                 'cvbook',
                 array(
-                    'logo' => $organization_logo,
+                    'logo'  => $organization_logo,
                     'index' => $this->translator->translate('Alphabetical Index'),
-                    'toc' => $this->translator->translate('Table of Contents'),
+                    'toc'   => $this->translator->translate('Table of Contents'),
                 ),
                 array(
                     new Node(

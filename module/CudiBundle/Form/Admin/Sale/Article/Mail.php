@@ -39,9 +39,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'multiple' => true,
                 'options'  => array(
-                    'booked' => 'Booked',
+                    'booked'   => 'Booked',
                     'assigned' => 'Assigned',
-                    'sold' => 'Sold',
+                    'sold'     => 'Sold',
                 ),
             ),
         ));
@@ -54,9 +54,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 350px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -71,9 +71,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

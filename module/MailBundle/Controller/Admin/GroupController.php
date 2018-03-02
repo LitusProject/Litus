@@ -36,7 +36,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
     {
         return new ViewModel(
             array(
-                'university' => UniversityStatus::$possibleStatuses,
+                'university'   => UniversityStatus::$possibleStatuses,
                 'organization' => OrganizationStatus::$possibleStatuses,
             )
         );
@@ -144,9 +144,9 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
 
         return new ViewModel(
             array(
-                'type' => $type,
+                'type'   => $type,
                 'status' => $statuses[$status],
-                'form' => $form,
+                'form'   => $form,
             )
         );
     }

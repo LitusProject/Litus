@@ -33,7 +33,7 @@ class ModuleGroup extends \CommonBundle\Component\Validator\AbstractValidator im
     const NOT_VALID = 'notValid';
 
     protected $options = array(
-        'subject' => null,
+        'subject'       => null,
         'academic_year' => null,
     );
 

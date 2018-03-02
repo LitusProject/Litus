@@ -45,8 +45,8 @@ return array(
         'description' => 'Maximum days a reservation is possible in advance',
     ),
     array(
-        'key'         => 'logistics.piano_time_slots',
-        'value'       => serialize(
+        'key'   => 'logistics.piano_time_slots',
+        'value' => serialize(
             array(
                 '1' => array(
                     array('start' => '19:00', 'end' => '22:00'),
@@ -71,8 +71,8 @@ return array(
         'description' => 'The mail address piano reservation mails are send to',
     ),
     array(
-        'key'         => 'logistics.piano_new_reservation',
-        'value'       => serialize(
+        'key'   => 'logistics.piano_new_reservation',
+        'value' => serialize(
             array(
                 'en' => array(
                     'subject' => 'New Piano Reservation',
@@ -105,8 +105,8 @@ Student IT
         'description' => 'The mail sent when a new piano reservation is created',
     ),
     array(
-        'key'         => 'logistics.piano_new_reservation_confirmed',
-        'value'       => serialize(
+        'key'   => 'logistics.piano_new_reservation_confirmed',
+        'value' => serialize(
             array(
                 'en' => array(
                     'subject' => 'New Piano Reservation',

@@ -37,8 +37,8 @@ class Tabs extends \Zend\Form\Element implements \CommonBundle\Component\Form\El
      * @var array
      */
     protected $attributes = array(
-        'type' => 'tabs',
-        'tabs' => array(),
+        'type'  => 'tabs',
+        'tabs'  => array(),
         'class' => '',
     );
 

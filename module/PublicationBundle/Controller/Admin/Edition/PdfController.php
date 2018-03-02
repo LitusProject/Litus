@@ -48,8 +48,8 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-                'publication' => $publication,
-                'paginator' => $paginator,
+                'publication'       => $publication,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -68,7 +68,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
                 'publication_admin_edition_pdf',
                 array(
                     'action' => 'upload',
-                    'id' => $publication->getId(),
+                    'id'     => $publication->getId(),
                 )
             )
         );
@@ -76,7 +76,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         return new ViewModel(
             array(
                 'publication' => $publication,
-                'form' => $form,
+                'form'        => $form,
             )
         );
     }
@@ -129,7 +129,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel(
                 array(
                     'status' => 'success',
-                    'info' => array(
+                    'info'   => array(
                         'info' => (object) array(
                             'title' => $edition->getTitle(),
                         ),
@@ -140,7 +140,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             return new ViewModel(
                 array(
                     'status' => 'error',
-                    'form' => array(
+                    'form'   => array(
                         'errors' => $form->getMessages(),
                     ),
                 )
@@ -187,8 +187,8 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="' . $edition->getTitle() . '"',
-            'Content-Type' => 'application/pdf',
-            'Content-Length' => filesize($filePath . $edition->getFileName()),
+            'Content-Type'        => 'application/pdf',
+            'Content-Length'      => filesize($filePath . $edition->getFileName()),
         ));
         $this->getResponse()->setHeaders($headers);
 

@@ -203,9 +203,9 @@ class GroupController extends \SportBundle\Component\Controller\RunController
                 return new ViewModel(
                     array(
                         'result' => (object) array(
-                            'status' => 'success',
+                            'status'    => 'success',
                             'firstName' => $person->getFirstName(),
-                            'lastName' => $person->getLastName(),
+                            'lastName'  => $person->getLastName(),
                         ),
                     )
                 );

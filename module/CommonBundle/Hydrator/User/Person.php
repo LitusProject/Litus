@@ -51,7 +51,7 @@ abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
             'barcode' => null !== $object->getBarcode()
                     ? $object->getBarcode()->getBarcode()
                     : '',
-            'status'  => null !== $object->getOrganizationStatus($academicYear)
+            'status' => null !== $object->getOrganizationStatus($academicYear)
                     ? $object->getOrganizationStatus($academicYear)->getStatus()
                     : null,
         );

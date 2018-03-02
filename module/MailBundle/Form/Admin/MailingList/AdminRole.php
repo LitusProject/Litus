@@ -43,16 +43,16 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'select',
-            'name'       => 'role',
-            'label'      => 'Role',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'select',
+            'name'     => 'role',
+            'label'    => 'Role',
+            'required' => true,
+            'options'  => array(
                 'options' => $this->createRolesArray(),
-                'input' => array(
+                'input'   => array(
                     'validators' => array(
                         array(
-                            'name' => 'mail_admin_role',
+                            'name'    => 'mail_admin_role',
                             'options' => array(
                                 'list' => $this->getList(),
                             ),
@@ -63,9 +63,9 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'edit_admin',
-            'label'      => 'Can Edit Admins',
+            'type'  => 'checkbox',
+            'name'  => 'edit_admin',
+            'label' => 'Can Edit Admins',
         ));
 
         $this->add(array(

@@ -47,7 +47,7 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -62,7 +62,7 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
             'value'    => 30,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -75,13 +75,13 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'payment_details',
-            'label'    => 'Payment Details',
-            'value'    => $this->getPaymentDetailsText(),
-            'options'  => array(
+            'type'    => 'textarea',
+            'name'    => 'payment_details',
+            'label'   => 'Payment Details',
+            'value'   => $this->getPaymentDetailsText(),
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -89,13 +89,13 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'auto_discount_text',
-            'label'    => 'Auto Discount Text',
-            'value'    => $this->getAutoDiscountText(),
-            'options'  => array(
+            'type'    => 'textarea',
+            'name'    => 'auto_discount_text',
+            'label'   => 'Auto Discount Text',
+            'value'   => $this->getAutoDiscountText(),
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -103,12 +103,12 @@ class GenerateContract extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'discount_text',
-            'label'    => 'Discount Text',
-            'options'  => array(
+            'type'    => 'textarea',
+            'name'    => 'discount_text',
+            'label'   => 'Discount Text',
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

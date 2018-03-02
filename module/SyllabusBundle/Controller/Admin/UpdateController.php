@@ -38,9 +38,9 @@ class UpdateController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'academicYear' => $this->getCurrentAcademicYear(),
-                'allowUpdate' => $allowUpdate,
-                'socketUrl' => $this->getSocketUrl(),
-                'authSession' => $this->getAuthentication()
+                'allowUpdate'  => $allowUpdate,
+                'socketUrl'    => $this->getSocketUrl(),
+                'authSession'  => $this->getAuthentication()
                     ->getSessionObject(),
                 'key' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')

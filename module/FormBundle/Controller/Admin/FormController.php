@@ -50,7 +50,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -71,8 +71,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'entityManager' => $this->getEntityManager(),
-                'paginator' => $paginator,
+                'entityManager'     => $this->getEntityManager(),
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -114,7 +114,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     'form_admin_form',
                     array(
                         'action' => 'edit',
-                        'id' => $formEntity->getId(),
+                        'id'     => $formEntity->getId(),
                     )
                 );
 
@@ -175,7 +175,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
                     'form_admin_form',
                     array(
                         'action' => 'edit',
-                        'id' => $formSpecification->getId(),
+                        'id'     => $formSpecification->getId(),
                     )
                 );
 
@@ -185,8 +185,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'group' => $group,
-                'form' => $form,
+                'group'             => $group,
+                'form'              => $form,
                 'formSpecification' => $formSpecification,
             )
         );

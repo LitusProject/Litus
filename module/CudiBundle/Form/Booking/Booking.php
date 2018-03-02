@@ -52,9 +52,9 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
                     'id'          => 'article-' . $saleArticle->getId(),
                     'placeholder' => '0',
                 ),
-                'options'    => array(
+                'options' => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
@@ -62,7 +62,7 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'name' => 'digits',
                             ),
                             array(
-                                'name' => 'between',
+                                'name'    => 'between',
                                 'options' => array(
                                     'min' => 0,
                                     'max' => self::MAX_BOOKING_NUMBER,

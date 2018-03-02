@@ -55,11 +55,11 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
             }
 
             $result[$identification][] = array(
-                'academic' => $status->getPerson()->getId(),
+                'academic'   => $status->getPerson()->getId(),
                 'start_date' => null,
-                'end_date' => null,
+                'end_date'   => null,
                 'start_time' => 0,
-                'end_time' => 0,
+                'end_time'   => 0,
             );
         }
 
@@ -74,11 +74,11 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
             }
 
             $result[$identification][] = array(
-                'academic' => $rule->getAcademic($this->getEntityManager())->getId(),
+                'academic'   => $rule->getAcademic($this->getEntityManager())->getId(),
                 'start_date' => $rule->getStartDate()->format('U'),
-                'end_date' => $rule->getEndDate()->format('U'),
+                'end_date'   => $rule->getEndDate()->format('U'),
                 'start_time' => $rule->getStartTime(),
-                'end_time' => $rule->getEndTime(),
+                'end_time'   => $rule->getEndTime(),
             );
         }
 

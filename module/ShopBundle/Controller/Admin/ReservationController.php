@@ -45,9 +45,9 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'salesSession' => $salesSession,
+                'salesSession'      => $salesSession,
             )
         );
     }
@@ -112,8 +112,8 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         return new ViewModel(
             array(
                 'result' => array(
-                    'status' => 'success',
-                    'blacklisted' => $blacklisted,
+                    'status'           => 'success',
+                    'blacklisted'      => $blacklisted,
                     'blacklistAvoided' => $blacklistAvoided,
                 ),
             )

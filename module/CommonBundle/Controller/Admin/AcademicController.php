@@ -55,7 +55,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -137,7 +137,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'     => $form,
                 'academic' => $academic,
             )
         );
@@ -166,7 +166,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             'common_admin_academic',
             array(
                 'action' => 'edit',
-                'id' => $academic->getId(),
+                'id'     => $academic->getId(),
             )
         );
 

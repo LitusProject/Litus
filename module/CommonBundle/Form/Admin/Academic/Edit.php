@@ -55,14 +55,14 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                 'data-help'   => 'The birthday of the user.',
                 'placeholder' => 'dd/mm/yyyy',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'Date',
+                            'name'    => 'Date',
                             'options' => array(
                                 'format' => 'd/m/Y',
                             ),
@@ -73,15 +73,15 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
         ));
 
         $this->add(array(
-            'type'       => 'common_address_add-primary',
-            'name'       => 'primary_address',
-            'label'      => 'Primary Address&mdash;Student Room or Home',
+            'type'  => 'common_address_add-primary',
+            'name'  => 'primary_address',
+            'label' => 'Primary Address&mdash;Student Room or Home',
         ));
 
         $this->add(array(
-            'type'       => 'common_address_add',
-            'name'       => 'secondary_address',
-            'label'      => 'Secondary Address&mdash;Home',
+            'type'  => 'common_address_add',
+            'name'  => 'secondary_address',
+            'label' => 'Secondary Address&mdash;Home',
         ));
 
         $this->add(array(
@@ -101,7 +101,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                                 <li><b>Supportive Member:</b> a member, but not a student of the faculty</li>
                                 <li><b>Praesidium:</b> a member of the board</li>
                             </ul>',
-                        'options'   => array_merge(
+                        'options' => array_merge(
                             array(
                                 '' => '',
                             ),
@@ -117,21 +117,21 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                         'class'     => 'disableEnter',
                         'data-help' => 'A barcode that can be used to identify the user.',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'barcode',
+                                    'name'    => 'barcode',
                                     'options' => array(
                                         'adapter'     => 'Ean12',
                                         'useChecksum' => false,
                                     ),
                                 ),
                                 array(
-                                    'name' => 'person_barcode',
+                                    'name'    => 'person_barcode',
                                     'options' => array(
                                         'person' => $this->person,
                                     ),
@@ -141,9 +141,9 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                     ),
                 ),
                 array(
-                    'type'       => 'checkbox',
-                    'name'       => 'is_in_workinggroup',
-                    'label'      => 'Working Group',
+                    'type'  => 'checkbox',
+                    'name'  => 'is_in_workinggroup',
+                    'label' => 'Working Group',
                 ),
             ),
         ));
@@ -166,7 +166,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                                 <li><b>Professor:</b> a professor</li>
                                 <li><b>Student:</b> a student</li>
                             </ul>',
-                        'options'   => array_merge(
+                        'options' => array_merge(
                             array(
                                 '' => '',
                             ),
@@ -181,9 +181,9 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                     'attributes' => array(
                         'data-help' => 'The identification used by the university for the student.',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -201,9 +201,9 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                     'attributes' => array(
                         'data-help' => 'The e-mail address given to the user by the university.',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(

@@ -64,9 +64,9 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'currentSemester' => $semester,
-                'period' => $period,
-                'paginator' => $paginator,
+                'currentSemester'   => $semester,
+                'period'            => $period,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -95,8 +95,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'period' => $period,
-                'paginator' => $paginator,
+                'period'            => $period,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -270,7 +270,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                         'cudi_admin_stock',
                         array(
                             'action' => 'edit',
-                            'id' => $article->getId(),
+                            'id'     => $article->getId(),
                         )
                     );
 
@@ -296,7 +296,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                         'cudi_admin_stock',
                         array(
                             'action' => 'edit',
-                            'id' => $article->getId(),
+                            'id'     => $article->getId(),
                         )
                     );
 
@@ -341,7 +341,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
                         'cudi_admin_stock',
                         array(
                             'action' => 'edit',
-                            'id' => $article->getId(),
+                            'id'     => $article->getId(),
                         )
                     );
 
@@ -352,12 +352,12 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'article' => $article,
-                'period' => $period,
+                'article'      => $article,
+                'period'       => $period,
                 'deliveryForm' => $deliveryForm,
-                'orderForm' => $orderForm,
-                'stockForm' => $stockForm,
-                'maxDelivery' => $maxDelivery,
+                'orderForm'    => $orderForm,
+                'stockForm'    => $stockForm,
+                'maxDelivery'  => $maxDelivery,
             )
         );
     }
@@ -375,7 +375,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'article' => $article,
-                'period' => $period,
+                'period'  => $period,
             )
         );
     }
@@ -399,8 +399,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'article' => $article,
-                'paginator' => $paginator,
+                'article'           => $article,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -577,8 +577,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel(
                 array(
                     'articles' => $articles,
-                    'form' => $form,
-                    'period' => $period,
+                    'form'     => $form,
+                    'period'   => $period,
                 )
             );
         }
@@ -662,7 +662,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     {
         $semester = (int) $this->getParam('semester');
 
-        if ($semester == 1 || $semester == 2  || $semester == 3) {
+        if ($semester == 1 || $semester == 2 || $semester == 3) {
             return $semester;
         }
 

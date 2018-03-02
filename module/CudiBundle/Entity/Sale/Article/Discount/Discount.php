@@ -107,7 +107,7 @@ class Discount
      */
     public static $possibleTypes = array(
         'member' => 'Member',
-        'acco' => 'Acco',
+        'acco'   => 'Acco',
     );
 
     /**
@@ -115,8 +115,8 @@ class Discount
      */
     public static $possibleMethods = array(
         'percentage' => 'Percentage',
-        'fixed' => 'Fixed',
-        'override' => 'Override',
+        'fixed'      => 'Fixed',
+        'override'   => 'Override',
     );
 
     /**
@@ -124,39 +124,39 @@ class Discount
      */
     public static $possibleRoundings = array(
         'none' => array(
-            'name' => 'None',
+            'name'  => 'None',
             'value' => '1',
-            'type' => 'up',
+            'type'  => 'up',
         ),
         '0.05_up' => array(
-            'name' => '0.05 (up)',
+            'name'  => '0.05 (up)',
             'value' => '5',
-            'type' => 'up',
+            'type'  => 'up',
         ),
         '0.05_down' => array(
-            'name' => '0.05 (down)',
+            'name'  => '0.05 (down)',
             'value' => '5',
-            'type' => 'down',
+            'type'  => 'down',
         ),
         '0.10_up' => array(
-            'name' => '0.10 (up)',
+            'name'  => '0.10 (up)',
             'value' => '10',
-            'type' => 'up',
+            'type'  => 'up',
         ),
         '0.10_down' => array(
-            'name' => '0.10 (down)',
+            'name'  => '0.10 (down)',
             'value' => '10',
-            'type' => 'down',
+            'type'  => 'down',
         ),
         '0.50_up' => array(
-            'name' => '0.50 (up)',
+            'name'  => '0.50 (up)',
             'value' => '50',
-            'type' => 'up',
+            'type'  => 'up',
         ),
         '0.50_down' => array(
-            'name' => '0.50 (down)',
+            'name'  => '0.50 (down)',
             'value' => '50',
-            'type' => 'down',
+            'type'  => 'down',
         ),
     );
 

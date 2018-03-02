@@ -35,10 +35,10 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->setAttribute('id', 'isic-order');
 
         $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'personal_info',
-            'label'      => 'Personal Info',
-            'elements'   => array(
+            'type'     => 'fieldset',
+            'name'     => 'personal_info',
+            'label'    => 'Personal Info',
+            'elements' => array(
                 array(
                     'type'       => 'text',
                     'name'       => 'first_name',
@@ -47,9 +47,9 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'id' => 'first_name',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
@@ -63,9 +63,9 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'id' => 'last_name',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
@@ -80,14 +80,14 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                         'data-help'   => 'The birthday of the user.',
                         'placeholder' => 'dd/mm/yyyy',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'Date',
+                                    'name'    => 'Date',
                                     'options' => array(
                                         'format' => 'd/m/Y',
                                     ),
@@ -125,17 +125,17 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'       => 'common_address_add',
-            'name'       => 'address',
-            'label'      => 'Home Address',
-            'required'   => true,
+            'type'     => 'common_address_add',
+            'name'     => 'address',
+            'label'    => 'Home Address',
+            'required' => true,
         ));
 
         $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'contact_details',
-            'label'      => 'Contact Details',
-            'elements'   => array(
+            'type'     => 'fieldset',
+            'name'     => 'contact_details',
+            'label'    => 'Contact Details',
+            'elements' => array(
                 array(
                     'type'     => 'text',
                     'name'     => 'email',
@@ -143,7 +143,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     'required' => true,
                     'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -161,9 +161,9 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'placeholder' => '+CCAAANNNNNN',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -176,10 +176,10 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'studies',
-            'label'      => 'Studies',
-            'elements'   => array(
+            'type'     => 'fieldset',
+            'name'     => 'studies',
+            'label'    => 'Studies',
+            'elements' => array(
                 array(
                     'type'       => 'select',
                     'name'       => 'course',
@@ -238,23 +238,23 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'photo_group',
-            'label'      => 'Photo',
-            'elements'   => array(
+            'type'     => 'fieldset',
+            'name'     => 'photo_group',
+            'label'    => 'Photo',
+            'elements' => array(
                 array(
                     'type'       => 'file',
                     'name'       => 'photo',
                     'label'      => 'Photo  (' . self::ISIC_PHOTO_WIDTH . ' x ' . self::ISIC_PHOTO_HEIGHT . ')',
                     'required'   => true,
-                    'attributes'  => array(
+                    'attributes' => array(
                         'data-help' => 'The image for the photo on your card. The maximum file size is ' . self::ISIC_PHOTO_FILESIZE . '. This must be a valid image (jpg, png, ...). The image must have a width of  ' . self::ISIC_PHOTO_WIDTH . 'px and a height of ' . self::ISIC_PHOTO_HEIGHT . 'px.',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'validators'  => array(
+                            'validators' => array(
                                 array(
-                                    'name' => 'filesize',
+                                    'name'    => 'filesize',
                                     'options' => array(
                                         'max' => self::ISIC_PHOTO_FILESIZE,
                                     ),
@@ -263,7 +263,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                                     'name' => 'fileisimage',
                                 ),
                                 array(
-                                    'name' => 'fileimagesize',
+                                    'name'    => 'fileimagesize',
                                     'options' => array(
                                         'minwidth'  => self::ISIC_PHOTO_WIDTH,
                                         'maxwidth'  => self::ISIC_PHOTO_WIDTH,
@@ -283,10 +283,10 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
             ->getConfigValue('cudi.isic_newsletter_mandatory');
 
         $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'optins',
-            'label'      => 'Newsletter',
-            'elements'   => array(
+            'type'     => 'fieldset',
+            'name'     => 'optins',
+            'label'    => 'Newsletter',
+            'elements' => array(
                 array(
                     'type'       => 'checkbox',
                     'name'       => 'newsletter',
@@ -298,16 +298,16 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'       => 'checkbox',
-                    'name'       => 'post',
-                    'value'      => true,
-                    'label'      => 'Receive post from ISIC/Club',
+                    'type'  => 'checkbox',
+                    'name'  => 'post',
+                    'value' => true,
+                    'label' => 'Receive post from ISIC/Club',
                 ),
                 array(
-                    'type'       => 'checkbox',
-                    'name'       => 'post_third',
-                    'value'      => true,
-                    'label'      => 'Receive post from ISIC/Club partners',
+                    'type'  => 'checkbox',
+                    'name'  => 'post_third',
+                    'value' => true,
+                    'label' => 'Receive post from ISIC/Club partners',
                 ),
             ),
 

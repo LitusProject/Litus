@@ -149,7 +149,7 @@ class Job
      */
     public static $possibleTypes = array(
         'internship' => 'Internship',
-        'vacancy' => 'Vacancy',
+        'vacancy'    => 'Vacancy',
     );
 
     /**

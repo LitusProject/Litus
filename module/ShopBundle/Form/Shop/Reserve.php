@@ -45,13 +45,13 @@ class Reserve extends \CommonBundle\Component\Form\Admin\Form
                 ->getRepository('ShopBundle\Entity\Product\SessionStockEntry')
                 ->getRealAvailability($product, $this->salesSession));
             $this->add(array(
-                'type' => 'number',
-                'name' => 'product-' . $product->getId(),
-                'label' => $product->getName() . ' (&euro; ' . sprintf('%0.2f', $product->getSellPrice()) . ')',
+                'type'       => 'number',
+                'name'       => 'product-' . $product->getId(),
+                'label'      => $product->getName() . ' (&euro; ' . sprintf('%0.2f', $product->getSellPrice()) . ')',
                 'attributes' => array(
                     'value' => '0',
-                    'min' => '0',
-                    'max' => $availability,
+                    'min'   => '0',
+                    'max'   => $availability,
                     'class' => 'product-amount form-control',
                 ),
             ));

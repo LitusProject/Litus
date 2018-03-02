@@ -78,9 +78,9 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'logoPath' => $logoPath,
+                'paginator'            => $paginator,
+                'paginationControl'    => $this->paginator()->createControl(true),
+                'logoPath'             => $logoPath,
                 'internshipSearchForm' => $internshipSearchForm,
             )
         );
@@ -99,7 +99,7 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
         return new ViewModel(
             array(
                 'internship' => $internship,
-                'logoPath' => $logoPath,
+                'logoPath'   => $logoPath,
             )
         );
     }

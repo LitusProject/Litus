@@ -83,7 +83,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
                     'cudi_admin_sales_article_restriction',
                     array(
                         'action' => 'manage',
-                        'id' => $article->getId(),
+                        'id'     => $article->getId(),
                     )
                 );
 
@@ -100,10 +100,10 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
 
         return new ViewModel(
             array(
-                'article' => $article,
-                'paginator' => $paginator,
+                'article'           => $article,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'form' => $form,
+                'form'              => $form,
             )
         );
     }

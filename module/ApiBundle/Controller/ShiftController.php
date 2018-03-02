@@ -53,7 +53,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
         $result = array();
         foreach ($shifts as $shift) {
             $result[] = array(
-                'id'                    => $shift->getId(),
+                'id' => $shift->getId(),
 
                 'canHaveAsResponsible'  => $shift->canHaveAsResponsible($this->getEntityManager(), $person),
                 'canHaveAsVolunteer'    => $shift->canHaveAsVolunteer($this->getEntityManager(), $person),
@@ -68,13 +68,13 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
                 'nbVolunteers'          => $shift->getNbVolunteers(),
                 'startDate'             => $shift->getStartDate()->format('c'),
 
-                'location'              => array(
+                'location' => array(
                     'id'        => $shift->getLocation()->getId(),
                     'latitude'  => $shift->getLocation()->getLatitude(),
                     'longitude' => $shift->getLocation()->getLongitude(),
                     'name'      => $shift->getLocation()->getName(),
                 ),
-                'unit'                  => array(
+                'unit' => array(
                     'id'   => $shift->getUnit()->getId(),
                     'name' => $shift->getUnit()->getName(),
                 ),

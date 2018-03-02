@@ -44,10 +44,10 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'logGraph' => $this->getLogGraph(),
-                'paginator' => $paginator,
+                'logGraph'          => $this->getLogGraph(),
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'entityManager' => $this->getEntityManager(),
+                'entityManager'     => $this->getEntityManager(),
             )
         );
     }
@@ -121,7 +121,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'academic' => $rule->getAcademic($this->getEntityManager()),
-                'form' => $form,
+                'form'     => $form,
             )
         );
     }
@@ -137,7 +137,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'     => $paginator,
                 'entityManager' => $this->getEntityManager(),
             )
         );
@@ -228,7 +228,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
         $logGraphData = array(
             'expirationTime' => $now->add(new DateInterval('PT1H')),
 
-            'labels' => array(),
+            'labels'  => array(),
             'dataset' => array(),
         );
 

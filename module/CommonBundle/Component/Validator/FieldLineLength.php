@@ -31,7 +31,7 @@ class FieldLineLength extends AbstractValidator
 
     protected $options = array(
         'chars_per_line' => 0,
-        'lines' => 0,
+        'lines'          => 0,
     );
 
     /**

@@ -28,7 +28,7 @@ return array(
             'matcher'     => array(),
             'collectors'  => array(
                 'config' => null,
-                'db' => null,
+                'db'     => null,
             ),
         ),
         'toolbar' => array(

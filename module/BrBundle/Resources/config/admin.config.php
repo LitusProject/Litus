@@ -23,11 +23,11 @@ return array(
         'Corporate Relations' => array(
             'subtitle' => array('Companies','CVs', 'Products'),
             'items'    => array(
-                'br_admin_collaborator'  => array(
+                'br_admin_collaborator' => array(
                     'title' => 'Collaborators',
                     'help'  => 'Here you can find a list of all the people that are collaborating with corporate relations.',
                 ),
-                'br_admin_company'  => array(
+                'br_admin_company' => array(
                     'title' => 'Companies',
                     'help'  => 'Here you can find all the companies that are registered in the database.',
                 ),
@@ -39,11 +39,11 @@ return array(
                     'title' => 'CVs',
                     'help'  => 'Here you can find a list of all the CVs that are uploaded on the site.',
                 ),
-                'br_admin_invoice'  => array(
+                'br_admin_invoice' => array(
                     'title' => 'Invoices',
                     'help'  => 'Here you can find a list of invoices that are automaticly generated when a contract is signed.',
                 ),
-                'br_admin_order'    => array(
+                'br_admin_order' => array(
                     'title' => 'Orders',
                     'help'  => 'Manage the orders of each company.  Orders can be added or deleted.  Creating an order instantly creates a contract that can be signed.  A the order of a signed contract cannot be removed.',
                 ),
@@ -52,11 +52,11 @@ return array(
                     'action' => 'person',
                     'help'   => 'A general overview for each member or company individually.',
                 ),
-                'br_admin_product'  => array(
+                'br_admin_product' => array(
                     'title' => 'Products',
                     'help'  => 'Here you can manage all the products Student IT has to offer to every company.',
                 ),
-                'br_admin_request'  => array(
+                'br_admin_request' => array(
                     'title' => 'Requests',
                     'help'  => 'Here you can manage all requests that are made by the companies.',
                 ),

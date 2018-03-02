@@ -32,14 +32,14 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'returnItem',
-            'label'      => 'Item',
+            'type'    => 'typeahead',
+            'name'    => 'returnItem',
+            'label'   => 'Item',
             'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'logistics_typeahead_lease',
+                            'name'    => 'logistics_typeahead_lease',
                             'options' => array(
                                 'must_be_leased' => true,
                             ),
@@ -57,9 +57,9 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'returned_amount',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -78,9 +78,9 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
                 'id'           => 'returned_by',
                 'autocomplete' => false,
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -95,9 +95,9 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'returned_pawn',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -114,9 +114,9 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'rows' => 3,
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

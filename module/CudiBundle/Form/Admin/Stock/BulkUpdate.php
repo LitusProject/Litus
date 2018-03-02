@@ -44,9 +44,9 @@ class BulkUpdate extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'style' => 'width: 70px;',
                 ),
-                'options'    => array(
+                'options' => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(

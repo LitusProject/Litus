@@ -141,7 +141,7 @@ class SpecialActionController extends \CudiBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'                => $form,
                 'currentAcademicYear' => $academicYear,
             )
         );

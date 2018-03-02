@@ -43,7 +43,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -60,7 +60,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -136,7 +136,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'  => $form,
                 'event' => $event,
             )
         );
@@ -175,7 +175,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 'calendar_admin_calendar',
                 array(
                     'action' => 'upload',
-                    'id' => $event->getId(),
+                    'id'     => $event->getId(),
                 )
             )
         );
@@ -183,7 +183,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'event' => $event,
-                'form' => $form,
+                'form'  => $form,
             )
         );
     }
@@ -238,7 +238,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 return new ViewModel(
                     array(
                         'status' => 'success',
-                        'info' => array(
+                        'info'   => array(
                             'info' => array(
                                 'name' => $event->getPoster(),
                             ),
@@ -249,7 +249,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 return new ViewModel(
                     array(
                         'status' => 'error',
-                        'form' => array(
+                        'form'   => array(
                             'errors' => $form->getMessages(),
                         ),
                     )

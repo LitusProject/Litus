@@ -69,11 +69,11 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'logoPath' => $logoPath,
-                'page' => $page,
-                'events' => $events,
+                'logoPath'    => $logoPath,
+                'page'        => $page,
+                'events'      => $events,
                 'internships' => $internships,
-                'vacancies' => $vacancies,
+                'vacancies'   => $vacancies,
             )
         );
     }
@@ -91,8 +91,8 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="' . $this->getParam('name') . '"',
-            'Content-Type' => mime_content_type($filePath),
-            'Content-Length' => filesize($filePath),
+            'Content-Type'        => mime_content_type($filePath),
+            'Content-Length'      => filesize($filePath),
         ));
         $this->getResponse()->setHeaders($headers);
 

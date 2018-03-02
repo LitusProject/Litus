@@ -23,11 +23,11 @@ return array(
         'door_admin_rule' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/door/rule[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/door/rule[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[a-z0-9]*',
-                    'page'    => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[a-z0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'door_admin_rule',

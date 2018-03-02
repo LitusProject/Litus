@@ -41,7 +41,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -115,7 +115,7 @@ class SupplierController extends \CudiBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'     => $form,
                 'supplier' => $supplier,
             )
         );

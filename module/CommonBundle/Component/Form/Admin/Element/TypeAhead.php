@@ -32,12 +32,12 @@ class TypeAhead extends Fieldset
     public function init()
     {
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'id',
-            'required'   => false,
-            'options'    => array(
+            'type'     => 'hidden',
+            'name'     => 'id',
+            'required' => false,
+            'options'  => array(
                 'input' => array(
-                    'filters'    => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -55,9 +55,9 @@ class TypeAhead extends Fieldset
                 'autocomplete' => 'off',
                 'data-provide' => 'typeahead',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'    => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

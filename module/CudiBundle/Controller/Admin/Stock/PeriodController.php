@@ -42,7 +42,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
         );
@@ -129,8 +129,8 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'period' => $period,
-                'paginator' => $paginator,
+                'period'            => $period,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

@@ -43,7 +43,7 @@ class Manage extends \CommonBundle\Component\Form\Bootstrap\Form
                     'required' => true,
                     'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -58,11 +58,11 @@ class Manage extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'       => 'text',
-                    'name'       => 'ticket_code',
-                    'label'      => 'Ticket Code',
-                    'required'   => true,
-                    'options'    => array(
+                    'type'     => 'text',
+                    'name'     => 'ticket_code',
+                    'label'    => 'Ticket Code',
+                    'required' => true,
+                    'options'  => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),

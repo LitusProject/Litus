@@ -108,9 +108,9 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     public function addSubmit($value, $class = null, $name = 'submit', $attributes = array())
     {
         $submit = array(
-            'type'       => 'submit',
-            'name'       => $name,
-            'value'      => $value,
+            'type'  => 'submit',
+            'name'  => $name,
+            'value' => $value,
         );
 
         if (null !== $class) {
@@ -134,8 +134,8 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     public function addFieldset($label, $name)
     {
         $this->add(array(
-            'type' => 'fieldset',
-            'name' => $name,
+            'type'  => 'fieldset',
+            'name'  => $name,
             'label' => $label,
         ));
 

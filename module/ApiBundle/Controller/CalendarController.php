@@ -42,13 +42,13 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
         $result = array();
         foreach ($items as $item) {
             $result[] = array(
-                'id' => $item->getId(),
-                'title' => $item->getTitle($this->getLanguage()),
-                'content' => trim(strip_tags(str_replace(array('<br />', '<br>'), "\r\n", $item->getContent($this->getLanguage())))),
+                'id'        => $item->getId(),
+                'title'     => $item->getTitle($this->getLanguage()),
+                'content'   => trim(strip_tags(str_replace(array('<br />', '<br>'), "\r\n", $item->getContent($this->getLanguage())))),
                 'startDate' => $item->getStartDate()->format('c'),
-                'endDate' => $item->getEndDate() ? $item->getEndDate()->format('c') : null,
-                'poster' => $item->getPoster(),
-                'location' => $item->getLocation(),
+                'endDate'   => $item->getEndDate() ? $item->getEndDate()->format('c') : null,
+                'poster'    => $item->getPoster(),
+                'location'  => $item->getLocation(),
             );
         }
 
@@ -87,7 +87,7 @@ class CalendarController extends \ApiBundle\Component\Controller\ActionControlle
 
         $result = array(
             'mime_type' => mime_content_type($filePath . $poster),
-            'data' => $data,
+            'data'      => $data,
         );
 
         return new ViewModel(

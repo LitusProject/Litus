@@ -50,8 +50,8 @@ class IndexController extends \CudiBundle\Component\Controller\ProfController
 
             return new ViewModel(
                 array(
-                    'paginator' => $paginator,
-                    'paginationControl' => $this->paginator()->createControl(),
+                    'paginator'           => $paginator,
+                    'paginationControl'   => $this->paginator()->createControl(),
                     'recentConversations' => $recentConversations,
                 )
             );

@@ -68,8 +68,8 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     public function getAuthenticationHandler()
     {
         return array(
-            'action'         => 'index',
-            'controller'     => 'common_index',
+            'action'     => 'index',
+            'controller' => 'common_index',
 
             'auth_route'     => 'cudi_prof_index',
             'redirect_route' => 'cudi_prof_index',

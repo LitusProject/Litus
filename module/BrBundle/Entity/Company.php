@@ -168,21 +168,21 @@ class Company
      */
     public static $possibleSectors = array(
         'architecture' => 'Architecture & Construction',
-        'audit' => 'Audit',
-        'automobile' => 'Automobile',
-        'biomedical' => 'Biomedical & Pharmaceutical',
-        'chemistry' => 'Chemistry',
-        'consultancy' => 'Consultancy',
-        'consumer' => 'Consumer Goods & Services',
+        'audit'        => 'Audit',
+        'automobile'   => 'Automobile',
+        'biomedical'   => 'Biomedical & Pharmaceutical',
+        'chemistry'    => 'Chemistry',
+        'consultancy'  => 'Consultancy',
+        'consumer'     => 'Consumer Goods & Services',
         'distribution' => 'Distribution, Logistics & Transportation',
-        'electronics' => 'Electronics',
-        'energy' => 'Energy',
-        'financial' => 'Financial',
-        'it' => 'IT',
-        'metal' => 'Metal',
-        'telecom' => 'Telecom',
-        'nonprofit' => 'Non-Profit',
-        'hr' => 'Human Resources',
+        'electronics'  => 'Electronics',
+        'energy'       => 'Energy',
+        'financial'    => 'Financial',
+        'it'           => 'IT',
+        'metal'        => 'Metal',
+        'telecom'      => 'Telecom',
+        'nonprofit'    => 'Non-Profit',
+        'hr'           => 'Human Resources',
     );
 
     public function __construct()
@@ -319,7 +319,7 @@ class Company
      */
     public function getInvoiceVatNumber()
     {
-        return $this->invoiceVatNumber  == null ? $this->vatNumber : $this->invoiceVatNumber;
+        return $this->invoiceVatNumber == null ? $this->vatNumber : $this->invoiceVatNumber;
     }
 
     /**
@@ -346,7 +346,7 @@ class Company
      */
     public function getInvoiceAddress()
     {
-        return $this->invoiceAddress  == null ? $this->address : $this->invoiceAddress;
+        return $this->invoiceAddress == null ? $this->address : $this->invoiceAddress;
     }
 
     /**
@@ -413,7 +413,7 @@ class Company
      */
     public function getFullWebsite()
     {
-        $result =  $this->getWebsite();
+        $result = $this->getWebsite();
         if (false === strpos($result, 'http://')) {
             $result = 'http://' . $result;
         }

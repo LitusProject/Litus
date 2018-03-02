@@ -47,7 +47,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'id' => 'article_form',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
                     'type'       => 'text',
                     'name'       => 'title',
@@ -56,9 +56,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'size' => 70,
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
@@ -72,9 +72,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'size' => 60,
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
@@ -88,9 +88,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'size' => 40,
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
@@ -102,7 +102,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'label'   => 'Year Published',
                     'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -118,12 +118,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'label'   => 'ISBN',
                     'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'isbn',
+                                    'name'    => 'isbn',
                                     'options' => array(
                                         'type' => 'auto',
                                     ),
@@ -138,7 +138,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'label'   => 'URL',
                     'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -180,8 +180,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             <li><b>Textbook:</b> a textbook of the course</li>
                             <li><b>Other:</b> any other type</li>
                         </ul>',
-                        'options'  => Article::$possibleTypes,
-                        'id'       => 'type',
+                        'options' => Article::$possibleTypes,
+                        'id'      => 'type',
                     ),
                 ),
                 array(
@@ -203,7 +203,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'id' => 'internal_form',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
                     'type'     => 'text',
                     'name'     => 'nb_black_and_white',
@@ -211,7 +211,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'required' => true,
                     'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -229,7 +229,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'required' => true,
                     'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -293,17 +293,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'id' => 'subject_form',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
                     'type'       => 'typeahead',
                     'name'       => 'subject',
                     'label'      => 'Subject',
                     'required'   => true,
                     'attributes' => array(
-                        'id'           => 'subject',
-                        'size'         => 70,
+                        'id'   => 'subject',
+                        'size' => 70,
                     ),
-                    'options'  => array(
+                    'options' => array(
                         'input' => array(
                             'validators' => array(
                                 array('name' => 'syllabus_typeahead_subject'),

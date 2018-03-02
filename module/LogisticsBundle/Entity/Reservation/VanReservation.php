@@ -67,10 +67,10 @@ class VanReservation extends Reservation
     private $car;
 
     /**
-    *@var text Y or N to indicate whether this is a bike reservation, boolean could not be used for unknown reasons
-    *
-    *@ORM\Column(type="text", nullable=true)
-    */
+     *@var text Y or N to indicate whether this is a bike reservation, boolean could not be used for unknown reasons
+     *
+     *@ORM\Column(type="text", nullable=true)
+     */
     private $bike;
 
     /**

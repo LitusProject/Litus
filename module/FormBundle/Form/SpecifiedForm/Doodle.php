@@ -141,7 +141,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                 if (isset($occupiedSlots[$fieldSpecification->getId()])) {
                     $validators = array(
                         array(
-                            'name' => 'Identical',
+                            'name'    => 'Identical',
                             'options' => array(
                                 'token' => '0',
                             ),
@@ -150,17 +150,17 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                 } else {
                     $validators = array(
                         array(
-                            'name' => 'form_timeslot',
+                            'name'    => 'form_timeslot',
                             'options' => array(
                                 'timeslot' => $fieldSpecification,
-                                'person' => $this->person,
+                                'person'   => $this->person,
                             ),
                         ),
                     );
                 }
 
                 $validators[] = array(
-                    'name' => 'form_max_timeslots',
+                    'name'    => 'form_max_timeslots',
                     'options' => array(
                         'form' => $this->form,
                     ),
@@ -171,9 +171,9 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                     'name'       => 'field-' . $fieldSpecification->getId(),
                     'class'      => 'checkbox',
                     'attributes' => array(
-                        'id'       => 'field-' . $fieldSpecification->getId(),
+                        'id' => 'field-' . $fieldSpecification->getId(),
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
                             'validators' => $validators,
                         ),

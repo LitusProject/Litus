@@ -51,10 +51,10 @@ class Edit extends Add
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'date_compare',
+                            'name'    => 'date_compare',
                             'options' => array(
                                 'first_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
                     ),
@@ -63,9 +63,9 @@ class Edit extends Add
         ));
 
         $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'active',
-            'label'    => 'Active',
+            'type'  => 'checkbox',
+            'name'  => 'active',
+            'label' => 'Active',
         ));
 
         $this->add(array(
@@ -74,7 +74,7 @@ class Edit extends Add
             'label'   => 'Total Max Entries',
             'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -87,15 +87,15 @@ class Edit extends Add
         ));
 
         $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'non_member',
-            'label'    => 'Allow Entry Without Login',
+            'type'  => 'checkbox',
+            'name'  => 'non_member',
+            'label' => 'Allow Entry Without Login',
         ));
 
         $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'editable_by_user',
-            'label'    => 'Allow Users To Edit Their Info',
+            'type'  => 'checkbox',
+            'name'  => 'editable_by_user',
+            'label' => 'Allow Users To Edit Their Info',
         ));
 
         $this->remove('submit');

@@ -174,8 +174,8 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
 
             $data['string_form'] = array(
                 'charsperline' => $object->getLineLength(),
-                'multiline' => $object->isMultiLine(),
-                'lines' => $lines,
+                'multiline'    => $object->isMultiLine(),
+                'lines'        => $lines,
             );
         } elseif ($object instanceof DropdownFieldEntity) {
             $data['type'] = 'dropdown';
@@ -195,14 +195,14 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
             $data['type'] = 'timeslot';
             $data['timeslot_form'] = array(
                 'start_date' => $object->getStartDate()->format('d/m/Y H:i'),
-                'end_date' => $object->getEndDate()->format('d/m/Y H:i'),
+                'end_date'   => $object->getEndDate()->format('d/m/Y H:i'),
             );
 
             foreach ($this->getLanguages() as $language) {
                 $translation = $object->getTimeSlotTranslation($language, false);
                 if (null !== $translation) {
                     $data['timeslot_form']['tab_content']['tab_' . $language->getAbbrev()] = array(
-                        'location' => $translation->getLocation(),
+                        'location'   => $translation->getLocation(),
                         'extra_info' => $translation->getExtraInformation(),
                     );
                 }

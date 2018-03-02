@@ -94,13 +94,13 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'openingHours' => $openingHours,
+                'openingHours'         => $openingHours,
                 'openingHoursTimeline' => $openingHoursArray,
-                'week' => $week,
-                'startHour' => $startHour,
-                'endHour' => $endHour,
-                'submenu' => isset($submenu) ? $submenu : null,
-                'page' => isset($link) ? $link : null,
+                'week'                 => $week,
+                'startHour'            => $startHour,
+                'endHour'              => $endHour,
+                'submenu'              => isset($submenu) ? $submenu : null,
+                'page'                 => isset($link) ? $link : null,
             )
         );
     }

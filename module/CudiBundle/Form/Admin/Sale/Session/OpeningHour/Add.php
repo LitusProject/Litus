@@ -50,10 +50,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'date_compare',
+                            'name'    => 'date_compare',
                             'options' => array(
                                 'first_date' => 'start',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
                     ),
@@ -70,7 +70,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'label'   => 'Comment',
             'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

@@ -42,7 +42,7 @@ class ManualAdd extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -50,10 +50,10 @@ class ManualAdd extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'select',
-            'name'     => 'company',
-            'label'    => 'Company',
-            'required' => true,
+            'type'       => 'select',
+            'name'       => 'company',
+            'label'      => 'Company',
+            'required'   => true,
             'attributes' => array(
                 'id'      => 'company',
                 'options' => $this->getCompanyArray(),
@@ -68,7 +68,7 @@ class ManualAdd extends \CommonBundle\Component\Form\Admin\Form
             'value'    => 0,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -79,9 +79,9 @@ class ManualAdd extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'refund',
-            'label'    => 'Refund',
+            'type'  => 'checkbox',
+            'name'  => 'refund',
+            'label' => 'Refund',
         ));
 
         $this->add(array(
@@ -92,7 +92,7 @@ class ManualAdd extends \CommonBundle\Component\Form\Admin\Form
             'value'    => 30,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -113,17 +113,17 @@ class ManualAdd extends \CommonBundle\Component\Form\Admin\Form
                 'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILESIZE . '.',
                 'size'      => 256,
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'filesize',
+                            'name'    => 'filesize',
                             'options' => array(
                                 'max' => self::FILESIZE,
                             ),
                         ),
                         array(
-                            'name' => 'fileextension',
+                            'name'    => 'fileextension',
                             'options' => array(
                                 'extension' => 'pdf',
                             ),

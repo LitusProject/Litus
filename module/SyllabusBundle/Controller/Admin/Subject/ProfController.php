@@ -77,8 +77,8 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'syllabus_admin_subject',
                     array(
-                        'action' => 'view',
-                        'id' => $subject->getId(),
+                        'action'       => 'view',
+                        'id'           => $subject->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -87,10 +87,10 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'subject' => $subject,
-                'form' => $form,
+                'subject'             => $subject,
+                'form'                => $form,
             )
         );
     }

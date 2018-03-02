@@ -45,7 +45,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
                 'carray' => $carray,
                 'marray' => $marray,
                 'totals' => $totals,
-                'em' => $this->getEntityManager(),
+                'em'     => $this->getEntityManager(),
             )
         );
     }
@@ -56,9 +56,9 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'array' => $array,
+                'array'  => $array,
                 'totals' => $totals,
-                'em' => $this->getEntityManager(),
+                'em'     => $this->getEntityManager(),
             )
         );
     }
@@ -78,10 +78,10 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'author' => $person,
-                'paginator' => $paginator,
+                'author'            => $person,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'em' => $this->getEntityManager(),
+                'em'                => $this->getEntityManager(),
             )
         );
     }
@@ -178,7 +178,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="contracts_overview.pdf"',
-            'Content-Type' => 'application/pdf',
+            'Content-Type'        => 'application/pdf',
         ));
         $this->getResponse()->setHeaders($headers);
 
@@ -204,8 +204,8 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'company' => $company,
-                'cpaginator' => $paginator,
+                'company'           => $company,
+                'cpaginator'        => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -282,12 +282,12 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             }
 
             $collection[] = array(
-                'company' => $company,
-                'amount' => sizeof($contracts),
+                'company'  => $company,
+                'amount'   => sizeof($contracts),
                 'invoiceN' => $invoiceN,
                 'contract' => $contracted,
                 'invoiced' => $invoiced,
-                'paid' => $paid,
+                'paid'     => $paid,
             );
         }
         $totals = array('amount' => $companyNmbr, 'contract' => $totalContracted, 'paid' => $totalPaid, 'signed' => $totalSigned);
@@ -348,12 +348,12 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             }
 
             $ccollection[] = array(
-                'person' => $person,
-                'camount' => sizeof($contracts),
-                'iamount' => $invoiceN,
-                'invoiced' => $invoiced,
+                'person'     => $person,
+                'camount'    => sizeof($contracts),
+                'iamount'    => $invoiceN,
+                'invoiced'   => $invoiced,
                 'contracted' => $contracted,
-                'paid' => $paid,
+                'paid'       => $paid,
             );
         }
 
@@ -390,21 +390,21 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             }
 
             $mcollection[] = array(
-                'person' => $person,
-                'iamount' => $invoiceN,
+                'person'   => $person,
+                'iamount'  => $invoiceN,
                 'invoiced' => $invoiced,
-                'paid' => $paid,
+                'paid'     => $paid,
             );
         }
 
         $totals = array(
-            'camount' => $contractNmbr,
+            'camount'    => $contractNmbr,
             'contracted' => $totalContracted,
-            'invoiced' => $totalInvoiced,
-            'minvoiced' => $totalMInvoiced,
-            'paid' => $totalPaid,
-            'iamount' => $invoiceNmbr,
-            'mamount' => $manualNmbr,
+            'invoiced'   => $totalInvoiced,
+            'minvoiced'  => $totalMInvoiced,
+            'paid'       => $totalPaid,
+            'iamount'    => $invoiceNmbr,
+            'mamount'    => $manualNmbr,
         );
 
         return [$ccollection, $mcollection, $totals];

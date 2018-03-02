@@ -77,7 +77,7 @@ class Comment
     public static $possibleTypes = array(
         'internal' => 'Internal',
         'external' => 'External',
-        'site' => 'Site',
+        'site'     => 'Site',
     );
 
     /**

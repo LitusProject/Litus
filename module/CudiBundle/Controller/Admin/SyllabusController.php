@@ -62,10 +62,10 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginator'           => $paginator,
+                'paginationControl'   => $this->paginator()->createControl(true),
             )
         );
     }
@@ -90,9 +90,9 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'study' => $study,
-                'subject_mappings' => $subject_mappings,
-                'totalCost' => $totalCost,
+                'study'                  => $study,
+                'subject_mappings'       => $subject_mappings,
+                'totalCost'              => $totalCost,
                 'totalCostMandatoryOnly' => $totalCostMandatoryOnly,
             )
         );

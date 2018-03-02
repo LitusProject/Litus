@@ -39,7 +39,7 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -116,7 +116,7 @@ class CollaboratorController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'         => $form,
                 'collaborator' => $collaborator,
             )
         );

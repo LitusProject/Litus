@@ -35,7 +35,7 @@ class Driver extends \CommonBundle\Component\Validator\Typeahead\Person
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This person does not exist',
+        self::NOT_VALID     => 'This person does not exist',
         self::DRIVER_EXISTS => 'A driver already exists for that user',
     );
 

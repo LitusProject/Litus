@@ -30,9 +30,9 @@ class Html extends \CommonBundle\Component\Validator\AbstractValidator
     const TITLE_EXISTS = 'titleExists';
 
     protected $options = array(
-        'publication' => null,
+        'publication'   => null,
         'academic_year' => null,
-        'exclude' => null,
+        'exclude'       => null,
     );
 
     /**

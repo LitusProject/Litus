@@ -85,7 +85,7 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
                     'cudi_admin_sales_article_discount',
                     array(
                         'action' => 'manage',
-                        'id' => $article->getId(),
+                        'id'     => $article->getId(),
                     )
                 );
 
@@ -106,11 +106,11 @@ class DiscountController extends \CudiBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'article' => $article,
-                'paginator' => $paginator,
+                'article'           => $article,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'form' => $form,
-                'templates' => $templates,
+                'form'              => $form,
+                'templates'         => $templates,
             )
         );
     }

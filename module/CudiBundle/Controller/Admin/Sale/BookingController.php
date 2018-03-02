@@ -70,10 +70,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'periods' => $periods,
-                'activePeriod' => $activePeriod,
-                'currentPeriod' => $currentPeriod,
-                'paginator' => $paginator,
+                'periods'           => $periods,
+                'activePeriod'      => $activePeriod,
+                'currentPeriod'     => $currentPeriod,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -110,10 +110,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'periods' => $periods,
-                'activePeriod' => $activePeriod,
-                'currentPeriod' => $currentPeriod,
-                'paginator' => $paginator,
+                'periods'           => $periods,
+                'activePeriod'      => $activePeriod,
+                'currentPeriod'     => $currentPeriod,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -196,11 +196,11 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'periods' => $periods,
-                'activePeriod' => $activePeriod,
-                'currentPeriod' => $currentPeriod,
+                'periods'             => $periods,
+                'activePeriod'        => $activePeriod,
+                'currentPeriod'       => $currentPeriod,
                 'currentAcademicYear' => $academicYear,
-                'form' => $form,
+                'form'                => $form,
             )
         );
     }
@@ -238,12 +238,12 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'mailForm' => $mailForm,
-                'periods' => $periods,
-                'activePeriod' => $activePeriod,
-                'currentPeriod' => $currentPeriod,
-                'booking' => $booking,
-                'paginator' => $paginator,
+                'mailForm'          => $mailForm,
+                'periods'           => $periods,
+                'activePeriod'      => $activePeriod,
+                'currentPeriod'     => $currentPeriod,
+                'booking'           => $booking,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
         );
@@ -299,7 +299,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
                 'cudi_admin_sales_booking',
                 array(
                     'action' => 'edit',
-                    'id' => $booking->getId(),
+                    'id'     => $booking->getId(),
                 )
             );
 
@@ -345,7 +345,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             'cudi_admin_sales_booking',
             array(
                 'action' => 'edit',
-                'id' => $booking->getId(),
+                'id'     => $booking->getId(),
             )
         );
 
@@ -383,7 +383,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             'cudi_admin_sales_booking',
             array(
                 'action' => 'edit',
-                'id' => $booking->getId(),
+                'id'     => $booking->getId(),
             )
         );
 
@@ -408,7 +408,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             'cudi_admin_sales_booking',
             array(
                 'action' => 'edit',
-                'id' => $booking->getId(),
+                'id'     => $booking->getId(),
             )
         );
 
@@ -440,7 +440,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             'cudi_admin_sales_booking',
             array(
                 'action' => 'edit',
-                'id' => $booking->getId(),
+                'id'     => $booking->getId(),
             )
         );
 
@@ -511,7 +511,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             'cudi_admin_sales_booking',
             array(
                 'action' => 'edit',
-                'id' => $booking->getId(),
+                'id'     => $booking->getId(),
             )
         );
 
@@ -694,10 +694,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
             return new ViewModel(
                 array(
-                    'form' => $form,
-                    'paginator' => $paginator,
+                    'form'              => $form,
+                    'paginator'         => $paginator,
                     'paginationControl' => $this->paginator()->createControl(),
-                    'person' => $person,
+                    'person'            => $person,
                 )
             );
         }
@@ -727,18 +727,18 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
             return new ViewModel(
                 array(
-                    'form' => $form,
+                    'form'                => $form,
                     'currentAcademicYear' => $this->getAcademicYearEntity(),
-                    'paginator' => $paginator,
-                    'paginationControl' => $this->paginator()->createControl(),
-                    'article' => $article,
+                    'paginator'           => $paginator,
+                    'paginationControl'   => $this->paginator()->createControl(),
+                    'article'             => $article,
                 )
             );
         }
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'                => $form,
                 'currentAcademicYear' => $this->getAcademicYearEntity(),
             )
         );
@@ -755,7 +755,7 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
