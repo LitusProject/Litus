@@ -73,6 +73,7 @@ return array(
     'Driver' => 'Driver',
     'Passenger' => 'Passenger',
     'Car' => 'Car',
+    'Bike' =>'Bike',
     'Add' => 'Add',
     'New Reservation' => 'New Reservation',
     'Edit Reservation' => 'Edit Reservation',

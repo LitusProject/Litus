@@ -73,6 +73,7 @@ return array(
     'Driver' => 'Bestuurder',
     'Passenger' => 'Passagier',
     'Car' => 'Auto',
+    'Bike' => 'Fietskar'
     'Add' => 'Toevoegen',
     'New Reservation' => 'Nieuwe Reservatie',
     'Edit Reservation' => 'Reservatie bewerken',

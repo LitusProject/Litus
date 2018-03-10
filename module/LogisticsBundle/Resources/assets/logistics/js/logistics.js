@@ -29,6 +29,7 @@
         tLoad: 'Load',
         tAdditionalInformation: 'Additional Information',
         tCar:'Car',
+        tBike: 'Bike',
         tDriver: 'Driver',
         tPassenger: 'Passenger',
         tDelete: 'Delete',
@@ -166,6 +167,7 @@
                         passengerId: reservation.passengerId,
                         load: reservation.load,
                         car: reservation.car,
+                        bike: reservation.bike,
                         additional: reservation.additionalInfo,
                         dbid: reservation.id
                     });
@@ -242,6 +244,7 @@
                         passengerId: data.reservation.passengerId,
                         load: data.reservation.load,
                         car: data.reservation.car,
+                        bike: data.reservation.bike,
                         additional: data.reservation.additionalInfo,
                         dbid: data.reservation.id
                     });
@@ -330,14 +333,25 @@
                 $('<dt>').html(settings.tCar),
                 $('<dd>').html("&#10004")
             );
-        }
-        else{
+        }else{
 			content.find('dl').append(
-			$('<dt>').html(settings.tCar),
-            $('<dd>').html(" &#x2718")
+		        $('<dt>').html(settings.tCar),
+                $('<dd>').html(" &#x2718")
             );
 		
 		}
+
+        if(event.bike==true) {
+            content.find('dl').append(
+                $('<dt>').html(settings.tBike),
+                $('<dd>').html("&#10004")
+            );
+        }else{
+            content.find('dl').append(
+                $('<dt>').html(settings.tBike),
+                $('<dd>').html(" &#x2718")
+            );
+        }
 		
 
         if (settings.editable) {
@@ -429,6 +443,7 @@
         $('.popover .driver').val(event.driverId);
         $('.popover [name="passenger[id]"]').val(event.passengerId);
         $('.popover .car').val(event.car); 
+        $('.popover .bike').val(event.bike);
         $('.popover .passenger').val(event.passenger);
         $('.popover .reservation_add').hide();
 
@@ -465,6 +480,7 @@
                         passenger: data.reservation.passenger,
                         passengerId: data.reservation.passengerId,
                         car: data.reservation.car,
+                        bike: data.reservation.bike,
                         load: data.reservation.load,
                         test: data.reservation.test,
                         additional: data.reservation.additionalInfo,
