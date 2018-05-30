@@ -13,6 +13,7 @@ cp config/database.config.php.dist config/database.config.php
 # install npm
 # I know, right?
 sudo aptitude -y install npm
+npm config set strict-ssl false
 
 # link node to /usr/bin
 sudo ln -s $(which node) /usr/bin/node
