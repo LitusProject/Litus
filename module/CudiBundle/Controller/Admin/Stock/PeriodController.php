@@ -78,6 +78,7 @@ class PeriodController extends \CudiBundle\Component\Controller\ActionController
                     continue;
                 }
 
+                $booking->setStatus('expired', $this->getEntityManager());
                 $booking->setStatus('booked', $this->getEntityManager());
                 $booking->setStatus('assigned', $this->getEntityManager());
             }
