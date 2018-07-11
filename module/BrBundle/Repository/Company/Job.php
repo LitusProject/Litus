@@ -171,9 +171,10 @@ class Job extends EntityRepository
      * @param  string              $type
      * @param  string              $sector
      * @param  string              $location
+     * @param  string              $master
      * @return \Doctrine\ORM\Query
      */
-    public function findAllActiveByTypeQuery($type, $sector, $location)
+    public function findAllActiveByTypeQuery($type, $sector, $location, $master)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('v, c')
@@ -190,7 +191,6 @@ class Job extends EntityRepository
             );
         
         if($sector !== null){
-            print("Sector not null");
             $query->andWhere(
                 $query->expr()->eq('v.sector', ':sector')
             )
@@ -198,11 +198,17 @@ class Job extends EntityRepository
         }
 
         if($location !== null){
-            print("Location not null");
             $query->andWhere(
                 $query->expr()->eq('v.location', ':location')
             )
             ->setParameter('location', $location);
+        }
+
+        if($master !== null){
+            $query->andWhere(
+                $query->expr()->eq('v.master', ':master')
+            )
+            ->setParameter('master', $master);
         }
 
         $resultSet = $query->setParameter('type', $type)
@@ -218,9 +224,10 @@ class Job extends EntityRepository
      * @param  string              $type
      * @param  string              $sector
      * @param  string              $location
+     * @param  string              $master
      * @return \Doctrine\ORM\Query
      */
-    public function findAllActiveByTypeSortedByDateQuery($type, $sector, $location)
+    public function findAllActiveByTypeSortedByDateQuery($type, $sector, $location, $master)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('v, c')
@@ -248,7 +255,15 @@ class Job extends EntityRepository
             )
             ->setParameter('location', $location);
         }
-            $resultSet = $query->setParameter('type', $type)
+
+        if($master !== null){
+            $query->andWhere(
+                $query->expr()->eq('v.master', ':master')
+            )
+            ->setParameter('master', $master);
+        }
+
+        $resultSet = $query->setParameter('type', $type)
             ->setParameter('now', new DateTime())
             ->orderBy('v.dateUpdated', 'DESC')
             ->getQuery();
@@ -260,9 +275,10 @@ class Job extends EntityRepository
      * @param  string              $type
      * @param  string              $sector
      * @param  string              $location
+     * @param  string              $master
      * @return \Doctrine\ORM\Query
      */
-    public function findAllActiveByTypeSortedByJobNameQuery($type, $sector, $location)
+    public function findAllActiveByTypeSortedByJobNameQuery($type, $sector, $location, $master)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $query->select('v, c')
@@ -291,6 +307,14 @@ class Job extends EntityRepository
             )
             ->setParameter('location', $location);
         }
+
+        if($master !== null){
+            $query->andWhere(
+                $query->expr()->eq('v.master', ':master')
+            )
+            ->setParameter('master', $master);
+        }
+
         $resultSet = $query->setParameter('type', $type)
             ->setParameter('now', new DateTime())
             ->orderBy('v.name', 'ASC')

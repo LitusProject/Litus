@@ -33,6 +33,15 @@
                 <center class="company-name">{{ vacancy.getCompany().getName() }}</center>
             {% endif %}
 
+            {% if vacancy.getMaster() %}
+                <hr/>
+                <center>
+                    <strong>
+                        {{ translate('Master') }}: {{ vacancy.getMaster() }}<br/>
+                    </strong>
+                </center>
+            {% endif %}
+
             {% if vacancy.getSector() %}
                 <hr/>
                 <center>
@@ -42,11 +51,20 @@
                 </center>
             {% endif %}
 
+            {% if vacancy.getLocation() %}
+                <hr/>
+                <center>
+                    <strong>
+                        {{ translate('Location') }}: {{ vacancy.getLocation() }}<br/>
+                    </strong>
+                </center>
+            {% endif %}
+
             {% if vacancy.getCity() %}
                 <hr/>
                 <center>
                     <strong>
-                        {{ translate('Location') }}: {{ vacancy.getCity() }}<br/>
+                        {{ translate('City') }}: {{ vacancy.getCity() }}<br/>
                     </strong>
                 </center>
             {% endif %}

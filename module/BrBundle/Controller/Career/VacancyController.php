@@ -51,13 +51,14 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 
                 $sector = $formData['sector'] == 'all' ? null : $formData['sector'];
                 $location = $formData['location'] == 'all' ? null : $formData['location'];
+                $master = $formData['master'] == 'all' ? null : $formData['master'];
 
                 if ('company' == $formData['searchType']) {
-                    $query = $repository->findAllActiveByTypeQuery('vacancy', $sector, $location);
+                    $query = $repository->findAllActiveByTypeQuery('vacancy', $sector, $location, $master);
                 } elseif ('vacancy' == $formData['searchType']) {
-                    $query = $repository->findAllActiveByTypeSortedByJobNameQuery('vacancy', $sector, $location);
+                    $query = $repository->findAllActiveByTypeSortedByJobNameQuery('vacancy', $sector, $location, $master);
                 } elseif ('mostRecent' == $formData['searchType']) {
-                    $query = $repository->findAllActiveByTypeSortedByDateQuery('vacancy', $sector, $location);
+                    $query = $repository->findAllActiveByTypeSortedByDateQuery('vacancy', $sector, $location, $master);
                 }
             }
         }
