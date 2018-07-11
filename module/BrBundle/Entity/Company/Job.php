@@ -87,6 +87,13 @@ class Job
     private $city;
 
     /**
+     * @var string The location (eg. province) where the job is located
+     * 
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $location;
+
+    /**
      * @var Company The company of the job
      *
      * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company")
@@ -452,6 +459,29 @@ class Job
     public function getEndDate()
     {
         return $this->endDate;
+    }
+
+    /**
+     * @param  string $location
+     * @return Job
+     */
+    public function setLocation($location)
+    {
+        if (!Company::isValidLocation($location)) {
+            throw new InvalidArgumentException('The location is not valid.');
+        }
+
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocation()
+    {
+        return Company::$possibleLocations[$this->location];
     }
 
     /**

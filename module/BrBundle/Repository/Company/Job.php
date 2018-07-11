@@ -168,97 +168,6 @@ class Job extends EntityRepository
     }
 
     /**
-     * @param  string              $type
-     * @param  string              $sector
-     * @return \Doctrine\ORM\Query
-     */
-    public function findAllActiveByTypeAndSectorByDateQuery($type, $sector)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('v, c')
-            ->from('BrBundle\Entity\Company\Job', 'v')
-            ->innerJoin('v.company', 'c')
-            ->where(
-                $query->expr()->andx(
-                    $query->expr()->eq('v.type', ':type'),
-                    $query->expr()->gt('v.endDate', ':now'),
-                    $query->expr()->eq('c.active', 'true'),
-                    $query->expr()->eq('v.sector', ':sector'),
-                    $query->expr()->eq('v.removed', 'FALSE'),
-                    $query->expr()->eq('v.approved', 'TRUE')
-                )
-            )
-            ->setParameter('type', $type)
-            ->setParameter('sector', $sector)
-            ->setParameter('now', new DateTime())
-            ->orderBy('v.dateUpdated', 'DESC')
-            ->getQuery();
-
-        return $resultSet;
-    }
-
-    /**
-     * @param  string              $type
-     * @param  string              $sector
-     * @return \Doctrine\ORM\Query
-     */
-    public function findAllActiveByTypeAndSectorQuery($type, $sector)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('v, c')
-            ->from('BrBundle\Entity\Company\Job', 'v')
-            ->innerJoin('v.company', 'c')
-            ->where(
-                $query->expr()->andx(
-                    $query->expr()->eq('v.type', ':type'),
-                    $query->expr()->gt('v.endDate', ':now'),
-                    $query->expr()->eq('c.active', 'true'),
-                    $query->expr()->eq('v.sector', ':sector'),
-                    $query->expr()->eq('v.removed', 'FALSE'),
-                    $query->expr()->eq('v.approved', 'TRUE')
-                )
-            )
-            ->setParameter('type', $type)
-            ->setParameter('sector', $sector)
-            ->setParameter('now', new DateTime())
-            ->orderBy('c.name', 'ASC')
-            ->addOrderBy('v.name', 'ASC')
-            ->getQuery();
-
-        return $resultSet;
-    }
-
-    /**
-     * @param  string              $type
-     * @param  string              $sector
-     * @return \Doctrine\ORM\Query
-     */
-    public function findAllActiveByTypeAndSectorByJobNameQuery($type, $sector)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('v, c')
-            ->from('BrBundle\Entity\Company\Job', 'v')
-            ->innerJoin('v.company', 'c')
-            ->where(
-                $query->expr()->andx(
-                    $query->expr()->eq('v.type', ':type'),
-                    $query->expr()->gt('v.endDate', ':now'),
-                    $query->expr()->eq('c.active', 'true'),
-                    $query->expr()->eq('v.sector', ':sector'),
-                    $query->expr()->eq('v.removed', 'FALSE'),
-                    $query->expr()->eq('v.approved', 'TRUE')
-                )
-            )
-            ->setParameter('type', $type)
-            ->setParameter('sector', $sector)
-            ->setParameter('now', new DateTime())
-            ->orderBy('v.name', 'ASC')
-            ->getQuery();
-
-        return $resultSet;
-    }
-
-    /**
      * @param  CompanyEntity       $company
      * @param  string              $type
      * @return \Doctrine\ORM\Query
@@ -279,6 +188,138 @@ class Job extends EntityRepository
             )
             ->setParameter('type', $type)
             ->setParameter('company', $company->getId())
+            ->setParameter('now', new DateTime())
+            ->orderBy('v.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  string              $type
+     * @param  string              $sector
+     * @param  string              $location
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllActiveByTypeQuery($type, $sector, $location)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('v.type', ':type'),
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
+                )
+            );
+        
+        if($sector !== null){
+            print("Sector not null");
+            $query->andWhere(
+                $query->expr()->eq('v.sector', ':sector')
+            )
+            ->setParameter('sector', $sector);
+        }
+
+        if($location !== null){
+            print("Location not null");
+            $query->andWhere(
+                $query->expr()->eq('v.location', ':location')
+            )
+            ->setParameter('location', $location);
+        }
+
+        $resultSet = $query->setParameter('type', $type)
+            ->setParameter('now', new DateTime())
+            ->orderBy('c.name', 'ASC')
+            ->addOrderBy('v.name', 'ASC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  string              $type
+     * @param  string              $sector
+     * @param  string              $location
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllActiveByTypeSortedByDateQuery($type, $sector, $location)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('v.type', ':type'),
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
+                )
+            );
+        if($sector !== null){
+            $query->andWhere(
+                $query->expr()->eq('v.sector', ':sector')
+            )
+            ->setParameter('sector', $sector);
+        }
+
+        if($location !== null){
+            $query->andWhere(
+                $query->expr()->eq('v.location', ':location')
+            )
+            ->setParameter('location', $location);
+        }
+            $resultSet = $query->setParameter('type', $type)
+            ->setParameter('now', new DateTime())
+            ->orderBy('v.dateUpdated', 'DESC')
+            ->getQuery();
+
+        return $resultSet;
+    }
+
+    /**
+     * @param  string              $type
+     * @param  string              $sector
+     * @param  string              $location
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllActiveByTypeSortedByJobNameQuery($type, $sector, $location)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('v.type', ':type'),
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
+                )
+            );
+
+        if($sector !== null){
+            $query->andWhere(
+                $query->expr()->eq('v.sector', ':sector')
+            )
+            ->setParameter('sector', $sector);
+        }
+
+        if($location !== null){
+            $query->andWhere(
+                $query->expr()->eq('v.location', ':location')
+            )
+            ->setParameter('location', $location);
+        }
+        $resultSet = $query->setParameter('type', $type)
             ->setParameter('now', new DateTime())
             ->orderBy('v.name', 'ASC')
             ->getQuery();

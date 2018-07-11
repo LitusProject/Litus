@@ -49,20 +49,15 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
                 $repository = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company\Job');
 
-                if ('all' != $formData['sector']) {
-                    if ('company' == $formData['searchType']) {
-                        $query = $repository->findAllActiveByTypeAndSectorQuery('vacancy', $formData['sector']);
-                    } elseif ('vacancy' == $formData['searchType']) {
-                        $query = $repository->findAllActiveByTypeAndSectorByJobNameQuery('vacancy', $formData['sector']);
-                    } elseif ('mostRecent' == $formData['searchType']) {
-                        $query = $repository->findAllActiveByTypeAndSectorByDateQuery('vacancy', $formData['sector']);
-                    }
-                } else {
-                    if ('vacancy' == $formData['searchType']) {
-                        $query = $repository->findAllActiveByTypeByJobNameQuery('vacancy');
-                    } elseif ('mostRecent' == $formData['searchType']) {
-                        $query = $repository->findAllActiveByTypeByDateQuery('vacancy');
-                    }
+                $sector = $formData['sector'] == 'all' ? null : $formData['sector'];
+                $location = $formData['location'] == 'all' ? null : $formData['location'];
+
+                if ('company' == $formData['searchType']) {
+                    $query = $repository->findAllActiveByTypeQuery('vacancy', $sector, $location);
+                } elseif ('vacancy' == $formData['searchType']) {
+                    $query = $repository->findAllActiveByTypeSortedByJobNameQuery('vacancy', $sector, $location);
+                } elseif ('mostRecent' == $formData['searchType']) {
+                    $query = $repository->findAllActiveByTypeSortedByDateQuery('vacancy', $sector, $location);
                 }
             }
         }

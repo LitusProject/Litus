@@ -185,6 +185,19 @@ class Company
         'hr'           => 'Human Resources',
     );
 
+    /**
+     * @var array The possible locations for an internship or job
+     */
+    public static $possibleLocations = array(
+        'antwerp'         => 'Antwerp',
+        'east flanders'   => 'East Flanders',
+        'flemish brabant' => 'Flemish Brabant', 
+        'limburg'         => 'Limburg',
+        'west flanders'   => 'West Flanders',
+        'wallonia'        => 'Wallonia',
+        'abroad'          => 'Abroad'
+    );
+
     public function __construct()
     {
         $this->active = true;
@@ -200,6 +213,14 @@ class Company
     public static function isValidSector($sector)
     {
         return array_key_exists($sector, self::$possibleSectors);
+    }
+    /**
+     * @param  string  $sector
+     * @return boolean
+     */
+    public static function isValidLocation($location)
+    {
+        return array_key_exists($location, self::$possibleLocations);
     }
 
     /**
