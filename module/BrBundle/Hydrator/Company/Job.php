@@ -34,7 +34,7 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'description', 'benefits', 'profile', 'contact', 'city');
+    private static $stdKeys = array('name', 'description', 'benefits', 'profile', 'email', 'city');
 
     protected function doHydrate(array $data, $object = null)
     {

@@ -73,11 +73,11 @@ class Job
     private $profile;
 
     /**
-     * @var string The contact information for this job.
+     * @var string The mailto link for this job
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="email", type="text", nullable=true)
      */
-    private $contact;
+    private $email;
 
     /**
      * @var string The city where the job is located
@@ -348,12 +348,12 @@ class Job
     }
 
     /**
-     * @param  string $contact
+     * @param  string $email
      * @return Job
      */
-    public function setContact($contact)
+    public function setEmail($email)
     {
-        $this->contact = $contact;
+        $this->email = $email;
 
         return $this;
     }
@@ -361,9 +361,9 @@ class Job
     /**
      * @return string
      */
-    public function getContact()
+    public function getEmail()
     {
-        return $this->contact;
+        return $this->email;
     }
 
     /**

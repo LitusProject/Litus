@@ -147,18 +147,24 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'contact',
-            'label'    => 'Contact Information',
-            'required' => true,
+            'type'     => 'text',
+            'name'     => 'email',
+            'label'    => 'Email',
+            'required' => false,
             'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
+                    'validators' => array(
+                        array(
+                            'name' => 'EmailAddress',
+                        )
+                    ),
                 ),
-            ),
+            )
         ));
+
 
         $this->add(array(
             'type'       => 'select',
