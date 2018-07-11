@@ -89,34 +89,6 @@ class Job extends EntityRepository
      * @param  string              $type
      * @return \Doctrine\ORM\Query
      */
-    public function findAllActiveByTypeQuery($type)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('v, c')
-            ->from('BrBundle\Entity\Company\Job', 'v')
-            ->innerJoin('v.company', 'c')
-            ->where(
-                $query->expr()->andx(
-                    $query->expr()->eq('v.type', ':type'),
-                    $query->expr()->gt('v.endDate', ':now'),
-                    $query->expr()->eq('c.active', 'true'),
-                    $query->expr()->eq('v.removed', 'FALSE'),
-                    $query->expr()->eq('v.approved', 'TRUE')
-                )
-            )
-            ->setParameter('type', $type)
-            ->setParameter('now', new DateTime())
-            ->orderBy('c.name','ASC')
-            ->addOrderBy('v.name', 'ASC')
-            ->getQuery();
-
-        return $resultSet;
-    }
-
-    /**
-     * @param  string              $type
-     * @return \Doctrine\ORM\Query
-     */
     public function findAllActiveByTypeByJobNameQuery($type)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
