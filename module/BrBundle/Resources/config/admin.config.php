@@ -60,6 +60,10 @@ return array(
                     'title' => 'Requests',
                     'help'  => 'Here you can manage all requests that are made by the companies.',
                 ),
+                'br_admin_event' => array(
+                    'title' => 'Events',
+                    'help'  => 'Here you can manage all events by VTK Corporate Relations.',
+                ),
             ),
             'controllers' => array(
                 'br_admin_company_event',
