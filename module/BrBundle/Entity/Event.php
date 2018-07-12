@@ -32,7 +32,7 @@ use CommonBundle\Entity\User\Person,
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Event")
  * @ORM\Table(name="br.events")
  */
-abstract class Event
+class Event
 {
     /**
      * @var int The event's unique identifier
@@ -95,6 +95,15 @@ abstract class Event
     public function getId()
     {
         return $this->id;
+    }
+
+
+    /**
+     * @return Person
+     */
+    public function getCreator()
+    {
+        return $this->creator;
     }
 
     /**

@@ -69,7 +69,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function addAction()
     {
-        /*Moet ik nog fixen $form = $this->getForm('');*/
+        $form = $this->getForm('br_event_add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -86,7 +86,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                    'logistics_admin_van_reservation',
+                    'br_admin_event',
                     array(
                         'action' => 'manage',
                     )
