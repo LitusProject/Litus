@@ -100,7 +100,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name'    => 'date_compare',
                             'options' => array(
-                                'first_date' => 'Start Date',
+                                'first_date' => 'start_date',
                                 'format'     => 'd/m/Y H:i',
                             ),
                         ),

@@ -463,6 +463,20 @@ return array(
                 ),
             ),
         ),
+        'br_event_fetch' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/career/event/fetch[/:start][/:end][/]',
+                'constraints' => array(
+                    'start' => '[0-9]*',
+                    'end'   => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_career_event',
+                    'action'     => 'fetch',
+                ),
+            ),
+        ),
     ),
     'controllers' => array(
         'br_admin_company'       => 'BrBundle\Controller\Admin\CompanyController',

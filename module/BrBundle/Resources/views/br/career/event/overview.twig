@@ -1,28 +1,91 @@
 {% extends 'career/partials/layout.twig' %}
 
-{% block page_content %}
-    <h1>{{ translate('Events') }}</h1>
+{% block content %}
+    <div class="flashmessage alert alert-danger fade load_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('There was an error while loading the events.') }}
+        </div>
+    </div>
 
-    <table style="cursor:pointer;" data-provides="rowlink" class="table table-hover full-width">
-        {% for event in paginator %}
-            <tr>
-                <td width="120">
-                    <a href="{{ url('br_career_event', {'action': 'view', 'id': event.getId() }) }}">
-                        {% if event.getEvent().getPoster() %}
-                            <img width="120" src="{{ url('calendar', {'action': 'poster', 'name': event.getEvent().getPoster()}) }}" alt="{{ event.getEvent().getTitle(language) }}">
-                        {% endif %}
-                    </a>
-                </td>
+    <div id="calendar"></div>
+{% endblock %}
 
-                <td>
-                    <strong>{{ event.getCompany().getName() }} - {{ event.getEvent().getTitle(language) }}</strong>
-                    <div class="pull-right hidden-xs"><strong>{{ dateLocalized(event.getEvent().getStartDate(), 'd  MMMM y HH:mm') }}</strong></div>
-                    <br/>{% autoescape false %}{{ event.getEvent().getSummary(400, language) }}{% endautoescape %}
-                </td>
-            </tr>
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.flashmessage .close').click(function () {
+                $(this).parent().removeClass('in');
+            });
 
-        {% endfor %}
-    </table>
-
-    {% include 'site/partials/paginationControl.twig' %}
+            $('#calendar').eventsCalendar({
+                fetchUrl: '{{ url('br_event_fetch') }}',
+                monthNames: [
+                    '{{ translate('January') }}',
+                    '{{ translate('February') }}',
+                    '{{ translate('March') }}',
+                    '{{ translate('April') }}',
+                    '{{ translate('May') }}',
+                    '{{ translate('June') }}',
+                    '{{ translate('July') }}',
+                    '{{ translate('August') }}',
+                    '{{ translate('September') }}',
+                    '{{ translate('October') }}',
+                    '{{ translate('November') }}',
+                    '{{ translate('December') }}'
+                ],
+                monthNamesShort: [
+                    '{{ translate('Jan') }}',
+                    '{{ translate('Feb') }}',
+                    '{{ translate('Mar') }}',
+                    '{{ translate('Apr') }}',
+                    '{{ translate('May') }}',
+                    '{{ translate('Jun') }}',
+                    '{{ translate('Jul') }}',
+                    '{{ translate('Aug') }}',
+                    '{{ translate('Sep') }}',
+                    '{{ translate('Oct') }}',
+                    '{{ translate('Nov') }}',
+                    '{{ translate('Dec') }}'
+                ],
+                dayNames: [
+                    '{{ translate('Sunday') }}',
+                    '{{ translate('Monday') }}',
+                    '{{ translate('Tuesday') }}',
+                    '{{ translate('Wednesday') }}',
+                    '{{ translate('Thursday') }}',
+                    '{{ translate('Friday') }}',
+                    '{{ translate('Saturday') }}'
+                ],
+                dayNamesShort: [
+                    '{{ translate('Sun') }}',
+                    '{{ translate('Mon') }}',
+                    '{{ translate('Tue') }}',
+                    '{{ translate('Wed') }}',
+                    '{{ translate('Thu') }}',
+                    '{{ translate('Fri') }}',
+                    '{{ translate('Sat') }}'
+                ],
+                buttonText: {
+                    today:    '{{ translate('today') }}',
+                    month:    '{{ translate('month') }}',
+                    week:     '{{ translate('week') }}',
+                    day:      '{{ translate('day') }}'
+                },
+                loadError: function () {
+                    $('.flashmessage').removeClass('in');
+                    $('.load_error').addClass('in');
+                },
+                hideErrors: function () {
+                    $('.flashmessage').removeClass('in');
+                },
+                tStartDate: '{{ translate('Start Date') }}',
+                tEndDate: '{{ translate('End Date') }}',
+            });
+            {% if date %}
+                var dateArray = '{{ date }}'.split('-');
+                $('#calendar').eventsCalendar('gotoDate', dateArray[0], dateArray[1], dateArray[2]);
+            {% endif %}
+        });
+    </script>
 {% endblock %}
