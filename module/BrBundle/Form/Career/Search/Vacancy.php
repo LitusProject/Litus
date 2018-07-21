@@ -60,6 +60,24 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
         ));
 
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'location',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->createLocationArray(),
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'master',
+            'required'   => true,
+            'attributes' => array(
+                'options' => $this->createMasterArray(),
+            ),
+        ));
+
         $this->addSubmit('Search');
         $this->get('submit')->setAttribute('class', 'btn btn-default');
     }
@@ -77,5 +95,25 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         return $sectorArray;
+    }
+
+    private function createLocationArray()
+    {
+        $locationArray = array('all' => 'All');
+        foreach (Company::$possibleLocations as $key => $location){
+            $locationArray[$key] = $location;
+        }
+
+        return $locationArray;
+    }
+
+    private function createMasterArray()
+    {
+        $masterArray = array('all' => 'All');
+        foreach (Company::$possibleMasters as $key => $master){
+            $masterArray[$key] = $master;
+        }
+
+        return $masterArray;
     }
 }

@@ -122,6 +122,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
         ));
 
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'master',
+            'label'      => 'Master',
+            'attributes' => array(
+                'options' => $this->getMasters(),
+            ),
+        ));
+
         $this->add(array(
             'type'     => 'textarea',
             'name'     => 'profile',
@@ -137,16 +147,31 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'contact',
-            'label'    => 'Contact Information',
-            'required' => true,
+            'type'     => 'text',
+            'name'     => 'email',
+            'label'    => 'Email',
+            'required' => false,
             'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
+                    'validators' => array(
+                        array(
+                            'name' => 'EmailAddress',
+                        )
+                    ),
                 ),
+            )
+        ));
+
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'location',
+            'label'      => 'Location',
+            'attributes' => array(
+                'options' => $this->getLocations(),
             ),
         ));
 
@@ -175,5 +200,25 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         return $sectorArray;
+    }
+
+    private function getLocations()
+    {
+        $locationArray = array();
+        foreach (Company::$possibleLocations as $key => $location){
+            $locationArray[$key] = $location;
+        }
+
+        return $locationArray;
+    }
+
+    private function getMasters()
+    {
+        $masterArray = array();
+        foreach (Company::$possibleMasters as $key => $master){
+            $masterArray[$key] = $master;
+        }
+
+        return $masterArray;
     }
 }

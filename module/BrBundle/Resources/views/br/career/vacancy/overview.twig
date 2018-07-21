@@ -12,9 +12,6 @@
                     <div class="form-group">
                         <div class="input-group">
                             {{ formElement(vacancySearchForm.get('searchType')) }}
-                            <div class="input-group-btn">
-                                {{ formElement(vacancySearchForm.get('submit')) }}
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -24,11 +21,27 @@
                     <div class="form-group">
                         <div class="input-group">
                             {{ formElement(vacancySearchForm.get('sector')) }}
-                            <div class="input-group-btn">
-                                {{ formElement(vacancySearchForm.get('submit')) }}
-                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="well">
+                    <h4>{{ translate('Location') }}</h4>
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(vacancySearchForm.get('location')) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="well">
+                    <h4>{{ translate('Master') }}</h4>
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(vacancySearchForm.get('master')) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group-btn">
+                    {{ formElement(vacancySearchForm.get('submit')) }}
                 </div>
             {{ form().closeTag()|raw }}
         </div>

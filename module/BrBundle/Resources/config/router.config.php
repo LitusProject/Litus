@@ -153,6 +153,21 @@ return array(
                 ),
             ),
         ),
+        'br_admin_event' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/br/event[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_admin_event',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'br_admin_invoice' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -448,6 +463,20 @@ return array(
                 ),
             ),
         ),
+        'br_event_fetch' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/career/event/fetch[/:start][/:end][/]',
+                'constraints' => array(
+                    'start' => '[0-9]*',
+                    'end'   => '[0-9]*',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_career_event',
+                    'action'     => 'fetch',
+                ),
+            ),
+        ),
     ),
     'controllers' => array(
         'br_admin_company'       => 'BrBundle\Controller\Admin\CompanyController',
@@ -459,6 +488,7 @@ return array(
 
         'br_admin_collaborator' => 'BrBundle\Controller\Admin\CollaboratorController',
         'br_admin_contract'     => 'BrBundle\Controller\Admin\ContractController',
+        'br_admin_event'        => 'BrBundle\Controller\Admin\EventController',
         'br_admin_order'        => 'BrBundle\Controller\Admin\OrderController',
         'br_admin_product'      => 'BrBundle\Controller\Admin\ProductController',
         'br_admin_invoice'      => 'BrBundle\Controller\Admin\InvoiceController',

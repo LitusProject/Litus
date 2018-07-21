@@ -470,6 +470,17 @@ abstract class Form extends \CommonBundle\Entity\Node
             }
         }
 
+        $viewer = $this->entityManager
+            ->getRepository('FormBundle\Entity\ViewerMap')
+            ->findOneByPersonAndForm($person, $this);
+
+        if($viewer !== null){
+            if($viewer->isEdit()){
+                return true;
+            }
+        }
+
+
         return false;
     }
 
