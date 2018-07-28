@@ -111,7 +111,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'reservation_id' => null === $this->reservation ? 0 : $this->reservation->getId(),
                             ),
                         ),
-		*/
+         */
         $this->add(array(
             'type'       => 'text',
             'name'       => 'reason',

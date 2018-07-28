@@ -122,7 +122,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
         ));
 
-
         $this->add(array(
             'type'       => 'select',
             'name'       => 'master',
@@ -159,12 +158,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'validators' => array(
                         array(
                             'name' => 'EmailAddress',
-                        )
+                        ),
                     ),
                 ),
-            )
+            ),
         ));
-
 
         $this->add(array(
             'type'       => 'select',
@@ -205,7 +203,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     private function getLocations()
     {
         $locationArray = array();
-        foreach (Company::$possibleLocations as $key => $location){
+        foreach (Company::$possibleLocations as $key => $location) {
             $locationArray[$key] = $location;
         }
 
@@ -215,7 +213,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     private function getMasters()
     {
         $masterArray = array();
-        foreach (Company::$possibleMasters as $key => $master){
+        foreach (Company::$possibleMasters as $key => $master) {
             $masterArray[$key] = $master;
         }
 

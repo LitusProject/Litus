@@ -164,8 +164,8 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
     }
 
     /**
-	 * deletes the pocgroup
-	 */
+     * deletes the pocgroup
+     */
     public function deleteAction()
     {
         if (!($academicYear = $this->getAcademicYearEntity())) {
@@ -206,7 +206,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
-     /**
+    /**
      * @return Study|null
      */
     private function getPocEntity()

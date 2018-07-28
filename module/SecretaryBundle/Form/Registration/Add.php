@@ -313,10 +313,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'  => 'checkbox',
-                    'name'  => 'receive_irreeel_at_cudi',
-                    'label' => 'I want to receive my Ir.Reëel at CuDi',
-                    'value' => true,
+                    'type'       => 'checkbox',
+                    'name'       => 'receive_irreeel_at_cudi',
+                    'label'      => 'I want to receive my Ir.Reëel at CuDi',
+                    'value'      => true,
                     'attributes' => array(
                         'id' => 'irreeel',
                     ),

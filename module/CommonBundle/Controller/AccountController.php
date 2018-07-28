@@ -310,7 +310,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                             'action'       => 'form',
                             'redirect'     => $this->getParam('return') ? $this->getParam('return') : 'common_account',
                             'organization' => $selectedOrganization->getId(),
-                            'size' => $organizationData['tshirt_size'],
+                            'size'         => $organizationData['tshirt_size'],
                         )
                     );
                 } else {
@@ -644,9 +644,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
             return new ViewModel(
                 array(
-                    'hasPayed' => true,
+                    'hasPayed'      => true,
                     'accountExists' => $accountExists,
-                    'form' => $form,
+                    'form'          => $form,
                 )
             );
         } else {

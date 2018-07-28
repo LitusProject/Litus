@@ -20,8 +20,6 @@
 
 namespace CommonBundle\Entity\User;
 
-
-
 use DateTime,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;

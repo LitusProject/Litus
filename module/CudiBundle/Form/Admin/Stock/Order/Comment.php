@@ -20,7 +20,6 @@
 
 namespace CudiBundle\Form\Admin\Stock\Order;
 
-
 use CudiBundle\Entity\Stock\Order\Order,
     LogicException;
 

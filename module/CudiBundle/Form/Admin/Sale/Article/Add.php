@@ -20,7 +20,6 @@
 
 namespace CudiBundle\Form\Admin\Sale\Article;
 
-
 use CudiBundle\Entity\Sale\Article,
     DateInterval;
 

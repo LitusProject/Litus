@@ -20,8 +20,6 @@
 
 namespace MailBundle\Hydrator\MailingList;
 
-
-
 use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
     MailBundle\Entity\MailingList\AdminMap as ListAdminEntity,
     MailBundle\Entity\MailingList\Named as NamedEntity;

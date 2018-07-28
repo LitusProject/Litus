@@ -278,7 +278,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                                 'redirect'     => 'secretary_registration',
                                 'rediraction'  => 'studies',
                                 'organization' => $selectedOrganization->getId(),
-                                'size' => $organizationData['tshirt_size'],
+                                'size'         => $organizationData['tshirt_size'],
                             )
                         );
                     } else {
@@ -561,7 +561,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             'redirect'     => 'secretary_registration',
                             'rediraction'  => 'studies',
                             'organization' => $selectedOrganization->getId(),
-                            'size' => $organizationData['tshirt_size'],
+                            'size'         => $organizationData['tshirt_size'],
                         )
                     );
                 } else {

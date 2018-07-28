@@ -20,7 +20,6 @@
 
 namespace ShiftBundle\Form\Admin\Shift;
 
-
 use LogicException,
     Shiftbundle\Entity\Shift;
 

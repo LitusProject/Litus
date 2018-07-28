@@ -20,7 +20,6 @@
 
 namespace BrBundle\Entity\Product;
 
-
 use BrBundle\Entity\Product,
     Doctrine\ORM\Mapping as ORM;
 

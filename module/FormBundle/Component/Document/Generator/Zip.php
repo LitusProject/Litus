@@ -52,7 +52,6 @@ class Zip
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('form.file_upload_path') . '/';
 
-        
         $zip->open($tmpFile->getFileName(), ZIPARCHIVE::CREATE);
         foreach ($entries as $entry) {
             $zip->addFile(

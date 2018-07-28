@@ -20,7 +20,6 @@
 
 namespace FormBundle\Hydrator\Node\Entry;
 
-
 use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
     FormBundle\Entity\Entry as FieldEntryEntity;
 

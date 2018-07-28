@@ -20,8 +20,6 @@
 
 namespace SyllabusBundle\Form\Admin\Subject\ModuleGroup;
 
-
-
 use CommonBundle\Entity\General\AcademicYear,
     SyllabusBundle\Entity\Study\SubjectMap,
     SyllabusBundle\Entity\Subject;

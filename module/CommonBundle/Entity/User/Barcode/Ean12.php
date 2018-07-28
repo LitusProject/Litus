@@ -20,8 +20,6 @@
 
 namespace CommonBundle\Entity\User\Barcode;
 
-
-
 use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM,
     InvalidArgumentException;

@@ -20,10 +20,6 @@
 
 namespace SecretaryBundle\Component\Registration;
 
-
-
-
-
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
     CommonBundle\Entity\User\Person\Academic,

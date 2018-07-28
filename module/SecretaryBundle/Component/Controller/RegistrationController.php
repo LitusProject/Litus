@@ -322,7 +322,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $organization,
             $academicYear,
             array(
-                'payed' => false,
+                'payed'      => false,
                 'tshirtSize' => $tshirtSize,
             )
         );

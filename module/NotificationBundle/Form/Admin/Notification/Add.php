@@ -20,7 +20,6 @@
 
 namespace NotificationBundle\Form\Admin\Notification;
 
-
 use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language;
 

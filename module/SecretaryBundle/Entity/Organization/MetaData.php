@@ -20,9 +20,6 @@
 
 namespace SecretaryBundle\Entity\Organization;
 
-
-
-
 use CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\User\Person\Academic,
     Doctrine\ORM\Mapping as ORM,
@@ -93,14 +90,14 @@ class MetaData
      * @var array The possible T-shirt sizes
      */
     public static $possibleSizes = array(
-        'M_S' => 'S - Male',
-        'M_M' => 'M - Male',
-        'M_L' => 'L - Male',
+        'M_S'  => 'S - Male',
+        'M_M'  => 'M - Male',
+        'M_L'  => 'L - Male',
         'M_XL' => 'XL - Male',
 
-        'F_S' => 'S - Female',
-        'F_M' => 'M - Female',
-        'F_L' => 'L - Female',
+        'F_S'  => 'S - Female',
+        'F_M'  => 'M - Female',
+        'F_L'  => 'L - Female',
         'F_XL' => 'XL - Female',
     );
 

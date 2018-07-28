@@ -20,7 +20,6 @@
 
 namespace FormBundle\Form\Admin\Field\Field;
 
-
 use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language;
 

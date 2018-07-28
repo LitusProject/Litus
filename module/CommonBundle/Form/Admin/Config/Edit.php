@@ -20,7 +20,6 @@
 
 namespace CommonBundle\Form\Admin\Config;
 
-
 use CommonBundle\Entity\General\Config,
     LogicException;
 

@@ -20,10 +20,6 @@
 
 namespace ApiBundle\Document\Code;
 
-
-
-
-
 use ApiBundle\Entity\Key,
     CommonBundle\Entity\User\Person,
     DateTime,

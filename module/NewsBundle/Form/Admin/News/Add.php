@@ -20,7 +20,6 @@
 
 namespace NewsBundle\Form\Admin\News;
 
-
 use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language;
 

@@ -473,12 +473,11 @@ abstract class Form extends \CommonBundle\Entity\Node
             ->getRepository('FormBundle\Entity\ViewerMap')
             ->findOneByPersonAndForm($person, $this);
 
-        if($viewer !== null){
-            if($viewer->isEdit()){
+        if ($viewer !== null) {
+            if ($viewer->isEdit()) {
                 return true;
             }
         }
-
 
         return false;
     }

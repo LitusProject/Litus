@@ -20,10 +20,6 @@
 
 namespace PageBundle\Form\Admin\Page;
 
-
-
-
-
 use CommonBundle\Component\Form\FieldsetInterface,
     CommonBundle\Entity\General\Language,
     PageBundle\Entity\Category,

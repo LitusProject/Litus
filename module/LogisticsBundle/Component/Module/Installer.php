@@ -20,8 +20,6 @@
 
 namespace LogisticsBundle\Component\Module;
 
-
-
 use LogisticsBundle\Entity\Reservation\PianoReservation,
     LogisticsBundle\Entity\Reservation\ReservableResource,
     LogisticsBundle\Entity\Reservation\VanReservation;

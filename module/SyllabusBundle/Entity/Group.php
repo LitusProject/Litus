@@ -190,7 +190,7 @@ class Group
         return $this;
     }
 
-     /**
+    /**
      * @return EntityManager
      */
     public function getEntityManager()

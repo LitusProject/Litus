@@ -20,7 +20,6 @@
 
 namespace CudiBundle\Form\Admin\Prof\File;
 
-
 use CudiBundle\Entity\File\Mapping as FileMapping,
     LogicException;
 

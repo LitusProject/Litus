@@ -20,8 +20,6 @@
 
 namespace SyllabusBundle\Entity\Subject;
 
-
-
 use CommonBundle\Entity\User\Person,
     DateTime,
     Doctrine\ORM\Mapping as ORM;

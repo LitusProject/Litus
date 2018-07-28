@@ -20,7 +20,6 @@
 
 namespace MailBundle\Entity\MailingList\Entry\Person;
 
-
 use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
     Doctrine\ORM\Mapping as ORM;
 

@@ -39,12 +39,12 @@ class Edit extends Add
 
         $this->remove('subject_form');
 
-    //    [COMMENT]: No idea why this is in here. Removed it on request by organisations
-    //    if ($this->article->getType() == 'common') {
-    //        /** @var \CommonBundle\Component\Form\Fieldset $articleFieldset */
-    //        $articleFieldset = $this->get('article');
-    //        $articleFieldset->remove('type');
-    //    }
+        //    [COMMENT]: No idea why this is in here. Removed it on request by organisations
+        //    if ($this->article->getType() == 'common') {
+        //        /** @var \CommonBundle\Component\Form\Fieldset $articleFieldset */
+        //        $articleFieldset = $this->get('article');
+        //        $articleFieldset->remove('type');
+        //    }
 
         $this->remove('submit')
             ->addSubmit('Save', 'article_edit');

@@ -49,7 +49,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object = $this->stdHydrate($data, $object, self::$stdKeys);
-        
+
         if (isset($data['start_date'])) {
             $object->setStartDate(self::loadDateTime($data['start_date']));
         }

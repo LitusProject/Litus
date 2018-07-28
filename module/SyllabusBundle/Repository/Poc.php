@@ -52,7 +52,7 @@ class Poc extends EntityRepository
 
         return $resultSet;
     }
-     /**
+    /**
      * @param  AcademicYear        $academicYear
      * @return \Doctrine\ORM\Query
      */

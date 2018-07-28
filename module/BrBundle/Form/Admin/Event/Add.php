@@ -81,7 +81,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name'    => 'date',
                             'options' => array(
-                                'format'     => 'd/m/Y H:i',
+                                'format' => 'd/m/Y H:i',
                             ),
                         ),
                     ),

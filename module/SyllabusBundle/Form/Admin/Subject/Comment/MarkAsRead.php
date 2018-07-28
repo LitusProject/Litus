@@ -20,7 +20,6 @@
 
 namespace SyllabusBundle\Form\Admin\Subject\Comment;
 
-
 use LogicException,
     SyllabusBundle\Entity\Subject\Comment;
 

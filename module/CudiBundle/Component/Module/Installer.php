@@ -20,17 +20,6 @@
 
 namespace CudiBundle\Component\Module;
 
-
-
-
-
-
-
-
-
-
-
-
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
     CommonBundle\Entity\General\Address,

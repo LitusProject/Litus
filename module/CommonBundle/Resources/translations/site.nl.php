@@ -23,7 +23,7 @@ return array(
     'VTK'                          => 'VTK',
     'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
 
-    'Welcome' => 'Welkom',
+    'Welcome'                                                                                                                      => 'Welkom',
     'Welcome on the website of Vlaamse Technische Kring, the student organization of the Faculty of Engineering at the KU Leuven.' => 'Welkom op de website van de Vlaamse Technische Kring, de vereniging van de studenten Burgerlijk Ingenieur en Burgerlijk Ingenieur-Architect aan de KU Leuven.',
 
     'Dutch'   => 'Nederlands',
@@ -116,9 +116,9 @@ return array(
 
     'VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.' => 'VTK gebruikt cookies om het gebruiksgemak van deze website te verhogen. Door deze website te gebruiken of op "Ga Verder" te klikken geeft u de toestemming om cookies te gebruiken. Indien u meer informatie wilt over cookies en hoe ze gebruikt worden, kan u <a href="%url%">ons privacybeleid</a> hier lezen.',
 
-    'Privacy Policy'                => 'Privacybeleid',
+    'Privacy Policy' => 'Privacybeleid',
 
-    'Wiki'                          => 'Examenwiki',
+    'Wiki' => 'Examenwiki',
 
     'International Student'         => 'Internationale Student',
     'I am an international student' => 'Ik ben een internationale student',

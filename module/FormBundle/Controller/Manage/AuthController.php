@@ -20,8 +20,6 @@
 
 namespace FormBundle\Controller\Manage;
 
-
-
 use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
     CommonBundle\Component\Authentication\Authentication,
     Zend\View\Model\ViewModel;

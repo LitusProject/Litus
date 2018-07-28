@@ -288,7 +288,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-     /**
+    /**
      * @return array
      */
     private function getMyPocers()

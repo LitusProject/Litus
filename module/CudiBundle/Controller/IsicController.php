@@ -253,7 +253,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                                 ->findOneById($this->getParam('organization')),
                             $this->getCurrentAcademicYear(),
                             array(
-                                'payed' => false,
+                                'payed'      => false,
                                 'tshirtSize' => $this->getParam('size'),
                             )
                         );

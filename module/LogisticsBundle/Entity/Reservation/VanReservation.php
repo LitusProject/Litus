@@ -20,8 +20,6 @@
 
 namespace LogisticsBundle\Entity\Reservation;
 
-
-
 use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM,
     LogisticsBundle\Entity\Driver;

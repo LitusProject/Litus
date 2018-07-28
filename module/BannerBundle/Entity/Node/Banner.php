@@ -20,7 +20,6 @@
 
 namespace BannerBundle\Entity\Node;
 
-
 use DateTime,
     Doctrine\ORM\Mapping as ORM;
 

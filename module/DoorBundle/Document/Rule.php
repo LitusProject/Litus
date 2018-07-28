@@ -20,9 +20,6 @@
 
 namespace DoorBundle\Document;
 
-
-
-
 use CommonBundle\Entity\User\Person\Academic,
     DateTime,
     Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,

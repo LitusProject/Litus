@@ -20,9 +20,6 @@
 
 namespace BrBundle\Entity\Company;
 
-
-
-
 use BrBundle\Entity\Company,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\Common\Collections\ArrayCollection,

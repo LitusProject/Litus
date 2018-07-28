@@ -65,15 +65,17 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findAll();
 
         $data = [];
-        
-        foreach($lists as $list){
+
+        foreach ($lists as $list) {
             $entries = $this->getEntityManager()
                 ->getRepository('MailBundle\Entity\MailingList\Entry')
                 ->findByList($list);
-            
-            $addresses = array_map(function($entry){ return $entry->getEmailAddress(); }, $entries);
+
+            $addresses = array_map(function ($entry) {
+                return $entry->getEmailAddress();
+            }, $entries);
             $addressesString = implode(', ', $addresses);
-            
+
             $data[] = array('name' => $list->getName(), 'addresses' => $addressesString);
         }
 

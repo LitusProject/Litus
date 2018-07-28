@@ -316,7 +316,7 @@ class Shift
         $this->nbResponsibles = $nbResponsibles;
 
         while ($this->countResponsibles() > $nbResponsibles) {
-            $this->responsibles->remove($this->countResponsibles()-1);
+            $this->responsibles->remove($this->countResponsibles() - 1);
         }
 
         return $this;
@@ -412,7 +412,7 @@ class Shift
         $this->nbVolunteers = $nbVolunteers;
 
         while ($this->countVolunteers() > $nbVolunteers) {
-            $this->volunteers->remove($this->countVolunteers()-1);
+            $this->volunteers->remove($this->countVolunteers() - 1);
         }
 
         return $this;

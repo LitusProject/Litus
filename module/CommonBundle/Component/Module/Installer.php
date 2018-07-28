@@ -20,9 +20,6 @@
 
 namespace CommonBundle\Component\Module;
 
-
-
-
 use CommonBundle\Entity\General\Address\City,
     CommonBundle\Entity\General\Address\Street,
     CommonBundle\Entity\General\Language,

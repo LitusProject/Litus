@@ -20,12 +20,6 @@
 
 namespace BrBundle\Entity\User\Person;
 
-
-
-
-
-
-
 use BrBundle\Entity\Company,
     BrBundle\Entity\User\Status\Corporate as CorporateStatus,
     CommonBundle\Component\Util\AcademicYear,

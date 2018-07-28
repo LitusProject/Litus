@@ -874,7 +874,7 @@ return array(
                     'redirect'     => '[a-zA-Z0-9_-]*',
                     'rediraction'  => '[a-zA-Z0-9]*',
                     'organization' => '[a-zA-Z0-9]*',
-                    'size' => '[a-zA-Z_]*',
+                    'size'         => '[a-zA-Z_]*',
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_isic',

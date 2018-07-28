@@ -100,7 +100,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
     private function createLocationArray()
     {
         $locationArray = array('all' => 'All');
-        foreach (Company::$possibleLocations as $key => $location){
+        foreach (Company::$possibleLocations as $key => $location) {
             $locationArray[$key] = $location;
         }
 
@@ -110,7 +110,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
     private function createMasterArray()
     {
         $masterArray = array('all' => 'All');
-        foreach (Company::$possibleMasters as $key => $master){
+        foreach (Company::$possibleMasters as $key => $master) {
             $masterArray[$key] = $master;
         }
 

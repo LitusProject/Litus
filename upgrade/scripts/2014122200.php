@@ -12,6 +12,8 @@
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  * @author Daan Wendelen <daan.wendelen@litus.cc>
+ * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
+ * @author Floris Kint <floris.kint@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -28,6 +30,6 @@ ORDER BY p.id");
 
 while ($row = pg_fetch_row($result)) {
     $lastID = pg_fetch_row(pg_query($connection, "SELECT u.id FROM users.university_statuses AS u ORDER BY u.id DESC"));
-    $id = ((int) $lastID[0])+1;
+    $id = ((int) $lastID[0]) + 1;
     pg_query($connection, "INSERT INTO users.university_statuses VALUES (" . $id . "," . $row[0] . ", '12', 'student' )");
 }

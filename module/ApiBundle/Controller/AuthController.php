@@ -14,7 +14,6 @@
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  * @author Floris Kint <floris.kint@vtk.be>
- * @author Hannes Vandecasteele <hannes.vandecasteele@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -49,7 +48,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($person->getId());
-        
+
         $corporate = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\User\Person\Corporate')
             ->findOneById($person->getId());
@@ -71,7 +70,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
                 ? $corporate->getCompany()->getId()
                 : "-1";
         }
-        
+
         return new ViewModel(
             array(
                 'result' => (object) $result,
