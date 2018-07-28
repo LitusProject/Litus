@@ -38,7 +38,7 @@ namespace BrBundle\Component\Document\Generator\Pdf;
 
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Object as Object,
+    CommonBundle\Component\Util\Xml\Node as Node,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -73,35 +73,35 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
         $xml = new Generator($tmpFile);
 
         $xml->append(
-            new Object(
+            new Node(
                 'companies_overview',
                 array(
                     'name' => 'Overview of contracts per company',
                     'date' => (new \DateTime())->format('d F Y H:i'),
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'our_union',
                         array(),
                         array(
-                            new Object(
+                            new Node(
                                 'name',
                                 array(),
                                 $organization_name
                             ),
-                            new Object(
+                            new Node(
                                 'logo',
                                 array(),
                                 $organization_logo
                             ),
                         )
                     ),
-                    new Object(
+                    new Node(
                         'summary',
                         array(),
                         $detailedOverview['totals']
                     ),
-                    new Object(
+                    new Node(
                         'companies',
                         array(),
                         $detailedOverview['companies']
@@ -165,11 +165,11 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
                 $orderEntries = $contract->getOrder()->getEntries();
 
                 foreach ($orderEntries as $entry) {
-                    $products[] = new Object(
+                    $products[] = new Node(
                         'product',
                         array(),
                         array(
-                            new Object(
+                            new Node(
                                 'text',
                                 array(),
                                 $entry->getProduct()->getName()
@@ -178,46 +178,46 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
                     );
                 }
 
-                $contract_details[] = new Object(
+                $contract_details[] = new Node(
                     'contract',
                     array(),
                     array(
-                        new Object(
+                        new Node(
                             'title',
                             array(),
                             $contract->getTitle()
                         ),
-                        new Object(
+                        new Node(
                             'date',
                             array(),
                             $contract->getDate()->format('Y-m-d')
                         ),
-                        new Object(
+                        new Node(
                             'contract_nb',
                             array(),
                             $contract->getFullContractNumber($this->getEntityManager())
                         ),
-                        new Object(
+                        new Node(
                             'signed',
                             array(),
                             $contract->isSigned() ? '1' : '0'
                         ),
-                        new Object(
+                        new Node(
                             'paid',
                             array(),
                             $isPaid ? '1' : '0'
                         ),
-                        new Object(
+                        new Node(
                             'author',
                             array(),
                             $contract->getAuthor()->getPerson()->getFullName()
                         ),
-                        new Object(
+                        new Node(
                             'value',
                             array(),
                             $value . ''
                         ),
-                        new Object(
+                        new Node(
                             'products',
                             array(),
                             $products
@@ -226,36 +226,36 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
                 );
             }
 
-            $collection[] = new Object(
+            $collection[] = new Node(
                 'company',
                 array(),
                 array(
-                    new Object(
+                    new Node(
                         'name',
                         array(),
                         $company->getName()
                     ),
-                    new Object(
+                    new Node(
                         'amount',
                         array(),
                         sizeof($contracts) . ''
                     ),
-                    new Object(
+                    new Node(
                         'contracted',
                         array(),
                         $contracted . ''
                     ),
-                    new Object(
+                    new Node(
                         'signed',
                         array(),
                         $signed . ''
                     ),
-                    new Object(
+                    new Node(
                         'paid',
                         array(),
                         $paid ? '1' : '0'
                     ),
-                    new Object(
+                    new Node(
                         'contracts',
                         array(),
                         $contract_details
@@ -264,22 +264,22 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
             );
         }
         $totals = array(
-            new Object(
+            new Node(
                 'amount',
                 array(),
                 $companyNmbr . ''
             ),
-            new Object(
+            new Node(
                 'contract',
                 array(),
                 $totalContracted . ''
             ),
-            new Object(
+            new Node(
                 'paid',
                 array(),
                 $totalPaid . ''
             ),
-            new Object(
+            new Node(
                 'signed',
                 array(),
                 $totalSigned . ''
@@ -287,7 +287,7 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
         );
 
         return array(
-            'totals' => $totals,
+            'totals'    => $totals,
             'companies' => $collection,
         );
     }

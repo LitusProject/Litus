@@ -50,9 +50,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'id' => 'purchase_price',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -70,9 +70,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'id' => 'sell_price',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -89,19 +89,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $barcodeInput = array();
         if ($barcodeCheck) {
             $barcodeInput = array(
-                'filters'  => array(
+                'filters' => array(
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'barcode',
+                        'name'    => 'barcode',
                         'options' => array(
                             'adapter'     => 'Ean12',
                             'useChecksum' => false,
                         ),
                     ),
                     array(
-                        'name' => 'sale_article_barcode_unique',
+                        'name'    => 'sale_article_barcode_unique',
                         'options' => array(
                             'sale_article' => $this->article,
                         ),
@@ -119,7 +119,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'class'     => 'disableEnter',
                 'data-help' => 'This is the main barcode of the article. This one will be printed on the front page.',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => $barcodeInput,
             ),
         ));

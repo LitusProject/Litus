@@ -53,12 +53,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required'   => true,
             'value'      => $this->barcodePrefix,
             'attributes' => array(
-                'id'           => 'article',
-                'style'        => 'width: 400px;',
+                'id'    => 'article',
+                'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'validators'  => array(
+                    'validators' => array(
                         array('name' => 'typeahead_sale_article'),
                     ),
                 ),
@@ -74,9 +74,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'autocomplete' => 'off',
                 'id'           => 'delivery_number',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -84,7 +84,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             'name' => 'int',
                         ),
                         array(
-                            'name' => 'greaterthan',
+                            'name'    => 'greaterthan',
                             'options' => array(
                                 'min' => 0,
                             ),

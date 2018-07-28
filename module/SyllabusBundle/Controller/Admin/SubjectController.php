@@ -59,10 +59,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginator'           => $paginator,
+                'paginationControl'   => $this->paginator()->createControl(true),
             )
         );
     }
@@ -93,8 +93,8 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
                 $this->redirect()->toRoute(
                     'syllabus_admin_subject',
                     array(
-                        'action' => 'view',
-                        'id' => $subject->getId(),
+                        'action'       => 'view',
+                        'id'           => $subject->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -107,9 +107,9 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'form' => $form,
+                'form'                => $form,
             )
         );
     }
@@ -142,12 +142,12 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'subject' => $subject,
-                'profMappings' => $profs,
-                'articleMappings' => $articles,
-                'studyMappings' => $studies,
+                'subject'             => $subject,
+                'profMappings'        => $profs,
+                'articleMappings'     => $articles,
+                'studyMappings'       => $studies,
             )
         );
     }
@@ -178,8 +178,8 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
                 $this->redirect()->toRoute(
                     'syllabus_admin_subject',
                     array(
-                        'action' => 'view',
-                        'id' => $subject->getId(),
+                        'action'       => 'view',
+                        'id'           => $subject->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -192,10 +192,10 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'form' => $form,
-                'subject' => $subject,
+                'form'                => $form,
+                'subject'             => $subject,
             )
         );
     }

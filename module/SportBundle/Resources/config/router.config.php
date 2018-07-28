@@ -14,7 +14,6 @@
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  * @author Floris Kint <floris.kint@vtk.be>
- * @author Hannes Vandecasteele <hannes.vandecasteele@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -24,11 +23,11 @@ return array(
         'sport_admin_run' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/run[/:action[/:id]][/page/:page][/]',
+                'route'       => '/admin/run[/:action[/:id]][/page/:page][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'sport_admin_run',
@@ -39,7 +38,7 @@ return array(
         'sport_run_index' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/run[/:action][/]',
+                'route'       => '[/:language]/run[/:action][/]',
                 'constraints' => array(
                     'language' => '[a-z]{2}',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -53,7 +52,7 @@ return array(
         'sport_run_group' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/run/group[/:action[/:university_identification]][/]',
+                'route'       => '[/:language]/run/group[/:action[/:university_identification]][/]',
                 'constraints' => array(
                     'language'                  => '[a-z]{2}',
                     'action'                    => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -68,7 +67,7 @@ return array(
         'sport_run_queue' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/run/queue[/:action[/:university_identification]][/]',
+                'route'       => '[/:language]/run/queue[/:action[/:university_identification]][/]',
                 'constraints' => array(
                     'language'                  => '[a-z]{2}',
                     'action'                    => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -83,7 +82,7 @@ return array(
         'sport_run_tombola' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/run/tombola[/:action[/:university_identification]][/]',
+                'route'       => '[/:language]/run/tombola[/:action[/:university_identification]][/]',
                 'constraints' => array(
                     'language'                  => '[a-z]{2}',
                     'action'                    => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -98,7 +97,7 @@ return array(
         'sport_run_screen' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/run/screen[/:action][/]',
+                'route'       => '[/:language]/run/screen[/:action][/]',
                 'constraints' => array(
                     'language' => '[a-z]{2}',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -112,7 +111,7 @@ return array(
         'sport_run_screen_outside' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/run/screenoutside[/:action][/]',
+                'route'       => '[/:language]/run/screenoutside[/:action][/]',
                 'constraints' => array(
                     'language' => '[a-z]{2}',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -126,12 +125,12 @@ return array(
     ),
 
     'controllers' => array(
-        'sport_admin_run'  => 'SportBundle\Controller\Admin\RunController',
-        'sport_run_index'  => 'SportBundle\Controller\Run\IndexController',
-        'sport_run_group'  => 'SportBundle\Controller\Run\GroupController',
-        'sport_run_queue'  => 'SportBundle\Controller\Run\QueueController',
-        'sport_run_screen' => 'SportBundle\Controller\Run\ScreenController',
+        'sport_admin_run'          => 'SportBundle\Controller\Admin\RunController',
+        'sport_run_index'          => 'SportBundle\Controller\Run\IndexController',
+        'sport_run_group'          => 'SportBundle\Controller\Run\GroupController',
+        'sport_run_queue'          => 'SportBundle\Controller\Run\QueueController',
+        'sport_run_screen'         => 'SportBundle\Controller\Run\ScreenController',
         'sport_run_screen_outside' => 'SportBundle\Controller\Run\ScreenOutsideController',
-        'sport_run_tombola' => 'SportBundle\Controller\Run\TombolaController',
+        'sport_run_tombola'        => 'SportBundle\Controller\Run\TombolaController',
     ),
 );

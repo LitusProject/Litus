@@ -46,11 +46,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
      * @var array The possible mobility answers.
      */
     public static $mobilityAnswers = array(
-        'Yes please' => 'Yes please',
-        'If necessary' => 'If necessary',
+        'Yes please'    => 'Yes please',
+        'If necessary'  => 'If necessary',
         'Monthly trips' => 'Monthly trips',
-        'Annual trips' => 'Annual trips',
-        'No' => 'No',
+        'Annual trips'  => 'Annual trips',
+        'No'            => 'No',
     );
 
     public function init()
@@ -74,16 +74,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'class'      => 'count',
                         'data-count' => 100,
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'field_length',
+                                    'name'    => 'field_length',
                                     'options' => array(
-                                        'max_length' => 100,
+                                        'max_length'      => 100,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -99,12 +99,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'empty-data' => '0',
                     'options'    => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'decimal',
+                                    'name'    => 'decimal',
                                     'options' => array(
                                         'max_after_decimal' => '2',
                                     ),
@@ -150,12 +150,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'empty-data' => '0',
                     'options'    => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'decimal',
+                                    'name'    => 'decimal',
                                     'options' => array(
                                         'max_after_decimal' => '2',
                                     ),
@@ -194,16 +194,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'data-count' => 100,
                         'style'      => 'resize: none;',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'field_length',
+                                    'name'    => 'field_length',
                                     'options' => array(
-                                        'max_length' => 100,
+                                        'max_length'      => 100,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -227,16 +227,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'class'      => 'count',
                         'data-count' => 50,
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'field_length',
+                                    'name'    => 'field_length',
                                     'options' => array(
-                                        'max_length' => 50,
+                                        'max_length'      => 50,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -252,16 +252,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'class'      => 'count',
                         'data-count' => 50,
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'field_length',
+                                    'name'    => 'field_length',
                                     'options' => array(
-                                        'max_length' => 50,
+                                        'max_length'      => 50,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -273,10 +273,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'       => 'collection',
-            'name'       => 'languages',
-            'label'      => 'Languages (max. 4)',
-            'options'    => array(
+            'type'    => 'collection',
+            'name'    => 'languages',
+            'label'   => 'Languages (max. 4)',
+            'options' => array(
                 'count'                  => 0,
                 'should_create_template' => true,
                 'allow_add'              => true,
@@ -284,7 +284,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'type' => 'br_cv_language',
                 ),
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
                     'type'       => 'textarea',
                     'name'       => 'extra',
@@ -295,16 +295,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'data-count' => 100,
                         'style'      => 'resize: none;',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'field_length',
+                                    'name'    => 'field_length',
                                     'options' => array(
-                                        'max_length' => 100,
+                                        'max_length'      => 100,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -326,21 +326,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Computer Skills',
                     'required'   => true,
                     'attributes' => array(
-                        'rows'        => 4,
+                        'rows'       => 4,
                         'class'      => 'count',
                         'data-count' => 250,
                         'style'      => 'resize: none;',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'field_length',
+                                    'name'    => 'field_length',
                                     'options' => array(
-                                        'max_length' => 250,
+                                        'max_length'      => 250,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -349,10 +349,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'       => 'collection',
-                    'name'       => 'experiences',
-                    'label'      => 'Experiences, Projects (e.g. Internship, Holiday Jobs) (Max 4)',
-                    'options'    => array(
+                    'type'    => 'collection',
+                    'name'    => 'experiences',
+                    'label'   => 'Experiences, Projects (e.g. Internship, Holiday Jobs) (Max 4)',
+                    'options' => array(
                         'count'                  => 0,
                         'should_create_template' => true,
                         'allow_add'              => true,
@@ -375,21 +375,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Summary',
                     'required'   => true,
                     'attributes' => array(
-                        'rows'        => 5,
+                        'rows'       => 5,
                         'class'      => 'count',
                         'data-count' => 250,
                         'style'      => 'resize: none;',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'field_length',
+                                    'name'    => 'field_length',
                                     'options' => array(
-                                        'max_length' => 250,
+                                        'max_length'      => 250,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -414,16 +414,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'class'      => 'count',
                         'data-count' => 50,
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'field_length',
+                                    'name'    => 'field_length',
                                     'options' => array(
-                                        'max_length' => 50,
+                                        'max_length'      => 50,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -462,16 +462,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'data-count' => 200,
                         'style'      => 'resize: none;',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'field_length',
+                                    'name'    => 'field_length',
                                     'options' => array(
-                                        'max_length' => 200,
+                                        'max_length'      => 200,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -493,21 +493,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Hobbies',
                     'required'   => true,
                     'attributes' => array(
-                        'rows'        => 3,
+                        'rows'       => 3,
                         'class'      => 'count',
                         'data-count' => 100,
                         'style'      => 'resize: none;',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'field_length',
+                                    'name'    => 'field_length',
                                     'options' => array(
-                                        'max_length' => 100,
+                                        'max_length'      => 100,
                                         'new_line_length' => 75,
                                     ),
                                 ),
@@ -521,21 +521,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'About Me',
                     'required'   => true,
                     'attributes' => array(
-                        'rows'        => 2,
+                        'rows'       => 2,
                         'class'      => 'count',
                         'data-count' => 200,
                         'style'      => 'resize: none;',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'field_length',
+                                    'name'    => 'field_length',
                                     'options' => array(
-                                        'max_length' => 200,
+                                        'max_length'      => 200,
                                         'new_line_length' => 75,
                                     ),
                                 ),

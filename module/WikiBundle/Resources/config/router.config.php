@@ -23,7 +23,7 @@ return array(
         'wiki_auth' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/wiki/auth[/:action[/identification/:identification[/hash/:hash]][/redirect/:redirect]][/]',
+                'route'       => '/wiki/auth[/:action[/identification/:identification[/hash/:hash]][/redirect/:redirect]][/]',
                 'constraints' => array(
                     'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'identification' => '[mrsu][0-9]{7}',
@@ -38,6 +38,6 @@ return array(
     ),
 
     'controllers' => array(
-        'wiki_auth'    => 'WikiBundle\Controller\AuthController',
+        'wiki_auth' => 'WikiBundle\Controller\AuthController',
     ),
 );

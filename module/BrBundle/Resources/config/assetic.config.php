@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'br_admin_collaborator' => array(
             '@common_jquery',
             '@admin_css',
@@ -102,6 +102,12 @@ return array(
             '@admin_css',
             '@admin_js',
             '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
+        'br_admin_event' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
             '@bootstrap_js_modal',
         ),
         'br_admin_invoice' => array(
@@ -262,6 +268,8 @@ return array(
             '@common_jquery',
             '@bootstrap_css',
             '@site_css',
+            '@event_js',
+            '@fullcalendar_css',
             '@bootstrap_js_dropdown',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
@@ -305,6 +313,22 @@ return array(
             'filters' => array('less'),
             'options' => array(
                 'output' => 'cv_css.css',
+            ),
+        ),
+        'event_js' => array(
+            'assets' => array(
+                'event/js/event.js',
+                'fullcalendar/fullcalendar.js'
+            ),
+            'filters' => array('js')
+        ),
+        'fullcalendar_css' => array(
+            'assets' => array(
+                'fullcalendar/fullcalendar.css',
+            ),
+            'filters' => array('css'),
+            'options' => array(
+                'output' => 'fullcalendar_css.css',
             ),
         ),
     ),

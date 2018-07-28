@@ -52,8 +52,8 @@ class RoundController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'quiz' => $quiz,
-                'paginator' => $paginator,
+                'quiz'              => $quiz,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
         );

@@ -192,25 +192,4 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
                 ->setDomain(str_replace(array('www.', ','), '', $this->request->getServer()->get('SERVER_NAME')))
         );
     }
-
-    // The following methods exist because we need to update their signatures.
-
-    /**
-     * @param  \CommonBundle\Component\Authentication\Adapter\Doctrine|null $adapter
-     * @param  boolean                                                      $rememberMe
-     * @param  boolean                                                      $shibboleth
-     * @return Result
-     */
-    public function authenticate(DoctrineAdapter $adapter = null, $rememberMe = false, $shibboleth = false)
-    {
-        return parent::authenticate($adapter);
-    }
-
-    /**
-     * @return \CommonBundle\Entity\User\Session|null
-     */
-    public function clearIdentity()
-    {
-        return parent::clearIdentity();
-    }
 }

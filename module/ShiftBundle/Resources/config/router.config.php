@@ -23,7 +23,7 @@ return array(
         'shift_admin_shift' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/shift[/:action[/:id][/:field/:string][/page/:page]][/]',
+                'route'       => '/admin/shift[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -40,7 +40,7 @@ return array(
         'shift_admin_shift_counter' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/shift/counter[/:action[/:id[/:person[/:payed]]]][/:academicyear][/:field/:string][/]',
+                'route'       => '/admin/shift/counter[/:action[/:id[/:person[/:payed]]]][/:academicyear][/:field/:string][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'           => '[0-9]*',
@@ -59,7 +59,7 @@ return array(
         'shift_admin_shift_ranking' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/shift/ranking[/:action][/:academicyear][/]',
+                'route'       => '/admin/shift/ranking[/:action][/:academicyear][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
@@ -73,7 +73,7 @@ return array(
         'shift_admin_shift_subscription' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/shift/subscription[/:action[/:id][/type/:type][/page/:page]][/]',
+                'route'       => '/admin/shift/subscription[/:action[/:id][/type/:type][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -89,7 +89,7 @@ return array(
         'shift' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/shift[/:action[/:id][]][/]',
+                'route'       => '/shift[/:action[/:id][]][/]',
                 'constraints' => array(
                     'language' => '[a-z]{2}',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -104,7 +104,7 @@ return array(
         'shift_export' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/shift/export/:token/ical.ics',
+                'route'       => '/shift/export/:token/ical.ics',
                 'constraints' => array(
                     'language' => '[a-z]{2}',
                     'token'    => '[a-zA-Z0-9_-]*',
@@ -123,6 +123,6 @@ return array(
         'shift_admin_shift_ranking'      => 'ShiftBundle\Controller\Admin\RankingController',
         'shift_admin_shift_subscription' => 'ShiftBundle\Controller\Admin\SubscriptionController',
 
-        'shift'                          => 'ShiftBundle\Controller\ShiftController',
+        'shift' => 'ShiftBundle\Controller\ShiftController',
     ),
 );

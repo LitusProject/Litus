@@ -99,12 +99,12 @@ class InjectTemplateListener implements ListenerAggregateInterface
         }
 
         $module = $this->deriveModuleNamespace($controller);
-        $template  .= $this->inflectName($module);
+        $template .= $this->inflectName($module);
 
         $controller = $this->deriveControllerClass($controller);
-        $template  .= $this->inflectName($controller);
+        $template .= $this->inflectName($controller);
 
-        $action     = $routeMatch->getParam('action');
+        $action = $routeMatch->getParam('action');
         if (null !== $action) {
             $template .= '/' . $this->inflectName($action);
         }

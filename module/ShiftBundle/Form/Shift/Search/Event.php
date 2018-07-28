@@ -54,7 +54,7 @@ class Event extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'options' => $this->createEventsArray(),
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'required' => true,
                 ),

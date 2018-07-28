@@ -41,7 +41,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

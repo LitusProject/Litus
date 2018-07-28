@@ -102,7 +102,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 $this->redirect()->toRoute(
                     'cudi_prof_article',
                     array(
-                        'action' => 'manage',
+                        'action'   => 'manage',
                         'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
@@ -121,8 +121,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'isPost' => $isPost,
+                'form'           => $form,
+                'isPost'         => $isPost,
                 'isInternalPost' => $isInternalPost,
             )
         );
@@ -190,8 +190,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 $this->redirect()->toRoute(
                     'cudi_prof_subject',
                     array(
-                        'action' => 'subject',
-                        'id' => $subject->getId(),
+                        'action'   => 'subject',
+                        'id'       => $subject->getId(),
                         'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
@@ -202,9 +202,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'subject' => $subject,
-                'isPost' => $this->getRequest()->isPost(),
+                'form'           => $form,
+                'subject'        => $subject,
+                'isPost'         => $this->getRequest()->isPost(),
                 'isInternalPost' => isset($formData) && $formData['internal'] ? true : false,
             )
         );
@@ -225,7 +225,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 'cudi_prof_article',
                 array(
                     'action' => 'edit',
-                    'id' => $history->getArticle()->getId(),
+                    'id'     => $history->getArticle()->getId(),
                 )
             );
         }
@@ -297,7 +297,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                 $this->redirect()->toRoute(
                     'cudi_prof_article',
                     array(
-                        'action' => 'manage',
+                        'action'   => 'manage',
                         'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
@@ -308,7 +308,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'    => $form,
                 'article' => $article,
             )
         );
@@ -383,7 +383,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             $this->redirect()->toRoute(
                 'cudi_prof_article',
                 array(
-                    'action' => 'manage',
+                    'action'   => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
@@ -431,7 +431,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
             $this->redirect()->toRoute(
                 'cudi_prof_article',
                 array(
-                    'action' => 'manage',
+                    'action'   => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );

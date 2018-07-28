@@ -61,9 +61,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'quiz' => $quiz,
+                'quiz'   => $quiz,
                 'rounds' => $rounds,
-                'teams' => $teams,
+                'teams'  => $teams,
                 'points' => $points,
             )
         );
@@ -81,7 +81,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Point')
             ->findOneBy(
                 array(
-                    'team' => $team,
+                    'team'  => $team,
                     'round' => $round,
                 )
             );
@@ -152,12 +152,12 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'quiz' => $quiz,
-                'rounds' => $rounds,
-                'teams' => $teams_indexed,
-                'points' => $points,
+                'quiz'         => $quiz,
+                'rounds'       => $rounds,
+                'teams'        => $teams_indexed,
+                'points'       => $points,
                 'total_points' => $totals,
-                'order' => $this->getRequest()->getQuery('order', 'ASC'),
+                'order'        => $this->getRequest()->getQuery('order', 'ASC'),
             )
         );
     }

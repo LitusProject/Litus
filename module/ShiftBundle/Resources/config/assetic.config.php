@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'shift_admin_shift' => array(
             '@common_jquery',
             '@admin_css',

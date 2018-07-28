@@ -37,7 +37,7 @@ class BusSeats extends \CommonBundle\Component\Validator\AbstractValidator
     private $bus;
 
     protected $options = array(
-        'bus'     => null,
+        'bus' => null,
     );
 
     /**

@@ -26,9 +26,9 @@ use BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
     BrBundle\Entity\Invoice\ContractInvoice,
     BrBundle\Entity\Invoice\InvoiceEntry,
     CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File as FileUtil,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Component\Util\File as FileUtil,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
 
@@ -42,15 +42,14 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        
-        $contracts =  $this->getEntityManager()
+        $contracts = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
                 ->findAllNewUnsignedQuery()
                 ->getResult();
 
         $contractData = array();
 
-        foreach($contracts as $contract){
+        foreach ($contracts as $contract) {
             $contract->getOrder()->setEntityManager($this->getEntityManager());
             $value = $contract->getOrder()->getTotalCostExclusive();
             $contractData[] = array("contract" => $contract, "value" => $value);
@@ -63,23 +62,23 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'em' => $this->getEntityManager(),
+                'em'                => $this->getEntityManager(),
             )
         );
     }
 
     public function signedListAction()
     {
-        $contracts =  $this->getEntityManager()
+        $contracts = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
                 ->findAllSignedQuery()
                 ->getResult();
 
         $contractData = array();
 
-        foreach($contracts as $contract){
+        foreach ($contracts as $contract) {
             $contract->getOrder()->setEntityManager($this->getEntityManager());
             $value = $contract->getOrder()->getTotalCostExclusive();
             $contractData[] = array("contract" => $contract, "value" => $value);
@@ -92,9 +91,9 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'em' => $this->getEntityManager(),
+                'em'                => $this->getEntityManager(),
             )
         );
     }
@@ -127,7 +126,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -143,18 +142,19 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             ->findAll();
 
         $results = array();
-        
-        foreach($contracts as $contract){
+
+        foreach ($contracts as $contract) {
             $contract->getOrder()->setEntityManager($this->getEntityManager());
             $value = $contract->getOrder()->getTotalCostExclusive();
-            
-            $results[] = array($contract->getCompany()->getName(), 
-                $contract->getAuthor()->getPerson()->getFullName(), 
+
+            $results[] = array($contract->getCompany()->getName(),
+                $contract->getAuthor()->getPerson()->getFullName(),
                 $contract->getTitle(),
                 $contract->getDate()->format('j/m/Y'),
                 $contract->getFullContractNumber($this->getEntityManager()),
                 $contract->isSigned(),
-                $value);
+                $value,
+            );
         }
 
         $document = new CsvGenerator($heading, $results);
@@ -201,7 +201,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                     'br_admin_contract',
                     array(
                         'action' => 'view',
-                        'id' => $contract->getId(),
+                        'id'     => $contract->getId(),
                     )
                 );
 
@@ -212,7 +212,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'contract' => $contract,
-                'form' => $form,
+                'form'     => $form,
             )
         );
     }
@@ -292,7 +292,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                     'br_admin_invoice',
                     array(
                         'action' => 'edit',
-                        'id' => $invoice->getId(),
+                        'id'     => $invoice->getId(),
                     )
                 );
             }

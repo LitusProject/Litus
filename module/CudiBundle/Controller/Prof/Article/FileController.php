@@ -61,8 +61,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             $this->url()->fromRoute(
                 'cudi_prof_file',
                 array(
-                    'action' => 'upload',
-                    'id' => $article->getId(),
+                    'action'   => 'upload',
+                    'id'       => $article->getId(),
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             )
@@ -70,8 +70,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'article' => $article,
+                'form'     => $form,
+                'article'  => $article,
                 'mappings' => $fileMappings,
             )
         );
@@ -92,8 +92,8 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="' . $file->getName() . '"',
-            'Content-Type' => 'application/octet-stream',
-            'Content-Length' => filesize($filePath . $file->getPath()),
+            'Content-Type'        => 'application/octet-stream',
+            'Content-Length'      => filesize($filePath . $file->getPath()),
         ));
         $this->getResponse()->setHeaders($headers);
 
@@ -160,12 +160,12 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel(
                 array(
                     'status' => 'success',
-                    'info' => array(
+                    'info'   => array(
                         'info' => (object) array(
-                            'name' => $file->getName(),
+                            'name'        => $file->getName(),
                             'description' => $file->getDescription(),
-                            'id' => $file->getId(),
-                            'mappingId' => $mapping->getId(),
+                            'id'          => $file->getId(),
+                            'mappingId'   => $mapping->getId(),
                         ),
                     ),
                 )
@@ -174,7 +174,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             return new ViewModel(
                 array(
                     'status' => 'error',
-                    'form' => array(
+                    'form'   => array(
                         'errors' => $form->getMessages(),
                     ),
                 )
@@ -231,7 +231,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             $this->redirect()->toRoute(
                 'cudi_prof_article',
                 array(
-                    'action' => 'manage',
+                    'action'   => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
@@ -258,7 +258,7 @@ class FileController extends \CudiBundle\Component\Controller\ProfController
             $this->redirect()->toRoute(
                 'cudi_prof_article',
                 array(
-                    'action' => 'manage',
+                    'action'   => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );

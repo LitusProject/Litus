@@ -10,13 +10,14 @@ composer install
 cp config/lilo.config.php.dist     config/lilo.config.php
 cp config/database.config.php.dist config/database.config.php
 
-# link node to /usr/local/bin
-sudo mkdir -p /usr/local/bin
-sudo ln -s $(which node) /usr/local/bin/node
-
 # install npm
 # I know, right?
 sudo aptitude -y install npm
+npm config set strict-ssl false
+
+# link node to /usr/bin
+sudo ln -s $(which node) /usr/bin/node
+sudo ln -s /usr/local/lib/node_modules /usr/lib/node_modules
 
 # install lessc
-sudo npm install -g less
+sudo npm install -g less@1.7.5

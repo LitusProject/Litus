@@ -79,31 +79,31 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'datetime',
-            'name'       => 'bookings_close_date',
-            'label'      => 'Booking Close Date',
-            'required'   => false,
-            'options' => array(
+            'type'     => 'datetime',
+            'name'     => 'bookings_close_date',
+            'label'    => 'Booking Close Date',
+            'required' => false,
+            'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'date',
+                            'name'    => 'date',
                             'options' => array(
                                 'format' => 'd/m/Y H:i',
                             ),
                         ),
                         array(
-                            'name' => 'date_compare',
+                            'name'    => 'date_compare',
                             'options' => array(
                                 'first_date' => 'now',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
                         array(
-                            'name' => 'ticket_date',
+                            'name'    => 'ticket_date',
                             'options' => array(
                                 'format' => 'd/m/Y H:i',
                             ),
@@ -128,13 +128,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array('name' => 'int'),
                         array(
-                            'name' => 'greaterthan',
+                            'name'    => 'greaterthan',
                             'options' => array(
                                 'min' => 0,
                             ),
@@ -152,7 +152,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -199,15 +199,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'class' => 'half_width',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
                     'type'     => 'text',
                     'name'     => 'price_members',
                     'label'    => 'Price Members',
                     'required' => true,
-                    'options' => array(
+                    'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -226,7 +226,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -239,10 +239,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'collection',
-            'name'       => 'options',
-            'label'      => 'Options',
-            'options'    => array(
+            'type'    => 'collection',
+            'name'    => 'options',
+            'label'   => 'Options',
+            'options' => array(
                 'count'                  => 0,
                 'should_create_template' => true,
                 'allow_add'              => true,

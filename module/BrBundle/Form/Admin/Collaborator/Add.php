@@ -42,7 +42,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'id' => 'person',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array('name' => 'typeahead_person'),
@@ -52,13 +52,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'number',
-            'label'      => 'Number',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'number',
+            'label'    => 'Number',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(

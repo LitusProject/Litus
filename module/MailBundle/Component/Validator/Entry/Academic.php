@@ -75,7 +75,7 @@ class Academic extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('MailBundle\Entity\MailingList\Entry\Person\Academic')
             ->findOneBy(
                 array(
-                    'list' => $this->options['list'],
+                    'list'     => $this->options['list'],
                     'academic' => $academic,
                 )
             );

@@ -45,14 +45,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'data-help' => 'The host from which the API can be accessed with the key.',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'Hostname',
+                            'name'    => 'Hostname',
                             'options' => array(
                                 'allow' => HostnameValidator::ALLOW_ALL,
                             ),
@@ -63,10 +63,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'check_host',
-            'label'      => 'Check Host',
-            'value'      => true,
+            'type'  => 'checkbox',
+            'name'  => 'check_host',
+            'label' => 'Check Host',
+            'value' => true,
         ));
 
         $this->add(array(

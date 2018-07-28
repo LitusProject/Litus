@@ -273,14 +273,14 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                     return new ViewModel(
                         array(
                             'status' => 'success',
-                            'info' => $capture[1],
+                            'info'   => $capture[1],
                         )
                     );
                 } else {
                     return new ViewModel(
                         array(
                             'status' => 'error',
-                            'error' => $result,
+                            'error'  => $result,
                         )
                     );
                 }
@@ -294,8 +294,8 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'status' => 'form',
-                'form' => $form,
-                'price' => $article->getSellPrice() / 100,
+                'form'   => $form,
+                'price'  => $article->getSellPrice() / 100,
             )
         );
     }

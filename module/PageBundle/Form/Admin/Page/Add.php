@@ -51,7 +51,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'name'       => 'category',
             'label'      => 'Category',
             'required'   => true,
-            'attributes'    => array(
+            'attributes' => array(
                 'id'      => 'category',
                 'options' => $this->createCategoriesArray(),
             ),
@@ -70,7 +70,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     'class' => 'parent',
                     'id'    => 'parent_' . $category->getId(),
                 ),
-                'options'    => array(
+                'options' => array(
                     'options' => $this->createPagesArray($category),
                 ),
             ));
@@ -84,7 +84,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'attributes' => array(
                 'multiple' => true,
             ),
-            'options'    => array(
+            'options' => array(
                 'options' => $this->createEditRolesArray(),
             ),
         ));
@@ -106,14 +106,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'attributes' => array(
                 'width' => '400px',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'page_title',
+                            'name'    => 'page_title',
                             'options' => array(
                                 'exclude' => $this->getPage() ? $this->getPage()->getName() : '',
                             ),
@@ -124,11 +124,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
 
         $container->add(array(
-            'type'       => 'textarea',
-            'name'       => 'content',
-            'label'      => 'Content',
-            'required'   => $isDefault,
-            'options'    => array(
+            'type'     => 'textarea',
+            'name'     => 'content',
+            'label'    => 'Content',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),

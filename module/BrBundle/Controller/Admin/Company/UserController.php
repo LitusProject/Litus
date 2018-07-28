@@ -14,7 +14,6 @@
  * @author Daan Wendelen <daan.wendelen@litus.cc>
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  * @author Floris Kint <floris.kint@vtk.be>
- * @author Hannes Vandecasteele <hannes.vandecasteele@vtk.be>
  *
  * @license http://litus.cc/LICENSE
  */
@@ -53,8 +52,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'company' => $company,
-                'paginator' => $paginator,
+                'company'           => $company,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
         );
@@ -97,7 +96,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     'br_admin_company_user',
                     array(
                         'action' => 'manage',
-                        'id' => $company->getId(),
+                        'id'     => $company->getId(),
                     )
                 );
 
@@ -108,7 +107,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'company' => $company,
-                'form' => $form,
+                'form'    => $form,
             )
         );
     }
@@ -137,7 +136,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                     'br_admin_company_user',
                     array(
                         'action' => 'manage',
-                        'id' => $user->getCompany()->getId(),
+                        'id'     => $user->getCompany()->getId(),
                     )
                 );
 
@@ -178,7 +177,7 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
             'br_admin_company_user',
             array(
                 'action' => 'edit',
-                'id' => $user->getId(),
+                'id'     => $user->getId(),
             )
         );
 

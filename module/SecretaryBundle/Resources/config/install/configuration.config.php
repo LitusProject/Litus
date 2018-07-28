@@ -40,8 +40,8 @@ return array(
         'description' => 'The mail address name',
     ),
     array(
-        'key'         => 'secretary.membership_article',
-        'value'       => serialize(
+        'key'   => 'secretary.membership_article',
+        'value' => serialize(
             array(
                 1 => 427,
             )
@@ -49,8 +49,8 @@ return array(
         'description' => 'The article for the membership',
     ),
     array(
-        'key'         => 'secretary.terms_and_conditions',
-        'value'       => serialize(
+        'key'   => 'secretary.terms_and_conditions',
+        'value' => serialize(
             array(
                 'nl' => 'Aan het lidmaatschap zijn een aantal gebruiksvoorwaarden verbonden:
 

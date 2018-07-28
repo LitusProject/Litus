@@ -45,8 +45,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         foreach ($this->weeks as $key => $week) {
             $this->add(array(
-                'type'       => 'fieldset',
-                'name'       => 'week_' . $key,
+                'type'     => 'fieldset',
+                'name'     => 'week_' . $key,
                 'elements' => array(
                     array(
                         'type'       => 'select',
@@ -55,7 +55,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'options' => $week['slotsStart'],
                         ),
-                        'options'    => array(
+                        'options' => array(
                             'input' => array(
                                 'required' => true,
                                 'filters'  => array(
@@ -63,7 +63,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 ),
                                 'validators' => array(
                                     array(
-                                        'name' => 'date',
+                                        'name'    => 'date',
                                         'options' => array(
                                             'format' => 'd/m/Y H:i',
                                         ),
@@ -79,7 +79,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'options' => $week['slotsEnd'],
                         ),
-                        'options'    => array(
+                        'options' => array(
                             'input' => array(
                                 'required' => true,
                                 'filters'  => array(
@@ -87,31 +87,31 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 ),
                                 'validators' => array(
                                     array(
-                                        'name' => 'date',
+                                        'name'    => 'date',
                                         'options' => array(
                                             'format' => 'd/m/Y H:i',
                                         ),
                                     ),
                                     array(
-                                        'name' => 'date_compare',
+                                        'name'    => 'date_compare',
                                         'options' => array(
                                             'first_date' => 'start_date',
-                                            'format' => 'd/m/Y H:i',
+                                            'format'     => 'd/m/Y H:i',
                                         ),
                                     ),
                                     array(
-                                        'name' => 'logistics_piano_reservation_conflict',
+                                        'name'    => 'logistics_piano_reservation_conflict',
                                         'options' => array(
                                             'start_date' => 'start_date',
-                                            'format' => 'd/m/Y H:i',
-                                            'resource' => PianoReservation::PIANO_RESOURCE_NAME,
+                                            'format'     => 'd/m/Y H:i',
+                                            'resource'   => PianoReservation::PIANO_RESOURCE_NAME,
                                         ),
                                     ),
                                     array(
-                                        'name' => 'logistics_piano_duration',
+                                        'name'    => 'logistics_piano_duration',
                                         'options' => array(
                                             'start_date' => 'start_date',
-                                            'format' => 'd/m/Y H:i',
+                                            'format'     => 'd/m/Y H:i',
                                         ),
                                     ),
                                 ),
@@ -185,8 +185,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 ->isTimeInExistingReservation($startSlot, true);
 
                             $listStart[] = array(
-                                'label' => $formatter->format($startSlot),
-                                'value' => $startSlot->format('d/m/Y H:i'),
+                                'label'      => $formatter->format($startSlot),
+                                'value'      => $startSlot->format('d/m/Y H:i'),
                                 'attributes' => array(
                                     'disabled' => $occupied,
                                 ),
@@ -199,8 +199,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 ->isTimeInExistingReservation($startSlot, false);
 
                             $listEnd[] = array(
-                                'label' => $formatter->format($startSlot),
-                                'value' => $startSlot->format('d/m/Y H:i'),
+                                'label'      => $formatter->format($startSlot),
+                                'value'      => $startSlot->format('d/m/Y H:i'),
                                 'attributes' => array(
                                     'disabled' => $occupied,
                                 ),
@@ -217,10 +217,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     $end = (clone $now);
                     $end->add(new DateInterval('P6D'));
                     $weeks[$now->format('W')] = array(
-                        'start' => clone $now,
-                        'end' => $end,
+                        'start'      => clone $now,
+                        'end'        => $end,
                         'slotsStart' => array(),
-                        'slotsEnd' => array(),
+                        'slotsEnd'   => array(),
                     );
                 }
 

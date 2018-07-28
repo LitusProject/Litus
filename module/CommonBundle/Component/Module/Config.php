@@ -230,7 +230,7 @@ class Config
 
             $result['modules'] = array(
                 strtolower($namespace) => array(
-                    'root_path' => $directory . '/../assets',
+                    'root_path'   => $directory . '/../assets',
                     'collections' => $asseticConfig['collections'],
                 ),
             );

@@ -98,9 +98,9 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
 
         $this->setAuthenticationResult(
             array(
-                'code' => Result::FAILURE,
-                'identity' => '',
-                'messages' => array(),
+                'code'         => Result::FAILURE,
+                'identity'     => '',
+                'messages'     => array(),
                 'personObject' => null,
             )
         );
@@ -247,7 +247,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
         if (count($resultSet) < 1) {
             $this->setAuthenticationResult(
                 array(
-                    'code' => Result::FAILURE_IDENTITY_NOT_FOUND,
+                    'code'     => Result::FAILURE_IDENTITY_NOT_FOUND,
                     'messages' => array(
                         'A record with the supplied identity could not be found',
                     ),
@@ -256,7 +256,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
         } elseif (count($resultSet) > 1) {
             $this->setAuthenticationResult(
                 array(
-                    'code' => Result::FAILURE_IDENTITY_AMBIGUOUS,
+                    'code'     => Result::FAILURE_IDENTITY_AMBIGUOUS,
                     'messages' => array(
                         'More than one record matches the supplied identity',
                     ),

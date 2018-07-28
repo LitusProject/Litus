@@ -38,7 +38,7 @@ class File extends \CommonBundle\Component\Form\Fieldset
             'value'   => 5,
             'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(

@@ -50,7 +50,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -99,7 +99,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        $form  = $this->getForm('quiz_quiz_edit', $quiz);
+        $form = $this->getForm('quiz_quiz_edit', $quiz);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());

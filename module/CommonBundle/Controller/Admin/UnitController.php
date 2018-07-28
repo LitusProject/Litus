@@ -63,10 +63,10 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'unitsWithMembers' => $unitsWithMembers,
-                'emptyUnits' => $units,
+                'unitsWithMembers'   => $unitsWithMembers,
+                'emptyUnits'         => $units,
                 'activeAcademicYear' => $academicYear,
-                'academicYears' => $academicYears,
+                'academicYears'      => $academicYears,
             )
         );
     }
@@ -146,8 +146,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap\Academic')
                     ->findOneBy(
                         array(
-                            'unit' => $unit,
-                            'academic' => $academic,
+                            'unit'         => $unit,
+                            'academic'     => $academic,
                             'academicYear' => $academicYear,
                         )
                     );
@@ -172,8 +172,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'common_admin_unit',
                     array(
-                        'action' => 'members',
-                        'id' => $unit->getId(),
+                        'action'       => 'members',
+                        'id'           => $unit->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -204,8 +204,8 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'common_admin_unit',
                     array(
-                        'action' => 'members',
-                        'id' => $unit->getId(),
+                        'action'       => 'members',
+                        'id'           => $unit->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -220,12 +220,12 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'unit' => $unit,
-                'academicForm' => $academicForm,
-                'externalForm' => $externalForm,
-                'members' => $members,
+                'unit'               => $unit,
+                'academicForm'       => $academicForm,
+                'externalForm'       => $externalForm,
+                'members'            => $members,
                 'activeAcademicYear' => $academicYear,
-                'academicYears' => $academicYears,
+                'academicYears'      => $academicYears,
             )
         );
     }

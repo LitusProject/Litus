@@ -99,7 +99,7 @@ class MailController extends \FormBundle\Component\Controller\FormController
                 return new ViewModel(
                     array(
                         'status' => 'error',
-                        'form' => array(
+                        'form'   => array(
                             'errors' => $form->getMessages(),
                         ),
                     )

@@ -128,25 +128,25 @@ EOT
     private function send($printer, $ticket)
     {
         $ticket = (object) array(
-            'type' => $ticket,
-            'id' => 's0210425',
-            'barcode' => '1234567890',
-            'name' => 'Kristof Mariën',
+            'type'        => $ticket,
+            'id'          => 's0210425',
+            'barcode'     => '1234567890',
+            'name'        => 'Kristof Mariën',
             'queuenumber' => '3',
             'totalAmount' => '63,00',
-            'title' => 'Litus Cursusdienst',
-            'items' => array(
+            'title'       => 'Litus Cursusdienst',
+            'items'       => array(
                 array(
-                    'title' => 'Fundamentals of Computer Graphics',
-                    'price' => '45,00',
+                    'title'   => 'Fundamentals of Computer Graphics',
+                    'price'   => '45,00',
                     'barcode' => '12345',
-                    'number' => '1',
+                    'number'  => '1',
                 ),
                 array(
-                    'title' => 'De Bijbel',
-                    'price' => '8,00',
+                    'title'   => 'De Bijbel',
+                    'price'   => '8,00',
                     'barcode' => '54321',
-                    'number' => '2',
+                    'number'  => '2',
                 ),
             ),
         );
@@ -154,9 +154,9 @@ EOT
         $data = json_encode(
             (object) array(
                 'command' => 'PRINT',
-                'id' => $printer,
-                'ticket' => $ticket,
-                'key' => $this->getEntityManager()
+                'id'      => $printer,
+                'ticket'  => $ticket,
+                'key'     => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.printer_socket_key'),
             )

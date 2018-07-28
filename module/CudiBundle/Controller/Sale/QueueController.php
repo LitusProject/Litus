@@ -33,7 +33,7 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
     {
         return new ViewModel(
             array(
-                'socketUrl' => $this->getSocketUrl(),
+                'socketUrl'   => $this->getSocketUrl(),
                 'authSession' => $this->getAuthentication()
                     ->getSessionObject(),
                 'key' => $this->getEntityManager()
@@ -66,17 +66,17 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 
         return new ViewModel(
             array(
-                'socketUrl' => $this->getSocketUrl(),
+                'socketUrl'   => $this->getSocketUrl(),
                 'authSession' => $this->getAuthentication()
                     ->getSessionObject(),
                 'key' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
-                'payDesks' => $payDesks,
+                'payDesks'         => $payDesks,
                 'enableCollecting' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.enable_collect_scanning'),
-                'logos' => $logos,
+                'logos'    => $logos,
                 'logoPath' => $logoPath,
             )
         );
@@ -88,8 +88,8 @@ class QueueController extends \CudiBundle\Component\Controller\SaleController
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'socketUrl' => $this->getSocketUrl(),
+                'form'        => $form,
+                'socketUrl'   => $this->getSocketUrl(),
                 'authSession' => $this->getAuthentication()
                     ->getSessionObject(),
                 'key' => $this->getEntityManager()

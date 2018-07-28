@@ -48,8 +48,8 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'publication' => $publication,
-                'paginator' => $paginator,
+                'publication'       => $publication,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -69,7 +69,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 'publication_admin_edition_html',
                 array(
                     'action' => 'upload',
-                    'id' => $publication->getId(),
+                    'id'     => $publication->getId(),
                 )
             )
         );
@@ -77,7 +77,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'publication' => $publication,
-                'form' => $form,
+                'form'        => $form,
             )
         );
     }
@@ -161,7 +161,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 return new ViewModel(
                     array(
                         'status' => 'success',
-                        'info' => array(
+                        'info'   => array(
                             'info' => (object) array(
                                 'title' => 'error',
                             ),
@@ -181,7 +181,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel(
                 array(
                     'status' => 'success',
-                    'info' => array(
+                    'info'   => array(
                         'info' => (object) array(
                             'title' => $edition->getTitle(),
                         ),
@@ -192,7 +192,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel(
                 array(
                     'status' => 'error',
-                    'form' => array(
+                    'form'   => array(
                         'errors' => $form->getMessages(),
                     ),
                 )

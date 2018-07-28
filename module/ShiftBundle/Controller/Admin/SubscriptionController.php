@@ -60,7 +60,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                         'shift_admin_shift_subscription',
                         array(
                             'action' => 'manage',
-                            'id' => $shift->getId(),
+                            'id'     => $shift->getId(),
                         )
                     );
 
@@ -74,7 +74,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                     'shift_admin_shift_subscription',
                     array(
                         'action' => 'manage',
-                        'id' => $shift->getId(),
+                        'id'     => $shift->getId(),
                     )
                 );
 
@@ -84,9 +84,9 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'shift' => $shift,
-                'volunteers' => $volunteers,
+                'form'         => $form,
+                'shift'        => $shift,
+                'volunteers'   => $volunteers,
                 'responsibles' => $responsibles,
             )
         );

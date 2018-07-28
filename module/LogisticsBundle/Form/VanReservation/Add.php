@@ -49,14 +49,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'class'       => 'start',
                 'placeholder' => 'dd/mm/yyyy hh:mm',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'date',
+                            'name'    => 'date',
                             'options' => array(
                                 'format' => 'd/m/Y H:i',
                             ),
@@ -75,23 +75,23 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'class'       => 'end',
                 'placeholder' => 'dd/mm/yyyy hh:mm',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'date',
+                            'name'    => 'date',
                             'options' => array(
                                 'format' => 'd/m/Y H:i',
                             ),
                         ),
                         array(
-                            'name' => 'date_compare',
+                            'name'    => 'date_compare',
                             'options' => array(
                                 'first_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
 
@@ -120,9 +120,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'class' => 'reason',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -136,9 +136,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'class' => 'load',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -153,9 +153,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'class' => 'additional',
                 'style' => 'height: 80px; resize: none;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -177,12 +177,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'passenger',
             'label'      => 'Passenger',
             'attributes' => array(
-                'class'   => 'passenger',
+                'class' => 'passenger',
             ),
-            'required'   => false,
-            'options'    => array(
+            'required' => false,
+            'options'  => array(
                 'input' => array(
-                    'validators'  => array(
+                    'validators' => array(
                         array('name' => 'typeahead_person'),
                     ),
                 ),
@@ -190,21 +190,21 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'  => 'select',
-            'name'  => 'car',
-            'label' => 'Car',
+            'type'       => 'select',
+            'name'       => 'car',
+            'label'      => 'Car',
             'attributes' => array(
-                'class' => 'car',
+                'class'   => 'car',
                 'options' => $this->returnYesNoArray(),
             ),
         ));
 
         $this->add(array(
-            'type'  => 'select',
-            'name'  => 'bike',
-            'label' => 'Cargo bike',
+            'type'       => 'select',
+            'name'       => 'bike',
+            'label'      => 'Cargo bike',
             'attributes' => array(
-                'class' => 'bike',
+                'class'   => 'bike',
                 'options' => $this->returnYesNoArray(),
             ),
         ));

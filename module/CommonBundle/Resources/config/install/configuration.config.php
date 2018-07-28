@@ -30,8 +30,8 @@ return array(
         'description' => 'The maximum number of search results shown',
     ),
     array(
-        'key'         => 'common.account_deactivated_mail',
-        'value'       => serialize(
+        'key'   => 'common.account_deactivated_mail',
+        'value' => serialize(
             array(
                 'en' => array(
                     'subject' => 'VTK Account Deactivated',
@@ -60,8 +60,8 @@ VTK',
         'description' => 'The email sent when an account is deactivated',
     ),
     array(
-        'key'         => 'common.account_activated_mail',
-        'value'       => serialize(
+        'key'   => 'common.account_activated_mail',
+        'value' => serialize(
             array(
                 'en' => array(
                     'subject' => 'VTK Account Activated',
@@ -115,13 +115,13 @@ VTK',
         'description' => 'The path to the logo of the organization',
     ),
     array(
-            'key'         => 'organization_address_array',
-            'value'       => serialize(array(
-                            'street' => 'Studentenwijk Arenberg',
-                            'number' => '6',
+            'key'   => 'organization_address_array',
+            'value' => serialize(array(
+                            'street'  => 'Studentenwijk Arenberg',
+                            'number'  => '6',
                             'mailbox' => '1',
-                            'postal' => '3001',
-                            'city' => 'Heverlee',
+                            'postal'  => '3001',
+                            'city'    => 'Heverlee',
                             'country' => 'Belgium', )),
             'description' => 'The address of the organization',
     ),
@@ -151,8 +151,8 @@ VTK',
         'description' => 'The date interval the academic year will start before the official start',
     ),
     array(
-        'key'         => 'shibboleth_url',
-        'value'       => serialize(
+        'key'   => 'shibboleth_url',
+        'value' => serialize(
             array(
                 'faye' => 'https://faye.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Ffaye.vtk.be%3A8443%2Fshibboleth%2F',
                 'liv'  => 'https://liv.vtk.be:8443/Shibboleth.sso/Login?target=https%3A%2F%2Fliv.vtk.be%3A8443%2Fshibboleth%2F',
@@ -176,8 +176,8 @@ VTK',
         'description' => 'The key in the $_SERVER array that accesses the shibboleth session',
     ),
     array(
-        'key'         => 'shibboleth_code_handler_url',
-        'value'       => serialize(
+        'key'   => 'shibboleth_code_handler_url',
+        'value' => serialize(
             array(
                 'admin'     => 'https://vtk.be/admin/auth/shibboleth/',
                 'api'       => 'https://vtk.be/api/oauth/shibboleth/',
@@ -192,12 +192,12 @@ VTK',
         'description' => 'The Shibboleth handler URL, without a trailing slash',
     ),
     array(
-        'key'         => 'shibboleth_extra_info',
-        'value'       => serialize(
+        'key'   => 'shibboleth_extra_info',
+        'value' => serialize(
             array(
                 'first_name' => 'Shib_Person_givenName',
-                'last_name' => 'Shib_Person_surname',
-                'email' => 'Shib_Person_mail',
+                'last_name'  => 'Shib_Person_surname',
+                'email'      => 'Shib_Person_mail',
             )
         ),
         'description' => 'The keys for extra info from Shibboleth',
@@ -263,8 +263,8 @@ VTK',
         'description' => 'The Piwik ID of the site that should be queried',
     ),
     array(
-        'key'         => 'common.robots',
-        'value'       => '#
+        'key'   => 'common.robots',
+        'value' => '#
 # Robots File
 #
 
@@ -280,8 +280,8 @@ Disallow: /admin/*
         'description' => 'The robots.txt content',
     ),
     array(
-        'key'         => 'common.passkit_certificates',
-        'value'       => serialize(
+        'key'   => 'common.passkit_certificates',
+        'value' => serialize(
             array(
                 'membership' => array(
                     'path'     => 'data/certificates/private/membership.p12',
@@ -292,8 +292,8 @@ Disallow: /admin/*
         'description' => 'The certificates that will be used to to create PassKit signatures',
     ),
     array(
-        'key'         => 'common.passkit_pass_type_identifiers',
-        'value'       => serialize(
+        'key'   => 'common.passkit_pass_type_identifiers',
+        'value' => serialize(
             array(
                 'membership' => 'pass.be.vtk.membership',
             )
@@ -306,8 +306,8 @@ Disallow: /admin/*
         'description' => 'The team identifier of the Apple developer account that generated the certificates',
     ),
     array(
-        'key'         => 'common.privacy_policy',
-        'value'       => serialize(
+        'key'   => 'common.privacy_policy',
+        'value' => serialize(
             array(
                 'nl' => '## Verantwoordelijke voor de verwerking
 

@@ -34,11 +34,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'person',
-            'label'      => 'User',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'typeahead',
+            'name'     => 'person',
+            'label'    => 'User',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -51,9 +51,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type' => 'checkbox',
-            'name' => 'reservationsAllowed',
-            'label' => 'Reservations allowed',
+            'type'       => 'checkbox',
+            'name'       => 'reservationsAllowed',
+            'label'      => 'Reservations allowed',
             'attributes' => array(
                 'data-help' => 'Enabling this option will allow this client to reserve articles.',
             ),

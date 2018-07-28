@@ -70,13 +70,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'id'    => 'module_group',
                 'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'syllabus_subject_module-group',
+                            'name'    => 'syllabus_subject_module-group',
                             'options' => array(
-                                'subject' => $this->subject,
+                                'subject'       => $this->subject,
                                 'academic_year' => $this->academicYear,
                             ),
                         ),

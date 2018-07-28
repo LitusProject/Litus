@@ -52,7 +52,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
         return new ViewModel(
             array(
-                'subjects' => $subjects,
+                'subjects'     => $subjects,
                 'academicYear' => $academicYear,
             )
         );
@@ -128,8 +128,8 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
                 $this->redirect()->toRoute(
                     'cudi_prof_subject',
                     array(
-                        'action' => 'subject',
-                        'id' => $subject->getId(),
+                        'action'   => 'subject',
+                        'id'       => $subject->getId(),
                         'language' => $this->getLanguage()->getAbbrev(),
                     )
                 );
@@ -140,12 +140,12 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
         return new ViewModel(
             array(
-                'subject' => $subject,
-                'academicYear' => $academicYear,
-                'articleMappings' => $articleMappings,
+                'subject'                 => $subject,
+                'academicYear'            => $academicYear,
+                'articleMappings'         => $articleMappings,
                 'previousArticleMappings' => $previousArticleMappings,
-                'profMappings' => $profMappings,
-                'enrollmentForm' => $enrollmentForm,
+                'profMappings'            => $profMappings,
+                'enrollmentForm'          => $enrollmentForm,
             )
         );
     }
@@ -247,7 +247,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
             $this->redirect()->toRoute(
                 'cudi_prof_article',
                 array(
-                    'action' => 'manage',
+                    'action'   => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );

@@ -60,7 +60,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -90,11 +90,11 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'academic' => $academic,
-                'academicYears' => $academicYears,
+                'academic'            => $academic,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'studies' => $studies,
-                'subjects' => $subjects,
+                'studies'             => $studies,
+                'subjects'            => $subjects,
             )
         );
     }
@@ -195,8 +195,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'syllabus_admin_academic',
                     array(
-                        'action' => 'edit',
-                        'id' => $academic->getId(),
+                        'action'       => 'edit',
+                        'id'           => $academic->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -207,10 +207,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'academic' => $academic,
-                'academicYears' => $academicYears,
+                'academic'            => $academic,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'form' => $form,
+                'form'                => $form,
             )
         );
     }
@@ -259,8 +259,8 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'syllabus_admin_academic',
                     array(
-                        'action' => 'edit',
-                        'id' => $academic->getId(),
+                        'action'       => 'edit',
+                        'id'           => $academic->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -271,10 +271,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'academic' => $academic,
-                'academicYears' => $academicYears,
+                'academic'            => $academic,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'form' => $form,
+                'form'                => $form,
             )
         );
     }

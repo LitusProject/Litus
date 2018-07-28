@@ -64,7 +64,7 @@ class Attachment
      */
     public function __construct($filename, $contentType, $data)
     {
-        $this->filename =  $filename;
+        $this->filename = $filename;
         $this->contentType = $contentType;
         $this->data = $data;
     }

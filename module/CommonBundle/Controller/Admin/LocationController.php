@@ -46,7 +46,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -84,7 +84,7 @@ class LocationController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'         => $form,
                 'geocodingUrl' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.geocoding_api_url'),

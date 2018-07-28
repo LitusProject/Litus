@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'syllabus_admin_update' => array(
             '@common_jquery',
             '@admin_css',

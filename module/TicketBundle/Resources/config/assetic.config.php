@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'ticket_admin_event' => array(
             '@common_jquery',
             '@admin_css',

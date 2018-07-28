@@ -33,7 +33,7 @@ return Config::create(
     array(
         'validators' => array(
             'invokables' => array(
-                'on_slug_name'   => 'OnBundle\Component\Validator\Name',
+                'on_slug_name' => 'OnBundle\Component\Validator\Name',
             ),
         ),
     )

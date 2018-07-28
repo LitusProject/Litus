@@ -21,10 +21,10 @@
 return array(
     'install.cudi' => 'CudiBundle\Command\Install',
 
-    'cudi.expire-warning' => 'CudiBundle\Command\ExpireWarning',
-    'cudi.catalog-update' => 'CudiBundle\Command\CatalogUpdate',
-    'cudi.test-printer'   => 'CudiBundle\Command\TestPrinter',
-    'cudi.recalculate-stock' => 'CudiBundle\Command\RecalculateStock',
+    'cudi.expire-warning'                => 'CudiBundle\Command\ExpireWarning',
+    'cudi.catalog-update'                => 'CudiBundle\Command\CatalogUpdate',
+    'cudi.test-printer'                  => 'CudiBundle\Command\TestPrinter',
+    'cudi.recalculate-stock'             => 'CudiBundle\Command\RecalculateStock',
     'cudi.disable-bookings-out-of-stock' => 'CudiBundle\Command\DisableBookingsOutOfStock',
 
     'cudi.socket.sale' => 'CudiBundle\Command\Socket\SaleQueue',

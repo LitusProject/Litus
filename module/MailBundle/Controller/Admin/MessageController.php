@@ -43,7 +43,7 @@ class MessageController extends \MailBundle\Component\Controller\AdminController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

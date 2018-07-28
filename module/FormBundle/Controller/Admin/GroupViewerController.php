@@ -59,7 +59,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'group' => $group,
+                'group'   => $group,
                 'viewers' => $viewers,
             )
         );
@@ -104,7 +104,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
                     ->getRepository('FormBundle\Entity\ViewerMap')
                     ->findOneBy(
                         array(
-                            'form' => $group->getForms()[0]->getForm(),
+                            'form'   => $group->getForms()[0]->getForm(),
                             'person' => $person,
                         )
                     );
@@ -133,7 +133,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
                     'form_admin_group_viewer',
                     array(
                         'action' => 'manage',
-                        'id' => $group->getId(),
+                        'id'     => $group->getId(),
                     )
                 );
 
@@ -144,7 +144,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
         return new ViewModel(
             array(
                 'group' => $group,
-                'form' => $form,
+                'form'  => $form,
             )
         );
     }

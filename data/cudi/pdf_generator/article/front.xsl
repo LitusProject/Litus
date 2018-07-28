@@ -52,7 +52,7 @@
                                 <fo:table-cell display-align="center" padding-right="3mm">
                                     <fo:block>
                                         <fo:external-graphic content-width="16mm" scaling="uniform">
-                                            <xsl:attribute name="src"><xsl:text>url('data/images/logo/sedes.svg')</xsl:text></xsl:attribute>
+                                            <xsl:attribute name="src"><xsl:text>url('file:data/images/logo/sedes.svg')</xsl:text></xsl:attribute>
                                         </fo:external-graphic>
                                     </fo:block>
                                 </fo:table-cell>

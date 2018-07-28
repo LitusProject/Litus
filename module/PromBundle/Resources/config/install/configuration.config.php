@@ -20,11 +20,11 @@
 
 return array(
     array(
-        'key'         => 'prom.confirmation_mail',
-        'value'       => serialize(
+        'key'   => 'prom.confirmation_mail',
+        'value' => serialize(
             array(
-                'from'         => 'galabal@vtk.be',
-                'subject'   => 'VTK Galabal Busreservatie - VTK Prom Bus Reservation ',
+                'from'    => 'galabal@vtk.be',
+                'subject' => 'VTK Galabal Busreservatie - VTK Prom Bus Reservation ',
                 'body'    => 'Beste,
 [English below]
 
@@ -50,11 +50,11 @@ See you then!
     ),
 
     array(
-        'key'         => 'prom.remove_mail',
-        'value'       => serialize(
+        'key'   => 'prom.remove_mail',
+        'value' => serialize(
             array(
-                'from'         => 'galabal@vtk.be',
-                'subject'   => 'VTK Galabal Busreservatie - VTK Prom Bus Reservation ',
+                'from'    => 'galabal@vtk.be',
+                'subject' => 'VTK Galabal Busreservatie - VTK Prom Bus Reservation ',
                 'body'    => 'Beste,
 [English below]
 

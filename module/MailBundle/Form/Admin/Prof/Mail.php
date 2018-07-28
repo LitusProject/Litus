@@ -55,7 +55,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -65,23 +65,23 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'select',
-            'name'       => 'semester',
-            'label'      => 'Semester',
-            'required'   => true,
-            'value'      => $this->getSemester(),
-            'options'    => array(
+            'type'     => 'select',
+            'name'     => 'semester',
+            'label'    => 'Semester',
+            'required' => true,
+            'value'    => $this->getSemester(),
+            'options'  => array(
                 'options' => array(1 => 'First Semester', 2 => 'Second Semester'),
             ),
         ));
 
         $this->add(array(
-            'type'       => 'textarea',
-            'name'       => 'message',
-            'label'      => 'Message',
-            'required'   => true,
-            'value'      => $this->getMessage(),
-            'options'    => array(
+            'type'     => 'textarea',
+            'name'     => 'message',
+            'label'    => 'Message',
+            'required' => true,
+            'value'    => $this->getMessage(),
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -91,10 +91,10 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'test_it',
-            'label'      => 'Send Test to System Administrator',
-            'value'   => true,
+            'type'  => 'checkbox',
+            'name'  => 'test_it',
+            'label' => 'Send Test to System Administrator',
+            'value' => true,
         ));
 
         $this->addSubmit('Send Mail', 'mail');

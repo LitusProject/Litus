@@ -49,17 +49,17 @@ class ManualEdit extends ManualAdd
                 'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILESIZE . '.',
                 'size'      => 256,
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'filesize',
+                            'name'    => 'filesize',
                             'options' => array(
                                 'max' => self::FILESIZE,
                             ),
                         ),
                         array(
-                            'name' => 'fileextension',
+                            'name'    => 'fileextension',
                             'options' => array(
                                 'extension' => 'pdf',
                             ),

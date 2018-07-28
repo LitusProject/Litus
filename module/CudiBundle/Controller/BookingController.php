@@ -50,7 +50,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'bookings' => $bookings,
-                'total' => $total,
+                'total'    => $total,
             )
         );
     }
@@ -161,12 +161,12 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         ->findAllSiteByArticle($article->getMainArticle());
 
                     $articleInfo = array(
-                        'article' => $article,
-                        'comments' => $comments,
+                        'article'   => $article,
+                        'comments'  => $comments,
                         'mandatory' => $subjectMap->isMandatory(),
-                        'booked' => isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0,
-                        'sold' => isset($sold[$article->getId()]) ? $sold[$article->getId()] : 0,
-                        'bookable' => $article->isBookable()
+                        'booked'    => isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0,
+                        'sold'      => isset($sold[$article->getId()]) ? $sold[$article->getId()] : 0,
+                        'bookable'  => $article->isBookable()
                             && $article->canBook($academic, $this->getEntityManager())
                             && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions)),
                     );
@@ -177,8 +177,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             }
 
             $result[] = array(
-                'subject' => $subject,
-                'articles' => $articles,
+                'subject'   => $subject,
+                'articles'  => $articles,
                 'isMapping' => false,
             );
         }
@@ -195,12 +195,12 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     ->findAllSiteByArticle($commonArticle->getMainArticle());
 
                 $articleInfo = array(
-                    'article' => $commonArticle,
-                    'comments' => $comments,
+                    'article'   => $commonArticle,
+                    'comments'  => $comments,
                     'mandatory' => false,
-                    'booked' => isset($booked[$commonArticle->getId()]) ? $booked[$commonArticle->getId()] : 0,
-                    'sold' => isset($sold[$commonArticle->getId()]) ? $sold[$commonArticle->getId()] : 0,
-                    'bookable' => $commonArticle->isBookable()
+                    'booked'    => isset($booked[$commonArticle->getId()]) ? $booked[$commonArticle->getId()] : 0,
+                    'sold'      => isset($sold[$commonArticle->getId()]) ? $sold[$commonArticle->getId()] : 0,
+                    'bookable'  => $commonArticle->isBookable()
                         && $commonArticle->canBook($academic, $this->getEntityManager())
                         && ($enableBookings || in_array($commonArticle->getId(), $bookingsClosedExceptions)),
                 );
@@ -211,8 +211,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $result[] = array(
-            'subject' => null,
-            'articles' => $articles,
+            'subject'   => null,
+            'articles'  => $articles,
             'isMapping' => false,
         );
 
@@ -254,7 +254,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                                 $amount = sizeof(
                                     $this->getEntityManager()
                                         ->getRepository('CudiBundle\Entity\Sale\Booking')
-                                        ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
+                                        ->findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
                                             $saleArticle,
                                             $academic,
                                             $this->getCurrentAcademicYear()
@@ -334,9 +334,9 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'subjectArticleMap' => $result,
-                'form' => $form,
-                'searchForm' => $searchForm,
-                'isSubscribed' => $this->getEntityManager()
+                'form'              => $form,
+                'searchForm'        => $searchForm,
+                'isSubscribed'      => $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Article\Notification\Subscription')
                     ->findOneByPerson($academic) !== null,
                 'isic' => $this->getIsic(),
@@ -411,7 +411,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
             foreach ($article->getDiscounts() as $discount) {
                 $item->discounts[] = array(
-                    'type' => $this->getTranslator()->translate($discount->getType()),
+                    'type'  => $this->getTranslator()->translate($discount->getType()),
                     'price' => number_format($discount->apply($article->getSellPrice()) / 100, 2),
                 );
             }

@@ -1,10 +1,15 @@
 <?php
 
-$finder = \Litus\CodeStyle\Finder\Finder::create()
-    ->exclude('data')
-    ->exclude('module/GalleryBundle/Resources/assets/plupload/examples')
-    ->in(__DIR__);
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__)
+    ->exclude(
+        array(
+            __DIR__ . '/data/',
+            __DIR__ . '/module/GalleryBundle/Resources/assets/plupload/examples/',
+        )
+    )
+    ->notPath('init_autoloader.php');
 
 return \Litus\CodeStyle\Config\Config::create()
     ->setLicense(__DIR__ . '/.license_header')
-    ->finder($finder);
+    ->setFinder($finder);

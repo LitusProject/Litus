@@ -174,9 +174,9 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
             foreach ($object->getOptions() as $option) {
                 $data['options'][] = array(
-                    'option_id' => $option->getId(),
-                    'option' => $option->getName(),
-                    'price_members' => number_format($option->getPriceMembers() / 100, 2),
+                    'option_id'         => $option->getId(),
+                    'option'            => $option->getName(),
+                    'price_members'     => number_format($option->getPriceMembers() / 100, 2),
                     'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
                 );
             }

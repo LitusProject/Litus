@@ -51,7 +51,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -72,7 +72,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -102,7 +102,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                     'br_admin_order',
                     array(
                         'action' => 'product',
-                        'id' => $order->getId(),
+                        'id'     => $order->getId(),
                     )
                 );
 
@@ -158,7 +158,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         'br_admin_order',
                         array(
                             'action' => 'product',
-                            'id' => $order->getId(),
+                            'id'     => $order->getId(),
                         )
                     );
                 }
@@ -167,8 +167,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'order' => $order,
-                'entries' => $entries,
+                'order'          => $order,
+                'entries'        => $entries,
                 'addProductForm' => $form,
             )
         );
@@ -259,7 +259,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         'br_admin_order',
                         array(
                             'action' => 'product',
-                            'id' => $order->getId(),
+                            'id'     => $order->getId(),
                         )
                     );
                 }
@@ -268,8 +268,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'order' => $order,
-                'entry' => $entry,
+                'order'           => $order,
+                'entry'           => $entry,
                 'editProductForm' => $form,
             )
         );
@@ -343,7 +343,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

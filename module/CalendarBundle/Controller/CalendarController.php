@@ -61,8 +61,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'event' => $event,
-                'hasShifts' => $hasShifts,
+                'event'       => $event,
+                'hasShifts'   => $hasShifts,
                 'ticketEvent' => $ticketEvent,
             )
         );
@@ -145,8 +145,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $date = $event->getStartDate()->format('d-M');
             if (!isset($calendarItems[$date])) {
                 $calendarItems[$date] = (object) array(
-                    'day' => ucfirst($event->getStartDate()->format('d')),
-                    'month' => $monthFormatter->format($event->getStartDate()),
+                    'day'    => ucfirst($event->getStartDate()->format('d')),
+                    'month'  => $monthFormatter->format($event->getStartDate()),
                     'events' => array(),
                 );
             }
@@ -162,17 +162,17 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             }
 
             $calendarItems[$date]->events[] = (object) array(
-                'id' => $event->getId(),
-                'title' => $event->getTitle($this->getLanguage()),
+                'id'        => $event->getId(),
+                'title'     => $event->getTitle($this->getLanguage()),
                 'startDate' => $hourFormatter->format($event->getStartDate()),
-                'summary' => $event->getSummary(100, $this->getLanguage()),
-                'content' => $event->getSummary(200, $this->getLanguage()),
-                'fullTime' => $fullTime,
-                'url' => $this->url()->fromRoute(
+                'summary'   => $event->getSummary(100, $this->getLanguage()),
+                'content'   => $event->getSummary(200, $this->getLanguage()),
+                'fullTime'  => $fullTime,
+                'url'       => $this->url()->fromRoute(
                     'calendar',
                     array(
                         'action' => 'view',
-                        'name' => $event->getName(),
+                        'name'   => $event->getName(),
                     )
                 ),
             );
@@ -191,7 +191,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             array(
                 'result' => (object) array(
                     'month' => ucfirst($formatter->format($first)),
-                    'days' => $calendarItems,
+                    'days'  => $calendarItems,
                 ),
             )
         );
@@ -202,7 +202,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="icalendar.ics"',
-            'Content-Type' => 'text/calendar',
+            'Content-Type'        => 'text/calendar',
         ));
         $this->getResponse()->setHeaders($headers);
 

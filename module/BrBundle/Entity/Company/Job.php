@@ -26,7 +26,7 @@ namespace BrBundle\Entity\Company;
 
 
 use BrBundle\Entity\Company,
-    CommonBundle\Component\Util\String,
+    CommonBundle\Component\Util\StringUtil,
     DateTime,
     Doctrine\ORM\Mapping as ORM,
     InvalidArgumentException,
@@ -78,11 +78,11 @@ class Job
     private $profile;
 
     /**
-     * @var string The contact information for this job.
+     * @var string The mailto link for this job
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="email", type="text", nullable=true)
      */
-    private $contact;
+    private $email;
 
     /**
      * @var string The city where the job is located
@@ -90,6 +90,20 @@ class Job
      * @ORM\Column(type="text")
      */
     private $city;
+
+    /**
+     * @var string The location (eg. province) where the job is located
+     * 
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $location;
+    
+    /**
+     * @var string The master for which this job is meant
+     * 
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $master;
 
     /**
      * @var Company The company of the job
@@ -154,7 +168,7 @@ class Job
      */
     public static $possibleTypes = array(
         'internship' => 'Internship',
-        'vacancy' => 'Vacancy',
+        'vacancy'    => 'Vacancy',
     );
 
     /**
@@ -339,12 +353,12 @@ class Job
     }
 
     /**
-     * @param  string $contact
+     * @param  string $email
      * @return Job
      */
-    public function setContact($contact)
+    public function setEmail($email)
     {
-        $this->contact = $contact;
+        $this->email = $email;
 
         return $this;
     }
@@ -352,9 +366,9 @@ class Job
     /**
      * @return string
      */
-    public function getContact()
+    public function getEmail()
     {
-        return $this->contact;
+        return $this->email;
     }
 
     /**
@@ -384,7 +398,7 @@ class Job
         $parser = new Markdown_Parser();
         $summary = $parser->transform($this->getDescription());
 
-        return String::truncate($summary, $length, '...');
+        return StringUtil::truncate($summary, $length, '...');
     }
 
     /**
@@ -458,6 +472,70 @@ class Job
     {
         return $this->endDate;
     }
+
+    /**
+     * @return string
+     */
+    public function getMaster()
+    {
+        return Company::$possibleMasters[$this->master];
+    }
+
+    /**
+     * @param  string $master
+     * @return Job
+     */
+    public function setMaster($master)
+    {
+        if (!Company::isValidMaster($master)) {
+            throw new InvalidArgumentException('The master is not valid.');
+        }
+
+        $this->master = $master;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMasterCode()
+    {
+        return $this->master;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocation()
+    {
+        return Company::$possibleLocations[$this->location];
+    }
+
+
+    /**
+     * @param  string $location
+     * @return Job
+     */
+    public function setLocation($location)
+    {
+        if (!Company::isValidLocation($location)) {
+            throw new InvalidArgumentException('The location is not valid.');
+        }
+
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocationCode()
+    {
+        return $this->location;
+    }
+
 
     /**
      * @param  string $sector

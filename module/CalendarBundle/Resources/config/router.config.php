@@ -23,7 +23,7 @@ return array(
         'calendar_admin_calendar' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/site/calendar[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/site/calendar[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[a-zA-Z0-9_-]*',
@@ -38,7 +38,7 @@ return array(
         'calendar_admin_calendar_registration' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/site/calendar/registration[/:action][/]',
+                'route'       => '/admin/site/calendar/registration[/:action][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
@@ -51,7 +51,7 @@ return array(
         'calendar' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/calendar[/:action[/:name]][/]',
+                'route'       => '[/:language]/calendar[/:action[/:name]][/]',
                 'constraints' => array(
                     'language' => '[a-z]{2}',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -66,7 +66,7 @@ return array(
         'calendar_export' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/calendar/export/ical.ics',
+                'route'       => '[/:language]/calendar/export/ical.ics',
                 'constraints' => array(
                     'language' => '[a-z]{2}',
                 ),
@@ -82,6 +82,6 @@ return array(
         'calendar_admin_calendar'              => 'CalendarBundle\Controller\Admin\CalendarController',
         'calendar_admin_calendar_registration' => 'CalendarBundle\Controller\Admin\RegistrationController',
 
-        'calendar'                             => 'CalendarBundle\Controller\CalendarController',
+        'calendar' => 'CalendarBundle\Controller\CalendarController',
     ),
 );

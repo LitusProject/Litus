@@ -23,7 +23,7 @@ namespace BrBundle\Component\Document\Generator\Company;
 use BrBundle\Entity\Company,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Object,
+    CommonBundle\Component\Util\Xml\Node,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -78,31 +78,31 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             $company_users = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\User\Person\Corporate')
                 ->findBy(array(
-                    'canLogin'  => 'true',
-                    'company'   => $company->getId(),
+                    'canLogin' => 'true',
+                    'company'  => $company->getId(),
                 ));
 
             foreach ($company_users as $user) {
-                $all_users[] = new Object(
+                $all_users[] = new Node(
                     'person',
                     array(),
                     array(
-                        new Object(
+                        new Node(
                             'username',
                             array(),
                             $user->getUsername()
                         ),
-                        new Object(
+                        new Node(
                             'name',
                             array(),
                             $user->getFullName()
                         ),
-                        new Object(
+                        new Node(
                             'email',
                             array(),
                             $user->getEmail()
                         ),
-                        new Object(
+                        new Node(
                             'userPhone',
                             array(),
                             $user->getPhoneNumber()
@@ -110,21 +110,21 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                     )
                 );
             }
-            $all_companies[] = new Object(
+            $all_companies[] = new Node(
                 'company',
                 array(),
                 array(
-                    new Object(
+                    new Node(
                         'name',
                         array(),
                         $company->getName()
                     ),
-                    new Object(
+                    new Node(
                         'companyPhone',
                         array(),
                         $company->getPhoneNumber()
                     ),
-                    new Object(
+                    new Node(
                         'users',
                         array(),
                         $all_users
@@ -136,30 +136,30 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
         $xml = new Generator($tmpFile);
 
         $xml->append(
-            new Object(
+            new Node(
                 'companieslist',
                 array(
                     'name' => 'List of companies',
                     'date' => (new \DateTime())->format('d F Y H:i'),
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'our_union',
                         array(),
                         array(
-                            new Object(
+                            new Node(
                                 'name',
                                 array(),
                                 $organization_name
                             ),
-                            new Object(
+                            new Node(
                                 'logo',
                                 array(),
                                 $organization_logo
                             ),
                         )
                     ),
-                    new Object(
+                    new Node(
                         'companies',
                         array(),
                         $all_companies

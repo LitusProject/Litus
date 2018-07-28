@@ -23,7 +23,7 @@ return array(
         'secretary_admin_registration' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/secretary/registration[/:action[/:id][/organization/:organization]][/:academicyear][/:field/:string][/]',
+                'route'       => '/admin/secretary/registration[/:action[/:id][/organization/:organization]][/:academicyear][/:field/:string][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'           => '[0-9]*',
@@ -41,7 +41,7 @@ return array(
         'secretary_admin_export' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/secretary/export[/:action[/:id][/organization/:organization]][/:academicyear][/]',
+                'route'       => '/admin/secretary/export[/:action[/:id][/organization/:organization]][/:academicyear][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'           => '[0-9]*',
@@ -57,9 +57,9 @@ return array(
         'secretary_admin_photos' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/secretary/photos[/:action][/]',
+                'route'       => '/admin/secretary/photos[/:action][/]',
                 'constraints' => array(
-                    'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'secretary_admin_photos',
@@ -70,7 +70,7 @@ return array(
         'secretary_admin_promotion' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/secretary/promotion[/:action[/:id][/page/:page]][/:academicyear][/:field/:string][/]',
+                'route'       => '/admin/secretary/promotion[/:action[/:id][/page/:page]][/:academicyear][/:field/:string][/]',
                 'constraints' => array(
                     'action'       => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'           => '[0-9]*',
@@ -88,7 +88,7 @@ return array(
         'secretary_registration' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/secretary/registration[/:action][/identification/:identification[/hash/:hash]][/]',
+                'route'       => '[/:language]/secretary/registration[/:action][/identification/:identification[/hash/:hash]][/]',
                 'constraints' => array(
                     'language'       => '[a-z]{2}',
                     'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -104,7 +104,7 @@ return array(
         'secretary_admin_working_group' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/secretary/workinggroup[/:action[/:id][/:field/:string][/page/:page]][/]',
+                'route'       => '/admin/secretary/workinggroup[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -121,11 +121,11 @@ return array(
     ),
 
     'controllers' => array(
-        'secretary_admin_registration'   => 'SecretaryBundle\Controller\Admin\RegistrationController',
-        'secretary_admin_export'         => 'SecretaryBundle\Controller\Admin\ExportController',
-        'secretary_admin_promotion'      => 'SecretaryBundle\Controller\Admin\PromotionController',
-        'secretary_admin_photos'         => 'SecretaryBundle\Controller\Admin\PhotosController',
-        'secretary_registration'         => 'SecretaryBundle\Controller\RegistrationController',
-        'secretary_admin_working_group'   => 'SecretaryBundle\Controller\Admin\WorkingGroupController',
+        'secretary_admin_registration'  => 'SecretaryBundle\Controller\Admin\RegistrationController',
+        'secretary_admin_export'        => 'SecretaryBundle\Controller\Admin\ExportController',
+        'secretary_admin_promotion'     => 'SecretaryBundle\Controller\Admin\PromotionController',
+        'secretary_admin_photos'        => 'SecretaryBundle\Controller\Admin\PhotosController',
+        'secretary_registration'        => 'SecretaryBundle\Controller\RegistrationController',
+        'secretary_admin_working_group' => 'SecretaryBundle\Controller\Admin\WorkingGroupController',
     ),
 );

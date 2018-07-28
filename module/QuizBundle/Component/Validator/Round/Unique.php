@@ -30,7 +30,7 @@ class Unique extends \CommonBundle\Component\Validator\AbstractValidator
     const NOT_VALID = 'notValid';
 
     protected $options = array(
-        'quiz' => null,
+        'quiz'  => null,
         'round' => null,
     );
 
@@ -81,7 +81,7 @@ class Unique extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('QuizBundle\Entity\Round')
             ->findBy(
                 array(
-                    'quiz' => $this->options['quiz']->getId(),
+                    'quiz'  => $this->options['quiz']->getId(),
                     'order' => $value,
                 )
             );

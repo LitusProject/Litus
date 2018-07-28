@@ -68,16 +68,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'person_form',
-            'label'      => 'Person',
-            'elements'   => array(
+            'type'     => 'fieldset',
+            'name'     => 'person_form',
+            'label'    => 'Person',
+            'elements' => array(
                 array(
-                    'type'       => 'typeahead',
-                    'name'       => 'person',
-                    'label'      => 'Person',
-                    'required'   => true,
-                    'options'    => array(
+                    'type'     => 'typeahead',
+                    'name'     => 'person',
+                    'label'    => 'Person',
+                    'required' => true,
+                    'options'  => array(
                         'input' => array(
                             'validators' => array(
                                 array('name' => 'typeahead_person'),
@@ -89,10 +89,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'guest_form',
-            'label'      => 'Guest',
-            'elements'   => array(
+            'type'     => 'fieldset',
+            'name'     => 'guest_form',
+            'label'    => 'Guest',
+            'elements' => array(
                 array(
                     'type'       => 'text',
                     'name'       => 'guest_first_name',
@@ -101,9 +101,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'id' => 'guest_first_name',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
@@ -117,9 +117,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'id' => 'guest_last_name',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
@@ -133,9 +133,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'id' => 'guest_email',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -161,11 +161,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'data-price' => $this->event->getPriceMembers(),
                     'options'    => $this->getNumberOptions(),
                 ),
-                'options'    => array(
+                'options' => array(
                     'input' => array(
                         'validators' => array(
                             array(
-                                'name' => 'ticket_number_tickets',
+                                'name'    => 'ticket_number_tickets',
                                 'options' => array(
                                     'event' => $this->event,
                                 ),
@@ -186,11 +186,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'data-price' => $this->event->getPriceNonMembers(),
                         'options'    => $this->getNumberOptions(),
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
                             'validators' => array(
                                 array(
-                                    'name' => 'ticket_number_tickets',
+                                    'name'    => 'ticket_number_tickets',
                                     'options' => array(
                                         'event' => $this->event,
                                     ),
@@ -212,11 +212,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'data-price' => $option->getPriceMembers(),
                         'options'    => $this->getNumberOptions(),
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
                             'validators' => array(
                                 array(
-                                    'name' => 'ticket_number_tickets',
+                                    'name'    => 'ticket_number_tickets',
                                     'options' => array(
                                         'event' => $this->event,
                                     ),
@@ -237,11 +237,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'data-price' => $option->getPriceNonMembers(),
                             'options'    => $this->getNumberOptions(),
                         ),
-                        'options'    => array(
+                        'options' => array(
                             'input' => array(
                                 'validators' => array(
                                     array(
-                                        'name' => 'ticket_number_tickets',
+                                        'name'    => 'ticket_number_tickets',
                                         'options' => array(
                                             'event' => $this->event,
                                         ),
@@ -255,9 +255,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'payed',
-            'label' => 'Payed',
+            'type'       => 'checkbox',
+            'name'       => 'payed',
+            'label'      => 'Payed',
             'attributes' => array(
                 'id' => 'payed',
             ),

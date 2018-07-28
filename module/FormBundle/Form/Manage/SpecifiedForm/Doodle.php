@@ -46,16 +46,16 @@ class Doodle extends \FormBundle\Form\SpecifiedForm\Doodle
         ));
 
         $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'person_form',
-            'label'      => 'Person',
-            'elements'   => array(
+            'type'     => 'fieldset',
+            'name'     => 'person_form',
+            'label'    => 'Person',
+            'elements' => array(
                 array(
-                    'type'       => 'typeahead',
-                    'name'       => 'person',
-                    'label'      => 'Person',
-                    'required'   => true,
-                    'options'    => array(
+                    'type'     => 'typeahead',
+                    'name'     => 'person',
+                    'label'    => 'Person',
+                    'required' => true,
+                    'options'  => array(
                         'input' => array(
                             'validators' => array(
                                 array('name' => 'typeahead_person'),
@@ -67,44 +67,44 @@ class Doodle extends \FormBundle\Form\SpecifiedForm\Doodle
         ));
 
         $this->add(array(
-            'type'       => 'fieldset',
-            'name'       => 'guest_form',
-            'label'      => 'Guest',
-            'elements'   => array(
+            'type'     => 'fieldset',
+            'name'     => 'guest_form',
+            'label'    => 'Guest',
+            'elements' => array(
                 array(
-                    'type'       => 'text',
-                    'name'       => 'first_name',
-                    'label'      => 'First Name',
-                    'required'   => true,
-                    'options'    => array(
+                    'type'     => 'text',
+                    'name'     => 'first_name',
+                    'label'    => 'First Name',
+                    'required' => true,
+                    'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
                     ),
                 ),
                 array(
-                    'type'       => 'text',
-                    'name'       => 'last_name',
-                    'label'      => 'Last Name',
-                    'required'   => true,
-                    'options'    => array(
+                    'type'     => 'text',
+                    'name'     => 'last_name',
+                    'label'    => 'Last Name',
+                    'required' => true,
+                    'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
                     ),
                 ),
                 array(
-                    'type'       => 'text',
-                    'name'       => 'email',
-                    'label'      => 'Email',
-                    'required'   => true,
-                    'options'    => array(
+                    'type'     => 'text',
+                    'name'     => 'email',
+                    'label'    => 'Email',
+                    'required' => true,
+                    'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(

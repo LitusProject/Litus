@@ -22,7 +22,7 @@ namespace CudiBundle\Component\Document\Generator\Order;
 
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Object,
+    CommonBundle\Component\Util\Xml\Node,
     CudiBundle\Component\Document\Generator\Front as FrontGenerator,
     CudiBundle\Entity\Article\Internal as InternalArticle,
     CudiBundle\Entity\Stock\Order\Item,
@@ -122,11 +122,11 @@ class Xml
 
         $num = 1;
         $attachments = array(
-            new Object(
+            new Node(
                 'Attachment',
                 array(
                     'AttachmentKey' => 'File' . ($num++),
-                    'FileName' => 'front_' . $item->getArticle()->getId() . '.pdf',
+                    'FileName'      => 'front_' . $item->getArticle()->getId() . '.pdf',
                 ),
                 null
             ),
@@ -136,11 +136,11 @@ class Xml
             ->getRepository('CudiBundle\Entity\File\Mapping')
             ->findAllByArticle($mainArticle);
         foreach ($mappings as $mapping) {
-            $attachments[] = new Object(
+            $attachments[] = new Node(
                 'Attachment',
                 array(
                     'AttachmentKey' => 'File' . ($num++),
-                    'FileName' => $mapping->getFile()->getName(),
+                    'FileName'      => $mapping->getFile()->getName(),
                 ),
                 null
             );
@@ -159,130 +159,130 @@ class Xml
         }
 
         $itemValues = array(
-            new Object(
+            new Node(
                 'ItemValue',
                 array(
                     'ItemKey' => 'titel',
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'LastUsedValue',
                         null,
                         $mainArticle->getTitle()
                     ),
                 )
             ),
-            new Object(
+            new Node(
                 'ItemValue',
                 array(
                     'ItemKey' => 'aantal',
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'LastUsedValue',
                         null,
                         (string) $item->getNumber()
                     ),
                 )
             ),
-            new Object(
+            new Node(
                 'ItemValue',
                 array(
                     'ItemKey' => 'barcode',
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'LastUsedValue',
                         null,
                         (string) $item->getArticle()->getBarcode()
                     ),
                 )
             ),
-            new Object(
+            new Node(
                 'ItemValue',
                 array(
                     'ItemKey' => 'afwerking',
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'LastUsedValue',
                         null,
                         $binding
                     ),
                 )
             ),
-            new Object(
+            new Node(
                 'ItemValue',
                 array(
                     'ItemKey' => 'kleur',
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'LastUsedValue',
                         null,
                         $mainArticle->getNbColored() > 0 ? 'kleur' : 'zwart/wit'
                     ),
                 )
             ),
-            new Object(
+            new Node(
                 'ItemValue',
                 array(
                     'ItemKey' => 'zijde',
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'LastUsedValue',
                         null,
                         (string) $mainArticle->isRectoVerso() ? 'Recto-Verso' : 'Recto'
                     ),
                 )
             ),
-            new Object(
+            new Node(
                 'ItemValue',
                 array(
                     'ItemKey' => 'TypeDrukOpdracht',
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'LastUsedValue',
                         null,
                         'Cursus'
                     ),
                 )
             ),
-            new Object(
+            new Node(
                 'ItemValue',
                 array(
                     'ItemKey' => 'DatumOpdrachtKlaar',
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'LastUsedValue',
                         null,
                         $this->order->getDeliveryDate()->format('d/m/Y')
                     ),
                 )
             ),
-            new Object(
+            new Node(
                 'ItemValue',
                 array(
                     'ItemKey' => 'Referentie',
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'LastUsedValue',
                         null,
                         (string) 'eigen cursus'
                     ),
                 )
             ),
-            new Object(
+            new Node(
                 'ItemValue',
                 array(
                     'ItemKey' => 'Opmerking',
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'LastUsedValue',
                         null,
                         ''
@@ -296,22 +296,22 @@ class Xml
             ->getConfigValue('cudi.order_job_id');
 
         $xml->append(
-            new Object(
+            new Node(
                 'Document',
                 null,
                 array(
-                    new Object(
+                    new Node(
                         'Job',
                         array(
                             'JobID' => str_replace('{{ date }}', $this->order->getDateOrdered()->format('YmdHi'), $jobId),
                         ),
                         array(
-                            new Object(
+                            new Node(
                                 'Attachments',
                                 null,
                                 $attachments
                             ),
-                            new Object(
+                            new Node(
                                 'ItemValues',
                                 null,
                                 $itemValues
@@ -360,77 +360,77 @@ class Xml
         $title = iconv("UTF-8", "ASCII//TRANSLIT", $item->getArticle()->getMainArticle()->getTitle());
 
         $orderDetails = array(
-                    new Object(
+                    new Node(
                         'Jobnummber',
                         null,
                         str_replace('{{ code }}', substr((string) $item->getArticle()->getBarcode(),-5) ,str_replace('{{ date }}', $this->order->getDateOrdered()->format('Ymd'), $jobId))
                     ),
-                    new Object(
+                    new Node(
                         'Klantnaam',
                         null,
                         $name
                     ),
-                    new Object(
+                    new Node(
                         'Klantvoornaam',
                         null,
                         ''
                     ),
-                    new Object(
+                    new Node(
                         'Klantemail',
                         null,
                         $mail
                     ),
-                    new Object(
+                    new Node(
                         'Levering',
                         null,
                         $this->order->getDeliveryDate()->format('d/m/Y')
                     ),
-                    new Object(
+                    new Node(
                         'Levering2',
                         null,
                         ''
                     ),
-                    new Object(
+                    new Node(
                         'Orderline',
                         null,
                         '1'
                     ),
-                    new Object(
+                    new Node(
                         'Titel',
                         null,
                         $title
                     ),
-                    new Object(
+                    new Node(
                         'Barcode',
                         null,
                         $item->getArticle()->getBarcode()
                     ),
-                    new Object(
+                    new Node(
                         'Categorie',
                         null,
                         'DOC'
                     ),
-                    new Object(
+                    new Node(
                         'Quantity',
                         null,
                         (string) $item->getNumber()
                     ),
-                    new Object(
+                    new Node(
                         'Afdruk',
                         null,
                         $mainArticle->getNbColored() > 0 ? 'kleur' : 'zwart wit'
                     ),
-                    new Object(
+                    new Node(
                         'bedrukking',
                         null,
                         (string) $mainArticle->isRectoVerso() ? 'Recto-Verso' : 'Recto'
                     ),
-                    new Object(
+                    new Node(
                         'afwerking',
                         null,
                         $binding
                     ),
-                    new Object(
+                    new Node(
                         'Bestandsnaam',
                         null,
                         substr((string) $item->getArticle()->getBarcode(),-5) . '.pdf'
@@ -438,7 +438,7 @@ class Xml
                 );
 
         $xml->append(
-            new Object(
+            new Node(
                 'Order',
                 null,
                 $orderDetails

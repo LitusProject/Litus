@@ -71,7 +71,7 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
                     'cudi_admin_article_comment',
                     array(
                         'action' => 'manage',
-                        'id' => $article->getId(),
+                        'id'     => $article->getId(),
                     )
                 );
 
@@ -81,9 +81,9 @@ class CommentController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'article' => $article,
-                'form' => $form,
-                'paginator' => $paginator,
+                'article'           => $article,
+                'form'              => $form,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
         );

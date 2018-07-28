@@ -78,8 +78,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     $this->redirect()->toRoute(
                         'cudi_prof_subject_comment',
                         array(
-                            'action' => 'manage',
-                            'id' => $subject->getId(),
+                            'action'   => 'manage',
+                            'id'       => $subject->getId(),
                             'language' => $this->getLanguage()->getAbbrev(),
                         )
                     );
@@ -110,8 +110,8 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
                     $this->redirect()->toRoute(
                         'cudi_prof_subject_comment',
                         array(
-                            'action' => 'manage',
-                            'id' => $subject->getId(),
+                            'action'   => 'manage',
+                            'id'       => $subject->getId(),
                             'language' => $this->getLanguage()->getAbbrev(),
                         )
                     );
@@ -123,10 +123,10 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
 
         return new ViewModel(
             array(
-                'subject' => $subject,
+                'subject'     => $subject,
                 'commentForm' => $commentForm,
-                'replyForm' => $replyForm,
-                'comments' => $comments,
+                'replyForm'   => $replyForm,
+                'comments'    => $comments,
             )
         );
     }
@@ -184,7 +184,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             $this->redirect()->toRoute(
                 'cudi_prof_subject',
                 array(
-                    'action' => 'manage',
+                    'action'   => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );
@@ -211,7 +211,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
             $this->redirect()->toRoute(
                 'cudi_prof_article',
                 array(
-                    'action' => 'manage',
+                    'action'   => 'manage',
                     'language' => $this->getLanguage()->getAbbrev(),
                 )
             );

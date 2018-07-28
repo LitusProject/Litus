@@ -23,11 +23,11 @@ return array(
         'prom_admin_bus' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/prom/bus[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/prom/bus[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'prom_admin_bus',
@@ -38,11 +38,11 @@ return array(
         'prom_admin_code' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/prom/code[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/prom/code[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'prom_admin_code',
@@ -53,11 +53,11 @@ return array(
         'prom_admin_passenger' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/prom/passenger[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/prom/passenger[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'prom_admin_passenger',
@@ -68,10 +68,10 @@ return array(
         'prom_registration_index' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/prom/registration[/:action[/:code]][/]',
+                'route'       => '/prom/registration[/:action[/:code]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'code'    => '[a-zA-Z0-9_-]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'code'   => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'prom_registration_index',
@@ -82,9 +82,9 @@ return array(
     ),
 
     'controllers' => array(
-        'prom_admin_bus'        => 'PromBundle\Controller\Admin\BusController',
-        'prom_admin_code'       => 'PromBundle\Controller\Admin\CodeController',
-        'prom_admin_passenger'  => 'PromBundle\Controller\Admin\PassengerController',
+        'prom_admin_bus'       => 'PromBundle\Controller\Admin\BusController',
+        'prom_admin_code'      => 'PromBundle\Controller\Admin\CodeController',
+        'prom_admin_passenger' => 'PromBundle\Controller\Admin\PassengerController',
 
         'prom_registration_index' => 'PromBundle\Controller\Registration\IndexController',
     ),

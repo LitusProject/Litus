@@ -37,7 +37,7 @@ class Reply extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'id' => 'comment',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'required' => true,
                     'filters'  => array(
@@ -56,9 +56,9 @@ class Reply extends \CommonBundle\Component\Form\Bootstrap\Form
                 'rows' => 5,
                 'id'   => 'reply',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

@@ -21,8 +21,8 @@
 return array(
     'Calendar' => 'Kalender',
     'Previous' => 'Vorige',
-    'Next' => 'Volgende',
+    'Next'     => 'Volgende',
     'Download' => 'Download',
-    'Shifts' => 'Shiften',
-    'Tickets' => 'Tickets',
+    'Shifts'   => 'Shiften',
+    'Tickets'  => 'Tickets',
 );

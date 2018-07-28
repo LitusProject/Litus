@@ -49,10 +49,10 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                 'name'       => 'studies',
                 'label'      => 'Studies',
                 'attributes' => array(
-                    'style' => 'max-width: 400px;',
+                    'style'    => 'max-width: 400px;',
                     'multiple' => true,
                 ),
-                'options'    => array(
+                'options' => array(
                     'options' => $studies,
                 ),
             ));
@@ -67,22 +67,22 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'multiple' => true,
                 ),
-                'options'    => array(
+                'options' => array(
                     'options' => $groups,
                 ),
             ));
         }
 
         $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'test',
-            'label'      => 'Test Mail',
+            'type'  => 'checkbox',
+            'name'  => 'test',
+            'label' => 'Test Mail',
         ));
 
         $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'html',
-            'label'      => 'HTML Mail',
+            'type'  => 'checkbox',
+            'name'  => 'html',
+            'label' => 'HTML Mail',
         ));
 
         $this->add(array(
@@ -93,13 +93,13 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'emailAddress'),
+                        array('name' => 'EmailAddress'),
                     ),
                 ),
             ),
@@ -112,7 +112,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -138,7 +138,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'style' => 'max-width: 100%;',
                         ),
-                        'options'    => array(
+                        'options' => array(
                             'options' => $storedMessages,
                         ),
                     ),
@@ -159,7 +159,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'style' => 'width: 400px;',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),
@@ -175,7 +175,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'style' => 'width: 500px; height: 200px;',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),
@@ -188,14 +188,14 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'name'       => 'file',
                     'label'      => 'Attachments',
                     'attributes' => array(
-                        'multiple' => true,
+                        'multiple'  => true,
                         'data-help' => 'The maximum file size is ' . self::FILESIZE . '.',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
                             'validators' => array(
                                 array(
-                                    'name' => 'filesize',
+                                    'name'    => 'filesize',
                                     'options' => array(
                                         'max' => self::FILESIZE,
                                     ),

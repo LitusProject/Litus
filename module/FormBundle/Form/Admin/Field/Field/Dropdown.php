@@ -41,7 +41,7 @@ class Dropdown extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
             'attributes' => array(
                 'data-help' => 'The options comma separated.',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),

@@ -86,7 +86,7 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
                     'cudi_admin_sales_session_restriction',
                     array(
                         'action' => 'manage',
-                        'id' => $session->getId(),
+                        'id'     => $session->getId(),
                     )
                 );
 
@@ -97,8 +97,8 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
         return new ViewModel(
             array(
                 'restrictions' => $restrictions,
-                'session' => $session,
-                'form' => $form,
+                'session'      => $session,
+                'form'         => $form,
             )
         );
     }

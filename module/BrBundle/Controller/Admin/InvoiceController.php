@@ -26,9 +26,9 @@ use BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
     BrBundle\Entity\Invoice\InvoiceHistory,
     BrBundle\Entity\Invoice\ManualInvoice,
     CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File as FileUtil,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Component\Util\File as FileUtil,
     DateTime,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -62,13 +62,13 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                         ->getResult();
 
         $invoiceData = [];
-        foreach($invoices as $invoice){
+        foreach ($invoices as $invoice) {
             $value = 0;
-            if($invoice->hasContract()){
+            if ($invoice->hasContract()) {
                 $invoice->getOrder()->setEntityManager($this->getEntityManager());
                 $value = $invoice->getOrder()->getTotalCostExclusive();
-            }else{
-                $value = $invoice->getPrice()/100;
+            } else {
+                $value = $invoice->getPrice() / 100;
             }
             $invoiceData[] = array("invoice" => $invoice, "value" => $value);
         }
@@ -80,7 +80,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -96,23 +96,24 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             ->findAll();
 
         $results = array();
-        
-        foreach($invoices as $invoice){
+
+        foreach ($invoices as $invoice) {
             $value = 0;
-            if($invoice->hasContract()){
+            if ($invoice->hasContract()) {
                 $invoice->getOrder()->setEntityManager($this->getEntityManager());
                 $value = $invoice->getOrder()->getTotalCostExclusive();
-            }else{
-                $value = $invoice->getPrice()/100;
+            } else {
+                $value = $invoice->getPrice() / 100;
             }
-            
-            $results[] = array($invoice->getCompany()->getName(), 
-                $invoice->getAuthor()->getPerson()->getFullName(), 
+
+            $results[] = array($invoice->getCompany()->getName(),
+                $invoice->getAuthor()->getPerson()->getFullName(),
                 $invoice->getTitle(),
                 $invoice->getCreationTime()->format('j/m/Y'),
                 $invoice->getInvoiceNumber(),
                 $invoice->isPayed(),
-                $value);
+                $value,
+            );
         }
 
         $document = new CsvGenerator($heading, $results);
@@ -140,12 +141,12 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                         ->getResult();
 
         $invoiceData = [];
-        foreach($invoices as $invoice){
+        foreach ($invoices as $invoice) {
             $value = 0;
-            if($invoice->hasContract()){
+            if ($invoice->hasContract()) {
                 $invoice->getOrder()->setEntityManager($this->getEntityManager());
                 $value = $invoice->getOrder()->getTotalCostExclusive();
-            }else{
+            } else {
                 $value = $invoice->getPrice();
             }
             $invoiceData[] = array("invoice" => $invoice, "value" => $value);
@@ -158,7 +159,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -179,7 +180,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

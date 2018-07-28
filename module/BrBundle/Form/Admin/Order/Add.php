@@ -49,10 +49,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'     => 'select',
-            'name'     => 'company',
-            'label'    => 'Company',
-            'required' => true,
+            'type'       => 'select',
+            'name'       => 'company',
+            'label'      => 'Company',
+            'required'   => true,
             'attributes' => array(
                 'id'      => 'company',
                 'options' => $this->getCompanyArray(),
@@ -65,16 +65,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         foreach ($companies as $company) {
             $this->add(array(
-                'type'     => 'select',
-                'name'     => 'contact_' . $company->getId(),
-                'label'    => 'Contact',
-                'required' => true,
+                'type'       => 'select',
+                'name'       => 'contact_' . $company->getId(),
+                'label'      => 'Contact',
+                'required'   => true,
                 'attributes' => array(
                     'class'   => 'company_contact',
                     'id'      => 'company_contact_' . $company->getId(),
                     'options' => $this->getContactArray($company),
                 ),
-                'options'  => array(
+                'options' => array(
                     'input' => array(
                         'required' => false,
                     ),
@@ -90,7 +90,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'value'    => 0,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(

@@ -49,11 +49,11 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        $data =  array(
+        $data = array(
             'totalTheoreticalRevenue' => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->getTheoreticalRevenueByAcademicYear($academicYear),
-            'totalActualRevenue' => 0,
+            'totalActualRevenue'   => 0,
             'totalPurchasedAmount' => $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->getPurchasedAmountByAcademicYear($academicYear),
@@ -81,7 +81,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
         foreach ($organizations as $organization) {
             $organizationsList[$organization->getId()] = array(
                 'entity' => $organization,
-                'data' => array(
+                'data'   => array(
                     'totalTheoreticalRevenue' => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Session')
                         ->getTheoreticalRevenueByAcademicYear($academicYear, $organization),
@@ -100,10 +100,10 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'organizationsList' => $organizationsList,
-                'data' => $data,
-                'academicYears' => $academicYears,
-                'activeAcademicYear' => $academicYear,
+                'organizationsList'        => $organizationsList,
+                'data'                     => $data,
+                'academicYears'            => $academicYears,
+                'activeAcademicYear'       => $academicYear,
                 'otherOrganizationEnabled' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('secretary.enable_other_organization'),
@@ -141,11 +141,11 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                     ->getRepository('CommonBundle\Entity\General\Organization')
                     ->findAll();
 
-                $data =  array(
+                $data = array(
                     'totalTheoreticalRevenue' => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Session')
                         ->getTheoreticalRevenueBetween($startDate, $endDate),
-                    'totalActualRevenue' => 0,
+                    'totalActualRevenue'   => 0,
                     'totalPurchasedAmount' => $this->getEntityManager()
                         ->getRepository('CudiBundle\Entity\Sale\Session')
                         ->getPurchasedAmountBetween($startDate, $endDate),
@@ -172,7 +172,7 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
                 foreach ($organizations as $organization) {
                     $organizationsList[$organization->getId()] = array(
                         'entity' => $organization,
-                        'data' => array(
+                        'data'   => array(
                             'totalTheoreticalRevenue' => $this->getEntityManager()
                                 ->getRepository('CudiBundle\Entity\Sale\Session')
                                 ->getTheoreticalRevenueBetween($startDate, $endDate, $organization),
@@ -193,11 +193,11 @@ class FinancialController extends \CudiBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'academicYears' => $academicYears,
-                'activeAcademicYear' => $academicYear,
-                'organizationsList' => $organizationsList,
-                'data' => $data,
+                'form'                     => $form,
+                'academicYears'            => $academicYears,
+                'activeAcademicYear'       => $academicYear,
+                'organizationsList'        => $organizationsList,
+                'data'                     => $data,
                 'otherOrganizationEnabled' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('secretary.enable_other_organization'),

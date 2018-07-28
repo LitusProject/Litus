@@ -174,7 +174,7 @@ class Update extends \CommonBundle\Component\WebSocket\Server
             json_encode(
                 (object) array(
                     'status' => (object) array(
-                        'type' => $type,
+                        'type'  => $type,
                         'extra' => substr(trim($extra), 0, 74),
                     ),
                 )

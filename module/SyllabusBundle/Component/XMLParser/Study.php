@@ -369,13 +369,16 @@ class Study
                         ->setPhoneNumber($info['phone'])
                         ->setUniversityIdentification($identification)
                         ->activate($this->getEntityManager(), $this->mailTransport, true);
-
-                    $image = $this->getProfImage($identification, $info['photo']);
-                    if (null !== $image) {
-                        $prof->setPhotoPath($image);
-                    }
-                    $this->profCache[$identification] = $prof;
                 }
+            } else {
+                $info = $this->getProfInfo(trim($data->attributes()->persno));
+
+                $prof->setFirstName(trim($data->voornaam))
+                    ->setLastName(trim($data->familienaam))
+                    ->setEmail($info['email'])
+                    ->setPersonalEmail($info['email'])
+                    ->setUniversityEmail($info['email'])
+                    ->setPhoneNumber($info['phone']);
             }
 
             if ($prof->canHaveUniversityStatus($this->academicYear)) {
@@ -411,21 +414,30 @@ class Study
         $info = array(
             'email' => null,
             'phone' => null,
-            'photo' => 'http://www.kuleuven.be/wieiswie/nl/person/' . $identification . '/photo',
         );
         $client = new HttpClient();
         $response = $client->setUri('http://www.kuleuven.be/wieiswie/nl/person/' . $identification)
             ->send();
 
-        preg_match('/<noscript>([a-zA-Z0-9\[\]\s\-]*)<\/noscript>/', $response->getBody(), $matches);
+        preg_match('/String.fromCharCode\(([\(\d,+\)]+)\)/', $response->getBody(), $matches);
 
         if (count($matches) > 1) {
-            $info['email'] = str_replace(array(' [dot] ', ' [at] '), array('.', '@'), $matches[1]);
+            $characters = explode(',', $matches[0]);
+
+            $string = '';
+            foreach ($characters as $character) {
+                if (preg_match('/(\d+)(?:\s*)([\+\-\*\/])(?:\s*)(\d+)/', $character, $matches)) {
+                    $string .= chr($matches[1] + $matches[3]);
+                }
+            }
+
+            preg_match('/<a href="mailto:([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})">/', $string, $matches);
+            $info['email'] = $matches[1];
         } else {
             $info['email'] = null;
         }
 
-        preg_match('/tel\s\.([0-9\+\s]*)/', $response->getBody(), $matches);
+        preg_match('/<a class="phone" href="tel:([\d+ ]+)">/', $response->getBody(), $matches);
 
         if (count($matches) > 1) {
             $info['phone'] = trim(str_replace(' ', '', $matches[1]));
@@ -434,38 +446,6 @@ class Study
         }
 
         return $info;
-    }
-
-    /**
-     * @param  string      $identification
-     * @param  string      $url
-     * @return string|null
-     */
-    private function getProfImage($identification, $url)
-    {
-        $headers = get_headers($url);
-
-        if ($headers[0] != 'HTTP/1.1 404 Not Found' && $headers[0] != 'HTTP/1.1 302 Moved Temporarily') {
-            file_put_contents('/tmp/' . $identification, file_get_contents($url));
-            $finfo = new finfo();
-            $fileinfo = $finfo->file('/tmp/' . $identification, FILEINFO_MIME);
-            $mimetype = substr($fileinfo, 0, strpos($fileinfo, ';'));
-
-            if (in_array($mimetype, array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif'))) {
-                $filePath = 'public' . $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.profile_path');
-
-                do {
-                    $fileName = '/' . sha1(uniqid());
-                } while (file_exists($filePath . $fileName));
-
-                file_put_contents($filePath . $fileName, file_get_contents('/tmp/' . $identification));
-                unlink('/tmp/' . $identification);
-
-                return $fileName;
-            }
-        }
     }
 
     /**
@@ -631,7 +611,7 @@ class Study
                         foreach ($classification->graad as $grade) {
                             foreach ($grade->opleidingen->children() as $study) {
                                 $studies[] = array(
-                                    'id' => (string) $study->attributes()->id,
+                                    'id'       => (string) $study->attributes()->id,
                                     'language' => $study->taal,
                                 );
                             }

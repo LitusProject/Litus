@@ -41,12 +41,12 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
             if (strstr($entry->getKey(), Config::$separator)) {
                 $explodedKey = explode(Config::$separator, $entry->getKey());
                 $formattedValues[$explodedKey[0]][$explodedKey[1]] = array(
-                    'value' => $entry->getValue(),
+                    'value'   => $entry->getValue(),
                     'fullKey' => $entry->getKey(),
                 );
             } else {
                 $formattedValues[0][$entry->getKey()] = array(
-                    'value' => $entry->getValue(),
+                    'value'   => $entry->getValue(),
                     'fullKey' => $entry->getKey(),
                 );
             }
@@ -94,7 +94,7 @@ class ConfigController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'entry' => $entry,
-                'form' => $form,
+                'form'  => $form,
             )
         );
     }

@@ -35,13 +35,13 @@ class WorkingGroupController extends \CommonBundle\Component\Controller\ActionCo
             ),
             array(
                 'firstName' => 'ASC',
-                'lastName' => 'ASC',
+                'lastName'  => 'ASC',
             )
         );
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

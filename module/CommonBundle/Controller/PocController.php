@@ -68,11 +68,11 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         return new ViewModel(
             array(
             //'isLoggedIn'	=> $isLoggedIn,
-            'pocItem'       => $pocItem,
-            'academicYears' => $academicYears,
-            'activeAcademicYear' => $academicYear,
+            'pocItem'             => $pocItem,
+            'academicYears'       => $academicYears,
+            'activeAcademicYear'  => $academicYear,
             'currentAcademicYear' => $this->getCurrentAcademicYear(),
-            'profilePath' => $this->getEntityManager()
+            'profilePath'         => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
             //'personalPocItem'	  => $personalPocItem,
@@ -93,9 +93,9 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
                 $pocGroupList[] = $pocer;
             } elseif ($lastPocGroup !== $pocer->getGroupId()) {
                 $pocItem[] = array(
-                    'groupId' => $lastPocGroup,
+                    'groupId'      => $lastPocGroup,
                     'pocGroupList' => $pocGroupList,
-                    'pocExample' => $pocGroupList[0],
+                    'pocExample'   => $pocGroupList[0],
                     );
                 unset($pocGroupList);
                 $pocGroupList = array();
@@ -105,9 +105,9 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         }
         if (!empty($pocGroupList)) {
             $pocItem[] = array(
-                    'groupId' => $lastPocGroup,
+                    'groupId'      => $lastPocGroup,
                     'pocGroupList' => $pocGroupList,
-                    'pocExample' => $pocGroupList[0],);
+                    'pocExample'   => $pocGroupList[0],);
         }
 
         return $pocItem;

@@ -27,13 +27,14 @@ use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
+ * @author Matthias Swiggers <matthias.swiggers@vtk.be>
  */
 class Job extends \CommonBundle\Component\Hydrator\Hydrator
 {
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static $stdKeys = array('name', 'description', 'benefits', 'profile', 'contact', 'city');
+    private static $stdKeys = array('name', 'description', 'benefits', 'profile', 'email', 'city');
 
     protected function doHydrate(array $data, $object = null)
     {
@@ -42,6 +43,8 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->setSector($data['sector']);
+        $object->setLocation($data['location']);
+        $object->setMaster($data['master']);
         $object->updateDate();
 
         $object->setStartDate(self::loadDateTime($data['start_date']))
@@ -59,6 +62,8 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['sector'] = $object->getSectorCode();
+        $data['location'] = $object->getLocationCode();
+        $data['master'] = $object->getMasterCode();
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
 

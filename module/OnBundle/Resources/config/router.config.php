@@ -23,11 +23,11 @@ return array(
         'on_admin_slug' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/on/slug[/:action[/:id][/:field/:string][/page/:page]][/]',
+                'route'       => '/admin/on/slug[/:action[/:id][/:field/:string][/page/:page]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[a-z0-9]*',
-                    'page'    => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[a-z0-9]*',
+                    'page'   => '[0-9]*',
                     'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
@@ -40,9 +40,9 @@ return array(
         'on_redirect' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/on[/:name][/]',
+                'route'       => '/on[/:name][/]',
                 'constraints' => array(
-                    'name'  => '[a-zA-Z0-9_-]*',
+                    'name' => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'on_redirect',
@@ -55,6 +55,6 @@ return array(
     'controllers' => array(
         'on_admin_slug' => 'OnBundle\Controller\Admin\SlugController',
 
-        'on_redirect'   => 'OnBundle\Controller\RedirectController',
+        'on_redirect' => 'OnBundle\Controller\RedirectController',
     ),
 );

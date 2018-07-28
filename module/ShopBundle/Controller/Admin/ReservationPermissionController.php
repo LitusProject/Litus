@@ -41,7 +41,7 @@ class ReservationPermissionController extends \CommonBundle\Component\Controller
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

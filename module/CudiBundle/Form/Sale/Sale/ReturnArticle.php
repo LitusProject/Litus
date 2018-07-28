@@ -37,11 +37,11 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'      => 'Person',
             'required'   => true,
             'attributes' => array(
-                'placeholder'  => 'Student',
+                'placeholder' => 'Student',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'validators'  => array(
+                    'validators' => array(
                         array('name' => 'typeahead_person'),
                     ),
                 ),
@@ -54,9 +54,9 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
             'label'      => 'Article',
             'required'   => true,
             'attributes' => array(
-                'placeholder'  => 'Article',
+                'placeholder' => 'Article',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array('name' => 'typeahead_sale_article'),

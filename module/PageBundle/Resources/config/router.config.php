@@ -23,13 +23,13 @@ return array(
         'page_admin_page' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/site/page[/:action[/:id][/page/:page][/:field/:string]][/]',
+                'route'       => '/admin/site/page[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
-                    'field'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'string'  => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'page_admin_page',
@@ -40,11 +40,11 @@ return array(
         'page_admin_category' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/site/page/category[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/site/page/category[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'page_admin_category',
@@ -55,11 +55,11 @@ return array(
         'page_admin_link' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/site/page/link[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/site/page/link[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'page_admin_link',
@@ -69,9 +69,9 @@ return array(
         ),
 
         'page_link' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/link[/:id][/]',
+                'route'       => '[/:language]/link[/:id][/]',
                 'constraints' => array(
                     'id'       => '[0-9]*',
                     'language' => '[a-z]{2}',
@@ -83,9 +83,9 @@ return array(
             ),
         ),
         'page' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/page[/parent/:parent][/name/:name][/]',
+                'route'       => '[/:language]/page[/parent/:parent][/name/:name][/]',
                 'constraints' => array(
                     'parent'   => '[a-zA-Z0-9_-]*',
                     'name'     => '[a-zA-Z0-9_-]*',
@@ -98,11 +98,11 @@ return array(
             ),
         ),
         'page_file' => array(
-            'type' => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/page/file/:name[/]',
+                'route'       => '/page/file/:name[/]',
                 'constraints' => array(
-                    'name'     => '[a-zA-Z0-9_-]*',
+                    'name' => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults' => array(
                     'controller' => 'page',
@@ -117,7 +117,7 @@ return array(
         'page_admin_category' => 'PageBundle\Controller\Admin\CategoryController',
         'page_admin_link'     => 'PageBundle\Controller\Admin\LinkController',
 
-        'page_link'           => 'PageBundle\Controller\LinkController',
-        'page'                => 'PageBundle\Controller\PageController',
+        'page_link' => 'PageBundle\Controller\LinkController',
+        'page'      => 'PageBundle\Controller\PageController',
     ),
 );

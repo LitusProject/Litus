@@ -30,8 +30,8 @@ return array(
         'description' => 'The mail address name from which Het Bakske is sent',
     ),
     array(
-        'key'         => 'mail.start_cudi_mail',
-        'value'       => serialize(
+        'key'   => 'mail.start_cudi_mail',
+        'value' => serialize(
             array(
                 'subject' => '[VTK Cursusdienst] Cursussen {{ semester }} Semester Academiejaar {{ academicYear }}',
                 'message' => 'Geachte professor,

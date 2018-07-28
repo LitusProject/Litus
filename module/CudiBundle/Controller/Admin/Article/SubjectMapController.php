@@ -86,8 +86,8 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 $this->redirect()->toRoute(
                     'cudi_admin_article_subject',
                     array(
-                        'action' => 'manage',
-                        'id' => $article->getId(),
+                        'action'       => 'manage',
+                        'id'           => $article->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -107,12 +107,12 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'form' => $form,
-                'article' => $article,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
+                'form'                => $form,
+                'article'             => $article,
+                'paginator'           => $paginator,
+                'paginationControl'   => $this->paginator()->createControl(),
             )
         );
     }

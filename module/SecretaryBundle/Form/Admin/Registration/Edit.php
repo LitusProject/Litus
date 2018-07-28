@@ -48,11 +48,11 @@ class Edit extends Add
         $this->remove('person');
 
         $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'cancel',
-            'label'      => 'Cancelled',
-            'value'      => $this->getRegistration()->isCancelled(),
-            'options'    => array(
+            'type'    => 'checkbox',
+            'name'    => 'cancel',
+            'label'   => 'Cancelled',
+            'value'   => $this->getRegistration()->isCancelled(),
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array('name' => 'secretary_cancel_registration'),

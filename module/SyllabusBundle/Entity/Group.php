@@ -223,13 +223,13 @@ class Group
     /**
      *returns boolean
      */
-     public function getIsPocGroup(AcademicYear $academicYear)
-     {
-         return $this->entityManager
+    public function getIsPocGroup(AcademicYear $academicYear)
+    {
+        return $this->entityManager
          ->getRepository('SyllabusBundle\Entity\Poc')
          ->getIsPocGroup($this, $academicYear);
-     }
-       /**
+    }
+    /**
      * @param  AcademicYear $academicYear
      * @return string
      */

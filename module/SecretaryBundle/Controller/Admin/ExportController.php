@@ -75,7 +75,7 @@ class ExportController extends \CommonBundle\Component\Controller\ActionControll
                     ->addHeaders(
                     array(
                         'Content-Disposition' => 'attachment; filename="members_' . strtolower($organization->getName()) . '_' . $academicYear->getCode() . '.csv"',
-                        'Content-Type' => 'text/csv',
+                        'Content-Type'        => 'text/csv',
                     )
                 );
 

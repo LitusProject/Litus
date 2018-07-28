@@ -52,8 +52,8 @@ class TeamController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'quiz' => $quiz,
-                'paginator' => $paginator,
+                'quiz'              => $quiz,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
         );

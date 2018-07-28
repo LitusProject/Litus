@@ -43,7 +43,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -60,7 +60,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -147,7 +147,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
         $form = $this->getForm('shop_salesSession_edit',
             array(
                 'salesSession' => $salesSession,
-                'products' => $products,
+                'products'     => $products,
             ));
 
         if ($this->getRequest()->isPost()) {

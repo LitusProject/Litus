@@ -41,8 +41,8 @@ return array(
         'description' => 'The name of the mail address from which shift notifications are sent',
     ),
     array(
-        'key'         => 'shift.praesidium_removed_mail',
-        'value'       => serialize(
+        'key'   => 'shift.praesidium_removed_mail',
+        'value' => serialize(
             array(
                 'en' => array(
                     'subject' => 'Shift Signout',
@@ -67,8 +67,8 @@ U bent verwijderd van de volgende shift door een niet-praesidium vrijwilliger:
         'description' => 'The mail sent to a praesidium member when a volunteer removes him from a shift.',
     ),
     array(
-        'key'         => 'shift.shift_deleted_mail',
-        'value'       => serialize(
+        'key'   => 'shift.shift_deleted_mail',
+        'value' => serialize(
             array(
                 'en' => array(
                     'subject' => 'Shift Deleted',
@@ -93,8 +93,8 @@ De volgende shift waar je was op ingeschreven is verwijderd:
         'description' => 'The mail sent to a shift subscriber when the shift is deleted.',
     ),
     array(
-        'key'         => 'shift.subscription_deleted_mail',
-        'value'       => serialize(
+        'key'   => 'shift.subscription_deleted_mail',
+        'value' => serialize(
             array(
                 'en' => array(
                     'subject' => 'Shift Signout',
@@ -124,15 +124,15 @@ U bent verwijderd van de volgende shift door een administrator:
         'description' => 'The path to the PDF generator files',
     ),
     array(
-        'key'         => 'shift.ranking_criteria',
-        'value'       => serialize(
+        'key'   => 'shift.ranking_criteria',
+        'value' => serialize(
             array(
                 array(
-                    'name' => 'silver',
+                    'name'  => 'silver',
                     'limit' => '10',
                 ),
                 array(
-                    'name' => 'gold',
+                    'name'  => 'gold',
                     'limit' => '20',
                 ),
             )
@@ -145,16 +145,16 @@ U bent verwijderd van de volgende shift door een administrator:
         'description' => 'The suffix of an iCalendar shift uid',
     ),
     array(
-        'key'           => 'shift.reward_numbers',
-        'value'         => serialize(
+        'key'   => 'shift.reward_numbers',
+        'value' => serialize(
             array(
-                '2' => 2,
-                '0' => 0,
-                '3' => 3,
+                '2'  => 2,
+                '0'  => 0,
+                '3'  => 3,
                 '10' => 10,
             )
         ),
-        'description'   => 'The coins you can select as reward for a shift',
+        'description' => 'The coins you can select as reward for a shift',
     ),
     array(
         'key'         => 'shift.insurance_enabled',
@@ -162,9 +162,8 @@ U bent verwijderd van de volgende shift door een administrator:
         'description' => 'A flag if the insurance reading feature is enabled.',
     ),
     array(
-        'key'         => 'shift.insurance_text',
-        'value'       =>
-            array(
+        'key'   => 'shift.insurance_text',
+        'value' => array(
                 'nl' => 'Vul deze config in!',
                 'en' => 'Fill this config in!',
             ),

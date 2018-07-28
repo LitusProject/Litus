@@ -48,7 +48,7 @@ class Date extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'placeholder' => 'dd/mm/yyyy',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'required' => true,
                     'filters'  => array(
@@ -56,7 +56,7 @@ class Date extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'date',
+                            'name'    => 'date',
                             'options' => array(
                                 'format' => 'd/m/Y',
                             ),

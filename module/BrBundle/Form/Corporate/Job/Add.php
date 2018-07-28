@@ -43,12 +43,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'StringLength',
+                            'name'    => 'StringLength',
                             'options' => array(
                                 'max' => '100',
                             ),
@@ -74,10 +74,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'date_compare',
+                            'name'    => 'date_compare',
                             'options' => array(
                                 'first_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
                     ),
@@ -101,7 +101,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -115,10 +115,20 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
+            ),
+        ));
+
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'master',
+            'label'      => 'Master',
+            'attributes' => array(
+                'options' => $this->getMasters(),
             ),
         ));
 
@@ -129,7 +139,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -137,16 +147,31 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'contact',
-            'label'    => 'Contact Information',
-            'required' => true,
+            'type'     => 'text',
+            'name'     => 'email',
+            'label'    => 'Email',
+            'required' => false,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
+                    'validators' => array(
+                        array(
+                            'name' => 'EmailAddress',
+                        )
+                    ),
                 ),
+            )
+        ));
+
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'location',
+            'label'      => 'Location',
+            'attributes' => array(
+                'options' => $this->getLocations(),
             ),
         ));
 
@@ -157,7 +182,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -175,5 +200,25 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         return $sectorArray;
+    }
+
+    private function getLocations()
+    {
+        $locationArray = array();
+        foreach (Company::$possibleLocations as $key => $location){
+            $locationArray[$key] = $location;
+        }
+
+        return $locationArray;
+    }
+
+    private function getMasters()
+    {
+        $masterArray = array();
+        foreach (Company::$possibleMasters as $key => $master){
+            $masterArray[$key] = $master;
+        }
+
+        return $masterArray;
     }
 }

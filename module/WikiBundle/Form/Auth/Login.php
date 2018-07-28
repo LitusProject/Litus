@@ -47,7 +47,7 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'disabled' => 'disabled',
                 ),
-                'options'    => array(
+                'options' => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -63,11 +63,11 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
             ));
         } else {
             $this->add(array(
-                'type'       => 'text',
-                'name'       => 'username',
-                'label'      => 'Username',
-                'required'   => true,
-                'options'    => array(
+                'type'     => 'text',
+                'name'     => 'username',
+                'label'    => 'Username',
+                'required' => true,
+                'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -78,11 +78,11 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
         }
 
         $this->add(array(
-            'type'       => 'password',
-            'name'       => 'password',
-            'label'      => 'Password',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'password',
+            'name'     => 'password',
+            'label'    => 'Password',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -92,9 +92,9 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'       => 'hidden',
-            'name'       => 'remember_me',
-            'value'      => true,
+            'type'  => 'hidden',
+            'name'  => 'remember_me',
+            'value' => true,
         ));
 
         $this->add(array(

@@ -92,7 +92,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
 
             if (null !== $translation) {
                 $data['tab_content']['tab_' . $language->getAbbrev()] = array(
-                    'title' => $translation->getTitle(),
+                    'title'        => $translation->getTitle(),
                     'introduction' => $translation->getIntroduction(),
                 );
             }

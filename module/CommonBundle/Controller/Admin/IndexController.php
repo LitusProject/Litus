@@ -56,8 +56,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
             $piwik = array(
                 'uniqueVisitors' => $analytics->getUniqueVisitors(),
-                'liveCounters' => $analytics->getLiveCounters(),
-                'visitsGraph' => $this->getVisitsGraph($analytics),
+                'liveCounters'   => $analytics->getLiveCounters(),
+                'visitsGraph'    => $this->getVisitsGraph($analytics),
             );
         }
 
@@ -93,16 +93,16 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'profActions' => $profActions,
-                'subjectComments' => $subjectComments,
-                'subjectReplies' => $subjectReplies,
-                'activeSessions' => $activeSessions,
-                'currentSession' => $currentSession,
-                'piwik' => $piwik,
+                'profActions'        => $profActions,
+                'subjectComments'    => $subjectComments,
+                'subjectReplies'     => $subjectReplies,
+                'activeSessions'     => $activeSessions,
+                'currentSession'     => $currentSession,
+                'piwik'              => $piwik,
                 'registrationsGraph' => $registrationsGraph,
-                'versions' => array(
-                    'php' => phpversion(),
-                    'zf' => ZendVersion::VERSION,
+                'versions'           => array(
+                    'php'      => phpversion(),
+                    'zf'       => ZendVersion::VERSION,
                     'doctrine' => DoctrineVersion::VERSION,
                 ),
             )
@@ -145,7 +145,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         $visitsGraphData = array(
             'expirationTime' => $now->add(new DateInterval('P1D')),
 
-            'labels' => array(),
+            'labels'  => array(),
             'dataset' => array(),
         );
 
@@ -193,7 +193,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         $registationGraphData = array(
             'expirationTime' => $now->add(new DateInterval('PT1H')),
 
-            'labels' => array(),
+            'labels'  => array(),
             'dataset' => array(),
         );
 

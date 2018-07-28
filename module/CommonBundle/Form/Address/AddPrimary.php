@@ -46,13 +46,13 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
             'options' => array(
                 'input' => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'notEmpty',
+                            'name'    => 'notEmpty',
                             'options' => array(
                                 'zero', 'string',
                             ),
@@ -68,20 +68,20 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
             'attributes' => array(
                 'class' => 'other',
             ),
-            'elements'   => array(
+            'elements' => array(
                 array(
                     'type'    => 'text',
                     'name'    => 'postal',
                     'label'   => 'Postal Code',
                     'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
                         'validators' => array(
                             array(
-                                'name' => 'alnum',
+                                'name'    => 'alnum',
                                 'options' => array(
                                     'allowWhiteSpace' => true,
                                 ),
@@ -96,7 +96,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                     'required' => true,
                     'options'  => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                         ),
@@ -108,7 +108,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                     'label'   => 'Street',
                     'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -133,12 +133,12 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                 ),
                 'options' => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
                             array(
-                                'name' => 'notEmpty',
+                                'name'    => 'notEmpty',
                                 'options' => array(
                                     'zero', 'string',
                                 ),
@@ -162,14 +162,14 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
             'attributes' => array(
                 'class' => 'number',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'alnum',
+                            'name'    => 'alnum',
                             'options' => array(
                                 'allowWhiteSpace' => true,
                             ),
@@ -187,9 +187,9 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
             'attributes' => array(
                 'class' => 'mailbox',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

@@ -131,13 +131,13 @@ class QueueItem
      * @var array The possible states of a queue item
      */
     private static $possibleStatuses = array(
-        'signed_in' => 'Signed In',
+        'signed_in'  => 'Signed In',
         'collecting' => 'Collecting',
-        'collected' => 'Collected',
-        'selling' => 'Selling',
-        'hold' => 'Hold',
-        'canceled' => 'Canceled',
-        'sold' => 'Sold',
+        'collected'  => 'Collected',
+        'selling'    => 'Selling',
+        'hold'       => 'Hold',
+        'canceled'   => 'Canceled',
+        'sold'       => 'Sold',
     );
 
     /**

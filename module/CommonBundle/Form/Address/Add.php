@@ -44,9 +44,9 @@ class Add extends \CommonBundle\Component\Form\Fieldset
             'attributes' => array(
                 'class' => 'street',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -60,10 +60,19 @@ class Add extends \CommonBundle\Component\Form\Fieldset
             'attributes' => array(
                 'class' => 'number',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
+                    ),
+                    'validators' => array(
+                        array(
+                            'name'    => 'alnum',
+                            'options' => array(
+                                'allowWhiteSpace' => true,
+                            ),
+                        ),
+                        array('name' => 'not_zero'),
                     ),
                 ),
             ),
@@ -76,9 +85,9 @@ class Add extends \CommonBundle\Component\Form\Fieldset
             'attributes' => array(
                 'class' => 'mailbox',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -92,14 +101,14 @@ class Add extends \CommonBundle\Component\Form\Fieldset
             'attributes' => array(
                 'class' => 'postal',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'alnum',
+                            'name'    => 'alnum',
                             'options' => array(
                                 'allowWhiteSpace' => true,
                             ),
@@ -116,9 +125,9 @@ class Add extends \CommonBundle\Component\Form\Fieldset
             'attributes' => array(
                 'class' => 'city',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -133,10 +142,10 @@ class Add extends \CommonBundle\Component\Form\Fieldset
                 'class'   => 'country',
                 'options' => $this->getCountries(),
             ),
-            'value'      => 'BE',
-            'options'    => array(
+            'value'   => 'BE',
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -171,7 +180,7 @@ class Add extends \CommonBundle\Component\Form\Fieldset
         $options = array();
         foreach (Address::$countries as $key => $continent) {
             $options[$key] = array(
-                'label' => $key,
+                'label'   => $key,
                 'options' => $continent,
             );
         }

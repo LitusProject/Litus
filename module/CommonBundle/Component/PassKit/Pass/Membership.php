@@ -99,8 +99,8 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
             ->getConfigValue('organization_short_name');
 
         $this->addLanguage('en', array(
-            'lAcademicYear'     => 'ACADEMIC YEAR',
-            'lStatus'           => 'STATUS',
+            'lAcademicYear' => 'ACADEMIC YEAR',
+            'lStatus'       => 'STATUS',
 
             'member'            => 'Member',
             'non_member'        => 'Non-Member',
@@ -110,8 +110,8 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
         ));
 
         $this->addLanguage('nl', array(
-            'lAcademicYear'     => 'ACADEMIEJAAR',
-            'lStatus'           => 'STATUS',
+            'lAcademicYear' => 'ACADEMIEJAAR',
+            'lStatus'       => 'STATUS',
 
             'member'            => 'Lid',
             'non_member'        => 'Niet-Lid',
@@ -136,7 +136,7 @@ class Membership extends \CommonBundle\Component\PassKit\Pass
                     'message'         => $this->authenticatedPerson->getUsername(),
                     'messageEncoding' => 'iso-8859-1',
                 ),
-                'generic'            => array(
+                'generic' => array(
                     'primaryFields' => array(
                         array(
                             'key'   => 'member',

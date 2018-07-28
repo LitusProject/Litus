@@ -23,11 +23,11 @@ return array(
         'gallery_admin_gallery' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/site/gallery[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/site/gallery[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'gallery_admin_gallery',
@@ -38,7 +38,7 @@ return array(
         'gallery' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/gallery[/:action[/:name]][/]',
+                'route'       => '[/:language]/gallery[/:action[/:name]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'name'     => '[a-zA-Z0-9_-]*',
@@ -55,6 +55,6 @@ return array(
     'controllers' => array(
         'gallery_admin_gallery' => 'GalleryBundle\Controller\Admin\GalleryController',
 
-        'gallery'               => 'GalleryBundle\Controller\GalleryController',
+        'gallery' => 'GalleryBundle\Controller\GalleryController',
     ),
 );

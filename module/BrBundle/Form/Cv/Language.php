@@ -31,10 +31,10 @@ use BrBundle\Entity\Cv\Language as CvLanguage,
 class Language extends Fieldset
 {
     public static $writtenAndOralSkills = array(
-        'Notions' => 'Notions',
-        'Basis' => 'Basis',
-        'Good' => 'Good',
-        'Very good' => 'Very good',
+        'Notions'       => 'Notions',
+        'Basis'         => 'Basis',
+        'Good'          => 'Good',
+        'Very good'     => 'Very good',
         'Mother tongue' => 'Mother tongue',
     );
 
@@ -51,9 +51,9 @@ class Language extends Fieldset
                 'class'      => 'count',
                 'data-count' => 30,
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

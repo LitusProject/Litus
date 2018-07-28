@@ -24,7 +24,7 @@ class Less extends \Assetic\Filter\LessFilter
 {
     public function __construct()
     {
-        parent::__construct('/usr/local/bin/node', array('/usr/local/lib/node_modules'));
+        parent::__construct('/usr/bin/node', array('/usr/lib/node_modules'));
         $this->setCompress(true);
     }
 }

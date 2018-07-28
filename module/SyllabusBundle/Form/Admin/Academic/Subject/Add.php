@@ -37,9 +37,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Subject',
             'required'   => true,
             'attributes' => array(
-                'style'        => 'width: 500px',
+                'style' => 'width: 500px',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array('name' => 'syllabus_typeahead_subject'),

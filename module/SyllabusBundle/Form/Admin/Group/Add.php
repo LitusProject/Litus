@@ -52,14 +52,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'size' => 70,
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'syllabus_group_name',
+                            'name'    => 'syllabus_group_name',
                             'options' => array(
                                 'exclude' => $this->group,
                             ),
@@ -81,7 +81,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'   => 'Extra Members',
             'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -97,7 +97,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'   => 'Excluded Members',
             'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(

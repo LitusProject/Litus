@@ -24,7 +24,7 @@ use BrBundle\Entity\Cv\Entry,
     BrBundle\Entity\Cv\Util,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Object,
+    CommonBundle\Component\Util\Xml\Node,
     CommonBundle\Entity\General\AcademicYear,
     Doctrine\ORM\EntityManager,
     Zend\Mvc\I18n\Translator;
@@ -89,22 +89,22 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             ->getConfigValue('br.cv_book_foreword');
 
         $xml->append(
-            new Object(
+            new Node(
                 'cvbook',
                 array(
-                    'logo' => $organization_logo,
+                    'logo'  => $organization_logo,
                     'index' => $this->translator->translate('Alphabetical Index'),
-                    'toc' => $this->translator->translate('Table of Contents'),
+                    'toc'   => $this->translator->translate('Table of Contents'),
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'foreword',
                         array(
                             'title' => $this->translator->translate('Foreword'),
                         ),
-                        Object::fromString($foreword)
+                        Node::fromString($foreword)
                     ),
-                    new Object(
+                    new Node(
                         'cvs',
                         null,
                         $groups
@@ -121,7 +121,7 @@ class CvBook extends \CommonBundle\Component\Document\Generator\Pdf
             $cvs[] = Util::getCvXML($this->getEntityManager(), $entry, $this->translator);
         }
 
-        return new Object(
+        return new Node(
             'cvgroup',
             array(
                 'name' => $groupName,

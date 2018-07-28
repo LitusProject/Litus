@@ -120,8 +120,6 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
                 continue;
             }
 
-            print_r($experienceData);
-
             $experience = new CvExperienceEntity(
                 $object,
                 $experienceData['experience_function'],
@@ -160,18 +158,18 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
         $data['languages']['extra'] = $object->getLanguageExtra();
         foreach ($object->getLanguages() as $language) {
             $data['languages'][] = array(
-                'language_name' => $language->getName(),
-                'language_oral' => $language->getOralSkillCode(),
+                'language_name'    => $language->getName(),
+                'language_oral'    => $language->getOralSkillCode(),
                 'language_written' => $language->getWrittenSkillCode(),
             );
         }
 
         foreach ($object->getExperiences() as $experience) {
             $data['capabilities']['experiences'][] = array(
-                'experience_type' => $experience->getType(),
+                'experience_type'     => $experience->getType(),
                 'experience_function' => $experience->getFunction(),
-                'experience_start' => $experience->getStartYear(),
-                'experience_end' => $experience->getEndYear(),
+                'experience_start'    => $experience->getStartYear(),
+                'experience_end'      => $experience->getEndYear(),
             );
         }
 

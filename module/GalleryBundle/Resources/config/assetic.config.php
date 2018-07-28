@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'gallery_admin_gallery' => array(
             '@common_jquery',
             '@admin_css',
@@ -62,20 +62,20 @@ return array(
             ),
         ),
         'gallery_js' => array(
-            'assets'  => array(
+            'assets' => array(
                 'common/js/imageGallery.js',
             ),
             'filters' => array('js'),
         ),
         'plupload_js' => array(
-            'assets'  => array(
+            'assets' => array(
                 'plupload/js/plupload.full.js',
                 'plupload/js/bootstrap/uploadkit.js',
             ),
             'filters' => array('js'),
         ),
         'plupload_css' => array(
-            'assets'  => array(
+            'assets' => array(
                 'plupload/js/bootstrap/uploadkit.css',
             ),
             'filters' => array('css'),

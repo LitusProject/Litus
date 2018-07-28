@@ -76,8 +76,8 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
                 $this->redirect()->toRoute(
                     'syllabus_admin_subject',
                     array(
-                        'action' => 'view',
-                        'id' => $subject->getId(),
+                        'action'       => 'view',
+                        'id'           => $subject->getId(),
                         'academicyear' => $academicYear->getCode(),
                     )
                 );
@@ -90,10 +90,10 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'subject' => $subject,
-                'form' => $form,
+                'subject'             => $subject,
+                'form'                => $form,
             )
         );
     }
@@ -120,8 +120,8 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
                 $this->redirect()->toRoute(
                     'syllabus_admin_subject',
                     array(
-                        'action' => 'view',
-                        'id' => $mapping->getSubject()->getId(),
+                        'action'       => 'view',
+                        'id'           => $mapping->getSubject()->getId(),
                         'academicyear' => $mapping->getAcademicYear()->getCode(),
                     )
                 );
@@ -134,10 +134,10 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $mapping->getAcademicYear(),
-                'mapping' => $mapping,
-                'form' => $form,
+                'mapping'             => $mapping,
+                'form'                => $form,
             )
         );
     }

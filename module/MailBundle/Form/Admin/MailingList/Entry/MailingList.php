@@ -47,16 +47,16 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'select',
-            'name'       => 'entry',
-            'label'      => 'List',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'select',
+            'name'     => 'entry',
+            'label'    => 'List',
+            'required' => true,
+            'options'  => array(
                 'options' => $this->createEntriesArray(),
-                'input' => array(
+                'input'   => array(
                     'validators' => array(
                         array(
-                            'name' => 'mail_entry_mailinglist',
+                            'name'    => 'mail_entry_mailinglist',
                             'options' => array(
                                 'list' => $this->getList(),
                             ),
@@ -86,7 +86,7 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
             }
         }
 
-        $lists =  $this->getEntityManager()
+        $lists = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\MailingList\Named')
             ->findBy(array(), array('name' => 'ASC'));
 
@@ -106,7 +106,7 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
                 ->getRepository('MailBundle\Entity\MailingList\Entry\MailingList')
                 ->findBy(
                     array(
-                        'list' => $this->getList(),
+                        'list'  => $this->getList(),
                         'entry' => $value,
                     )
                 );

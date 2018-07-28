@@ -42,7 +42,7 @@ class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
             'attributes' => array(
                 'options' => $this->createUnitsArray(),
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'required' => true,
                 ),

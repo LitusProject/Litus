@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'prom_admin_bus' => array(
             '@common_jquery',
             '@admin_css',

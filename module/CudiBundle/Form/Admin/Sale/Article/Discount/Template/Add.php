@@ -44,7 +44,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'id' => 'name',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -61,9 +61,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'id' => 'value',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -85,8 +85,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         <li><b>Fixed:</b> the value will be subtracted from the real price</li>
                         <li><b>Override:</b> the value will be used as the new price</li>
                     </ul>',
-                'id'        => 'method',
-                'options'   => Discount::$possibleMethods,
+                'id'      => 'method',
+                'options' => Discount::$possibleMethods,
             ),
         ));
 

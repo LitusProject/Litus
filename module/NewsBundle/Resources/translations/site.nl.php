@@ -19,6 +19,6 @@
  */
 
 return array(
-    'News' => 'Nieuws',
+    'News'                           => 'Nieuws',
     'No news items were posted yet.' => 'Er werden nog geen nieuwsberichten geplaatst.',
 );

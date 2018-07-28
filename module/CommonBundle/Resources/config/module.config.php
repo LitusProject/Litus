@@ -72,7 +72,7 @@ return Config::create(
 
                 'AsseticBundle\Service' => 'CommonBundle\Component\Assetic\ServiceFactory',
 
-                'doctrine.cli' => 'CommonBundle\Component\Console\ApplicationFactory',
+                'doctrine.cli'         => 'CommonBundle\Component\Console\ApplicationFactory',
                 'litus.console_router' => 'CommonBundle\Component\Mvc\Router\Console\RouteStackFactory',
 
                 'formfactory.bootstrap' => new Component\Form\FactoryFactory(false),
@@ -82,14 +82,14 @@ return Config::create(
                 'mail_transport'     => 'Zend\Mail\Transport\Sendmail',
                 'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
 
-                'litus.hydratormanager'    => 'CommonBundle\Component\Hydrator\HydratorPluginManager',
+                'litus.hydratormanager' => 'CommonBundle\Component\Hydrator\HydratorPluginManager',
             ),
             'aliases' => array(
                 'litus.console_application' => 'doctrine.cli',
 
-                'authentication_service' => 'authentication_doctrineservice',
+                'authentication_service'           => 'authentication_doctrineservice',
                 'authentication_credentialadapter' => 'authentication_doctrinecredentialadapter',
-                'authentication_action' => 'authentication_doctrineaction',
+                'authentication_action'            => 'authentication_doctrineaction',
 
                 'translator' => 'MvcTranslator',
             ),
@@ -138,11 +138,11 @@ return Config::create(
         ),
         'assetic_configuration' => array(
             'buildOnRequest' => getenv('APPLICATION_ENV') == 'development',
-            'debug' => false,
-            'webPath' => __DIR__ . '/../../../../public/_assetic',
-            'cacheEnabled' => true,
-            'cachePath' => __DIR__ . '/../../../../data/cache',
-            'basePath' => '/_assetic/',
+            'debug'          => false,
+            'webPath'        => __DIR__ . '/../../../../public/_assetic',
+            'cacheEnabled'   => true,
+            'cachePath'      => __DIR__ . '/../../../../data/cache',
+            'basePath'       => '/_assetic/',
         ),
         'assetic_filters' => array(
             'invokables' => array(
@@ -175,10 +175,10 @@ return Config::create(
                         'textarea'   => 'CommonBundle\Component\Form\Bootstrap\Element\Textarea',
                         'typeahead'  => 'CommonBundle\Component\Form\Bootstrap\Element\TypeAhead',
 
-                        'fieldset'   => 'CommonBundle\Component\Form\Fieldset',
+                        'fieldset' => 'CommonBundle\Component\Form\Fieldset',
                     ),
                 ),
-                'admin'     => array(
+                'admin' => array(
                     'invokables' => array(
                         'checkbox'   => 'CommonBundle\Component\Form\Admin\Element\Checkbox',
                         'collection' => 'CommonBundle\Component\Form\Collection',
@@ -200,7 +200,7 @@ return Config::create(
                         'tabcontent' => 'CommonBundle\Component\Form\Admin\Fieldset\TabContent',
                         'tabpane'    => 'CommonBundle\Component\Form\Admin\Fieldset\TabPane',
 
-                        'fieldset'   => 'CommonBundle\Component\Form\Fieldset',
+                        'fieldset' => 'CommonBundle\Component\Form\Fieldset',
                     ),
                 ),
             ),

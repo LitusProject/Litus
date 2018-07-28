@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'logistics_admin_driver' => array(
             '@common_jquery',
             '@common_remote_typeahead',

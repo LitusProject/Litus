@@ -43,7 +43,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -79,7 +79,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                     'cudi_admin_sales_session',
                     array(
                         'action' => 'edit',
-                        'id' => $session->getId(),
+                        'id'     => $session->getId(),
                     )
                 );
 
@@ -89,7 +89,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'        => $form,
                 'lastSession' => $lastSession,
             )
         );
@@ -126,7 +126,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                     'cudi_admin_sales_session',
                     array(
                         'action' => 'edit',
-                        'id' => $session->getId(),
+                        'id'     => $session->getId(),
                     )
                 );
 
@@ -147,7 +147,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 'session' => $session,
                 'units'   => $units,
                 'devices' => $devices,
-                'form' => $form,
+                'form'    => $form,
             )
         );
     }
@@ -181,7 +181,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                     'cudi_admin_sales_session',
                     array(
                         'action' => 'edit',
-                        'id' => $session->getId(),
+                        'id'     => $session->getId(),
                     )
                 );
 
@@ -191,7 +191,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'    => $form,
                 'session' => $session,
             )
         );
@@ -239,7 +239,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                        'cudi_admin_sales_session',
                        array(
                            'action' => 'edit',
-                           'id' => $session->getId(),
+                           'id'     => $session->getId(),
                        )
                    );
 
@@ -249,7 +249,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'    => $form,
                 'session' => $session,
             )
         );
@@ -268,7 +268,7 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'session' => $session,
-                'items' => $items,
+                'items'   => $items,
             )
         );
     }

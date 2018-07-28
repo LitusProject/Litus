@@ -68,7 +68,16 @@
                 <div class="flashmessage warning_message full_width">
                     <div class="title">Warning</div>
                     <div class="content">
-                        <p>Please create a new stock period! To do so, please click <a href="{{ url('cudi_admin_stock_period', {'action': 'new'}) }}">here</a>.</p>
+                        <p>A new stock period should be created for each semester! For the upcomming semester you did not yet create one!<br>
+                            Creating a new stock period will:<br>
+                            <ul>
+                              <li>Close the current stock period, making it impossible to change the stock article values. Make sure you <b>enter your last stock changes from last semester before creating a new one</b>!</li>
+                              <li>Open a new stock period with the same start stock article values as the end values of the previous stock period.</li>
+                              <li>Re-book and re-assign all open bookings from previous stock period into the new period.</li>
+                            </ul>
+                            If you do not know what to do, please contact your site administrator.<br><br>
+                            To create a new stock period, please click <a href="{{ url('cudi_admin_stock_period', {'action': 'new'}) }}">here</a>.
+                        </p>
                     </div>
                 </div>
             {% endif %}

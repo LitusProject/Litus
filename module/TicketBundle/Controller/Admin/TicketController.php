@@ -59,8 +59,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         return new ViewModel(
             array(
-                'event' => $event,
-                'paginator' => $paginator,
+                'event'             => $event,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

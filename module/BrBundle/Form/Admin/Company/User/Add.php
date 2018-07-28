@@ -35,10 +35,10 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
         parent::init();
 
         $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'activate',
-            'label'      => 'Activation Mail',
-            'value'         => true,
+            'type'  => 'checkbox',
+            'name'  => 'activate',
+            'label' => 'Activation Mail',
+            'value' => true,
         ));
 
         $this->remove('roles');

@@ -80,7 +80,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'int'),
                         array('name' => 'positive_number'),
                         array(
-                            'name' => 'quiz_team_unique',
+                            'name'    => 'quiz_team_unique',
                             'options' => array(
                                 'quiz' => $this->quiz,
                                 'team' => $this->team,

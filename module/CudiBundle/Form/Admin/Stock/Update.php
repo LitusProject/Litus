@@ -53,9 +53,9 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'autocomplete' => 'off',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -63,9 +63,9 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
                             'name' => 'int',
                         ),
                         array(
-                            'name' => 'greaterthan',
+                            'name'    => 'greaterthan',
                             'options' => array(
-                                'min' => 0,
+                                'min'       => 0,
                                 'inclusive' => true,
                             ),
                         ),
@@ -81,7 +81,7 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

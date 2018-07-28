@@ -33,7 +33,7 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
      * @var array The search possibilities
      */
     private static $possibleSearchTypes = array(
-        'company' => 'Company',
+        'company'    => 'Company',
         'internship' => 'Internship',
         'mostRecent' => 'Most Recent',
     );

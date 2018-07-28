@@ -197,16 +197,16 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'resultString' => $resultString,
-                'eventSearchForm' => $eventSearchForm,
-                'unitSearchForm' => $unitSearchForm,
-                'dateSearchForm' => $dateSearchForm,
-                'myShifts' => $myShifts,
-                'token' => $token,
-                'searchResults' => $searchResults,
-                'entityManager' => $this->getEntityManager(),
+                'resultString'     => $resultString,
+                'eventSearchForm'  => $eventSearchForm,
+                'unitSearchForm'   => $unitSearchForm,
+                'dateSearchForm'   => $dateSearchForm,
+                'myShifts'         => $myShifts,
+                'token'            => $token,
+                'searchResults'    => $searchResults,
+                'entityManager'    => $this->getEntityManager(),
                 'hasReadInsurance' => $hasReadInsurance,
-                'insuranceText' => $insuranceText[$this->getLanguage()->getAbbrev()],
+                'insuranceText'    => $insuranceText[$this->getLanguage()->getAbbrev()],
                 'insuranceEnabled' => $insuranceEnabled,
             )
         );
@@ -267,7 +267,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'ratio' => $shift->countResponsibles() / $shift->getNbResponsibles(),
+                    'ratio'  => $shift->countResponsibles() / $shift->getNbResponsibles(),
                 ),
             )
         );
@@ -359,7 +359,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'ratio' => $shift->getNbVolunteers() == 0 ? 0 : $shift->countVolunteers() / $shift->getNbVolunteers(),
+                    'ratio'  => $shift->getNbVolunteers() == 0 ? 0 : $shift->countVolunteers() / $shift->getNbVolunteers(),
                 ),
             )
         );
@@ -400,7 +400,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'ratio' => $shift->getNbVolunteers() == 0 ? 0 : $shift->countVolunteers() / $shift->getNbVolunteers(),
+                    'ratio'  => $shift->getNbVolunteers() == 0 ? 0 : $shift->countVolunteers() / $shift->getNbVolunteers(),
                 ),
             )
         );
@@ -411,7 +411,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="icalendar.ics"',
-            'Content-Type' => 'text/calendar',
+            'Content-Type'        => 'text/calendar',
         ));
         $this->getResponse()->setHeaders($headers);
 
@@ -518,7 +518,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
             if (!isset($shiftsAsVolunteer[$shift->getUnit()->getId()])) {
                 $shiftsAsVolunteer[$shift->getUnit()->getId()] = array(
-                    'count' => 1,
+                    'count'    => 1,
                     'unitName' => $shift->getUnit()->getName(),
                 );
             } else {
@@ -568,7 +568,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
             if (!isset($shiftsAsResponsible[$shift->getUnit()->getId()])) {
                 $shiftsAsResponsible[$shift->getUnit()->getId()] = array(
-                    'count' => 1,
+                    'count'    => 1,
                     'unitName' => $shift->getUnit()->getName(),
                 );
             } else {
@@ -582,17 +582,17 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'shiftsAsVolunteer' => $shiftsAsVolunteer,
-                'totalAsVolunteer' => $shiftsAsVolunteerCount,
+                'shiftsAsVolunteer'   => $shiftsAsVolunteer,
+                'totalAsVolunteer'    => $shiftsAsVolunteerCount,
                 'shiftsAsResponsible' => $shiftsAsResponsible,
-                'totalAsResponsible' => $shiftsAsResponsibleCount,
-                'unPayedShifts' => $unPayedShifts,
-                'unPayedCoins' => $unPayedCoins,
-                'lastShift' => $lastShift->format('d/m/Y'),
-                'praesidium' => $praesidium,
-                'ranking' => $ranking,
+                'totalAsResponsible'  => $shiftsAsResponsibleCount,
+                'unPayedShifts'       => $unPayedShifts,
+                'unPayedCoins'        => $unPayedCoins,
+                'lastShift'           => $lastShift->format('d/m/Y'),
+                'praesidium'          => $praesidium,
+                'ranking'             => $ranking,
                 'shiftsToNextRanking' => $shiftsToNextRanking,
-                'insuranceEnabled' => $insuranceEnabled,
+                'insuranceEnabled'    => $insuranceEnabled,
             )
         );
     }
@@ -613,7 +613,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'insuranceText' => $insuranceText[$this->getLanguage()->getAbbrev()],
+                'insuranceText'    => $insuranceText[$this->getLanguage()->getAbbrev()],
                 'insuranceEnabled' => $insuranceEnabled,
             )
         );

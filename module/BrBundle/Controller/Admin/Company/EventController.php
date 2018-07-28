@@ -47,9 +47,9 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'company' => $company,
+                'company'           => $company,
             )
         );
     }
@@ -87,7 +87,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     'br_admin_company_event',
                     array(
                         'action' => 'manage',
-                        'id' => $company->getId(),
+                        'id'     => $company->getId(),
                     )
                 );
 
@@ -98,7 +98,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'company' => $company,
-                'form' => $form,
+                'form'    => $form,
             )
         );
     }
@@ -127,7 +127,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     'br_admin_company_event',
                     array(
                         'action' => 'manage',
-                        'id' => $event->getCompany()->getId(),
+                        'id'     => $event->getCompany()->getId(),
                     )
                 );
 
@@ -138,7 +138,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'company' => $event->getCompany(),
-                'form' => $form,
+                'form'    => $form,
             )
         );
     }
@@ -174,7 +174,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 'br_admin_company_event',
                 array(
                     'action' => 'upload',
-                    'id' => $event->getId(),
+                    'id'     => $event->getId(),
                 )
             )
         );
@@ -182,7 +182,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'event' => $event->getEvent(),
-                'form' => $form,
+                'form'  => $form,
             )
         );
     }
@@ -237,7 +237,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 return new ViewModel(
                     array(
                         'status' => 'success',
-                        'info' => array(
+                        'info'   => array(
                             'info' => array(
                                 'name' => $event->getEvent()->getPoster(),
                             ),
@@ -248,7 +248,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 return new ViewModel(
                     array(
                         'status' => 'error',
-                        'form' => array(
+                        'form'   => array(
                             'errors' => $form->getMessages(),
                         ),
                     )

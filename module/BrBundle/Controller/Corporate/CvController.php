@@ -48,7 +48,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 $this->redirect()->toRoute(
                     'br_corporate_cv',
                     array(
-                        'action' => 'grouped',
+                        'action'       => 'grouped',
                         'academicyear' => $person->getCompany()->getCvBookYears()[sizeof($person->getCompany()->getCvBookYears()) - 1]->getCode(),
                     )
                 );
@@ -79,9 +79,9 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         return new ViewModel(
             array(
                 'academicYear' => $academicYear,
-                'studies' => $result,
-                'onlyArchive' => $onlyArchive,
-                'profilePath' => $this->getEntityManager()
+                'studies'      => $result,
+                'onlyArchive'  => $onlyArchive,
+                'profilePath'  => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
             )
@@ -103,7 +103,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                 $this->redirect()->toRoute(
                     'br_corporate_cv',
                     array(
-                        'action' => 'list',
+                        'action'       => 'list',
                         'academicyear' => $person->getCompany()->getCvBookYears()[sizeof($person->getCompany()->getCvBookYears()) - 1]->getCode(),
                     )
                 );
@@ -134,8 +134,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         return new ViewModel(
             array(
                 'academicYear' => $academicYear,
-                'entries' => $entries,
-                'profilePath' => $this->getEntityManager()
+                'entries'      => $entries,
+                'profilePath'  => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
                 'onlyArchive' => $onlyArchive,
@@ -247,8 +247,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="cv-' . $archiveYear['full_year'] . '.pdf"',
-            'Content-Type' => 'application/octet-stream',
-            'Content-Length' => filesize($filePath . $archiveYear['file']),
+            'Content-Type'        => 'application/octet-stream',
+            'Content-Length'      => filesize($filePath . $archiveYear['file']),
         ));
         $this->getResponse()->setHeaders($headers);
 

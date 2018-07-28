@@ -35,8 +35,8 @@ class QueueController extends \SportBundle\Component\Controller\RunController
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'socketUrl' => $this->getSocketUrl(),
+                'form'        => $form,
+                'socketUrl'   => $this->getSocketUrl(),
                 'authSession' => $this->getAuthentication()
                     ->getSessionObject(),
                 'key' => $this->getEntityManager()
@@ -71,9 +71,9 @@ class QueueController extends \SportBundle\Component\Controller\RunController
                 return new ViewModel(
                     array(
                         'result' => (object) array(
-                            'status' => 'success',
-                            'firstName' => $runner->getFirstName(),
-                            'lastName' => $runner->getLastName(),
+                            'status'     => 'success',
+                            'firstName'  => $runner->getFirstName(),
+                            'lastName'   => $runner->getLastName(),
                             'department' => $department,
                         ),
                     )

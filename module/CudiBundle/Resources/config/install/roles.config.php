@@ -20,7 +20,7 @@
 
 return array(
     'guest' => array(
-        'system' => true,
+        'system'  => true,
         'actions' => array(
             'cudi_prof_auth' => array(
                 'login', 'logout', 'shibboleth',
@@ -34,7 +34,7 @@ return array(
         ),
     ),
     'supplier' => array(
-        'system' => true,
+        'system'  => true,
         'parents' => array(
             'guest',
         ),
@@ -48,7 +48,7 @@ return array(
         ),
     ),
     'prof' => array(
-        'system' => true,
+        'system'  => true,
         'parents' => array(
             'guest',
         ),
@@ -80,7 +80,7 @@ return array(
         ),
     ),
     'student' => array(
-        'system' => true,
+        'system'  => true,
         'parents' => array(
             'guest',
         ),

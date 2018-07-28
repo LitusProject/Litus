@@ -33,17 +33,39 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 {
     public function overviewAction()
     {
-        $paginator = $this->paginator()->createFromQuery(
-            $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Event')
-            ->findAllFutureQuery(new DateTime()),
-            $this->getParam('page')
+        return new ViewModel(
+            array(
+                'date'  => $this->getParam('date'),
+            )
         );
+    }
+
+    public function fetchAction()
+    {
+        $this->initAjax();
+
+        $events = $this->getEvents();
+
+        if (null === $events) {
+            return $this->notFoundAction();
+        }
+
+        $result = array();
+        foreach ($events as $event) {
+            $result[] = array (
+                'start'          => $event->getStartDate()->getTimeStamp(),
+                'end'            => $event->getEndDate()->getTimeStamp(),
+                'title'          => $event->getTitle(),
+                'id'             => $event->getId(),
+            );
+        }
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'result' => (object) array(
+                    'status'       => 'success',
+                    'events' => (object) $result,
+                ),
             )
         );
     }
@@ -60,7 +82,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'event' => $event,
+                'event'    => $event,
                 'logoPath' => $logoPath,
             )
         );
@@ -91,6 +113,32 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 'result' => $result,
             )
         );
+    }
+
+    /**
+     * @return array
+     */
+    private function getEvents()
+    {
+        if (null === $this->getParam('start') || null === $this->getParam('end')) {
+            return;
+        }
+
+        $startTime = new DateTime();
+        $startTime->setTimeStamp($this->getParam('start'));
+
+        $endTime = new DateTime();
+        $endTime->setTimeStamp($this->getParam('end'));
+
+        $events = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event')
+            ->findAllByDates($startTime, $endTime);
+
+        if (empty($events)) {
+            $events = array();
+        }
+
+        return $events;
     }
 
     /**

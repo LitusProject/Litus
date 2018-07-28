@@ -23,11 +23,11 @@ return array(
         'quiz_admin_quiz' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/quiz[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/quiz[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'quiz_admin_quiz',
@@ -38,12 +38,12 @@ return array(
         'quiz_admin_round' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/quiz/:quizid/round[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/quiz/:quizid/round[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'quizid'  => '[0-9]+',
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
+                    'quizid' => '[0-9]+',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'quiz_admin_round',
@@ -54,12 +54,12 @@ return array(
         'quiz_admin_team' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/quiz/:quizid/team[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/quiz/:quizid/team[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
-                    'quizid'  => '[0-9]+',
-                    'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'      => '[0-9]*',
-                    'page'    => '[0-9]*',
+                    'quizid' => '[0-9]+',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults' => array(
                     'controller' => 'quiz_admin_team',
@@ -70,7 +70,7 @@ return array(
         'quiz_quiz' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route' => '/quiz/:quizid[/:action[/:roundid/:teamid]][/]',
+                'route'       => '/quiz/:quizid[/:action[/:roundid/:teamid]][/]',
                 'constraints' => array(
                     'quizid'  => '[0-9]+',
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -86,9 +86,9 @@ return array(
     ),
 
     'controllers' => array(
-        'quiz_admin_quiz'           => 'QuizBundle\Controller\Admin\QuizController',
-        'quiz_admin_round'          => 'QuizBundle\Controller\Admin\RoundController',
-        'quiz_admin_team'           => 'QuizBundle\Controller\Admin\TeamController',
-        'quiz_quiz'                 => 'QuizBundle\Controller\QuizController',
+        'quiz_admin_quiz'  => 'QuizBundle\Controller\Admin\QuizController',
+        'quiz_admin_round' => 'QuizBundle\Controller\Admin\RoundController',
+        'quiz_admin_team'  => 'QuizBundle\Controller\Admin\TeamController',
+        'quiz_quiz'        => 'QuizBundle\Controller\QuizController',
     ),
 );

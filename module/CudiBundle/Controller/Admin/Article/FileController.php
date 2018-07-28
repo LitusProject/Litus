@@ -60,17 +60,17 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                 'cudi_admin_article_file',
                 array(
                     'action' => 'upload',
-                    'id' => $article->getId(),
+                    'id'     => $article->getId(),
                 )
             )
         );
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'article' => $article,
-                'saleArticle' => $saleArticle,
-                'paginator' => $paginator,
+                'form'              => $form,
+                'article'           => $article,
+                'saleArticle'       => $saleArticle,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
         );
@@ -123,13 +123,13 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel(
                 array(
                     'status' => 'success',
-                    'info' => array(
+                    'info'   => array(
                         'info' => (object) array(
-                            'name' => $file->getName(),
+                            'name'        => $file->getName(),
                             'description' => $file->getDescription(),
-                            'printable' => $mapping->isPrintable(),
-                            'mappingId' => $mapping->getId(),
-                            'id' => $file->getId(),
+                            'printable'   => $mapping->isPrintable(),
+                            'mappingId'   => $mapping->getId(),
+                            'id'          => $file->getId(),
                         ),
                     ),
                 )
@@ -138,7 +138,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel(
                 array(
                     'status' => 'error',
-                    'form' => array(
+                    'form'   => array(
                         'errors' => $form->getMessages(),
                     ),
                 )
@@ -169,7 +169,7 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_article_file',
                     array(
                         'action' => 'manage',
-                        'id' => $mapping->getArticle()->getId(),
+                        'id'     => $mapping->getArticle()->getId(),
                     )
                 );
 
@@ -179,8 +179,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'file' => $mapping->getFile(),
+                'form'    => $form,
+                'file'    => $mapping->getFile(),
                 'article' => $mapping->getArticle(),
             )
         );
@@ -219,8 +219,8 @@ class FileController extends \CudiBundle\Component\Controller\ActionController
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'attachment; filename="' . $file->getName() . '"',
-            'Content-Type' => 'application/octet-stream',
-            'Content-Length' => filesize($filePath . $file->getPath()),
+            'Content-Type'        => 'application/octet-stream',
+            'Content-Length'      => filesize($filePath . $file->getPath()),
         ));
         $this->getResponse()->setHeaders($headers);
 

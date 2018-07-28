@@ -66,7 +66,7 @@ class Edit extends Add
             if (isset($spec['name']) && $spec['name'] == 'event') {
                 $specs[$key]['validators'] = array(
                     array(
-                        'name' => 'ticket_activtiy',
+                        'name'    => 'ticket_activtiy',
                         'options' => array(
                             'exclude' => $this->event,
                         ),

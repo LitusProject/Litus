@@ -59,10 +59,10 @@ class AddProduct extends Add
         }
 
         $this->add(array(
-            'type'     => 'select',
-            'name'     => 'new_product',
-            'label'    => 'Product',
-            'required' => true,
+            'type'       => 'select',
+            'name'       => 'new_product',
+            'label'      => 'Product',
+            'required'   => true,
             'attributes' => array(
                 'options' => $this->createProductArray(),
             ),
@@ -75,7 +75,7 @@ class AddProduct extends Add
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -83,7 +83,7 @@ class AddProduct extends Add
                             'name' => 'int',
                         ),
                         array(
-                            'name' => 'between',
+                            'name'    => 'between',
                             'options' => array(
                                 'min' => 1,
                                 'max' => self::MAX_ORDER_NUMBER,

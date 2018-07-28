@@ -47,7 +47,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'activeAcademicYear' => $academicYear,
-                'academicYears' => $academicYears,
+                'academicYears'      => $academicYears,
             )
         );
     }
@@ -87,7 +87,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             foreach ($shift->getResponsibles() as $responsible) {
                 if (!isset($result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()])) {
                     $result[$shift->getUnit()->getId()][$responsible->getPerson()->getId()] = array(
-                        'name' => $responsible->getPerson()->getFullName(),
+                        'name'  => $responsible->getPerson()->getFullName(),
                         'count' => 1,
                     );
                 } else {
@@ -98,7 +98,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             foreach ($shift->getVolunteers() as $volunteer) {
                 if (!isset($result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()])) {
                     $result[$shift->getUnit()->getId()][$volunteer->getPerson()->getId()] = array(
-                        'name' => $volunteer->getPerson()->getFullName(),
+                        'name'  => $volunteer->getPerson()->getFullName(),
                         'count' => 1,
                     );
                 } else {
@@ -110,9 +110,9 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'activeAcademicYear' => $academicYear,
-                'academicYears' => $academicYears,
-                'result' => $result,
-                'units' => $unitsArray,
+                'academicYears'      => $academicYears,
+                'result'             => $result,
+                'units'              => $unitsArray,
             )
         );
     }
@@ -142,10 +142,10 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'person' => $person->getId(),
+                'person'        => $person->getId(),
                 'asResponsible' => $asResponsible,
-                'asVolunteer' => $asVolunteer,
-                'payed' => $payed,
+                'asVolunteer'   => $asVolunteer,
+                'payed'         => $payed,
             )
         );
     }

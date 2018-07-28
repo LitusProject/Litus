@@ -23,7 +23,7 @@ namespace ShiftBundle\Component\Document\Generator\Event;
 use CalendarBundle\Entity\Node\Event,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Object,
+    CommonBundle\Component\Util\Xml\Node,
     Doctrine\ORM\EntityManager;
 
 /**
@@ -86,21 +86,21 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             $people = array();
 
             foreach ($shift->getResponsibles() as $responsible) {
-                $people[] = new Object(
+                $people[] = new Node(
                     'person',
                     array(),
                     array(
-                        new Object(
+                        new Node(
                             'name',
                             array(),
                             $responsible->getPerson()->getFullName()
                         ),
-                        new Object(
+                        new Node(
                             'phone_number',
                             array(),
                             $responsible->getPerson()->getPhoneNumber()
                         ),
-                        new Object(
+                        new Node(
                             'responsible',
                             array(),
                             '1'
@@ -111,21 +111,21 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             if (count($shift->getResponsibles()) != $shift->getNbResponsibles()) {
                 $y = $shift->getNbResponsibles()-count($shift->getResponsibles());
                 for ($x = 0; $x < $y; $x++) {
-                    $people[] = new Object(
+                    $people[] = new Node(
                     'person',
                     array(),
                     array(
-                        new Object(
+                        new Node(
                             'name',
                             array(),
                             ''
                         ),
-                        new Object(
+                        new Node(
                             'phone_number',
                             array(),
                             ''
                         ),
-                        new Object(
+                        new Node(
                             'responsible',
                             array(),
                             '1'
@@ -136,21 +136,21 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             }
 
             foreach ($shift->getVolunteers() as $volunteer) {
-                $people[] = new Object(
+                $people[] = new Node(
                     'person',
                     array(),
                     array(
-                        new Object(
+                        new Node(
                             'name',
                             array(),
                             $volunteer->getPerson()->getFullName()
                         ),
-                        new Object(
+                        new Node(
                             'phone_number',
                             array(),
                             $volunteer->getPerson()->getPhoneNumber()
                         ),
-                        new Object(
+                        new Node(
                             'responsible',
                             array(),
                             '0'
@@ -161,21 +161,21 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
             if (count($shift->getVolunteers()) != $shift->getNbVolunteers()) {
                 $y = $shift->getNbVolunteers()-count($shift->getVolunteers());
                 for ($x = 0; $x < $y; $x++) {
-                    $people[] = new Object(
+                    $people[] = new Node(
                     'person',
                     array(),
                     array(
-                        new Object(
+                        new Node(
                             'name',
                             array(),
                             ''
                         ),
-                        new Object(
+                        new Node(
                             'phone_number',
                             array(),
                             ''
                         ),
-                        new Object(
+                        new Node(
                             'responsible',
                             array(),
                             '0'
@@ -184,26 +184,26 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                 );
                 }
             }
-            $shifts[] = new Object(
+            $shifts[] = new Node(
                 'shift',
                 array(),
                 array(
-                    new Object(
+                    new Node(
                         'date',
                         array(),
                         $shift->getStartDate()->format('d/m/Y H:i') . '-' . $shift->getEndDate()->format('H:i')
                     ),
-                    new Object(
+                    new Node(
                         'name',
                         array(),
                         $shift->getName()
                     ),
-                    new Object(
+                    new Node(
                         'manager',
                         array(),
                         $shift->getManager()->getFullName()
                     ),
-                    new Object(
+                    new Node(
                         'people',
                         array(),
                         $people
@@ -215,30 +215,30 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
         $xml = new Generator($tmpFile);
 
         $xml->append(
-            new Object(
+            new Node(
                 'event',
                 array(
                     'name' => $this->event->getTitle(),
                     'date' => $this->event->getStartDate()->format('d F Y H:i'),
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'our_union',
                         array(),
                         array(
-                            new Object(
+                            new Node(
                                 'name',
                                 array(),
                                 $organization_name
                             ),
-                            new Object(
+                            new Node(
                                 'logo',
                                 array(),
                                 $organization_logo
                             ),
                         )
                     ),
-                    new Object(
+                    new Node(
                         'shifts',
                         array(),
                         $shifts

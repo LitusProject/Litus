@@ -41,7 +41,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -58,7 +58,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -123,7 +123,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                     'ticket_admin_event',
                     array(
                         'action' => 'edit',
-                        'id' => $event->getId(),
+                        'id'     => $event->getId(),
                     )
                 );
 
@@ -133,7 +133,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'  => $form,
                 'event' => $event,
             )
         );

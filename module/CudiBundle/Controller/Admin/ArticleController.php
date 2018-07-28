@@ -61,8 +61,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginator'           => $paginator,
+                'paginationControl'   => $this->paginator()->createControl(true),
                 'currentAcademicYear' => $academicYear,
             )
         );
@@ -109,7 +109,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     'cudi_admin_article',
                     array(
                         'action' => 'edit',
-                        'id' => $article->getId(),
+                        'id'     => $article->getId(),
                     )
                 );
 
@@ -123,7 +123,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'                => $form,
                 'currentAcademicYear' => $academicYear,
             )
         );
@@ -157,7 +157,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     'cudi_admin_article',
                     array(
                         'action' => 'edit',
-                        'id' => $article->getId(),
+                        'id'     => $article->getId(),
                     )
                 );
 
@@ -175,10 +175,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'article' => $article,
+                'form'        => $form,
+                'article'     => $article,
                 'saleArticle' => $saleArticle,
-                'comments' => $comments,
+                'comments'    => $comments,
             )
         );
     }
@@ -295,7 +295,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     'cudi_admin_article',
                     array(
                         'action' => 'edit',
-                        'id' => $article->getId(),
+                        'id'     => $article->getId(),
                     )
                 );
 
@@ -305,7 +305,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'    => $form,
                 'article' => $article,
             )
         );
@@ -322,7 +322,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 'cudi_admin_article',
                 array(
                     'action' => 'edit',
-                    'id' => $previous->getId(),
+                    'id'     => $previous->getId(),
                 )
             );
 
@@ -387,7 +387,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             'cudi_admin_article',
             array(
                 'action' => 'edit',
-                'id' => $article->getId(),
+                'id'     => $article->getId(),
             )
         );
 
@@ -405,7 +405,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 'cudi_admin_article',
                 array(
                     'action' => 'edit',
-                    'id' => $previous->getId(),
+                    'id'     => $previous->getId(),
                 )
             );
 
@@ -487,7 +487,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             'cudi_admin_article',
             array(
                 'action' => 'edit',
-                'id' => $article->getId(),
+                'id'     => $article->getId(),
             )
         );
 

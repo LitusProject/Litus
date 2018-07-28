@@ -53,10 +53,10 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
+                'academicYears'       => $academicYears,
                 'currentAcademicYear' => $academicYear,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginator'           => $paginator,
+                'paginationControl'   => $this->paginator()->createControl(true),
             )
         );
     }
@@ -93,7 +93,7 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
                     'syllabus_admin_subject_comment',
                     array(
                         'action' => 'subject',
-                        'id' => $subject->getId(),
+                        'id'     => $subject->getId(),
                     )
                 );
 
@@ -103,8 +103,8 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'subject' => $subject,
-                'form' => $form,
+                'subject'  => $subject,
+                'form'     => $form,
                 'comments' => $comments,
             )
         );
@@ -148,7 +148,7 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
                         'syllabus_admin_subject_comment',
                         array(
                             'action' => 'reply',
-                            'id' => $comment->getId(),
+                            'id'     => $comment->getId(),
                         )
                     );
 
@@ -174,7 +174,7 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
                         'syllabus_admin_subject_comment',
                         array(
                             'action' => 'reply',
-                            'id' => $comment->getId(),
+                            'id'     => $comment->getId(),
                         )
                     );
 
@@ -185,9 +185,9 @@ class CommentController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'comment' => $comment,
-                'replies' => $replies,
-                'form' => $form,
+                'comment'        => $comment,
+                'replies'        => $replies,
+                'form'           => $form,
                 'markAsReadForm' => $markAsReadForm,
             )
         );

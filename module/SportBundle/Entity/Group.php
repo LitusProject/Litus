@@ -139,16 +139,16 @@ class Group
         return $this->members->toArray();
     }
 
-     /**
-      * @rparam boolean $isSpeedyGroup
-      * @return self
-      */
-     public function setIsSpeedyGroup($isSpeedyGroup)
-     {
-         $this->isSpeedyGroup = $isSpeedyGroup;
+    /**
+     * @rparam boolean $isSpeedyGroup
+     * @return self
+     */
+    public function setIsSpeedyGroup($isSpeedyGroup)
+    {
+        $this->isSpeedyGroup = $isSpeedyGroup;
 
-         return $this;
-     }
+        return $this;
+    }
 
     /**
      * @return boolean

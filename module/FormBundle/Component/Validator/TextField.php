@@ -21,25 +21,25 @@
 namespace FormBundle\Component\Validator;
 
 /**
- * Checks whether the string field was specified correctly.
+ * Checks whether the text field was specified correctly.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class StringField extends \CommonBundle\Component\Validator\AbstractValidator
+class TextField extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const ML_BOTH = 'mlboth';
     const NON_ML_LINES = 'nonmllines';
 
     protected $options = array(
         'multiline' => false,
-        'lines' => 0,
+        'lines'     => 0,
     );
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::ML_BOTH => 'Multiline fields must specify either both a line limit and a character limit or none',
+        self::ML_BOTH      => 'Multiline fields must specify either both a line limit and a character limit or none',
         self::NON_ML_LINES => 'Non multiline fields should not specify a maximum number of lines',
     );
 

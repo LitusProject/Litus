@@ -65,7 +65,7 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
 
                 if (!$person->isPraesidium($academicYear)) {
                     $ranking[$rankingCriteria[$i]['name']][] = array(
-                        'person' => $person,
+                        'person'     => $person,
                         'shiftCount' => $volunteer['shiftCount'],
                     );
                 }
@@ -75,8 +75,8 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'activeAcademicYear' => $academicYear,
-                'academicYears' => $academicYears,
-                'ranking' => $ranking,
+                'academicYears'      => $academicYears,
+                'ranking'            => $ranking,
             )
         );
     }

@@ -48,12 +48,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'product_name',
+                            'name'    => 'product_name',
                             'options' => array(
                                 'product' => $this->product,
                             ),
@@ -70,7 +70,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -85,7 +85,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'value'    => 0,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -96,28 +96,28 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'checkbox',
-            'name'     => 'refund',
-            'label'    => 'Refund',
+            'type'  => 'checkbox',
+            'name'  => 'refund',
+            'label' => 'Refund',
         ));
 
         $this->add(array(
-            'type'     => 'select',
-            'name'     => 'vat_type',
-            'label'    => 'VAT Type',
-            'required' => true,
+            'type'       => 'select',
+            'name'       => 'vat_type',
+            'label'      => 'VAT Type',
+            'required'   => true,
             'attributes' => array(
                 'options' => $this->getVatTypes(),
             ),
         ));
 
         $this->add(array(
-            'type'     => 'text',
-            'name'     => 'invoice_description',
-            'label'    => 'Invoice Text',
-            'options'  => array(
+            'type'    => 'text',
+            'name'    => 'invoice_description',
+            'label'   => 'Invoice Text',
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -125,13 +125,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'contract_text',
-            'label'    => 'Contract Text',
-            'value'    => $this->getContractText(),
-            'options'  => array(
+            'type'    => 'textarea',
+            'name'    => 'contract_text',
+            'label'   => 'Contract Text',
+            'value'   => $this->getContractText(),
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -142,9 +142,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'select',
-            'name'     => 'event',
-            'label'    => 'Event',
+            'type'       => 'select',
+            'name'       => 'event',
+            'label'      => 'Event',
             'attributes' => array(
                 'id'      => 'event',
                 'options' => $this->createEventsArray(),
@@ -159,9 +159,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'id' => 'delivery_date',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -222,8 +222,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         );
         foreach ($events as $event) {
             $eventsArray[] = array(
-                'label' => $event->getTitle(),
-                'value' => $event->getId(),
+                'label'      => $event->getTitle(),
+                'value'      => $event->getId(),
                 'attributes' => array(
                     'data-date' => $event->getStartDate()->format('d/m/Y'),
                 ),

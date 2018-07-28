@@ -74,7 +74,7 @@ class Http extends \CommonBundle\Component\Lilo\Connection
             ->setParameterPost(
                 array(
                     'data' => (string) $data,
-                    'key' => $this->secretKey,
+                    'key'  => $this->secretKey,
                 )
             );
 

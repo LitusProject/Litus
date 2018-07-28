@@ -19,6 +19,6 @@
  */
 
 return array(
-    'News' => 'News',
+    'News'                           => 'News',
     'No news items were posted yet.' => 'No news items were posted yet.',
 );

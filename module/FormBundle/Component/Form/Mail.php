@@ -41,8 +41,8 @@ class Mail
             'form_view',
             array(
                 'action' => 'login',
-                'id' => $formSpecification->getId(),
-                'key' => $formEntry->getGuestInfo() ? $formEntry->getGuestInfo()->getSessionId() : '',
+                'id'     => $formSpecification->getId(),
+                'key'    => $formEntry->getGuestInfo() ? $formEntry->getGuestInfo()->getSessionId() : '',
             )
         );
         $mailAddress = $formSpecification->getMail()->getFrom();

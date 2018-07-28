@@ -20,7 +20,7 @@
 
 return array(
     'prof' => array(
-        'system' => true,
+        'system'  => true,
         'parents' => array(
             'guest',
         ),
@@ -28,7 +28,7 @@ return array(
         ),
     ),
     'guest' => array(
-        'system' => true,
+        'system'  => true,
         'actions' => array(
             'syllabus_subject' => array(
                 'typeahead',

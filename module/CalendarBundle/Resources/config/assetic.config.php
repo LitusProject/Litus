@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'calendar_admin_calendar' => array(
             '@common_jquery',
             '@admin_css',

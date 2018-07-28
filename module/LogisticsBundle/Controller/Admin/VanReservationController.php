@@ -46,8 +46,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
         return new ViewModel(
             array(
-                'isDriverLoggedIn' => $isDriverLoggedIn,
-                'paginator' => $paginator,
+                'isDriverLoggedIn'  => $isDriverLoggedIn,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -73,8 +73,8 @@ class VanReservationController extends \CommonBundle\Component\Controller\Action
 
         return new ViewModel(
             array(
-                'isDriverLoggedIn' => $isDriverLoggedIn,
-                'paginator' => $paginator,
+                'isDriverLoggedIn'  => $isDriverLoggedIn,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

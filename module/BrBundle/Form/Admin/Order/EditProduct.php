@@ -48,11 +48,11 @@ class EditProduct extends AddProduct
         $this->remove('new_product_amount');
 
         $this->add(array(
-            'type'     => 'select',
-            'name'     => 'edit_product',
-            'label'    => 'Product',
-            'required' => true,
-            'value'    => strval($this->entry->getProduct()->getId()),
+            'type'       => 'select',
+            'name'       => 'edit_product',
+            'label'      => 'Product',
+            'required'   => true,
+            'value'      => strval($this->entry->getProduct()->getId()),
             'attributes' => array(
                 'options' => $this->createProductArray(),
                 'disable' => 'disable',
@@ -60,16 +60,16 @@ class EditProduct extends AddProduct
         ));
 
         $this->add(array(
-            'type'     => 'text',
-            'name'     => 'edit_product_amount',
-            'label'    => 'Amount',
-            'required' => true,
+            'type'       => 'text',
+            'name'       => 'edit_product_amount',
+            'label'      => 'Amount',
+            'required'   => true,
             'attributes' => array(
-                'value'    => $this->entry->getQuantity(),
+                'value' => $this->entry->getQuantity(),
             ),
-            'options'  => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -77,7 +77,7 @@ class EditProduct extends AddProduct
                             'name' => 'int',
                         ),
                         array(
-                            'name' => 'between',
+                            'name'    => 'between',
                             'options' => array(
                                 'min' => 1,
                                 'max' => self::MAX_ORDER_NUMBER,

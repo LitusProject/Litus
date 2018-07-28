@@ -81,7 +81,7 @@ class Unique extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('QuizBundle\Entity\Team')
             ->findBy(
                 array(
-                    'quiz' => $this->options['quiz']->getId(),
+                    'quiz'   => $this->options['quiz']->getId(),
                     'number' => $value,
                 )
             );

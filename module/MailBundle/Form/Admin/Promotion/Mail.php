@@ -52,7 +52,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'multiple' => true,
             ),
-            'options'    => array(
+            'options' => array(
                 'options' => $this->createPromotionsArray(),
             ),
         ));
@@ -70,15 +70,15 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         }
 
         $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'test',
-            'label'      => 'Test Mail',
+            'type'  => 'checkbox',
+            'name'  => 'test',
+            'label' => 'Test Mail',
         ));
 
         $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'html',
-            'label'      => 'HTML Mail',
+            'type'  => 'checkbox',
+            'name'  => 'html',
+            'label' => 'HTML Mail',
         ));
 
         $this->add(array(
@@ -88,9 +88,9 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -114,7 +114,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                         'attributes' => array(
                             'style' => 'max-width: 100%;',
                         ),
-                        'options'    => array(
+                        'options' => array(
                             'options' => $storedMessages,
                         ),
                     ),
@@ -135,7 +135,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'style' => 'width: 400px;',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),
@@ -151,7 +151,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'style' => 'width: 500px; height: 200px;',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),
@@ -164,14 +164,14 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'name'       => 'file',
                     'label'      => 'Attachments',
                     'attributes' => array(
-                        'multiple' => true,
+                        'multiple'  => true,
                         'data-help' => 'The maximum file size is ' . self::FILESIZE . '.',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
                             'validators' => array(
                                 array(
-                                    'name' => 'filesize',
+                                    'name'    => 'filesize',
                                     'options' => array(
                                         'max' => self::FILESIZE,
                                     ),

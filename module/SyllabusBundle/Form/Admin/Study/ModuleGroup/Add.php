@@ -48,9 +48,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -58,19 +58,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'external_id',
-            'label'      => 'External Id',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'external_id',
+            'label'    => 'External Id',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array('name' => 'int'),
                         array(
-                            'name' => 'syllabus_study_module-group_external_id',
+                            'name'    => 'syllabus_study_module-group_external_id',
                             'options' => array(
                                 'exclude' => $this->moduleGroup,
                             ),
@@ -81,13 +81,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'phase',
-            'label'      => 'Phase',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'phase',
+            'label'    => 'Phase',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -98,13 +98,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'language',
-            'label'      => 'Language',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'language',
+            'label'    => 'Language',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -112,9 +112,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'mandatory',
-            'label'      => 'Mandatory',
+            'type'  => 'checkbox',
+            'name'  => 'mandatory',
+            'label' => 'Mandatory',
         ));
 
         $this->add(array(
@@ -126,9 +126,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'id'    => 'parent',
                 'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(

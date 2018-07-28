@@ -22,7 +22,7 @@ namespace CudiBundle\Component\Document\Generator;
 
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Object,
+    CommonBundle\Component\Util\Xml\Node,
     CommonBundle\Entity\General\AcademicYear,
     DateTime,
     Doctrine\ORM\EntityManager;
@@ -122,31 +122,31 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
                 continue;
             }
 
-            $items[] = new Object(
+            $items[] = new Node(
                 'item',
                 null,
                 array(
-                    new Object(
+                    new Node(
                         'barcode',
                         null,
                         (string) $item->getBarcode()
                     ),
-                    new Object(
+                    new Node(
                         'title',
                         null,
                         $item->getMainArticle()->getTitle()
                     ),
-                    new Object(
+                    new Node(
                         'author',
                         null,
                         $item->getMainArticle()->getAuthors()
                     ),
-                    new Object(
+                    new Node(
                         'publisher',
                         null,
                         $item->getMainArticle()->getPublishers()
                     ),
-                    new Object(
+                    new Node(
                         'amount',
                         null,
                         (string) $item->getStockValue()
@@ -158,49 +158,49 @@ class Stock extends \CommonBundle\Component\Document\Generator\Pdf
         $xml = new Generator($tmpFile);
 
         $xml->append(
-            new Object(
+            new Node(
                 'stock',
                 array(
                     'date' => $now->format('d F Y'),
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'our_union',
                         array(
                             'short_name' => $organization_short_name,
                         ),
                         array(
-                            new Object(
+                            new Node(
                                 'name',
                                 null,
                                 $organization_name
                             ),
-                            new Object(
+                            new Node(
                                 'logo',
                                 null,
                                 $organization_logo
                             ),
                         )
                     ),
-                    new Object(
+                    new Node(
                         'cudi',
                         array(
                             'name' => $cudi_name,
                         ),
                         array(
-                             new Object(
+                             new Node(
                                  'mail',
                                  null,
                                  $cudi_mail
                              ),
-                             new Object(
+                             new Node(
                                  'phone',
                                  null,
                                  $person->getPhoneNumber()
                              ),
                         )
                     ),
-                    new Object(
+                    new Node(
                         'items',
                         null,
                         $items

@@ -33,11 +33,11 @@ class External extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'first_name',
-            'label'      => 'First Name',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'first_name',
+            'label'    => 'First Name',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -47,11 +47,11 @@ class External extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'last_name',
-            'label'      => 'Last Name',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'last_name',
+            'label'    => 'Last Name',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -67,9 +67,9 @@ class External extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'description',
-            'label'      => 'Description',
+            'type'  => 'text',
+            'name'  => 'description',
+            'label' => 'Description',
         ));
 
         $this->add(array(
@@ -80,14 +80,14 @@ class External extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'data-help' => 'The picture must be an image of max ' . self::FILESIZE . '.',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
                             'name' => 'fileisimage',
                         ),
                         array(
-                            'name' => 'filesize',
+                            'name'    => 'filesize',
                             'options' => array(
                                 'max' => self::FILESIZE,
                             ),
@@ -98,8 +98,8 @@ class External extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type' => 'hidden',
-            'name' => 'mapType',
+            'type'  => 'hidden',
+            'name'  => 'mapType',
             'value' => 'external',
         ));
 

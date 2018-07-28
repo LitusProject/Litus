@@ -47,12 +47,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'syllabus_subject_code',
+                            'name'    => 'syllabus_subject_code',
                             'options' => array(
                                 'exclude' => $this->subject,
                             ),
@@ -70,9 +70,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -98,9 +98,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'     => 'credits',
             'label'    => 'Credits',
             'required' => true,
-            'options' => array(
+            'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(

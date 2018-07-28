@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                                 <li><b>Supportive Member:</b> a member, but not a student of the faculty</li>
                                 <li><b>Praesidium:</b> a member of the board</li>
                             </ul>',
-                        'options'   => array_merge(
+                        'options' => array_merge(
                             array(
                                 '' => '',
                             ),
@@ -80,14 +80,14 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                         'class'     => 'disableEnter',
                         'data-help' => 'A barcode that can be used to identify the user.',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
                                 array(
-                                    'name' => 'barcode',
+                                    'name'    => 'barcode',
                                     'options' => array(
                                         'adapter'     => 'Ean12',
                                         'useChecksum' => false,
@@ -99,10 +99,10 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                     ),
                 ),
                 array(
-                    'type'       => 'checkbox',
-                    'name'       => 'is_in_workinggroup',
-                    'label'      => 'Working Group',
-                    'value'      => false,
+                    'type'  => 'checkbox',
+                    'name'  => 'is_in_workinggroup',
+                    'label' => 'Working Group',
+                    'value' => false,
                 ),
             ),
         ));
@@ -125,7 +125,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                                 <li><b>Professor:</b> a professor</li>
                                 <li><b>Student:</b> a student</li>
                             </ul>',
-                        'options'   => array_merge(
+                        'options' => array_merge(
                             array(
                                 '' => '',
                             ),
@@ -140,9 +140,9 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                     'attributes' => array(
                         'data-help' => 'The identification used by the university for the student.',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -161,9 +161,9 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                         'id'        => 'university_email',
                         'data-help' => 'The univeristy email, without @ sign.',
                     ),
-                    'options'    => array(
+                    'options' => array(
                         'input' => array(
-                            'filters'  => array(
+                            'filters' => array(
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
@@ -173,10 +173,10 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                     ),
                 ),
                 array(
-                    'type'       => 'checkbox',
-                    'name'       => 'is_international',
-                    'label'      => 'International',
-                    'value'      => false,
+                    'type'  => 'checkbox',
+                    'name'  => 'is_international',
+                    'label' => 'International',
+                    'value' => false,
                 ),
             ),
         ));

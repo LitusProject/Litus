@@ -21,11 +21,11 @@
 namespace FormBundle\Form\Admin\Field\Field;
 
 /**
- * Add String Field
+ * Add Text Field
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class String extends \CommonBundle\Component\Form\Fieldset
+class Text extends \CommonBundle\Component\Form\Fieldset
 {
     public function init()
     {
@@ -47,16 +47,16 @@ class String extends \CommonBundle\Component\Form\Fieldset
             'attributes' => array(
                 'data-help' => 'The maximum numbers of characters on one line. Zero is infinite.',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'allow_empty'       => false,
                     'continue_if_empty' => true,
-                    'filters'  => array(
+                    'filters'           => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'notempty',
+                            'name'    => 'notempty',
                             'options' => array(
                                 'null',
                             ),
@@ -73,9 +73,9 @@ class String extends \CommonBundle\Component\Form\Fieldset
             'attributes' => array(
                 'data-help' => 'The maximum numbers of lines. Zero is infinite.',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -102,10 +102,10 @@ class String extends \CommonBundle\Component\Form\Fieldset
         $lineValue = $this->get('lines')->getValue();
 
         $specs['charsperline']['validators'][] = array(
-            'name' => 'form_string_field',
+            'name'    => 'form_text_field',
             'options' => array(
                 'multiline' => !empty($multilineValue) ? $this->get('multiline')->getValue() : false,
-                'lines' => !empty($lineValue) ? $this->get('lines')->getValue() : null,
+                'lines'     => !empty($lineValue) ? $this->get('lines')->getValue() : null,
             ),
         );
 

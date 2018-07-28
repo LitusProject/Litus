@@ -22,7 +22,7 @@ namespace TicketBundle\Component\Document\Generator\Event;
 
 use CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Object,
+    CommonBundle\Component\Util\Xml\Node,
     DateTime,
     Doctrine\ORM\EntityManager,
     TicketBundle\Entity\Event;
@@ -80,41 +80,41 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
         $list = array();
 
         foreach ($tickets as $ticket) {
-            $object = new Object(
+            $node = new Node(
                 'ticket',
                 null,
                 array(
-                    new Object(
+                    new Node(
                         'name',
                         null,
                         $ticket->getFullName()
                     ),
-                    new Object(
+                    new Node(
                         'status',
                         null,
                         $ticket->getStatus()
                     ),
-                    new Object(
+                    new Node(
                         'option',
                         null,
                         ($ticket->getOption() ? $ticket->getOption()->getName() : '') . ' (' . ($ticket->isMember() ? 'Member' : 'Non Member') . ')'
                     ),
-                    new Object(
+                    new Node(
                         'number',
                         null,
                         $ticket->getNumber()
                     ),
-                    new Object(
+                    new Node(
                         'bookdate',
                         null,
                         $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : ''
                     ),
-                    new Object(
+                    new Node(
                         'solddate',
                         null,
                         $ticket->getSoldDate() ? $ticket->getSoldDate()->format('d/m/Y H:i') : ''
                     ),
-                    new Object(
+                    new Node(
                         'member',
                         null,
                         $ticket->isMember() ? '1' : '0'
@@ -122,38 +122,38 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                 )
             );
 
-            $list[] = $object;
+            $list[] = $node;
         }
 
         $xml = new Generator($tmpFile);
 
         $xml->append(
-            new Object(
+            new Node(
                 'event',
                 array(
                     'name' => $this->event->getActivity()->getTitle(),
                     'date' => $now->format('d F Y'),
                 ),
                 array(
-                    new Object(
+                    new Node(
                         'our_union',
                         array(
                             'short_name' => $organization_short_name,
                         ),
                         array(
-                            new Object(
+                            new Node(
                                 'name',
                                 null,
                                 $organization_name
                             ),
-                            new Object(
+                            new Node(
                                 'logo',
                                 null,
                                 $organization_logo
                             ),
                         )
                     ),
-                    new Object(
+                    new Node(
                         'tickets',
                         null,
                         $list

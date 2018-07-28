@@ -55,9 +55,9 @@ class Exception extends \CommonBundle\Component\Lilo\Data
     {
         $this->request = $request;
         $this->data = array(
-            'class' => get_class($exception),
-            'message' => $exception->getMessage(),
-            'trace' => $this->formatBacktrace($exception),
+            'class'       => get_class($exception),
+            'message'     => $exception->getMessage(),
+            'trace'       => $this->formatBacktrace($exception),
             'environment' => array(
                 'person' => $authentication->isAuthenticated()
                     ? $authentication->getPersonObject()->getFullName() . ' (' . $authentication->getPersonObject()->getUsername() . ')'
@@ -65,7 +65,7 @@ class Exception extends \CommonBundle\Component\Lilo\Data
                 'session' => $authentication->isAuthenticated()
                     ? $authentication->getSessionObject()->getId()
                     : '',
-                'url' => $this->formatUrl(),
+                'url'       => $this->formatUrl(),
                 'userAgent' => $this->getUserAgent(),
             ),
         );
@@ -96,11 +96,11 @@ class Exception extends \CommonBundle\Component\Lilo\Data
             }
 
             $backtrace[] = array(
-                'file' => basename($t['file']),
-                'line' => $t['line'],
-                'class' => isset($t['class']) ? $t['class'] : '',
+                'file'     => basename($t['file']),
+                'line'     => $t['line'],
+                'class'    => isset($t['class']) ? $t['class'] : '',
                 'function' => $t['function'],
-                'args' => '',
+                'args'     => '',
             );
         }
 

@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'notification_admin_notification' => array(
             '@common_jquery',
             '@admin_css',

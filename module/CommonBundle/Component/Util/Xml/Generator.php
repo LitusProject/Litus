@@ -21,7 +21,7 @@
 namespace CommonBundle\Component\Util\Xml;
 
 use CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Object;
+    CommonBundle\Component\Util\Xml\Node;
 
 /**
  * This generator creates an XML file from the supplied XML objects
@@ -61,15 +61,15 @@ class Generator
     }
 
     /**
-     * Append an XML object to the file.
+     * Append an XML node to the file.
      *
-     * @param  Object $object The object that should be appended
+     * @param  Node $node The node that should be appended
      * @return void
      */
-    public function append(Object $object)
+    public function append(Node $node)
     {
         $this->data->appendContent(
-            $object->__toString()
+            $node->__toString()
         );
     }
 

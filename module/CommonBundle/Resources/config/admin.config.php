@@ -29,7 +29,7 @@ return array(
         'general_1' => array(
             'common_admin_cache'  => array('title' => 'Cache'),
             'common_admin_config' => array('title' => 'Configuration'),
-            'common_admin_visit' => array('title' => 'Visits'),
+            'common_admin_visit'  => array('title' => 'Visits'),
         ),
         'general_2' => array(
             'common_admin_academic' => array('title' => 'Academics'),

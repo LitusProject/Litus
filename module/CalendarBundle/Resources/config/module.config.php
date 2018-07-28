@@ -31,7 +31,7 @@ return Config::create(
     array(
         'validators' => array(
             'invokables' => array(
-                'calendar_event_name'   => 'CalendarBundle\Component\Validator\Name',
+                'calendar_event_name' => 'CalendarBundle\Component\Validator\Name',
             ),
         ),
     )

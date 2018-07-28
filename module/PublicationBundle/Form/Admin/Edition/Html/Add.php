@@ -52,9 +52,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'publication_title_edition_pdf',
+                            'name'    => 'publication_title_edition_pdf',
                             'options' => array(
-                                'publication' => $this->publication,
+                                'publication'   => $this->publication,
                                 'academic_year' => $this->getCurrentAcademicYear(true),
                             ),
                         ),
@@ -99,13 +99,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'filesize',
+                            'name'    => 'filesize',
                             'options' => array(
                                 'max' => '75MB',
                             ),
                         ),
                         array(
-                            'name' => 'fileextension',
+                            'name'    => 'fileextension',
                             'options' => array(
                                 'extension' => 'zip',
                             ),

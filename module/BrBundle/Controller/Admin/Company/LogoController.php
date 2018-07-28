@@ -52,10 +52,10 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'company' => $company,
-                'filePath' => $filePath,
+                'company'           => $company,
+                'filePath'          => $filePath,
             )
         );
     }
@@ -144,7 +144,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
                     'br_admin_company_logo',
                     array(
                         'action' => 'manage',
-                        'id' => $company->getId(),
+                        'id'     => $company->getId(),
                     )
                 );
 
@@ -155,7 +155,7 @@ class LogoController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'company' => $company,
-                'form' => $form,
+                'form'    => $form,
             )
         );
     }

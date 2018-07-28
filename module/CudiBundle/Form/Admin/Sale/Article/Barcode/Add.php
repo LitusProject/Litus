@@ -39,14 +39,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'class' => 'disableEnter',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'barcode',
+                            'name'    => 'barcode',
                             'options' => array(
                                 'adapter'     => 'Ean12',
                                 'useChecksum' => false,

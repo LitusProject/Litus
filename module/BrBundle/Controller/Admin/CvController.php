@@ -52,11 +52,11 @@ class CvController extends \BrBundle\Component\Controller\CvController
 
         return new ViewModel(
             array(
-                'academicYears' => $academicYears,
-                'activeAcademicYear' => $academicYear,
+                'academicYears'       => $academicYears,
+                'activeAcademicYear'  => $academicYear,
                 'currentAcademicYear' => $this->getCurrentAcademicYear(),
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(),
+                'paginator'           => $paginator,
+                'paginationControl'   => $this->paginator()->createControl(),
             )
         );
     }

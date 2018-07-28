@@ -34,11 +34,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'person',
-            'label'      => 'Person',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'typeahead',
+            'name'     => 'person',
+            'label'    => 'Person',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'validators' => array(
                         array('name' => 'typeahead_person'),
@@ -48,10 +48,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'payed',
-            'label'      => 'Has Payed',
-            'required'   => true,
+            'type'     => 'checkbox',
+            'name'     => 'payed',
+            'label'    => 'Has Payed',
+            'required' => true,
         ));
 
         $this->add(array(

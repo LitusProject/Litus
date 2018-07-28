@@ -274,9 +274,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         $this->redirect()->toRoute(
                             'cudi_isic',
                             array(
-                                'action' => 'form',
-                                'redirect' => 'secretary_registration',
-                                'rediraction' => 'studies',
+                                'action'       => 'form',
+                                'redirect'     => 'secretary_registration',
+                                'rediraction'  => 'studies',
                                 'organization' => $selectedOrganization->getId(),
                                 'size' => $organizationData['tshirt_size'],
                             )
@@ -300,15 +300,15 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 return new ViewModel(
                     array(
-                        'form' => $form,
-                        'termsAndConditions' => $termsAndConditions,
-                        'studentDomain' => $studentDomain,
-                        'organizations' => $organizations,
-                        'membershipArticles' => $membershipArticles,
-                        'selectedOrganization' => $selectedOrganization,
-                        'isPost' => true,
+                        'form'                    => $form,
+                        'termsAndConditions'      => $termsAndConditions,
+                        'studentDomain'           => $studentDomain,
+                        'organizations'           => $organizations,
+                        'membershipArticles'      => $membershipArticles,
+                        'selectedOrganization'    => $selectedOrganization,
+                        'isPost'                  => true,
                         'enableOtherOrganization' => $enableOtherOrganization,
-                        'academicYear' => $this->getCurrentAcademicYear(),
+                        'academicYear'            => $this->getCurrentAcademicYear(),
                     )
                 );
             }
@@ -325,13 +325,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                 return new ViewModel(
                     array(
-                        'form' => $form,
-                        'termsAndConditions' => $termsAndConditions,
-                        'studentDomain' => $studentDomain,
-                        'organizations' => $organizations,
-                        'membershipArticles' => $membershipArticles,
+                        'form'                    => $form,
+                        'termsAndConditions'      => $termsAndConditions,
+                        'studentDomain'           => $studentDomain,
+                        'organizations'           => $organizations,
+                        'membershipArticles'      => $membershipArticles,
                         'enableOtherOrganization' => $enableOtherOrganization,
-                        'academicYear' => $this->getCurrentAcademicYear(),
+                        'academicYear'            => $this->getCurrentAcademicYear(),
                     )
                 );
             }
@@ -557,9 +557,9 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $this->redirect()->toRoute(
                         'cudi_isic',
                         array(
-                            'action' => 'form',
-                            'redirect' => 'secretary_registration',
-                            'rediraction' => 'studies',
+                            'action'       => 'form',
+                            'redirect'     => 'secretary_registration',
+                            'rediraction'  => 'studies',
                             'organization' => $selectedOrganization->getId(),
                             'size' => $organizationData['tshirt_size'],
                         )
@@ -582,15 +582,15 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             } else {
                 return new ViewModel(
                     array(
-                        'form' => $form,
-                        'termsAndConditions' => $termsAndConditions,
-                        'studentDomain' => $studentDomain,
-                        'membershipArticles' => $membershipArticles,
-                        'organizations' => $organizations,
-                        'selectedOrganization' => $selectedOrganization,
-                        'isPost' => true,
+                        'form'                    => $form,
+                        'termsAndConditions'      => $termsAndConditions,
+                        'studentDomain'           => $studentDomain,
+                        'membershipArticles'      => $membershipArticles,
+                        'organizations'           => $organizations,
+                        'selectedOrganization'    => $selectedOrganization,
+                        'isPost'                  => true,
                         'enableOtherOrganization' => $enableOtherOrganization,
-                        'academicYear' => $this->getCurrentAcademicYear(),
+                        'academicYear'            => $this->getCurrentAcademicYear(),
                     )
                 );
             }
@@ -598,13 +598,13 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'termsAndConditions' => $termsAndConditions,
-                'studentDomain' => $studentDomain,
-                'membershipArticles' => $membershipArticles,
-                'organizations' => $organizations,
+                'form'                    => $form,
+                'termsAndConditions'      => $termsAndConditions,
+                'studentDomain'           => $studentDomain,
+                'membershipArticles'      => $membershipArticles,
+                'organizations'           => $organizations,
                 'enableOtherOrganization' => $enableOtherOrganization,
-                'academicYear' => $this->getCurrentAcademicYear(),
+                'academicYear'            => $this->getCurrentAcademicYear(),
             )
         );
     }
@@ -714,7 +714,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         foreach ($studies as $enrollment) {
             $mappings[] = array(
                 'enrollment' => $enrollment,
-                'subjects' => $this->getEntityManager()
+                'subjects'   => $this->getEntityManager()
                     ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
                     ->findAllByStudy($enrollment->getStudy()),
             );
@@ -732,10 +732,10 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         return new ViewModel(
             array(
                 'academicYear' => $this->getCurrentAcademicYear(),
-                'academic' => $academic,
-                'metaData' => $metaData,
-                'studies' => $mappings,
-                'subjects' => $subjectIds,
+                'academic'     => $academic,
+                'metaData'     => $metaData,
+                'studies'      => $mappings,
+                'subjects'     => $subjectIds,
             )
         );
     }
@@ -792,10 +792,6 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             }
         } catch (\ErrorException $e) {
             // No load balancer active
-        }
-
-        if ('%2F' != substr($shibbolethUrl, 0, -3)) {
-            $shibbolethUrl .= '%2F';
         }
 
         return $shibbolethUrl . '?source=register';

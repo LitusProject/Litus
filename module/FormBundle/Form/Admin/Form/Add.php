@@ -51,25 +51,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         parent::init();
 
         $this->add(array(
-            'type'       => 'datetime',
-            'name'       => 'start_date',
-            'label'      => 'Start Date',
-            'required'   => true,
+            'type'     => 'datetime',
+            'name'     => 'start_date',
+            'label'    => 'Start Date',
+            'required' => true,
         ));
 
         $this->add(array(
-            'type'       => 'datetime',
-            'name'       => 'end_date',
-            'label'      => 'End Date',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'datetime',
+            'name'     => 'end_date',
+            'label'    => 'End Date',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'date_compare',
+                            'name'    => 'date_compare',
                             'options' => array(
                                 'first_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
                     ),
@@ -78,9 +78,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
 
         $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'active',
-            'label'      => 'Active',
+            'type'  => 'checkbox',
+            'name'  => 'active',
+            'label' => 'Active',
         ));
 
         $this->add(array(
@@ -91,9 +91,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'class'     => 'form_element',
                 'data-help' => 'The maximum number of form submittions possible.',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -188,7 +188,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'label'      => 'Reminder Mail',
             'required'   => true,
             'attributes' => array(
-                'id'    => 'reminder_mail_form',
+                'id' => 'reminder_mail_form',
             ),
         ));
 
@@ -208,7 +208,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'attributes' => array(
                 'width' => '400px',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -226,7 +226,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'class' => 'md',
                 'row'   => 20,
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -236,11 +236,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
 
         $container->add(array(
-            'type'       => 'text',
-            'name'       => 'submittext',
-            'label'      => 'Submit Button Text',
-            'required'   => $isDefault,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'submittext',
+            'label'    => 'Submit Button Text',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -250,11 +250,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
 
         $container->add(array(
-            'type'       => 'text',
-            'name'       => 'updatetext',
-            'label'      => 'Update Button Text',
-            'required'   => $isDefault,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'updatetext',
+            'label'    => 'Update Button Text',
+            'required' => $isDefault,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),

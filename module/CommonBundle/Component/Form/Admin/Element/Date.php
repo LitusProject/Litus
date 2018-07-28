@@ -39,12 +39,12 @@ class Date extends Text
     {
         return array_merge_recursive(
             array(
-                'filters'  => array(
+                'filters' => array(
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'date',
+                        'name'    => 'date',
                         'options' => array(
                             'format' => 'd/m/Y',
                         ),

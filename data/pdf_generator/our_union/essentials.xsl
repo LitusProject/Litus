@@ -17,7 +17,7 @@
         <xsl:param name="width"><xsl:text>100%</xsl:text></xsl:param>
         <fo:external-graphic content-width="scale-to-fit" content-height="100%" scaling="uniform">
             <xsl:attribute name="width"><xsl:value-of select="$width"/></xsl:attribute>
-            <xsl:attribute name="src"><xsl:text>url('</xsl:text><xsl:value-of select="."/><xsl:text>')</xsl:text></xsl:attribute>
+            <xsl:attribute name="src"><xsl:text>url('file:</xsl:text><xsl:value-of select="."/><xsl:text>')</xsl:text></xsl:attribute>
         </fo:external-graphic>
     </xsl:template>
 

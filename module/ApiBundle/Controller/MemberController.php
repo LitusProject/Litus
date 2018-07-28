@@ -42,11 +42,11 @@ class MemberController extends \ApiBundle\Component\Controller\ActionController\
             ->findAllMembers($academicYear);
         foreach ($members as $member) {
             $result[] = (object) array(
-                'id' => $member->getId(),
-                'identification' => $member->getUniversityIdentification(),
-                'firstName' => $member->getFirstName(),
-                'lastName' => $member->getLastName(),
-                'barcode' => $member->getBarcode() ? $member->getBarcode()->getBarcode() : '',
+                'id'                  => $member->getId(),
+                'identification'      => $member->getUniversityIdentification(),
+                'firstName'           => $member->getFirstName(),
+                'lastName'            => $member->getLastName(),
+                'barcode'             => $member->getBarcode() ? $member->getBarcode()->getBarcode() : '',
                 'organization_status' => $member->getOrganizationStatus($academicYear) ? $member->getOrganizationStatus($academicYear)->getStatus() : '',
             );
         }

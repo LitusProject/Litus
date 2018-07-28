@@ -44,8 +44,8 @@ class Experience extends Fieldset
                 'options' => array(
                     'internship' => 'Internship',
                     'jobstudent' => 'Job Student',
-                    'volunteer' => 'Volunteer',
-                    'other' => 'Other',
+                    'volunteer'  => 'Volunteer',
+                    'other'      => 'Other',
                 ),
             ),
         ));
@@ -59,16 +59,16 @@ class Experience extends Fieldset
                 'class'      => 'count',
                 'data-count' => 50,
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'field_length',
+                            'name'    => 'field_length',
                             'options' => array(
-                                'max_length' => 50,
+                                'max_length'      => 50,
                                 'new_line_length' => 75,
                             ),
                         ),

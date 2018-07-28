@@ -67,11 +67,11 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
-                'organizations' => $organizations,
+                'organizations'      => $organizations,
             )
         );
     }
@@ -177,9 +177,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );
@@ -218,12 +218,12 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'session' => $session,
-                'organizations' => $organizations,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
-                'activeAcademicYear' => $academicYear,
+                'session'                  => $session,
+                'organizations'            => $organizations,
+                'paginator'                => $paginator,
+                'paginationControl'        => $this->paginator()->createControl(true),
+                'academicYears'            => $academicYears,
+                'activeAcademicYear'       => $academicYear,
                 'otherOrganizationEnabled' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('secretary.enable_other_organization'),
@@ -336,9 +336,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );
@@ -444,12 +444,12 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'article' => $article,
-                'organizations' => $organizations,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
-                'activeAcademicYear' => $academicYear,
+                'article'                  => $article,
+                'organizations'            => $organizations,
+                'paginator'                => $paginator,
+                'paginationControl'        => $this->paginator()->createControl(true),
+                'academicYears'            => $academicYears,
+                'activeAcademicYear'       => $academicYear,
                 'otherOrganizationEnabled' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('secretary.enable_other_organization'),
@@ -554,9 +554,9 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'academicYears'      => $academicYears,
                 'activeAcademicYear' => $academicYear,
             )
         );
@@ -599,12 +599,12 @@ class SoldController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'supplier' => $supplier,
-                'organizations' => $organizations,
-                'paginator' => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-                'academicYears' => $academicYears,
-                'activeAcademicYear' => $academicYear,
+                'supplier'                 => $supplier,
+                'organizations'            => $organizations,
+                'paginator'                => $paginator,
+                'paginationControl'        => $this->paginator()->createControl(true),
+                'academicYears'            => $academicYears,
+                'activeAcademicYear'       => $academicYear,
                 'otherOrganizationEnabled' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('secretary.enable_other_organization'),

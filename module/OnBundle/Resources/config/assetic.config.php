@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'on_admin_slug' => array(
             '@common_jquery',
             '@admin_css',

@@ -45,11 +45,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'player',
-            'label'      => 'Player',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'typeahead',
+            'name'     => 'player',
+            'label'    => 'Player',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'validators' => array(
                         array('name' => 'typeahead_person'),
@@ -66,14 +66,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'options' => $this->getTimeSlots(true),
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'date',
+                            'name'    => 'date',
                             'options' => array(
                                 'format' => 'd/m/Y H:i',
                             ),
@@ -91,39 +91,39 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'options' => $this->getTimeSlots(false),
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'date',
+                            'name'    => 'date',
                             'options' => array(
                                 'format' => 'd/m/Y H:i',
                             ),
                         ),
                         array(
-                            'name' => 'date_compare',
+                            'name'    => 'date_compare',
                             'options' => array(
                                 'first_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
                         array(
-                            'name' => 'logistics_piano_reservation_conflict',
+                            'name'    => 'logistics_piano_reservation_conflict',
                             'options' => array(
-                                'start_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
-                                'resource' => PianoReservation::PIANO_RESOURCE_NAME,
+                                'start_date'     => 'start_date',
+                                'format'         => 'd/m/Y H:i',
+                                'resource'       => PianoReservation::PIANO_RESOURCE_NAME,
                                 'reservation_id' => null !== $this->reservation ? $this->reservation->getId() : null,
                             ),
                         ),
                         array(
-                            'name' => 'logistics_piano_duration',
+                            'name'    => 'logistics_piano_duration',
                             'options' => array(
                                 'start_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
                     ),
@@ -137,7 +137,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'   => 'Additional Info',
             'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -145,9 +145,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'   => 'checkbox',
-            'name'   => 'confirmed',
-            'label'  => 'Confirmed',
+            'type'  => 'checkbox',
+            'name'  => 'confirmed',
+            'label' => 'Confirmed',
         ));
 
         $this->addSubmit('Add', 'reservation_add');

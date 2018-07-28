@@ -40,11 +40,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         parent::init();
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'first_name',
-            'label'      => 'First  Name',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'first_name',
+            'label'    => 'First  Name',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -54,11 +54,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'       => 'text',
-            'name'       => 'last_name',
-            'label'      => 'Last  Name',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'text',
+            'name'     => 'last_name',
+            'label'    => 'Last  Name',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -74,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
@@ -108,7 +108,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'id'      => 'first_bus',
                 'options' => $this->getFirstBusses(),
             ),
-            'options'  => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
@@ -128,7 +128,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'id'      => 'second_bus',
                 'options' => $this->getSecondBusses(),
             ),
-            'options'  => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(

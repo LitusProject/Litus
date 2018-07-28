@@ -136,14 +136,14 @@ class QueueItem
         return json_encode(
             array(
                 'collect' => array(
-                    'id' => $item->getId(),
+                    'id'      => $item->getId(),
                     'comment' => $item->getComment(),
-                    'person' => array(
-                        'id' => $item->getPerson()->getId(),
-                        'name' => $item->getPerson()->getFullName(),
+                    'person'  => array(
+                        'id'                       => $item->getPerson()->getId(),
+                        'name'                     => $item->getPerson()->getFullName(),
                         'universityIdentification' => $item->getPerson()->getUniversityIdentification(),
-                        'member' => $item->getPerson()->isMember($this->getCurrentAcademicYear()),
-                        'acco' => isset($acco) ? $acco->hasAccoCard() : false,
+                        'member'                   => $item->getPerson()->isMember($this->getCurrentAcademicYear()),
+                        'acco'                     => isset($acco) ? $acco->hasAccoCard() : false,
                     ),
                     'articles' => $this->getArticles(),
                 ),
@@ -167,14 +167,14 @@ class QueueItem
         return json_encode(
             array(
                 'sale' => array(
-                    'id' => $item->getId(),
+                    'id'      => $item->getId(),
                     'comment' => $item->getComment(),
-                    'person' => array(
-                        'id' => $item->getPerson()->getId(),
-                        'name' => $item->getPerson()->getFullName(),
+                    'person'  => array(
+                        'id'                       => $item->getPerson()->getId(),
+                        'name'                     => $item->getPerson()->getFullName(),
                         'universityIdentification' => $item->getPerson()->getUniversityIdentification(),
-                        'member' => $item->getPerson()->isMember($this->getCurrentAcademicYear()),
-                        'acco' => isset($acco) ? $acco->hasAccoCard() : false,
+                        'member'                   => $item->getPerson()->isMember($this->getCurrentAcademicYear()),
+                        'acco'                     => isset($acco) ? $acco->hasAccoCard() : false,
                     ),
                     'articles' => $this->getArticles(),
                 ),
@@ -264,7 +264,7 @@ class QueueItem
             } else {
                 $soldArticles[$booking->getArticle()->getId()] = array(
                     'article' => $booking->getArticle(),
-                    'number' => $booking->getNumber(),
+                    'number'  => $booking->getNumber(),
                 );
             }
 
@@ -334,7 +334,7 @@ class QueueItem
             } else {
                 $soldArticles[$booking->getArticle()->getId()] = array(
                     'article' => $booking->getArticle(),
-                    'number' => $booking->getNumber(),
+                    'number'  => $booking->getNumber(),
                 );
             }
 
@@ -383,7 +383,7 @@ class QueueItem
                 $bestDiscount = null;
                 foreach ($soldArticle['article']->getDiscounts() as $discount) {
                     if (in_array($discount->getRawType(), $discounts)) {
-                        if (!$discount->canBeApplied($item->getPerson(), $this->getCurrentAcademicYear(), $this->entityManager)) {
+                        if (!$discount->canBeApplied($this->entityManager, $soldArticle['article'], $item->getPerson(), $this->getCurrentAcademicYear())) {
                             continue;
                         }
                         $newPrice = $discount->apply($soldArticle['article']->getSellPrice());
@@ -457,25 +457,25 @@ class QueueItem
                 $results[$booking->getStatus() . '_' . $booking->getArticle()->getId()]['number'] += $booking->getNumber();
             } else {
                 $result = array(
-                    'id' => $booking->getId(),
+                    'id'        => $booking->getId(),
                     'articleId' => $booking->getArticle()->getId(),
-                    'price' => (int) $booking->getArticle()->getSellPrice(),
-                    'title' => $booking->getArticle()->getMainArticle()->getTitle(),
-                    'barcode' => $booking->getArticle()->getBarcode(),
-                    'barcodes' => $barcodes,
-                    'author' => $booking->getArticle()->getMainArticle()->getAuthors(),
-                    'number' => $booking->getNumber(),
-                    'status' => $booking->getStatus(),
-                    'sellable' => $booking->getArticle()->isSellable(),
+                    'price'     => (int) $booking->getArticle()->getSellPrice(),
+                    'title'     => $booking->getArticle()->getMainArticle()->getTitle(),
+                    'barcode'   => $booking->getArticle()->getBarcode(),
+                    'barcodes'  => $barcodes,
+                    'author'    => $booking->getArticle()->getMainArticle()->getAuthors(),
+                    'number'    => $booking->getNumber(),
+                    'status'    => $booking->getStatus(),
+                    'sellable'  => $booking->getArticle()->isSellable(),
                     'collected' => isset($this->articles->{$booking->getArticle()->getId()}) ? $this->articles->{$booking->getArticle()->getId()} : 0,
                     'discounts' => array(),
                 );
 
                 foreach ($booking->getArticle()->getDiscounts() as $discount) {
-                    if ($discount->canBeApplied($booking->getArticle(), $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear())) {
+                    if ($discount->canBeApplied($this->entityManager, $booking->getArticle(), $item->getPerson(), $this->getCurrentAcademicYear())) {
                         $result['discounts'][] = array(
-                            'type' => $discount->getRawType(),
-                            'value' => $discount->apply($booking->getArticle()->getSellPrice()),
+                            'type'      => $discount->getRawType(),
+                            'value'     => $discount->apply($booking->getArticle()->getSellPrice()),
                             'applyOnce' => $discount->applyOnce(),
                         );
                     }
@@ -497,25 +497,25 @@ class QueueItem
                 }
 
                 $result = array(
-                    'id' => 0,
+                    'id'        => 0,
                     'articleId' => $article->getId(),
-                    'price' => $article->getSellPrice(),
-                    'title' => $article->getMainArticle()->getTitle(),
-                    'barcode' => $article->getBarcode(),
-                    'barcodes' => $barcodes,
-                    'author' => $article->getMainArticle()->getAuthors(),
-                    'number' => 1,
-                    'status' => 'assigned',
-                    'sellable' => $article->isSellable(),
+                    'price'     => $article->getSellPrice(),
+                    'title'     => $article->getMainArticle()->getTitle(),
+                    'barcode'   => $article->getBarcode(),
+                    'barcodes'  => $barcodes,
+                    'author'    => $article->getMainArticle()->getAuthors(),
+                    'number'    => 1,
+                    'status'    => 'assigned',
+                    'sellable'  => $article->isSellable(),
                     'collected' => $number,
                     'discounts' => array(),
                 );
 
                 foreach ($article->getDiscounts() as $discount) {
-                    if ($discount->canBeApplied($article, $item->getPerson(), $this->entityManager, $this->getCurrentAcademicYear())) {
+                    if ($discount->canBeApplied($this->entityManager, $article, $item->getPerson(), $this->getCurrentAcademicYear())) {
                         $result['discounts'][] = array(
-                            'type' => $discount->getRawType(),
-                            'value' => $discount->apply($article->getSellPrice()),
+                            'type'      => $discount->getRawType(),
+                            'value'     => $discount->apply($article->getSellPrice()),
                             'applyOnce' => $discount->applyOnce(),
                         );
                     }

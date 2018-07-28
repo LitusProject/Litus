@@ -54,8 +54,8 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'date' => $this->getParam('date'),
+                'form'  => $form,
+                'date'  => $this->getParam('date'),
                 'token' => $token,
             )
         );
@@ -79,7 +79,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
                 $driverArray = array(
                     'color' => '#444444',
-                    'name' => '',
+                    'name'  => '',
                 );
                 if (null !== $driver) {
                     $driverArray['id'] = $driver->getPerson()->getId();
@@ -94,24 +94,24 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     $passengerId = $passenger->getId();
                 }
 
-                $result = array(
-                    'start' => $reservation->getStartDate()->getTimeStamp(),
-                    'end' => $reservation->getEndDate()->getTimeStamp(),
-                    'reason' => $reservation->getReason(),
-                    'driver' => $driverArray,
-                    'passenger' => $passengerName,
-                    'passengerId' => $passengerId,
-                    'load' => $reservation->getLoad(),
-                    'car' => $reservation->getCar(),
-                    'bike' => $reservation->getBike(),
+                $result = array (
+                    'start'          => $reservation->getStartDate()->getTimeStamp(),
+                    'end'            => $reservation->getEndDate()->getTimeStamp(),
+                    'reason'         => $reservation->getReason(),
+                    'driver'         => $driverArray,
+                    'passenger'      => $passengerName,
+                    'passengerId'    => $passengerId,
+                    'load'           => $reservation->getLoad(),
+                    'car'            => $reservation->getCar(),
+                    'bike'           => $reservation->getBike(),
                     'additionalInfo' => $reservation->getAdditionalInfo(),
-                    'id' => $reservation->getId(),
+                    'id'             => $reservation->getId(),
                 );
 
                 return new ViewModel(
                     array(
                         'result' => array(
-                            'status' => 'success',
+                            'status'      => 'success',
                             'reservation' => $result,
                         ),
                     )
@@ -156,7 +156,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
                 $driverArray = array(
                     'color' => '#444444',
-                    'name' => '',
+                    'name'  => '',
                 );
                 if (null !== $driver) {
                     $driverArray['id'] = $driver->getPerson()->getId();
@@ -173,24 +173,24 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     $passengerId = $passenger->getId();
                 }
 
-                $result = array(
-                    'start' => $reservation->getStartDate()->getTimeStamp(),
-                    'end' => $reservation->getEndDate()->getTimeStamp(),
-                    'reason' => $reservation->getReason(),
-                    'driver' => $driverArray,
-                    'passenger' => $passengerName,
-                    'passengerId' => $passengerId,
-                    'load' => $reservation->getLoad(),
-                    'car' => $reservation->getCar(),
-                    'bike' => $reservation->getBike(),
+                $result = array (
+                    'start'          => $reservation->getStartDate()->getTimeStamp(),
+                    'end'            => $reservation->getEndDate()->getTimeStamp(),
+                    'reason'         => $reservation->getReason(),
+                    'driver'         => $driverArray,
+                    'passenger'      => $passengerName,
+                    'passengerId'    => $passengerId,
+                    'load'           => $reservation->getLoad(),
+                    'car'            => $reservation->getCar(),
+                    'bike'           => $reservation->getBike(),
                     'additionalInfo' => $reservation->getAdditionalInfo(),
-                    'id' => $reservation->getId(),
+                    'id'             => $reservation->getId(),
                 );
 
                 return new ViewModel(
                     array(
                         'result' => array(
-                            'status' => 'success',
+                            'status'      => 'success',
                             'reservation' => $result,
                         ),
                     )
@@ -275,7 +275,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
             $driverArray = array(
                 'color' => '#444444',
-                'name' => '',
+                'name'  => '',
             );
             if (null !== $driver) {
                 $driverArray['id'] = $driver->getPerson()->getId();
@@ -292,25 +292,25 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 $passengerId = $passenger->getId();
             }
 
-            $result[] = array(
-                'start' => $reservation->getStartDate()->getTimeStamp(),
-                'end' => $reservation->getEndDate()->getTimeStamp(),
-                'reason' => $reservation->getReason(),
-                'driver' => $driverArray,
-                'passenger' => $passengerName,
-                'passengerId' => $passengerId,
-                'load' => $reservation->getLoad(),
-                'car' => $reservation->getCar(),
-                'bike' => $reservation->getBike(),
+            $result[] = array (
+                'start'          => $reservation->getStartDate()->getTimeStamp(),
+                'end'            => $reservation->getEndDate()->getTimeStamp(),
+                'reason'         => $reservation->getReason(),
+                'driver'         => $driverArray,
+                'passenger'      => $passengerName,
+                'passengerId'    => $passengerId,
+                'load'           => $reservation->getLoad(),
+                'car'            => $reservation->getCar(),
+                'bike'           => $reservation->getBike(),
                 'additionalInfo' => $reservation->getAdditionalInfo(),
-                'id' => $reservation->getId(),
+                'id'             => $reservation->getId(),
             );
         }
 
         return new ViewModel(
             array(
                 'result' => (object) array(
-                    'status' => 'success',
+                    'status'       => 'success',
                     'reservations' => (object) $result,
                 ),
             )
@@ -322,7 +322,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
         $headers = new Headers();
         $headers->addHeaders(array(
             'Content-Disposition' => 'inline; filename="icalendar.ics"',
-            'Content-Type' => 'text/calendar',
+            'Content-Type'        => 'text/calendar',
         ));
         $this->getResponse()->setHeaders($headers);
 

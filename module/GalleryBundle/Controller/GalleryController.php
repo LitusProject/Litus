@@ -50,7 +50,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
             $year = AcademicYear::getAcademicYear($date);
             if (!isset($sorted[$year])) {
                 $sorted[$year] = (object) array(
-                    'year' => $year,
+                    'year'   => $year,
                     'albums' => array(),
                 );
             }
@@ -67,10 +67,10 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'albums' => $sorted,
+                'albums'      => $sorted,
                 'currentYear' => AcademicYear::getAcademicYear(),
-                'filePath' => $filePath,
-                'archiveUrl' => $archiveUrl,
+                'filePath'    => $filePath,
+                'archiveUrl'  => $archiveUrl,
             )
         );
     }
@@ -101,8 +101,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'albums' => $albums,
-                'filePath' => $filePath,
+                'albums'       => $albums,
+                'filePath'     => $filePath,
                 'academicYear' => AcademicYear::getAcademicYear($end),
             )
         );
@@ -128,8 +128,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'album' => $album,
-                'filePath' => $filePath,
+                'album'       => $album,
+                'filePath'    => $filePath,
                 'allowCensor' => $allowCensor,
             )
         );

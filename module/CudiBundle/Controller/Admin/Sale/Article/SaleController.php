@@ -94,7 +94,7 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_sales_article',
                     array(
                         'action' => 'edit',
-                        'id' => $article->getId(),
+                        'id'     => $article->getId(),
                     )
                 );
 
@@ -105,7 +105,7 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'article' => $article,
-                'form' => $form,
+                'form'    => $form,
             )
         );
     }

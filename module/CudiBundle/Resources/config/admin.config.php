@@ -21,8 +21,8 @@
 return array(
     'submenus' => array(
         'CuDi' => array(
-            'subtitle'    => array('Articles', 'Financial', 'Stock'),
-            'items'       => array(
+            'subtitle' => array('Articles', 'Financial', 'Stock'),
+            'items'    => array(
                 'cudi_admin_article' => array(
                     'title' => 'Articles',
                     'help'  => 'Here you can find all the articles stored in the database. The general information can be managed here. These articles aren\'t sellable yet. To make them sellable a \'Sale Article\' must be created first.',
@@ -39,7 +39,7 @@ return array(
                 'cudi_admin_sales_financial' => array(
                     'action' => 'overview',
                     'title'  => 'Financial',
-                    'help'  => 'A financial overview of the cudi system can be found here.',
+                    'help'   => 'A financial overview of the cudi system can be found here.',
                 ),
                 'cudi_admin_sales_session_openinghour' => array(
                     'title' => 'Opening Hours',

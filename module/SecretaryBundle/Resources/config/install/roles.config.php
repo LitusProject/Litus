@@ -20,7 +20,7 @@
 
 return array(
     'guest' => array(
-        'system' => true,
+        'system'  => true,
         'actions' => array(
             'secretary_registration' => array(
                 'add',
@@ -28,7 +28,7 @@ return array(
         ),
     ),
     'student' => array(
-        'system' => true,
+        'system'  => true,
         'parents' => array(
             'guest',
         ),

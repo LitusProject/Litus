@@ -52,15 +52,15 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
         return new ViewModel(
             array(
-                'socketUrl' => $this->getSocketUrl(),
+                'socketUrl'   => $this->getSocketUrl(),
                 'authSession' => $this->getAuthentication()
                     ->getSessionObject(),
                 'key' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.queue_socket_key'),
-                'paydesks' => $paydesks,
-                'membershipArticles' => $membershipArticles,
-                'currentAcademicYear' => $this->getCurrentAcademicYear(),
+                'paydesks'             => $paydesks,
+                'membershipArticles'   => $membershipArticles,
+                'currentAcademicYear'  => $this->getCurrentAcademicYear(),
                 'printCollectAsSignin' => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.print_collect_as_signin'),
@@ -138,7 +138,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
                 $this->redirect()->toRoute(
                     'cudi_sale_sale',
                     array(
-                        'action' => 'return',
+                        'action'  => 'return',
                         'session' => $session->getId(),
                     )
                 );
@@ -149,7 +149,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'                => $form,
                 'currentAcademicYear' => $this->getCurrentAcademicYear(),
             )
         );

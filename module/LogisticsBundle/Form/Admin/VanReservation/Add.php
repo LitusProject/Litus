@@ -48,18 +48,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'datetime',
-            'name'       => 'end_date',
-            'label'      => 'End Date',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'datetime',
+            'name'     => 'end_date',
+            'label'    => 'End Date',
+            'required' => true,
+            'options'  => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'date_compare',
+                            'name'    => 'date_compare',
                             'options' => array(
                                 'first_date' => 'start_date',
-                                'format' => 'd/m/Y H:i',
+                                'format'     => 'd/m/Y H:i',
                             ),
                         ),
 
@@ -88,7 +88,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'required' => true,
             'options'  => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -101,7 +101,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'   => 'Load',
             'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -114,7 +114,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'   => 'Additional Info',
             'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -131,22 +131,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'       => 'typeahead',
-            'name'       => 'passenger',
-            'label'      => 'Passenger',
-            'required'   => false,
-            'options'    => array(
+            'type'     => 'typeahead',
+            'name'     => 'passenger',
+            'label'    => 'Passenger',
+            'required' => false,
+            'options'  => array(
                 'input' => array(
-                    'validators'  => array(
+                    'validators' => array(
                         array('name' => 'typeahead_person'),
                     ),
                 ),
             ),
         ));
         $this->add(array(
-            'type'  => 'select',
-            'name'  => 'car',
-            'label' => 'Car',
+            'type'       => 'select',
+            'name'       => 'car',
+            'label'      => 'Car',
             'attributes' => array(
                 'options' => $this->returnYesNoArray(),
             ),

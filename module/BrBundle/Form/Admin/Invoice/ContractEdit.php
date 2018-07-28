@@ -41,12 +41,12 @@ class ContractEdit extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         $this->add(array(
-            'type'     => 'text',
-            'name'     => 'company_reference',
-            'label'    => 'Company Reference',
-            'options'  => array(
+            'type'    => 'text',
+            'name'    => 'company_reference',
+            'label'   => 'Company Reference',
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),
@@ -55,12 +55,12 @@ class ContractEdit extends \CommonBundle\Component\Form\Admin\Form
 
         foreach ($this->invoice->getEntries() as $entry) {
             $this->add(array(
-                'type'     => 'textarea',
-                'name'     => 'entry_' . $entry->getId(),
-                'label'    => $entry->getOrderEntry()->getProduct()->getName(),
-                'options'  => array(
+                'type'    => 'textarea',
+                'name'    => 'entry_' . $entry->getId(),
+                'label'   => $entry->getOrderEntry()->getProduct()->getName(),
+                'options' => array(
                     'input' => array(
-                        'filters'  => array(
+                        'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
                     ),
@@ -69,12 +69,12 @@ class ContractEdit extends \CommonBundle\Component\Form\Admin\Form
         }
 
         $this->add(array(
-            'type'     => 'textarea',
-            'name'     => 'VATContext',
-            'label'    => 'VAT Context',
-            'options'  => array(
+            'type'    => 'textarea',
+            'name'    => 'VATContext',
+            'label'   => 'VAT Context',
+            'options' => array(
                 'input' => array(
-                    'filters'  => array(
+                    'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                 ),

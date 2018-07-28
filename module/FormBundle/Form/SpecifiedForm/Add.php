@@ -121,7 +121,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                         'validators' => array(
                             array(
-                                'name' => 'emailaddress',
+                                'name' => 'EmailAddress',
                             ),
                         ),
                     ),
@@ -162,10 +162,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
                     $specification['options']['input']['validators'] = array(
                         array(
-                            'name' => 'field_line_length',
+                            'name'    => 'field_line_length',
                             'options' => array(
                                 'chars_per_line' => $fieldSpecification->getLineLength(),
-                                'lines' => $fieldSpecification->getLines(),
+                                'lines'          => $fieldSpecification->getLines(),
                             ),
                         ),
                     );
@@ -179,7 +179,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 $specification['type'] = 'file';
                 $specification['options']['input']['validators'] = array(
                     array(
-                        'name' => 'filesize',
+                        'name'    => 'filesize',
                         'options' => array(
                             'max' => $fieldSpecification->getMaxSize() . 'MB',
                         ),

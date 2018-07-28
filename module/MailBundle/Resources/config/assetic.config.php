@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'mail_admin_alias' => array(
             '@common_jquery',
             '@admin_css',

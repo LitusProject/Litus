@@ -69,8 +69,8 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
     public function getAuthenticationHandler()
     {
         return array(
-            'action'         => 'index',
-            'controller'     => 'common_index',
+            'action'     => 'index',
+            'controller' => 'common_index',
 
             'auth_route'     => 'form_manage',
             'redirect_route' => 'form_manage',

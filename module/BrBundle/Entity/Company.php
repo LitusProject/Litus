@@ -164,25 +164,57 @@ class Company
     private $page;
 
     /**
+     * @var array The possible masters for students
+     */
+    public static $possibleMasters = array(
+        'architectural engineering'     => 'Architectural Engineering',
+        'biomedical engineering'        => 'Biomedical Engineering',
+        'chemical engineering'          => 'Chemical Engineering',
+        'civil engineering'             => 'Civil Engineering',
+        'computer science engineering'  => 'Computer Science Engineering',
+        'electrical engineering'        => 'Electrical Engineering',
+        'energy engineering'            => 'Energy Engineering',
+        'logistics engineering'         => 'Logistics Engineering',
+        'materials engineering'         => 'Materials Engineering',
+        'mathematical engineering'      => 'Mathematical Engineering',
+        'mechanical engineering'        => 'Mechanical Engineering',
+        'nanoengineering'               => 'Nanoengineering'
+    );
+
+    /**
      * @var array The possible sectors of a company
      */
     public static $possibleSectors = array(
         'architecture' => 'Architecture & Construction',
-        'audit' => 'Audit',
-        'automobile' => 'Automobile',
-        'biomedical' => 'Biomedical & Pharmaceutical',
-        'chemistry' => 'Chemistry',
-        'consultancy' => 'Consultancy',
-        'consumer' => 'Consumer Goods & Services',
+        'audit'        => 'Audit',
+        'automobile'   => 'Automobile',
+        'biomedical'   => 'Biomedical & Pharmaceutical',
+        'chemistry'    => 'Chemistry',
+        'consultancy'  => 'Consultancy',
+        'consumer'     => 'Consumer Goods & Services',
         'distribution' => 'Distribution, Logistics & Transportation',
-        'electronics' => 'Electronics',
-        'energy' => 'Energy',
-        'financial' => 'Financial',
-        'it' => 'IT',
-        'metal' => 'Metal',
-        'telecom' => 'Telecom',
-        'nonprofit' => 'Non-Profit',
-        'hr' => 'Human Resources',
+        'electronics'  => 'Electronics',
+        'energy'       => 'Energy',
+        'financial'    => 'Financial',
+        'it'           => 'IT',
+        'metal'        => 'Metal',
+        'telecom'      => 'Telecom',
+        'nonprofit'    => 'Non-Profit',
+        'hr'           => 'Human Resources',
+    );
+
+    /**
+     * @var array The possible locations for an internship or job
+     */
+    public static $possibleLocations = array(
+        'antwerp'         => 'Antwerp',
+        'brussels'        => 'Brussels',
+        'east flanders'   => 'East Flanders',
+        'flemish brabant' => 'Flemish Brabant', 
+        'limburg'         => 'Limburg',
+        'west flanders'   => 'West Flanders',
+        'wallonia'        => 'Wallonia',
+        'abroad'          => 'Abroad'
     );
 
     public function __construct()
@@ -200,6 +232,24 @@ class Company
     public static function isValidSector($sector)
     {
         return array_key_exists($sector, self::$possibleSectors);
+    }
+
+    /**
+     * @param  string  $sector
+     * @return boolean
+     */
+    public static function isValidLocation($location)
+    {
+        return array_key_exists($location, self::$possibleLocations);
+    }
+
+    /**
+     * @param  string  $master
+     * @return boolean
+     */
+    public static function isValidMaster($master)
+    {
+        return array_key_exists($master, self::$possibleMasters);
     }
 
     /**
@@ -319,7 +369,7 @@ class Company
      */
     public function getInvoiceVatNumber()
     {
-        return $this->invoiceVatNumber  == null ? $this->vatNumber : $this->invoiceVatNumber;
+        return $this->invoiceVatNumber == null ? $this->vatNumber : $this->invoiceVatNumber;
     }
 
     /**
@@ -346,7 +396,7 @@ class Company
      */
     public function getInvoiceAddress()
     {
-        return $this->invoiceAddress  == null ? $this->address : $this->invoiceAddress;
+        return $this->invoiceAddress == null ? $this->address : $this->invoiceAddress;
     }
 
     /**
@@ -413,7 +463,7 @@ class Company
      */
     public function getFullWebsite()
     {
-        $result =  $this->getWebsite();
+        $result = $this->getWebsite();
         if (false === strpos($result, 'http://')) {
             $result = 'http://' . $result;
         }

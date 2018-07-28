@@ -84,8 +84,8 @@ class StudyMap
     /**
      * @return Group
      */
-     public function getGroup()
-     {
-         return $this->group;
-     }
+    public function getGroup()
+    {
+        return $this->group;
+    }
 }

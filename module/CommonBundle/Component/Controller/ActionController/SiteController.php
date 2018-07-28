@@ -94,8 +94,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     public function getAuthenticationHandler()
     {
         return array(
-            'action'         => 'login',
-            'controller'     => 'common_auth',
+            'action'     => 'login',
+            'controller' => 'common_auth',
 
             'auth_route'     => 'common_auth',
             'redirect_route' => 'common_index',
@@ -120,9 +120,9 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $i = 0;
         foreach ($categories as $category) {
             $menu[$i] = array(
-                'type'  => 'category',
-                'name'  => $category->getName($this->getLanguage()),
-                'items' => array(),
+                'type'   => 'category',
+                'name'   => $category->getName($this->getLanguage()),
+                'items'  => array(),
                 'active' => false,
             );
 
@@ -131,8 +131,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 ->findBy(
                     array(
                         'category' => $category,
-                        'parent' => null,
-                        'endTime' => null,
+                        'parent'   => null,
+                        'endTime'  => null,
                     )
                 );
 
@@ -141,7 +141,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 ->findBy(
                     array(
                         'category' => $category,
-                        'parent' => null,
+                        'parent'   => null,
                     )
                 );
 
@@ -218,11 +218,11 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $submenu = array();
         foreach ($pages as $page) {
             $submenu[] = array(
-                'type'     => 'page',
-                'id'       => $page->getId(),
-                'name'     => $page->getName(),
-                'parent'   => $page->getParent()->getName(),
-                'title'    => $page->getTitle($this->getLanguage()),
+                'type'   => 'page',
+                'id'     => $page->getId(),
+                'name'   => $page->getName(),
+                'parent' => $page->getParent()->getName(),
+                'title'  => $page->getTitle($this->getLanguage()),
             );
         }
 

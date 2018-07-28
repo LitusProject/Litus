@@ -151,10 +151,10 @@ class Form extends \CommonBundle\Component\Hydrator\Hydrator
         $data['tab_content'] = array();
         foreach ($this->getLanguages() as $language) {
             $data['tab_content']['tab_' . $language->getAbbrev()] = array(
-                'title' => $object->getTitle($language, false),
+                'title'        => $object->getTitle($language, false),
                 'introduction' => $object->getIntroduction($language, false),
-                'submittext' => $object->getSubmitText($language, false),
-                'updatetext' => $object->getUpdateText($language, false),
+                'submittext'   => $object->getSubmitText($language, false),
+                'updatetext'   => $object->getUpdateText($language, false),
             );
         }
 

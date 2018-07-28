@@ -75,7 +75,7 @@ class MailingList extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('MailBundle\Entity\MailingList\Entry\MailingList')
             ->findOneBy(
                 array(
-                    'list' => $this->options['list'],
+                    'list'  => $this->options['list'],
                     'entry' => $list,
                 )
             );

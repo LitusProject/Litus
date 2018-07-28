@@ -19,7 +19,7 @@
  */
 
 return array(
-    'controllers'  => array(
+    'controllers' => array(
         'api_admin_key' => array(
             '@common_jquery',
             '@admin_css',

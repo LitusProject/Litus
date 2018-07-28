@@ -25,6 +25,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th width="70px">Active</th>
                     <th width="70px">Actions</th>
                 </tr>
             </thead>
@@ -33,6 +34,7 @@
                 {% for unit in unitsWithMembers %}
                     <tr class="item item-{{ unit.getId() }}">
                         <td>{{ unit.getName() }}</td>
+                        <td>{% if unit.isActive() %}&times;{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('common_admin_unit', 'members') %}
                                 <a href="{{ url('common_admin_unit', {"action": "members", "id": unit.getId(), "academicyear": activeAcademicYear.getCode()}) }}" class="unit_member_edit">Members</a>
@@ -54,6 +56,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th width="70px">Active</th>
                     <th width="70px">Actions</th>
                 </tr>
             </thead>
@@ -62,6 +65,7 @@
                 {% for unit in emptyUnits %}
                     <tr class="item item-{{ unit.getId() }}">
                         <td>{{ unit.getName() }}</td>
+                        <td>{% if unit.isActive() %}&times;{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('common_admin_unit', 'members') %}
                                 <a href="{{ url('common_admin_unit', {"action": "members", "id": unit.getId(), "academicyear": activeAcademicYear.getCode()}) }}" class="unit_member_edit">Members</a>

@@ -57,7 +57,7 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'publication' => $publication,
-                'years' => $years,
+                'years'       => $years,
             )
         );
     }
@@ -86,10 +86,10 @@ class ArchiveController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'publication' => $publication,
-                'year' => $year,
-                'pdfs' => $pdfs,
-                'htmls' => $htmls,
+                'publication'  => $publication,
+                'year'         => $year,
+                'pdfs'         => $pdfs,
+                'htmls'        => $htmls,
                 'publicPdfDir' => $publicPdfDir,
             )
         );

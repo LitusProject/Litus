@@ -55,7 +55,7 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                     'ticket_sale_index',
                     array(
                         'action' => 'sale',
-                        'id' => $event->getId(),
+                        'id'     => $event->getId(),
                     )
                 );
 
@@ -85,14 +85,14 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
                 return new ViewModel(
                     array(
                         'status' => 'success',
-                        'info' => array('status' => 'success'),
+                        'info'   => array('status' => 'success'),
                     )
                 );
             } else {
                 return new ViewModel(
                     array(
                         'status' => 'error',
-                        'form' => array(
+                        'form'   => array(
                             'errors' => $form->getMessages(),
                         ),
                     )

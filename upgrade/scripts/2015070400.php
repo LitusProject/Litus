@@ -75,13 +75,13 @@ if (!file_exists($dumpFileName)) {
 
     $dump = serialize(
         array(
-            'studies' => $studies,
+            'studies'                    => $studies,
             'studies_academic_years_map' => $studiesAcademicYearsMap,
-            'studies_group_map' => $studiesGroupMap,
-            'studies_subjects_map' => $studiesSubjectsMap,
-            'study_enrollment' => $studyEnrollment,
-            'cv_entries' => $cvEntries,
-            'used_studies' => $usedStudies,
+            'studies_group_map'          => $studiesGroupMap,
+            'studies_subjects_map'       => $studiesSubjectsMap,
+            'study_enrollment'           => $studyEnrollment,
+            'cv_entries'                 => $cvEntries,
+            'used_studies'               => $usedStudies,
         )
     );
 

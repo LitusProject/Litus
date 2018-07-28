@@ -41,24 +41,24 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'emailAddress'),
+                        array('name' => 'EmailAddress'),
                     ),
                 ),
             ),
         ));
 
         $this->add(array(
-            'type'       => 'select',
-            'name'       => 'minimum_rank',
-            'label'      => 'Minimum Rank',
-            'required'   => true,
-            'options'    => array(
+            'type'     => 'select',
+            'name'     => 'minimum_rank',
+            'label'    => 'Minimum Rank',
+            'required' => true,
+            'options'  => array(
                 'options' => $this->createRanksArray(),
             ),
         ));
@@ -71,7 +71,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 400px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
@@ -88,7 +88,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
             'attributes' => array(
                 'style' => 'width: 500px; height: 200px;',
             ),
-            'options'    => array(
+            'options' => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),

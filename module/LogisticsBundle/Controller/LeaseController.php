@@ -47,10 +47,10 @@ class LeaseController extends LogisticsController
 
         return new ViewModel(
             array(
-                'leases' => $paginator,
-                'paginationControl' =>  $this->paginator()->createControl(),
-                'leaseForm' => $leaseForm,
-                'returnForm' => $returnForm,
+                'leases'            => $paginator,
+                'paginationControl' => $this->paginator()->createControl(),
+                'leaseForm'         => $leaseForm,
+                'returnForm'        => $returnForm,
             )
         );
     }
@@ -83,8 +83,8 @@ class LeaseController extends LogisticsController
 
         return new ViewModel(
             array(
-                'item' => $item,
-                'leases' => $paginator,
+                'item'              => $item,
+                'leases'            => $paginator,
                 'paginationControl' => $this->paginator()->createControl(),
             )
         );
@@ -114,8 +114,8 @@ class LeaseController extends LogisticsController
                 }
 
                 $results[] = array(
-                    'id' => $item->getId(),
-                    'value' => $item->getName(),
+                    'id'              => $item->getId(),
+                    'value'           => $item->getName(),
                     'additional_info' => $item->getAdditionalInfo(),
                 );
             }
@@ -172,7 +172,7 @@ class LeaseController extends LogisticsController
                         'logistics_lease',
                         array(
                             'action' => 'show',
-                            'id' => $lease->getId(),
+                            'id'     => $lease->getId(),
                         )
                     );
                 }
@@ -228,7 +228,7 @@ class LeaseController extends LogisticsController
                         'logistics_lease',
                         array(
                             'action' => 'show',
-                            'id' => $lease->getId(),
+                            'id'     => $lease->getId(),
                         )
                     );
                 }
