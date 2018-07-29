@@ -7,7 +7,7 @@ cd $(dirname "$0")/../..;
 
 composer install
 
-cp config/sntry.config.php.dist config/sentry.config.php
+cp config/sentry.config.php.dist config/sentry.config.php
 cp config/database.config.php.dist config/database.config.php
 
 # install npm
