@@ -161,7 +161,8 @@ class Client
                 $user = array(
                     'id'         => $this->authentication->getPersonObject()->getId(),
                     'username'   => $this->authentication->getPersonObject()->getUsername(),
-                    'email'      => $this->authentication->getPersonObject()->getEmail(), 
+                    'email'      => $this->authentication->getPersonObject()->getEmail(),
+                    'name'       => $this->authentication->getPersonObject()->getFullName(), 
                     'session'    => $this->authentication->getSessionObject()->getId(),
                 );
             } else {
