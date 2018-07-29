@@ -19,27 +19,28 @@
  */
 
 if ('development' != getenv('APPLICATION_ENV')) {
-    if (!file_exists(__DIR__ . '/../lilo.config.php')) {
+    if (!file_exists(__DIR__ . '/../sentry.config.php')) {
         throw new RuntimeException(
-            'The Lilo configuration file (' . (__DIR__ . '/../lilo.config.php') . ') was not found'
+            'The Sentry configuration file (' . (__DIR__ . '/../sentry.config.php') . ') was not found'
         );
     }
 
     return array(
         'service_manager' => array(
             'factories' => array(
-                'lilo' => function ($serviceManager) {
-                    return new \CommonBundle\Component\Lilo\Client(
-                        $serviceManager->get('lilo_connection'),
+                'sentry' => function($serviceManager) {
+                    return new \CommonBundle\Component\Sentry\Client(
+                        $serviceManager->get('raven_client'),
                         $serviceManager->get('authentication'),
                         $serviceManager->get('Request')
                     );
                 },
-                'lilo_connection' => function ($serviceManager) {
-                    $liloConfig = include __DIR__ . '/../lilo.config.php';
+                'raven_client' => function ($serviceManager) {
+                    $sentryConfig = include __DIR__ . '/../sentry.config.php';
 
-                    return new \CommonBundle\Component\Lilo\Connection\Http(
-                        $liloConfig['host'], $liloConfig['secure'], $liloConfig['secretKey']
+                    return new \Raven_Client(
+                        $sentryConfig['dsn'],
+                        $sentryConfig['options']
                     );
                 },
             ),

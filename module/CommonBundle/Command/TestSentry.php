@@ -18,20 +18,36 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Lilo;
+namespace CommonBundle\Command;
+
+use Zend\Log\Logger;
 
 /**
- * This class represents a connection to Lilo.
- *
- * @author Pieter Maene <pieter.maene@litus.cc>
+ * Tests connection to Sentry.
  */
-abstract class Connection
+class TestSentry extends \CommonBundle\Component\Console\Command
 {
-    /**
-     * Sends the given data object to the server.
-     *
-     * @param  Data $data The data object that should be sent
-     * @return void
-     */
-    abstract public function send(Data $data);
+    protected function configure()
+    {
+        $this
+            ->setName('common:test-sentry')
+            ->setDescription('Test connection to Sentry.')
+            ->setHelp(<<<EOT
+The <info>%command.name%</info> command tests the connection to the Sentry server.
+EOT
+        );
+    }
+
+    protected function executeCommand()
+    {
+        $this->getServiceLocator()->get('sentry')
+            ->logMessage(
+                'Saying hi to the cutest error robot ever!'
+            );
+    }
+
+    protected function getLogName()
+    {
+        return 'TestSentry';
+    }
 }

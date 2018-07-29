@@ -37,7 +37,8 @@ class Module
         $sharedEvents = $events->getSharedManager();
 
         if ('production' == getenv('APPLICATION_ENV')) {
-            $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('lilo'), 'handleMvcEvent'));
+            $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('sentry'), 'logMvcEvent'));
+            $events->attach(MvcEvent::EVENT_RENDER_ERROR, array($services->get('sentry'), 'logMvcEvent'));
         }
 
         $injectTemplateListener = new InjectTemplateListener();

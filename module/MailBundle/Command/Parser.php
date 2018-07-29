@@ -20,8 +20,7 @@
 
 namespace MailBundle\Command;
 
-use CommonBundle\Component\Lilo\Client as LiloClient,
-    MailBundle\Component\Parser\Message as MessageParser,
+use MailBundle\Component\Parser\Message as MessageParser,
     MailBundle\Document\Message,
     MailBundle\Document\Message\Attachment;
 
@@ -44,11 +43,6 @@ class Parser extends \CommonBundle\Component\Console\Command
         self::COMMAND_STORE => 'Store the incoming mail and its attachments...',
     );
 
-    /**
-     * @var LiloClient|null
-     */
-    private $lilo;
-
     protected function configure()
     {
         $this
@@ -63,17 +57,9 @@ EOT
 
     protected function executeCommand()
     {
-        if ($this->getServiceLocator()->has('lilo')) {
-            $lilo = $this->getServiceLocator()->get('lilo');
-            if ($lilo instanceof LiloClient) {
-                $this->lilo = $lilo;
-            }
-        } else {
-            $this->lilo = null;
-        }
-
-        $mail = $this->readMail();
-        $this->parseMessage($mail);
+        $this->parseMessage(
+            $this->readMail()
+        );
     }
 
     /**
@@ -91,8 +77,8 @@ EOT
      */
     public function write($str, $raw = false)
     {
-        if (null !== $this->lilo) {
-            $this->sendToLilo($str);
+        if ($this->getServiceLocator()->has('sentry')) {
+            $this->logMessage($str);
         } else {
             return parent::write($str, $raw);
         }
@@ -105,8 +91,8 @@ EOT
      */
     public function writeln($str, $raw = false)
     {
-        if (null !== $this->lilo) {
-            $this->sendToLilo($str);
+        if ($this->getServiceLocator()->has('sentry')) {
+            $this->logMessage($str);
         } else {
             return parent::writeln($str, $raw);
         }
@@ -116,15 +102,10 @@ EOT
      * @param  string $str
      * @return null
      */
-    private function sendToLilo($str)
+    private function logMessage($str)
     {
-        $this->lilo->sendLog(
-            $str,
-            array(
-                'MailBundle',
-                'parser.php',
-            )
-        );
+        $this->getServiceLocator()->get('sentry')
+            ->logMessage($str);
     }
 
     /**
