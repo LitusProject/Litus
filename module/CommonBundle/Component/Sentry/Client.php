@@ -109,10 +109,10 @@ class Client
      * Handler that can be attached to Zend's EventManager and extracts the exception
      * from an MvcEvent
      *
-     * @param  MvcEvent $e The MvcEvent passed by the EventManager
+     * @param  MvcEvent $event The MvcEvent passed by the EventManager
      * @return void
      */
-    public function logMvcEvent(MvcEvent $e)
+    public function logMvcEvent(MvcEvent $event)
     {
         $exception = $event->getParam('exception');
         if (!$exception instanceof \Throwable) {
@@ -124,7 +124,7 @@ class Client
             return;
         }
 
-        $this->logException("exception");
+        $this->logException($exception);
     }
 
     /**
