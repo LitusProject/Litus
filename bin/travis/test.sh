@@ -34,7 +34,7 @@ install() {
 
 case $1 in
     codestyle)
-        exec bin/fix-cs.sh --verbose
+        exec bin/php-cs-fixer.sh --verbose
         ;;
     install)
         install
