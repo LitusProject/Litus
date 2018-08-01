@@ -81,7 +81,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'paginator'         => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(true)
             )
         );
     }
@@ -317,8 +317,10 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
+        $language = $this->getParam('language');
+
         if ($invoice->hasContract()) {
-            $generator = new InvoiceGenerator($this->getEntityManager(), $invoice);
+            $generator = new InvoiceGenerator($this->getEntityManager(), $invoice, $language);
             $generator->generate();
         }
 
