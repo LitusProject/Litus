@@ -127,35 +127,6 @@ class Academic extends \CommonBundle\Repository\User\Person
     }
 
     /**
-     * @param  string              $barcode
-     * @return \Doctrine\ORM\Query
-     */
-    public function findAllByBarcodeQuery($barcode)
-    {
-        $barcodes = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Barcode')
-            ->findAllByBarcode($barcode);
-
-        $ids = array(0);
-        foreach ($barcodes as $barcode) {
-            $ids[] = $barcode->getId();
-        }
-
-        $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p')
-            ->from('CommonBundle\Entity\User\Person\Academic', 'p')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->in('p.id', $ids),
-                    $query->expr()->eq('p.canLogin', 'true')
-                )
-            )
-            ->getQuery();
-
-        return $resultSet;
-    }
-
-    /**
      * @param  string                                $username
      * @return \CommonBundle\Entity\User\Person|null
      */

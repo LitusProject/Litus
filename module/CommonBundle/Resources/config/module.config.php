@@ -78,6 +78,9 @@ return Config::create(
                 'formfactory.bootstrap' => new Component\Form\FactoryFactory(false),
                 'formfactory.admin'     => new Component\Form\FactoryFactory(true),
             ),
+            'abstract_factories' => array(
+                'Zend\Log\LoggerAbstractServiceFactory',
+            ),
             'invokables' => array(
                 'mail_transport'     => 'Zend\Mail\Transport\Sendmail',
                 'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',

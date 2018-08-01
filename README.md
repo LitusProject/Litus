@@ -19,7 +19,7 @@ This is only the tip of the iceberg and there is a lot more inside! You can easi
 Because we spent a great deal of time on this project, we thought it would be nice to release all our code under the AGPLv3 license. That way, you can contribute to it if you have a great idea or you think something's missing. We also wrote a lot of code to use various protocols and to integrate with other applications.
 
 The following files are exempt from the AGPLv3 license:
-- `config/{application,database,lilo}.config.php`, due to being configuration rather than code. These files are released under the MIT license.
+- `config/{application,database,sentry}.config.php`, due to being configuration rather than code. These files are released under the MIT license.
 - `public/img/glyphicons-halflings{,-white}.png` are part of [Bootstrap](http://getbootstrap.com/) and [thus](http://glyphicons.com/license/) licensed under the [MIT license](https://github.com/twbs/bootstrap/blob/master/LICENSE).
 - `public/_gollum/img/icon-sprite.png` is part of [Gollum](https://github.com/gollum/gollum), licensed as [CC-BY-SA](https://github.com/gollum/gollum/blob/master/licenses/licenses.txt) v3 or later.
 - The images in `public/{img/jquery_ui,_logistics/theme/images}`are part of [jQuery UI](http://jqueryui.com/) and [licensed](https://jquery.org/license/) under the MIT License.

@@ -201,12 +201,12 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
     public function typeaheadAction()
     {
-        $this->initAjax();
+        //$this->initAjax();
 
         $academics = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findAllByNameQuery($this->getParam('string'))
-            ->setMaxResults(20)
+            ->setMaxResults(10)
             ->getResult();
 
         $result = array();
@@ -218,6 +218,34 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
             $item->name = $academic->getFullName();
             $item->universityIdentification = $identification;
             $item->value = $academic->getFullName() . ' - ' . $identification;
+            $result[] = $item;
+        }
+
+        $barcodes = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Barcode')
+            ->findAllByBarcode($this->getParam('string'));
+        
+        if(count($barcodes) > 10) {
+            $barcodes = array_slice(0, 10);
+        }
+
+        $barcodePeople = array();
+        foreach ($barcodes as $barcode) {
+            $person = $barcode->getPerson();
+            if($person->canLogin()) {
+                $barcodePeople[] = $person;
+            }
+        }
+
+        foreach ($barcodePeople as $person) {
+            $barcode = $person->getBarcode()->getBarcode();
+            $universityIdentification = $person->getUniversityIdentification() ? $person->getUniversityIdentification() : $person->getUserName();
+
+            $item = (object) array();
+            $item->id = $person->getId();
+            $item->name = $person->getFullName();
+            $item->universityIdentification = $universityIdentification;
+            $item->value = $person->getFullName() . ' - ' . $barcode;
             $result[] = $item;
         }
 
