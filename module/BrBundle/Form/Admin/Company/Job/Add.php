@@ -137,17 +137,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'textarea',
+            'type'     => 'text',
             'name'     => 'email',
-            'label'    => 'Contact Information',
-            'required' => true,
+            'label'    => 'Email',
+            'required' => false,
             'options'  => array(
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
                     ),
+                    'validators' => array(
+                        array(
+                            'name' => 'EmailAddress',
+                        )
+                    ),
                 ),
-            ),
+            )
         ));
 
         $this->add(array(
