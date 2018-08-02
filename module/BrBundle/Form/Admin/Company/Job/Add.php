@@ -90,7 +90,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'       => 'sector',
             'label'      => 'Sector',
             'attributes' => array(
-                'options' => $this->getSectors(),
+                'options' => Company::POSSIBLE_SECTORS,
             ),
         ));
 
@@ -138,7 +138,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(array(
             'type'     => 'textarea',
-            'name'     => 'contact',
+            'name'     => 'email',
             'label'    => 'Contact Information',
             'required' => true,
             'options'  => array(
@@ -173,16 +173,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'location',
+            'label'      => 'Location',
+            'attributes' => array(
+                'options' => Company::POSSIBLE_LOCATIONS,
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'master',
+            'label'      => 'Master',
+            'attributes' => array(
+                'options' => Company::POSSIBLE_MASTERS,
+            ),
+        ));
+
         $this->addSubmit('Add', 'company_add');
     }
 
-    private function getSectors()
-    {
-        $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
-    }
 }

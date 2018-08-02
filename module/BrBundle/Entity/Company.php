@@ -166,7 +166,7 @@ class Company
     /**
      * @var array The possible masters for students
      */
-    public static $possibleMasters = array(
+    const POSSIBLE_MASTERS = array(
         'architectural engineering'     => 'Architectural Engineering',
         'biomedical engineering'        => 'Biomedical Engineering',
         'chemical engineering'          => 'Chemical Engineering',
@@ -184,7 +184,7 @@ class Company
     /**
      * @var array The possible sectors of a company
      */
-    public static $possibleSectors = array(
+    const POSSIBLE_SECTORS = array(
         'architecture' => 'Architecture & Construction',
         'audit'        => 'Audit',
         'automobile'   => 'Automobile',
@@ -206,7 +206,7 @@ class Company
     /**
      * @var array The possible locations for an internship or job
      */
-    public static $possibleLocations = array(
+    const POSSIBLE_LOCATIONS = array(
         'antwerp'         => 'Antwerp',
         'brussels'        => 'Brussels',
         'east flanders'   => 'East Flanders',
@@ -231,7 +231,7 @@ class Company
      */
     public static function isValidSector($sector)
     {
-        return array_key_exists($sector, self::$possibleSectors);
+        return array_key_exists($sector, Company::POSSIBLE_SECTORS);
     }
 
     /**
@@ -240,7 +240,7 @@ class Company
      */
     public static function isValidLocation($location)
     {
-        return array_key_exists($location, self::$possibleLocations);
+        return array_key_exists($location, Company::POSSIBLE_LOCATIONS);
     }
 
     /**
@@ -249,7 +249,7 @@ class Company
      */
     public static function isValidMaster($master)
     {
-        return array_key_exists($master, self::$possibleMasters);
+        return array_key_exists($master, Company::POSSIBLE_MASTERS);
     }
 
     /**
@@ -476,7 +476,7 @@ class Company
      */
     public function getSector()
     {
-        return self::$possibleSectors[$this->sector];
+        return Company::POSSIBLE_SECTORS[$this->sector];
     }
 
     /**

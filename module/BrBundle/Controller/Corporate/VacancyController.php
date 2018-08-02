@@ -361,18 +361,6 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         return $request;
     }
 
-    /**
-     * @return array
-     */
-    private function getSectors()
-    {
-        $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
-    }
 
     /**
      * @return array

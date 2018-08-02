@@ -56,7 +56,7 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'sector',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->createSectorArray(),
+                'options' => Company::POSSIBLE_SECTORS,
             ),
         ));
 
@@ -69,13 +69,4 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
         return self::$possibleSearchTypes;
     }
 
-    private function createSectorArray()
-    {
-        $sectorArray = array('all' => 'All');
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
-    }
 }

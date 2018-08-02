@@ -90,7 +90,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'sector',
             'label'      => 'Sector',
             'attributes' => array(
-                'options' => $this->getSectors(),
+                'options' => Company::POSSIBLE_SECTORS,
             ),
         ));
 
@@ -128,7 +128,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'master',
             'label'      => 'Master',
             'attributes' => array(
-                'options' => $this->getMasters(),
+                'options' => Company::POSSIBLE_MASTERS,
             ),
         ));
 
@@ -171,7 +171,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'location',
             'label'      => 'Location',
             'attributes' => array(
-                'options' => $this->getLocations(),
+                'options' => Company::POSSIBLE_LOCATIONS,
             ),
         ));
 
@@ -190,35 +190,5 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->addSubmit('Add');
-    }
-
-    private function getSectors()
-    {
-        $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
-    }
-
-    private function getLocations()
-    {
-        $locationArray = array();
-        foreach (Company::$possibleLocations as $key => $location){
-            $locationArray[$key] = $location;
-        }
-
-        return $locationArray;
-    }
-
-    private function getMasters()
-    {
-        $masterArray = array();
-        foreach (Company::$possibleMasters as $key => $master){
-            $masterArray[$key] = $master;
-        }
-
-        return $masterArray;
     }
 }

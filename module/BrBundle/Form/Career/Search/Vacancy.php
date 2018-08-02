@@ -56,7 +56,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'sector',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->createSectorArray(),
+                'options' => Company::POSSIBLE_SECTORS,
             ),
         ));
 
@@ -65,7 +65,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'location',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->createLocationArray(),
+                'options' => Company::POSSIBLE_LOCATIONS,
             ),
         ));
 
@@ -74,7 +74,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'master',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->createMasterArray(),
+                'options' => Company::POSSIBLE_MASTERS,
             ),
         ));
 
@@ -85,35 +85,5 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
     private function createSearchTypeArray()
     {
         return self::$possibleSearchTypes;
-    }
-
-    private function createSectorArray()
-    {
-        $sectorArray = array('all' => 'All');
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
-    }
-
-    private function createLocationArray()
-    {
-        $locationArray = array('all' => 'All');
-        foreach (Company::$possibleLocations as $key => $location){
-            $locationArray[$key] = $location;
-        }
-
-        return $locationArray;
-    }
-
-    private function createMasterArray()
-    {
-        $masterArray = array('all' => 'All');
-        foreach (Company::$possibleMasters as $key => $master){
-            $masterArray[$key] = $master;
-        }
-
-        return $masterArray;
     }
 }

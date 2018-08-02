@@ -363,19 +363,6 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     /**
      * @return array
      */
-    private function getSectors()
-    {
-        $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
-    }
-
-    /**
-     * @return array
-     */
     private function getOpenRequests($company)
     {
         $unhandledRequests = $this->getEntityManager()

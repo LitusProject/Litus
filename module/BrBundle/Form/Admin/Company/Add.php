@@ -68,7 +68,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Sector',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->getSectors(),
+                'options' => Company::POSSIBLE_SECTORS,
             ),
         ));
 
@@ -254,18 +254,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
     }
 
-    /**
-     * @return array
-     */
-    private function getSectors()
-    {
-        $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
-    }
 
     /**
      * @return array
