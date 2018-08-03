@@ -38,6 +38,13 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
         'vacancy'    => 'Vacancy',
     );
 
+    /**
+     * @var Array of all possible sectors, locations and masters.
+     */
+    const POSSIBLE_SECTORS = array('all'=>'All') + Company::POSSIBLE_SECTORS;
+    const POSSIBLE_LOCATIONS = array('all'=>'All') + Company::POSSIBLE_LOCATIONS;
+    const POSSIBLE_MASTERS = array('all'=>'All') + Company::POSSIBLE_MASTERS;
+
     public function init()
     {
         parent::init();
@@ -56,7 +63,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'sector',
             'required'   => true,
             'attributes' => array(
-                'options' => Company::POSSIBLE_SECTORS,
+                'options' => Vacancy::POSSIBLE_SECTORS,
             ),
         ));
 
@@ -65,7 +72,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'location',
             'required'   => true,
             'attributes' => array(
-                'options' => Company::POSSIBLE_LOCATIONS,
+                'options' => Vacancy::POSSIBLE_LOCATIONS,
             ),
         ));
 
@@ -74,7 +81,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'master',
             'required'   => true,
             'attributes' => array(
-                'options' => Company::POSSIBLE_MASTERS,
+                'options' => Vacancy::POSSIBLE_MASTERS,
             ),
         ));
 

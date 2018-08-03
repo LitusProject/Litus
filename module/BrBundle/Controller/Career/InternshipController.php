@@ -40,6 +40,7 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
             ->findAllActiveByTypeByDateQuery('internship');
 
         if ($this->getRequest()->isPost()) {
+
             $formData = $this->getRequest()->getPost();
             $internshipSearchForm->setData($formData);
 
@@ -49,20 +50,16 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
                 $repository = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company\Job');
 
-                if ('all' != $formData['sector']) {
-                    if ('company' == $formData['searchType']) {
-                        $query = $repository->findAllActiveByTypeAndSectorQuery('internship', $formData['sector']);
-                    } elseif ('internship' == $formData['searchType']) {
-                        $query = $repository->findAllActiveByTypeAndSectorByJobNameQuery('internship', $formData['sector']);
-                    } elseif ('mostRecent' == $formData['searchType']) {
-                        $query = $repository->findAllActiveByTypeAndSectorByDateQuery('internship', $formData['sector']);
-                    }
-                } else {
-                    if ('internship' == $formData['searchType']) {
-                        $query = $repository->findAllActiveByTypeByJobNameQuery('internship');
-                    } elseif ('mostRecent' == $formData['searchType']) {
-                        $query = $repository->findAllActiveByTypeByDateQuery('internship');
-                    }
+                $sector = $formData['sector'] == 'all' ? null : $formData['sector'];
+                $location = $formData['location'] == 'all' ? null : $formData['location'];
+                $master = $formData['master'] == 'all' ? null : $formData['master'];
+
+                if ('company' == $formData['searchType']) {
+                    $query = $repository->findAllActiveByTypeQuery('internship', $sector, $location, $master);
+                } elseif ('vacancy' == $formData['searchType']) {
+                    $query = $repository->findAllActiveByTypeSortedByJobNameQuery('internship', $sector, $location, $master);
+                } elseif ('mostRecent' == $formData['searchType']) {
+                    $query = $repository->findAllActiveByTypeSortedByDateQuery('internship', $sector, $location, $master);
                 }
             }
         }
