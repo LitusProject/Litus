@@ -279,10 +279,9 @@ return array(
         'br_career_company_search' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/career/company/search[/:string][/]',
+                'route'       => '[/:language]/career/company/search[/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'string'   => '[%a-zA-Z0-9:.,_-]*',
                     'language' => '[a-z]{2}',
                 ),
                 'defaults' => array(

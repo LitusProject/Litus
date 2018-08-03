@@ -84,13 +84,14 @@ class Page extends EntityRepository
 
     /**
      * @param  AcademicYear        $academicYear
-     * @param  string              $string
+     * @param  name                $name
+     * @param  sector              $sector
      * @return \Doctrine\ORM\Query
      */
-    public function findAllActiveBySearchQuery(AcademicYear $academicYear, $string)
+    public function findAllActiveBySearchQuery(AcademicYear $academicYear, $name="%%", $sector="")
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p, c')
+        $query = $query->select('p, c')
             ->from('BrBundle\Entity\Company\Page', 'p')
             ->innerJoin('p.years', 'y')
             ->innerJoin('p.company', 'c')
@@ -102,10 +103,16 @@ class Page extends EntityRepository
                 )
             )
             ->orderBy('c.name', 'ASC')
-            ->setParameter('name', strtolower($string))
-            ->setParameter('year', $academicYear)
-            ->getQuery();
+            ->setParameter('name', strtolower($name))
+            ->setParameter('year', $academicYear);
 
-        return $resultSet;
+        if ($sector !== "" && $sector !=="all") {
+            $query->andWhere(
+                $query->expr()->eq('c.sector', ':sector')
+            )
+            ->setParameter('sector', $sector);
+        }
+
+        return $query->getQuery();
     }
 }

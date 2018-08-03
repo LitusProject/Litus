@@ -10,6 +10,11 @@
     </div>
 
     <div style="text-align:right;margin-bottom: 10px;" class="form-inline">
+        <select id="sector" class="form-control" name="Sector" required="required">
+            {% for sector_id, sector_name in possible_sectors %}
+                <option value={{ sector_id }}>{{ sector_name }}</option>
+            {% endfor %}
+        </select>
         <input id="searchbox" type="text" class="search-query form-control" placeholder="{{ translate('Search') }}">
     </div>
 
@@ -21,47 +26,63 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#searchbox').bind("input propertychange", function(){
-                var $this = $(this);
-                var delay = 500;
-
-                clearTimeout($this.data("timer"));
-                $this.data("timer", setTimeout(function(){
-                    $this.removeData("timer");
-                    performSearch('%25' + $('#searchbox').val() + '%25');
-                }, delay));
+            $('#searchbox').bind("input propertychange", function() {
+                setTimer(500);
             });
 
-            performSearch('%25%25');
+            $('#sector').change(function(){
+                setTimer(500);
+            });
+
+            performSearch();
+
+            function setTimer(delay) {
+                var $this = $(this)
+
+                clearTimeout($this.data("timer"));
+                $this.data("timer", setTimeout(function() {
+                    $this.removeData("timer");
+                    performSearch();
+                }, delay));
+            }
         });
 
-        function performSearch(text) {
+        function performSearch() {
             $('#companies').html('').spin({
                 color: '#ccc',
                 length: 0,
                 width: 4,
                 lines: 10
             });
-            $.post('{{ url('br_career_company', {"action": "search"})}}' + text, function (data) {
-                $('#companies').html('');
-                $.each(data, function(index, element) {
-                    $('#companies').append(
-                        $('<div>', {'class': 'col-xs-6 col-sm-4 col-md-2'}).append(
-                            $('<div>', {'class': 'thumbnail'}).append(
-                                $('<a>', {'href': '{{ url("br_career_company", {"action": "view"}) }}' + element.slug}).append(
-                                    $('<span>').append(
-                                        element.logo ?
-                                            $('<img>', {'src': '/{{ logoPath }}/' + element.logo, 'alt': element.name}).css({'max-height': '100px', 'max-width': '120px', 'vertical-align': 'middle'})
-                                        :
-                                            $('<h4>').html(element.name).css({'position': 'absolute', 'top': '0', 'left': '0', 'width': '120px', 'line-height': '20px'}),
-                                        $('<span>').html(element.name).css({'position': 'absolute', 'bottom': '0', 'left': '0', 'width': '120px', 'line-height': '20px'})
-                                    ).css({'display': 'block', 'line-height': '120px', 'height': '150px', 'width': '120px', 'margin': '0 auto', 'text-align': 'center', 'position': 'relative'})
-                                )
-                            ).css({'text-align': 'center'})
-                        )
-                    );
-                });
-            }, 'json').error(errorSearch);
+
+            $.ajax({
+                type: "POST",
+                url: '{{ url('br_career_company', {'action': 'search'}) }}',
+                data: {query: '%' + $('#searchbox').val() + '%', sector: $('#sector').val()},
+                success: function (data) {
+                    $('#companies').html('');
+                    $.each(data, function(index, element) {
+                        $('#companies').append(
+                            $('<div>', {'class': 'col-xs-6 col-sm-4 col-md-2'}).append(
+                                $('<div>', {'class': 'thumbnail'}).append(
+                                    $('<a>', {'href': '{{ url("br_career_company", {"action": "view"}) }}' + element.slug}).append(
+                                        $('<span>').append(
+                                            element.logo ?
+                                                $('<img>', {'src': '/{{ logoPath }}/' + element.logo, 'alt': element.name}).css({'max-height': '100px', 'max-width': '120px', 'vertical-align': 'middle'})
+                                                :
+                                                $('<h4>').html(element.name).css({'position': 'absolute', 'top': '0', 'left': '0', 'width': '120px', 'line-height': '20px'}),
+                                            $('<span>').html(element.name).css({'position': 'absolute', 'bottom': '0', 'left': '0', 'width': '120px', 'line-height': '20px'})
+                                        ).css({'display': 'block', 'line-height': '120px', 'height': '150px', 'width': '120px', 'margin': '0 auto', 'text-align': 'center', 'position': 'relative'})
+                                    )
+                                ).css({'text-align': 'center'})
+                            )
+                        );
+                    });
+                },
+                dataType: 'json',
+                error: errorSearch,
+                }
+            );
         }
 
         function errorSearch() {
