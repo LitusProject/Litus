@@ -57,8 +57,8 @@ abstract class Pdf
     /**
      * @var String The possible languages for a generated pdf
      */
-    static const ENGLISH = "en";
-    static const DUTCH = "nl";
+    const ENGLISH = "en";
+    const DUTCH = "nl";
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
