@@ -65,13 +65,19 @@ class Invoice extends EntityRepository
     }
 
     /**
-     * @return int
+     * @param   String      $invoicePrefix  The invoice prefix for which you want to find the next invoice number
+     * @return  int
      */
-    public function findNextInvoiceNb()
+    public function findNextInvoiceNb($invoicePrefix)
     {
+
         $query = $this->getEntityManager()->createQueryBuilder();
         $highestInvoiceNb = $query->select('MAX(i.invoiceNb)')
             ->from('BrBundle\Entity\Invoice', 'i')
+            ->where(
+                $query->expr()->eq('i.invoiceNumberPrefix', ':prefix')
+            )
+            ->setParameter('prefix', $invoicePrefix)
             ->getQuery()
             ->getSingleScalarResult();
 

@@ -217,6 +217,12 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                     ->getConfigValue('br.file_path') . '/invoices/'
                     . $invoice->getInvoiceNumberPrefix();
 
+                if (!file_exists($filePath)) {
+                    if (!mkdir($filePath, 0770, true)) {
+                        throw new RuntimeException('Failed to create the PDF directory');
+                    }
+                }
+
                 do {
                     $fileName = '/' . $invoice->getInvoiceNumber() . '.pdf';
                 } while (file_exists($filePath . $fileName));
@@ -318,7 +324,6 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $language = $this->getParam('language');
-
         if ($invoice->hasContract()) {
             $generator = new InvoiceGenerator($this->getEntityManager(), $invoice, $language);
             $generator->generate();
