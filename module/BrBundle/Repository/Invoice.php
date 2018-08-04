@@ -72,7 +72,7 @@ class Invoice extends EntityRepository
     {
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        $highestInvoiceNb = $query->select('MAX(i.invoiceNb)')
+        $highestInvoiceNb = $query->select('COALESCE(MAX(i.invoiceNb), 0)')
             ->from('BrBundle\Entity\Invoice', 'i')
             ->where(
                 $query->expr()->eq('i.invoiceNumberPrefix', ':prefix')
