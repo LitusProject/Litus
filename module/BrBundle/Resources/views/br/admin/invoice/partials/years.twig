@@ -1,0 +1,9 @@
+<header class="controller_sub_header">
+    <nav class="controller_sub_nav">
+        <ul>
+            {% for invoiceYear in invoiceYears %}
+                <li><a {% if invoiceYear == activeInvoiceYear %} class="active" {% endif %}href="{{ url("br_admin_invoice", {"action": "manage", "invoiceyear": invoiceYear}) }}">{{ invoiceYear }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+</header>

@@ -48,6 +48,28 @@ class Invoice extends EntityRepository
     }
 
     /**
+     * @param   String      $invoiceYear        The year from which you want to find all the unpayed invoices.
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllUnPayedByInvoiceYearQuery($invoiceYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $result = $query->select('i')
+            ->from('BrBundle\Entity\Invoice', 'i')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->isNull('i.paidTime'),
+                    $query->expr()->like('i.invoiceNumberPrefix', ':invoiceYear')
+                )
+            )
+            ->setParameter('invoiceYear', $invoiceYear.'%')
+            ->orderBy('i.creationTime', 'DESC')
+            ->getQuery();
+
+        return $result;
+    }
+
+    /**
      * @return \Doctrine\ORM\Query
      */
     public function findAllPayedQuery()
@@ -83,4 +105,20 @@ class Invoice extends EntityRepository
 
         return (int) ++$highestInvoiceNb;
     }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllInvoicePrefixes()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $result = $query->select('i.invoiceNumberPrefix')
+            ->from('BrBundle\Entity\Invoice', 'i')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
 }

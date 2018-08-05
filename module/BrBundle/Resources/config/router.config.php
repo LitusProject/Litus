@@ -171,7 +171,7 @@ return array(
         'br_admin_invoice' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/invoice[/:action[/:id][/:payed][/date/:date][/page/:page][/:language]][/]',
+                'route'       => '/admin/br/invoice[/:action[/:invoiceyear][/:id][/:payed][/date/:date][/page/:page][/:language]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -179,6 +179,7 @@ return array(
                     'date'   => '[0-9]{2}/[0-9]{2}/[0-9]{4}',
                     'page'   => '[0-9]*',
                     'language' => '[a-z]{2}',
+                    'invoiceyear' => '[0-9]{4}',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_invoice',
