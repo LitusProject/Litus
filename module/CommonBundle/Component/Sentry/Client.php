@@ -119,11 +119,6 @@ class Client
             return;
         }
 
-        $errorTypes = (int) ($this->options->getErrorTypes() ?? error_reporting());
-        if ($exception instanceof \ErrorException && 0 === ($errorTypes & $exception->getSeverity())) {
-            return;
-        }
-
         $this->logException($exception);
     }
 
