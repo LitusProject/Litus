@@ -216,21 +216,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ),
                 array(
                     'type'       => 'textarea',
-                    'name'       => 'summary',
-                    'label'      => 'Summary',
-                    'attributes' => array(
-                        'id' => 'summary',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        ),
-                    ),
-                ),
-                array(
-                    'type'       => 'textarea',
                     'name'       => 'description',
                     'label'      => 'Description',
                     'attributes' => array(

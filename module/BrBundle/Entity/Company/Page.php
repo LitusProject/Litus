@@ -43,13 +43,6 @@ class Page
     private $id;
 
     /**
-     * @var string The summary of the company
-     *
-     * @ORM\Column(type="text")
-     */
-    private $summary;
-
-    /**
      * @var string The description of the company
      *
      * @ORM\Column(type="text")
@@ -104,25 +97,6 @@ class Page
     public function getCompany()
     {
         return $this->company;
-    }
-
-    /**
-     * @param  string                        $summary
-     * @return \BrBundle\Entity\Company\Page
-     */
-    public function setSummary($summary)
-    {
-        $this->summary = $summary;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSummary()
-    {
-        return $this->summary;
     }
 
     /**
