@@ -20,9 +20,12 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
+use CommonBundle\Component\Acl\Driver\Exception\RuntimeException;
 use CommonBundle\Component\Util\File\TmpFile,
     CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator,
     CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CudiBundle\Entity\Stock\Order\Item as OrderItem,
     CudiBundle\Entity\Stock\Order\Order,
     CudiBundle\Entity\Stock\Period,
@@ -38,6 +41,9 @@ use CommonBundle\Component\Util\File\TmpFile,
  */
 class OrderController extends \CudiBundle\Component\Controller\ActionController
 {
+
+    const NOT_APPLICABLE = "/";
+
     public function manageAction()
     {
         $paginator = $this->paginator()->createFromQuery(
@@ -239,6 +245,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     ->getRepository('CudiBundle\Entity\Stock\Order\Order')
                     ->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
 
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -391,6 +398,85 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'data' => $file->getContent(),
             )
         );
+
+
+    }
+
+    public function csvAction() {
+        if (!($order = $this->getOrderEntity())) {
+            return new ViewModel();
+        }
+
+        $sortOrder = $this->getParam('order');
+        $items = null;
+        switch($sortOrder) {
+            case 'barcode':
+                $items = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+                    ->findAllByOrderOnBarcode($order);
+                break;
+            case 'alpha':
+                $items = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Stock\Order\Item')
+                    ->findAllByOrderOnAlpha($order);
+                break;
+            default:
+                new RuntimeException("Unknown sorting order");
+        }
+
+        $file = new CsvFile();
+
+        $heading = array('Barcode', 'Title', 'RV', 'Binding', 'Color', '# Pages', 'Amount', 'Isbn', 'Author', 'Publisher');
+        $results = array();
+        foreach ($items as $item) {
+            if ($item->getArticle()->getMainArticle()->isInternal()) {
+                $results[] = array(
+                    (string) $item->getArticle()->getBarcode(),
+                    $item->getArticle()->getMainArticle()->getTitle(),
+                    $item->getArticle()->getMainArticle()->isRectoVerso() ? '1' : '0',
+                    $item->getArticle()->getMainArticle()->isRectoVerso() ? '1' : '0',
+                    $item->getArticle()->getMainArticle()->getBinding()->getName(),
+                    (string) ($item->getArticle()->getMainArticle()->getNbBlackAndWhite() + $item->getArticle()->getMainArticle()->getNbColored()),
+                    (string) $item->getNumber(),
+                    OrderController::NOT_APPLICABLE,
+                    OrderController::NOT_APPLICABLE,
+                    OrderController::NOT_APPLICABLE,
+                );
+            } else {
+                $result[] = array(
+                    OrderController::NOT_APPLICABLE,
+                    $item->getArticle()->getMainArticle()->getTitle(),
+                    OrderController::NOT_APPLICABLE,
+                    OrderController::NOT_APPLICABLE,
+                    OrderController::NOT_APPLICABLE,
+                    OrderController::NOT_APPLICABLE,
+                    (string) $item->getNumber(),
+                    (string) $item->getArticle()->getMainArticle()->getIsbn(),
+                    $item->getArticle()->getMainArticle()->getAuthors(),
+                    $item->getArticle()->getMainArticle()->getPublishers(),
+                );
+            }
+
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $filename = 'order ' . $order->getDateOrdered()->format('Ymd') . '.csv';
+
+        $headers = new Headers();
+        $headers->addHeaders(array(
+            'Content-Disposition' => 'attachment; filename=' . $filename,
+            'Content-Type'        => 'text/csv',
+        ));
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+
     }
 
     public function exportAction()
