@@ -289,7 +289,7 @@
                     <fo:table-cell><fo:block text-align="right">Tel: +32 (0)16 20.00.97 <xsl:apply-templates select="right"/></fo:block></fo:table-cell>
                 </fo:table-row>
                 <fo:table-row>
-                    <fo:table-cell><fo:block text-align="left">KBC: 745-175900-11 <xsl:apply-templates select="left"/></fo:block></fo:table-cell>
+                    <fo:table-cell><fo:block text-align="left">KBC: 745-01 75900-11 <xsl:apply-templates select="left"/></fo:block></fo:table-cell>
                     <fo:table-cell><fo:block>Faculteitskring Ingenieurswetenschappen <xsl:apply-templates select="center"/></fo:block></fo:table-cell>
                     <fo:table-cell><fo:block text-align="right">Fax: +32 (0)16 20.65.29 <xsl:apply-templates select="right"/></fo:block></fo:table-cell>
                 </fo:table-row>
