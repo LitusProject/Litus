@@ -78,9 +78,9 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li>
-                                        <a href="">
+                                        <a href="{{ url("br_corporate_company", {"action": "edit", "language": language.getAbbrev()}) }}">
                                             <b class="fullName">{{ authenticatedPerson.getFullName() }}</b>
-                                            <small class="metadata">{{ company.getName() }}</small>
+                                            <small class="metadata">{{ authenticatedPerson.getCompany().getName() }}</small>
                                         </a>
                                     </li>
                                     <li class="divider"></li>
