@@ -20,7 +20,9 @@
 
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
+        <h1>Edit</h1>
         {{ forms.renderForm(propertiesForm) }}
+        <h1>Participants</h1>
         {{ forms.renderForm(companyMapForm) }}
 
          <table class="manage">
@@ -42,7 +44,7 @@
             {% endfor %}
         </table>
     </div>
-     <div class="modal fade" id="removeAttendee" tabindex="-1">
+    <div class="modal fade" id="removeAttendee" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
