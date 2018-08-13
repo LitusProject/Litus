@@ -28,7 +28,7 @@ use BrBundle\Entity\Company;
  */
 class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    protected $hydrator = 'BrBundle\Hydrator\Company\Company';
+    protected $hydrator = 'BrBundle\Hydrator\Company';
 
     protected $company;
 
