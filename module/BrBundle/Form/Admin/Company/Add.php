@@ -192,7 +192,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'type'     => 'common_address_add',
                     'name'     => 'invoice_address',
                     'label'    => 'Invoice Address',
-                    'required' => false,
+                    'required' => true,
                 ),
             ),
         ));
