@@ -171,6 +171,29 @@ class Printer
     }
 
     /**
+     * @param EntityManager   $entityManager
+     * @param string          $printer
+     * @param Academic        $academic
+     */
+    public static function membershipCard(EntityManager $entityManager, $printer, Academic $academic)
+    {
+        if (!($academic instanceof Academic)) {
+            return;
+        }
+
+        $data = array(
+            'id'        => $academic->getUniversityIdentification(),
+            'barcode'   => $academic->getUniversityIdentification(),
+            'firstName' => $academic->getFirstName(),
+            'lastName'  => $academic->getLastName(),
+            'comment'   => $comment,
+            'type'      => 4,
+        );
+
+        self::doPrint($entityManager, $printer, $data);
+    }
+
+    /**
      * @param EntityManager $entityManager
      * @param string        $printer
      * @param array         $data
