@@ -329,6 +329,7 @@ Student IT Cudi
         'value' => serialize(
             array(
                 'signin'    => 'LITUS-SignIn',
+                'card'      => 'LITUS-Card',
                 'collect_1' => 'LITUS-Collect',
                 'collect_2' => 'LITUS-Collect',
                 'collect_3' => 'LITUS-Collect',
@@ -471,6 +472,11 @@ Student IT Cudi
         'key'         => 'cudi.signing_printer',
         'value'       => 'signin',
         'description' => 'Printer used to print sign-in tickets.',
+    ),
+    array(
+        'key'         => 'cudi.card_printer',
+        'value'       => 'card',
+        'description' => 'Printer used to print membership cards.',
     ),
     array(
         'key'         => 'cudi.enable_sale_article_barcode_check',

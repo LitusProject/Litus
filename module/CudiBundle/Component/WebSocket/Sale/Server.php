@@ -476,24 +476,6 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             $saleItems
         );
 
-        $academic = $item->getPerson();
-
-        if (!($academic instanceof Academic)) {
-            return;
-        }
-
-        if('member' != $academic->getOrganizationStatus($this->getCurrentAcademicYear())){
-            return;
-        }
-
-        Printer::membershipCard(
-            $entityManager, 
-            $this->entityManager
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.card_printer'), 
-            $academic
-        );
-
     }
 
     /**

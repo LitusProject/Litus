@@ -24,6 +24,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CudiBundle\Component\WebSocket\Sale\Printer as Printer,
     CudiBundle\Entity\IsicCard,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Sale\SaleItem,
@@ -283,6 +284,15 @@ class QueueItem
                 } else {
                     if ('non_member' === $status->getStatus()) {
                         $status->setStatus('member');
+
+                        Printer::membershipCard(
+                            $this->entityManager, 
+                            $this->entityManager
+                                    ->getRepository('CommonBundle\Entity\General\Config')
+                                    ->getConfigValue('cudi.card_printer'), 
+                            $booking->getPerson(),
+                            $this->getCurrentAcademicYear()
+                        );
                     }
                 }
 
