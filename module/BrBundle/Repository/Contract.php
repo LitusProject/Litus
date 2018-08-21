@@ -23,6 +23,7 @@ namespace BrBundle\Repository;
 use BrBundle\Entity\Collaborator as CollaboratorEntity,
     BrBundle\Entity\Company as CompanyEntity,
     CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Contract
@@ -78,6 +79,44 @@ class Contract extends EntityRepository
      */
     public function findAllNewOrSignedByPerson(CollaboratorEntity $person)
     {
+//        $query = $this->getEntityManager()->createQueryBuilder();
+//        $result = $query->select('c')
+//            ->from('BrBundle\Entity\Contract', 'c')
+//            ->innerjoin('c.order','o')
+//            ->where(
+//                $query->expr()->andX(
+//                    $query->expr()->eq('c.author', ':person'),
+//                    $query->expr()->eq('o.old', 'false')
+//                )
+//            )
+//            ->setParameter('person', $person)
+//            ->getQuery()
+//            ->getResult();
+
+        $result = $this->findAllNewOrSignedByPersonQuery($person)->getResult();
+
+        return $result;
+    }
+
+    /**
+     * @param  AcademicYear                                $year
+     * @param  CollaboratorEntity                           $person
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findAllNewOrSignedByPersonByYear(CollaboratorEntity $person, AcademicYear $year)
+    {
+        $result = $this->findAllNewOrSignedByPersonByYearQuery($person, $year)->getResult();
+
+        return $result;
+    }
+
+    /**
+     * @param  AcademicYear                                $year
+     * @param  CollaboratorEntity                           $person
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllNewOrSignedByPersonByYearQuery(CollaboratorEntity $person, AcademicYear $year)
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('c')
             ->from('BrBundle\Entity\Contract', 'c')
@@ -85,12 +124,14 @@ class Contract extends EntityRepository
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('c.author', ':person'),
-                    $query->expr()->eq('o.old', 'false')
+                    $query->expr()->eq('o.old', 'false'),
+                    $query->expr()->between("c.date", ':start', ':end')
                 )
             )
             ->setParameter('person', $person)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('start', $year->getStartDate()->format('Y-m-d H:i:s'))
+            ->setParameter('end', $year->getEndDate()->format('Y-m-d H:i:s'))
+            ->getQuery();
 
         return $result;
     }
@@ -191,6 +232,26 @@ class Contract extends EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         $result = $query->select('DISTINCT(c.author)')
             ->from('BrBundle\Entity\Contract', 'c')
+            ->getQuery()
+            ->getResult();
+
+        return $result;
+    }
+
+    /**
+     * @param   AcademicYear    $year
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findContractAuthorsByYear(AcademicYear $year)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $result = $query->select('DISTINCT(c.author)')
+            ->from('BrBundle\Entity\Contract', 'c')
+            ->where(
+                $query->expr()->between('c.date', ':start', ':end')
+            )->setParameter('start', $year->getStartDate()->format('Y-m-d H:i:s'))
+            ->setParameter('end', $year->getEndDate()->format('Y-m-d H:i:s'))
             ->getQuery()
             ->getResult();
 
