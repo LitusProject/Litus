@@ -67,4 +67,34 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
     {
         return $this->barcode;
     }
+
+    /**
+     * @return integer
+     */
+    public static function generateBarcode(){
+        $gs1 = 540; //Belgium
+        $unique = mt_rand(0, pow(10, 9) - 1); // Random 9 digit number
+        $ean12 = $gs1*pow(10, 9) + $unique; // Full 12 digit number
+
+        return $ean12;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPrintableCode(){
+        $ean12 = $this->barcode;
+        $splitted = str_split($ean12);
+
+        $weight1 = 0;
+        $weight3 = 0;
+        for($i = 0; $i < 6; $i++){
+            $weight3 += (int) $splitted[$i*2];
+            $weight1 += (int) $splitted[$i*2+1];
+        } 
+        $sum = 1*$weight1 + 3*$weight3;
+        $checkdigit = $sum%10;
+
+        $ean13 = 10*$ean12 + $checkdigit;
+    }
 }
