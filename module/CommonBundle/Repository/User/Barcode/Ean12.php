@@ -20,6 +20,8 @@
 
 namespace CommonBundle\Repository\User\Barcode;
 
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+
 /**
  * Ean12
  *

@@ -24,6 +24,7 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Barcode\Ean12 as Ean12,
     CudiBundle\Component\WebSocket\Sale\Printer as Printer,
     CudiBundle\Entity\IsicCard,
     CudiBundle\Entity\Sale\Booking,
@@ -272,6 +273,16 @@ class QueueItem
             if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
                 $status = $booking->getPerson()
                     ->getOrganizationStatus($this->getCurrentAcademicYear());
+
+                $ean12s = $this->entityManager
+                    ->getRepository('CommonBundle\Entity\User\Barcode')
+                    ->findValidEan12ByPerson($booking->getPerson());
+
+                if($ean12s === null){
+                    $barcode = new Ean12($booking->getPerson(), Ean12::generateUnusedBarcode($this->entityManager));
+                    $this->entityManager->persist($barcode);
+                }
+                
                 if (null === $status) {
                     $booking->getPerson()
                         ->addOrganizationStatus(
@@ -294,15 +305,6 @@ class QueueItem
                             $this->getCurrentAcademicYear()
                         );
                     }
-                }
-
-                $ean12s = $this->entityManager
-                    ->getRepository('CommonBundle\User\Barcode\Ean12')
-                    ->getOneByPerson($booking->getPerson());
-
-                if($ean12s === null){
-                    $barcode = new Ean12(Ean12::generateUnusedBarcode());
-                    $this->entityManager->persist($barcode);
                 }
 
                 $registration = $this->entityManager

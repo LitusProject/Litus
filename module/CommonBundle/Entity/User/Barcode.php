@@ -89,6 +89,7 @@ abstract class Barcode
     {
         $this->person = $person;
         $this->creationTime = new DateTime();
+        $this->valid = true;
     }
 
     /**
@@ -124,5 +125,23 @@ abstract class Barcode
         if ($this instanceof QR) {
             return 'qr';
         }
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getValid()
+    {
+        return $this->valid;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function setValid($valid)
+    {
+        $this->valid = $valid;
+
+        return $this;
     }
 }

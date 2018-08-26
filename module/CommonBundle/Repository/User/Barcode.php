@@ -197,25 +197,33 @@ class Barcode extends EntityRepository
         return array_merge($qrResult, $ean12Result);
     }
 
+    /**
+     * @param  Person   $person
+     * @return \CommonBundle\Entity\User\Barcode\Ean12|null
+     */
+
     public function findValidEan12ByPerson($person){
         if(!($person instanceof Person)){
             return null;
         }
 
         $query = $this->getEntityManager()
-            ->createQueryBuilder()
-            ->select('b')
-            ->from('CommonBundle\Entity\User\Barcode', 'b')
+            ->createQueryBuilder();
+
+        $resultSet = $query->select('b')
+            ->from('CommonBundle\Entity\User\Barcode\Ean12', 'b')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('b.person', ':person'),
-                    $query->expr()->eq('b.inheritanceType', ':inheritanceType')
+                    $query->expr()->eq('b.valid', ':valid')
                 )
             )
-            ->setParameter('person', $person)
-            ->setParameter('inheritanceType', 'ean12')
+            ->setParameter('person', $person->getId())
+            ->setParameter('valid', true)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+
+        return $resultSet;
     }
 }

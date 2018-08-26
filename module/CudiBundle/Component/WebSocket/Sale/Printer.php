@@ -196,9 +196,11 @@ class Printer
             return;
         }
 
+        $printableBarcode = $barcode->getPrintableCode();
+
         $data = array(
             'id'        => $academic->getUsername(),
-            'barcode'   => $barcode,
+            'barcode'   => $printableBarcode,
             'firstName' => $academic->getFirstName(),
             'lastName'  => $academic->getLastName(),
             'comment'   => $comment,
