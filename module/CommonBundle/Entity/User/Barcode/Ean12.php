@@ -71,11 +71,16 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
     /**
      * @return integer
      */
-    public static function generateBarcode(){
-        $gs1 = 540; //Belgium
-        $unique = mt_rand(0, pow(10, 9) - 1); // Random 9 digit number
-        $ean12 = $gs1*pow(10, 9) + $unique; // Full 12 digit number
+    public static function generateUnusedBarcode($entityManager){
+        do{
+            $gs1 = 540; //Belgium
+            $unique = mt_rand(0, pow(10, 9) - 1); // Random 9 digit number
+            $ean12 = $gs1*pow(10, 9) + $unique; // Full 12 digit number
 
+            $match = $entityManager
+                ->getRepository('CommonBundle\Entity\User\Barcode\Ean12')
+                ->findOneByBarcode($ean12);
+        }while($match != null);
         return $ean12;
     }
 

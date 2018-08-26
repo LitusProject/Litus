@@ -296,6 +296,15 @@ class QueueItem
                     }
                 }
 
+                $ean12s = $this->entityManager
+                    ->getRepository('CommonBundle\User\Barcode\Ean12')
+                    ->getOneByPerson($booking->getPerson());
+
+                if($ean12s === null){
+                    $barcode = new Ean12(Ean12::generateUnusedBarcode());
+                    $this->entityManager->persist($barcode);
+                }
+
                 $registration = $this->entityManager
                     ->getRepository('SecretaryBundle\Entity\Registration')
                     ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->getCurrentAcademicYear());

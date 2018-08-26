@@ -23,6 +23,7 @@ namespace CommonBundle\Repository\User;
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     CommonBundle\Entity\General\AcademicYear,
     CommonBundle\Entity\General\Organization,
+    CommonBundle\Entity\User\Person,
     RuntimeException;
 
 /**
@@ -194,5 +195,27 @@ class Barcode extends EntityRepository
             ->getResult();
 
         return array_merge($qrResult, $ean12Result);
+    }
+
+    public function findValidEan12ByPerson($person){
+        if(!($person instanceof Person)){
+            return null;
+        }
+
+        $query = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('b')
+            ->from('CommonBundle\Entity\User\Barcode', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.person', ':person'),
+                    $query->expr()->eq('b.inheritanceType', ':inheritanceType')
+                )
+            )
+            ->setParameter('person', $person)
+            ->setParameter('inheritanceType', 'ean12')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }
