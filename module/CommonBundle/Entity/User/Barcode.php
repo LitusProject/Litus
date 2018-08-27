@@ -74,6 +74,13 @@ abstract class Barcode
     private $creationTime;
 
     /**
+     * @var boolean Flag wether the bar code is still valid
+     *
+     * @ORM\Column(type="boolean", options={"default": true})
+     */
+    private $valid;
+
+    /**
      * Constructs a new barcode
      *
      * @param Person $person
@@ -82,6 +89,7 @@ abstract class Barcode
     {
         $this->person = $person;
         $this->creationTime = new DateTime();
+        $this->valid = true;
     }
 
     /**
@@ -117,5 +125,23 @@ abstract class Barcode
         if ($this instanceof QR) {
             return 'qr';
         }
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getValid()
+    {
+        return $this->valid;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function setValid($valid)
+    {
+        $this->valid = $valid;
+
+        return $this;
     }
 }

@@ -188,9 +188,19 @@ class Printer
 
         $comment = $organization.' '.$year->getCode();
 
+        $barcode = $entityManager
+            ->getRepository('CommonBundle\Entity\User\Barcode')
+            ->findValidEan12ByPerson($academic);
+
+        if($barcode === null){
+            return;
+        }
+
+        $printableBarcode = $barcode->getPrintableCode();
+
         $data = array(
             'id'        => $academic->getUsername(),
-            'barcode'   => $academic->getUsername(),
+            'barcode'   => $printableBarcode,
             'firstName' => $academic->getFirstName(),
             'lastName'  => $academic->getLastName(),
             'comment'   => $comment,
