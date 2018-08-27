@@ -282,7 +282,7 @@ class QueueItem
                     $barcode = new Ean12($booking->getPerson(), Ean12::generateUnusedBarcode($this->entityManager));
                     $this->entityManager->persist($barcode);
                 }
-                
+
                 if (null === $status) {
                     $booking->getPerson()
                         ->addOrganizationStatus(
@@ -295,17 +295,17 @@ class QueueItem
                 } else {
                     if ('non_member' === $status->getStatus()) {
                         $status->setStatus('member');
-
-                        Printer::membershipCard(
-                            $this->entityManager, 
-                            $this->entityManager
-                                    ->getRepository('CommonBundle\Entity\General\Config')
-                                    ->getConfigValue('cudi.card_printer'), 
-                            $booking->getPerson(),
-                            $this->getCurrentAcademicYear()
-                        );
                     }
                 }
+
+                Printer::membershipCard(
+                    $this->entityManager, 
+                    $this->entityManager
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.card_printer'), 
+                    $booking->getPerson(),
+                    $this->getCurrentAcademicYear()
+                );
 
                 $registration = $this->entityManager
                     ->getRepository('SecretaryBundle\Entity\Registration')
