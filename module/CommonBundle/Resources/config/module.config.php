@@ -143,7 +143,7 @@ return Config::create(
             'buildOnRequest' => getenv('APPLICATION_ENV') == 'development',
             'debug'          => false,
             'webPath'        => __DIR__ . '/../../../../public/_assetic',
-            'cacheEnabled'   => true,
+            'cacheEnabled'   => getenv('APPLICATION_ENV') != 'development',
             'cachePath'      => __DIR__ . '/../../../../data/cache',
             'basePath'       => '/_assetic/',
         ),
