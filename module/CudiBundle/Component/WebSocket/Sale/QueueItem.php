@@ -276,7 +276,7 @@ class QueueItem
 
                 $ean12s = $this->entityManager
                     ->getRepository('CommonBundle\Entity\User\Barcode')
-                    ->findValidEan12ByPerson($booking->getPerson());
+                    ->findEan12ByPerson($booking->getPerson());
 
                 if($ean12s === null){
                     $barcode = new Ean12($booking->getPerson(), Ean12::generateUnusedBarcode($this->entityManager));

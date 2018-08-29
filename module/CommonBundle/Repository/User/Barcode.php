@@ -202,7 +202,7 @@ class Barcode extends EntityRepository
      * @return \CommonBundle\Entity\User\Barcode\Ean12|null
      */
 
-    public function findValidEan12ByPerson($person){
+    public function findEan12ByPerson($person){
         if(!($person instanceof Person)){
             return null;
         }
@@ -214,12 +214,10 @@ class Barcode extends EntityRepository
             ->from('CommonBundle\Entity\User\Barcode\Ean12', 'b')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->eq('b.person', ':person'),
-                    $query->expr()->eq('b.valid', ':valid')
+                    $query->expr()->eq('b.person', ':person')
                 )
             )
             ->setParameter('person', $person->getId())
-            ->setParameter('valid', true)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

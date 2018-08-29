@@ -190,7 +190,7 @@ class Printer
 
         $barcode = $entityManager
             ->getRepository('CommonBundle\Entity\User\Barcode')
-            ->findValidEan12ByPerson($academic);
+            ->findEan12ByPerson($academic);
 
         if($barcode === null){
             return;
