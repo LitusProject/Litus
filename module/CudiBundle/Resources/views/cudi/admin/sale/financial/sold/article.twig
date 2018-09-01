@@ -90,6 +90,7 @@
                     <th width="70px">Sell Price</th>
                     <th width="70px">Discount</th>
                     <th width="70px" class="wider">Sale Type</th>
+                    <th width="100px" class="wider">Payment Type</th>
                 </tr>
             </table>
         </div>
@@ -105,6 +106,7 @@
                     <th width="70px">Sell Price</th>
                     <th width="70px">Discount</th>
                     <th width="70px" class="wider">Sale Type</th>
+                    <th width="100px" class="wider">Payment Type</th>
                 </tr>
 
                 {% for item in paginator %}
@@ -117,6 +119,7 @@
                         <td>&euro; {{ (item.getPrice()/100)|number_format(2) }}</td>
                         <td>{{ item.getDiscountType() }}</td>
                         <td class="wider">{{ item.getType()|capitalize }}</td>
+                        <td class="wider">{{ item.getQueueItem().getPayMethod() }}</td>
                     </tr>
                 {% endfor %}
             </table>
