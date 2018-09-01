@@ -24,6 +24,7 @@
                 {{ forms.renderForm(form) }}
 
                 <p id="photo-help-link">{{translate('Visit isic.vtk.be if you still need a picture, or want to resize a picture to the correct size!')}}</p>
+                <p>{{ additionalConditions|raw }}</p>
             </div>
         {% else %}
             <p>{{ translate('Something went wrong with your order. Please email isic@vtk.be with the following error:') }} {{error}}</p>

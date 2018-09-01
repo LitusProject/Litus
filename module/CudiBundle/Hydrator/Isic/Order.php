@@ -66,8 +66,9 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         if (isset($data['optins']['newsletter'])) {
             $result['Optin'] = $data['optins']['newsletter'] == true ? '1' : '0';
         }
-        $result['postOptOut'] = $data['optins']['post'] == true ? '0' : '1';
-        $result['postOptOutThird'] = $data['optins']['post_third'] == true ? '0' : '1';
+        if (isset($data['optins']['npartners'])) {
+            $result['partnerOptin'] = $data['optins']['partners'] == true ? '1' : '0';
+        }
 
         $result['Photo'] = $this->convertBase64($data['photo_group']['photo']);
         $result['ImageExtension'] = pathinfo($data['photo_group']['photo']['name'], PATHINFO_EXTENSION);

@@ -121,7 +121,10 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
         }
 
         if (!$isicCard->hasPaid()) {
-            $client = new SoapClient('http://isicregistrations.guido.be/service.asmx?WSDL');
+            $serviceUrl = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.isic_service_url');
+            $client = new SoapClient($serviceUrl);
             $config = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config');
 

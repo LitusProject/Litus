@@ -282,6 +282,10 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.isic_newsletter_mandatory');
 
+        $partnerMandatory = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.isic_partner_mandatory');
+
         $this->add(array(
             'type'     => 'fieldset',
             'name'     => 'optins',
@@ -299,15 +303,14 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
                 array(
                     'type'  => 'checkbox',
-                    'name'  => 'post',
+                    'name'  => 'partners',
                     'value' => true,
-                    'label' => 'Receive post from ISIC/Club',
-                ),
-                array(
-                    'type'  => 'checkbox',
-                    'name'  => 'post_third',
-                    'value' => true,
-                    'label' => 'Receive post from ISIC/Club partners',
+                    'label' => 'Receive information from ISIC partners',
+                    'value'      => 1 == $partnerMandatory,
+                    'attributes' => array(
+                        'id'       => 'partners',
+                        'disabled' => 1 == $partnerMandatory,
+                    ),
                 ),
             ),
 

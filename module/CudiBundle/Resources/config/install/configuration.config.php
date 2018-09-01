@@ -504,6 +504,11 @@ Student IT Cudi
         'description' => 'Enable the isic info on the bookings page.',
     ),
     array(
+        'key'         => 'cudi.isic_service_url',
+        'value'       => 'https://isicregistrations.guido.be/service.asmx',
+        'description' => 'The url for the ISIC SOAP API.',
+    ),
+    array(
         'key'         => 'cudi.isic_username',
         'value'       => '',
         'description' => 'The username for the ISIC SOAP API.',
@@ -556,8 +561,31 @@ Student IT Cudi
         'description' => 'Whether or not the ISIC newsletter is mandatory.',
     ),
     array(
+        'key'         => 'cudi.isic_partner_mandatory',
+        'value'       => '0',
+        'description' => 'Whether or not the ISIC partners information is mandatory.',
+    ),
+    array(
         'key'         => 'cudi.isic_delay_order',
         'value'       => '0',
         'description' => 'Whether or not to delay an ISIC order until it has been paid for.',
+    ),
+    array(
+        'key'   => 'cudi.isic_additional_conditions',
+        'value' => serialize(
+            array(
+                'en' => '<b>By clicking \'Order\' I herby consent</b> with the storage of above data by GUIDO NV, Bruiloftstraat 127, 9050 Gentbrugge.<br>
+This allows GUIDO to keep you updated in the future about their hints, tricks, news, activities, games etc...<br>
+We will never sell your data to third parties.<br>
+In each electronic communication you will receive from GUIDO, you will get the possibility to unsubscribe from future communications. You will also be possible to consult and correct your data at all times. (cfr. GDPR regulation to protect your privacy)
+This is a direct link to our online-privacy page: <a href="https://www.guido.be/Specialepaginas/Privacy.aspx">https://www.guido.be/Specialepaginas/Privacy.aspx</a>.',
+                'nl' => '<b>Door op \'Bestel\' te klikken sta ik toe</b> dat bovenstaande gegevens kunnen worden opgenomen in het bestand van GUIDO NV, Bruiloftstraat 127, 9050 Gentbrugge.<br>
+Zo kan GUIDO je ook in de toekomst op de hoogte houden van onze tips, trucs, nieuwtjes, activiteiten, wedstrijden etc...<br>
+Wij verkopen je gegevens nooit aan derden.<br>
+Bij elke elektronische post die je van GUIDO zal ontvangen, krijg je trouwens de mogelijkheid om je uit te schrijven voor toekomstige elektronische communicatie en je kunt je gegevens steeds raadplegen en laten verbeteren. (cfr. De GDPR-wetgeving op de privacy)<br>
+Dit is de rechtstreekse link naar onze online-privacy pagina: <a href="https://www.guido.be/Specialepaginas/Privacy.aspx">https://www.guido.be/Specialepaginas/Privacy.aspx</a>.'
+                )
+            ),
+        'description' => 'The additional conditions to be displayed below the isic registration form.',
     ),
 );
