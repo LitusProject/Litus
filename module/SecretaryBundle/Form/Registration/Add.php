@@ -259,6 +259,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ->getConfigValue('secretary.membership_article')
         );
 
+        $isicMembership = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.isic_membership');
+
         $this->add(array(
             'type'       => 'fieldset',
             'name'       => 'organization_info',
@@ -285,10 +289,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'       => empty($memberShipArticles) ? 'hidden' : 'checkbox',
+                    'type'       => (empty($memberShipArticles) && !($isicMembership == '1')) ? 'hidden' : 'checkbox',
                     'name'       => 'become_member',
                     'label'      => 'I want to become a member of the student association in academic year { year } (&euro; { price })',
-                    'value'      => true,
+                    'value'      => (empty($memberShipArticles) && !($isicMembership == '1')) ? false : true,
                     'attributes' => array(
                         'id'       => 'become_member',
                         'disabled' => 1 != $registrationEnabled,
