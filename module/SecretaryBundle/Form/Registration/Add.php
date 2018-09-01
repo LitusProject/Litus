@@ -253,6 +253,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('secretary.enable_registration');
 
+        $memberShipArticles = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.membership_article')
+        );
+
         $this->add(array(
             'type'       => 'fieldset',
             'name'       => 'organization_info',
@@ -279,7 +285,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'       => 'checkbox',
+                    'type'       => empty($memberShipArticles) ? 'hidden' : 'checkbox',
                     'name'       => 'become_member',
                     'label'      => 'I want to become a member of the student association in academic year { year } (&euro; { price })',
                     'value'      => true,
