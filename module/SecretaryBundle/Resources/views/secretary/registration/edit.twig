@@ -131,18 +131,21 @@
                             .end()
                             .attr('checked', false);
                     } else {
-                        $form.find('#become_member')
+                         $form.find('#become_member')
                             .closest('.form-group')
-                                .show()
-                            .end()
-                            .closest('label')
-                                .html(
-                                    $form.find('#become_member')
-                                        .closest('label')
-                                        .html()
-                                        .replace('{ price }', membershipArticles[$(this).data('id')])
-                                        .replace('{ year }', '{{ academicYear.getCode() }}')
-                                );
+                                .show();
+
+                        if ($form.find('#become_member').is(':visible')) {
+                            $form.find('#become_member')
+                                .closest('label')
+                                    .html(
+                                        $form.find('#become_member')
+                                            .closest('label')
+                                            .html()
+                                            .replace('{ price }', membershipArticles[$(this).data('id')])
+                                            .replace('{ year }', '{{ academicYear.getCode() }}')
+                                    );
+                        }
                     }
 
                     return false;
@@ -151,15 +154,17 @@
                 $form.find('#organization')
                     .closest('.form-group')
                         .hide();
-                $form.find('#become_member')
-                    .closest('label')
-                    .html(
-                        $form.find('#become_member')
-                            .closest('label')
-                            .html()
-                            .replace('{ price }', membershipArticles[$form.find('#organization').val()])
-                            .replace('{ year }', '{{ academicYear.getCode() }}')
-                    );
+                if ($form.find('#become_member').is(':visible')) {
+                    $form.find('#become_member')
+                        .closest('label')
+                        .html(
+                            $form.find('#become_member')
+                                .closest('label')
+                                .html()
+                                .replace('{ price }', membershipArticles[$('#registerForm #organization').val()])
+                                .replace('{ year }', '{{ academicYear.getCode() }}')
+                        );
+                }
             {% endif %}
 
             {% if selectedOrganization %}

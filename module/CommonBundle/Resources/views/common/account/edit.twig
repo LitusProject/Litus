@@ -102,16 +102,19 @@
                 $form.find('#become_member')
                     .closest('label')
                     .closest('.form-group')
-                        .show()
-                    .end()
-                    .closest('label')
-                        .html(
+                        .show();
+
+                        if ($form.find('#become_member').is(':visible')) {
                             $form.find('#become_member')
                                 .closest('label')
-                                .html()
-                                .replace('{ price }', membershipArticles[$form.find('#organization').val()])
-                                .replace('{ year }', '{{ academicYear.getCode() }}')
-                        );
+                                    .html(
+                                        $form.find('#become_member')
+                                            .closest('label')
+                                            .html()
+                                            .replace('{ price }', membershipArticles[$(this).data('id')])
+                                            .replace('{ year }', '{{ academicYear.getCode() }}')
+                                    );
+                        }
             }
 
             $('.primary-address .city').change(cityChange);
