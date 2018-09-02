@@ -207,10 +207,10 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                     $result = 'OKS 032 123 456 789 A';
                 } else {
                     if ($delayOrder) {
-                        $result = $this->client->addUnpaidIsicRegistration($arguments)->addUnpaidIsicRegistrationResult;
+                        $result = $client->addUnpaidIsicRegistration($arguments)->addUnpaidIsicRegistrationResult;
                         $regex = '/^OK(\d+)$/i';
                     } else {
-                        $result = $this->client->addIsicRegistration($arguments)->addIsicRegistrationResult;
+                        $result = $client->addIsicRegistration($arguments)->addIsicRegistrationResult;
                     }
                 }
 
