@@ -201,6 +201,11 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                     $arguments['Optin'] = '1';
                 }
 
+                $newsletterMandatory = $config->getConfigValue('cudi.isic_partner_mandatory');
+                if ($newsletterMandatory == 1) {
+                    $arguments['partnerOptin'] = '1';
+                }
+
                 $result = '';
                 $regex = '/^OK(S 032 (\d{3} ){3}[A-Za-z])$/i';
                 if ('development' == getenv('APPLICATION_ENV')) {

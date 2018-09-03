@@ -295,7 +295,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     'type'       => 'checkbox',
                     'name'       => 'newsletter',
                     'label'      => 'Receive the ISIC/Club newsletter',
-                    'value'      => 1 == $newsletterMandatory,
+                    'value'      => $newsletterMandatory,
                     'attributes' => array(
                         'id'       => 'newsletter',
                         'disabled' => 1 == $newsletterMandatory,
@@ -304,9 +304,8 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                 array(
                     'type'  => 'checkbox',
                     'name'  => 'partners',
-                    'value' => true,
                     'label' => 'Receive information from ISIC partners',
-                    'value'      => 1 == $partnerMandatory,
+                    'value'      => $partnerMandatory,
                     'attributes' => array(
                         'id'       => 'partners',
                         'disabled' => 1 == $partnerMandatory,

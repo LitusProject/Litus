@@ -24,7 +24,7 @@ return array(
     'Home Address'         => 'Adres',
     'Contact Details'      => 'Contact Info',
     'Photo'                => 'Foto',
-    'Newsletter'           => 'Newsletter',
+    'Newsletter'           => 'Nieuwsbrief',
 
     'Birthplace'          => 'Geboorteplaats',
     'Course'              => 'Studierichting',
