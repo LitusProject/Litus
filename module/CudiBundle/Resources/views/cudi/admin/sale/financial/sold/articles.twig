@@ -71,7 +71,7 @@
                                         {% if discount.getOrganization().getName() != '' %}
                                             {{ discount.getOrganization().getName() }} &#61; 
                                         {% endif %}
-                                        &euro; {{ (discount.apply(item.getPurchasePrice())/100)|number_format(2) }} &nbsp;
+                                        &euro; {{ (discount.apply(item.getSellPrice())/100)|number_format(2) }} &nbsp;
                                     {% else %}
                                         &euro; {{ (item.getSellPrice()/100)|number_format(2) }}
                                     {% endif %}
