@@ -111,7 +111,7 @@
                                         $form.find('#become_member')
                                             .closest('label')
                                             .html()
-                                            .replace('{ price }', membershipArticles[$(this).data('id')])
+                                            .replace('{ price }', membershipArticles[$form.find('#organization').val()])
                                             .replace('{ year }', '{{ academicYear.getCode() }}')
                                     );
                         }
