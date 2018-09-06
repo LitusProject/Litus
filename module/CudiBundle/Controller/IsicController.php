@@ -297,7 +297,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
         $additionalConditions = unserialize(
                         $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('cudi.isic_additional_conditions')
+                            ->getConfigValue('cudi.isic_Guido_conditions')
                     );
 
         return new ViewModel(

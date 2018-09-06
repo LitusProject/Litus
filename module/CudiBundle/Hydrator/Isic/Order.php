@@ -77,7 +77,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $result['Photo'] = $this->convertBase64($data['photo_group']['photo']);
         $result['ImageExtension'] = pathinfo($data['photo_group']['photo']['name'], PATHINFO_EXTENSION);
 
-        $result['postOptOutThird'] = '';
+        $result['postOptOutThird'] = '1';
 
         return $result;
     }

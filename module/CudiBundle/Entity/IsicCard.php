@@ -28,7 +28,7 @@ use CommonBundle\Entity\General\AcademicYear,
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\IsicCard")
- * @ORM\Table(name="cudi.isic_card")
+ * @ORM\Table(name="cudi.isic_card", uniqueConstraints={@ORM\UniqueConstraint(name="year_person_unique", columns={"person", "academic_year"})})
  */
 class IsicCard
 {
@@ -44,7 +44,7 @@ class IsicCard
     /**
      * @var The owner of the card
      *
-     * @ORM\OneToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
      */
     private $person;

@@ -34,7 +34,7 @@ return array(
     'Order'               => 'Bestel',
 
     'Receive the ISIC/Club newsletter'          => 'Stuur mij de ISIC/Club nieuwsbrief',
-    'Receive information from ISIC partners'    => 'Stuur mij informatie van ISIC partners',
+    'Receive information Guido NV'    => 'Stuur mij informatie van Guido NV',
 
     'You do not have permission to view this page.'                         => 'U heeft geen toegang tot deze pagina.',
     'You need to be logged in to view this page.'                           => 'U moet ingelogd zijn om deze pagina te bekijken.',

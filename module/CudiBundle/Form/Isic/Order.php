@@ -304,7 +304,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                 array(
                     'type'  => 'checkbox',
                     'name'  => 'partners',
-                    'label' => 'Receive information from ISIC partners',
+                    'label' => 'Receive information Guido NV',
                     'value'      => $partnerMandatory,
                     'attributes' => array(
                         'id'       => 'partners',

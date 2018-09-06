@@ -34,7 +34,7 @@ return array(
     'Order'               => 'Order',
 
     'Receive the ISIC/Club newsletter'          => 'Receive the ISIC/Club newsletter',
-    'Receive information from ISIC partners'    => 'Receive information from ISIC partners',
+    'Receive information Guido NV'    => 'Receive information Guido NV',
 
     'You do not have permission to view this page! Make sure you are logged in.' => 'You do not have permission to view this page! Make sure you are logged in.',
     'Orders for ISIC cards are currently disabled, please try again later.'      => 'Orders for ISIC cards are currently disabled, please try again later.',
