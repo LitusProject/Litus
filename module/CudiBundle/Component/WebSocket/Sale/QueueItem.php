@@ -247,10 +247,11 @@ class QueueItem
                     ->findOneBy(array('booking' => $booking->getId()));
 
                 if (!$isicCard->hasPaid()) {
-                    $serviceUrl = $config->getConfigValue('cudi.isic_service_url');
-                    $client = new SoapClient($serviceUrl);
                     $config = $this->entityManager
                     ->getRepository('CommonBundle\Entity\General\Config');
+
+                    $serviceUrl = $config->getConfigValue('cudi.isic_service_url');
+                    $client = new SoapClient($serviceUrl);
 
                     $arguments = array();
                     $arguments['username'] = $config->getConfigValue('cudi.isic_username');
