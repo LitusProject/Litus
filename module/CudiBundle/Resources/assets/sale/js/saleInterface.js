@@ -526,7 +526,7 @@
                             )
                         ),
                         $('<div>', {'class': 'modal-footer'}).append(
-                            addButton = $('<button>', {'class': 'btn btn-primary disabled'}).html(settings.tAdd),
+                            addButton = $('<button>', {'class': 'btn btn-primary disabled', 'data-key': 13}).html(settings.tAdd),
                             $('<button>', {'class': 'btn btn-default'}).html(settings.tClose).click(function () {
                                 $(this).closest('.modal').modal('hide').on('hidden', function () {
                                     $(this).remove();
@@ -546,12 +546,12 @@
             if ($(this).data('value')) {
                 articleId.val($(this).data('value').id);
 
-                addButton.removeClass('disabled').click(function () {
+                addButton.removeClass('disabled').unbind().click(function () {
                     settings.addArticle($this.data('data').id, articleId.val());
                     $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
                         $(this).remove();
                     });
-                }).click();
+                });
             }
         });
 
