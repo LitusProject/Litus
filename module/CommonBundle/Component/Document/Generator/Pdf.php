@@ -50,9 +50,15 @@ abstract class Pdf
     protected $xmlFile;
 
     /**
-     * @var string The
+     * @var string The path where the pdf will be generated
      */
     protected $pdfPath;
+
+    /**
+     * @var String The possible languages for a generated pdf
+     */
+    const ENGLISH = "en";
+    const DUTCH = "nl";
 
     /**
      * @param EntityManager $entityManager The EntityManager instance

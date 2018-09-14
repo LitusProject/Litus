@@ -68,7 +68,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Sector',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->getSectors(),
+                'options' => Company::POSSIBLE_SECTORS,
             ),
         ));
 
@@ -192,7 +192,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'type'     => 'common_address_add',
                     'name'     => 'invoice_address',
                     'label'    => 'Invoice Address',
-                    'required' => false,
+                    'required' => true,
                 ),
             ),
         ));
@@ -212,21 +212,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'multiple' => true,
                         'options'  => $this->getYears(),
-                    ),
-                ),
-                array(
-                    'type'       => 'textarea',
-                    'name'       => 'summary',
-                    'label'      => 'Summary',
-                    'attributes' => array(
-                        'id' => 'summary',
-                    ),
-                    'options' => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                        ),
                     ),
                 ),
                 array(
@@ -254,18 +239,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
     }
 
-    /**
-     * @return array
-     */
-    private function getSectors()
-    {
-        $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
-    }
 
     /**
      * @return array

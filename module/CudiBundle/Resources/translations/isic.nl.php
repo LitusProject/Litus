@@ -24,7 +24,7 @@ return array(
     'Home Address'         => 'Adres',
     'Contact Details'      => 'Contact Info',
     'Photo'                => 'Foto',
-    'Newsletter'           => 'Newsletter',
+    'Newsletter'           => 'Nieuwsbrief',
 
     'Birthplace'          => 'Geboorteplaats',
     'Course'              => 'Studierichting',
@@ -33,9 +33,8 @@ return array(
     'Photo (140 x 200)'   => 'Foto (140 x 200)',
     'Order'               => 'Bestel',
 
-    'Receive the ISIC newsletter' => 'Stuur mij de ISIC nieuwsbrief',
-    'Receive post from VTK'       => 'Stuur mij post van VTK',
-    'Receive post from ISIC'      => 'Stuur mij post van ISIC',
+    'Receive the ISIC/Club newsletter'          => 'Stuur mij de ISIC/Club nieuwsbrief',
+    'Receive information Guido NV'    => 'Stuur mij informatie van Guido NV',
 
     'You do not have permission to view this page.'                         => 'U heeft geen toegang tot deze pagina.',
     'You need to be logged in to view this page.'                           => 'U moet ingelogd zijn om deze pagina te bekijken.',

@@ -38,6 +38,13 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
         'mostRecent' => 'Most Recent',
     );
 
+    /**
+     * @var Array of all possible sectors, locations and masters.
+     */
+    const POSSIBLE_SECTORS = array('all'=>'All') + Company::POSSIBLE_SECTORS;
+    const POSSIBLE_LOCATIONS = array('all'=>'All') + Company::POSSIBLE_LOCATIONS;
+    const POSSIBLE_MASTERS = array('all'=>'All') + Company::POSSIBLE_MASTERS;
+
     public function init()
     {
         parent::init();
@@ -56,7 +63,25 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'sector',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->createSectorArray(),
+                'options' => Internship::POSSIBLE_SECTORS,
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'location',
+            'required'   => true,
+            'attributes' => array(
+                'options' => Internship::POSSIBLE_LOCATIONS,
+            ),
+        ));
+
+        $this->add(array(
+            'type'       => 'select',
+            'name'       => 'master',
+            'required'   => true,
+            'attributes' => array(
+                'options' => Internship::POSSIBLE_MASTERS,
             ),
         ));
 
@@ -69,13 +94,4 @@ class Internship extends \CommonBundle\Component\Form\Bootstrap\Form
         return self::$possibleSearchTypes;
     }
 
-    private function createSectorArray()
-    {
-        $sectorArray = array('all' => 'All');
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
-    }
 }

@@ -63,14 +63,21 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $result['School'] = $data['studies']['school'];
         $result['StudentCity'] = $data['studies']['student_city'];
         $result['Year'] = $data['studies']['year'];
-        if (isset($data['optins']['newsletter'])) {
-            $result['Optin'] = $data['optins']['newsletter'] == true ? '1' : '0';
+
+        $result['Optin'] = '0';
+        if(isset($data['optins']['newsletter'])) {
+            $result['Optin'] = $data['optins']['newsletter'];
         }
-        $result['postOptOut'] = $data['optins']['post'] == true ? '0' : '1';
-        $result['postOptOutThird'] = $data['optins']['post_third'] == true ? '0' : '1';
+
+        $result['partnerOptin'] = '0';
+        if(isset($data['optins']['partners'])) {
+            $result['partnerOptin'] = $data['optins']['partners'];
+        }
 
         $result['Photo'] = $this->convertBase64($data['photo_group']['photo']);
         $result['ImageExtension'] = pathinfo($data['photo_group']['photo']['name'], PATHINFO_EXTENSION);
+
+        $result['postOptOutThird'] = '1';
 
         return $result;
     }

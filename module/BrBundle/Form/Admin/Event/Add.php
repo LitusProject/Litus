@@ -40,75 +40,105 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        $this->add(array(
-            'type'     => 'text',
-            'name'     => 'title',
-            'label'    => 'Event Title',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'title',
+                'label'    => 'Event Title',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
                     ),
                 ),
-            ),
-        ));
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'textarea',
+                'name'       => 'description',
+                'label'      => 'Description',
+                'attributes' => array(
+                    'id' => 'description',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'start_date',
+                'label'    => 'Start Date',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'date',
+                                'options' => array(
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+         
+        $this->add(
+            array(
+                'type'     => 'datetime',
+                'name'     => 'end_date',
+                'label'    => 'End Date',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'date_compare',
+                                'options' => array(
+                                    'first_date' => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
 
         $this->add(array(
-            'type'       => 'textarea',
-            'name'       => 'description',
-            'label'      => 'Description',
+            'type'       => 'submit',
+            'name'       => 'event_add',
+            'value'      => 'Add',
             'attributes' => array(
-                'id' => 'description',
-            ),
-            'options' => array(
-                'input' => array(
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                ),
+                'class' => 'mail_add',
             ),
         ));
 
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'start_date',
-            'label'    => 'Start Date',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'date',
-                            'options' => array(
-                                'format' => 'd/m/Y H:i',
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ));
+        if (null !== $this->event) {
+            $this->bind($this->event);
+        }
+    }
 
-        $this->add(array(
-            'type'     => 'datetime',
-            'name'     => 'end_date',
-            'label'    => 'End Date',
-            'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(
-                        array(
-                            'name'    => 'date_compare',
-                            'options' => array(
-                                'first_date' => 'start_date',
-                                'format'     => 'd/m/Y H:i',
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ));
+    /**
+     * @param  Event $event
+     * @return self
+     */
+    public function setEvent(Event $event)
+    {
+        $this->event = $event;
 
-        $this->addSubmit('Add', 'event_add');
+        return $this;
     }
 }

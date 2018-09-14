@@ -168,10 +168,10 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                         return new ViewModel();
                     }
                 } else {
-                    $this->logToLilo('Code not valid (' . $this->getParam('identification') . ')', array('auth'));
+                    $this->logMessage('Code not valid (' . $this->getParam('identification') . ')');
                 }
             } else {
-                $this->logToLilo('No code specifier (' . $this->getParam('identification') . ')', array('auth'));
+                $this->logMessage('No code specifier (' . $this->getParam('identification') . ')');
             }
         }
 

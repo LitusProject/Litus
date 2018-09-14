@@ -93,6 +93,57 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
+    public function printAction()
+    {
+        $this->initAjax();
+
+        if (!($isicCard = $this->getIsicCardEntity())) {
+            return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'error'),
+            )
+        );
+        }
+
+        if ($isicCard->getBooking()->getStatus() !== 'sold') {
+            return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'error'),
+            )
+        );
+        }
+
+        if (!$isicCard->hasPaid()) {
+            $serviceUrl = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.isic_service_url');
+            $client = new SoapClient($serviceUrl);
+            $config = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config');
+
+            $arguments = array();
+            $arguments['username'] = $config->getConfigValue('cudi.isic_username');
+            $arguments['password'] = $config->getConfigValue('cudi.isic_password');
+            $arguments['userID'] = $isicCard->getCardNumber();
+
+            $client->hasPaid($arguments);
+            $isicCard->setPaid(true);
+
+            $this->getEntityManager()->flush();
+        } else {
+            return new ViewModel(
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
+        }
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
 
     public function unassignAction()
     {

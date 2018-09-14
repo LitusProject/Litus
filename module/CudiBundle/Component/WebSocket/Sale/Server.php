@@ -475,6 +475,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
             $item,
             $saleItems
         );
+
     }
 
     /**

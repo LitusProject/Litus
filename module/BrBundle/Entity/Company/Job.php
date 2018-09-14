@@ -473,7 +473,7 @@ class Job
      */
     public function getMaster()
     {
-        return Company::$possibleMasters[$this->master];
+        return Company::POSSIBLE_MASTERS[$this->master];
     }
 
     /**
@@ -504,7 +504,7 @@ class Job
      */
     public function getLocation()
     {
-        return Company::$possibleLocations[$this->location];
+        return Company::POSSIBLE_LOCATIONS[$this->location];
     }
 
     /**
@@ -550,7 +550,7 @@ class Job
      */
     public function getSector()
     {
-        return Company::$possibleSectors[$this->sector];
+        return Company::POSSIBLE_SECTORS[$this->sector];
     }
 
     /**

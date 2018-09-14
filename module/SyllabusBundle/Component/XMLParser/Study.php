@@ -416,6 +416,7 @@ class Study
             'phone' => null,
         );
         $client = new HttpClient();
+        $client->setOptions(array('sslcapath' => '/etc/ssl/certs'));
         $response = $client->setUri('http://www.kuleuven.be/wieiswie/nl/person/' . $identification)
             ->send();
 

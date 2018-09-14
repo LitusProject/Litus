@@ -100,7 +100,7 @@
             {% endif %}
             {% if hasAccess('cudi_admin_stock_order', 'pdf') %}
                 <div class="sidebox">
-                    <div class="title">Print Order</div>
+                    <div class="title">Print(pdf) Order</div>
                     <div class="content">
                         <p>
                             <i>Please hit the link below to print the order for the supplier!</i>
@@ -121,6 +121,20 @@
                         </p>
                         <p>
                             <a href="#" id="exportOrder">&rarr; Export Order</a>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if hasAccess('cudi_admin_stock_order', 'csv') %}
+                <div class="sidebox">
+                    <div class="title">Csv Order</div>
+                    <div class="content">
+                        <p>
+                            <i>Please hit the link below to export the order to csv for the supplier!</i>
+                        </p>
+                        <p>
+                            <a href="{{ url('cudi_admin_stock_order', {"action": "csv", "id": order.getId(), "order": "alpha"}) }}">&rarr; Order (Alphabetic)</a>
+                            <a href="{{ url('cudi_admin_stock_order', {"action": "csv", "id": order.getId(), "order": "barcode"}) }}">&rarr; Order (On Barcode)</a>
                         </p>
                     </div>
                 </div>

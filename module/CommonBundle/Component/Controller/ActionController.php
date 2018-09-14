@@ -487,16 +487,16 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * Retrieve lilo from the DI container.
+     * Log a message to Sentry.
      *
      * @param  string   $message
-     * @param  string[] $tags
      * @return void
      */
-    protected function logToLilo($message, array $tags = array())
+    protected function logMessage($message)
     {
         if ('development' != getenv('APPLICATION_ENV')) {
-            $this->getServiceLocator()->get('lilo')->sendLog($message, $tags);
+            $this->getServiceLocator()->get('sentry')
+                ->logMessage($message);
         }
     }
 

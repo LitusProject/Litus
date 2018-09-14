@@ -78,6 +78,9 @@ return Config::create(
                 'formfactory.bootstrap' => new Component\Form\FactoryFactory(false),
                 'formfactory.admin'     => new Component\Form\FactoryFactory(true),
             ),
+            'abstract_factories' => array(
+                'Zend\Log\LoggerAbstractServiceFactory',
+            ),
             'invokables' => array(
                 'mail_transport'     => 'Zend\Mail\Transport\Sendmail',
                 'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
@@ -140,7 +143,7 @@ return Config::create(
             'buildOnRequest' => getenv('APPLICATION_ENV') == 'development',
             'debug'          => false,
             'webPath'        => __DIR__ . '/../../../../public/_assetic',
-            'cacheEnabled'   => true,
+            'cacheEnabled'   => getenv('APPLICATION_ENV') != 'development',
             'cachePath'      => __DIR__ . '/../../../../data/cache',
             'basePath'       => '/_assetic/',
         ),

@@ -140,14 +140,4 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         return $request;
     }
-
-    private function getSectors()
-    {
-        $sectorArray = array();
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
-    }
 }

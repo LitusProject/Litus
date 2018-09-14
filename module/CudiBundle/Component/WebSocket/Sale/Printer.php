@@ -21,6 +21,7 @@
 namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Entity\User\Person\Academic,
+    CommonBundle\Entity\General\AcademicYear as AcademicYear,
     CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
     Doctrine\ORM\EntityManager;
 
@@ -165,6 +166,45 @@ class Printer
             'totalAmount' => (string) number_format($totalPrice / 100, 2),
             'items'       => $articles,
             'type'        => 3,
+        );
+
+        self::doPrint($entityManager, $printer, $data);
+    }
+
+    /**
+     * @param EntityManager   $entityManager
+     * @param string          $printer
+     * @param Person          $person
+     */
+    public static function membershipCard(EntityManager $entityManager, $printer, Academic $academic, AcademicYear $year)
+    {
+        if (!($academic instanceof Academic)) {
+            return;
+        }
+
+        $organization = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('organization_short_name');
+
+        $comment = $organization.' '.$year->getCode();
+
+        $barcode = $entityManager
+            ->getRepository('CommonBundle\Entity\User\Barcode')
+            ->findEan12ByPerson($academic);
+
+        if($barcode === null){
+            return;
+        }
+
+        $printableBarcode = $barcode->getPrintableCode();
+
+        $data = array(
+            'id'        => $academic->getUsername(),
+            'barcode'   => $printableBarcode,
+            'firstName' => $academic->getFirstName(),
+            'lastName'  => $academic->getLastName(),
+            'comment'   => $comment,
+            'type'      => 4,
         );
 
         self::doPrint($entityManager, $printer, $data);

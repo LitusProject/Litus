@@ -69,10 +69,12 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
+        $currentYear = $this->getCurrentAcademicYear();
+
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
-                ->findAllNewOrSignedByPersonQuery($person),
+                ->findAllNewOrSignedByPersonByYearQuery($person, $currentYear),
             $this->getParam('page')
         );
 
@@ -308,9 +310,13 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
         $totalMInvoiced = 0;
         $totalPaid = 0;
 
+        $currentYear = $this->getCurrentAcademicYear();
+
         $ids = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Contract')
-            ->findContractAuthors();
+            ->findContractAuthorsByYear($currentYear);
+
+        echo "<script>console.log(".json_encode($ids).")</script>";
 
         $ccollection = array();
         foreach ($ids as $id) {
@@ -320,7 +326,11 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
 
             $contracts = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Contract')
-                ->findAllNewOrSignedByPerson($person);
+                ->findAllNewOrSignedByPersonByYear($person, $currentYear);
+
+            if (count($contracts) == 0) {
+                continue;
+            }
 
             $contracted = 0;
             $invoiceN = 0;

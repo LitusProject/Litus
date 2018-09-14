@@ -18,6 +18,8 @@
         </div>
     </div>
 
+    {% include 'br/admin/invoice/partials/years.twig' %}
+
     <div id="controller_action">
         <table class="full_width manage">
             <tr>
@@ -57,7 +59,8 @@
                             <a href="{{ url('br_admin_invoice', {"action": "view", "id": row['invoice'].getId()}) }}" class="view">View</a>
                         {% endif %}
                         {% if hasAccess('br_admin_invoice', 'download') %}
-                            <a href="{{ url('br_admin_invoice', {"action": "download", "id": row['invoice'].getId()}) }}" class="download">Download</a>
+                            <a href="{{ url('br_admin_invoice', {"action": "download", "id": row['invoice'].getId(), "language": "en"}) }}" class="download">Download EN</a>
+                            <a href="{{ url('br_admin_invoice', {"action": "download", "id": row['invoice'].getId(), "language": "nl"}) }}" class="download">Download NL</a>
                         {% endif %}
                     </td>
                 </tr>

@@ -38,6 +38,13 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
         'vacancy'    => 'Vacancy',
     );
 
+    /**
+     * @var Array of all possible sectors, locations and masters.
+     */
+    const POSSIBLE_SECTORS = array('all'=>'All') + Company::POSSIBLE_SECTORS;
+    const POSSIBLE_LOCATIONS = array('all'=>'All') + Company::POSSIBLE_LOCATIONS;
+    const POSSIBLE_MASTERS = array('all'=>'All') + Company::POSSIBLE_MASTERS;
+
     public function init()
     {
         parent::init();
@@ -56,7 +63,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'sector',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->createSectorArray(),
+                'options' => Vacancy::POSSIBLE_SECTORS,
             ),
         ));
 
@@ -65,7 +72,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'location',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->createLocationArray(),
+                'options' => Vacancy::POSSIBLE_LOCATIONS,
             ),
         ));
 
@@ -74,7 +81,7 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'master',
             'required'   => true,
             'attributes' => array(
-                'options' => $this->createMasterArray(),
+                'options' => Vacancy::POSSIBLE_MASTERS,
             ),
         ));
 
@@ -85,35 +92,5 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
     private function createSearchTypeArray()
     {
         return self::$possibleSearchTypes;
-    }
-
-    private function createSectorArray()
-    {
-        $sectorArray = array('all' => 'All');
-        foreach (Company::$possibleSectors as $key => $sector) {
-            $sectorArray[$key] = $sector;
-        }
-
-        return $sectorArray;
-    }
-
-    private function createLocationArray()
-    {
-        $locationArray = array('all' => 'All');
-        foreach (Company::$possibleLocations as $key => $location) {
-            $locationArray[$key] = $location;
-        }
-
-        return $locationArray;
-    }
-
-    private function createMasterArray()
-    {
-        $masterArray = array('all' => 'All');
-        foreach (Company::$possibleMasters as $key => $master) {
-            $masterArray[$key] = $master;
-        }
-
-        return $masterArray;
     }
 }

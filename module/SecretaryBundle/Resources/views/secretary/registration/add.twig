@@ -121,16 +121,19 @@
                     } else {
                         $form.find('#become_member')
                             .closest('.form-group')
-                                .show()
-                            .end()
-                            .closest('label')
-                                .html(
-                                    $form.find('#become_member')
-                                        .closest('label')
-                                        .html()
-                                        .replace('{ price }', membershipArticles[$(this).data('id')])
-                                        .replace('{ year }', '{{ academicYear.getCode() }}')
-                                );
+                                .show();
+
+                        if ($form.find('#become_member').is(':visible')) {
+                            $form.find('#become_member')
+                                .closest('label')
+                                    .html(
+                                        $form.find('#become_member')
+                                            .closest('label')
+                                            .html()
+                                            .replace('{ price }', membershipArticles[$(this).data('id')])
+                                            .replace('{ year }', '{{ academicYear.getCode() }}')
+                                    );
+                        }
                     }
 
                     return false;
@@ -139,15 +142,18 @@
                 $form.find('#organization')
                     .closest('.form-group')
                         .hide();
-                $form.find('#become_member')
-                    .closest('label')
-                    .html(
-                        $form.find('#become_member')
-                            .closest('label')
-                            .html()
-                            .replace('{ price }', membershipArticles[$('#registerForm #organization').val()])
-                            .replace('{ year }', '{{ academicYear.getCode() }}')
-                    );
+
+                if ($form.find('#become_member').is(':visible')) {
+                    $form.find('#become_member')
+                        .closest('label')
+                        .html(
+                            $form.find('#become_member')
+                                .closest('label')
+                                .html()
+                                .replace('{ price }', membershipArticles[$('#registerForm #organization').val()])
+                                .replace('{ year }', '{{ academicYear.getCode() }}')
+                        );
+                }
             {% endif %}
 
             $('#conditions').parent().append(
@@ -160,7 +166,7 @@
             });
 
             $('#register').click(function (e) {
-                if (!$('#become_member').is(':checked') && $form.find('#organization').val() != 0) {
+                if (!$form.find('#become_member').is(':checked') && $form.find('#organization').val() != 0) {
                     $('#modalMemberWarning')
                         .modal()
                         .find('.confirm')
@@ -180,8 +186,8 @@
                 $('#organization > option[value="0"]').click();
             {% endif %}
 
-            $('.primary-address .city').change(cityChange);
-            $('#become_member').change(toggleMember);
+            $form.find('.primary-address .city').change(cityChange);
+            $form.find('#become_member').change(toggleMember);
             toggleMember();
             cityChange();
 

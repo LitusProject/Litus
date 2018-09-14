@@ -102,7 +102,6 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->getPage()->setYears($years)
-            ->setSummary($data['page']['summary'])
             ->setDescription($data['page']['description']);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
@@ -146,7 +145,6 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
             foreach ($page->getYears() as $year) {
                 $data['page']['years'][] = $year->getId();
             }
-            $data['page']['summary'] = $page->getSummary();
             $data['page']['description'] = $page->getDescription();
         }
 

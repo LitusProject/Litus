@@ -393,6 +393,8 @@ class Order
             }
         }
 
+        $cost = ($cost - ($cost * $this->getAutoDiscountPercentage() / 100));
+
         return (double) $cost;
     }
 

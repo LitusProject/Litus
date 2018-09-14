@@ -56,10 +56,29 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
     public function manageAction()
     {
+        $invoiceYear = $this->getParam('invoiceyear');
+
+        if($invoiceYear == null){
+            $invoiceYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.invoice_year_number');
+        }
+        
+
+        $invoicePrefixes = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Invoice')
+            ->findAllInvoicePrefixes();
+
+        $invoiceYears = [];
+        foreach($invoicePrefixes as $invoicePrefix){
+            $invoiceYears[] = substr($invoicePrefix['invoiceNumberPrefix'], 0, 4);
+        }
+        $invoiceYears = array_unique($invoiceYears);
+
         $invoices = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Invoice')
-                        ->findAllUnPayedQuery()
-                        ->getResult();
+            ->getRepository('BrBundle\Entity\Invoice')
+            ->findAllUnPayedByInvoiceYearQuery($invoiceYear)
+            ->getResult();
 
         $invoiceData = [];
         foreach ($invoices as $invoice) {
@@ -80,8 +99,10 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
+                'invoiceYears'      => $invoiceYears,
+                'activeInvoiceYear' => $invoiceYear,
                 'paginator'         => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl' => $this->paginator()->createControl(true)
             )
         );
     }
@@ -217,6 +238,12 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                     ->getConfigValue('br.file_path') . '/invoices/'
                     . $invoice->getInvoiceNumberPrefix();
 
+                if (!file_exists($filePath)) {
+                    if (!mkdir($filePath, 0770, true)) {
+                        throw new RuntimeException('Failed to create the PDF directory');
+                    }
+                }
+
                 do {
                     $fileName = '/' . $invoice->getInvoiceNumber() . '.pdf';
                 } while (file_exists($filePath . $fileName));
@@ -317,8 +344,9 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
+        $language = $this->getParam('language');
         if ($invoice->hasContract()) {
-            $generator = new InvoiceGenerator($this->getEntityManager(), $invoice);
+            $generator = new InvoiceGenerator($this->getEntityManager(), $invoice, $language);
             $generator->generate();
         }
 

@@ -4,58 +4,59 @@
 >
 
     <xsl:template name="invoice_all_u">
-        <xsl:text>FACTUUR</xsl:text>
+        <xsl:text>INVOICE</xsl:text>
     </xsl:template>
 
     <xsl:template name="invoice_address_u">
-        <xsl:text>Facturatieadres</xsl:text>
+        <xsl:text>Invoice Address</xsl:text>
     </xsl:template>
 
     <xsl:template name="invoice_number_u">
-        <xsl:text>Factuurnummer</xsl:text>
+        <xsl:text>Invoice Nb.</xsl:text>
     </xsl:template>
 
     <xsl:template name="invoice_date_u">
-        <xsl:text>Factuurdatum</xsl:text>
+        <xsl:text>Invoice Date</xsl:text>
     </xsl:template>
 
     <xsl:template name="expiration_date_u">
-        <xsl:text>Vervaldatum</xsl:text>
+        <xsl:text>Expiration Date</xsl:text>
     </xsl:template>
 
     <xsl:template name="vat_client_u">
-        <xsl:text>BTW-nummer klant</xsl:text>
+        <xsl:text>VAT Number Client</xsl:text>
     </xsl:template>
 
     <xsl:template name="reference_u">
-        <xsl:text>Uw referentie</xsl:text>
+        <xsl:text>Your Reference</xsl:text>
     </xsl:template>
 
     <xsl:template name="description_u">
-        <xsl:text>Omschrijving</xsl:text>
+        <xsl:text>Description</xsl:text>
     </xsl:template>
 
     <xsl:template name="total_excl_short">
-        <xsl:text>Totaal (Excl.)</xsl:text>
+        <xsl:text>Total (Excl.)</xsl:text>
     </xsl:template>
 
     <xsl:template name="total_excl_full">
-        <xsl:text>TOTAAL (Excl. BTW)</xsl:text>
+        <xsl:text>TOTAL (Excl. VAT)</xsl:text>
     </xsl:template>
 
     <xsl:template name="vat_all_u">
-        <xsl:text>BTW</xsl:text>
+        <xsl:text>VAT</xsl:text>
     </xsl:template>
 
     <xsl:template name="to_pay_all_u">
-        <xsl:text>TE BETALEN</xsl:text>
+        <xsl:text>TO PAY</xsl:text>
     </xsl:template>
 
     <xsl:template name="VAT">
-        <xsl:text>BTW</xsl:text>
+        <xsl:text>VAT</xsl:text>
     </xsl:template>
 
     <xsl:template name="product_amount">
-        <xsl:text>Aantal</xsl:text>
+        <xsl:text>Amount</xsl:text>
     </xsl:template>
+
 </xsl:stylesheet>

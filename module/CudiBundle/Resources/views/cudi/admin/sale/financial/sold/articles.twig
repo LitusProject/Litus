@@ -27,12 +27,13 @@
                 <tr>
                     <th>Title</th>
                     <th width="170px">Author</th>
-                    <th width="100px" class="widest">Publisher</th>
+                    <th width="90px" class="widest">Publisher</th>
                     <th width="100px" class="wider">Barcode</th>
                     <th width="100px">Purchase Price</th>
-                    <th width="90px">Sell Price</th>
-                    <th width="80px"># Sold</th>
+                    <th width="70px">Sell Price</th>
+                    <th width="50px"># Sold</th>
                     <th width="100px" class="widest"># Sold Member</th>
+                    <th width="90px" class="widest">Member price</th>
                     <th width="70px">Action</th>
                 </tr>
             </table>
@@ -43,12 +44,13 @@
                 <tr>
                     <th>Title</th>
                     <th width="170px">Author</th>
-                    <th width="100px" class="widest">Publisher</th>
+                    <th width="90px" class="widest">Publisher</th>
                     <th width="100px" class="wider">Barcode</th>
                     <th width="100px">Purchase Price</th>
-                    <th width="90px">Sell Price</th>
-                    <th width="80px"># Sold</th>
+                    <th width="70px">Sell Price</th>
+                    <th width="50px"># Sold</th>
                     <th width="100px" class="widest"># Sold Member</th>
+                    <th width="90px" class="widest">Member price</th>
                     <th width="70px">Action</th>
                 </tr>
 
@@ -62,6 +64,22 @@
                         <td>&euro; {{ (item.getSellPrice()/100)|number_format(2) }}</td>
                         <td>{{ item.getNumberSold(activeAcademicYear) }}</td>
                         <td class="widest">{{ item.getNumberSoldToMembers(activeAcademicYear) }}</td>
+                        <td> 
+                            {% if item.getDiscounts()|length > 0 %}
+                                {% for discount in item.getDiscounts() %}
+                                    {% if discount.getType() == 'Member' %}
+                                        {% if discount.getOrganization().getName() != '' %}
+                                            {{ discount.getOrganization().getName() }} &#61; 
+                                        {% endif %}
+                                        &euro; {{ (discount.apply(item.getSellPrice())/100)|number_format(2) }} &nbsp;
+                                    {% else %}
+                                        &euro; {{ (item.getSellPrice()/100)|number_format(2) }}
+                                    {% endif %}
+                                {% endfor %} 
+                            {% else %}
+                                &euro; {{ (item.getSellPrice()/100)|number_format(2) }}
+                            {% endif %} 
+                        </td>
                         <td class="actions">
                             {% if hasAccess('cudi_admin_sales_financial_sold', 'article') %}
                                 <a href="{{ url('cudi_admin_sales_financial_sold', {'action': 'article', 'id': item.getId(), 'academicyear': activeAcademicYear.getCode()}) }}" class="view">View</a>

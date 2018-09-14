@@ -233,10 +233,20 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 $this->getEntityManager()->persist($invoiceEntry);
             }
 
+            $bookNumber = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.invoice_book_number');
+
+            $yearNumber = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.invoice_year_number');
+
+            $prefix = $yearNumber.$bookNumber;
+            
             $contract->setInvoiceNb(
                 $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Contract')
-                    ->findNextInvoiceNb()
+                    ->findNextInvoiceNb($prefix)
             );
 
             $this->getEntityManager()->persist($invoice);

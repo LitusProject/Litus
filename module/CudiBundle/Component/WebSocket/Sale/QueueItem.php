@@ -24,6 +24,8 @@ use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CommonBundle\Entity\User\Barcode\Ean12 as Ean12,
+    CudiBundle\Component\WebSocket\Sale\Printer as Printer,
     CudiBundle\Entity\IsicCard,
     CudiBundle\Entity\Sale\Booking,
     CudiBundle\Entity\Sale\SaleItem,
@@ -245,9 +247,11 @@ class QueueItem
                     ->findOneBy(array('booking' => $booking->getId()));
 
                 if (!$isicCard->hasPaid()) {
-                    $client = new SoapClient('http://isicregistrations.guido.be/service.asmx?WSDL');
                     $config = $this->entityManager
                     ->getRepository('CommonBundle\Entity\General\Config');
+
+                    $serviceUrl = $config->getConfigValue('cudi.isic_service_url');
+                    $client = new SoapClient($serviceUrl);
 
                     $arguments = array();
                     $arguments['username'] = $config->getConfigValue('cudi.isic_username');
@@ -271,6 +275,16 @@ class QueueItem
             if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
                 $status = $booking->getPerson()
                     ->getOrganizationStatus($this->getCurrentAcademicYear());
+
+                $ean12s = $this->entityManager
+                    ->getRepository('CommonBundle\Entity\User\Barcode')
+                    ->findEan12ByPerson($booking->getPerson());
+
+                if($ean12s === null){
+                    $barcode = new Ean12($booking->getPerson(), Ean12::generateUnusedBarcode($this->entityManager));
+                    $this->entityManager->persist($barcode);
+                }
+
                 if (null === $status) {
                     $booking->getPerson()
                         ->addOrganizationStatus(
@@ -285,6 +299,15 @@ class QueueItem
                         $status->setStatus('member');
                     }
                 }
+
+                Printer::membershipCard(
+                    $this->entityManager, 
+                    $this->entityManager
+                            ->getRepository('CommonBundle\Entity\General\Config')
+                            ->getConfigValue('cudi.card_printer'), 
+                    $booking->getPerson(),
+                    $this->getCurrentAcademicYear()
+                );
 
                 $registration = $this->entityManager
                     ->getRepository('SecretaryBundle\Entity\Registration')

@@ -171,13 +171,15 @@ return array(
         'br_admin_invoice' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/invoice[/:action[/:id][/:payed][/date/:date][/page/:page]][/]',
+                'route'       => '/admin/br/invoice[/:action[/:invoiceyear][/:id][/:payed][/date/:date][/page/:page][/:language]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                     'payed'  => '(true|false)',
                     'date'   => '[0-9]{2}/[0-9]{2}/[0-9]{4}',
                     'page'   => '[0-9]*',
+                    'language' => '[a-z]{2}',
+                    'invoiceyear' => '[0-9]{4}',
                 ),
                 'defaults' => array(
                     'controller' => 'br_admin_invoice',
@@ -278,10 +280,9 @@ return array(
         'br_career_company_search' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/career/company/search[/:string][/]',
+                'route'       => '[/:language]/career/company/search[/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'string'   => '[%a-zA-Z0-9:.,_-]*',
                     'language' => '[a-z]{2}',
                 ),
                 'defaults' => array(
@@ -449,6 +450,21 @@ return array(
                 ),
             ),
         ),
+        'br_corporate_company' => array(
+            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/corporate/company[/:action][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'session'  => '[0-9]*',
+                    'language' => '[a-z]{2}',
+                ),
+                'defaults' => array(
+                    'controller' => 'br_corporate_company',
+                    'action'     => 'edit',
+                ),
+            ),
+        ),
         'br_cv_index' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -501,6 +517,7 @@ return array(
         'br_corporate_jobfair'    => 'BrBundle\Controller\Corporate\JobfairController',
         'br_corporate_vacancy'    => 'BrBundle\Controller\Corporate\VacancyController',
         'br_corporate_internship' => 'BrBundle\Controller\Corporate\InternshipController',
+        'br_corporate_company'    => 'BrBundle\Controller\Corporate\CompanyController',
 
         'br_career_index'      => 'BrBundle\Controller\Career\IndexController',
         'br_career_vacancy'    => 'BrBundle\Controller\Career\VacancyController',

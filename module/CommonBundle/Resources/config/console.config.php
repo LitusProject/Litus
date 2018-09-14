@@ -25,6 +25,7 @@ return array(
     'common.gc'              => 'CommonBundle\Command\GarbageCollect',
     'common.config'          => 'CommonBundle\Command\Config',
     'common.test-config'     => 'CommonBundle\Command\TestConfig',
+    'common.test-sentry'     => 'CommonBundle\Command\TestSentry',
     'common.destroy-account' => 'CommonBundle\Command\DestroyAccount',
     'common.acl-cleanup'     => 'CommonBundle\Command\AclCleanup',
 

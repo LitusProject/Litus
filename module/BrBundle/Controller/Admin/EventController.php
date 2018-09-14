@@ -21,7 +21,8 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Event,
-    Zend\View\Model\ViewModel;
+    Zend\View\Model\ViewModel,
+    BrBundle\Entity\Event\CompanyMap;
 
 /**
  * EventController
@@ -105,37 +106,66 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function editAction()
     {
-        if (!($reservation = $this->getVanReservationEntity())) {
+        if (!($event = $this->getEventEntity())) {
             return new ViewModel();
         }
 
-        $form = $this->getForm('logistics_van-reservation_edit', array('reservation' => $reservation));
+        $propertiesForm = $this->getForm('br_event_edit', array('event' => $event));
+        $companyMapForm = $this->getForm('br_event_companyMap');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()->getPost());
+            $formData = $this->getRequest()->getPost();
+            $propertiesForm->setData($formData);
+            $companyMapForm->setData($formData);
 
-            if ($form->isValid()) {
-                $this->getEntityManager()->flush();
-
+            if (isset($formData['event_edit']) && $propertiesForm->isValid()) {
                 $this->flashMessenger()->success(
-                    'SUCCESS',
-                    'The reservation was successfully updated!'
+                    'Success',
+                    'The event was successfully updated!'
                 );
 
                 $this->redirect()->toRoute(
-                    'logistics_admin_van_reservation',
+                    'br_admin_event',
                     array(
                         'action' => 'manage',
                     )
                 );
 
-                return new ViewModel();
+            }elseif(isset($formData['event_companyMap']) && $companyMapForm->isValid()) {
+                $company = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Company')
+                    ->findOneById($formData['company']);
+                $objectMap = new CompanyMap($company, $event);
+
+                $this->getEntityManager()->persist($objectMap);
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The attendee was successfully added!'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_event',
+                    array(
+                        'action' => 'edit',
+                        'id'     => $event->getId(),
+                    )
+                );
             }
+
+            $this->getEntityManager()->flush();
+
         }
+        $eventCompanyMaps = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Event\CompanyMap')
+            ->findAllByEvent($event);
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'propertiesForm'    => $propertiesForm,
+                'companyMapForm'    => $companyMapForm,
+                'eventCompanyMaps'  => $eventCompanyMaps,
+                'event'             => $event,
             )
         );
     }
@@ -158,68 +188,21 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function assignmeAction()
-    {
-        $this->initAjax();
-
-        if (!($reservation = $this->getVanReservationEntity())) {
-            return new ViewModel();
-        }
-
-        $person = $this->getAuthentication()->getPersonObject();
-        $driver = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Driver')
-            ->findOneById($person->getId());
-
-        $reservation->setDriver($driver);
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => (object) array(
-                    'status' => 'success',
-                    'driver' => $person->getFullName(),
-                ),
-            )
-        );
-    }
-
-    public function unassignmeAction()
-    {
-        $this->initAjax();
-
-        if (!($reservation = $this->getVanReservationEntity())) {
-            return new ViewModel();
-        }
-
-        $reservation->setDriver(null);
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => (object) array(
-                    'status' => 'success',
-                    'driver' => '',
-                ),
-            )
-        );
-    }
-
     /**
-     * @return VanReservation|null
+     * @return Event|null
      */
-    private function getVanReservationEntity()
+    private function getEventEntity()
     {
-        $reservation = $this->getEntityById('LogisticsBundle\Entity\Reservation\VanReservation');
+        $event = $this->getEntityById('BrBundle\Entity\Event');
 
-        if (!($reservation instanceof VanReservation)) {
+        if (!($event instanceof Event)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No reservation was found!'
+                'No event was found!'
             );
 
             $this->redirect()->toRoute(
-                'logistics_admin_van_reservation',
+                'br_admin_event',
                 array(
                     'action' => 'manage',
                 )
@@ -228,6 +211,6 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        return $reservation;
+        return $event;
     }
 }

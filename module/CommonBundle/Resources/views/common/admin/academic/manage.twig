@@ -17,6 +17,19 @@
         </div>
     </div>
 
+    <div class="flashmessage success_message full_width academic_printed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The membership card was successfully printed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width academic_printed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to print the membership card.</p>
+        </div>
+    </div>
+
     <div id="controller_action">
         <div id="student_search" style="display: none;">
             <div style="padding: 4px; text-align: right">
@@ -64,6 +77,9 @@
                                 {% if hasAccess('common_admin_academic', 'edit') %}
                                     <a href="{{ url('common_admin_academic', {"action": "edit", "id": academic.getId()}) }}" class="edit">Edit</a></li>
                                 {% endif %}
+                                {% if hasAccess('common_admin_academic', 'print') %}
+                                    <a href="#" class="print" data-id="{{ academic.getId() }}" data-fullname="{{ academic.getFullName() }}">Print</a></li>
+                                {% endif %}
                                 {% if hasAccess('common_admin_academic', 'delete') %}
                                     <a href="#" class="delete" data-id="{{ academic.getId() }}" data-fullname="{{ academic.getFullName() }}">Delete</a>
                                 {% endif %}
@@ -100,6 +116,30 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="printAcademic" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Print Academic
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to print a membership card for the following student: <b class="fullname"></b>?
+                        If you do so, please take back the old membership card and throw it in the trash!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="print">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
@@ -124,14 +164,20 @@
                             .append(
                                 $('<td>', {'class': 'actions'})
                                     .append('<a href="{{ url('common_admin_academic', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                                    .append(printButton = $('<a href="#" class="print">Print</a>'))
                                     .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
                                 );
                             deleteButton.data({
                                 id: this.id,
                                 fullname: this.fullName
                             });
+                            printButton.data({
+                                id: this.id,
+                                fullname: this.fullName
+                            })
                     });
-                    $('#student_search .delete').click(openModal);
+                    $('#student_search .delete').click(openDeleteModal);
+                    $('#student_search .print').click(openPrintModal);
                     $('#student_search table').change();
                 },
                 clear: function () {
@@ -140,10 +186,11 @@
             });
             {% endif %}
 
-            $('.item .delete').click(openModal);
+            $('.item .delete').click(openDeleteModal);
+            $('.item .print').click(openPrintModal);
         });
 
-        function openModal(e) {
+        function openDeleteModal(e) {
             var $this = $(this);
             e.preventDefault();
             var removeAcademic = $('#removeAcademic');
@@ -154,6 +201,7 @@
             var id = $this.data('id');
             removeAcademic.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('common_admin_academic', {"action": "delete"})}}' + id, function (data) {
+                    console.log(data);
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.academic_removed_success').removeClass('hide');
@@ -167,10 +215,39 @@
             removeAcademic.modal();
         }
 
+        function openPrintModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var printAcademic = $('#printAcademic');
+            printAcademic.find('.fullname').html($(this).data('fullname'));
+            printAcademic.find('.cancel').one('click', function () {
+                printAcademic.modal('hide');
+            });
+            var id = $this.data('id');
+            printAcademic.find('.print').unbind('click').click(function () {
+                $.post('{{ url('common_admin_academic', {"action": "print"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.academic_printed_success').removeClass('hide');
+                        printAcademic.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorPrint);
+            });
+            printAcademic.modal();
+        }
+
         function errorRemove() {
             $('.flashmessage').addClass('hide');
             $('.academic_removed_error').removeClass('hide');
             $('#removeAcademic').modal('hide');
+        }
+
+        function errorPrint() {
+            $('.flashmessage').addClass('hide');
+            $('.academic_printed_error').removeClass('hide');
+            $('#printAcademic').modal('hide');
         }
     </script>
 {% endblock %}
