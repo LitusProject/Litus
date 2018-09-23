@@ -90,8 +90,8 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
         $shibbolethUrl .= '?source=logistics';
 
         $server = $this->getRequest()->getServer();
-        if (isset($server['HTTP_HOST']) && isset($server['REQUEST_URI'])) {
-            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $server['HTTP_HOST'] . $server['REQUEST_URI']);
+        if (isset($server['X-Forwarded-Host']) && isset($server['REQUEST_URI'])) {
+            $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $server['X-Forwarded-Host'] . $server['REQUEST_URI']);
         }
 
         return $shibbolethUrl;
