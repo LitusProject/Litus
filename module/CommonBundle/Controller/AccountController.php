@@ -31,7 +31,8 @@ use CommonBundle\Component\PassKit\Pass\Membership,
     Imagick,
     SecretaryBundle\Entity\Organization\MetaData,
     SecretaryBundle\Entity\Registration,
-    Zend\Http\Headers;
+    Zend\Http\Headers,
+    Zend\View\Model\ViewModel;
 
 /**
  * Handles account page.
