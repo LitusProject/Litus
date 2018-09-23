@@ -23,7 +23,8 @@ namespace CudiBundle\Component\WebSocket\Sale;
 use CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\General\AcademicYear as AcademicYear,
     CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
-    Doctrine\ORM\EntityManager;
+    Doctrine\ORM\EntityManager,
+    CommonBundle\Entity\User\Barcode\Ean12 as Ean12;
 
 class Printer
 {
@@ -193,7 +194,8 @@ class Printer
             ->findEan12ByPerson($academic);
 
         if($barcode === null){
-            return;
+            $barcode = new Ean12($academic, Ean12::generateUnusedBarcode($entityManager));
+            $entityManager->persist($barcode);
         }
 
         $printableBarcode = $barcode->getPrintableCode();
@@ -207,6 +209,7 @@ class Printer
             'type'      => 4,
         );
 
+        $entityManager->flush();
         self::doPrint($entityManager, $printer, $data);
     }
 

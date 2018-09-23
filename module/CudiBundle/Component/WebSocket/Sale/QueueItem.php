@@ -276,16 +276,6 @@ class QueueItem
                 $status = $booking->getPerson()
                     ->getOrganizationStatus($this->getCurrentAcademicYear());
 
-                $ean12s = $this->entityManager
-                    ->getRepository('CommonBundle\Entity\User\Barcode')
-                    ->findEan12ByPerson($booking->getPerson());
-
-                if($ean12s === null){
-                    $barcode = new Ean12($booking->getPerson(), Ean12::generateUnusedBarcode($this->entityManager));
-                    $this->entityManager->persist($barcode);
-                    $this->entityManager->flush();
-                }
-
                 if (null === $status) {
                     $booking->getPerson()
                         ->addOrganizationStatus(
