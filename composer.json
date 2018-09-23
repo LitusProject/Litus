@@ -21,7 +21,7 @@
         "alcaeus/mongo-php-adapter": "@stable",
         "doctrine/doctrine-orm-module": "@stable",
         "doctrine/doctrine-mongo-odm-module": "@stable",
-        "EvanDotPro/EdpMarkdown": "@dev",
+        "EvanDotPro/EdpMarkdown": "dev-master",
         "kriswallsmith/assetic": "1.0.5",
         "packagist/yuicompressor-bin": "@stable",
         "widmogrod/zf2-assetic-module": "1.3.4",
