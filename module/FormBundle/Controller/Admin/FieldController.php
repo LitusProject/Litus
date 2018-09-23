@@ -25,7 +25,7 @@ use FormBundle\Component\Exception\UnsupportedTypeException,
     FormBundle\Entity\Field\Checkbox as CheckboxField,
     FormBundle\Entity\Field\Dropdown as DropdownField,
     FormBundle\Entity\Field\File as FileField,
-    FormBundle\Entity\Field\String as StringField,
+    FormBundle\Entity\Field\Text as StringField,
     FormBundle\Entity\Field\TimeSlot as TimeSlotField,
     FormBundle\Entity\Node\Form,
     Zend\View\Model\ViewModel;
