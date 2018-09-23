@@ -283,6 +283,7 @@ class QueueItem
                 if($ean12s === null){
                     $barcode = new Ean12($booking->getPerson(), Ean12::generateUnusedBarcode($this->entityManager));
                     $this->entityManager->persist($barcode);
+                    $this->entityManager->flush();
                 }
 
                 if (null === $status) {
