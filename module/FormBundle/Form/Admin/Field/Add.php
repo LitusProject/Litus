@@ -26,7 +26,7 @@ use CommonBundle\Component\Form\FieldsetInterface,
     FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity,
     FormBundle\Entity\Field\Dropdown as DropdownFieldEntity,
     FormBundle\Entity\Field\File as FileFieldEntity,
-    FormBundle\Entity\Field\String as StringFieldEntity,
+    FormBundle\Entity\Field\Text as StringFieldEntity,
     FormBundle\Entity\Field\TimeSlot as TimeSlotFieldEntity,
     FormBundle\Entity\Node\Form,
     FormBundle\Entity\Node\Form\Doodle;

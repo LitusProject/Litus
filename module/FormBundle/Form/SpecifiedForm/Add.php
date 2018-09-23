@@ -26,7 +26,7 @@ use CommonBundle\Entity\General\Language,
     FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity,
     FormBundle\Entity\Field\Dropdown as DropdownFieldEntity,
     FormBundle\Entity\Field\File as FileFieldEntity,
-    FormBundle\Entity\Field\String as StringFieldEntity,
+    FormBundle\Entity\Field\Text as StringFieldEntity,
     FormBundle\Entity\Node\Entry as EntryEntity,
     FormBundle\Entity\Node\Form\Form as FormEntity,
     FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
