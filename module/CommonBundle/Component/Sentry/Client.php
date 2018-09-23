@@ -87,7 +87,7 @@ class Client
             )
         );
     }
-    
+
     /**
      * Sends a log message to the server.
      *
@@ -104,7 +104,7 @@ class Client
             )
         );
     }
-    
+
     /**
      * Handler that can be attached to Zend's EventManager and extracts the exception
      * from an MvcEvent
@@ -129,12 +129,19 @@ class Client
      */
     private function getRequestUri()
     {
-        if ($this->request instanceof ConsoleRequest) {
-            return $this->request->toString();
-        } elseif ($this->request instanceof PhpRequest) {
-            return '' != $this->request->getServer()->get('HTTP_HOST')
-                ? (($this->request->getServer()->get('HTTPS') != 'off') ? 'https://' : 'http://') . $this->request->getServer()->get('HTTP_HOST') . $this->request->getServer()->get('REQUEST_URI')
-                : '';
+        if ($this->getRequest() instanceof ConsoleRequest) {
+            return $this->getRequest()->toString();
+        } elseif ($this->getRequest() instanceof PhpRequest) {
+            $server = $this->getRequest()->getServer();
+            if (isset($server['X-Forwarded-Host'])) {
+                return '' != $server['X-Forwarded-Host']
+                    ? (($server['HTTPS'] != 'off') ? 'https://' : 'http://') . $server['X-Forwarded-Host'] . $server['REQUEST_URI']
+                    : '';
+            } else {
+                return '' != $server['HTTP_HOST']
+                    ? (($server['HTTPS'] != 'off') ? 'https://' : 'http://') . $server['HTTP_HOST'] . $server['REQUEST_URI']
+                    : '';
+            }
         }
 
         return '';
@@ -157,7 +164,7 @@ class Client
                     'id'         => $this->authentication->getPersonObject()->getId(),
                     'username'   => $this->authentication->getPersonObject()->getUsername(),
                     'email'      => $this->authentication->getPersonObject()->getEmail(),
-                    'name'       => $this->authentication->getPersonObject()->getFullName(), 
+                    'name'       => $this->authentication->getPersonObject()->getFullName(),
                     'session'    => $this->authentication->getSessionObject()->getId(),
                 );
             } else {
