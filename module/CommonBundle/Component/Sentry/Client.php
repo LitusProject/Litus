@@ -129,10 +129,10 @@ class Client
      */
     private function getRequestUri()
     {
-        if ($this->getRequest() instanceof ConsoleRequest) {
-            return $this->getRequest()->toString();
-        } elseif ($this->getRequest() instanceof PhpRequest) {
-            $server = $this->getRequest()->getServer();
+        if ($this->request instanceof ConsoleRequest) {
+            return $this->request->toString();
+        } elseif ($this->request instanceof PhpRequest) {
+            $server = $this->request->getServer();
             if (isset($server['X-Forwarded-Host'])) {
                 return '' != $server['X-Forwarded-Host']
                     ? (($server['HTTPS'] != 'off') ? 'https://' : 'http://') . $server['X-Forwarded-Host'] . $server['REQUEST_URI']
