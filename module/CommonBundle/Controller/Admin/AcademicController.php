@@ -319,22 +319,12 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         $this->initAjax();
 
         if (!($academic = $this->getAcademicEntity())) {
-            return new ViewModel(
-                array(
-                    "result" => array("status" => "failure"),
-                )
-            );
+            return new ViewModel();
         }
 
-        $barcodes = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Barcode')
-            ->findEan12ByPerson($academic);
-
-        if($barcodes === null){
-            return new ViewModel(array(
-                    "result" => array("status" => "failure"),
-                ));
-        }
+        /*if(!$person->isMember($this->getCurrentAcademicYear())){
+            return new ViewModel();
+        }*/
 
         Printer::membershipCard(
             $this->getEntityManager(), 
