@@ -67,7 +67,7 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         $person = null;
         $guestInfo = null;
-        $entries = null;
+        $entries = array();
         $draftVersion = null;
 
         if ($this->getAuthentication()->isAuthenticated()) {
