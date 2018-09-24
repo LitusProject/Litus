@@ -88,6 +88,10 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $data['organization_info'];
 
+        if ($data['become_member'] == "") {
+            $data['become_member'] = false;
+        }
+
         if ($academic->canHaveUniversityStatus($year)) {
             $academic->addUniversityStatus(
                 new UniversityStatus(
