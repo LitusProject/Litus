@@ -291,15 +291,6 @@ class QueueItem
                     }
                 }
 
-                Printer::membershipCard(
-                    $this->entityManager, 
-                    $this->entityManager
-                            ->getRepository('CommonBundle\Entity\General\Config')
-                            ->getConfigValue('cudi.card_printer'), 
-                    $booking->getPerson(),
-                    $this->getCurrentAcademicYear()
-                );
-
                 $registration = $this->entityManager
                     ->getRepository('SecretaryBundle\Entity\Registration')
                     ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->getCurrentAcademicYear());
@@ -422,6 +413,17 @@ class QueueItem
                 $soldArticle['number'] -= $number;
 
                 $soldArticle['article']->setStockValue($soldArticle['article']->getStockValue() - $number);
+            }
+
+            if(in_array($soldArticle['article']->getId(), $memberShipArticles)){
+                Printer::membershipCard(
+                    $this->entityManager, 
+                    $this->entityManager
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.card_printer'), 
+                    $item->getPerson(),
+                    $this->getCurrentAcademicYear()
+                );
             }
         }
 
