@@ -109,6 +109,9 @@
             $('#subject').typeaheadRemote(
                 {
                     source: '{{ url("syllabus_admin_subject_typeahead", {"academicyear": currentAcademicYear.getCode() })}}',
+                },
+                {
+                    items: 12,
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
