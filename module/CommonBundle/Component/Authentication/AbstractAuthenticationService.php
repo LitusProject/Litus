@@ -182,6 +182,11 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
         $this->clearCookie();
 
         $this->cookies[$this->cookie] = $value;
+
+        $servername_parts = explode('.', $this->request->getServer()->get('SERVER_NAME'));
+        $domain_parts = array_slice($servername_parts, -2);
+        $domain = $domain_parts[0].".".$domain_parts[1];
+
         $this->response->getHeaders()->addHeader(
             (new SetCookie())
                 ->setName($this->cookie)
@@ -189,7 +194,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
                 ->setExpires(time() + $this->duration)
                 ->setMaxAge($this->duration)
                 ->setPath('/')
-                ->setDomain(str_replace(array('www.', ','), '', $this->request->getServer()->get('SERVER_NAME')))
+                ->setDomain($domain)
         );
     }
 }
