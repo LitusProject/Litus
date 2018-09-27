@@ -34,7 +34,7 @@ return Config::create(
             'invokables' => array(
                 'form_max_timeslots'  => 'FormBundle\Component\Validator\MaxTimeSlot',
                 'form_field_required' => 'FormBundle\Component\Validator\Required',
-                'form_string_field'   => 'FormBundle\Component\Validator\StringField',
+                'form_text_field'   => 'FormBundle\Component\Validator\TextField',
                 'form_timeslot'       => 'FormBundle\Component\Validator\TimeSlot',
             ),
         ),

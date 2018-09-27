@@ -110,11 +110,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         ));
 
         $this->add(array(
-            'type'       => 'form_field_field_string',
-            'name'       => 'string_form',
+            'type'       => 'form_field_field_text',
+            'name'       => 'text_form',
             'label'      => 'String Options',
             'attributes' => array(
-                'class' => 'string_form extra_form hide',
+                'class' => 'text_form extra_form hide',
             ),
         ));
 
@@ -315,7 +315,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         if ($type == 'string') {
             /** @var \FormBundle\Form\Admin\Field\Field\String $stringForm */
-            $stringForm = $this->get('string_form');
+            $stringForm = $this->get('text_form');
             $stringForm->setRequired();
         } elseif ($type == 'dropdown') {
             /** @var \FormBundle\Form\Admin\Field\Field\Dropdown $dropdownForm */

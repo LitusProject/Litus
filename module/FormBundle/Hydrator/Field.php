@@ -56,7 +56,7 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
             ->setVisibilityValue(isset($visibilityDecissionField) ? $data['visibility']['value'] : null);
 
         if ($object instanceof StringFieldEntity) {
-            $stringData = $data['string_form'];
+            $stringData = $data['text_form'];
             $object->setLineLength($stringData['charsperline'] === '' ? 0 : $stringData['charsperline'])
                 ->setLines($stringData['lines'] === '' ? 0 : $stringData['lines'])
                 ->setMultiLine($stringData['multiline']);
@@ -172,7 +172,7 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
                 $lines = $object->getLines();
             }
 
-            $data['string_form'] = array(
+            $data['text_form'] = array(
                 'charsperline' => $object->getLineLength(),
                 'multiline'    => $object->isMultiLine(),
                 'lines'        => $lines,
