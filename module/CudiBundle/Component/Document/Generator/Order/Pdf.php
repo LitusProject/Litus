@@ -125,12 +125,12 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                         new Node(
                             'recto_verso',
                             null,
-                            $item->getArticle()->getMainArticle()->isColored() ? '1' : '0'
+                            $item->getArticle()->getMainArticle()->isRectoVerso() ? '1' : '0'
                         ),
                         new Node(
                             'colored',
                             null,
-                            $item->getArticle()->getMainArticle()->isRectoVerso() ? '1' : '0'
+                            $item->getArticle()->getMainArticle()->getColored() ? '1' : '0'
                         ),
                         new Node(
                             'binding',
