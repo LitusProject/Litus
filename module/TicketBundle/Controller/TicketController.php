@@ -34,7 +34,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 {
     public function eventAction()
     {
-
         if (!($event = $this->getEventEntity())) {
             return $this->notFoundAction();
         }
