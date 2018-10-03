@@ -40,6 +40,13 @@ class GuestInfo
     private $id;
 
     /**
+     * @var string The user's university identification (eg. r-number)
+     *
+     * @ORM\Column(name="university_identification", type="string", length=8, nullable=true)
+     */
+    private $universityIdentification;
+
+    /**
      * @var string The first name of this guest
      *
      * @ORM\Column(name="first_name", type="string")
@@ -64,12 +71,14 @@ class GuestInfo
      * @param string $firstName
      * @param string $lastName
      * @param string $email
+     * @param string $universityIdentification
      */
-    public function __construct($firstName, $lastName, $email)
+    public function __construct($firstName = null, $lastName = null, $email = null, $universityIdentification = null)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
+        $this->universityIdentification = $universityIdentification;
     }
 
     /**

@@ -99,27 +99,27 @@ class Ticket
      */
     private $soldDate;
 
-    /**
-     * @var integer|null The number of the ticket (unique for an event)
-     *
-     * @ORM\Column(type="bigint", nullable=true)
-     */
-    private $number;
-
-    /**
-     * @var Option|null The option of the ticket
-     *
-     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Option")
-     * @ORM\JoinColumn(name="option", referencedColumnName="id")
-     */
-    private $option;
-
-    /**
-     * @var boolean|null Flag whether the ticket was sold to a member
-     *
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $member;
+//    /**
+//     * @var integer|null The number of the ticket (unique for an event)
+//     *
+//     * @ORM\Column(type="bigint", nullable=true)
+//     */
+//    private $number;
+//
+//    /**
+//     * @var Option|null The option of the ticket
+//     *
+//     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Option")
+//     * @ORM\JoinColumn(name="option", referencedColumnName="id")
+//     */
+//    private $option;
+//
+//    /**
+//     * @var boolean|null Flag whether the ticket was sold to a member
+//     *
+//     * @ORM\Column(type="boolean", nullable=true)
+//     */
+//    private $member;
 
     /**
      * @param  Event                    $event
