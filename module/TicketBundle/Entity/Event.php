@@ -1,28 +1,15 @@
 <?php
 /**
- * Litus is a project by a group of students from the KU Leuven. The goal is to create
- * various applications to support the IT needs of student unions.
- *
- * @author Niels Avonds <niels.avonds@litus.cc>
- * @author Karsten Daemen <karsten.daemen@litus.cc>
- * @author Koen Certyn <koen.certyn@litus.cc>
- * @author Bram Gotink <bram.gotink@litus.cc>
- * @author Dario Incalza <dario.incalza@litus.cc>
- * @author Pieter Maene <pieter.maene@litus.cc>
- * @author Kristof Mariën <kristof.marien@litus.cc>
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
- * @author Daan Wendelen <daan.wendelen@litus.cc>
- * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
- * @author Floris Kint <floris.kint@vtk.be>
- *
- * @license http://litus.cc/LICENSE
+ * Created by PhpStorm.
+ * User: mathias
+ * Date: 10/3/18
+ * Time: 12:50 PM
  */
 
 namespace TicketBundle\Entity;
 
+
 use CalendarBundle\Entity\Node\Event as CalendarEvent,
-    DateInterval,
-    DateTime,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Mapping as ORM;
@@ -31,8 +18,8 @@ use CalendarBundle\Entity\Node\Event as CalendarEvent,
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Event")
  * @ORM\Table(name="tickets.events")
  */
-class Event
-{
+class Event {
+
     /**
      * @var integer The ID of the event
      *
@@ -43,6 +30,13 @@ class Event
     private $id;
 
     /**
+     * @var boolean Flag whether the event booking system is active
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
+    /**
      * @var CalendarEvent The activity of the event
      *
      * @ORM\OneToOne(targetEntity="CalendarBundle\Entity\Node\Event")
@@ -51,108 +45,65 @@ class Event
     private $activity;
 
     /**
-     * @var boolean Flag whether the tickets are bookable for praesidium
+     * @var ArrayCollection The categories that can book tickets
      *
-     * @ORM\Column(name="bookable_praesidium", type="boolean")
+     * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Category", mappedBy="event")
+     * @ORM\JoinColumn(name="booking_category", referencedColumnName="id")
      */
-    private $bookablePraesidium;
+    private $bookingCategories;
 
     /**
-     * @var boolean Flag whether the tickets are bookable
+     * @var boolean Flag whether the reservation can be removed by the user.
      *
      * @ORM\Column(type="boolean")
-     */
-    private $bookable;
-
-    /**
-     * @var DateTime|null The date the booking system will close
-     *
-     * @ORM\Column(name="bookings_close_date", type="datetime", nullable=true)
-     */
-    private $bookingsCloseDate;
-
-    /**
-     * @var boolean Flag whether the event booking system is active
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $active;
-
-    /**
-     * @var boolean Flag whether the tickets are generated
-     *
-     * @ORM\Column(name="tickets_generated", type="boolean")
-     */
-    private $ticketsGenerated;
-
-    /**
-     * @var integer The total number of tickets
-     *
-     * @ORM\Column(name="number_of_tickets", type="integer", nullable=true)
-     */
-    private $numberOfTickets;
-
-    /**
-     * @var integer The maximum number of tickets bookable by one person
-     *
-     * @ORM\Column(name="limit_per_person", type="integer", nullable=true)
-     */
-    private $limitPerPerson;
-
-    /**
-     * @var bool Flag whether only members can book tickets
-     *
-     * @ORM\Column(name="only_members", type="boolean")
-     */
-    private $onlyMembers;
-
-    /**
-     * @var bool Flag whether users can remove there ticket
-     *
-     * @ORM\Column(name="allow_remove", type="boolean")
      */
     private $allowRemove;
 
     /**
-     * @var integer The price for members
+     * @var integer The maximum number of tickets available. If negative, look inside the
+     * bookingCategories. Zero means an infinite amount.
      *
-     * @ORM\Column(name="price_members", type="smallint")
+     * @ORM\Column(type="integer")
      */
-    private $priceMembers;
+    private $maxNumberTickets;
 
     /**
-     * @var integer The price for non members
+     * @var ArrayCollection The orders for this event.
      *
-     * @ORM\Column(name="price_non_members", type="smallint")
+     * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Order", mappedBy="event")
      */
-    private $priceNonMembers;
+    private $orders;
 
     /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Option", mappedBy="event")
-     */
-    private $options;
-
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="TicketBundle\Entity\Ticket", mappedBy="event")
-     */
-    private $tickets;
-
-    public function __construct()
-    {
-        $this->options = new ArrayCollection();
-        $this->tickets = new ArrayCollection();
-    }
-
-    /**
-     * @return integer
+     * @return int
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
     }
 
     /**
@@ -164,391 +115,76 @@ class Event
     }
 
     /**
-     * @param  CalendarEvent $activity
-     * @return self
+     * @param CalendarEvent $activity
      */
-    public function setActivity(CalendarEvent $activity)
+    public function setActivity($activity)
     {
         $this->activity = $activity;
-
-        return $this;
     }
 
     /**
-     * @return boolean
+     * @return ArrayCollection
      */
-    public function isBookablePraesidium()
+    public function getBookingCategories()
     {
-        return $this->bookablePraesidium;
+        return $this->bookingCategories;
     }
 
     /**
-     * @return boolean
+     * @param ArrayCollection $bookingCategories
      */
-    public function isStillBookablePraesidium()
+    public function setBookingCategories($bookingCategories)
     {
-        return $this->bookablePraesidium && (new DateTime() < $this->getBookingsCloseDate() || $this->getBookingsCloseDate() === null);
+        $this->bookingCategories = $bookingCategories;
     }
 
     /**
-     * @param  boolean $bookablePraesidium
-     * @return self
+     * @return bool
      */
-    public function setBookablePraesidium($bookablePraesidium)
-    {
-        $this->bookablePraesidium = $bookablePraesidium;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isBookable()
-    {
-        return $this->bookable;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isStillBookable()
-    {
-        return $this->bookable && (new DateTime() < $this->getBookingsCloseDate() || $this->getBookingsCloseDate() === null);
-    }
-
-    /**
-     * @param  boolean $bookable
-     * @return self
-     */
-    public function setBookable($bookable)
-    {
-        $this->bookable = $bookable;
-
-        return $this;
-    }
-
-    /**
-     * @return DateTime|null
-     */
-    public function getBookingsCloseDate()
-    {
-        return $this->bookingsCloseDate;
-    }
-
-    /**
-     * @param  DateTime|null $bookingsCloseDate
-     * @return self
-     */
-    public function setBookingsCloseDate(DateTime $bookingsCloseDate = null)
-    {
-        $this->bookingsCloseDate = $bookingsCloseDate;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isActive()
-    {
-        if ($this->activity->getStartDate() < new DateTime()) {
-            return false;
-        }
-
-        return $this->active;
-    }
-
-    /**
-     * @param  boolean $active
-     * @return self
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function areTicketsGenerated()
-    {
-        return $this->ticketsGenerated;
-    }
-
-    /**
-     * @param  boolean $ticketsGenerated
-     * @return self
-     */
-    public function setTicketsGenerated($ticketsGenerated)
-    {
-        $this->ticketsGenerated = $ticketsGenerated;
-
-        return $this;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getNumberOfTickets()
-    {
-        return $this->numberOfTickets;
-    }
-
-    /**
-     * @param  integer $numberOfTickets
-     * @return self
-     */
-    public function setNumberOfTickets($numberOfTickets)
-    {
-        $this->numberOfTickets = $numberOfTickets;
-
-        return $this;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getLimitPerPerson()
-    {
-        return $this->limitPerPerson;
-    }
-
-    /**
-     * @param  integer $limitPerPerson
-     * @return self
-     */
-    public function setLimitPerPerson($limitPerPerson)
-    {
-        $this->limitPerPerson = $limitPerPerson;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function allowRemove()
+    public function isAllowRemove()
     {
         return $this->allowRemove;
     }
 
     /**
-     * @param  boolean $allowRemove
-     * @return self
+     * @param bool $allowRemove
      */
     public function setAllowRemove($allowRemove)
     {
         $this->allowRemove = $allowRemove;
-
-        return $this;
     }
 
     /**
-     * @return boolean
+     * @return int
      */
-    public function isOnlyMembers()
+    public function getMaxNumberTickets()
     {
-        return $this->onlyMembers;
+        return $this->maxNumberTickets;
     }
 
     /**
-     * @param  boolean $onlyMembers
-     * @return self
+     * @param int $maxNumberTickets
      */
-    public function setOnlyMembers($onlyMembers)
+    public function setMaxNumberTickets($maxNumberTickets)
     {
-        $this->onlyMembers = $onlyMembers;
-
-        return $this;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getPriceMembers()
-    {
-        return $this->priceMembers;
-    }
-
-    /**
-     * @param  integer $priceMembers
-     * @return self
-     */
-    public function setPriceMembers($priceMembers)
-    {
-        $this->priceMembers = $priceMembers * 100;
-
-        return $this;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getPriceNonMembers()
-    {
-        return $this->priceNonMembers;
-    }
-
-    /**
-     * @param  integer $priceNonMembers
-     * @return self
-     */
-    public function setPriceNonMembers($priceNonMembers)
-    {
-        $this->priceNonMembers = $priceNonMembers * 100;
-
-        return $this;
+        $this->maxNumberTickets = $maxNumberTickets;
     }
 
     /**
      * @return ArrayCollection
      */
-    public function getTickets()
+    public function getOrders()
     {
-        return $this->tickets;
+        return $this->orders;
     }
 
     /**
-     * @return ArrayCollection
+     * @param ArrayCollection $orders
      */
-    public function getOptions()
+    public function setOrders($orders)
     {
-        return $this->options;
+        $this->orders = $orders;
     }
 
-    /**
-     * @return integer
-     */
-    public function getNumberSold()
-    {
-        $sold = 0;
-        foreach ($this->tickets as $ticket) {
-            if ($ticket->getStatusCode() == 'sold') {
-                $sold++;
-            }
-        }
 
-        return $sold;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getNumberBooked()
-    {
-        $sold = 0;
-        foreach ($this->tickets as $ticket) {
-            if ($ticket->getStatusCode() == 'booked') {
-                $sold++;
-            }
-        }
-
-        return $sold;
-    }
-
-    public function getNumberFree()
-    {
-        return $this->getNumberOfTickets() - $this->getNumberSold() - $this->getNumberBooked();
-    }
-
-    /**
-     * @param  EntityManager $entityManager
-     * @return integer
-     */
-    public function generateTicketNumber(EntityManager $entityManager)
-    {
-        do {
-            $number = rand();
-            $ticket = $entityManager
-                ->getRepository('TicketBundle\Entity\Ticket')
-                ->findOneByEventAndNumber($this, $number);
-        } while ($ticket !== null);
-
-        return $number;
-    }
-
-    /**
-     * Check whether or not the given person can sign out from this shift.
-     *
-     * @param  EntityManager $entityManager The EntityManager instance
-     * @return boolean
-     */
-    public function canRemoveReservation(EntityManager $entityManager)
-    {
-        if (!$this->allowRemove()) {
-            return false;
-        }
-
-        $now = new DateTime();
-
-        $removeReservationThreshold = new DateInterval(
-            $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('ticket.remove_reservation_treshold')
-        );
-
-        if ($this->getBookingsCloseDate() == null) {
-            $getStartDate = clone $this->getActivity()->getStartDate();
-        } else {
-            $getStartDate = clone $this->getBookingsCloseDate();
-        }
-
-        return !($getStartDate->sub($removeReservationThreshold) < $now);
-    }
-
-    /**
-     * @param  Option|null $option
-     * @param  boolean     $member
-     * @return integer
-     */
-    public function getNumberSoldByOption(Option $option = null, $member = false)
-    {
-        $number = 0;
-        foreach ($this->tickets as $ticket) {
-            if ($ticket->getStatusCode() !== 'sold') {
-                continue;
-            }
-
-            if (null !== $option) {
-                if (($ticket->getOption() == $option) && (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member))) {
-                    $number++;
-                }
-            } else {
-                if (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member)) {
-                    $number++;
-                }
-            }
-        }
-
-        return $number;
-    }
-
-    /**
-     * @param  Option|null $option
-     * @param  boolean     $member
-     * @return integer
-     */
-    public function getNumberBookedByOption(Option $option = null, $member = false)
-    {
-        $number = 0;
-        foreach ($this->tickets as $ticket) {
-            if ($ticket->getStatusCode() !== 'booked') {
-                continue;
-            }
-
-            if (null !== $option) {
-                if (($ticket->getOption() == $option) && (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member))) {
-                    $number++;
-                }
-            } else {
-                if (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member)) {
-                    $number++;
-                }
-            }
-        }
-
-        return $number;
-    }
 }
