@@ -38,12 +38,12 @@ class Option
     private $id;
 
     /**
-     * @var Category The category this option belongs to.
+     * @var Event The event of the ticket
      *
-     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Category", inversedBy="options")
-     * @ORM\JoinColumn(name="category", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="TicketBundle\Entity\Event", inversedBy="tickets")
+     * @ORM\JoinColumn(name="event", referencedColumnName="id")
      */
-    private $category;
+    private $event;
 
     /**
      * @var string
@@ -53,14 +53,36 @@ class Option
     private $name;
 
     /**
-     * @var integer
+     * @var integer The price for members
      *
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(name="price_members", type="smallint")
      */
-    private $price;
+    private $priceMembers;
 
     /**
-     * @return int
+     * @var integer The price for non members
+     *
+     * @ORM\Column(name="price_non_members", type="smallint")
+     */
+    private $priceNonMembers;
+
+    /**
+     * @param Event   $event
+     * @param string  $name
+     * @param integer $priceMembers
+     * @param integer $priceNonMembers
+     */
+    public function __construct(Event $event, $name, $priceMembers, $priceNonMembers)
+    {
+        $this->event = $event;
+        $this->name = $name;
+
+        $this->setPriceMembers($priceMembers)
+            ->setPriceNonMembers($priceNonMembers);
+    }
+
+    /**
+     * @return integer
      */
     public function getId()
     {
@@ -68,27 +90,11 @@ class Option
     }
 
     /**
-     * @param int $id
+     * @return Event
      */
-    public function setId($id)
+    public function getEvent()
     {
-        $this->id = $id;
-    }
-
-    /**
-     * @return Category
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     * @param Category $category
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
+        return $this->event;
     }
 
     /**
@@ -100,28 +106,51 @@ class Option
     }
 
     /**
-     * @param string $name
+     * @param  string $name
+     * @return Option
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
-     * @return int
+     * @return integer
      */
-    public function getPrice()
+    public function getPriceMembers()
     {
-        return $this->price;
+        return $this->priceMembers;
     }
 
     /**
-     * @param int $price
+     * @param  integer $priceMembers
+     * @return self
      */
-    public function setPrice($price)
+    public function setPriceMembers($priceMembers)
     {
-        $this->price = $price;
+        $this->priceMembers = $priceMembers * 100;
+
+        return $this;
     }
 
+    /**
+     * @return integer
+     */
+    public function getPriceNonMembers()
+    {
+        return $this->priceNonMembers;
+    }
 
+    /**
+     * @param  integer $priceNonMembers
+     * @return self
+     */
+    public function setPriceNonMembers($priceNonMembers)
+    {
+        $this->priceNonMembers = $priceNonMembers * 100;
+
+        return $this;
+    }
 }
