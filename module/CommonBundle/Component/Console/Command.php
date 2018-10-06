@@ -22,7 +22,7 @@ namespace CommonBundle\Component\Console;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
     Exception,
-    Raven_Client,
+    Raven_ErrorHandler,
     Symfony\Component\Console\Input\InputInterface as Input,
     Symfony\Component\Console\Output\OutputInterface as Output,
     Zend\ServiceManager\ServiceLocatorAwareTrait as ZendServiceLocatorAwareTrait;
@@ -50,15 +50,18 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
         $this->input = $input;
         $this->output = $output;
 
+        if ('production' == getenv('APPLICATION_ENV')) {
+            $errorHandler = new Raven_ErrorHandler($this->getServiceLocator()->get('raven_client'));
+            $errorHandler->registerErrorHandler()
+                ->registerExceptionHandler()
+                ->registerShutdownFunction();
+        }
+
         try {
             return $this->executeCommand();
         } catch (Exception $e) {
-            if ('production' == getenv('APPLICATION_ENV')) {
-                $this->getServiceLocator()->get('sentry')
-                    ->logException($e);
-            }
-
-            throw $e;
+            $this->write($e, true);
+            return 1;
         }
     }
 
