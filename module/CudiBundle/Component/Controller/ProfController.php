@@ -89,7 +89,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
             ->getConfigValue('shibboleth_url');
 
         try {
-            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+            if (false !== ($shibbolethUrl = @unserialize($shibbolethUrl))) {
                 if (false === getenv('SERVED_BY')) {
                     throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
                 }

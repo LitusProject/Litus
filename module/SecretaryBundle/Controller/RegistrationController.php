@@ -749,7 +749,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
             ->getConfigValue('shibboleth_url');
 
         try {
-            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+            if (false !== ($shibbolethUrl = @unserialize($shibbolethUrl))) {
                 if (false === getenv('SERVED_BY')) {
                     throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
                 }
