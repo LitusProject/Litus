@@ -336,7 +336,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             ->getConfigValue('shibboleth_url');
 
         try {
-            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
+            if (false !== ($shibbolethUrl = @unserialize($shibbolethUrl))) {
                 if (false === getenv('SERVED_BY')) {
                     throw new Exception\ShibbolethUrlException('The SERVED_BY environment variable does not exist');
                 }
