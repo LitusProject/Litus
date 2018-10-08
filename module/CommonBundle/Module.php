@@ -21,6 +21,7 @@
 namespace CommonBundle;
 
 use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
+    Raven_ErrorHandler,
     Symfony\Component\Console\Application as ConsoleApplication,
     Zend\Console\Request as ConsoleRequest,
     Zend\Mvc\MvcEvent,
@@ -39,6 +40,11 @@ class Module
         if ('production' == getenv('APPLICATION_ENV')) {
             $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('sentry'), 'logMvcEvent'));
             $events->attach(MvcEvent::EVENT_RENDER_ERROR, array($services->get('sentry'), 'logMvcEvent'));
+
+            $errorHandler = new Raven_ErrorHandler($services->get('raven_client'));
+            $errorHandler->registerErrorHandler()
+                ->registerExceptionHandler()
+                ->registerShutdownFunction();
         }
 
         $injectTemplateListener = new InjectTemplateListener();

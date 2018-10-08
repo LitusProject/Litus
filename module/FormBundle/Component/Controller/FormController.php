@@ -89,19 +89,17 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        try {
-            if (false !== ($shibbolethUrl = unserialize($shibbolethUrl))) {
-                if (false === getenv('SERVED_BY')) {
-                    throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
-                }
-                if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {
-                    throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
-                }
+        if (false !== @unserialize($shibbolethUrl)) {
+            $shibbolethUrl = unserialize($shibbolethUrl);
 
-                $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+            if (false === getenv('SERVED_BY')) {
+                throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
             }
-        } catch (\ErrorException $e) {
-            // No load balancer active
+            if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {
+                throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+            }
+
+            $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
         }
 
         $shibbolethUrl .= '?source=form';

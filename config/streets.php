@@ -588,6 +588,10 @@ return array(
                 'name'     => 'Reeboklaan',
             ),
             array(
+                'register' => 7263,
+                'name'     => 'Remisebosweg',
+            ),
+            array(
                 'register' => 144,
                 'name'     => 'Renaat Veremanslaan',
             ),

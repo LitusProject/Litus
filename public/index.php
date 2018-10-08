@@ -33,14 +33,6 @@ if ('development' == getenv('APPLICATION_ENV')) {
     define('REQUEST_MICROTIME', microtime(true));
 }
 
-set_error_handler(
-    function ($errorNb, $errorString, $errorFile, $errorLine) {
-        if (0 !== error_reporting()) {
-            throw new ErrorException($errorString, $errorNb, 0, $errorFile, $errorLine);
-        }
-    }
-);
-
 /**
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.
