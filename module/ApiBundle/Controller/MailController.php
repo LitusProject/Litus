@@ -76,7 +76,9 @@ class MailController extends \ApiBundle\Component\Controller\ActionController\Ap
             }, $entries);
             $addressesString = implode(', ', $addresses);
 
-            $data[] = array('name' => $list->getName(), 'addresses' => $addressesString);
+            if(!empty($addresses)){
+                $data[] = array('name' => $list->getName(), 'addresses' => $addressesString);
+            }
         }
 
         $headers = new Headers();
