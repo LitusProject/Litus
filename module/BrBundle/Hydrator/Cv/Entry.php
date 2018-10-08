@@ -23,6 +23,7 @@ namespace BrBundle\Hydrator\Cv;
 use BrBundle\Entity\Cv\Experience as CvExperienceEntity,
     BrBundle\Entity\Cv\Language as CvLanguageEntity,
     CommonBundle\Entity\General\Address as AddressEntity;
+
 /**
  * This hydrator hydrates/extracts Cv entry data.
  *

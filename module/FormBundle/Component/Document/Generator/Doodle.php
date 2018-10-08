@@ -61,7 +61,10 @@ class Doodle extends \CommonBundle\Component\Document\Generator\Csv
             }
             $results[] = $result;
         }
+<<<<<<< HEAD
+=======
 
+>>>>>>> a507a280f9f3c25dee6a17cf254ca1a4d6f5cfe4
         for ($i = 0 ; $i < $maxSlots ; $i++) {
             $headers[] = 'Slot ' . ($i + 1) . ' Start';
             $headers[] = 'Slot ' . ($i + 1) . ' End';

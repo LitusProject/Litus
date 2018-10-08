@@ -83,7 +83,7 @@ A new piano reservation was made:
 
 It is important you always have the accompanying letter with you if you are going to play. You can get this in Blok 6 (Studentenwijk Arenberg) from the vice. You should be able to show this letter when security asks for it.
 
-Student IT
+VTK
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -96,7 +96,7 @@ Een nieuwe piano reservatie is aangemaakt:
 
 Het is belangrijk dat je de begeleidende brief steeds bij je hebt als je gaat spelen. Deze kan je gaan afhalen op blok 6 (Studentenwijk Arenberg) bij de vice. De brief moet je steeds kunnen voorleggen wanneer security er om vraagt.
 
-Student IT
+VTK
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
@@ -117,7 +117,7 @@ A new piano reservation was made and confirmed:
 
 It is important you always have the accompanying letter with you if you are going to play. You can get this in Blok 6 (Studentenwijk Arenberg) from the vice. You should be able to show this letter when security asks for it.
 
-Student IT
+VTK
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -130,7 +130,7 @@ Een nieuwe piano reservatie is aangemaakt en bevestigd:
 
 Het is belangrijk dat je de begeleidende brief steeds bij je hebt als je gaat spelen. Deze kan je gaan afhalen op blok 6 (Studentenwijk Arenberg) bij de vice. De brief moet je steeds kunnen voorleggen wanneer security er om vraagt.
 
-Student IT
+VTK
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),

@@ -225,15 +225,15 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         $barcodes = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findAllByBarcode($this->getParam('string'));
-        
-        if(count($barcodes) > 10) {
+
+        if (count($barcodes) > 10) {
             $barcodes = array_slice(0, 10);
         }
 
         $barcodePeople = array();
         foreach ($barcodes as $barcode) {
             $person = $barcode->getPerson();
-            if($person->canLogin()) {
+            if ($person->canLogin()) {
                 $barcodePeople[] = $person;
             }
         }

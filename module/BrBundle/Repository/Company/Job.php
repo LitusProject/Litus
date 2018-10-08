@@ -189,22 +189,22 @@ class Job extends EntityRepository
                     $query->expr()->eq('v.approved', 'TRUE')
                 )
             );
-        
-        if($sector !== null){
+
+        if ($sector !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.sector', ':sector')
             )
             ->setParameter('sector', $sector);
         }
 
-        if($location !== null){
+        if ($location !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.location', ':location')
             )
             ->setParameter('location', $location);
         }
 
-        if($master !== null){
+        if ($master !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.master', ':master')
             )
@@ -242,21 +242,21 @@ class Job extends EntityRepository
                     $query->expr()->eq('v.approved', 'TRUE')
                 )
             );
-        if($sector !== null){
+        if ($sector !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.sector', ':sector')
             )
             ->setParameter('sector', $sector);
         }
 
-        if($location !== null){
+        if ($location !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.location', ':location')
             )
             ->setParameter('location', $location);
         }
 
-        if($master !== null){
+        if ($master !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.master', ':master')
             )
@@ -294,21 +294,21 @@ class Job extends EntityRepository
                 )
             );
 
-        if($sector !== null){
+        if ($sector !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.sector', ':sector')
             )
             ->setParameter('sector', $sector);
         }
 
-        if($location !== null){
+        if ($location !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.location', ':location')
             )
             ->setParameter('location', $location);
         }
 
-        if($master !== null){
+        if ($master !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.master', ':master')
             )

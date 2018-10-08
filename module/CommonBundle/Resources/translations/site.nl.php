@@ -19,12 +19,12 @@
  */
 
 return array(
-    'Student IT'     => 'Student IT',
-    'Student IT'     => 'Student IT',
-    'Student IT vzw' => 'Student IT vzw',
+    'Vlaamse Technische Kring'     => 'Vlaamse Technische Kring',
+    'VTK'                          => 'VTK',
+    'Vlaamse Technische Kring vzw' => 'Vlaamse Technische Kring vzw',
 
-    'Welcome'                                                    => 'Welkom',
-    'Welcome to the website of Student IT, a demo organization.' => 'Welkom op de website van de Student IT, een demo organizatie.',
+    'Welcome'                                                                                                                      => 'Welkom',
+    'Welcome on the website of Vlaamse Technische Kring, the student organization of the Faculty of Engineering at the KU Leuven.' => 'Welkom op de website van de Vlaamse Technische Kring, de vereniging van de studenten Burgerlijk Ingenieur en Burgerlijk Ingenieur-Architect aan de KU Leuven.',
 
     'Dutch'   => 'Nederlands',
     'English' => 'English',
@@ -114,11 +114,11 @@ return array(
     'The selected file is too large.'                       => 'Het geselecteerde bestand is te groot.',
     'An error occurred while uploading your profile image.' => 'Er is een fout opgetreden tijdens het uploaden van je profiel foto.',
 
-    'Student IT uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.' => 'Student IT gebruikt cookies om het gebruiksgemak van deze website te verhogen. Door deze website te gebruiken of op "Ga Verder" te klikken geeft u de toestemming om cookies te gebruiken. Indien u meer informatie wilt over cookies en hoe ze gebruikt worden, kan u <a href="%url%">ons privacybeleid</a> hier lezen.',
+    'VTK uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.' => 'VTK gebruikt cookies om het gebruiksgemak van deze website te verhogen. Door deze website te gebruiken of op "Ga Verder" te klikken geeft u de toestemming om cookies te gebruiken. Indien u meer informatie wilt over cookies en hoe ze gebruikt worden, kan u <a href="%url%">ons privacybeleid</a> hier lezen.',
 
-    'Privacy Policy'                => 'Privacybeleid',
+    'Privacy Policy' => 'Privacybeleid',
 
-    'Wiki'                          => 'Examenwiki',
+    'Wiki' => 'Examenwiki',
 
     'International Student'         => 'Internationale Student',
     'I am an international student' => 'Ik ben een internationale student',

@@ -310,10 +310,11 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
     /**
      * @param Academic     $academic
+     * @param string       $tshirtSize
      * @param Organization $organization
      * @param AcademicYear $academicYear
      */
-    protected function bookRegistrationArticles(Academic $academic, Organization $organization, AcademicYear $academicYear)
+    protected function bookRegistrationArticles(Academic $academic, $tshirtSize, Organization $organization, AcademicYear $academicYear)
     {
         RegistrationArticles::book(
             $this->getEntityManager(),
@@ -321,7 +322,8 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             $organization,
             $academicYear,
             array(
-                'payed' => false,
+                'payed'      => false,
+                'tshirtSize' => $tshirtSize,
             )
         );
     }

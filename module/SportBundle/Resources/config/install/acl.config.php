@@ -38,5 +38,8 @@ return array(
         'sport_run_screen_outside' => array(
             'index',
         ),
+        'sport_run_tombola' => array(
+            'index', 'getName',
+        ),
     ),
 );

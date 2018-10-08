@@ -28,7 +28,6 @@ use CommonBundle\Entity\General\Language,
     Doctrine\ORM\Mapping as ORM,
     FormBundle\Entity\Field,
     FormBundle\Entity\Mail\Mail,
-    FormBundle\Entity\Node\Entry,
     Locale;
 
 /**
@@ -474,12 +473,11 @@ abstract class Form extends \CommonBundle\Entity\Node
             ->getRepository('FormBundle\Entity\ViewerMap')
             ->findOneByPersonAndForm($person, $this);
 
-        if($viewer !== null){
-            if($viewer->isEdit()){
+        if ($viewer !== null) {
+            if ($viewer->isEdit()) {
                 return true;
             }
         }
-
 
         return false;
     }

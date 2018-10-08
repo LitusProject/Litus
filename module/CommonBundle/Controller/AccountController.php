@@ -26,6 +26,7 @@ use CommonBundle\Component\PassKit\Pass\Membership,
     CommonBundle\Entity\User\Person,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
+    CommonBundle\Form\Account\Profile as ProfileForm,
     CudiBundle\Entity\Sale\Booking,
     Imagick,
     SecretaryBundle\Entity\Organization\MetaData,
@@ -153,6 +154,31 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->findOneById($id);
         }
 
+        $tshirts = unserialize(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.tshirt_article')
+        );
+
+        $oldTshirtBooking = null;
+        $oldTshirtSize = null;
+        if (null !== $metaData) {
+            if ($enableRegistration) {
+                if (null !== $metaData->getTshirtSize()) {
+                    $oldTshirtBooking = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Booking')
+                        ->findOneAssignedByArticleAndPersonInAcademicYear(
+                            $this->getEntityManager()
+                                ->getRepository('CudiBundle\Entity\Sale\Article')
+                                ->findOneById($tshirts[$metaData->getTshirtSize()]),
+                            $academic,
+                            $this->getCurrentAcademicYear()
+                        );
+                }
+            }
+            $oldTshirtSize = $metaData->getTshirtSize();
+        }
+
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost()->toArray();
             $formData['academic']['university_identification'] = $academic->getUniversityIdentification();
@@ -214,6 +240,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 }
 
                 if ($enableRegistration) {
+                    if (null !== $oldTshirtBooking && $oldTshirtSize != $metaData->getTshirtSize()) {
+                        $this->getEntityManager()->remove($oldTshirtBooking);
+                    }
+
                     $membershipArticles = array();
                     $ids = unserialize(
                         $this->getEntityManager()
@@ -231,7 +261,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         if ($isicMembership && $isicOrder == null) {
                             $isicRedirect = true;
                         } else {
-                            $this->bookRegistrationArticles($academic, $selectedOrganization, $this->getCurrentAcademicYear());
+                            $this->bookRegistrationArticles($academic, $organizationData['tshirt_size'], $selectedOrganization, $this->getCurrentAcademicYear());
                         }
                     } else {
                         foreach ($membershipArticles as $membershipArticle) {
@@ -276,6 +306,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                             'action'       => 'form',
                             'redirect'     => $this->getParam('return') ? $this->getParam('return') : 'common_account',
                             'organization' => $selectedOrganization->getId(),
+                            'size'         => $organizationData['tshirt_size'],
                         )
                     );
                 } else {

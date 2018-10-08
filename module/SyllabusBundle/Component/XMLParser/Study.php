@@ -381,8 +381,6 @@ class Study
                     ->setPhoneNumber($info['phone']);
             }
 
-            $this->profCache[$identification] = $prof;
-
             if ($prof->canHaveUniversityStatus($this->academicYear)) {
                 $prof->addUniversityStatus(
                     new UniversityStatus(

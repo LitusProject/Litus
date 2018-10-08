@@ -1,0 +1,52 @@
+stages:
+    - build
+    - deploy
+
+variables:
+    COMPOSER_HOME: $CI_PROJECT_DIR/.composer
+
+build:
+    stage: build
+    script:
+        - composer install --no-dev
+        - echo $CI_COMMIT_SHA > COMMIT
+        - tar czf litus.tar.gz bin/ config/ data/ module/ public/ shibboleth/ upgrade/ vendor/ COMMIT init_autoloader.php LICENSE.md NOTICE.md README.md
+    only:
+        - master
+    cache:
+        paths:
+            - .composer/
+            - vendor/
+    artifacts:
+        paths:
+            - litus.tar.gz
+
+.deploy: &deploy
+    stage: deploy
+    before_script:
+        - eval $(ssh-agent -s)
+        - ssh-add <(echo $SSH_PRIVATE_KEY | base64 -d)
+    script:
+        - scp -o StrictHostKeyChecking=no litus.tar.gz root@$SSH_HOSTNAME:/tmp
+        - ssh -o StrictHostKeyChecking=no root@$SSH_HOSTNAME /usr/local/sbin/deploy.sh
+    only:
+        - master
+    when: manual
+    dependencies:
+        - build
+ 
+deploy_leia:
+    <<: *deploy
+    variables:
+        SSH_HOSTNAME: leia.vtk.be
+    environment:
+        name: leia
+        url: https://vtk.be
+
+deploy_lily:
+    <<: *deploy
+    variables:
+        SSH_HOSTNAME: lily.vtk.be
+    environment:
+        name: lily
+        url: https://vtk.be

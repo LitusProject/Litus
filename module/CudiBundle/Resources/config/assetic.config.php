@@ -189,7 +189,6 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
-            '@common_remote_typeahead',
         ),
         'cudi_admin_stock' => array(
             '@common_jquery',

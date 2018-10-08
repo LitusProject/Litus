@@ -62,7 +62,7 @@ class VanReservation extends Reservation
     /**
      * @var text Y or N to indicate whether this is a car reservation, boolean could not be used for unkown reasons
      *
-     * @ORM\Column(type="text",nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $car;
 
@@ -145,6 +145,25 @@ class VanReservation extends Reservation
     public function setCar($car)
     {
         $this->car = $car;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getBike()
+    {
+        return $this->bike;
+    }
+
+    /**
+     * @param  boolean $bike
+     * @return self
+     */
+    public function setBike($bike)
+    {
+        $this->bike = $bike;
 
         return $this;
     }

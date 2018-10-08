@@ -24,7 +24,7 @@ return array(
         'value' => serialize(
             array(
                 'from'    => 'galabal@vtk.be',
-                'subject' => 'Student IT Galabal Busreservatie - Student IT Prom Bus Reservation ',
+                'subject' => 'VTK Galabal Busreservatie - VTK Prom Bus Reservation ',
                 'body'    => 'Beste,
 [English below]
 
@@ -54,7 +54,7 @@ See you then!
         'value' => serialize(
             array(
                 'from'    => 'galabal@vtk.be',
-                'subject' => 'Student IT Galabal Busreservatie - Student IT Prom Bus Reservation ',
+                'subject' => 'VTK Galabal Busreservatie - VTK Prom Bus Reservation ',
                 'body'    => 'Beste,
 [English below]
 

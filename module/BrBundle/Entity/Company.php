@@ -210,11 +210,11 @@ class Company
         'antwerp'         => 'Antwerp',
         'brussels'        => 'Brussels',
         'east flanders'   => 'East Flanders',
-        'flemish brabant' => 'Flemish Brabant', 
+        'flemish brabant' => 'Flemish Brabant',
         'limburg'         => 'Limburg',
         'west flanders'   => 'West Flanders',
         'wallonia'        => 'Wallonia',
-        'abroad'          => 'Abroad'
+        'abroad'          => 'Abroad',
     );
 
     public function __construct()

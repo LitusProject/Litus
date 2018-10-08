@@ -846,7 +846,6 @@ return array(
                 ),
             ),
         ),
-
         'cudi_admin_isic' => array(
             'type'    => 'Zend\Mvc\Router\Http\Segment',
             'options' => array(
@@ -875,6 +874,7 @@ return array(
                     'redirect'     => '[a-zA-Z0-9_-]*',
                     'rediraction'  => '[a-zA-Z0-9]*',
                     'organization' => '[a-zA-Z0-9]*',
+                    'size'         => '[a-zA-Z_]*',
                 ),
                 'defaults' => array(
                     'controller' => 'cudi_isic',

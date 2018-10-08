@@ -35,7 +35,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
     {
         return new ViewModel(
             array(
-                'date'  => $this->getParam('date'),
+                'date' => $this->getParam('date'),
             )
         );
     }
@@ -53,17 +53,17 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         $result = array();
         foreach ($events as $event) {
             $result[] = array (
-                'start'          => $event->getStartDate()->getTimeStamp(),
-                'end'            => $event->getEndDate()->getTimeStamp(),
-                'title'          => $event->getTitle(),
-                'id'             => $event->getId(),
+                'start' => $event->getStartDate()->getTimeStamp(),
+                'end'   => $event->getEndDate()->getTimeStamp(),
+                'title' => $event->getTitle(),
+                'id'    => $event->getId(),
             );
         }
 
         return new ViewModel(
             array(
                 'result' => (object) array(
-                    'status'       => 'success',
+                    'status' => 'success',
                     'events' => (object) $result,
                 ),
             )

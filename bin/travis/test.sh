@@ -14,7 +14,7 @@ init_database() {
 
     cat <<EOF | mongo
 use litus
-db.createUser({
+db.addUser({
     user: "litus",
     pwd: "huQeyU8te3aXusaz",
     roles: ["readWrite", "dbAdmin"]

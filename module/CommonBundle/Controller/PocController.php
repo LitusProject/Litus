@@ -46,17 +46,17 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         $currentAcademicYear = $this->getCurrentAcademicYear();
         //UNCOMMENT THIS IN CASE YOU WANT TO SHOW THE POCERS OF THE LOGGED IN PERSON
         /**
-         $isLoggedIn = true;
-         if (!($academic = $this->getAcademicEntity())) {
-         $isLoggedIn = false;
-         }
-         $personalPocItem = null;
-         if ($isLoggedIn){
-         $pocersFromAcademic = $this->getEntityManager()
-         ->getRepository('SyllabusBundle\Entity\Poc')
-         ->findPocersByAcademicAndAcademicYear($academic, $currentAcademicYear);
-         $personalPocItem = $this-> organisePocList($pocersFromAcademic);
-         }
+        $isLoggedIn = true;
+        if (!($academic = $this->getAcademicEntity())) {
+            $isLoggedIn = false;
+        }
+        $personalPocItem = null;
+        if ($isLoggedIn){
+        $pocersFromAcademic = $this->getEntityManager()
+            ->getRepository('SyllabusBundle\Entity\Poc')
+            ->findPocersByAcademicAndAcademicYear($academic, $currentAcademicYear);
+        $personalPocItem = $this-> organisePocList($pocersFromAcademic);
+        }
          */
 
         $pocList = $this->getEntityManager()

@@ -20,9 +20,7 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Cudibundle\Entity\IsicCard,
-    Zend\Soap\Client as SoapClient,
+use Cudibundle\Entity\IsicCard,
     Zend\View\Model\ViewModel;
 
 /**
@@ -32,13 +30,9 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (!($academicYear = $this->getAcademicYearEntity())) {
-            return new ViewModel();
-        }
-
         $cards = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\IsicCard')
-            ->findByYearQuery($academicYear);
+            ->findAllQuery();
 
         $paginator = $this->paginator()->createFromQuery(
             $cards,
@@ -99,7 +93,6 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
             )
         );
     }
-
     public function printAction()
     {
         $this->initAjax();
@@ -174,56 +167,6 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
                 'result' => (object) array('status' => 'success'),
             )
         );
-    }
-
-    public function searchAction()
-    {
-        $this->initAjax();
-
-        if (!($academicYear = $this->getAcademicYearEntity())) {
-            return new ViewModel();
-        }
-
-        $numResults = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('search_max_results');
-
-        $cards = $this->search($academicYear)
-            ->setMaxResults($numResults)
-            ->getResult();
-
-        $result = array();
-        foreach ($cards as $card) {
-            $item = (object) array();
-            $item->id = $card->getId();
-            $item->number = $card->getCardNumber();
-            $item->person = $card->getPerson()->getFullName();
-            $item->status = $card->getBooking()->getStatus();
-            $item->year = $card->getAcademicYear()->getStartDate()->format('Y') . " - " . $card->getAcademicYear()->getEndDate()->format('Y') ;
-            $item->isPaid = $card->hasPaid();
-            $item->booking = $card->getBooking()->getId();
-            $result[] = $item;
-        }
-
-        return new ViewModel(
-            array(
-                'result' => $result,
-            )
-        );
-    }
-
-    /**
-     * @param  AcademicYear             $academicYear
-     * @return \Doctrine\ORM\Query|null
-     */
-    private function search(AcademicYear $academicYear)
-    {
-        switch ($this->getParam('field')) {
-            case 'owner':
-                return $this->getEntityManager()
-                    ->getRepository('CudiBundle\Entity\IsicCard')
-                    ->findByPersonNameAndYearQuery($this->getParam('string'), $academicYear);
-        }
     }
 
     private function getIsicCardEntity()

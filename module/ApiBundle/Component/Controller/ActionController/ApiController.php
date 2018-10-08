@@ -313,7 +313,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function initUriScheme()
     {
-        UriFactory::registerScheme('litus', 'ApiBundle\Component\Uri\Litus');
+        UriFactory::registerScheme('vtk', 'ApiBundle\Component\Uri\Litus');
     }
 
     /**

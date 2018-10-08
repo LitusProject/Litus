@@ -24,7 +24,6 @@ use CommonBundle\Entity\General\Language,
     Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ORM\Mapping as ORM,
     Locale,
-    PageBundle\Entity\Category,
     PageBundle\Entity\Node\Page;
 
 /**

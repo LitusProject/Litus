@@ -37,13 +37,13 @@ class GroupController extends \SportBundle\Component\Controller\RunController
     private function generateHappyHours($startTime)
     {
         $optionsArray = array();
-        for ($i = 0; $i < 6; $i++) {
-            $startInterval = ($startTime + 2 * $i) % 24;
+        for ($i = 0; $i < 4; $i++) {
+            $startInterval = ($startTime + 3 * $i) % 24;
             if ($startInterval < 10) {
                 $startInterval = 0 . $startInterval;
             }
 
-            $endInterval = ($startTime + 2 * ($i + 1)) % 24;
+            $endInterval = ($startTime + 3 * ($i + 1)) % 24;
             if ($endInterval < 10) {
                 $endInterval = 0 . $endInterval;
             }
@@ -78,7 +78,7 @@ class GroupController extends \SportBundle\Component\Controller\RunController
         }
         $returnArray = array();
         foreach ($optionsArray as $key => $value) {
-            if ($countArray[$key] < 4) {
+            if ($countArray[$key] < 6) {
                 $returnArray[$key] = $value;
             }
         }

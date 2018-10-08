@@ -493,7 +493,6 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         } else {
             $booking->setStatus('returned', $this->getEntityManager());
         }
-
         for ($i = 0 ; $i < $number ; $i++) {
             $this->getEntityManager()->persist(new ReturnItem($booking->getArticle(), $price / 100, $queueItem));
         }

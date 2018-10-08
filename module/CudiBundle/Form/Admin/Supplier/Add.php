@@ -21,7 +21,6 @@
 namespace CudiBundle\Form\Admin\Supplier;
 
 use CudiBundle\Entity\Supplier;
-
 /**
  * Add Supplier
  *
