@@ -39,7 +39,7 @@ return array(
             'getRules', 'log',
         ),
         'api_mail' => array(
-            'getAliases', 'getListsArchive',
+            'getAliases', 'getLists', 'getListsArchive',
         ),
         'api_member' => array(
             'all',
