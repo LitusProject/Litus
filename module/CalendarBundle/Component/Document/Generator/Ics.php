@@ -70,7 +70,7 @@ class Ics
     {
         $this->entityManager = $entityManager;
         $this->language = $language;
-        $this->serverName = (('on' === $request->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . (isset($request->getServer('X-Forwarded-Host')) ? $request->getServer('X-Forwarded-Host') : $request->getServer('HTTP_HOST'));
+        $this->serverName = (('on' === $request->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . ((null !== $request->getServer('X-Forwarded-Host')) ? $request->getServer('X-Forwarded-Host') : $request->getServer('HTTP_HOST'));
         $this->url = $url;
 
         $this->suffix = $entityManager
