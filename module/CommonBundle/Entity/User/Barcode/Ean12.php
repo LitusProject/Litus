@@ -56,7 +56,7 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
 
         $validator = new BarcodeValidator(
             array(
-                'adapter'  => 'EAN12',
+                'adapter'     => 'EAN12',
                 'useChecksum' => false,
             )
         );
@@ -81,16 +81,16 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
      */
     public function getPrintableBarcode() {
         $ean12 = $this->barcode;
-        $splitted = str_split($ean12);
+        $split = str_split($ean12);
 
         $weight1 = 0;
         $weight3 = 0;
         for($i = 0; $i < 6; $i++){
-            $weight1 += (int) $splitted[$i*2];
-            $weight3 += (int) $splitted[$i*2+1];
+            $weight1 += (int) $split[$i*2];
+            $weight3 += (int) $split[$i*2+1];
         }
         $sum = 1*$weight1 + 3*$weight3;
-        $checkdigit = (10 - ($sum%10))%10;
+        $checkdigit = (10 - ($sum % 10)) % 10;
 
         $ean13 = 10*$ean12 + $checkdigit;
 
@@ -103,13 +103,13 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
     public static function generate($entityManager) {
         $validator = new BarcodeValidator(
             array(
-                'adapter'  => 'EAN12',
+                'adapter'     => 'EAN12',
                 'useChecksum' => false,
             )
         );
 
         do {
-            $ean12 = mt_rand(0, (pow(10, 12) - 1));
+            $ean12 = rand(0, (pow(10, 12) - 1));
 
             $barcode = $entityManager
                 ->getRepository('CommonBundle\Entity\User\Barcode\Ean12')
@@ -118,6 +118,6 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
             $done = (null === $barcode) && ($validator->isValid(strval($ean12)));
         } while(!$done);
 
-        return strval($ean12);
+        return $ean12;
     }
 }
