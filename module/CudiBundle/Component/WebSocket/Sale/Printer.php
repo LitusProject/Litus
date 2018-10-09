@@ -193,16 +193,14 @@ class Printer
             ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findEan12ByPerson($academic);
 
-        if($barcode === null){
-            $barcode = new Ean12($academic, Ean12::generateUnusedBarcode($entityManager));
+        if ($barcode === null) {
+            $barcode = new Ean12($academic, Ean12::generate($entityManager));
             $entityManager->persist($barcode);
         }
 
-        $printableBarcode = $barcode->getPrintableCode();
-
         $data = array(
             'id'        => $academic->getUsername(),
-            'barcode'   => $printableBarcode,
+            'barcode'   => $barcode->getPrintableBarcode(),
             'firstName' => $academic->getFirstName(),
             'lastName'  => $academic->getLastName(),
             'comment'   => $comment,
