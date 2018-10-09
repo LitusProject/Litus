@@ -415,12 +415,12 @@ class QueueItem
                 $soldArticle['article']->setStockValue($soldArticle['article']->getStockValue() - $number);
             }
 
-            if(in_array($soldArticle['article']->getId(), $memberShipArticles)){
+            if (in_array($soldArticle['article']->getId(), $memberShipArticles)) {
                 Printer::membershipCard(
-                    $this->entityManager, 
+                    $this->entityManager,
                     $this->entityManager
                         ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('cudi.card_printer'), 
+                        ->getConfigValue('cudi.card_printer'),
                     $item->getPerson(),
                     $this->getCurrentAcademicYear()
                 );

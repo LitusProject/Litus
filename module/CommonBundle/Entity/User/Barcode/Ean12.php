@@ -22,7 +22,8 @@ namespace CommonBundle\Entity\User\Barcode;
 
 use CommonBundle\Entity\User\Person,
     Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+    InvalidArgumentException,
+    Zend\Validator\Barcode as BarcodeValidator;
 
 /**
  * This entity stores an EAN12 barcode.
@@ -53,7 +54,14 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
             $barcode = (int) floor($barcode / 10);
         }
 
-        if (strlen($barcode) != 12) {
+        $validator = new BarcodeValidator(
+            array(
+                'adapter'  => 'EAN12',
+                'useChecksum' => false,
+            )
+        );
+
+        if (!$validator->isValid(strval($barcode))) {
             throw new InvalidArgumentException('Invalid EAN12 barcode given: ' . $barcode);
         }
 
@@ -71,21 +79,7 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
     /**
      * @return integer
      */
-    public static function generateUnusedBarcode($entityManager){
-        do{
-            $ean12 = mt_rand(0, pow(10, 12) - 1); // Random 12 digit random number
-
-            $match = $entityManager
-                ->getRepository('CommonBundle\Entity\User\Barcode\Ean12')
-                ->findOneByBarcode($ean12);
-        }while($match != null);
-        return $ean12;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getPrintableCode(){
+    public function getPrintableBarcode() {
         $ean12 = $this->barcode;
         $splitted = str_split($ean12);
 
@@ -101,5 +95,29 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
         $ean13 = 10*$ean12 + $checkdigit;
 
         return $ean13;
+    }
+
+    /**
+     * @return integer
+     */
+    public static function generate($entityManager) {
+        $validator = new BarcodeValidator(
+            array(
+                'adapter'  => 'EAN12',
+                'useChecksum' => false,
+            )
+        );
+
+        do {
+            $ean12 = mt_rand(0, (pow(10, 12) - 1));
+
+            $barcode = $entityManager
+                ->getRepository('CommonBundle\Entity\User\Barcode\Ean12')
+                ->findOneByBarcode($ean12);
+
+            $done = (null === $barcode) && ($validator->isValid(strval($ean12)));
+        } while(!$done);
+
+        return strval($ean12);
     }
 }
