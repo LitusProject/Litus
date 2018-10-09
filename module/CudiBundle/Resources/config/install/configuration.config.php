@@ -469,7 +469,7 @@ Student IT Cudi
         'description' => 'Print collect ticket on sign-in instead of sign-in ticket.',
     ),
     array(
-        'key'         => 'cudi.signing_printer',
+        'key'         => 'cudi.signin_printer',
         'value'       => 'signin',
         'description' => 'Printer used to print sign-in tickets.',
     ),
