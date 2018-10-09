@@ -57,11 +57,11 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
         $validator = new BarcodeValidator(
             array(
                 'adapter'  => 'EAN12',
-                'checksum' => false,
+                'useChecksum' => false,
             )
         );
 
-        if (!$validator->isValid($barcode)) {
+        if (!$validator->isValid(strval($barcode))) {
             throw new InvalidArgumentException('Invalid EAN12 barcode given: ' . $barcode);
         }
 
@@ -104,7 +104,7 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
         $validator = new BarcodeValidator(
             array(
                 'adapter'  => 'EAN12',
-                'checksum' => false,
+                'useChecksum' => false,
             )
         );
 
@@ -115,9 +115,9 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
                 ->getRepository('CommonBundle\Entity\User\Barcode\Ean12')
                 ->findOneByBarcode($ean12);
 
-            $done = (null === $barcode) && ($validator->isValid($ean12));
+            $done = (null === $barcode) && ($validator->isValid(strval($ean12)));
         } while(!$done);
 
-        return $ean12;
+        return strval($ean12);
     }
 }
