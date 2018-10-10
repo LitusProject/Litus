@@ -60,22 +60,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
         $this->input = $input;
         $this->output = $output;
 
-        if ('production' == getenv('APPLICATION_ENV')) {
-            $errorHandler = new Raven_ErrorHandler($this->getServiceLocator()->get('raven_client'));
-            $errorHandler->registerErrorHandler()
-                ->registerExceptionHandler()
-                ->registerShutdownFunction();
-        }
-
-        try {
-            return $this->executeCommand();
-        } catch (Exception $e) {
-            if ('production' == getenv('APPLICATION_ENV')) {
-                $this->getSentry()->logException($e);
-            }
-
-            throw $e;
-        }
+        return $this->executeCommand();
     }
 
     /**
