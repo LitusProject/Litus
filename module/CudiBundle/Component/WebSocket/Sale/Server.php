@@ -350,7 +350,7 @@ class Server extends \CommonBundle\Component\WebSocket\Server
                 $this->entityManager,
                 $this->entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.signing_printer'),
+                    ->getConfigValue('cudi.signin_printer'),
                 $item,
                 $this->entityManager
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
