@@ -33,8 +33,8 @@ return array(
     'Photo (140 x 200)'   => 'Foto (140 x 200)',
     'Order'               => 'Bestel',
 
-    'Receive the ISIC/Club newsletter'          => 'Stuur mij de ISIC/Club nieuwsbrief',
-    'Receive information Guido NV'    => 'Stuur mij informatie van Guido NV',
+    'Receive the ISIC/Club newsletter' => 'Stuur mij de ISIC/Club nieuwsbrief',
+    'Receive information Guido NV'     => 'Stuur mij informatie van Guido NV',
 
     'You do not have permission to view this page.'                         => 'U heeft geen toegang tot deze pagina.',
     'You need to be logged in to view this page.'                           => 'U moet ingelogd zijn om deze pagina te bekijken.',

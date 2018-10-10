@@ -138,7 +138,7 @@ trait ElementTrait
     public function prepareElement(FormInterface $form)
     {
         if (!$this->hasAttribute('id')) {
-            $this->setAttribute('id', md5($this->getName() . rand() . rand()));
+            $this->setAttribute('id', md5(uniqid(rand(), true)));
         }
     }
 

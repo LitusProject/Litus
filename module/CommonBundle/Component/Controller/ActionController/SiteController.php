@@ -40,7 +40,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
      */
     public function onDispatch(MvcEvent $e)
     {
-        $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer')
+        $this->getViewRenderer()
             ->plugin('headMeta')
             ->appendName('viewport', 'width=device-width, initial-scale=1.0');
 
@@ -49,7 +49,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             ->getConfigValue('common.ios_app_id');
 
         if ('' != $iosAppId) {
-            $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer')
+            $this->getViewRenderer()
                 ->plugin('headMeta')
                 ->appendName('apple-itunes-app', 'app-id=' . $iosAppId);
         }

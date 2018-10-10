@@ -18,6 +18,11 @@
  * @license http://litus.cc/LICENSE
  */
 
+namespace SportBundle;
+
+use CommonBundle\Component\Assetic\Filter\Js as JsFilter,
+    CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'sport_admin_run' => array(
@@ -89,7 +94,11 @@ return array(
             'assets' => array(
                 'run/less/base.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'run_css.css',
             ),
@@ -98,7 +107,11 @@ return array(
             'assets' => array(
                 'run/js/*.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
     ),
 );

@@ -20,7 +20,8 @@
 
 namespace SecretaryBundle\Form\Registration;
 
-use CommonBundle\Entity\User\Person\Academic,
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait,
+    CommonBundle\Entity\User\Person\Academic,
     SecretaryBundle\Entity\Organization\MetaData,
     Zend\Validator\Identical;
 
@@ -31,6 +32,8 @@ use CommonBundle\Entity\User\Person\Academic,
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
+    use HydratorPluginManagerTrait;
+
     protected $hydrator = 'SecretaryBundle\Hydrator\Organization\MetaData';
 
     /**
@@ -348,8 +351,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             /** @var \CommonBundle\Component\Form\Fieldset $academicFieldset */
             $academicFieldset = $this->get('academic');
             $academicFieldset->populateValues(
-                $this->getServiceLocator()
-                    ->get('litus.hydratormanager')
+                $this->getHydratorPluginManager()
                     ->get('CommonBundle\Hydrator\User\Person\Academic')
                     ->extract($this->academic)
             );

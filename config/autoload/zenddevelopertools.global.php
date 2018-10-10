@@ -35,7 +35,7 @@ return array(
             'enabled'       => ('development' == getenv('APPLICATION_ENV')),
             'auto_hide'     => true,
             'position'      => 'bottom',
-            'version_check' => false,
+            'version_check' => true,
             'entries'       => array(),
         ),
     ),

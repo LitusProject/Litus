@@ -21,8 +21,8 @@
 namespace BrBundle\Controller\Admin;
 
 use BrBundle\Entity\Event,
-    Zend\View\Model\ViewModel,
-    BrBundle\Entity\Event\CompanyMap;
+    BrBundle\Entity\Event\CompanyMap,
+    Zend\View\Model\ViewModel;
 
 /**
  * EventController
@@ -130,8 +130,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                         'action' => 'manage',
                     )
                 );
-
-            }elseif(isset($formData['event_companyMap']) && $companyMapForm->isValid()) {
+            } elseif (isset($formData['event_companyMap']) && $companyMapForm->isValid()) {
                 $company = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company')
                     ->findOneById($formData['company']);
@@ -154,7 +153,6 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             }
 
             $this->getEntityManager()->flush();
-
         }
         $eventCompanyMaps = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\CompanyMap')
@@ -162,10 +160,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'propertiesForm'    => $propertiesForm,
-                'companyMapForm'    => $companyMapForm,
-                'eventCompanyMaps'  => $eventCompanyMaps,
-                'event'             => $event,
+                'propertiesForm'   => $propertiesForm,
+                'companyMapForm'   => $companyMapForm,
+                'eventCompanyMaps' => $eventCompanyMaps,
+                'event'            => $event,
             )
         );
     }

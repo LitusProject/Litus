@@ -40,7 +40,6 @@ class InternshipController extends \BrBundle\Component\Controller\CareerControll
             ->findAllActiveByTypeByDateQuery('internship');
 
         if ($this->getRequest()->isPost()) {
-
             $formData = $this->getRequest()->getPost();
             $internshipSearchForm->setData($formData);
 

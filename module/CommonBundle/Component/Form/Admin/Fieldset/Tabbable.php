@@ -23,6 +23,9 @@ namespace CommonBundle\Component\Form\Admin\Fieldset;
 use CommonBundle\Component\Form\Admin\Fieldset\TabContent,
     CommonBundle\Component\Form\Admin\Fieldset\TabPane,
     CommonBundle\Component\Form\FieldsetInterface,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
     CommonBundle\Entity\General\Language,
     Locale,
     RuntimeException,
@@ -35,8 +38,12 @@ use CommonBundle\Component\Form\Admin\Fieldset\TabContent,
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset
+abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset implements ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
+
+    use DoctrineTrait;
+
     public function init()
     {
         $languages = $this->getLanguages();

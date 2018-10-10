@@ -18,6 +18,10 @@
  * @license http://litus.cc/LICENSE
  */
 
+namespace SecretaryBundle;
+
+use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'secretary_admin_registration' => array(
@@ -80,7 +84,11 @@ return array(
             'assets' => array(
                 'secretary/less/study.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'secretary.css',
             ),

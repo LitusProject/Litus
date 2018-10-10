@@ -149,10 +149,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         array(
                             'name' => 'EmailAddress',
-                        )
+                        ),
                     ),
                 ),
-            )
+            ),
         ));
 
         $this->add(array(
@@ -198,5 +198,4 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Add', 'company_add');
     }
-
 }

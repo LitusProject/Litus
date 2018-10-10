@@ -21,9 +21,9 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Person\Academic,
+    CudiBundle\Component\WebSocket\Sale\Printer as Printer,
     Doctrine\ORM\Query,
-    Zend\View\Model\ViewModel,
-    CudiBundle\Component\WebSocket\Sale\Printer as Printer;
+    Zend\View\Model\ViewModel;
 
 /**
  * AcademicController
@@ -225,15 +225,15 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         $barcodes = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findAllByBarcode($this->getParam('string'));
-        
-        if(count($barcodes) > 10) {
+
+        if (count($barcodes) > 10) {
             $barcodes = array_slice(0, 10);
         }
 
         $barcodePeople = array();
         foreach ($barcodes as $barcode) {
             $person = $barcode->getPerson();
-            if($person->canLogin()) {
+            if ($person->canLogin()) {
                 $barcodePeople[] = $person;
             }
         }
@@ -313,7 +313,6 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         }
     }
 
-
     public function printAction()
     {
         $this->initAjax();
@@ -327,10 +326,10 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
         }*/
 
         Printer::membershipCard(
-            $this->getEntityManager(), 
+            $this->getEntityManager(),
             $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('cudi.card_printer'), 
+                    ->getConfigValue('cudi.card_printer'),
             $academic,
             $this->getCurrentAcademicYear()
         );

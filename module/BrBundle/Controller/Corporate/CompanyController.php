@@ -32,7 +32,6 @@ use BrBundle\Entity\Company,
  */
 class CompanyController extends \BrBundle\Component\Controller\CorporateController
 {
-
     public function editAction()
     {
         if (!($company = $this->getCorporateEntity()->getCompany())) {
@@ -66,10 +65,8 @@ class CompanyController extends \BrBundle\Component\Controller\CorporateControll
 
         return new ViewModel(
             array(
-                'form'    => $form,
+                'form' => $form,
             )
         );
     }
-
-
 }

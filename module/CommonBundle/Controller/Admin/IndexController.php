@@ -21,10 +21,10 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\Piwik\Analytics,
+    CommonBundle\Component\Version\Version,
     DateInterval,
     DateTime,
-    Doctrine\Common\Version as DoctrineVersion,
-    Zend\Version\Version as ZendVersion,
+    PackageVersions\Versions,
     Zend\View\Model\ViewModel;
 
 /**
@@ -91,6 +91,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
 
         $currentSession = $this->getAuthentication()->getSessionObject();
 
+        $versions = $this->getVersions();
+
         return new ViewModel(
             array(
                 'profActions'        => $profActions,
@@ -100,12 +102,23 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 'currentSession'     => $currentSession,
                 'piwik'              => $piwik,
                 'registrationsGraph' => $registrationsGraph,
-                'versions'           => array(
-                    'php'      => phpversion(),
-                    'zf'       => ZendVersion::VERSION,
-                    'doctrine' => DoctrineVersion::VERSION,
-                ),
+                'versions'           => $versions,
             )
+        );
+    }
+
+    /**
+     * @return array
+     */
+    private function getVersions()
+    {
+        preg_match('/(\d.\d.\d)/', phpversion(), $phpVersion);
+        preg_match('/(\d.\d.\d)/', Versions::getVersion('zendframework/zend-mvc'), $zfVersion);
+
+        return array(
+            'php'   => $phpVersion[0],
+            'zf'    => $zfVersion[0],
+            'litus' => Version::getCommitHash(),
         );
     }
 

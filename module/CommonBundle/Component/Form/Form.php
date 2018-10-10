@@ -21,6 +21,8 @@
 namespace CommonBundle\Component\Form;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
     CommonBundle\Component\Validator\FormAwareInterface,
     RuntimeException,
     Zend\Form\FieldsetInterface as ZendFieldsetInterface,
@@ -29,7 +31,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     Zend\InputFilter\InputFilterInterface,
     Zend\InputFilter\InputInterface,
     Zend\InputFilter\InputProviderInterface,
-    Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
+    Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want
@@ -40,8 +42,9 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
  */
 abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface, ServiceLocatorAwareInterface, ZendFieldsetInterface
 {
-    use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+    use ServiceLocatorAwareTrait;
+
+    use DoctrineTrait;
 
     use ElementTrait, FieldsetTrait {
         FieldsetTrait::setRequired insteadof ElementTrait;
@@ -61,7 +64,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     }
 
     /**
-     * @return \Zend\Stdlib\Hydrator\HydratorInterface
+     * @return \Zend\Hydrator\HydratorInterface
      */
     public function getHydrator()
     {

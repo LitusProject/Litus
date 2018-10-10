@@ -54,7 +54,7 @@ EOT
             $files = array($files);
         }
 
-        // get PWD of shell that called public/index.php
+        // get PWD of shell that called bin/console.php
         // the PWD of php itself is changed in said file
         $pwd = getenv('PWD');
 

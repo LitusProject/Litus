@@ -24,6 +24,17 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
     CommonBundle\Component\Controller\DoctrineAware,
     CommonBundle\Component\Controller\Exception\RuntimeException,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\RouterTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionStorageTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\ViewRendererTrait,
     CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\Visit,
     Zend\Http\Header\HeaderInterface,
@@ -43,8 +54,20 @@ use CommonBundle\Component\Acl\Acl,
  * @method \Zend\Http\PhpEnvironment\Response getResponse()
  * @method \Zend\Http\PhpEnvironment\Request getRequest()
  */
-class ApiController extends \Zend\Mvc\Controller\AbstractActionController implements DoctrineAware
+class ApiController extends \Zend\Mvc\Controller\AbstractActionController implements ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
+
+    use AuthenticationTrait;
+    use CacheTrait;
+    use DoctrineTrait;
+    use FormFactoryTrait;
+    use MailTransportTrait;
+    use RouterTrait;
+    use SessionStorageTrait;
+    use TranslatorTrait;
+    use ViewRendererTrait;
+
     /**
      * @var \CommonBundle\Component\Acl\Driver\HasAccess The access driver
      */
@@ -63,8 +86,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     public function onDispatch(MvcEvent $e)
     {
-        $this->getServiceLocator()
-            ->get('Zend\View\Renderer\PhpRenderer')
+        $this->getViewRenderer()
             ->plugin('headMeta')
             ->setCharset('utf-8');
 
@@ -209,11 +231,11 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function initViewHelpers()
     {
-        $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
+        $renderer = $this->getViewRenderer();
 
         $renderer->plugin('url')
             ->setLanguage($this->getLanguage())
-            ->setRouter($this->getServiceLocator()->get('router'));
+            ->setRouter($this->getRouter());
 
         // HasAccess View Helper
         $renderer->plugin('hasAccess')->setDriver(
@@ -262,11 +284,11 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
-     * @return null
+     * @return void
      */
     private function initAuthenticationService()
     {
-        $this->getServiceLocator()->get('authentication_service')
+        $this->getAuthenticationService()
             ->setRequest($this->getRequest())
             ->setResponse($this->getResponse());
     }
@@ -361,42 +383,10 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
-     * We want an easy method to retrieve the Authentication from
-     * the DI container.
-     *
-     * @return \CommonBundle\Component\Authentication\Authentication
-     */
-    public function getAuthentication()
-    {
-        return $this->getServiceLocator()->get('authentication');
-    }
-
-    /**
-     * We want an easy method to retrieve the Authentication Service
-     * from the DI container.
-     *
-     * @return \CommonBundle\Component\Authentication\AbstractAuthenticationService
-     */
-    public function getAuthenticationService()
-    {
-        return $this->getServiceLocator()->get('authentication_doctrineservice');
-    }
-
-    /**
-     * We want an easy method to retrieve the Cache from
-     * the DI container.
-     *
-     * @return \Zend\Cache\Storage\StorageInterface
-     */
-    public function getCache()
-    {
-        return $this->getServiceLocator()->get('cache');
-    }
-
-    /**
      * Get the current academic year.
      *
-     * @return \CommonBundle\Entity\General\AcademicYear
+     * @param  boolean      $organization
+     * @return AcademicYear
      */
     protected function getCurrentAcademicYear($organization = false)
     {
@@ -405,28 +395,6 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         }
 
         return AcademicYear::getUniversityYear($this->getEntityManager());
-    }
-
-    /**
-     * We want an easy method to retrieve the DocumentManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
-     */
-    public function getDocumentManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
-    }
-
-    /**
-     * We want an easy method to retrieve the EntityManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
     }
 
     /**
@@ -526,46 +494,6 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     public function getParam($param, $default = null)
     {
         return $this->getEvent()->getRouteMatch()->getParam($param, $default);
-    }
-
-    /**
-     * Retrieve the common session storage from the DI container.
-     *
-     * @return \Zend\Session\Container
-     */
-    public function getSessionStorage()
-    {
-        return $this->getServiceLocator()->get('common_sessionstorage');
-    }
-
-    /**
-     * We want an easy method to retrieve the Mail Transport from
-     * the DI container.
-     *
-     * @return \Zend\Mail\Transport\TransportInterface
-     */
-    public function getMailTransport()
-    {
-        return $this->getServiceLocator()->get('mail_transport');
-    }
-
-    /**
-     * We want an easy method to retrieve the Translator from
-     * the DI container.
-     *
-     * @return \Zend\Mvc\I18n\Translator
-     */
-    public function getTranslator()
-    {
-        return $this->getServiceLocator()->get('translator');
-    }
-
-    /**
-     * @return \CommonBundle\Component\Form\Factory
-     */
-    protected function getFormFactory()
-    {
-        return $this->getServiceLocator()->get('formfactory.bootstrap');
     }
 
     /**

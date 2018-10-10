@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\General\AcademicYear as AcademicYear,
+use CommonBundle\Entity\General\AcademicYear as AcademicYear,
+    CommonBundle\Entity\User\Barcode\Ean12 as Ean12,
+    CommonBundle\Entity\User\Person\Academic,
     CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
-    Doctrine\ORM\EntityManager,
-    CommonBundle\Entity\User\Barcode\Ean12 as Ean12;
+    Doctrine\ORM\EntityManager;
 
 class Printer
 {
@@ -173,9 +173,9 @@ class Printer
     }
 
     /**
-     * @param EntityManager   $entityManager
-     * @param string          $printer
-     * @param Person          $person
+     * @param EntityManager $entityManager
+     * @param string        $printer
+     * @param Person        $person
      */
     public static function membershipCard(EntityManager $entityManager, $printer, Academic $academic, AcademicYear $year)
     {
@@ -187,7 +187,7 @@ class Printer
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_short_name');
 
-        $comment = $organization.' '.$year->getCode();
+        $comment = $organization . ' ' . $year->getCode();
 
         $barcode = $entityManager
             ->getRepository('CommonBundle\Entity\User\Barcode')

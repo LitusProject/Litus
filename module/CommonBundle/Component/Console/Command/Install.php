@@ -39,7 +39,7 @@ abstract class Install extends \CommonBundle\Component\Console\Command
         $this->module = $this->getModule();
 
         $this
-            ->setName('install:' . str_replace(array('bundle', 'module'), '', strtolower($this->module)))
+            ->setName('install:' . str_replace('bundle', '', strtolower($this->module)))
             ->setDescription('Install the ' . $this->module . '.')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command installs the $this->module module.
@@ -55,7 +55,7 @@ EOT
     protected function executeCommand()
     {
         $installer = $this->getServiceLocator()
-            ->get('litus.install.' . $this->module);
+            ->get($this->module . '\Component\Module\Installer');
 
         $installer->setCommand($this);
 

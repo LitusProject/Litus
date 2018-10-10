@@ -18,6 +18,10 @@
  * @license http://litus.cc/LICENSE
  */
 
+namespace FormBundle;
+
+use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'form_admin_form' => array(
@@ -141,7 +145,11 @@ return array(
             'assets' => array(
                 'manage/less/base.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'form_manage_css.css',
             ),

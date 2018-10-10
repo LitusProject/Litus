@@ -1,7 +1,7 @@
 {% if 1 < paginationControl.pages.pageCount %}
     <ul class="pagination">
-        <li {% if paginationControl.pages.previous is sameas(null) %}class="disabled"{% endif %}>
-            {% if paginationControl.pages.previous is not sameas(null) %}
+        <li {% if paginationControl.pages.previous is same as(null) %}class="disabled"{% endif %}>
+            {% if paginationControl.pages.previous is not same as(null) %}
                 <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.previous}|merge(paginationControl.matchedRouteParams)) }}">&larr;</a>
             {% else %}
                 <a href="#">&larr;</a>
@@ -48,8 +48,8 @@
             {% endfor %}
         {% endif %}
 
-        <li {% if paginationControl.pages.next is sameas(null) %}class="disabled"{% endif %}>
-            {% if paginationControl.pages.next is not sameas(null) %}
+        <li {% if paginationControl.pages.next is same as(null) %}class="disabled"{% endif %}>
+            {% if paginationControl.pages.next is not same as(null) %}
                 <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.next}|merge(paginationControl.matchedRouteParams)) }}">&rarr;</a>
             {% else %}
                 <a href="#">&rarr;</a>

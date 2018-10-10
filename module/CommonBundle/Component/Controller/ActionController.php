@@ -23,14 +23,27 @@ namespace CommonBundle\Component\Controller;
 use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
     CommonBundle\Component\Controller\Exception\RuntimeException,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface as ServiceLocatorAware,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\RouterTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionStorageTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\ViewRendererTrait,
+    CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Entity\General\Language,
     CommonBundle\Entity\General\Visit,
     Locale,
     Zend\Http\Header\HeaderInterface,
     Zend\Mvc\MvcEvent,
     Zend\Paginator\Paginator,
+    Zend\Validator\AbstractValidator,
     Zend\View\Model\ViewModel;
 
 /**
@@ -38,16 +51,22 @@ use CommonBundle\Component\Acl\Acl,
  * and some other common functionality.
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
- * @method \CommonBundle\Component\Controller\Plugin\FlashMessenger flashMessenger()
- * @method \CommonBundle\Component\Controller\Plugin\HasAccess hasAccess()
- * @method \CommonBundle\Component\Controller\Plugin\Paginator paginator()
- * @method \CommonBundle\Component\Controller\Plugin\Url url()
- * @method \Zend\Http\PhpEnvironment\Response getResponse()
- * @method \Zend\Http\PhpEnvironment\Request getRequest()
  */
-class ActionController extends \Zend\Mvc\Controller\AbstractActionController implements AuthenticationAware, DoctrineAware, ServiceLocatorAware
+class ActionController extends \Zend\Mvc\Controller\AbstractActionController implements ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
+
+    use AuthenticationTrait;
+    use CacheTrait;
+    use ConfigTrait;
+    use DoctrineTrait;
+    use FormFactoryTrait;
+    use MailTransportTrait;
+    use RouterTrait;
+    use SentryTrait;
+    use SessionStorageTrait;
+    use TranslatorTrait;
+    use ViewRendererTrait;
 
     /**
      * @var Language
@@ -63,12 +82,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     public function onDispatch(MvcEvent $e)
     {
-        $this->getServiceLocator()
-            ->get('Zend\View\Renderer\PhpRenderer')
+        $this->getViewRenderer()
             ->plugin('headMeta')
             ->setCharset('utf-8');
-
-        $this->initAcademicYear();
 
         $this->initAuthenticationService();
         $this->initControllerPlugins();
@@ -156,26 +172,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         }
     }
 
-    /**
-     * @return null
-     */
-    private function initAcademicYear()
-    {
-        $this->getServiceLocator()
-            ->setService('litus.academic_year', $this->findCurrentAcademicYear());
-    }
-
-    /**
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
-    protected function findCurrentAcademicYear()
-    {
-        return $this->getCurrentAcademicYear(false);
-    }
-
     private function initAuthenticationService()
     {
-        $this->getServiceLocator()->get('authentication_service')
+        $this->getAuthenticationService()
             ->setRequest($this->getRequest())
             ->setResponse($this->getResponse());
     }
@@ -237,11 +236,11 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     private function initViewHelpers()
     {
-        $renderer = $this->getServiceLocator()->get('Zend\View\Renderer\PhpRenderer');
+        $renderer = $this->getViewRenderer();
 
         $renderer->plugin('url')
             ->setLanguage($this->getLanguage())
-            ->setRouter($this->getServiceLocator()->get('router'));
+            ->setRouter($this->getRouter());
 
         // HasAccess View Helper
         $renderer->plugin('hasAccess')->setDriver(
@@ -340,12 +339,27 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $translator->setCache($this->getCache())
             ->setLocale($this->getLanguage()->getAbbrev());
 
-        \Zend\Validator\AbstractValidator::setDefaultTranslator($this->getTranslator());
+        AbstractValidator::setDefaultTranslator($this->getTranslator());
 
         if ($this->getAuthentication()->isAuthenticated()) {
             $this->getAuthentication()->getPersonObject()->setLanguage($this->getLanguage());
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Get the current academic year.
+     *
+     * @param  boolean      $organization
+     * @return AcademicYear
+     */
+    public function getCurrentAcademicYear($organization = false)
+    {
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
+
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 
     /**
@@ -370,28 +384,6 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         return new Acl(
             $this->getEntityManager()
         );
-    }
-
-    /**
-     * We want an easy method to retrieve the Authentication from
-     * the DI container.
-     *
-     * @return \CommonBundle\Component\Authentication\Authentication
-     */
-    public function getAuthentication()
-    {
-        return $this->getServiceLocator()->get('authentication');
-    }
-
-    /**
-     * We want an easy method to retrieve the Authentication Service
-     * from the DI container.
-     *
-     * @return \CommonBundle\Component\Authentication\AbstractAuthenticationService
-     */
-    public function getAuthenticationService()
-    {
-        return $this->getServiceLocator()->get('authentication_doctrineservice');
     }
 
     /**
@@ -465,27 +457,15 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * We want an easy method to retrieve the Translator from
-     * the DI container.
-     *
-     * @return \Zend\Mvc\I18n\Translator
-     */
-    public function getTranslator()
-    {
-        return $this->getServiceLocator()->get('translator');
-    }
-
-    /**
      * Log a message to Sentry.
      *
-     * @param  string   $message
+     * @param  string $message
      * @return void
      */
     protected function logMessage($message)
     {
         if ('development' != getenv('APPLICATION_ENV')) {
-            $this->getServiceLocator()->get('sentry')
-                ->logMessage($message);
+            $this->getSentry()->logMessage($message);
         }
     }
 
@@ -503,23 +483,13 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * @return \CommonBundle\Component\Form\Factory
-     */
-    protected function getFormFactory()
-    {
-        return $this->getServiceLocator()->get('formfactory.bootstrap');
-    }
-
-    /**
      * @param  string                            $name
      * @param  array|object|null                 $data
      * @return \CommonBundle\Component\Form\Form
      */
     public function getForm($name, $data = null)
     {
-        $form = $this->getFormFactory()->create(array('type' => $name), $data);
-
-        return $form;
+        return $this->getFormFactory()->create(array('type' => $name), $data);
     }
 
     /**

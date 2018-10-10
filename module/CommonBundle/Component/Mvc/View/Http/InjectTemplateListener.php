@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\Mvc\View\Http;
 
-use Zend\EventManager\EventManagerInterface as Events,
+use Zend\EventManager\EventManagerInterface,
     Zend\EventManager\ListenerAggregateInterface,
     Zend\Filter\Word\CamelCaseToDash as CamelCaseToDashFilter,
     Zend\Mvc\MvcEvent,
@@ -48,9 +48,9 @@ class InjectTemplateListener implements ListenerAggregateInterface
      * @param  Events $events
      * @return void
      */
-    public function attach(Events $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
-        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'injectTemplate'), -90);
+        $this->listeners[] = $events->attach(MvcEvent::EVENT_DISPATCH, array($this, 'injectTemplate'), $priority);
     }
 
     /**
@@ -59,7 +59,7 @@ class InjectTemplateListener implements ListenerAggregateInterface
      * @param  Events $events
      * @return void
      */
-    public function detach(Events $events)
+    public function detach(EventManagerInterface $events)
     {
         foreach ($this->listeners as $index => $listener) {
             if ($events->detach($listener)) {

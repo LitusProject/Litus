@@ -361,7 +361,6 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
         return $request;
     }
 
-
     /**
      * @return array
      */

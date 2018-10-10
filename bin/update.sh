@@ -1,43 +1,35 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# A little script that makes it easier to update the application
-#
-
-# don't continue if any subcommand fails
+# fail on subcommand
 set -e
 
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$SCRIPT_DIRECTORY/../"
 
-function checkAndMakeExecutable() {
-    if [ ! -x "$1" ]; then
-        chmod +x "$1"
-    fi
-}
-
 function run() {
-    php public/index.php "$@"
+    php bin/console.php "$@"
 }
 
-# Making sure our scripts are executable
-find bin/ -follow -name '*.sh' | while read file
+# making sure our scripts are executable
+find bin/ -follow -name '*.sh' | while read f
 do
-  checkAndMakeExecutable "$file"
+  if [ ! -x "$file" ]; then
+        chmod +x "$file"
+    fi
 done
 
-# Upgrade script
+# upgrade
 ./bin/upgrade.sh
 
-# Updating the database
-run orm:schema-tool:update --force
+# doctrine
+php bin/console.php orm:schema-tool:update --force
 run orm:generate-proxies data/proxies/
 
-# Run installation
+# install
 run install:all
 
-# Making sure our LESS stylesheets are recompiled
+# assetic
 touch module/*/Resources/assets/*/less/base.less
-
 run assetic:build
 
-./bin/litus.sh common:acl-cleanup --flush
+run common:acl-cleanup --flush

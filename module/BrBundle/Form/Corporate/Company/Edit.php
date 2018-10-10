@@ -235,7 +235,6 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
         }
     }
 
-
     /**
      * @return array
      */

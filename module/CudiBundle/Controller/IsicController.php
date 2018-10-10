@@ -103,7 +103,6 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
 
     public function formAction()
     {
-
         $serviceUrl = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('cudi.isic_service_url');
@@ -302,9 +301,9 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'status' => 'form',
-                'form'   => $form,
-                'price'  => $article->getSellPrice() / 100,
+                'status'               => 'form',
+                'form'                 => $form,
+                'price'                => $article->getSellPrice() / 100,
                 'additionalConditions' => $additionalConditions[$this->getLanguage()->getAbbrev()],
             )
         );

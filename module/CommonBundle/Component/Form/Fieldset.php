@@ -21,7 +21,7 @@
 namespace CommonBundle\Component\Form;
 
 use Zend\Form\FormInterface,
-    Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
+    Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
  * Extending Zend's fieldset component, so that our forms look the way we want
@@ -32,15 +32,12 @@ use Zend\Form\FormInterface,
  * @method \CommonBundle\Component\Form\FieldsetTrait setRequired(boolean $flag = true)
  * @method \CommonBundle\Component\Form\ElementTrait setElementRequired(boolean $flag = true)
  */
-class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
+class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface
 {
     use ElementTrait, FieldsetTrait {
         FieldsetTrait::setRequired insteadof ElementTrait;
         ElementTrait::setRequired as setElementRequired;
     }
-
-    use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
 
     /**
      * @param string|null $name

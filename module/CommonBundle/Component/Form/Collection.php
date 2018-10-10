@@ -20,19 +20,20 @@
 
 namespace CommonBundle\Component\Form;
 
-use Traversable,
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    Traversable,
     Zend\Form\FormInterface,
     Zend\Stdlib\ArrayUtils;
 
-class Collection extends \Zend\Form\Element\Collection implements FieldsetInterface, \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
+class Collection extends \Zend\Form\Element\Collection implements FieldsetInterface, ServiceLocatorAwareInterface
 {
     use ElementTrait, FieldsetTrait {
         FieldsetTrait::setRequired insteadof ElementTrait;
         ElementTrait::setRequired as setElementRequired;
     }
 
-    use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+    use ServiceLocatorAwareTrait;
 
     public function showAs()
     {

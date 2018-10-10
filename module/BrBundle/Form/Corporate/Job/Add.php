@@ -122,7 +122,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
         ));
 
-
         $this->add(array(
             'type'       => 'select',
             'name'       => 'master',
@@ -159,12 +158,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'validators' => array(
                         array(
                             'name' => 'EmailAddress',
-                        )
+                        ),
                     ),
                 ),
-            )
+            ),
         ));
-
 
         $this->add(array(
             'type'       => 'select',

@@ -65,12 +65,12 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $result['Year'] = $data['studies']['year'];
 
         $result['Optin'] = '0';
-        if(isset($data['optins']['newsletter'])) {
+        if (isset($data['optins']['newsletter'])) {
             $result['Optin'] = $data['optins']['newsletter'];
         }
 
         $result['partnerOptin'] = '0';
-        if(isset($data['optins']['partners'])) {
+        if (isset($data['optins']['partners'])) {
             $result['partnerOptin'] = $data['optins']['partners'];
         }
 

@@ -20,8 +20,6 @@
 
 namespace CommonBundle\Command;
 
-use Zend\Log\Logger;
-
 /**
  * Tests connection to Sentry.
  */
@@ -40,10 +38,9 @@ EOT
 
     protected function executeCommand()
     {
-        $this->getServiceLocator()->get('sentry')
-            ->logMessage(
-                'Saying hi to the cutest error robot ever!'
-            );
+        $this->getSentry()->logMessage(
+            'Saying hi to the cutest error robot ever!'
+        );
     }
 
     protected function getLogName()

@@ -20,12 +20,13 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-use CommonBundle\Component\Acl\Driver\Exception\RuntimeException;
-use CommonBundle\Component\Util\File\TmpFile,
+
+use CommonBundle\Component\Acl\Driver\Exception\RuntimeException,
+    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
+    CommonBundle\Component\Util\File\TmpFile,
+    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator,
     CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     CudiBundle\Entity\Stock\Order\Item as OrderItem,
     CudiBundle\Entity\Stock\Order\Order,
     CudiBundle\Entity\Stock\Period,
@@ -41,7 +42,6 @@ use CommonBundle\Component\Util\File\TmpFile,
  */
 class OrderController extends \CudiBundle\Component\Controller\ActionController
 {
-
     const NOT_APPLICABLE = "/";
 
     public function manageAction()
@@ -245,7 +245,6 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     ->getRepository('CudiBundle\Entity\Stock\Order\Order')
                     ->addNumberByArticle($article, $formData['number'], $this->getAuthentication()->getPersonObject());
 
-
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -398,18 +397,17 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'data' => $file->getContent(),
             )
         );
-
-
     }
 
-    public function csvAction() {
+    public function csvAction()
+    {
         if (!($order = $this->getOrderEntity())) {
             return new ViewModel();
         }
 
         $sortOrder = $this->getParam('order');
         $items = null;
-        switch($sortOrder) {
+        switch ($sortOrder) {
             case 'barcode':
                 $items = $this->getEntityManager()
                     ->getRepository('CudiBundle\Entity\Stock\Order\Item')
@@ -456,7 +454,6 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     $item->getArticle()->getMainArticle()->getPublishers(),
                 );
             }
-
         }
 
         $document = new CsvGenerator($heading, $results);
@@ -476,7 +473,6 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                 'data' => $file->getContent(),
             )
         );
-
     }
 
     public function exportAction()

@@ -73,29 +73,29 @@ EOT
     /**
      * @param  string  $str
      * @param  boolean $raw
-     * @return null
+     * @return void
      */
     public function write($str, $raw = false)
     {
-        if ($this->getServiceLocator()->has('sentry')) {
+        if ($this->hasSentry()) {
             $this->logMessage($str);
-        } else {
-            return parent::write($str, $raw);
         }
+        
+        return parent::write($str, $raw);
     }
 
     /**
      * @param  string  $str
      * @param  boolean $raw
-     * @return null
+     * @return void
      */
     public function writeln($str, $raw = false)
     {
-        if ($this->getServiceLocator()->has('sentry')) {
+        if ($this->hasSentry()) {
             $this->logMessage($str);
-        } else {
-            return parent::writeln($str, $raw);
         }
+        
+        return parent::writeln($str, $raw);
     }
 
     /**
@@ -104,8 +104,7 @@ EOT
      */
     private function logMessage($str)
     {
-        $this->getServiceLocator()->get('sentry')
-            ->logMessage($str);
+        $this->getSentry()->logMessage($str);
     }
 
     /**

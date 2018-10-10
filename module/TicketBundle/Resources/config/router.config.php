@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'ticket_admin_event' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/ticket/event[/:action[/:id]][/page/:page][/]',
                 'constraints' => array(
@@ -36,7 +36,7 @@ return array(
             ),
         ),
         'ticket_admin_ticket' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/ticket/ticket[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
@@ -53,7 +53,7 @@ return array(
             ),
         ),
         'ticket_sale_index' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/ticket/sale[/:action[/:id]][/]',
                 'constraints' => array(
@@ -67,7 +67,7 @@ return array(
             ),
         ),
         'ticket_sale_ticket' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/ticket/sale/ticket[/:action[/:id[/:ticket]][/page/:page]][/]',
                 'constraints' => array(
@@ -83,7 +83,7 @@ return array(
             ),
         ),
         'ticket_sale_person_typeahead' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/ticket/person/typeahead[/:string][/]',
                 'constraints' => array(
@@ -96,7 +96,7 @@ return array(
             ),
         ),
         'ticket' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/ticket[/:action[/:id]][/]',
                 'constraints' => array(

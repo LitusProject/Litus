@@ -29,14 +29,11 @@ use LogicException;
  */
 class Edit extends Add
 {
-
-
     public function init()
     {
-
-		if (null === $this->event) {
-	        throw new LogicException('Cannot edit a null event');
-	    }
+        if (null === $this->event) {
+            throw new LogicException('Cannot edit a null event');
+        }
 
         parent::init();
 

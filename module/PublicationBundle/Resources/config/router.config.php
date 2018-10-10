@@ -21,7 +21,7 @@
 return array(
     'routes' => array(
         'publication_admin_publication' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/publication[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -36,7 +36,7 @@ return array(
             ),
         ),
         'publication_admin_edition_pdf' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/edition/pdf[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -51,7 +51,7 @@ return array(
             ),
         ),
         'publication_admin_edition_html' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/admin/edition/html[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
@@ -66,7 +66,7 @@ return array(
             ),
         ),
         'publication_archive' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/archive[/:action[/:publication[/:year]]][/]',
                 'constraints' => array(
@@ -81,7 +81,7 @@ return array(
             ),
         ),
         'publication_edition_html' => array(
-            'type'    => 'Zend\Mvc\Router\Http\Segment',
+            'type'    => 'Zend\Router\Http\Segment',
             'options' => array(
                 'route'       => '/archive/html[/:action[/:id]][/]',
                 'constraints' => array(

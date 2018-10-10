@@ -23,11 +23,12 @@ namespace CommonBundle\Component\Sentry;
 use CommonBundle\Component\Authentication\Authentication,
     Exception,
     Raven_Client,
+    Symfony\Component\Console\Event\ConsoleErrorEvent,
     Throwable,
     Zend\Console\Request as ConsoleRequest,
+    Zend\Http\PhpEnvironment\Request as PhpRequest,
     Zend\Mvc\Application,
     Zend\Mvc\MvcEvent,
-    Zend\Http\PhpEnvironment\Request as PhpRequest,
     Zend\Stdlib\RequestInterface;
 
 /**
@@ -50,22 +51,15 @@ class Client
     private $ravenClient;
 
     /**
-     * @var RequestInterface The request to the page
-     */
-    private $request;
-
-    /**
      * Constructs a new Sentry client.
      *
      * @param Raven_Client          $ravenClient    The Raven client connecting to the Sentry server
      * @param Authentication|null   $authentication The authentication instance
-     * @param RequestInterface|null $request        The request to the page
      */
-    public function __construct(Raven_Client $ravenClient, Authentication $authentication = null, RequestInterface $request = null)
+    public function __construct(Raven_Client $ravenClient, Authentication $authentication = null)
     {
         $this->authentication = $authentication;
         $this->ravenClient = $ravenClient;
-        $this->request = $request;
     }
 
     /**
@@ -80,10 +74,6 @@ class Client
             $exception,
             array(
                 'user'  => $this->getUser(),
-                'extra' => array(
-                    'request_uri' => $this->getRequestUri(),
-                    'user_agent'  => $this->getUserAgent(),
-                ),
             )
         );
     }
@@ -106,8 +96,22 @@ class Client
     }
 
     /**
-     * Handler that can be attached to Zend's EventManager and extracts the exception
-     * from an MvcEvent
+     * Handler that can be attached to Symfony's EventDispatcher and extracts the
+     * exception from a ConsoleErrorEvent.
+     *
+     * @param  ConsoleErrorEvent $event The ConsoleErrorEvent passed by the EventManager
+     * @return void
+     */
+    public function logConsoleErrorEvent(ConsoleErrorEvent $event)
+    {
+        $this->logException(
+            $event->getError()
+        );
+    }
+
+    /**
+     * Handler that can be attached to Zend's EventManager and extracts the
+     * exception from an MvcEvent.
      *
      * @param  MvcEvent $event The MvcEvent passed by the EventManager
      * @return void
@@ -123,74 +127,25 @@ class Client
     }
 
     /**
-     * Get the request URI.
-     *
-     * @return string
-     */
-    private function getRequestUri()
-    {
-        if ($this->request instanceof ConsoleRequest) {
-            return $this->request->toString();
-        } elseif ($this->request instanceof PhpRequest) {
-            $server = $this->request->getServer();
-            if (isset($server['X-Forwarded-Host'])) {
-                return '' != $server['X-Forwarded-Host']
-                    ? (($server['HTTPS'] != 'off') ? 'https://' : 'http://') . $server['X-Forwarded-Host'] . $server['REQUEST_URI']
-                    : '';
-            } else {
-                return '' != $server['HTTP_HOST']
-                    ? (($server['HTTPS'] != 'off') ? 'https://' : 'http://') . $server['HTTP_HOST'] . $server['REQUEST_URI']
-                    : '';
-            }
-        }
-
-        return '';
-    }
-
-    /**
      * Get the user.
      *
      * @return array
      */
-    private function getUser() {
-        if ($this->request instanceof ConsoleRequest) {
+    private function getUser()
+    {
+        if ($this->authentication->isAuthenticated()) {
+            $user = array(
+                'id'       => $this->authentication->getPersonObject()->getId(),
+                'username' => $this->authentication->getPersonObject()->getUsername(),
+                'email'    => $this->authentication->getPersonObject()->getEmail(),
+                'name'     => $this->authentication->getPersonObject()->getFullName(),
+                'session'  => $this->authentication->getSessionObject()->getId(),
+            );
+        } else {
             $user = array(
                 'id'       => 0,
-                'username' => 'console',
+                'username' => 'guest',
             );
-        } elseif ($this->request instanceof PhpRequest) {
-            if ($this->authentication->isAuthenticated()) {
-                $user = array(
-                    'id'         => $this->authentication->getPersonObject()->getId(),
-                    'username'   => $this->authentication->getPersonObject()->getUsername(),
-                    'email'      => $this->authentication->getPersonObject()->getEmail(),
-                    'name'       => $this->authentication->getPersonObject()->getFullName(),
-                    'session'    => $this->authentication->getSessionObject()->getId(),
-                );
-            } else {
-                $user = array(
-                    'id'       => 0,
-                    'username' => 'guest',
-                );
-            }
-        } else {
-            $user = array();
         }
-    }
-
-    /**
-     * Get the user agent.
-     *
-     * @return string
-     */
-    private function getUserAgent()
-    {
-        if ($this->request instanceof ConsoleRequest) {
-            return 'Console';
-        } elseif ($this->request instanceof PhpRequest) {
-            return $this->request->getServer()->get('HTTP_USER_AGENT');
-        }
-
-        return '';
     }
 }

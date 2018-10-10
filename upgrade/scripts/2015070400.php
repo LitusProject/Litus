@@ -115,7 +115,7 @@ pg_query($connection, 'DELETE FROM syllabus.studies');
 
 // Build the new syllabus structure
 echo ' -> Build new syllabus structure' . PHP_EOL;
-exec('./bin/litus.sh orm:schema-tool:update --force', $output, $returnValue);
+exec('php bin/doctrine.php orm:schema-tool:update --force', $output, $returnValue);
 
 if ($returnValue !== 0) {
     echo ' Failed to update database, please try it manualy. This script can be run again afterwards.' . PHP_EOL;

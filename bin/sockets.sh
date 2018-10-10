@@ -1,33 +1,25 @@
-#!/bin/bash
-# This little script starts our WebSockets
+#!/usr/bin/env bash
+
 #
+# sockets.sh
 # @author Bram Gotink <bram.gotink@litus.cc>
-# @license http://litus.cc/LICENSE
+#
 
 # allow job control
-#
-
 set -m
-
-# cd to the repository root
-#
 
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$SCRIPT_DIRECTORY"; cd ..;
 
-# check configuration of litus
-#
-
-if ! php public/index.php common:config test socket_path || ! php public/index.php common:config test socket_log; then
+# check litus configuration
+if ! php bin/console.php common:config test socket_path || ! php bin/console.php common:config test socket_log; then
     echo "Cannot get socket info, is litus configured correctly?" >&2
     exit 4
 fi
 
 # log function
-#
-
 if [[ "${1:-n}" =~ -d|--daemon ]]; then
-    _LOGFILE=$(php public/index.php common:config get socket_log)
+    _LOGFILE=$(php bin/console.php common:config get socket_log)
     mkdir -p $(dirname $_LOGFILE)
 else
     _LOGFILE=0
@@ -42,18 +34,10 @@ log() {
 }
 
 # location of run directory
-#
-
-_TMPDIR=$(php public/index.php common:config get socket_path)
-
-# don't start the sockets if they're already running or if $_TMPDIR cannot be
-# created
-#
+_TMPDIR=$(php bin/console.php common:config get socket_path)
 
 if [ -d "$_TMPDIR" ]; then
-    # directory exists, are we running already?
     if [ -f "$_TMPDIR/pid" ]; then
-        # pid file still exists, get pid and check if it is running
         _PID=$(cat "$_TMPDIR/pid")
         if kill -0 "$_PID" 2>/dev/null; then
             log "Sockets already running, restarting sockets"
@@ -76,13 +60,10 @@ else
         exit 2
     fi
 
-    # disallow group/other access
     chmod 700 "$_TMPDIR"
 fi
 
-# trap INT: close all sockets when this process is killed
-#
-
+# SIGINT SIGQUIT SIGTERM
 on_int() {
     log "Got SIGINT/SIGQUIT/SIGTERM, exiting..."
 
@@ -95,9 +76,7 @@ on_int() {
 
 trap on_int SIGINT SIGQUIT SIGTERM
 
-# trap USR1: restart sockets
-#
-
+# SIGUSR1
 on_usr1() {
     log "Got SIGUSR1, restarting sockets..."
 
@@ -107,21 +86,15 @@ on_usr1() {
 
 trap on_usr1 SIGUSR1
 
-# function to run a socket
-#
-
+# socket function
 function socket() {
-    if ! php public/index.php "socket:$1" --is-enabled; then
-        # the socket is disabled
+    if [ ! php bin/console.php "socket:$1" --is-enabled ]; then
         return
     fi
 
-    # we know this is only run if the sockets aren't running...
-
     local _PIDFILE="$_TMPDIR/pids/$1.pid"
 
-    while :
-    do
+    while true; do
         if [ ! -f "$_TMPDIR/pid" ]; then
             log "Stopping socket $1"
             rm "$_PIDFILE";
@@ -132,7 +105,7 @@ function socket() {
         log "Starting socket $1";
 
         # start socket in background
-        php public/index.php "socket:$1" --run >> $_LOGFILE &
+        php bin/console.php "socket:$1" --run >> $_LOGFILE &
 
         # get PID
         local _PID=$!
@@ -144,28 +117,19 @@ function socket() {
 
         # sleep for one second
         # not doing this could result in a DoS if the socket exits instantly
-        # added bonus: gives clients time to realise the socket died
         sleep 1
     done
 }
 
-# main execution
-#
-
-# create sockets directory
+# main
 mkdir -p "$_TMPDIR/pids"
-
-# store PID
 echo $$ > "$_TMPDIR/pid"
 
-# Start the WebSockets
 socket "cudi:sale-queue" &
 socket "sport:run-queue" &
 socket "syllabus:update" &
 
-# wait until all socket ... & calls end
-while jobs %% >/dev/null 2>&1
-do
-    log 'waiting...'
+while jobs %% >/dev/null 2>&1; do
+    log 'Waiting...'
     wait
 done

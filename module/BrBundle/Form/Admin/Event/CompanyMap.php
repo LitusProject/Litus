@@ -29,7 +29,6 @@ use BrBundle\Entity\Event;
  */
 class CompanyMap extends \CommonBundle\Component\Form\Admin\Form
 {
-
     public function init()
     {
         parent::init();

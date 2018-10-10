@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.news' => 'NewsBundle\Command\Install',
+    'install_news' => 'NewsBundle\Command\Install',
 );

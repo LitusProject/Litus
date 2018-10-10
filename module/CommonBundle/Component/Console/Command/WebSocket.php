@@ -41,11 +41,11 @@ abstract class WebSocket extends \CommonBundle\Component\Console\Command
 The <info>%command.name%</info> command runs the $name websocket.
 
 Call
-    php public/index.php <info>%command.name%</info> <comment>--run</comment>
+    php bin/console.php <info>%command.name%</info> <comment>--run</comment>
 to run the socket.
 
 Call
-    php public/index.php <info>%command.name%</info> <comment>--is-enabled</comment>
+    php bin/console.php <info>%command.name%</info> <comment>--is-enabled</comment>
 to check whether the socket is enabled (return value 0) or disabled (return value 1).
 EOT
         );

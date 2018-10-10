@@ -1,14 +1,18 @@
 {% macro renderForm(form) %}
+    {% import _self as self %}
+
     {% do form.prepare() %}
     {% autoescape false %}
         {% set buttons = [] %}
         {{ form().openTag(form) }}
-            {{ _self.renderFieldset(form) }}
+            {{ self.renderFieldset(form) }}
         {{ form().closeTag() }}
     {% endautoescape %}
 {% endmacro %}
 
 {% macro renderFieldset(fieldset) %}
+    {% import _self as self %}
+
     {% autoescape false %}
         {% set buttons = [] %}
         {% for element in fieldset %}
@@ -16,14 +20,14 @@
                 {% if element.showAs() == 'fieldset' and element.getLabel() %}
                     <fieldset name="{{ element.getName() }}" class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
                         <legend>{{ translate(element.getLabel()) }}</legend>
-                        {{ _self.renderFieldset(element) }}
+                        {{ self.renderFieldset(element) }}
                     </fieldset>
                     {% if element.shouldCreateTemplate() %}
-                        <span id="data-template-{{ element.getName() }}" data-template="{{ ("<fieldset name=\"" ~ element.getTemplateElement().getName() ~ "\" class=\"" ~ element.getAttribute('class') ~ "\" id=\"" ~ element.getAttribute('id') ~ "\"><legend>" ~ element.getTemplateElement().getLabel() ~ "</legend>" ~ _self.renderFieldset(element.getTemplateElement()) ~ "</fieldset>")|escape }}"></span>
+                        <span id="data-template-{{ element.getName() }}" data-template="{{ ("<fieldset name=\"" ~ element.getTemplateElement().getName() ~ "\" class=\"" ~ element.getAttribute('class') ~ "\" id=\"" ~ element.getAttribute('id') ~ "\"><legend>" ~ element.getTemplateElement().getLabel() ~ "</legend>" ~ self.renderFieldset(element.getTemplateElement()) ~ "</fieldset>")|escape }}"></span>
                     {% endif %}
                 {% else %}
                     <div name="{{ element.getName() }}" class="{{ element.getAttribute('class') }}" id="{{ element.getAttribute('id') }}">
-                        {{ _self.renderFieldset(element) }}
+                        {{ self.renderFieldset(element) }}
                     </div>
                 {% endif %}
             {% elseif element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset' or element.getAttribute('type') == 'button' %}
@@ -105,11 +109,11 @@
                     </div>
                 {% endif %}
             {% elseif element.getAttribute('type') == 'checkbox' %}
-                {{ _self.renderCheckbox(element) }}
+                {{ self.renderCheckbox(element) }}
             {% elseif element.getAttribute('type') == 'hidden' %}
                 {{ formElement(element) }}
             {% else %}
-                {{ _self.renderOther(element) }}
+                {{ self.renderOther(element) }}
             {% endif %}
         {% endfor %}
         {% if buttons|length > 0 %}

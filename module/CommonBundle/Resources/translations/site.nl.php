@@ -116,9 +116,9 @@ return array(
 
     'Student IT uses cookies to increase the ease of this website. By using the website or by pressing "Continue", you give the permission to use cookies. If you want more information about cookies and how they are used, you can view <a href="%url%">our privacy policy</a> here.' => 'Student IT gebruikt cookies om het gebruiksgemak van deze website te verhogen. Door deze website te gebruiken of op "Ga Verder" te klikken geeft u de toestemming om cookies te gebruiken. Indien u meer informatie wilt over cookies en hoe ze gebruikt worden, kan u <a href="%url%">ons privacybeleid</a> hier lezen.',
 
-    'Privacy Policy'                => 'Privacybeleid',
+    'Privacy Policy' => 'Privacybeleid',
 
-    'Wiki'                          => 'Examenwiki',
+    'Wiki' => 'Examenwiki',
 
     'International Student'         => 'Internationale Student',
     'I am an international student' => 'Ik ben een internationale student',

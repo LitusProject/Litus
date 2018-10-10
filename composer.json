@@ -1,41 +1,86 @@
 {
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/LitusProject/dbal"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/LitusProject/EdpMarkdown"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/LitusProject/zendframework"
         }
     ],
     "require": {
-        "zendframework/zendframework": "dev-master as 2.4.13",
-        "zendframework/zend-developer-tools": "@stable",
+        "zendframework/zend-authentication": "@stable",
+        "zendframework/zend-cache": "@stable",
+        "zendframework/zend-console": "@stable",
+        "zendframework/zend-eventmanager": "@stable",
+        "zendframework/zend-file": "@stable",
+        "zendframework/zend-filter": "@stable",
+        "zendframework/zend-form": "@stable",
+        "zendframework/zend-http": "@stable",
+        "zendframework/zend-i18n": "@stable",
+        "zendframework/zend-i18n-resources": "@stable",
+        "zendframework/zend-inputfilter": "@stable",
+        "zendframework/zend-loader": "@stable",
+        "zendframework/zend-mail": "@stable",
+        "zendframework/zend-math": "@stable",
+        "zendframework/zend-mime": "@stable",
+        "zendframework/zend-mvc": "@stable",
+        "zendframework/zend-mvc-i18n": "@stable",
+        "zendframework/zend-mvc-plugin-flashmessenger": "@stable",
+        "zendframework/zend-paginator": "@stable",
+        "zendframework/zend-permissions-acl": "@stable",
+        "zendframework/zend-router": "@stable",
+        "zendframework/zend-serializer": "@stable",
+        "zendframework/zend-servicemanager": "@stable",
+        "zendframework/zend-session": "@stable",
+        "zendframework/zend-soap": "@stable",
+        "zendframework/zend-stdlib": "@stable",
+        "zendframework/zend-uri": "@stable",
+        "zendframework/zend-validator": "@stable",
+        "zendframework/zend-view": "@stable",
 
         "alcaeus/mongo-php-adapter": "@stable",
         "doctrine/doctrine-orm-module": "@stable",
         "doctrine/doctrine-mongo-odm-module": "@stable",
         "EvanDotPro/EdpMarkdown": "dev-master",
-        "kriswallsmith/assetic": "1.0.5",
-        "packagist/yuicompressor-bin": "@stable",
-        "widmogrod/zf2-assetic-module": "1.3.4",
-        "zf-commons/zfc-twig": "@stable",
+        "ocramius/package-versions": "@stable",
+        "oxcom/zend-twig": "@stable",
+        "packagelist/yuicompressor-bin": "@stable",
+        "widmogrod/zf2-assetic-module": "@stable",
 
         "twitter/bootstrap": "~3.0.0",
         "sentry/sentry": "@stable"
     },
     "require-dev": {
+        "zendframework/zend-developer-tools": "@stable",
         "litus/php-cs-fixer": "dev-master"
     },
     "autoload": {
         "psr-4": {
-            "": "module/"
+            "ApiBundle\\": "module/ApiBundle",
+            "BannerBundle\\": "module/BannerBundle",
+            "BrBundle\\": "module/BrBundle",
+            "CalendarBundle\\": "module/CalendarBundle",
+            "CommonBundle\\": "module/CommonBundle",
+            "CudiBundle\\": "module/CudiBundle",
+            "DoorBundle\\": "module/DoorBundle",
+            "FormBundle\\": "module/FormBundle",
+            "GalleryBundle\\": "module/GalleryBundle",
+            "LogisticsBundle\\": "module/LogisticsBundle",
+            "MailBundle\\": "module/MailBundle",
+            "NewsBundle\\": "module/NewsBundle",
+            "NotificationBundle\\": "module/NotificationBundle",
+            "OnBundle\\": "module/OnBundle",
+            "QuizBundle\\": "module/QuizBundle",
+            "PageBundle\\": "module/PageBundle",
+            "PromBundle\\": "module/PromBundle",
+            "PublicationBundle\\": "module/PublicationBundle",
+            "SecretaryBundle\\": "module/SecretaryBundle",
+            "ShiftBundle\\": "module/ShiftBundle",
+            "ShopBundle\\": "module/ShopBundle",
+            "SportBundle\\": "module/SportBundle",
+            "SyllabusBundle\\": "module/SyllabusBundle",
+            "TicketBundle\\": "module/TicketBundle",
+            "WikiBundle\\": "module/WikiBundle"
         }
     },
     "config": {

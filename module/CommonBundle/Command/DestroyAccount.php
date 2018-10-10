@@ -67,7 +67,7 @@ EOT
         $fullName = $person->getFullName();
 
         $question = new ConfirmationQuestion('Do you want to destroy the account of ' . $person->getFullName() . '? [y/n]: ', false);
-        $confirmed = $this->getQuestion()->ask($this->input, $this->output, $question);
+        $confirmed = $this->ask($this->input, $this->output, $question);
 
         if ($confirmed) {
             $person->setUsername(substr(md5(time()), 0, 50));

@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.publication' => 'PublicationBundle\Command\Install',
+    'install_publication' => 'PublicationBundle\Command\Install',
 );

@@ -316,7 +316,7 @@ class OverviewController extends \CommonBundle\Component\Controller\ActionContro
             ->getRepository('BrBundle\Entity\Contract')
             ->findContractAuthorsByYear($currentYear);
 
-        echo "<script>console.log(".json_encode($ids).")</script>";
+        echo "<script>console.log(" . json_encode($ids) . ")</script>";
 
         $ccollection = array();
         foreach ($ids as $id) {

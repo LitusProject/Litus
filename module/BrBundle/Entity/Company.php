@@ -167,18 +167,18 @@ class Company
      * @var array The possible masters for students
      */
     const POSSIBLE_MASTERS = array(
-        'architectural engineering'     => 'Architectural Engineering',
-        'biomedical engineering'        => 'Biomedical Engineering',
-        'chemical engineering'          => 'Chemical Engineering',
-        'civil engineering'             => 'Civil Engineering',
-        'computer science engineering'  => 'Computer Science Engineering',
-        'electrical engineering'        => 'Electrical Engineering',
-        'energy engineering'            => 'Energy Engineering',
-        'logistics engineering'         => 'Logistics Engineering',
-        'materials engineering'         => 'Materials Engineering',
-        'mathematical engineering'      => 'Mathematical Engineering',
-        'mechanical engineering'        => 'Mechanical Engineering',
-        'nanoengineering'               => 'Nanoengineering'
+        'architectural engineering'    => 'Architectural Engineering',
+        'biomedical engineering'       => 'Biomedical Engineering',
+        'chemical engineering'         => 'Chemical Engineering',
+        'civil engineering'            => 'Civil Engineering',
+        'computer science engineering' => 'Computer Science Engineering',
+        'electrical engineering'       => 'Electrical Engineering',
+        'energy engineering'           => 'Energy Engineering',
+        'logistics engineering'        => 'Logistics Engineering',
+        'materials engineering'        => 'Materials Engineering',
+        'mathematical engineering'     => 'Mathematical Engineering',
+        'mechanical engineering'       => 'Mechanical Engineering',
+        'nanoengineering'              => 'Nanoengineering',
     );
 
     /**
@@ -210,11 +210,11 @@ class Company
         'antwerp'         => 'Antwerp',
         'brussels'        => 'Brussels',
         'east flanders'   => 'East Flanders',
-        'flemish brabant' => 'Flemish Brabant', 
+        'flemish brabant' => 'Flemish Brabant',
         'limburg'         => 'Limburg',
         'west flanders'   => 'West Flanders',
         'wallonia'        => 'Wallonia',
-        'abroad'          => 'Abroad'
+        'abroad'          => 'Abroad',
     );
 
     public function __construct()

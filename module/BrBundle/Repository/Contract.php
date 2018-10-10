@@ -20,10 +20,11 @@
 
 namespace BrBundle\Repository;
 
+
 use BrBundle\Entity\Collaborator as CollaboratorEntity,
     BrBundle\Entity\Company as CompanyEntity,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
-use CommonBundle\Entity\General\AcademicYear;
+    CommonBundle\Component\Doctrine\ORM\EntityRepository,
+    CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Contract
@@ -99,7 +100,7 @@ class Contract extends EntityRepository
     }
 
     /**
-     * @param  AcademicYear                                $year
+     * @param  AcademicYear                                 $year
      * @param  CollaboratorEntity                           $person
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
@@ -111,8 +112,8 @@ class Contract extends EntityRepository
     }
 
     /**
-     * @param  AcademicYear                                $year
-     * @param  CollaboratorEntity                           $person
+     * @param  AcademicYear        $year
+     * @param  CollaboratorEntity  $person
      * @return \Doctrine\ORM\Query
      */
     public function findAllNewOrSignedByPersonByYearQuery(CollaboratorEntity $person, AcademicYear $year)
@@ -239,7 +240,7 @@ class Contract extends EntityRepository
     }
 
     /**
-     * @param   AcademicYear    $year
+     * @param AcademicYear $year
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */

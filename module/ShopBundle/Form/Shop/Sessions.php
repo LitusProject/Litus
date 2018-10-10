@@ -20,15 +20,18 @@
 
 namespace ShopBundle\Form\Shop;
 
-use Zend\Form\Element;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait,
+    Zend\Form\Element;
 
 /**
- * Reserve
+ * Sessions
  *
  * @author Floris Kint <floris.kint@litus.cc>
  */
 class Sessions extends \CommonBundle\Component\Form\Admin\Form
 {
+    use TranslatorTrait;
+
     /**
      * @var SalesSession[]
      */
@@ -55,7 +58,7 @@ class Sessions extends \CommonBundle\Component\Form\Admin\Form
      */
     private function createSalesSessionsArray()
     {
-        $translator = $this->getServiceLocator()->get('translator');
+        $translator = $this->getTranslator();
 
         $result = array();
         foreach ($this->salesSessions as $session) {

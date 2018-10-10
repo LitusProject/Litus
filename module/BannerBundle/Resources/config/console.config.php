@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.banner' => 'BannerBundle\Command\Install',
+    'install_banner' => 'BannerBundle\Command\Install',
 );

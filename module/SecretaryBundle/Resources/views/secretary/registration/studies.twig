@@ -1,6 +1,8 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
+    {% import _self as self %}
+
     <div class="page-alert">
         <div class="flashmessage alert alert-success alert-fixed-top fade" id="studies_saved_success">
             <button type="button" class="close">&times;</button>
@@ -29,7 +31,7 @@
         {{ translate('Choose a Study') }}
     </h2>
     <div id="studies">
-        {{ _self.displayStudies(studies, enrollments) }}
+        {{ self.displayStudies(studies, enrollments) }}
     </div>
     <div style="text-align: center;">
         <a href="{{ url('secretary_registration', {'action': 'subjects'}) }}" class="btn btn-primary">{{ translate('Choose Your Subjects') }}</a>
@@ -37,6 +39,8 @@
 {% endblock %}
 
 {% macro displayStudies(studies, enrollments) %}
+    {% import _self as self %}
+
     {% for study in studies %}
         <div class="panel-group" id="studies-{{ study.getId() }}">
             <div class="panel panel-default">
@@ -56,7 +60,7 @@
                     <div class="panel-body">
                         <p>{{ study.getTitle() }}</p>
                         {% if study.getChildren()|length > 0 %}
-                            {{ _self.displayStudies(study.getChildren(), enrollments) }}
+                            {{ self.displayStudies(study.getChildren(), enrollments) }}
                         {% endif %}
                     </div>
                 </div>

@@ -88,7 +88,7 @@ class Page extends EntityRepository
      * @param  sector              $sector
      * @return \Doctrine\ORM\Query
      */
-    public function findAllActiveBySearchQuery(AcademicYear $academicYear, $name="%%", $sector="")
+    public function findAllActiveBySearchQuery(AcademicYear $academicYear, $name = "%%", $sector = "")
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $query = $query->select('p, c')
@@ -106,7 +106,7 @@ class Page extends EntityRepository
             ->setParameter('name', strtolower($name))
             ->setParameter('year', $academicYear);
 
-        if ($sector !== "" && $sector !=="all") {
+        if ($sector !== "" && $sector !== "all") {
             $query->andWhere(
                 $query->expr()->eq('c.sector', ':sector')
             )

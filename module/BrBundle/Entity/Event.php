@@ -97,7 +97,6 @@ class Event
         return $this->id;
     }
 
-
     /**
      * @return Person
      */
@@ -124,7 +123,6 @@ class Event
     {
         return $this->title;
     }
-
 
     /**
      * @param  DateTime $startDate

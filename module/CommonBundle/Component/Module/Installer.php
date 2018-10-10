@@ -39,8 +39,8 @@ class Installer extends AbstractInstaller
         $this->installLanguages();
         $this->writeln(' done.', true);
 
-        $this->write('Installing cities and streets...');
-        $this->installCities();
+        $this->write('Installing streets...');
+        $this->installStreets();
         $this->writeln(' done.', true);
 
         $this->write('Installing organizations...');
@@ -69,7 +69,7 @@ class Installer extends AbstractInstaller
         $this->getEntityManager()->flush();
     }
 
-    private function installCities()
+    private function installStreets()
     {
         $cities = include 'config/streets.php';
 

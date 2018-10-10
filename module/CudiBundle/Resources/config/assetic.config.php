@@ -18,6 +18,11 @@
  * @license http://litus.cc/LICENSE
  */
 
+namespace CudiBundle;
+
+use CommonBundle\Component\Assetic\Filter\Js as JsFilter,
+    CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'cudi_admin_article' => array(
@@ -433,7 +438,11 @@ return array(
             'assets' => array(
                 'sale/less/base.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'sale_css.css',
             ),
@@ -442,7 +451,11 @@ return array(
             'assets' => array(
                 'supplier/less/base.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'supplier_css.css',
             ),
@@ -451,19 +464,31 @@ return array(
             'assets' => array(
                 'queue/js/*.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'sale_js' => array(
             'assets' => array(
                 'sale/js/*.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'prof_css' => array(
             'assets' => array(
                 'prof/less/base.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'prof_css.css',
             ),
@@ -472,7 +497,11 @@ return array(
             'assets' => array(
                 'booking/less/base.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'booking_css.css',
             ),
@@ -481,7 +510,11 @@ return array(
             'assets' => array(
                 'opening-hour/less/schedule.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'opening_hour_css.css',
             ),
@@ -490,7 +523,11 @@ return array(
             'assets' => array(
                 'opening-hour/js/*.js',
             ),
-            'filters' => array('js'),
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
     ),
 );

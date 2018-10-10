@@ -19,5 +19,5 @@
  */
 
 return array(
-    'install.door' => 'DoorBundle\Command\Install',
+    'install_door' => 'DoorBundle\Command\Install',
 );

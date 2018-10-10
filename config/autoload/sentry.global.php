@@ -28,11 +28,10 @@ if ('development' != getenv('APPLICATION_ENV')) {
     return array(
         'service_manager' => array(
             'factories' => array(
-                'sentry' => function($serviceManager) {
+                'sentry' => function ($serviceManager) {
                     return new \CommonBundle\Component\Sentry\Client(
                         $serviceManager->get('raven_client'),
-                        $serviceManager->get('authentication'),
-                        $serviceManager->get('Request')
+                        $serviceManager->get('authentication')
                     );
                 },
                 'raven_client' => function ($serviceManager) {

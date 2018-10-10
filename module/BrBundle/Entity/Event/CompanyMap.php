@@ -21,8 +21,8 @@
 namespace BrBundle\Entity\Event;
 
 use BrBundle\Entity\Company,
-    Doctrine\ORM\Mapping as ORM,
-    BrBundle\Entity\Event;
+    BrBundle\Entity\Event,
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Event\CompanyMap")
@@ -54,17 +54,16 @@ class CompanyMap
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $event;
-    
+
     /**
-     * @param Company   $company
-     * @param Event     $event
+     * @param Company $company
+     * @param Event   $event
      */
     public function __construct(Company $company, Event $event)
     {
         $this->company = $company;
         $this->event = $event;
     }
-
 
     /**
      * @return integer
@@ -73,7 +72,6 @@ class CompanyMap
     {
         return $this->id;
     }
-
 
     /**
      * @return Company

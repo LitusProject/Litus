@@ -184,7 +184,7 @@ abstract class Invoice
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.invoice_year_number');
 
-        $prefix = $yearNumber.$bookNumber;
+        $prefix = $yearNumber . $bookNumber;
         $this->setInvoiceNumberPrefix($prefix);
 
         $iNb = $entityManager

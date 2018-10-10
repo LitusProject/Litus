@@ -20,95 +20,31 @@
 
 namespace CommonBundle\Component\ServiceManager;
 
-use CommonBundle\Component\Util\AcademicYear;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
-/**
- * A trait to define some common methods for classes with a ServiceLocator.
- * This trait requires the class to implement \Zend\ServiceManager\ServiceLocatorAwareInterface.
- *
- * @see \Zend\ServiceManager\ServiceLocatorAwareInterface
- * @author Bram Gotink <bram.gotink@litus.cc>
- */
 trait ServiceLocatorAwareTrait
 {
     /**
-     * We want an easy method to retrieve the DocumentManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
+     * @var ServiceLocatorInterface
      */
-    public function getDocumentManager()
+    protected $serviceLocator = null;
+
+    /**
+     * @param  ServiceLocatorInterface $serviceLocator
+     * @return mixed
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
-        return $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
+        $this->serviceLocator = $serviceLocator;
+
+        return $this;
     }
 
     /**
-     * We want an easy method to retrieve the EntityManager from
-     * the DI container.
-     *
-     * @return \Doctrine\ORM\EntityManager
+     * @return ServiceLocatorInterface
      */
-    public function getEntityManager()
+    public function getServiceLocator()
     {
-        return $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        return $this->serviceLocator;
     }
-
-    /**
-     * We want an easy method to retrieve the Cache from
-     * the DI container.
-     *
-     * @return \Zend\Cache\Storage\StorageInterface
-     */
-    public function getCache()
-    {
-        return $this->getServiceLocator()->get('cache');
-    }
-
-    /**
-     * Get the current academic year.
-     *
-     * @param  boolean|null                              $organization
-     * @return \CommonBundle\Entity\General\AcademicYear
-     */
-    public function getCurrentAcademicYear($organization = null)
-    {
-        if (null === $organization) {
-            return $this->getServiceLocator()
-                ->get('litus.academic_year');
-        }
-
-        if ($organization) {
-            return AcademicYear::getOrganizationYear($this->getEntityManager());
-        }
-
-        return AcademicYear::getUniversityYear($this->getEntityManager());
-    }
-
-    /**
-     * We want an easy method to retrieve the Mail Transport from
-     * the DI container.
-     *
-     * @return \Zend\Mail\Transport\TransportInterface
-     */
-    public function getMailTransport()
-    {
-        return $this->getServiceLocator()->get('mail_transport');
-    }
-
-    /**
-     * Retrieve the common session storage from the DI container.
-     *
-     * @return \Zend\Session\Container
-     */
-    public function getSessionStorage()
-    {
-        return $this->getServiceLocator()->get('common_sessionstorage');
-    }
-
-    // Explicitly require the getServiceLocator() method
-
-    /**
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
-     */
-    abstract public function getServiceLocator();
 }

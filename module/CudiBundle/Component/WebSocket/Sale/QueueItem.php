@@ -22,9 +22,9 @@ namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\Util\AcademicYear,
     CommonBundle\Component\WebSocket\User,
+    CommonBundle\Entity\User\Barcode\Ean12 as Ean12,
     CommonBundle\Entity\User\Person\Academic,
     CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CommonBundle\Entity\User\Barcode\Ean12 as Ean12,
     CudiBundle\Component\WebSocket\Sale\Printer as Printer,
     CudiBundle\Entity\IsicCard,
     CudiBundle\Entity\Sale\Booking,

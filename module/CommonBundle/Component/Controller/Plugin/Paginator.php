@@ -20,7 +20,10 @@
 
 namespace CommonBundle\Component\Controller\Plugin;
 
-use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter,
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
+    DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter,
     Doctrine\ORM\Query,
     Doctrine\ORM\QueryBuilder,
     Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator,
@@ -28,17 +31,19 @@ use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAd
     Zend\Mvc\Controller\AbstractController,
     Zend\Mvc\Exception,
     Zend\Paginator\Adapter\ArrayAdapter,
-    Zend\Paginator\Paginator as ZendPaginator,
-    Zend\ServiceManager\ServiceLocatorAwareInterface,
-    Zend\ServiceManager\ServiceLocatorInterface;
+    Zend\Paginator\Paginator as ZendPaginator;
 
 /**
  * A controller plugin containing some utility methods for pagination.
  *
  * @autor Pieter Maene <pieter.maene@litus.cc>
  */
-class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
+class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin implements ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
+    
+    use DoctrineTrait;
+
     /**
      * @var ZendPaginator $paginator The paginator
      */
@@ -48,11 +53,6 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
      * @var int The number of items on each page
      */
     private $itemsPerPage = 25;
-
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $locator;
 
     /**
      * Setting the number of items per page, defaults to 25.
@@ -113,8 +113,8 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
     {
         return $this->createFromArray(
             (0 == count($conditions)) ?
-                $this->getLocator()->get('doctrine.documentmanager.odm_default')->getRepository($document)->findBy(array(), $orderBy) :
-                $this->getLocator()->get('doctrine.documentmanager.odm_default')->getRepository($document)->findBy($conditions, $orderBy),
+                $this->getDocumentManager()->getRepository($document)->findBy(array(), $orderBy) :
+                $this->getDocumentManager()->getRepository($document)->findBy($conditions, $orderBy),
             $currentPage
         );
     }
@@ -130,10 +130,9 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
      */
     public function createFromEntity($entity, $currentPage, array $conditions = array(), array $orderBy = array())
     {
-        $qb = $this->getLocator()->get('doctrine.entitymanager.orm_default')
+        $qb = $this->getEntityManager()
                 ->getRepository($entity)
                 ->createQueryBuilder('e');
-        /* @var $qb \Doctrine\ORM\QueryBuilder */
         foreach (array_keys($conditions) as $fieldName) {
             $qb->andWhere('e.' . $fieldName . ' = :' . $fieldName);
         }
@@ -239,31 +238,5 @@ class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin
             'query'              => sizeof($query) > 0 ? '?' . $query->toString() : '',
             'pages'              => $this->paginator->getPages(),
         );
-    }
-
-    /**
-     * Get the locator
-     *
-     * @return ServiceLocatorInterface
-     * @throws Exception\DomainException if unable to find locator
-     */
-    protected function getLocator()
-    {
-        if ($this->locator) {
-            return $this->locator;
-        }
-
-        $controller = $this->getController();
-
-        if (!$controller instanceof ServiceLocatorAwareInterface) {
-            throw new Exception\DomainException('Paginator plugin requires controller implements ServiceLocatorAwareInterface');
-        }
-        $locator = $controller->getServiceLocator();
-        if (!$locator instanceof ServiceLocatorInterface) {
-            throw new Exception\DomainException('Paginator plugin requires controller composes Locator');
-        }
-        $this->locator = $locator;
-
-        return $this->locator;
     }
 }

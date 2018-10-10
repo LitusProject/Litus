@@ -35,7 +35,7 @@ $connection = pg_connect(
 $result = pg_query($connection, 'SELECT value FROM general.config WHERE key = \'last_upgrade\'');
 
 if (0 == pg_num_rows($result)) {
-    echo 'Please run `php public/index.php install:all` before attempting to upgrade' . PHP_EOL;
+    echo 'Please run `php bin/console.php install:all` before attempting to upgrade' . PHP_EOL;
     exit(1);
 }
 

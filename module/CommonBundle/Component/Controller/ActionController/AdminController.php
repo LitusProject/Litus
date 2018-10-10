@@ -20,7 +20,8 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use CommonBundle\Component\Util\NamedPriorityQueue,
+use CommonBundle\Component\Form\Factory,
+    CommonBundle\Component\Util\NamedPriorityQueue,
     CommonBundle\Entity\General\Language,
     Zend\Mvc\MvcEvent,
     Zend\Validator\AbstractValidator;
@@ -179,13 +180,11 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getMenu()
     {
-        $config = $this->getServiceLocator()->get('Config');
-        $config = $config['litus']['admin'];
+        $config = $this->getConfig()['litus']['admin'];
 
         $currentController = $this->getParam('controller');
 
         $general = array();
-
         foreach ($config['general'] as $name => $submenu) {
             $newSubmenu = new NamedPriorityQueue();
 
@@ -198,8 +197,9 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
-        $submenus = array();
+        uksort($general, 'strnatcmp');
 
+        $submenus = array();
         foreach ($config['submenus'] as $name => $submenu) {
             $newSubmenu = array();
 
@@ -248,6 +248,11 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function getFormFactory()
     {
-        return $this->getServiceLocator()->get('formfactory.admin');
+        return $this->getServiceLocator()->build(
+            Factory::class,
+            array(
+                'isAdmin' => true
+            )
+        );
     }
 }

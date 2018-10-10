@@ -61,15 +61,13 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        echo "<script>console.log(".json_encode( $data ).")</script>";
+        echo "<script>console.log(" . json_encode( $data ) . ")</script>";
 
         $data['sector'] = $object->getSectorCode();
         $data['location'] = $object->getLocationCode();
         $data['master'] = $object->getMasterCode();
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
-
-
 
         return $data;
     }

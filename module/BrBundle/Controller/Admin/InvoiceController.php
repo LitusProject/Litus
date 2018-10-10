@@ -58,19 +58,18 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     {
         $invoiceYear = $this->getParam('invoiceyear');
 
-        if($invoiceYear == null){
+        if ($invoiceYear == null) {
             $invoiceYear = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.invoice_year_number');
         }
-        
 
         $invoicePrefixes = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Invoice')
             ->findAllInvoicePrefixes();
 
         $invoiceYears = [];
-        foreach($invoicePrefixes as $invoicePrefix){
+        foreach ($invoicePrefixes as $invoicePrefix) {
             $invoiceYears[] = substr($invoicePrefix['invoiceNumberPrefix'], 0, 4);
         }
         $invoiceYears = array_unique($invoiceYears);
@@ -102,7 +101,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                 'invoiceYears'      => $invoiceYears,
                 'activeInvoiceYear' => $invoiceYear,
                 'paginator'         => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true)
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }

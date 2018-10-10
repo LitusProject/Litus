@@ -109,6 +109,7 @@ namespace CommonBundle\Component\Module;
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
+
 class Config
 {
     /**
@@ -289,12 +290,6 @@ class Config
 
             'doctrine' => array(
                 'driver' => self::createDoctrineConfig($settings),
-            ),
-
-            'service_manager' => array(
-                'invokables' => array(
-                    'litus.install.' . $module => $module . '\Component\Module\Installer',
-                ),
             ),
 
             'assetic_configuration' => self::createAsseticConfig($settings),

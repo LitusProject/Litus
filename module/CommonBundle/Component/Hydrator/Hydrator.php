@@ -20,21 +20,26 @@
 
 namespace CommonBundle\Component\Hydrator;
 
-use DateTime,
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
+    DateTime,
     RecursiveArrayIterator,
     RecursiveIteratorIterator,
     RuntimeException,
-    Zend\Stdlib\Hydrator\Filter\FilterComposite;
+    Zend\Hydrator\Filter\FilterComposite,
+    Zend\Hydrator\HydratorInterface;
 
 /**
  * A common superclass for hydrators.
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface
+abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterface
 {
-    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
-    use \CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+    use ServiceLocatorAwareTrait;
+
+    use DoctrineTrait;
 
     /**
      * Flattens an array( of arrays)+? of strings into an array of strings
@@ -151,7 +156,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
     {
         $keys = self::flatten($keys);
 
-        /** @var \Zend\Stdlib\Hydrator\ClassMethods $hydrator */
+        /** @var \Zend\Hydrator\ClassMethods $hydrator */
         $hydrator = $this->getHydrator('classmethods');
 
         if (empty($keys)) {
@@ -183,7 +188,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
 
         $keys = self::flatten($keys);
 
-        /** @var \Zend\Stdlib\Hydrator\ClassMethods $hydrator */
+        /** @var \Zend\Hydrator\ClassMethods $hydrator */
         $hydrator = clone $originalHydrator;
         if (!empty($keys)) {
             $hydrator->addFilter('keys', function ($property) use ($hydrator, $keys, $object) {
@@ -208,7 +213,7 @@ abstract class Hydrator implements \Zend\Stdlib\Hydrator\HydratorInterface, \Com
 
     /**
      * @param  string                                  $name
-     * @return \Zend\Stdlib\Hydrator\HydratorInterface
+     * @return \Zend\Hydrator\HydratorInterface
      */
     public function getHydrator($name)
     {

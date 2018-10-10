@@ -18,6 +18,12 @@
  * @license http://litus.cc/LICENSE
  */
 
+namespace BrBundle;
+
+use CommonBundle\Component\Assetic\Filter\Css as CssFilter,
+    CommonBundle\Component\Assetic\Filter\Js as JsFilter,
+    CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+
 return array(
     'controllers' => array(
         'br_admin_collaborator' => array(
@@ -315,7 +321,11 @@ return array(
             'assets' => array(
                 'corporate/less/base.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'corporate_css.css',
             ),
@@ -324,7 +334,11 @@ return array(
             'assets' => array(
                 'cv/less/cv.less',
             ),
-            'filters' => array('less'),
+            'filters' => array(
+                '?LessFilter' => array(
+                    'name' => LessFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'cv_css.css',
             ),
@@ -332,15 +346,23 @@ return array(
         'event_js' => array(
             'assets' => array(
                 'event/js/event.js',
-                'fullcalendar/fullcalendar.js'
+                'fullcalendar/fullcalendar.js',
             ),
-            'filters' => array('js')
+            'filters' => array(
+                '?JsFilter' => array(
+                    'name' => JsFilter::class,
+                ),
+            ),
         ),
         'fullcalendar_css' => array(
             'assets' => array(
                 'fullcalendar/fullcalendar.css',
             ),
-            'filters' => array('css'),
+            'filters' => array(
+                '?CssFilter' => array(
+                    'name' => CssFilter::class,
+                ),
+            ),
             'options' => array(
                 'output' => 'fullcalendar_css.css',
             ),

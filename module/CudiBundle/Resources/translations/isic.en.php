@@ -33,8 +33,8 @@ return array(
     'Photo (140 x 200)'   => 'Photo (140 x 200)',
     'Order'               => 'Order',
 
-    'Receive the ISIC/Club newsletter'          => 'Receive the ISIC/Club newsletter',
-    'Receive information Guido NV'    => 'Receive information Guido NV',
+    'Receive the ISIC/Club newsletter' => 'Receive the ISIC/Club newsletter',
+    'Receive information Guido NV'     => 'Receive information Guido NV',
 
     'You do not have permission to view this page! Make sure you are logged in.' => 'You do not have permission to view this page! Make sure you are logged in.',
     'Orders for ISIC cards are currently disabled, please try again later.'      => 'Orders for ISIC cards are currently disabled, please try again later.',

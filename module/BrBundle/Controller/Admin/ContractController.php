@@ -241,8 +241,8 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.invoice_year_number');
 
-            $prefix = $yearNumber.$bookNumber;
-            
+            $prefix = $yearNumber . $bookNumber;
+
             $contract->setInvoiceNb(
                 $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Contract')

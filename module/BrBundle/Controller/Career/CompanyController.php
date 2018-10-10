@@ -20,8 +20,9 @@
 
 namespace BrBundle\Controller\Career;
 
-use BrBundle\Entity\Company;
-use BrBundle\Entity\Company\Page,
+
+use BrBundle\Entity\Company,
+    BrBundle\Entity\Company\Page,
     DateTime,
     Zend\Http\Headers,
     Zend\View\Model\ViewModel;
@@ -33,7 +34,6 @@ use BrBundle\Entity\Company\Page,
  */
 class CompanyController extends \BrBundle\Component\Controller\CareerController
 {
-
     public function overviewAction()
     {
         $logoPath = $this->getEntityManager()
@@ -42,8 +42,8 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'logoPath' => $logoPath,
-                'possible_sectors' => array('all'=>'All') + Company::POSSIBLE_SECTORS,
+                'logoPath'         => $logoPath,
+                'possible_sectors' => array('all' => 'All') + Company::POSSIBLE_SECTORS,
             )
         );
     }
@@ -116,15 +116,14 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
 
         $result = array();
 
-        if ($this->getRequest()->isPost()){
+        if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
 
             $pages = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Company\Page')
                 ->findAllActiveBySearch($this->getCurrentAcademicYear(), $data['query'], $data['sector']);
 
-
-        foreach ($pages as $page) {
+            foreach ($pages as $page) {
                 $item = (object) array();
                 $item->name = $page->getCompany()->getName();
                 $item->logo = $page->getCompany()->getLogo();

@@ -21,17 +21,18 @@
 namespace CommonBundle\Component\Form;
 
 use CommonBundle\Component\InputFilter\Factory as InputFilterFactory,
-    Zend\Form\ElementInterface as OriginalElementInterface,
-    Zend\Form\FieldsetInterface as OriginalFieldsetInterface;
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    Zend\Form\ElementInterface as ZendElementInterface,
+    Zend\Form\FieldsetInterface as ZendFieldsetInterface;
 
 /**
- * Creates forms
- *
  * @author Bram Gotink <bram.gotink@litus.cc>
- * @method FormElementManager getFormElementManager()
  */
-class Factory extends \Zend\Form\Factory
+class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
+
     /**
      * @param FormElementManager $elementManager
      */
@@ -77,11 +78,11 @@ class Factory extends \Zend\Form\Factory
         }
     }
 
-    public function configureElement(OriginalElementInterface $element, $spec)
+    public function configureElement(ZendElementInterface $element, $spec)
     {
         parent::configureElement($element, $spec);
 
-        if (($element instanceof ElementInterface)) {
+        if ($element instanceof ElementInterface) {
             $element->setRequired(
                 isset($spec['required'])
                 ? (bool) $spec['required']
@@ -100,11 +101,11 @@ class Factory extends \Zend\Form\Factory
         return $element;
     }
 
-    protected function prepareAndInjectElements($elements, OriginalFieldsetInterface $fieldset, $method)
+    protected function prepareAndInjectElements($elements, ZendFieldsetInterface $fieldset, $method)
     {
         if (is_array($elements)) {
             foreach ($elements as $k => $v) {
-                if ($v instanceof OriginalElementInterface) {
+                if ($v instanceof ZendElementInterface) {
                     $elements[$k] = array(
                         'spec' => array(
                             'instance' => $v,

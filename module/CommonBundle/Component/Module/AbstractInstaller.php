@@ -24,21 +24,26 @@ use CommonBundle\Component\Acl\Acl,
     CommonBundle\Component\Console\Command,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
     CommonBundle\Entity\Acl\Action,
     CommonBundle\Entity\Acl\Resource,
     CommonBundle\Entity\Acl\Role,
     CommonBundle\Entity\General\Config as ConfigEntity,
     Exception,
-    LogicException,
-    Zend\ServiceManager\ServiceLocatorAwareTrait as ZendServiceLocatorAwareTrait;
+    RuntimeException;
 
 /**
  * Installs a module.
  */
 abstract class AbstractInstaller implements ServiceLocatorAwareInterface
 {
-    use ZendServiceLocatorAwareTrait;
     use ServiceLocatorAwareTrait;
+
+    use CacheTrait;
+    use ConfigTrait;
+    use DoctrineTrait;
 
     /**
      * @var string the module name
@@ -64,7 +69,7 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
      */
     public function install()
     {
-        $configuration = $this->getConfiguration();
+        $configuration = $this->getModuleConfig();
 
         $this->preInstall();
 
@@ -145,23 +150,22 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
     /**
      * @return array
      */
-    private function getConfiguration()
+    private function getModuleConfig()
     {
-        $configuration = $this->getServiceLocator()->get('Config');
-        $configuration = $configuration['litus']['install'];
-        $configuration = array_change_key_case($configuration);
+        $config = $this->getConfig()['litus']['install'];
+        $config = array_change_key_case($config);
 
         $key = strtolower($this->module);
-        if (array_key_exists($key, $configuration)) {
-            $configuration = $configuration[$key];
-        } elseif (array_key_exists(str_replace('bundle', '', $key), $configuration)) {
+        if (array_key_exists($key, $config)) {
+            $moduleConfig = $config[$key];
+        } elseif (array_key_exists(str_replace('bundle', '', $key), $config)) {
             $key = str_replace('bundle', '', $key);
-            $configuration = $configuration[$key];
+            $moduleConfig = $config[$key];
         } else {
-            throw new LogicException('Module ' . $this->module . ' does not have any configured installation files.');
+            throw new RuntimeException('Module ' . $this->module . ' does not have any configured installation files.');
         }
 
-        return $configuration;
+        return $moduleConfig;
     }
 
     /**
@@ -178,7 +182,7 @@ abstract class AbstractInstaller implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Install the config values
+     * Install the config values.
      *
      * @param array $config The configuration values
      */

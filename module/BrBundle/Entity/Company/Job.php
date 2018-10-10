@@ -92,7 +92,7 @@ class Job
      * @ORM\Column(type="text", nullable=true)
      */
     private $location;
-    
+
     /**
      * @var string The master for which this job is meant
      * 
@@ -507,7 +507,6 @@ class Job
         return Company::POSSIBLE_LOCATIONS[$this->location];
     }
 
-
     /**
      * @param  string $location
      * @return Job
@@ -530,7 +529,6 @@ class Job
     {
         return $this->location;
     }
-
 
     /**
      * @param  string $sector

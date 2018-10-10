@@ -85,14 +85,14 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
 
         $weight1 = 0;
         $weight3 = 0;
-        for($i = 0; $i < 6; $i++){
+        for ($i = 0; $i < 6; $i++) {
             $weight1 += (int) $split[$i*2];
             $weight3 += (int) $split[$i*2+1];
         }
         $sum = 1*$weight1 + 3*$weight3;
         $checkdigit = (10 - ($sum % 10)) % 10;
 
-        $ean13 = 10*$ean12 + $checkdigit;
+        $ean13 = 10 * $ean12 + $checkdigit;
 
         return $ean13;
     }

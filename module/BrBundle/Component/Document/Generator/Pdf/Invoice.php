@@ -21,11 +21,11 @@
 namespace BrBundle\Component\Document\Generator\Pdf;
 
 use BrBundle\Entity\Invoice\ContractInvoice as InvoiceEntity,
+    CommonBundle\Component\Document\Generator\Pdf as PdfGenerator,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
     CommonBundle\Component\Util\Xml\Node as XmlNode,
-    Doctrine\ORM\EntityManager,
-    CommonBundle\Component\Document\Generator\Pdf as PdfGenerator;
+    Doctrine\ORM\EntityManager;
 
 /**
  * Generate a PDF for an invoice.
@@ -50,9 +50,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
      * @var String The xsl file path, relative to the br generator path, to use for each language
      */
     const INVOICE_XSL_PATHS = array(
-        null                    => '/invoice/invoice_default.xsl',
-        PdfGenerator::ENGLISH  => '/invoice/invoice_en.xsl',
-        PdfGenerator::DUTCH    => '/invoice/invoice_nl.xsl'
+        null                  => '/invoice/invoice_default.xsl',
+        PdfGenerator::ENGLISH => '/invoice/invoice_en.xsl',
+        PdfGenerator::DUTCH   => '/invoice/invoice_nl.xsl',
     );
 
     /**

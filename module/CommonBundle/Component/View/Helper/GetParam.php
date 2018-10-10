@@ -20,7 +20,7 @@
 
 namespace CommonBundle\Component\View\Helper;
 
-use Zend\Mvc\Router\RouteMatch;
+use Zend\Router\RouteMatch;
 
 /**
  * This view helper makes sure we can access the request paramaters in our view.
