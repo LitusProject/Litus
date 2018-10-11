@@ -162,7 +162,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array('name' => 'phone_number_regex'),
+                                array('name' => 'phone_number'),
                             ),
                         ),
                     ),

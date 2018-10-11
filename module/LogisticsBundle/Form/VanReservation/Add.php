@@ -100,17 +100,18 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ),
         ));
         /**
-         * Copy paste this code in the validators above to check for reservation conflicts
-         * Was requested to remove by logistics in 2016-2017.
-         array(
-         'name' => 'logistics_reservation_conflict',
-         'options' => array(
-         'start_date' => 'start_date',
-         'format' => 'd/m/Y H:i',
-         'resource' => VanReservation::VAN_RESOURCE_NAME,
-         'reservation_id' => null === $this->reservation ? 0 : $this->reservation->getId(),
-         ),
-         ),
+         * Include this code in the validators above to check for reservation
+         * conflicts. Logistics requested this to be remobed in 2016-2017.
+         *
+         * array(
+         *     'name'    => 'logistics_reservation_conflict',
+         *     'options' => array(
+         *         'start_date'     => 'start_date',
+         *         'format'         => 'd/m/Y H:i',
+         *         'resource'       => VanReservation::VAN_RESOURCE_NAME,
+         *         'reservation_id' => ((null === $this->reservation) ? 0 : $this->reservation->getId()),
+         *     ),
+         * ),
          */
         $this->add(array(
             'type'       => 'text',

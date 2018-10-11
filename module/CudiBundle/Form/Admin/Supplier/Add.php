@@ -62,7 +62,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'phone_number_regex'),
+                        array('name' => 'phone_number'),
                     ),
                 ),
             ),

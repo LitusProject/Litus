@@ -23,7 +23,8 @@ namespace CommonBundle\Component\Validator\Service;
 use CommonBundle\Component\Validator\AbstractValidator,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     Interop\Container\ContainerInterface,
-    Zend\ServiceManager\Factory\AbstractFactoryInterface;
+    Zend\ServiceManager\Factory\AbstractFactoryInterface,
+    Zend\Validator\AbstractValidator as ZendAbstractValidator;
 
 /**
  * Abstract factory instantiating an installer.
@@ -40,7 +41,15 @@ class AbstractValidatorFactory implements AbstractFactoryInterface
     public function canCreate(ContainerInterface $container, $requestedName)
     {
         if (class_exists($requestedName)) {
-            return in_array(AbstractValidator::class, class_parents($requestedName), true);
+            if (in_array(AbstractValidator::class, class_parents($requestedName), true)) {
+                return true;
+            }
+
+            if (in_array(ZendAbstractValidator::class, class_parents($requestedName), true)) {
+                return true;
+            }
+
+            return false;
         }
 
         return false;
