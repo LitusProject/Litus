@@ -6,30 +6,25 @@ set -e
 SCRIPT_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$SCRIPT_DIRECTORY/../"
 
-function run() {
-    php bin/console.php "$@"
-}
-
-# making sure our scripts are executable
 find bin/ -follow -name '*.sh' | while read f
 do
-  if [ ! -x "$file" ]; then
-        chmod +x "$file"
-    fi
+  if [ ! -x "$f" ]; then
+      chmod +x "$f"
+  fi
 done
 
 # upgrade
 ./bin/upgrade.sh
 
 # doctrine
-php bin/console.php orm:schema-tool:update --force
-run orm:generate-proxies data/proxies/
+php bin/doctrine.php orm:schema-tool:update --force
+php bin/doctrine.php orm:generate-proxies data/proxies/
 
 # install
-run install:all
+php bin/console.php install:all
 
 # assetic
 touch module/*/Resources/assets/*/less/base.less
-run assetic:build
+php bin/assetic.php build
 
-run common:acl-cleanup --flush
+php bin/console.php common:acl-cleanup --flush
