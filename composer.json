@@ -54,6 +54,9 @@
         "zendframework/zend-developer-tools": "@stable",
         "litus/php-cs-fixer": "dev-master"
     },
+    "provide": {
+        "ext-mongo": "^1.5"
+    },
     "autoload": {
         "psr-4": {
             "ApiBundle\\": "module/ApiBundle",
@@ -81,11 +84,6 @@
             "SyllabusBundle\\": "module/SyllabusBundle",
             "TicketBundle\\": "module/TicketBundle",
             "WikiBundle\\": "module/WikiBundle"
-        }
-    },
-    "config": {
-        "platform": {
-            "ext-mongo": "1.6.16"
         }
     }
 }

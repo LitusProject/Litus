@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f5acc055b28fda5125c394da358393c2",
-    "content-hash": "53052cb695fb0a307fa8b47f8e422913",
+    "hash": "c4f009d63827f6d9de2824a36b6faba4",
+    "content-hash": "d0e768c5b10c165e743ff819bd3dabdf",
     "packages": [
         {
             "name": "EvanDotPro/EdpMarkdown",
@@ -5579,8 +5579,5 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": [],
-    "platform-overrides": {
-        "ext-mongo": "1.6.16"
-    }
+    "platform-dev": []
 }
