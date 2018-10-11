@@ -19,7 +19,7 @@
  */
 
 if (!file_exists(__DIR__ . '/../database.config.php')) {
-    throw new RuntimeException(
+    throw new \RuntimeException(
         'The database configuration file (' . (__DIR__ . '/../database.config.php') . ') was not found'
     );
 }
