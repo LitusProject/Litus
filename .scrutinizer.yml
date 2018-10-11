@@ -2,11 +2,3 @@ build:
     environment:
         php:
             version: 7.2
-    nodes:
-        tests: true
-        analysis:
-            tests:
-                override:
-                    - command: phpcs-run
-                      use_website_config: true
-                    - php-scrutinizer-run
