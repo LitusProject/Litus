@@ -40,7 +40,7 @@ return array(
                     $memcached = new \Memcached();
 
                     if (!$memcached->addServer('localhost', 11211)) {
-                        throw now \RuntimeException('Failed to connect to the memcached server');
+                        throw new \RuntimeException('Failed to connect to the memcached server');
                     }
 
                     $cache->setMemcached($memcached);
