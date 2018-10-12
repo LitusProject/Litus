@@ -32,12 +32,12 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'logistics_typeahead_driver'           => 'LogisticsBundle\Component\Validator\Typeahead\Driver',
-                'logistics_typeahead_lease'            => 'LogisticsBundle\Component\Validator\Typeahead\Lease',
-                'logistics_piano_duration'             => 'LogisticsBundle\Component\Validator\PianoDuration',
-                'logistics_piano_reservation_conflict' => 'LogisticsBundle\Component\Validator\PianoReservationConflict',
-                'logistics_reservation_conflict'       => 'LogisticsBundle\Component\Validator\ReservationConflict',
+            'aliases' => array(
+                'logistics_typeahead_driver'           => Component\Validator\Typeahead\Driver::class,
+                'logistics_typeahead_lease'            => Component\Validator\Typeahead\Lease::class,
+                'logistics_piano_duration'             => Component\Validator\PianoDuration::class,
+                'logistics_piano_reservation_conflict' => Component\Validator\PianoReservationConflict::class,
+                'logistics_reservation_conflict'       => Component\Validator\ReservationConflict::class,
             ),
         ),
     )

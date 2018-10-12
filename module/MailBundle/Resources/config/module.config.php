@@ -31,15 +31,15 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'mail_entry_academic'    => 'MailBundle\Component\Validator\Entry\Academic',
-                'mail_entry_external'    => 'MailBundle\Component\Validator\Entry\External',
-                'mail_entry_mailinglist' => 'MailBundle\Component\Validator\Entry\MailingList',
-                'mail_admin_map'         => 'MailBundle\Component\Validator\AdminMap',
-                'mail_admin_role'        => 'MailBundle\Component\Validator\AdminRole',
-                'mail_alias'             => 'MailBundle\Component\Validator\Alias',
-                'mail_multi_mail'        => 'MailBundle\Component\Validator\MultiMail',
-                'mail_named_list'        => 'MailBundle\Component\Validator\NamedList',
+            'aliases' => array(
+                'mail_entry_academic'    => Component\Validator\Entry\Academic::class,
+                'mail_entry_external'    => Component\Validator\Entry\External::class,
+                'mail_entry_mailinglist' => Component\Validator\Entry\MailingList::class,
+                'mail_admin_map'         => Component\Validator\AdminMap::class,
+                'mail_admin_role'        => Component\Validator\AdminRole::class,
+                'mail_alias'             => Component\Validator\Alias::class,
+                'mail_multi_mail'        => Component\Validator\MultiMail::class,
+                'mail_named_list'        => Component\Validator\NamedList::class,
             ),
         ),
     )

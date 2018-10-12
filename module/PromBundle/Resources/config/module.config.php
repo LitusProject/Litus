@@ -31,13 +31,13 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'prom_code_exists'      => 'PromBundle\Component\Validator\CodeExists',
-                'prom_code_used'        => 'PromBundle\Component\Validator\CodeUsed',
-                'prom_code_email'       => 'PromBundle\Component\Validator\CodeEmail',
-                'prom_passenger_exists' => 'PromBundle\Component\Validator\PassengerExists',
-                'prom_bus_selected'     => 'PromBundle\Component\Validator\BusSelected',
-                'prom_bus_seats'        => 'PromBundle\Component\Validator\BusSeats',
+            'aliases' => array(
+                'prom_code_exists'      => Component\Validator\CodeExists::class,
+                'prom_code_used'        => Component\Validator\CodeUsed::class,
+                'prom_code_email'       => Component\Validator\CodeEmail::class,
+                'prom_passenger_exists' => Component\Validator\PassengerExists::class,
+                'prom_bus_selected'     => Component\Validator\BusSelected::class,
+                'prom_bus_seats'        => Component\Validator\BusSeats::class,
             ),
         ),
     )

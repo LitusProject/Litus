@@ -53,22 +53,6 @@ class Name extends \CommonBundle\Component\Validator\AbstractValidator implement
     );
 
     /**
-     * Sets validator options
-     *
-     * @param int|array|\Traversable $options
-     */
-    public function __construct($options = array())
-    {
-        if (!is_array($options)) {
-            $args = func_get_args();
-            $options = array();
-            $options['album'] = array_shift($args);
-        }
-
-        parent::__construct($options);
-    }
-
-    /**
      * @param Form $form
      */
     public function setForm(Form $form)

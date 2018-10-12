@@ -63,7 +63,7 @@ class AbstractValidatorFactory implements AbstractFactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $validator = new $requestedName();
+        $validator = new $requestedName($options);
         if ($validator instanceof ServiceLocatorAwareInterface) {
             $validator->setServiceLocator($container);
         }

@@ -31,10 +31,10 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'ticket_activtiy'       => 'TicketBundle\Component\Validator\Activity',
-                'ticket_date'           => 'TicketBundle\Component\Validator\Date',
-                'ticket_number_tickets' => 'TicketBundle\Component\Validator\NumberTickets',
+            'aliases' => array(
+                'ticket_activtiy'       => Component\Validator\Activity::class,
+                'ticket_date'           => Component\Validator\Date::class,
+                'ticket_number_tickets' => Component\Validator\NumberTickets::class,
             ),
         ),
     )

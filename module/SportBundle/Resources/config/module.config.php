@@ -31,8 +31,8 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'university_identification' => 'SportBundle\Component\Validator\UniversityIdentification',
+            'aliases' => array(
+                'university_identification' => Component\Validator\UniversityIdentification::class,
             ),
         ),
     )

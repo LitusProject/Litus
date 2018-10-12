@@ -31,15 +31,15 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'sale_article_barcode_unique'     => 'CudiBundle\Component\Validator\Sale\Article\Barcode\Unique',
-                'sale_article_discount_exits'     => 'CudiBundle\Component\Validator\Sale\Article\Discount\Exists',
-                'sale_article_restriction_exists' => 'CudiBundle\Component\Validator\Sale\Article\Restriction\Exists',
-                'sale_session_restriction_exists' => 'CudiBundle\Component\Validator\Sale\Session\Restriction\Exists',
-                'sale_session_restriction_values' => 'CudiBundle\Component\Validator\Sale\Session\Restriction\Values',
-                'sale_has_bought'                 => 'CudiBundle\Component\Validator\Sale\HasBought',
-                'typeahead_sale_article'          => 'CudiBundle\Component\Validator\Typeahead\Sale\Article',
-                'typeahead_article'               => 'CudiBundle\Component\Validator\Typeahead\Article',
+            'aliases' => array(
+                'sale_article_barcode_unique'     => Component\Validator\Sale\Article\Barcode\Unique::class,
+                'sale_article_discount_exits'     => Component\Validator\Sale\Article\Discount\Exists::class,
+                'sale_article_restriction_exists' => Component\Validator\Sale\Article\Restriction\Exists::class,
+                'sale_session_restriction_exists' => Component\Validator\Sale\Session\Restriction\Exists::class,
+                'sale_session_restriction_values' => Component\Validator\Sale\Session\Restriction\Values::class,
+                'sale_has_bought'                 => Component\Validator\Sale\HasBought::class,
+                'typeahead_sale_article'          => Component\Validator\Typeahead\Sale\Article::class,
+                'typeahead_article'               => Component\Validator\Typeahead\Article::class,
             ),
         ),
     )

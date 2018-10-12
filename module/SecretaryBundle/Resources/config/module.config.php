@@ -30,9 +30,9 @@ return Config::create(
     ),
     array(
         'validators' => array(
-            'invokables' => array(
-                'secretary_cancel_registration' => 'SecretaryBundle\Component\Validator\CancelRegistration',
-                'secretary_no_at'               => 'SecretaryBundle\Component\Validator\NoAt',
+            'aliases' => array(
+                'secretary_cancel_registration' => Component\Validator\CancelRegistration::class,
+                'secretary_no_at'               => Component\Validator\NoAt::class,
             ),
         ),
     )
