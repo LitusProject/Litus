@@ -42,6 +42,11 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
     private $invoide;
 
     /**
+     * @var String The language used for the invoice
+     */
+    private $lang = "nl";
+
+    /**
      * @var String The xsl file path, relative to the br generator path, to use for each language
      */
     const INVOICE_XSL_PATHS = array(
@@ -69,6 +74,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                 . $invoice->getInvoiceNumber() . '.pdf'
         );
         $this->invoide = $invoice;
+        if (null !== $language) {
+            $this->lang = $language;
+        }
     }
 
     protected function generateXml(TmpFile $file)
@@ -99,7 +107,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation') . ' ' . $this->invoide->getVatContext();
         }
 
-        $subEntries = unserialize($configs->getConfigValue('br.invoice_below_entries'))['nl'];
+        $subEntries = unserialize($configs->getConfigValue('br.invoice_below_entries'))[$this->$lang];
 
         $vatTypes = unserialize($configs->getConfigValue('br.vat_types'));
 
