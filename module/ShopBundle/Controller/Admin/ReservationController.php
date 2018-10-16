@@ -43,10 +43,16 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 ->findBySalesSessionQuery($salesSession),
             $this->getParam('page'));
 
+        $result = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Reservation')
+            ->getTotalByProductBySalesQuery($salesSession);
+//        $paginator_total = $this->paginator()->createFromArray($result, $this->getParam('page_total'));
+
         return new ViewModel(
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'totals'   => $result,
                 'salesSession'      => $salesSession,
             )
         );
