@@ -52,6 +52,20 @@
             <br>
             <table class="full_width manage">
                 <tr>
+                    <th>Product</th>
+                    <th>Amount</th>
+                </tr>
+
+                {% for reservation in totals %}
+                    <tr class="item item-{{ reservation['id'] }}">
+                        <td>{{ reservation['name'] }}</td>
+                        <td>{{ reservation['sum'] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <br>
+            <table class="full_width manage">
+                <tr>
                     <th>Person</th>
                     <th>Product</th>
                     <th>Amount</th>

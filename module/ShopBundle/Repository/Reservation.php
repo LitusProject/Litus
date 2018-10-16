@@ -22,6 +22,7 @@ namespace ShopBundle\Repository;
 
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     DateTime;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * Reservation
@@ -69,6 +70,17 @@ class Reservation extends EntityRepository
             ->orderBy('r.person', 'ASC')
             ->setParameter('salesSession', $salesSession)
             ->getQuery();
+    }
+
+    public function getTotalByProductBySalesQuery($salesSession) {
+        $q = 'SELECT p.id, p.name, SUM(r.amount) FROM shop.reservations as r INNER JOIN shop.products as p ON r.product=p.id WHERE r.session=:sessId GROUP BY p.id';
+        $em = $this->getEntityManager();
+        $stmt = $em->getConnection()->prepare($q);
+        $stmt->bindValue('sessId', $salesSession->getId());
+        $stmt->execute();
+        $res = $stmt->fetchAll();
+
+        return $res;
     }
 
     /**
