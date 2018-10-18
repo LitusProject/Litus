@@ -26,9 +26,11 @@ use BrBundle\Component\Document\Generator\Company\Pdf as PdfGenerator,
     CommonBundle\Component\Util\File\TmpFile,
     CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
     Imagick,
-    Zend\File\Transfer\Adapter\Http as FileUpload,
+    Zend\Filter\File\RenameUpload as RenameUploadFilter,
     Zend\Http\Headers,
     Zend\Validator\File\IsImage as IsImageValidator,
+    Zend\Validator\File\UploadFile as UploadFileValidator,
+    Zend\Validator\ValidatorChain,
     Zend\View\Model\ViewModel;
 
 /**
@@ -164,15 +166,20 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
     public function uploadAction()
     {
         if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
+            $form = $this->getRequest()->getPost();
 
-            $upload = new FileUpload();
-
-            if ('image' == $formData['type']) {
-                $upload->addValidator(new IsImageValidator(array('image/jpeg', 'image/jpg', 'image/pjpeg', 'image/png', 'image/gif')));
+            $validatorChain = new ValidatorChain();
+            $validatorChain->attach(new UploadFileValidator());
+            if ('image' == $form['type']) {
+                $validatorChain->attach(
+                    new IsImageValidator(
+                        array('image/gif', 'image/jpeg', 'image/png')
+                    )
+                );
             }
 
-            if ($upload->isValid()) {
+            $file = $this->getRequest()->getFiles()['file'];
+            if ($validatorChain->isValid($file)) {
                 $filePath = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('br.file_path') . '/';
@@ -181,8 +188,9 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     $fileName = sha1(uniqid());
                 } while (file_exists($filePath . $fileName));
 
-                $upload->addFilter('Rename', $filePath . $fileName);
-                $upload->receive();
+                $renameUploadFilter = new RenameUploadFilter();
+                $renameUploadFilter->setTarget($filePath . $fileName)
+                    ->filter($file);
 
                 $url = $this->url()->fromRoute(
                     'br_career_file',

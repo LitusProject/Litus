@@ -13,7 +13,8 @@ var UploadKit = function(input) {
   var $input = $(input);
   var $form = $input.closest('form');
 
-  var id = (Date['now']) ? Date.now() : +new Date(); // TODO: Verify this failover works in IE.
+  // TODO: Verify this failover works in IE.
+  var id = (Date['now']) ? Date.now() : +new Date();
   var baseUrl = '';
   $('script').each(function(index, element) {
     var src = $(element).attr('src') || '';
@@ -33,16 +34,11 @@ var UploadKit = function(input) {
   $input.data('uploadKit', this);
   $input.attr('disabled', true);
 
-  var infoHtml = (isMultiple) ?
-    this.infoMultiple :
-    this.infoNotMultiple;
-
-  var $info = this.$info = $('<div class="uk-info"/>').html(infoHtml).appendTo($element);
-  var $table = this.$table = $('<table class="table table-condensed no-hover"/>').appendTo($element).hide();
-  var $thead = this.$thead = $('<thead/>').html('<tr><th class="uk-close-column"></th><th class="uk-icon-column"></th><th class="uk-title-column">' + this.fileColumnTitle +'</th><th class="uk-size-column">' + this.sizeColumnTitle + '</th><th class="uk-progress-column">' + this.progressColumnTitle + '</th></tr>').appendTo($table);
+  var $table = this.$table = $('<table/>').appendTo($element);
+  var $thead = this.$thead = $('<thead/>').html('<tr><th class="uk-close-column"></th><th class="uk-title-column">' + this.fileColumnTitle +'</th><th class="uk-size-column">' + this.sizeColumnTitle + '</th><th class="uk-progress-column">' + this.progressColumnTitle + '</th></tr>').appendTo($table);
   var $tbody = this.$tbody = $('<tbody/>').appendTo($table);
-  var $browseButton = this.$browseButton = $('<a id="uk-browse-button-' + id + '" class="btn" href="#"/>').html('<i class="icon-file"/>' + this.browseLabel).appendTo($element);
-  var $uploadButton = this.$uploadButton = $('<a id="uk-upload-button-' + id + '" class="btn btn-primary" href="#"/>').html('<i class="icon-upload icon-white"/>' + this.uploadLabel).appendTo($element).hide();
+  var $browseButton = this.$browseButton = $('<a id="uk-browse-button-' + id + '" href="#"/>').html(this.browseLabel).appendTo($element);
+  var $uploadButton = this.$uploadButton = $('<a id="uk-upload-button-' + id + '" href="#"/>').html(this.uploadLabel).appendTo($element).hide();
 
   var uploader = this.uploader = new plupload.Uploader({
     runtimes: this.runtimes,
@@ -60,12 +56,7 @@ var UploadKit = function(input) {
 
   var responses = this.responses = [];
 
-  uploader.bind('Init', function(uploader, params) {
-    console.log('Initialized UploadKit uploader with ' + params.runtime + ' runtime');
-  });
-
   uploader.bind('FilesAdded', function(uploader, files) {
-    $info.hide();
     $table.show();
     $uploadButton.removeClass('disabled').show();
 
@@ -82,8 +73,7 @@ var UploadKit = function(input) {
 
     for (var i = 0, length = newFiles.length; i < length; i++) {
       $tbody.append('<tr id="' + newFiles[i].id + '">' +
-        '<td class="uk-close-column"><a class="close" title="' + this.removeLabel + '" href="#">&times;</a></td>' +
-        '<td class="uk-icon-column"><i class="icon-file"/></td>' +
+        '<td class="uk-close-column"><a class="close" title="' + self.removeLabel + '" href="#">&times;</a></td>' +
         '<td class="uk-title-column">' + newFiles[i].name + '</td>' +
         '<td class="uk-size-column">' + plupload.formatSize(newFiles[i].size) + '</td>' +
         '<td class="uk-progress-column">' +
@@ -125,11 +115,11 @@ var UploadKit = function(input) {
 
   uploader.bind('FileUploaded', function(uploader, file, response) {
     var $tr = $tbody.find('#' + file.id);
+    var $close = $tr.find('.uk-close-column');
     var $progress = $tr.find('.progress');
-    var $bar = $progress.find('.bar');
 
+    $close.html('');
     $progress.removeClass('progress-info active').addClass('progress-success');
-    $bar.html('Done');
 
     responses.push(response);
 
@@ -149,22 +139,16 @@ var UploadKit = function(input) {
   });
 
   uploader.bind('Error', function(uploader, error) {
-    var $tr = $tbody.find('#' + error.file.id).addClass('error');
-    var $td = $tr.children('.uk-progress-column');
-    var message;
-
-    switch (error.code) {
-      case -600:
-        message = this.errorFileSize;;
-        break;
-      default:
-        message = this.errorFileSize;;
-        break;
-    }
-
-    $td.html(message);
-
     if (uploader.files.length === 0) $uploadButton.addClass('disabled');
+
+    var $tr = $tbody.find('#' + error.file.id);
+    var $close = $tr.find('.uk-close-column');
+    var $progress = $tr.find('.progress');
+    var $bar = $progress.find('.bar');
+
+    $close.html('');
+    $progress.removeClass('progress-info active').addClass('progress-danger');
+    $bar.width('100%');
 
     $input.trigger($.Event(UKEventType.UploadError, {
       uploader: uploader,
@@ -173,14 +157,11 @@ var UploadKit = function(input) {
   });
 
   $tbody.delegate('a.close', 'click', function(evt) {
-    var $this = $(this);
-    var $tr = $this.closest('tr');
+    var $tr = $(this).closest('tr');
     var id = $tr.attr('id');
     var file = uploader.getFile(id);
 
     if (uploader.files.length <= 1) {
-      $info.show();
-      $table.hide();
       $browseButton.show();
       $uploadButton.hide();
     }
@@ -210,7 +191,6 @@ var UploadKit = function(input) {
 
 UploadKit.prototype = {
   $element: null,
-  $info: null,
   $table: null,
   $thead: null,
   $tbody: null,
@@ -224,15 +204,11 @@ UploadKit.prototype = {
   responses: null,
   swfUrl: '/_gallery/plupload/plupload.flash.swf',
   silverlightUrl: '',
-  errorFileSize: 'File size exceeds limit',
-  errorUnknown: 'Unknown error occurred',
-  infoMultiple: '<h1>No Files Selected</h1><h2>Browse for files to upload or drag and drop them here</h2>',
-  infoNotMultiple: '<h1>No File Selected</h1><h2>Browse for file to upload or drag and drop it here</h2>',
   runtimes: 'html5,flash,silverlight,gears,browserplus,html4',
   fileColumnTitle: 'File Name',
   sizeColumnTitle: 'Size',
   progressColumnTitle: 'Progress',
-  browseLabel: 'Browse...',
+  browseLabel: 'Browse',
   uploadLabel: 'Upload',
   removeLabel: 'Remove',
   filters: [],

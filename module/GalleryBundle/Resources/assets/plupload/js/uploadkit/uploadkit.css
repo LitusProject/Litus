@@ -1,0 +1,40 @@
+.uk-input {
+  display: none;
+}
+
+.uk-container {
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+.uk-container > a {
+  margin-right: 10px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.uk-container > a.disabled {
+  pointer-events: none;
+}
+
+.uk-container > table {
+  margin-bottom: 10px;
+}
+
+.uk-close-column, .uk-icon-column {
+  width: 15px;
+}
+
+.uk-size-column {
+  width: 80px;
+}
+
+.uk-progress-column {
+  width: 150px;
+  padding: 0;
+}
+
+.uk-progress-column .progress {
+  margin: 0 auto;
+  width: 130px;
+}

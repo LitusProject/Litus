@@ -84,7 +84,7 @@ return array(
         'plupload_js' => array(
             'assets' => array(
                 'plupload/js/plupload.full.js',
-                'plupload/js/bootstrap/uploadkit.js',
+                'plupload/js/uploadkit/uploadkit.js',
             ),
             'filters' => array(
                 '?JsFilter' => array(
@@ -94,7 +94,7 @@ return array(
         ),
         'plupload_css' => array(
             'assets' => array(
-                'plupload/js/bootstrap/uploadkit.css',
+                'plupload/js/uploadkit/uploadkit.css',
             ),
             'filters' => array(
                 '?CssFilter' => array(
