@@ -22,7 +22,10 @@ namespace CommonBundle\Component\Hydrator;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait,
     CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait,
+    CommonBundle\Component\Util\AcademicYear,
     DateTime,
     RecursiveArrayIterator,
     RecursiveIteratorIterator,
@@ -39,7 +42,9 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
 {
     use ServiceLocatorAwareTrait;
 
+    use AuthenticationTrait;
     use DoctrineTrait;
+    use HydratorPluginManagerTrait;
 
     /**
      * Flattens an array( of arrays)+? of strings into an array of strings
@@ -212,25 +217,27 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
     }
 
     /**
-     * @param  string                                  $name
-     * @return \Zend\Hydrator\HydratorInterface
+     * Get the current academic year.
+     *
+     * @param  boolean      $organization
+     * @return AcademicYear
      */
-    public function getHydrator($name)
+    public function getCurrentAcademicYear($organization = false)
     {
-        return $this->getServiceLocator()
-            ->get('litus.hydratormanager')
-            ->get($name);
+        if ($organization) {
+            return AcademicYear::getOrganizationYear($this->getEntityManager());
+        }
+
+        return AcademicYear::getUniversityYear($this->getEntityManager());
     }
 
     /**
-     * We want an easy method to retrieve the Authentication from
-     * the DI container.
-     *
-     * @return \CommonBundle\Component\Authentication\Authentication
+     * @param  string            $name
+     * @return HydratorInterface
      */
-    public function getAuthentication()
+    public function getHydrator($name)
     {
-        return $this->getServiceLocator()->get('authentication');
+        return $this->getHydratorPluginManager()->get($name);
     }
 
     /**

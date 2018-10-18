@@ -23,6 +23,7 @@ namespace CommonBundle\Component\Form;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
     CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait,
     CommonBundle\Component\Validator\FormAwareInterface,
     RuntimeException,
     Zend\Form\FieldsetInterface as ZendFieldsetInterface,
@@ -45,6 +46,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     use ServiceLocatorAwareTrait;
 
     use DoctrineTrait;
+    use HydratorPluginManagerTrait;
 
     use ElementTrait, FieldsetTrait {
         FieldsetTrait::setRequired insteadof ElementTrait;
@@ -72,9 +74,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
             $this->setHydrator(new ClassMethodsHydrator());
         } elseif (is_string($this->hydrator)) {
             $this->setHydrator(
-                $this->getServiceLocator()
-                    ->get('litus.hydratormanager')
-                    ->get($this->hydrator)
+                $this->getHydratorPluginManager()->get($this->hydrator)
             );
         }
 

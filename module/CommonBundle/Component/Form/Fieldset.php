@@ -20,7 +20,11 @@
 
 namespace CommonBundle\Component\Form;
 
-use Zend\Form\FormInterface,
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
+    Zend\Form\FormInterface,
     Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
@@ -32,8 +36,13 @@ use Zend\Form\FormInterface,
  * @method \CommonBundle\Component\Form\FieldsetTrait setRequired(boolean $flag = true)
  * @method \CommonBundle\Component\Form\ElementTrait setElementRequired(boolean $flag = true)
  */
-class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface
+class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
+
+    use CacheTrait;
+    use DoctrineTrait;
+
     use ElementTrait, FieldsetTrait {
         FieldsetTrait::setRequired insteadof ElementTrait;
         ElementTrait::setRequired as setElementRequired;
