@@ -120,7 +120,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 array(
                     'type'       => 'text',
                     'name'       => 'university_identification',
-                    'label'      => 'University Identification',
+                    'label'      => 'R-number',
                     'attributes' => array(
                         'id' => 'university_identification_' . $memberNb,
                     ),
