@@ -24,7 +24,16 @@
 
     <div class="row">
         <div class="col-md-3 justify">
-            <p>{{ translate('Register for the tombola by filling out this form.') }}</p>
+            <p>{{ translate('Register for the tombola by filling out this form. Runners who sign up for the tombola can choose a happy hour slot of 3 hours during which their points will be counted double. For a happy hour between 2AM and 11AM, we even triple your points!<br /><br />Possible prizes:<br />1. Garmin Forerunner 235<br />2. 1-Year Netflix subscription<br />3. 1-Year Spotify Premium<br />4. Nike gift cheque(&euro;100)<br />5. Decathlon gift cheque (&euro;100) (2x)<br />6. bol.com gift cheque (&euro;50) (4x)') }}</p>
+            <h2>{{ translate('Scoring') }}</h2>
+            <ul>
+                <li>&lt;= 1'29": 1 {{ translate('point') }}</li>
+                <li>&lt;= 1'27": 3 {{ translate('points') }}</li>
+                <li>&lt;= 1'25": 4 {{ translate('points') }}</li>
+                <li>&lt;= 1'22": 6 {{ translate('points') }}</li>
+                <li>&lt;= 1'19": 8 {{ translate('points') }}</li>
+                <li>&lt;= 1'15": 10 {{ translate('points') }}</li>
+            </ul>
 
             <div class="flashmessage alert alert-danger fade" id="identification_error">
                 <a class="close">&times;</a>

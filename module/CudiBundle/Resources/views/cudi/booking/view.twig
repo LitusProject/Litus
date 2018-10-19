@@ -22,9 +22,8 @@
                 <th>{{ translate('Price / Piece') }}</th>
                 <th>#</th>
                 <th class="hidden-xs">{{ translate('Expiration Date') }}</th>
-                <th class="hidden-xs">{{ '|   ' ~ translate('Status') }}</th>
-                <th class="visible-xs">{{ translate('Assigned') }}</th>
-                <th class="hidden-xs">{{ translate('Actions') }}</th>
+                <th class="hidden-xs">{{ translate('Status') }}</th>
+                <th>{{ translate('Actions') }}</th>
             </tr>
             {% for booking in bookings %}
                 <tr class="item item-{{ booking.getId() }} {% if 'assigned' == booking.getStatus() %}success{% endif %}" data-price="{{ booking.getArticle().getSellPrice() * booking.getNumber() }}">
@@ -44,8 +43,7 @@
                     <td>{{ booking.getNumber() }}</td>
                     <td class="hidden-xs">{{ dateLocalized(booking.getExpirationDate(), 'dd/MM/y') }}</td>
                     <td class="hidden-xs">{{ translate(booking.getStatus()) }}</td>
-                    <td class="visible-xs" style="text-align: center;">{% if booking.getStatus() == 'assigned' %}&times;{% endif %}</td>
-                    <td class="hidden-xs actions">
+                    <td class="actions">
                         {% if booking.getArticle().isUnbookable() %}
                             <a href="#" class="btn btn-default btn-sm cancel" data-id="{{ booking.getId() }}" data-title="{{ booking.getArticle().getMainArticle().getTitle() }}">
                                 {{ translate('Cancel') }}
@@ -62,8 +60,7 @@
                 <td></td>
                 <td class="hidden-xs"></td>
                 <td class="hidden-xs"></td>
-                <td class="visible-xs"></td>
-                <td class="hidden-xs"></td>
+                <td></td>
             </tr>
         </table>
 
