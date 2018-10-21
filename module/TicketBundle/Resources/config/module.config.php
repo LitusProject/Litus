@@ -32,14 +32,14 @@ return Config::create(
     array(
         'validators' => array(
             'aliases' => array(
-                'activtiy'         => Component\Validator\Activity::class,
-                'Activtiy'         => Component\Validator\Activity::class,
-                'bookingclosedate' => Component\Validator\BookingCloseDate::class,
-                'bookingCloseDate' => Component\Validator\BookingCloseDate::class,
-                'BookingCloseDate' => Component\Validator\BookingCloseDate::class,
-                'numbertickets'    => Component\Validator\NumberTickets::class,
-                'numberTickets'    => Component\Validator\NumberTickets::class,
-                'NumberTickets'    => Component\Validator\NumberTickets::class,
+                'activtiy'          => Component\Validator\Activity::class,
+                'Activtiy'          => Component\Validator\Activity::class,
+                'bookingsclosedate' => Component\Validator\BookingsCloseDate::class,
+                'bookingsCloseDate' => Component\Validator\BookingsCloseDate::class,
+                'BookingsCloseDate' => Component\Validator\BookingsCloseDate::class,
+                'numbertickets'     => Component\Validator\NumberTickets::class,
+                'numberTickets'     => Component\Validator\NumberTickets::class,
+                'NumberTickets'     => Component\Validator\NumberTickets::class,
             ),
         ),
     )

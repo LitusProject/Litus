@@ -81,7 +81,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(array(
             'type'     => 'datetime',
             'name'     => 'bookings_close_date',
-            'label'    => 'Booking Close Date',
+            'label'    => 'Bookings Close Date',
             'required' => false,
             'options'  => array(
                 'input' => array(

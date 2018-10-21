@@ -23,11 +23,11 @@ namespace TicketBundle\Component\Validator;
 use DateTime;
 
 /**
- * Check the booking close date is not after the event's date
+ * Check the bookings close date is not after the event's date.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class BookingCloseDate extends \CommonBundle\Component\Validator\AbstractValidator
+class BookingsCloseDate extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -41,7 +41,7 @@ class BookingCloseDate extends \CommonBundle\Component\Validator\AbstractValidat
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The booking close date cannot be after the event',
+        self::NOT_VALID => 'The bookings close date cannot be after the event',
     );
 
     /**
