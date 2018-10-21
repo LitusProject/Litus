@@ -20,8 +20,6 @@
 
 namespace LogisticsBundle\Form\Admin\VanReservation;
 
-use LogicException;
-
 /**
  * This form allows the user to edit the reservation.
  *
@@ -31,10 +29,6 @@ class Edit extends Add
 {
     public function init()
     {
-        if (null === $this->reservation) {
-            throw new LogicException('Cannot edit a null reservation');
-        }
-
         parent::init();
 
         $this->remove('submit')

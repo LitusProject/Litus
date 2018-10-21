@@ -84,7 +84,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'input' => array(
                         'validators' => array(
                             array(
-                                'name'    => 'date',
+                                'name'    => 'Date',
                                 'options' => array(
                                     'format' => 'd/m/Y H:i',
                                 ),
@@ -105,7 +105,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'input' => array(
                         'validators' => array(
                             array(
-                                'name'    => 'date_compare',
+                                'name'    => 'DateCompare',
                                 'options' => array(
                                     'first_date' => 'start_date',
                                     'format'     => 'd/m/Y H:i',
@@ -117,14 +117,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->add(array(
-            'type'       => 'submit',
-            'name'       => 'event_add',
-            'value'      => 'Add',
-            'attributes' => array(
-                'class' => 'mail_add',
-            ),
-        ));
+        $this->addSubmit('Add', 'mail_add');
 
         if (null !== $this->event) {
             $this->bind($this->event);

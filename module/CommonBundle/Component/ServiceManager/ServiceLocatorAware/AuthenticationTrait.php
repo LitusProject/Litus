@@ -44,7 +44,7 @@ trait AuthenticationTrait
      */
     public function getAuthenticationService()
     {
-        return $this->getServiceLocator()->get('authentication_doctrineservice');
+        return $this->getServiceLocator()->get('authentication_service');
     }
 
     /**

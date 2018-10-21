@@ -18,27 +18,22 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Component\Validator\Subject;
+namespace CudiBundle\Component\Validator;
 
 use CommonBundle\Component\Form\Form,
     CommonBundle\Component\Validator\FormAwareInterface;
 
 /**
- * Matches the given subject against the database to check duplicate mappings.
+ * Check if user has bought an aritcle
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ModuleGroup extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
+class HasBought extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
 
-    protected $options = array(
-        'subject'       => null,
-        'academic_year' => null,
-    );
-
     /**
-     * @var Form The form to validate
+     * @var Form
      */
     private $form;
 
@@ -48,33 +43,8 @@ class ModuleGroup extends \CommonBundle\Component\Validator\AbstractValidator im
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The mapping already exists',
+        self::NOT_VALID => 'The article was never bought by this user',
     );
-
-    /**
-     * Sets validator options
-     *
-     * @param int|array|\Traversable $options
-     */
-    public function __construct($options = array())
-    {
-        if (!is_array($options)) {
-            $args = func_get_args();
-            $options = array();
-            $options['subject'] = array_shift($args);
-            $options['academic_year'] = array_shift($args);
-        }
-
-        parent::__construct($options);
-    }
-
-    /**
-     * @param Form $form
-     */
-    public function setForm(Form $form)
-    {
-        $this->form = $form;
-    }
 
     /**
      * Returns true if and only if a field name has been set, the field name is available in the
@@ -88,20 +58,43 @@ class ModuleGroup extends \CommonBundle\Component\Validator\AbstractValidator im
     {
         $this->setValue($value);
 
-        $moduleGroup = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
-            ->findOneById(self::getFormValue($this->form, array('module_group', 'id')));
+        $personField = $this->form->get('person');
 
-        $mapping = $this->getEntityManager()
-            ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
-            ->findOneByModuleGroupSubjectAndAcademicYear($moduleGroup, $this->options['subject'], $this->options['academic_year']);
+        if ($personField->get('id')->getValue() == '' || $context['id'] == null) {
+            $this->error(self::NOT_VALID);
 
-        if (null === $mapping) {
+            return false;
+        }
+
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneById($personField->get('id')->getValue());
+
+        $article = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Article')
+            ->findOneById($context['id']);
+
+        $booking = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findOneSoldByArticleAndPerson($article, $person, false);
+
+        if (null !== $booking) {
             return true;
         }
 
         $this->error(self::NOT_VALID);
 
         return false;
+    }
+
+    /**
+     * @param  Form $form
+     * @return self
+     */
+    public function setForm(Form $form)
+    {
+        $this->form = $form;
+
+        return $this;
     }
 }

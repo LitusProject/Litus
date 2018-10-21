@@ -52,7 +52,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'notEmpty',
+                            'name'    => 'NotEmpty',
                             'options' => array(
                                 'zero', 'string',
                             ),
@@ -81,7 +81,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                         ),
                         'validators' => array(
                             array(
-                                'name'    => 'alnum',
+                                'name'    => 'Alnum',
                                 'options' => array(
                                     'allowWhiteSpace' => true,
                                 ),
@@ -112,7 +112,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array('name' => 'notEmpty'),
+                                array('name' => 'NotEmpty'),
                             ),
                         ),
                     ),
@@ -138,7 +138,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                         ),
                         'validators' => array(
                             array(
-                                'name'    => 'notEmpty',
+                                'name'    => 'NotEmpty',
                                 'options' => array(
                                     'zero', 'string',
                                 ),
@@ -169,12 +169,12 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'alnum',
+                            'name'    => 'Alnum',
                             'options' => array(
                                 'allowWhiteSpace' => true,
                             ),
                         ),
-                        array('name' => 'not_zero'),
+                        array('name' => 'NotZero'),
                     ),
                 ),
             ),

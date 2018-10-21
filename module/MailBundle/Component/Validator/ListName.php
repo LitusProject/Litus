@@ -18,26 +18,43 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Component\Validator\Contract;
-
-use BrBundle\Component\ContractParser\IllegalFormatException,
-    BrBundle\Component\ContractParser\Parser as BulletParser;
+namespace MailBundle\Component\Validator;
 
 /**
- * Check for syntac errors in text.
+ * Checks whether a mailing list name is unique or not.
  *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Bullet extends \CommonBundle\Component\Validator\AbstractValidator
+class ListName extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
+
+    protected $options = array(
+        'list' => null,
+    );
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The text cannot be parsed',
+        self::NOT_VALID => 'A list with this name already exists',
     );
+
+    /**
+     * Sets validator options
+     *
+     * @param int|array|\Traversable $options
+     */
+    public function __construct($options = array())
+    {
+        if (!is_array($options)) {
+            $args = func_get_args();
+            $options = array();
+            $options['list'] = array_shift($args);
+        }
+
+        parent::__construct($options);
+    }
 
     /**
      * Returns true if no matching record is found in the database.
@@ -50,15 +67,16 @@ class Bullet extends \CommonBundle\Component\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        try {
-            $p = new BulletParser();
-            $p->parse($value);
-        } catch (IllegalFormatException $e) {
-            $this->error(self::NOT_VALID);
+        $list = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\MailingList\Named')
+            ->findOneByName($value);
 
-            return false;
+        if (null === $list || ($this->options['list'] && $list == $this->options['list'])) {
+            return true;
         }
 
-        return true;
+        $this->error(self::NOT_VALID);
+
+        return false;
     }
 }

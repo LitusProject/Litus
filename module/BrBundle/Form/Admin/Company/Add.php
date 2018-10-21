@@ -52,7 +52,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'company_name',
+                            'name'    => 'CompanyName',
                             'options' => array(
                                 'company' => $this->company,
                             ),
@@ -100,7 +100,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'phone_number'),
+                        array('name' => 'PhoneNumber'),
                     ),
                 ),
             ),
@@ -117,9 +117,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'uri',
-                        ),
+                        array('name' => 'Uri'),
                     ),
                 ),
             ),
@@ -164,7 +162,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'company_name',
+                                    'name'    => 'CompanyName',
                                     'options' => array(
                                         'company' => $this->company,
                                     ),

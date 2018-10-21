@@ -95,8 +95,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array('name' => 'int'),
-                                array('name' => 'year'),
+                                array('name' => 'Int'),
+                                array('name' => 'Year'),
                             ),
                         ),
                     ),
@@ -112,7 +112,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'isbn',
+                                    'name'    => 'Isbn',
                                     'options' => array(
                                         'type' => 'auto',
                                     ),
@@ -131,7 +131,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array('name' => 'uri'),
+                                array('name' => 'Uri'),
                             ),
                         ),
                     ),
@@ -220,7 +220,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'options' => array(
                         'input' => array(
                             'validators' => array(
-                                array('name' => 'syllabus_typeahead_subject'),
+                                array('name' => 'TypeaheadSubject'),
                             ),
                         ),
                     ),

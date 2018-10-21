@@ -47,9 +47,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),
@@ -69,9 +67,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),
@@ -91,9 +87,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),
@@ -113,9 +107,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),
@@ -135,9 +127,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),
@@ -157,9 +147,7 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),
@@ -176,13 +164,13 @@ class Profile extends \CommonBundle\Component\Form\Bootstrap\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'fileextension',
+                            'name'    => 'FileExtension',
                             'options' => array(
                                 'extension' => 'jpg,png',
                             ),
                         ),
                         array(
-                            'name'    => 'filesize',
+                            'name'    => 'FileSize',
                             'options' => array(
                                 'max' => '2MB',
                             ),

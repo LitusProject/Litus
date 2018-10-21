@@ -43,9 +43,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'EmailAddress',
-                        ),
+                        array('name' => 'EmailAddress'),
                     ),
                 ),
             ),

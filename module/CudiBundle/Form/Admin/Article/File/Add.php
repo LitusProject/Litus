@@ -29,7 +29,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'CudiBundle\Hydrator\File\Mapping';
 
-    const FILESIZE = '256MB';
+    const FILE_SIZE = '256MB';
 
     public function init()
     {
@@ -60,16 +60,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'File',
             'required'   => true,
             'attributes' => array(
-                'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILESIZE . '.',
+                'data-help' => 'The file can be of any type and has a file size limit of ' . self::FILE_SIZE . '.',
                 'size'      => 70,
             ),
             'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'filesize',
+                            'name'    => 'FileSize',
                             'options' => array(
-                                'max' => self::FILESIZE,
+                                'max' => self::FILE_SIZE,
                             ),
                         ),
                     ),

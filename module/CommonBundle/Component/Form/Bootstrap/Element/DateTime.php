@@ -21,7 +21,7 @@
 namespace CommonBundle\Component\Form\Bootstrap\Element;
 
 /**
- * A date picker element
+ * DateTime form element
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */

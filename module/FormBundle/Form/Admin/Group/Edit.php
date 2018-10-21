@@ -51,7 +51,7 @@ class Edit extends Add
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'date_compare',
+                            'name'    => 'DateCompare',
                             'options' => array(
                                 'first_date' => 'start_date',
                                 'format'     => 'd/m/Y H:i',
@@ -78,9 +78,7 @@ class Edit extends Add
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'digits',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),
@@ -98,8 +96,7 @@ class Edit extends Add
             'label' => 'Allow Users To Edit Their Info',
         ));
 
-        $this->remove('submit');
-
-        $this->addSubmit('Save', 'form_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'form_edit');
     }
 }

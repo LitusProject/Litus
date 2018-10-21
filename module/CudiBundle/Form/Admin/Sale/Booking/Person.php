@@ -43,7 +43,7 @@ class Person extends \CommonBundle\Component\Form\Admin\Form
             'options' => array(
                 'input' => array(
                     'validators' => array(
-                        array('name' => 'typeahead_person'),
+                        array('name' => 'TypeaheadPerson'),
                     ),
                 ),
             ),

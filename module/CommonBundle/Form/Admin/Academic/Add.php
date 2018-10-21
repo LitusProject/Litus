@@ -86,13 +86,13 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'barcode',
+                                    'name'    => 'Barcode',
                                     'options' => array(
                                         'adapter'     => 'Ean12',
                                         'useChecksum' => false,
                                     ),
                                 ),
-                                array('name' => 'person_barcode'),
+                                array('name' => 'PersonBarcode'),
                             ),
                         ),
                     ),
@@ -145,9 +145,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array(
-                                    'name' => 'alnum',
-                                ),
+                                array('name' => 'Alnum'),
                             ),
                         ),
                     ),
@@ -166,7 +164,7 @@ class Add extends \CommonBundle\Form\Admin\Person\Add
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array('name' => 'secretary_no_at'),
+                                array('name' => 'NoAt'),
                             ),
                         ),
                     ),

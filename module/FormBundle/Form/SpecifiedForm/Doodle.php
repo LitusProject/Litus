@@ -121,9 +121,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array(
-                                'name' => 'EmailAddress',
-                            ),
+                            array('name' => 'EmailAddress'),
                         ),
                     ),
                 ),
@@ -150,7 +148,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                 } else {
                     $validators = array(
                         array(
-                            'name'    => 'form_timeslot',
+                            'name'    => 'TimeSlot',
                             'options' => array(
                                 'timeslot' => $fieldSpecification,
                                 'person'   => $this->person,
@@ -160,7 +158,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
                 }
 
                 $validators[] = array(
-                    'name'    => 'form_max_timeslots',
+                    'name'    => 'MaxTimeSlots',
                     'options' => array(
                         'form' => $this->form,
                     ),

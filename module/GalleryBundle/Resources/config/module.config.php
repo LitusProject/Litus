@@ -31,7 +31,9 @@ return Config::create(
     array(
         'validators' => array(
             'aliases' => array(
-                'gallery_album_name' => Component\Validator\Name::class,
+                'albumname' => Component\Validator\AlbumName::class,
+                'albumName' => Component\Validator\AlbumName::class,
+                'AlbumName' => Component\Validator\AlbumName::class,
             ),
         ),
     )

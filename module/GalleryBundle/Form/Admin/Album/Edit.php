@@ -20,8 +20,6 @@
 
 namespace GalleryBundle\Form\Admin\Album;
 
-use LogicException;
-
 /**
  * Edit an album.
  */
@@ -29,10 +27,6 @@ class Edit extends Add
 {
     public function init()
     {
-        if (null === $this->album) {
-            throw new LogicException('Cannot edit a null album');
-        }
-
         parent::init();
 
         $this->remove('submit')

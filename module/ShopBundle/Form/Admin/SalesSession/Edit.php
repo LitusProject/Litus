@@ -20,8 +20,7 @@
 
 namespace ShopBundle\Form\Admin\SalesSession;
 
-use LogicException,
-    ShopBundle\Entity\SalesSession;
+use ShopBundle\Entity\SalesSession;
 
 /**
  * Edit SalesSession
@@ -37,10 +36,6 @@ class Edit extends Add
 
     public function init()
     {
-        if (null === $this->salesSession) {
-            throw new LogicException('Cannot edit a null shift');
-        }
-
         parent::init();
 
         foreach ($this->products as $product) {

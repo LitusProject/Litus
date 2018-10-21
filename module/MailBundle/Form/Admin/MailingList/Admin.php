@@ -48,9 +48,11 @@ class Admin extends \CommonBundle\Component\Form\Admin\Form
             'options'  => array(
                 'input' => array(
                     'validators' => array(
-                        array('name' => 'typeahead_person'),
                         array(
-                            'name'    => 'mail_admin_map',
+                            'name' => 'TypeaheadPerson',
+                        ),
+                        array(
+                            'name'    => 'AdminMap',
                             'options' => array(
                                 'list' => $this->getList(),
                             ),

@@ -42,7 +42,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'date_compare',
+                            'name'    => 'DateCompare',
                             'options' => array(
                                 'first_date' => 'now',
                                 'format'     => 'd/m/Y H:i',
@@ -64,7 +64,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'int'),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),

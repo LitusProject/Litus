@@ -124,14 +124,14 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'barcode',
+                                    'name'    => 'Barcode',
                                     'options' => array(
                                         'adapter'     => 'Ean12',
                                         'useChecksum' => false,
                                     ),
                                 ),
                                 array(
-                                    'name'    => 'person_barcode',
+                                    'name'    => 'PersonBarcode',
                                     'options' => array(
                                         'person' => $this->person,
                                     ),
@@ -187,9 +187,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array(
-                                    'name' => 'alnum',
-                                ),
+                                array('name' => 'Alnum'),
                             ),
                         ),
                     ),
@@ -207,7 +205,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array('name' => 'secretary_no_at'),
+                                array('name' => 'NoAt'),
                             ),
                         ),
                     ),

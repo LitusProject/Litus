@@ -66,12 +66,12 @@ class Add extends \CommonBundle\Component\Form\Fieldset
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'alnum',
+                            'name'    => 'Alnum',
                             'options' => array(
                                 'allowWhiteSpace' => true,
                             ),
                         ),
-                        array('name' => 'not_zero'),
+                        array('name' => 'NotZero'),
                     ),
                 ),
             ),
@@ -107,7 +107,7 @@ class Add extends \CommonBundle\Component\Form\Fieldset
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'alnum',
+                            'name'    => 'Alnum',
                             'options' => array(
                                 'allowWhiteSpace' => true,
                             ),

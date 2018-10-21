@@ -52,7 +52,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'publication_title',
+                            'name'    => 'PublicationTitle',
                             'options' => array(
                                 'exclude' => (null !== $this->publication) ? $this->publication->getId() : null,
                             ),

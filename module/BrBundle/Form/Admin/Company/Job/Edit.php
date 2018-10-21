@@ -33,7 +33,7 @@ class Edit extends Add
 
         $this->remove('type');
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'company_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'company_edit');
     }
 }

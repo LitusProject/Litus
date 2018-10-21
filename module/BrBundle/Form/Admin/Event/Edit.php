@@ -20,8 +20,6 @@
 
 namespace BrBundle\Form\Admin\Event;
 
-use LogicException;
-
 /**
  * Edit an event.
  *
@@ -31,21 +29,9 @@ class Edit extends Add
 {
     public function init()
     {
-        if (null === $this->event) {
-            throw new LogicException('Cannot edit a null event');
-        }
-
         parent::init();
 
-        $this->remove('event_add');
-
-        $this->add(array(
-            'type'       => 'submit',
-            'name'       => 'event_edit',
-            'value'      => 'Edit',
-            'attributes' => array(
-                'class' => 'mail_add',
-            ),
-        ));
+        $this->remove('submit')
+            ->addSubmit('Save', 'mail_edit');
     }
 }

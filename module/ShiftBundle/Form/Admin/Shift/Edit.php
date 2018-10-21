@@ -20,8 +20,7 @@
 
 namespace ShiftBundle\Form\Admin\Shift;
 
-use LogicException,
-    Shiftbundle\Entity\Shift;
+use Shiftbundle\Entity\Shift;
 
 /**
  * Edit Shift
@@ -37,10 +36,6 @@ class Edit extends Add
 
     public function init()
     {
-        if (null === $this->shift) {
-            throw new LogicException('Cannot edit a null shift');
-        }
-
         parent::init();
 
         if (!$this->shift->canEditDates()) {

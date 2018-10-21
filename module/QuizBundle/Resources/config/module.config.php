@@ -32,8 +32,12 @@ return Config::create(
     array(
         'validators' => array(
             'aliases' => array(
-                'quiz_round_unique' => Component\Validator\Round\Unique::class,
-                'quiz_team_unique'  => Component\Validator\Team\Unique::class,
+                'roundnumber' => Component\Validator\RoundNumber::class,
+                'roundNumber' => Component\Validator\RoundNumber::class,
+                'RoundNumber' => Component\Validator\RoundNumber::class,
+                'teamnumber'  => Component\Validator\TeamNumber::class,
+                'teamNumber'  => Component\Validator\TeamNumber::class,
+                'TeamNumber'  => Component\Validator\TeamNumber::class,
             ),
         ),
     )

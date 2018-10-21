@@ -45,9 +45,7 @@ class Send extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'EmailAddress',
-                        ),
+                        array('name' => 'EmailAddress'),
                     ),
                 ),
             ),

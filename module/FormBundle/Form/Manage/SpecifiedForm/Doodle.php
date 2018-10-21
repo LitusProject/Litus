@@ -58,7 +58,7 @@ class Doodle extends \FormBundle\Form\SpecifiedForm\Doodle
                     'options'  => array(
                         'input' => array(
                             'validators' => array(
-                                array('name' => 'typeahead_person'),
+                                array('name' => 'TypeaheadPerson'),
                             ),
                         ),
                     ),

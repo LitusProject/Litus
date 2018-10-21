@@ -20,8 +20,7 @@
 
 namespace CudiBundle\Form\Prof\Article;
 
-use LogicException,
-    SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject;
 
 /**
  * Add With Subject
@@ -37,15 +36,9 @@ class AddWithSubject extends Add
 
     public function init()
     {
-        if (null === $this->subject) {
-            throw new LogicException('Cannot add an article to a null subject');
-        }
-
         parent::init();
 
-        /** @var \CommonBundle\Component\Form\Fieldset $subjectFieldset */
         $subjectFieldset = $this->get('subject');
-        /** @var \CommonBundle\Component\Form\Bootstrap\Element\TypeAhead $subjectField */
         $subjectField = $subjectFieldset->get('subject');
 
         $subjectField->get('id')

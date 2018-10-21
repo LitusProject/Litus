@@ -38,9 +38,8 @@ class Edit extends Add
     {
         parent::init();
 
-        $this->remove('submit');
-
-        $this->addSubmit('Save Changes');
+        $this->remove('submit')
+            ->addSubmit('Save Changes');
 
         if (null !== $this->entry) {
             $this->bind($this->entry);

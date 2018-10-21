@@ -29,6 +29,8 @@ use PublicationBundle\Entity\Publication;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    const FILE_SIZE = '50MB';
+
     /**
      * @var Publication The publication
      */
@@ -52,7 +54,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'publication_title_edition_pdf',
+                            'name'    => 'TitleEditionPdf',
                             'options' => array(
                                 'publication'   => $this->publication,
                                 'academic_year' => $this->getCurrentAcademicYear(true),
@@ -91,21 +93,25 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         ));
 
         $this->add(array(
-            'type'     => 'file',
-            'name'     => 'file',
-            'label'    => 'Image Archive',
-            'required' => true,
-            'options'  => array(
+            'type'       => 'file',
+            'name'       => 'file',
+            'label'      => 'Image Archive',
+            'required'   => true,
+            'attributes' => array(
+                'multiple'  => true,
+                'data-help' => 'The maximum file size is ' . self::FILE_SIZE . '.',
+            ),
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'filesize',
+                            'name'    => 'FileSize',
                             'options' => array(
-                                'max' => '75MB',
+                                'max' => self::FILE_SIZE,
                             ),
                         ),
                         array(
-                            'name'    => 'fileextension',
+                            'name'    => 'FileExtension',
                             'options' => array(
                                 'extension' => 'zip',
                             ),

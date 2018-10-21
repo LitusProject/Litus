@@ -29,7 +29,7 @@ class Edit extends Add
     {
         parent::init();
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'calendar_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'calendar_edit');
     }
 }

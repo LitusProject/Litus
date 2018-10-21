@@ -31,9 +31,15 @@ return Config::create(
     array(
         'validators' => array(
             'aliases' => array(
-                'publication_title_edition_html' => Component\Validator\Title\Edition\Html::class,
-                'publication_title_edition_pdf'  => Component\Validator\Title\Edition\Pdf::class,
-                'publication_title'              => Component\Validator\Title\Publication::class,
+                'titleeditionhtml' => Component\Validator\Title\Edition\Html::class,
+                'titleEditionHtml' => Component\Validator\Title\Edition\Html::class,
+                'TitleEditionHtml' => Component\Validator\Title\Edition\Html::class,
+                'titleeditionpdf'  => Component\Validator\Title\Edition\Pdf::class,
+                'titleEditionPdf'  => Component\Validator\Title\Edition\Pdf::class,
+                'TitleEditionPdf'  => Component\Validator\Title\Edition\Pdf::class,
+                'titlepublication' => Component\Validator\Title\Publication::class,
+                'titlePublication' => Component\Validator\Title\Publication::class,
+                'TitlePublication' => Component\Validator\Title\Publication::class,
             ),
         ),
     )

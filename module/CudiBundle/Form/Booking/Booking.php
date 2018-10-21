@@ -59,10 +59,10 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                         'validators' => array(
                             array(
-                                'name' => 'digits',
+                                'name' => 'Digits',
                             ),
                             array(
-                                'name'    => 'between',
+                                'name'    => 'Between',
                                 'options' => array(
                                     'min' => 0,
                                     'max' => self::MAX_BOOKING_NUMBER,

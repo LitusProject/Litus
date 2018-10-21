@@ -20,8 +20,6 @@
 
 namespace QuizBundle\Form\Admin\Team;
 
-use LogicException;
-
 /**
  * Edits a quiz team
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
@@ -30,10 +28,6 @@ class Edit extends Add
 {
     public function init()
     {
-        if (null === $this->team) {
-            throw new LogicException('Cannot edit a null team');
-        }
-
         parent::init();
 
         $this->remove('submit')

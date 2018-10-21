@@ -26,7 +26,7 @@ namespace CommonBundle\Form\Admin\Unit;
  */
 class External extends \CommonBundle\Component\Form\Admin\Form
 {
-    const FILESIZE = '10MB';
+    const FILE_SIZE = '10MB';
 
     public function init()
     {
@@ -78,18 +78,18 @@ class External extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Picture',
             'required'   => true,
             'attributes' => array(
-                'data-help' => 'The picture must be an image of max ' . self::FILESIZE . '.',
+                'data-help' => 'The picture must be an image with a file size limit of ' . self::FILE_SIZE . '.',
             ),
             'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'fileisimage',
+                            'name' => 'FileIsImage'
                         ),
                         array(
-                            'name'    => 'filesize',
+                            'name'    => 'FileSize',
                             'options' => array(
-                                'max' => self::FILESIZE,
+                                'max' => self::FILE_SIZE,
                             ),
                         ),
                     ),

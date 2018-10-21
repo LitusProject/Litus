@@ -33,8 +33,8 @@ class Edit extends Add
     {
         parent::init();
 
-        $this->remove('submit');
-        $this->addSubmit($this->form->getUpdateText($this->language));
+        $this->remove('submit')
+            ->addSubmit($this->form->getUpdateText($this->language));
     }
 
     public function getInputFilterSpecification()

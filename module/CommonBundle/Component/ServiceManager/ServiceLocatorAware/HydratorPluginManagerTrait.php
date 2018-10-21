@@ -36,7 +36,7 @@ trait HydratorPluginManagerTrait
      */
     public function getHydratorPluginManager()
     {
-        return $this->getServiceLocator()->get('litus.hydratormanager');
+        return $this->getServiceLocator()->get('hydrator_plugin_manager');
     }
 
     /**

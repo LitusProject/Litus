@@ -58,7 +58,7 @@ class Add extends \FormBundle\Form\SpecifiedForm\Add
                     'options'  => array(
                         'input' => array(
                             'validators' => array(
-                                array('name' => 'typeahead_person'),
+                                array('name' => 'TypeaheadPerson'),
                             ),
                         ),
                     ),

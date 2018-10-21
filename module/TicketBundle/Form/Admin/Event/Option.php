@@ -46,9 +46,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),
@@ -79,7 +77,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'price'),
+                        array('name' => 'Price'),
                     ),
                 ),
             ),
@@ -99,7 +97,7 @@ class Option extends Fieldset implements InputFilterProviderInterface
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'price'),
+                        array('name' => 'Price'),
                     ),
                 ),
             ),

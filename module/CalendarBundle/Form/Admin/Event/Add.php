@@ -74,7 +74,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'date_compare',
+                            'name'    => 'DateCompare',
                             'options' => array(
                                 'first_date' => 'start_date',
                                 'format'     => 'd/m/Y H:i',
@@ -106,7 +106,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'calendar_event_name',
+                            'name'    => 'EventName',
                             'options' => array(
                                 'event' => $this->getEvent(),
                             ),

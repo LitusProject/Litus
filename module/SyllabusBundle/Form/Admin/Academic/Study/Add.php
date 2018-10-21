@@ -42,7 +42,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options' => array(
                 'input' => array(
                     'validators' => array(
-                        array('name' => 'syllabus_typeahead_study'),
+                        array('name' => 'TypeaheadStudy'),
                     ),
                 ),
             ),

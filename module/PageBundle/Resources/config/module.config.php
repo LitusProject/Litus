@@ -31,7 +31,7 @@ return Config::create(
     array(
         'validators' => array(
             'aliases' => array(
-                'page_title' => Component\Validator\Title::class,
+                'PageTitle' => Component\Validator\PageTitle::class,
             ),
         ),
     )

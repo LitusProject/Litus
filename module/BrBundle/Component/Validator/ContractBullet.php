@@ -18,46 +18,29 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace OnBundle\Component\Validator;
+namespace BrBundle\Component\Validator;
+
+use BrBundle\Component\ContractParser\IllegalFormatException,
+    BrBundle\Component\ContractParser\Parser as BulletParser;
 
 /**
- * Checks whether a slug name already exists.
+ * Check for syntac errors in text.
  *
- * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Name extends \CommonBundle\Component\Validator\AbstractValidator
+class ContractBullet extends \CommonBundle\Component\Validator\AbstractValidator
 {
-    const TITLE_EXISTS = 'nameExists';
-
-    protected $options = array(
-        'slug' => null,
-    );
+    const NOT_VALID = 'notValid';
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::TITLE_EXISTS => 'There already is a slug with this title',
+        self::NOT_VALID => 'The text cannot be parsed',
     );
 
     /**
-     * Sets validator options
-     *
-     * @param int|array|\Traversable $options
-     */
-    public function __construct($options = array())
-    {
-        if (!is_array($options)) {
-            $args = func_get_args();
-            $options = array();
-            $options['slug'] = array_shift($args);
-        }
-
-        parent::__construct($options);
-    }
-
-    /**
-     * Returns true if no publication with this title exists.
+     * Returns true if no matching record is found in the database.
      *
      * @param  string     $value   The value of the field that will be validated
      * @param  array|null $context The context of the field that will be validated
@@ -65,16 +48,17 @@ class Name extends \CommonBundle\Component\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-        $slug = $this->getDocumentManager()
-            ->getRepository('OnBundle\Document\Slug')
-            ->findOneByName($value);
+        $this->setValue($value);
 
-        if (null === $slug || ($this->options['slug'] && $slug == $this->options['slug'])) {
-            return true;
+        try {
+            $p = new BulletParser();
+            $p->parse($value);
+        } catch (IllegalFormatException $e) {
+            $this->error(self::NOT_VALID);
+
+            return false;
         }
 
-        $this->error(self::TITLE_EXISTS);
-
-        return false;
+        return true;
     }
 }

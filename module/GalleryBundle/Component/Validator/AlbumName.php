@@ -32,7 +32,7 @@ use CommonBundle\Component\Form\Form,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Name extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
+class AlbumName extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
 {
     const NOT_VALID = 'notValid';
 

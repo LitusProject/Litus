@@ -53,9 +53,7 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'int',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),

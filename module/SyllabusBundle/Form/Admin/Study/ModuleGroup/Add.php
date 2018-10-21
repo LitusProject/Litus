@@ -70,7 +70,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         array('name' => 'int'),
                         array(
-                            'name'    => 'syllabus_study_module-group_external_id',
+                            'name'    => 'StudyModuleGroupExternalId',
                             'options' => array(
                                 'exclude' => $this->moduleGroup,
                             ),
@@ -91,7 +91,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'int'),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),
@@ -133,7 +133,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'syllabus_typeahead_study_module-group',
+                            'name' => 'TypeaheadStudyModuleGroup',
                         ),
                     ),
                 ),

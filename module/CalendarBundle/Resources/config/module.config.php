@@ -31,7 +31,9 @@ return Config::create(
     array(
         'validators' => array(
             'aliases' => array(
-                'calendar_event_name' => Component\Validator\Name::class,
+                'eventname' => Component\Validator\EventName::class,
+                'eventName' => Component\Validator\EventName::class,
+                'EventName' => Component\Validator\EventName::class,
             ),
         ),
     )

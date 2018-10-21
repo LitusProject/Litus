@@ -82,7 +82,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'name' => 'EmailAddress',
                         ),
                         array(
-                            'name' => 'prom_passenger_exists',
+                            'name' => 'PassengerExists',
                         ),
                     ),
                 ),
@@ -112,7 +112,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'prom_bus_selected',
+                            'name' => 'BusSelected',
                         ),
                     ),
                 ),
@@ -132,7 +132,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'prom_bus_selected',
+                            'name' => 'BusSelected',
                         ),
                     ),
                 ),

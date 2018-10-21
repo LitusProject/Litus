@@ -74,10 +74,10 @@ class EditProduct extends AddProduct
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'int',
+                            'name' => 'Int',
                         ),
                         array(
-                            'name'    => 'between',
+                            'name'    => 'Between',
                             'options' => array(
                                 'min' => 1,
                                 'max' => self::MAX_ORDER_NUMBER,

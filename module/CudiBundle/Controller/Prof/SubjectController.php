@@ -158,7 +158,7 @@ class SubjectController extends \CudiBundle\Component\Controller\ProfController
 
         $subjects = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
-            ->findAllByNameAndProfAndAcademicYearTypeAhead($this->getParam('string'), $this->getAuthentication()->getPersonObject(), $academicYear);
+            ->findAllByNameAndProfAndAcademicYearTypeahead($this->getParam('string'), $this->getAuthentication()->getPersonObject(), $academicYear);
 
         $result = array();
         foreach ($subjects as $subject) {

@@ -51,7 +51,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'ticket_activtiy'),
+                        array('name' => 'Activity'),
                     ),
                 ),
             ),
@@ -90,20 +90,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'date',
+                            'name'    => 'Date',
                             'options' => array(
                                 'format' => 'd/m/Y H:i',
                             ),
                         ),
                         array(
-                            'name'    => 'date_compare',
+                            'name'    => 'DateCompare',
                             'options' => array(
                                 'first_date' => 'now',
                                 'format'     => 'd/m/Y H:i',
                             ),
                         ),
                         array(
-                            'name'    => 'ticket_date',
+                            'name'    => 'BookingCloseData',
                             'options' => array(
                                 'format' => 'd/m/Y H:i',
                             ),
@@ -211,7 +211,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array('name' => 'price'),
+                                array('name' => 'Price'),
                             ),
                         ),
                     ),
@@ -230,7 +230,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array('name' => 'price'),
+                                array('name' => 'Price'),
                             ),
                         ),
                     ),

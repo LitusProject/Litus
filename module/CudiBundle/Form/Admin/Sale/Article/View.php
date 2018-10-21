@@ -20,8 +20,6 @@
 
 namespace CudiBundle\Form\Admin\Sale\Article;
 
-use LogicException;
-
 /**
  * View Sale Article
  *
@@ -31,10 +29,6 @@ class View extends Add
 {
     public function init()
     {
-        if (null === $this->article) {
-            throw new LogicException('Cannot view a null sale article');
-        }
-
         parent::init();
 
         foreach ($this->getElements() as $element) {

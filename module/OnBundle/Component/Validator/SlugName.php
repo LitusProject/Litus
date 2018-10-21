@@ -18,29 +18,26 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace QuizBundle\Component\Validator\Round;
+namespace OnBundle\Component\Validator;
 
 /**
- * Validates the uniqueness of a round number in a quiz
+ * Checks whether a slug name already exists.
  *
- * @author Lars Vierbergen <lars.vierbergen@litus.cc>
+ * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Unique extends \CommonBundle\Component\Validator\AbstractValidator
+class SlugName extends \CommonBundle\Component\Validator\AbstractValidator
 {
-    const NOT_VALID = 'notValid';
+    const TITLE_EXISTS = 'nameExists';
 
     protected $options = array(
-        'quiz'  => null,
-        'round' => null,
+        'slug' => null,
     );
 
     /**
-     * Error messages
-     *
-     * @var array
+     * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The round number already exists',
+        self::TITLE_EXISTS => 'There already is a slug with this title',
     );
 
     /**
@@ -53,15 +50,14 @@ class Unique extends \CommonBundle\Component\Validator\AbstractValidator
         if (!is_array($options)) {
             $args = func_get_args();
             $options = array();
-            $options['quiz'] = array_shift($args);
-            $options['round'] = array_shift($args);
+            $options['slug'] = array_shift($args);
         }
 
         parent::__construct($options);
     }
 
     /**
-     * Returns true if this round is unique
+     * Returns true if no publication with this title exists.
      *
      * @param  string     $value   The value of the field that will be validated
      * @param  array|null $context The context of the field that will be validated
@@ -69,28 +65,15 @@ class Unique extends \CommonBundle\Component\Validator\AbstractValidator
      */
     public function isValid($value, $context = null)
     {
-        $this->setValue($value);
+        $slug = $this->getDocumentManager()
+            ->getRepository('OnBundle\Document\Slug')
+            ->findOneByName($value);
 
-        if (!is_numeric($value)) {
-            $this->error(self::NOT_VALID);
-
-            return false;
-        }
-
-        $rounds = $this->getEntityManager()
-            ->getRepository('QuizBundle\Entity\Round')
-            ->findBy(
-                array(
-                    'quiz'  => $this->options['quiz']->getId(),
-                    'order' => $value,
-                )
-            );
-
-        if (count($rounds) == 0 || $rounds[0] == $this->options['round']) {
+        if (null === $slug || ($this->options['slug'] && $slug == $this->options['slug'])) {
             return true;
         }
 
-        $this->error(self::NOT_VALID);
+        $this->error(self::TITLE_EXISTS);
 
         return false;
     }

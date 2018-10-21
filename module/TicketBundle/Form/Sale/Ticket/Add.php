@@ -20,8 +20,7 @@
 
 namespace TicketBundle\Form\Sale\Ticket;
 
-use LogicException,
-    TicketBundle\Entity\Event;
+use TicketBundle\Entity\Event;
 
 /**
  * Add Ticket
@@ -39,10 +38,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function init()
     {
-        if (null === $this->event) {
-            throw new LogicException('Cannot create tickets for null event.');
-        }
-
         parent::init();
 
         $this->setAttribute('id', 'ticket_sale_form');
@@ -80,7 +75,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'options'  => array(
                         'input' => array(
                             'validators' => array(
-                                array('name' => 'typeahead_person'),
+                                array('name' => 'TypeaheadPerson'),
                             ),
                         ),
                     ),
@@ -165,7 +160,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'input' => array(
                         'validators' => array(
                             array(
-                                'name'    => 'ticket_number_tickets',
+                                'name'    => 'NumberTickets',
                                 'options' => array(
                                     'event' => $this->event,
                                 ),
@@ -190,7 +185,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'input' => array(
                             'validators' => array(
                                 array(
-                                    'name'    => 'ticket_number_tickets',
+                                    'name'    => 'NumberTickets',
                                     'options' => array(
                                         'event' => $this->event,
                                     ),
@@ -216,7 +211,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'input' => array(
                             'validators' => array(
                                 array(
-                                    'name'    => 'ticket_number_tickets',
+                                    'name'    => 'NumberTickets',
                                     'options' => array(
                                         'event' => $this->event,
                                     ),
@@ -241,7 +236,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'input' => array(
                                 'validators' => array(
                                     array(
-                                        'name'    => 'ticket_number_tickets',
+                                        'name'    => 'NumberTickets',
                                         'options' => array(
                                             'event' => $this->event,
                                         ),

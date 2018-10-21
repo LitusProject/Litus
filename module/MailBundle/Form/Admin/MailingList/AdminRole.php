@@ -52,7 +52,7 @@ class AdminRole extends \CommonBundle\Component\Form\Admin\Form
                 'input'   => array(
                     'validators' => array(
                         array(
-                            'name'    => 'mail_admin_role',
+                            'name'    => 'AdminRole',
                             'options' => array(
                                 'list' => $this->getList(),
                             ),

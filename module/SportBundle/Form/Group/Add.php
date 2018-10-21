@@ -131,9 +131,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array(
-                                    'name' => 'university_identification',
-                                ),
+                                array('name' => 'UniversityIdentification'),
                             ),
                         ),
                     ),

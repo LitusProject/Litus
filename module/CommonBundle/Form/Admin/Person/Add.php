@@ -45,8 +45,8 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'alnum'),
-                        array('name' => 'username'),
+                        array('name' => 'Alnum'),
+                        array('name' => 'Username'),
                     ),
                 ),
             ),
@@ -97,9 +97,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'EmailAddress',
-                        ),
+                        array('name' => 'EmailAddress'),
                     ),
                 ),
             ),
@@ -118,7 +116,7 @@ abstract class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'phone_number'),
+                        array('name' => 'PhoneNumber'),
                     ),
                 ),
             ),

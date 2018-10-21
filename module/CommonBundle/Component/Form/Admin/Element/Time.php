@@ -21,7 +21,7 @@
 namespace CommonBundle\Component\Form\Admin\Element;
 
 /**
- * A date picker element
+ * Time form element
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */

@@ -29,7 +29,7 @@ class ManualAdd extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'BrBundle\Hydrator\Invoice\ManualInvoice';
 
-    const FILESIZE = '256MB';
+    const FILE_SIZE = '256MB';
 
     public function init()
     {
@@ -72,7 +72,7 @@ class ManualAdd extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'price'),
+                        array('name' => 'Price'),
                     ),
                 ),
             ),
@@ -96,9 +96,7 @@ class ManualAdd extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'digits',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),
@@ -110,22 +108,22 @@ class ManualAdd extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'File',
             'required'   => true,
             'attributes' => array(
-                'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILESIZE . '.',
+                'data-help' => 'The file can be of any type and has a file size limit of ' . self::FILE_SIZE . '.',
                 'size'      => 256,
             ),
             'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'filesize',
+                            'name'    => 'FileExtension',
                             'options' => array(
-                                'max' => self::FILESIZE,
+                                'extension' => 'pdf',
                             ),
                         ),
                         array(
-                            'name'    => 'fileextension',
+                            'name'    => 'FileSize',
                             'options' => array(
-                                'extension' => 'pdf',
+                                'max' => self::FILE_SIZE,
                             ),
                         ),
                     ),

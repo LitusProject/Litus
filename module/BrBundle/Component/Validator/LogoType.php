@@ -18,36 +18,27 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace PageBundle\Component\Validator;
-
-use CommonBundle\Component\Form\Form,
-    CommonBundle\Component\Util\Url,
-    CommonBundle\Component\Validator\FormAwareInterface;
+namespace BrBundle\Component\Validator;
 
 /**
- * Matches the given page title against the database to check whether it is
- * unique or not.
+ * Matches the given company against the database to check whether the logo type
+ * already exists or not.
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Title extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
+class LogoType extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
-
-    protected $options = array(
-        'exclude' => null,
-    );
-
-    /**
-     * @var Form
-     */
-    private $form;
 
     /**
      * @var array The error messages
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'There already exists a page with this title and the same parent',
+        self::NOT_VALID => 'The logo type already exists for this company',
+    );
+
+    protected $options = array(
+        'company' => null,
     );
 
     /**
@@ -60,7 +51,7 @@ class Title extends \CommonBundle\Component\Validator\AbstractValidator implemen
         if (!is_array($options)) {
             $args = func_get_args();
             $options = array();
-            $options['exclude'] = array_shift($args);
+            $options['company'] = array_shift($args);
         }
 
         parent::__construct($options);
@@ -77,38 +68,16 @@ class Title extends \CommonBundle\Component\Validator\AbstractValidator implemen
     {
         $this->setValue($value);
 
-        $parentName = null;
-        if ('' != $this->form->get('parent_' . $this->form->get('category')->getValue())->getValue()) {
-            $realParent = $this->getEntityManager()
-                ->getRepository('PageBundle\Entity\Node\Page')
-                ->findOneById($this->form->get('parent_' . $this->form->get('category')->getValue())->getValue());
+        $logo = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company\Logo')
+            ->findOneByTypeAndCompany($value, $this->options['company']);
 
-            $parentName = $realParent->getName();
-        }
-
-        $page = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Node\Page')
-            ->findOneByNameAndParent(
-                Url::createSlug($value), Url::createSlug($parentName)
-            );
-
-        if (null === $page || $page->getName() == $this->options['exclude']) {
+        if (null === $logo) {
             return true;
         }
 
         $this->error(self::NOT_VALID);
 
         return false;
-    }
-
-    /**
-     * @param  Form $form
-     * @return self
-     */
-    public function setForm(Form $form)
-    {
-        $this->form = $form;
-
-        return $this;
     }
 }

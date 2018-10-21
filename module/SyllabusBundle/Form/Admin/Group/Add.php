@@ -59,7 +59,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'syllabus_group_name',
+                            'name'    => 'GroupName',
                             'options' => array(
                                 'exclude' => $this->group,
                             ),
@@ -85,7 +85,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'mail_multi_mail'),
+                        array('name' => 'MultiMail'),
                     ),
                 ),
             ),
@@ -101,7 +101,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'mail_multi_mail'),
+                        array('name' => 'MultiMail'),
                     ),
                 ),
             ),

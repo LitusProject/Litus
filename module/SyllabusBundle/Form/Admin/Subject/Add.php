@@ -52,7 +52,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'syllabus_subject_code',
+                            'name'    => 'SubjectCode',
                             'options' => array(
                                 'exclude' => $this->subject,
                             ),
@@ -104,7 +104,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'int'),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),

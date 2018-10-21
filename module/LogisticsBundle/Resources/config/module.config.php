@@ -33,11 +33,22 @@ return Config::create(
     array(
         'validators' => array(
             'aliases' => array(
-                'logistics_typeahead_driver'           => Component\Validator\Typeahead\Driver::class,
-                'logistics_typeahead_lease'            => Component\Validator\Typeahead\Lease::class,
-                'logistics_piano_duration'             => Component\Validator\PianoDuration::class,
-                'logistics_piano_reservation_conflict' => Component\Validator\PianoReservationConflict::class,
-                'logistics_reservation_conflict'       => Component\Validator\ReservationConflict::class,
+                'pianoduration'            => Component\Validator\PianoDuration::class,
+                'pianoDuration'            => Component\Validator\PianoDuration::class,
+                'PianoDuration'            => Component\Validator\PianoDuration::class,
+                'pianoreservationconflict' => Component\Validator\PianoReservationConflict::class,
+                'pianoReservationConflict' => Component\Validator\PianoReservationConflict::class,
+                'PianoReservationConflict' => Component\Validator\PianoReservationConflict::class,
+                'reservationconflict'      => Component\Validator\ReservationConflict::class,
+                'reservationConflict'      => Component\Validator\ReservationConflict::class,
+                'ReservationConflict'      => Component\Validator\ReservationConflict::class,
+                'typeaheaddriver'          => Component\Validator\Typeahead\Driver::class,
+                'typeaheadDriver'          => Component\Validator\Typeahead\Driver::class,
+                'TypeaheadDriver'          => Component\Validator\Typeahead\Driver::class,
+                'typeaheadlease'           => Component\Validator\Typeahead\Lease::class,
+                'typeaheadlease'           => Component\Validator\Typeahead\Lease::class,
+                'typeaheadLease'           => Component\Validator\Typeahead\Lease::class,
+                'TypeaheadLease'           => Component\Validator\Typeahead\Lease::class,
             ),
         ),
     )

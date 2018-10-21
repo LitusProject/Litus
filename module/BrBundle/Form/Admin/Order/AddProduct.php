@@ -42,8 +42,6 @@ class AddProduct extends Add
     {
         parent::init();
 
-        $this->remove('submit');
-
         foreach ($this->getElements() as $element) {
             if (in_array($element->getName(), array('csrf'))) {
                 continue;
@@ -80,10 +78,10 @@ class AddProduct extends Add
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'int',
+                            'name' => 'Int',
                         ),
                         array(
-                            'name'    => 'between',
+                            'name'    => 'Between',
                             'options' => array(
                                 'min' => 1,
                                 'max' => self::MAX_ORDER_NUMBER,
@@ -94,7 +92,8 @@ class AddProduct extends Add
             ),
         ));
 
-        $this->addSubmit('Add', 'product_add');
+        $this->remove('submit')
+            ->addSubmit('Add', 'product_add');
     }
 
     /**

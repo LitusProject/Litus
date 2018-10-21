@@ -416,10 +416,10 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 ->findOneByAbbrev($this->getParam('language'));
         }
 
-        if (!isset($language) && isset($this->getSessionStorage()->language)) {
+        if (!isset($language) && isset($this->getSessionContainer()->language)) {
             $language = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev($this->getSessionStorage()->language);
+                ->findOneByAbbrev($this->getSessionContainer()->language);
         }
 
         if (!isset($language)) {
@@ -437,7 +437,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             }
         }
 
-        $this->getSessionStorage()->language = $language->getAbbrev();
+        $this->getSessionContainer()->language = $language->getAbbrev();
 
         $this->language = $language;
 

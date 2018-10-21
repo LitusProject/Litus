@@ -20,8 +20,6 @@
 
 namespace SyllabusBundle\Form\Admin\Study;
 
-use LogicException;
-
 /**
  * Edit Study
  *
@@ -31,14 +29,10 @@ class Edit extends Add
 {
     public function init()
     {
-        if (null === $this->study) {
-            throw new LogicException('Cannot edit a null study');
-        }
-
         parent::init();
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'edit');
 
         $this->bind($this->study);
     }

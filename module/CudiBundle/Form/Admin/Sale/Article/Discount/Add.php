@@ -71,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'price'),
+                        array('name' => 'Price'),
                     ),
                 ),
             ),
@@ -107,7 +107,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'sale_article_discount_exits',
+                            'name'    => 'SaleArticleDiscountExits',
                             'options' => array(
                                 'article' => $this->article,
                             ),

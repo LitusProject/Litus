@@ -55,7 +55,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'price'),
+                        array('name' => 'Price'),
                     ),
                 ),
             ),
@@ -75,7 +75,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'price'),
+                        array('name' => 'Price'),
                     ),
                 ),
             ),
@@ -93,16 +93,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ),
                 'validators' => array(
                     array(
+                        'name'    => 'SaleArticleBarcodeUnique',
+                        'options' => array(
+                            'sale_article' => $this->article,
+                        ),
+                    ),
+                    array(
                         'name'    => 'barcode',
                         'options' => array(
                             'adapter'     => 'Ean12',
                             'useChecksum' => false,
-                        ),
-                    ),
-                    array(
-                        'name'    => 'sale_article_barcode_unique',
-                        'options' => array(
-                            'sale_article' => $this->article,
                         ),
                     ),
                 ),

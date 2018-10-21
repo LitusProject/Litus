@@ -18,27 +18,25 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace BrBundle\Component\Validator\Logo;
+namespace CommonBundle\Component\Validator;
 
-/**
- * Matches the given company against the database to check whether the logo type
- * already exists or not.
- *
- * @author Kristof Mariën <kristof.marien@litus.cc>
- */
-class Type extends \CommonBundle\Component\Validator\AbstractValidator
+use CommonBundle\Entity\User\Person;
+
+class PersonBarcode extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
     /**
-     * @var array The error messages
+     * Error messages
+     *
+     * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The logo type already exists for this company',
+        self::NOT_VALID => 'The academic barcode already exists',
     );
 
     protected $options = array(
-        'company' => null,
+        'person' => null,
     );
 
     /**
@@ -51,14 +49,15 @@ class Type extends \CommonBundle\Component\Validator\AbstractValidator
         if (!is_array($options)) {
             $args = func_get_args();
             $options = array();
-            $options['company'] = array_shift($args);
+            $options['person'] = array_shift($args);
         }
 
         parent::__construct($options);
     }
 
     /**
-     * Returns true if no matching record is found in the database.
+     * Returns true if and only if a field name has been set, the field name is available in the
+     * context, and the value of that field unique and valid.
      *
      * @param  string     $value   The value of the field that will be validated
      * @param  array|null $context The context of the field that will be validated
@@ -68,11 +67,15 @@ class Type extends \CommonBundle\Component\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        $logo = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Logo')
-            ->findOneByTypeAndCompany($value, $this->options['company']);
+        if (null === $this->options['person']) {
+            return true;
+        }
 
-        if (null === $logo) {
+        $barcode = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Barcode')
+            ->findOneByBarcode($value);
+
+        if (null === $barcode || ($this->options['person'] && $barcode->getPerson() == $this->options['person'])) {
             return true;
         }
 

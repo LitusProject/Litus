@@ -39,7 +39,7 @@ class Edit extends Add
             $parentField->setValueOptions($this->createPagesArray($category, $this->getPage()->getCategory()->getId() == $category->getId() ? $this->getPage()->getTitle() : ''));
         }
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'category_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'category_edit');
     }
 }

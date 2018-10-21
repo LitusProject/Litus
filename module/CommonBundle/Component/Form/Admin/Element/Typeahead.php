@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CommonBundle\Component\Form\Bootstrap\Element;
+namespace CommonBundle\Component\Form\Admin\Element;
 
 use CommonBundle\Component\Form\Fieldset;
 
@@ -27,14 +27,14 @@ use CommonBundle\Component\Form\Fieldset;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class TypeAhead extends Fieldset
+class Typeahead extends Fieldset
 {
     public function init()
     {
         $this->add(array(
             'type'     => 'hidden',
             'name'     => 'id',
-            'required' => true,
+            'required' => false,
             'options'  => array(
                 'input' => array(
                     'filters' => array(
@@ -50,7 +50,7 @@ class TypeAhead extends Fieldset
         $this->add(array(
             'type'       => 'text',
             'name'       => 'value',
-            'required'   => true,
+            'required'   => false,
             'attributes' => array(
                 'autocomplete' => 'off',
                 'data-provide' => 'typeahead',

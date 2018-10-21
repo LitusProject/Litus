@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SyllabusBundle\Component\Validator\Typeahead;
+namespace SyllabusBundle\Component\Validator\Typeahead\Study;
 
 class ModuleGroup extends \CommonBundle\Component\Validator\Typeahead
 {

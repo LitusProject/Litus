@@ -66,7 +66,7 @@ class Experience extends Fieldset
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'field_length',
+                            'name'    => 'FieldLength',
                             'options' => array(
                                 'max_length'      => 50,
                                 'new_line_length' => 75,

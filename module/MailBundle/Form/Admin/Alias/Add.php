@@ -44,7 +44,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'mail_alias'),
+                        array('name' => 'Alias'),
                     ),
                 ),
             ),
@@ -58,7 +58,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'  => array(
                 'input' => array(
                     'validators' => array(
-                        array('name' => 'typeahead_person'),
+                        array('name' => 'TypeaheadPerson'),
                     ),
                 ),
             ),

@@ -39,8 +39,8 @@ class Edit extends Add
     {
         parent::init();
 
-        $this->remove('submit');
-        $this->addSubmit('Save Changes');
+        $this->remove('submit')
+            ->addSubmit('Save Changes');
 
         if (null !== $this->job) {
             $hydrator = $this->getHydrator();

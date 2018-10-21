@@ -20,8 +20,7 @@
 
 namespace SyllabusBundle\Form\Admin\Subject\Comment;
 
-use LogicException,
-    SyllabusBundle\Entity\Subject\Comment;
+use SyllabusBundle\Entity\Subject\Comment;
 
 /**
  * Mark Comment As Read
@@ -37,10 +36,6 @@ class MarkAsRead extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->comment) {
-            throw new LogicException('No comment given to mark as read');
-        }
-
         parent::init();
 
         $this->setAttribute('class', '');

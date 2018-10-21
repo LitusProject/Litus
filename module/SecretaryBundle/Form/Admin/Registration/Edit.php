@@ -54,7 +54,7 @@ class Edit extends Add
             'options' => array(
                 'input' => array(
                     'validators' => array(
-                        array('name' => 'secretary_cancel_registration'),
+                        array('name' => 'CancelRegistration'),
                     ),
                 ),
             ),

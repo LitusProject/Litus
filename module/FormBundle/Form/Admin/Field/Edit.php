@@ -32,19 +32,16 @@ class Edit extends Add
     {
         parent::init();
 
-        /** @var \CommonBundle\Component\Form\Admin\Element\Select $typeField */
         $typeField = $this->get('type');
         $typeField->setAttribute('disabled', 'disabled')
             ->setRequired(false);
 
-        /** @var \CommonBundle\Component\Form\Fieldset $visibilityFieldset */
         $visibilityFieldset = $this->get('visibility');
         $visibilityFieldset->get('value')->setAttribute('data-current_value', $this->field->getVisibilityValue());
 
-        $this->remove('submit');
-        $this->remove('submit_repeat');
-
-        $this->addSubmit('Save', 'form_edit');
+        $this->remove('submit')
+            ->remove('submit_repeat')
+            ->addSubmit('Save', 'form_edit');
 
         $this->bind($this->field);
     }

@@ -20,8 +20,6 @@
 
 namespace SyllabusBundle\Form\Admin\Group;
 
-use LogicException;
-
 /**
  * Edit Group
  *
@@ -33,29 +31,8 @@ class Edit extends Add
     {
         parent::init();
 
-        if (null === $this->group) {
-            throw new LogicException('Cannot edit null group');
-        }
-
-        if ((!$this->isPocGroup) or $this->isPocGroup === null) {
-            $this->add(array(
-            'type'  => 'checkbox',
-            'name'  => 'poc_group',
-            'label' => 'Is POC group this year?',
-        ));
-        } else {
-            $this->add(array(
-            'type'       => 'checkbox',
-            'name'       => 'poc_group',
-            'label'      => 'Is POC group this year? ',
-            'value'      => true,
-            'attributes' => array(
-            'disabled' => 1,),
-            ));
-        }
-
-        $this->remove('submit');
-        $this->addSubmit('Save', 'edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'edit');
 
         $this->bind($this->group);
     }

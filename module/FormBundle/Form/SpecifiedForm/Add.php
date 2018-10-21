@@ -120,9 +120,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array(
-                                'name' => 'EmailAddress',
-                            ),
+                            array('name' => 'EmailAddress'),
                         ),
                     ),
                 ),
@@ -162,7 +160,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
                     $specification['options']['input']['validators'] = array(
                         array(
-                            'name'    => 'field_line_length',
+                            'name'    => 'FieldLineLength',
                             'options' => array(
                                 'chars_per_line' => $fieldSpecification->getLineLength(),
                                 'lines'          => $fieldSpecification->getLines(),
@@ -179,7 +177,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 $specification['type'] = 'file';
                 $specification['options']['input']['validators'] = array(
                     array(
-                        'name'    => 'filesize',
+                        'name'    => 'FileSize',
                         'options' => array(
                             'max' => $fieldSpecification->getMaxSize() . 'MB',
                         ),

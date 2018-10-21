@@ -56,7 +56,7 @@ class MailingList extends \CommonBundle\Component\Form\Admin\Form
                 'input'   => array(
                     'validators' => array(
                         array(
-                            'name'    => 'mail_entry_mailinglist',
+                            'name'    => 'EntryMailingList',
                             'options' => array(
                                 'list' => $this->getList(),
                             ),

@@ -42,7 +42,7 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
             'options' => array(
                 'input' => array(
                     'validators' => array(
-                        array('name' => 'typeahead_person'),
+                        array('name' => 'TypeaheadPerson'),
                     ),
                 ),
             ),
@@ -59,8 +59,8 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
             'options' => array(
                 'input' => array(
                     'validators' => array(
-                        array('name' => 'typeahead_sale_article'),
-                        array('name' => 'sale_has_bought'),
+                        array('name' => 'TypeaheadSaleArticle'),
+                        array('name' => 'HasBought'),
                     ),
                 ),
             ),

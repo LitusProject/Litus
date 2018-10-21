@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace SecretaryBundle\Component\Validator;
+namespace CommonBundle\Component\Validator;
 
 /**
  * Validate the university email (no @ sign)

@@ -50,7 +50,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'date_compare',
+                            'name'    => 'DateCompare',
                             'options' => array(
                                 'first_date' => 'start',
                                 'format'     => 'd/m/Y H:i',

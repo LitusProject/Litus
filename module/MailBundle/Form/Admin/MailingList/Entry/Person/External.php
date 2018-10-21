@@ -79,9 +79,11 @@ class External extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'EmailAddress'),
                         array(
-                            'name'    => 'mail_entry_external',
+                            'name' => 'EmailAddress',
+                        ),
+                        array(
+                            'name'    => 'EntryExternal',
                             'options' => array(
                                 'list' => $this->getList(),
                             ),

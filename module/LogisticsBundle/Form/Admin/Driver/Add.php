@@ -50,7 +50,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'  => array(
                 'input' => array(
                     'validators' => array(
-                        array('name' => 'logistics_typeahead_driver'),
+                        array('name' => 'TypeaheadDriver'),
                     ),
                 ),
             ),
@@ -71,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'regex',
+                            'name'    => 'Regex',
                             'options' => array(
                                 'pattern' => '/^#([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$/',
                             ),

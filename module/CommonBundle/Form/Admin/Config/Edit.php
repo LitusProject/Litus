@@ -67,7 +67,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'filters' => array(
                         array('name' => 'StringTrim'),
-                        array('name' => 'stripcarriagereturn'),
+                        array('name' => 'StripCarriageReturn'),
                     ),
                 ),
             ),

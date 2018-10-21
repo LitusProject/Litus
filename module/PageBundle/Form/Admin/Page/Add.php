@@ -109,7 +109,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'page_title',
+                            'name'    => 'PageTitle',
                             'options' => array(
                                 'exclude' => $this->getPage() ? $this->getPage()->getName() : '',
                             ),

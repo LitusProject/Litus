@@ -49,12 +49,12 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'mail_entry_academic',
+                            'name'    => 'EntryAcademic',
                             'options' => array(
                                 'list' => $this->getList(),
                             ),
                         ),
-                        array('name' => 'typeahead_person'),
+                        array('name' => 'TypeaheadPerson'),
                     ),
                 ),
             ),

@@ -18,37 +18,29 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace CalendarBundle\Component\Validator;
-
-use CommonBundle\Component\Form\Form,
-    CommonBundle\Component\Util\Url,
-    CommonBundle\Component\Validator\FormAwareInterface,
-    DateTime;
+namespace QuizBundle\Component\Validator;
 
 /**
- * Matches the given event title against the database to check whether it is
- * unique or not.
+ * Validates the uniqueness of a team number in a quiz
  *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Name extends \CommonBundle\Component\Validator\AbstractValidator implements FormAwareInterface
+class TeamNumber extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
     protected $options = array(
-        'event' => null,
+        'quiz' => null,
+        'team' => null,
     );
 
     /**
-     * @var Form
-     */
-    private $form;
-
-    /**
-     * @var array The error messages
+     * Error messages
+     *
+     * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'This event title already exists',
+        self::NOT_VALID => 'The team number already exists',
     );
 
     /**
@@ -61,14 +53,15 @@ class Name extends \CommonBundle\Component\Validator\AbstractValidator implement
         if (!is_array($options)) {
             $args = func_get_args();
             $options = array();
-            $options['event'] = array_shift($args);
+            $options['quiz'] = array_shift($args);
+            $options['team'] = array_shift($args);
         }
 
         parent::__construct($options);
     }
 
     /**
-     * Returns true if no matching record is found in the database.
+     * Returns true if this team is unique
      *
      * @param  string     $value   The value of the field that will be validated
      * @param  array|null $context The context of the field that will be validated
@@ -78,33 +71,27 @@ class Name extends \CommonBundle\Component\Validator\AbstractValidator implement
     {
         $this->setValue($value);
 
-        $date = DateTime::createFromFormat('d#m#Y H#i', $this->form->get('start_date')->getValue());
-
-        if ($date) {
-            $title = $date->format('Ymd') . '_' . Url::createSlug($value);
-
-            $event = $this->getEntityManager()
-                ->getRepository('CalendarBundle\Entity\Node\Event')
-                ->findOneByName($title);
-
-            if (null === $event || ($this->options['event'] && $event->getEvent() == $this->options['event'])) {
-                return true;
-            }
-
+        if (!is_numeric($value)) {
             $this->error(self::NOT_VALID);
+
+            return false;
         }
 
+        $teams = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\Team')
+            ->findBy(
+                array(
+                    'quiz'   => $this->options['quiz']->getId(),
+                    'number' => $value,
+                )
+            );
+
+        if (count($teams) == 0 || $teams[0] == $this->options['team']) {
+            return true;
+        }
+
+        $this->error(self::NOT_VALID);
+
         return false;
-    }
-
-    /**
-     * @param  Form $form
-     * @return self
-     */
-    public function setForm(Form $form)
-    {
-        $this->form = $form;
-
-        return $this;
     }
 }

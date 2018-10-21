@@ -68,7 +68,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                         'required'   => true,
                         'validators' => array(
                             array(
-                                'name'    => 'ticket_number_tickets',
+                                'name'    => 'NumberTickets',
                                 'options' => array(
                                     'event'  => $this->event,
                                     'person' => $this->person,
@@ -92,7 +92,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                             'required'   => true,
                             'validators' => array(
                                 array(
-                                    'name'    => 'ticket_number_tickets',
+                                    'name'    => 'NumberTickets',
                                     'options' => array(
                                         'event'  => $this->event,
                                         'person' => $this->person,
@@ -117,7 +117,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                             'required'   => true,
                             'validators' => array(
                                 array(
-                                    'name'    => 'ticket_number_tickets',
+                                    'name'    => 'NumberTickets',
                                     'options' => array(
                                         'event'  => $this->event,
                                         'person' => $this->person,
@@ -141,7 +141,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                                 'required'   => true,
                                 'validators' => array(
                                     array(
-                                        'name'    => 'ticket_number_tickets',
+                                        'name'    => 'NumberTickets',
                                         'options' => array(
                                             'event'  => $this->event,
                                             'person' => $this->person,

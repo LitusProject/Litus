@@ -29,7 +29,7 @@ use CommonBundle\Entity\General\AcademicYear;
  */
 class Mail extends \CommonBundle\Component\Form\Admin\Form
 {
-    const FILESIZE = '50MB';
+    const FILE_SIZE = '50MB';
 
     /**
      * @var AcademicYear
@@ -118,7 +118,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'mail_multi_mail'),
+                        array('name' => 'MultiMail'),
                     ),
                 ),
             ),
@@ -189,15 +189,15 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
                     'label'      => 'Attachments',
                     'attributes' => array(
                         'multiple'  => true,
-                        'data-help' => 'The maximum file size is ' . self::FILESIZE . '.',
+                        'data-help' => 'The maximum file size is ' . self::FILE_SIZE . '.',
                     ),
                     'options' => array(
                         'input' => array(
                             'validators' => array(
                                 array(
-                                    'name'    => 'filesize',
+                                    'name'    => 'FileSize',
                                     'options' => array(
-                                        'max' => self::FILESIZE,
+                                        'max' => self::FILE_SIZE,
                                     ),
                                 ),
                             ),

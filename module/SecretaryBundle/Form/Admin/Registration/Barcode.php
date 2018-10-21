@@ -72,7 +72,7 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'person_barcode',
+                            'name'    => 'PersonBarcode',
                             'options' => array(
                                 'person' => $this->getPerson(),
                             ),

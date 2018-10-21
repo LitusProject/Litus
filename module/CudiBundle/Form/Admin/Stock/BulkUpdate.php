@@ -50,9 +50,7 @@ class BulkUpdate extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                         'validators' => array(
-                            array(
-                                'name' => 'digits',
-                            ),
+                            array('name' => 'Int'),
                         ),
                     ),
                 ),

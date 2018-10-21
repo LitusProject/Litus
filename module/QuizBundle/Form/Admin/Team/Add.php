@@ -20,7 +20,7 @@
 
 namespace QuizBundle\Form\Admin\Team;
 
-use LogicException,
+use RuntimeException,
     QuizBundle\Entity\Quiz,
     QuizBundle\Entity\Team;
 
@@ -45,7 +45,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function init()
     {
         if (null === $this->quiz) {
-            throw new LogicException('Quiz cannot be null in order to add teams');
+            throw new RuntimeException('Quiz cannot be null when adding a team');
         }
 
         parent::init();
@@ -75,10 +75,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'int'),
-                        array('name' => 'positive_number'),
                         array(
-                            'name'    => 'quiz_team_unique',
+                            'name' => 'Int',
+                        ),
+                        array(
+                            'name' => 'PositiveNumber',
+                        ),
+                        array(
+                            'name'    => 'TeamNumber',
                             'options' => array(
                                 'quiz' => $this->quiz,
                                 'team' => $this->team,

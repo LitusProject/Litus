@@ -32,7 +32,9 @@ return Config::create(
     array(
         'validators' => array(
             'aliases' => array(
-                'university_identification' => Component\Validator\UniversityIdentification::class,
+                'universityidentification' => Component\Validator\UniversityIdentification::class,
+                'universityIdentification' => Component\Validator\UniversityIdentification::class,
+                'UniversityIdentification' => Component\Validator\UniversityIdentification::class,
             ),
         ),
     )

@@ -121,10 +121,10 @@ class Edit extends Add
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'prom_bus_selected',
+                            'name' => 'BusSelected',
                         ),
                         array(
-                            'name'    => 'prom_bus_seats',
+                            'name'    => 'BusSeats',
                             'options' => array(
                                 'bus' => $firstBusEntity,
                             ),
@@ -148,10 +148,10 @@ class Edit extends Add
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'prom_bus_selected',
+                            'name' => 'BusSelected',
                         ),
                         array(
-                            'name'    => 'prom_bus_seats',
+                            'name'    => 'BusSeats',
                             'options' => array(
                                 'bus' => $secondBusEntity,
                             ),

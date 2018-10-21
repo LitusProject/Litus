@@ -59,10 +59,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'int',
+                            'name' => 'Int',
                         ),
                         array(
-                            'name'    => 'greaterthan',
+                            'name'    => 'GreaterThan',
                             'options' => array(
                                 'min' => 0,
                             ),
@@ -86,7 +86,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'price'),
+                        array('name' => 'Price'),
                     ),
                 ),
             ),

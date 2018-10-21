@@ -70,7 +70,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'sale_article_restriction_exists',
+                            'name'    => 'SaleArticleRestrictionExists',
                             'options' => array(
                                 'article' => $this->article,
                             ),

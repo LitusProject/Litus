@@ -59,10 +59,10 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'int',
+                            'name' => 'Int',
                         ),
                         array(
-                            'name'    => 'greaterthan',
+                            'name'    => 'GreaterThan',
                             'options' => array(
                                 'min'       => 0,
                                 'inclusive' => true,

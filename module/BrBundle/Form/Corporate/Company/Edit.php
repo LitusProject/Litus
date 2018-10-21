@@ -48,7 +48,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'company_name',
+                            'name'    => 'CompanyName',
                             'options' => array(
                                 'company' => $this->company,
                             ),
@@ -96,7 +96,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'phone_number'),
+                        array('name' => 'PhoneNumber'),
                     ),
                 ),
             ),
@@ -113,9 +113,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'uri',
-                        ),
+                        array('name' => 'Uri'),
                     ),
                 ),
             ),
@@ -160,7 +158,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'company_name',
+                                    'name'    => 'CompanyName',
                                     'options' => array(
                                         'company' => $this->company,
                                     ),

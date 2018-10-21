@@ -38,7 +38,7 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
             'options' => array(
                 'input' => array(
                     'validators' => array(
-                        array('name' => 'logistics_typeahead_lease'),
+                        array('name' => 'TypeaheadLease'),
                     ),
                 ),
             ),
@@ -90,7 +90,7 @@ class AddLease extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'price'),
+                        array('name' => 'Price'),
                     ),
                 ),
             ),

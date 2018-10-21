@@ -28,7 +28,7 @@ use CommonBundle\Component\Form\FieldsetInterface,
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Timeslot extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
+class TimeSlot extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
 {
     public function init()
     {
@@ -48,7 +48,7 @@ class Timeslot extends \CommonBundle\Component\Form\Admin\Fieldset\Tabbable
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'date_compare',
+                            'name'    => 'DateCompare',
                             'options' => array(
                                 'first_date' => 'start_date',
                                 'format'     => 'd/m/Y H:i',

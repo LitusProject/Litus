@@ -34,7 +34,7 @@ class Edit extends Add
 
         $this->remove('person');
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'collaborator_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'collaborator_edit');
     }
 }

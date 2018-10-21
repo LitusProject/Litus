@@ -57,7 +57,7 @@ class Activate extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'identical',
+                            'name'    => 'Identical',
                             'options' => array(
                                 'token' => 'credential',
                             ),

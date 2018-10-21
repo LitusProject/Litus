@@ -33,7 +33,7 @@ return Config::create(
     array(
         'validators' => array(
             'aliases' => array(
-                'on_slug_name' => Component\Validator\Name::class,
+                'SlugName' => Component\Validator\SlugName::class,
             ),
         ),
     )

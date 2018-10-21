@@ -39,7 +39,7 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'logistics_typeahead_lease',
+                            'name'    => 'TypeaheadLease',
                             'options' => array(
                                 'must_be_leased' => true,
                             ),
@@ -101,7 +101,7 @@ class AddReturn extends \CommonBundle\Component\Form\Bootstrap\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'price'),
+                        array('name' => 'Price'),
                     ),
                 ),
             ),

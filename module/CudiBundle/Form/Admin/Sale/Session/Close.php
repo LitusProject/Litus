@@ -20,8 +20,6 @@
 
 namespace CudiBundle\Form\Admin\Sale\Session;
 
-use LogicException;
-
 /**
  * Close Sale Session
  *
@@ -31,18 +29,13 @@ class Close extends Add
 {
     public function init()
     {
-        if (null === $this->cashRegister) {
-            throw new LogicException('Cannot close sale session with a null cash register');
-        }
-
         parent::init();
 
         $this->remove('submit')
             ->addSubmit('Close', 'sale_edit');
 
         $this->setData(
-            $this->getHydrator()
-                ->extract($this->cashRegister)
+            $this->getHydrator()->extract($this->cashRegister)
         );
     }
 }

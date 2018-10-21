@@ -54,7 +54,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'date_compare',
+                            'name'    => 'DateCompare',
                             'options' => array(
                                 'first_date' => 'start_date',
                                 'format'     => 'd/m/Y H:i',

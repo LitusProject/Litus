@@ -27,6 +27,8 @@ namespace CudiBundle\Form\Prof\File;
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
+    const FILE_SIZE = '256MB';
+
     public function init()
     {
         parent::init();
@@ -52,13 +54,17 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'     => 'file',
             'label'    => 'File',
             'required' => true,
+            'attributes' => array(
+                'data-help' => 'The file can be of any type and has a file size limit of ' . self::FILE_SIZE . '.',
+                'size'      => 256,
+            ),
             'options'  => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'filesize',
+                            'name'    => 'FileSize',
                             'options' => array(
-                                'max' => '256MB',
+                                'max' => self::FILE_SIZE,
                             ),
                         ),
                     ),

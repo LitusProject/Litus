@@ -18,21 +18,20 @@
  * @license http://litus.cc/LICENSE
  */
 
-namespace TicketBundle\Component\Validator;
-
-use DateTime;
+namespace QuizBundle\Component\Validator;
 
 /**
- * Check the booking close date is not after the event's date
+ * Validates the uniqueness of a round number in a quiz
  *
- * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Date extends \CommonBundle\Component\Validator\AbstractValidator
+class RoundNumber extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
     protected $options = array(
-        'format' => '',
+        'quiz'  => null,
+        'round' => null,
     );
 
     /**
@@ -41,7 +40,7 @@ class Date extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The booking close date cannot be after the event',
+        self::NOT_VALID => 'The round number already exists',
     );
 
     /**
@@ -54,14 +53,15 @@ class Date extends \CommonBundle\Component\Validator\AbstractValidator
         if (!is_array($options)) {
             $args = func_get_args();
             $options = array();
-            $options['format'] = array_shift($args);
+            $options['quiz'] = array_shift($args);
+            $options['round'] = array_shift($args);
         }
 
         parent::__construct($options);
     }
 
     /**
-     * Returns true if these does not exceed max
+     * Returns true if this round is unique
      *
      * @param  string     $value   The value of the field that will be validated
      * @param  array|null $context The context of the field that will be validated
@@ -71,15 +71,22 @@ class Date extends \CommonBundle\Component\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (!is_numeric($context['event'])) {
+        if (!is_numeric($value)) {
+            $this->error(self::NOT_VALID);
+
             return false;
         }
 
-        $activity = $this->getEntityManager()
-            ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findOneById($context['event']);
+        $rounds = $this->getEntityManager()
+            ->getRepository('QuizBundle\Entity\Round')
+            ->findBy(
+                array(
+                    'quiz'  => $this->options['quiz']->getId(),
+                    'order' => $value,
+                )
+            );
 
-        if (null === $activity || $activity->getStartDate() >= DateTime::createFromFormat($this->options['format'], $value)) {
+        if (count($rounds) == 0 || $rounds[0] == $this->options['round']) {
             return true;
         }
 

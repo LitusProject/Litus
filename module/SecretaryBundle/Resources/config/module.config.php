@@ -31,8 +31,9 @@ return Config::create(
     array(
         'validators' => array(
             'aliases' => array(
-                'secretary_cancel_registration' => Component\Validator\CancelRegistration::class,
-                'secretary_no_at'               => Component\Validator\NoAt::class,
+                'cancelregistration' => Component\Validator\CancelRegistration::class,
+                'cancelRegistration' => Component\Validator\CancelRegistration::class,
+                'CancelRegistration' => Component\Validator\CancelRegistration::class,
             ),
         ),
     )

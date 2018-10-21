@@ -31,9 +31,9 @@ class Edit extends Add
     {
         parent::init();
 
-        $this->remove('academic')
-            ->remove('submit');
+        $this->remove('academic');
 
-        $this->addSubmit('Save', 'rule_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'rule_edit');
     }
 }

@@ -38,23 +38,18 @@ class EditEmail extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->poc) {
-            throw new LogicException('Cannot edit null poc');
-        }
-
         parent::init();
 
         $this->add(array(
             'type'       => 'text',
             'name'       => 'emailAdress',
-            'label'      => 'Email adress of this years poc',
+            'label'      => 'POC Email Address',
             'required'   => true,
             'attributes' => array(
-                'size'  => 70,
-                'value' => $this->poc->getEmailAdress(),
+                'size' => 70,
+            ),
+        ));
 
-            ),)
-            );
         $this->addSubmit('Save', 'edit');
     }
     public function setPoc(Poc $poc)

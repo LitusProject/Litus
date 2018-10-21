@@ -83,13 +83,13 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
         } elseif ($object instanceof FileFieldEntity) {
             $fileData = $data['file_form'];
             $object->setMaxSize($fileData['max_size'] === '' ? 25 : intval($fileData['max_size']));
-        } elseif ($object instanceof TimeslotFieldEntity) {
+        } elseif ($object instanceof TimeSlotFieldEntity) {
             $timeslotData = $data['timeslot_form'];
             $startDate = self::loadDateTime($timeslotData['start_date']);
             $endDate = self::loadDateTime($timeslotData['end_date']);
 
             if (!$startDate || !$endDate) {
-                throw new \RuntimeException('Timeslot has invalid dates.');
+                throw new \RuntimeException('Time slot has invalid dates.');
             }
 
             $object->setStartDate($startDate)
@@ -191,7 +191,7 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
         } elseif ($object instanceof FileFieldEntity) {
             $data['type'] = 'file';
             $data['file_form']['max_size'] = $object->getMaxSize();
-        } elseif ($object instanceof TimeslotFieldEntity) {
+        } elseif ($object instanceof TimeSlotFieldEntity) {
             $data['type'] = 'timeslot';
             $data['timeslot_form'] = array(
                 'start_date' => $object->getStartDate()->format('d/m/Y H:i'),

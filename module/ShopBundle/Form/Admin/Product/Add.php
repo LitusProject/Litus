@@ -38,11 +38,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'name'     => 'name',
             'label'    => 'Name',
             'required' => true,
-            'options'  => array(
-                'input' => array(
-                    'validators' => array(),
-                ),
-            ),
         ));
 
         $this->add(array(
@@ -56,7 +51,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'price'),
+                        array('name' => 'Price'),
                     ),
                 ),
             ),

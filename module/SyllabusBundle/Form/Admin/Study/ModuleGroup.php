@@ -48,9 +48,7 @@ class ModuleGroup extends Fieldset
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'syllabus_typeahead_study_module-group',
-                        ),
+                        array('name' => 'TypeaheadStudyModuleGroup'),
                     ),
                 ),
             ),

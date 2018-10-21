@@ -34,7 +34,7 @@ class File extends \CommonBundle\Component\Form\Fieldset
         $this->add(array(
             'type'    => 'text',
             'name'    => 'max_size',
-            'label'   => 'Max. Size (in MB)',
+            'label'   => 'Maximum Size (in MB)',
             'value'   => 5,
             'options' => array(
                 'input' => array(
@@ -42,9 +42,7 @@ class File extends \CommonBundle\Component\Form\Fieldset
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'digits',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),

@@ -26,7 +26,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
 
     const ISIC_PHOTO_WIDTH = 140;
     const ISIC_PHOTO_HEIGHT = 200;
-    const ISIC_PHOTO_FILESIZE = '1MB';
+    const ISIC_PHOTO_FILE_SIZE = '1MB';
 
     public function init()
     {
@@ -167,7 +167,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array('name' => 'phone_number'),
+                                array('name' => 'PhoneNumber'),
                             ),
                         ),
                     ),
@@ -248,22 +248,22 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     'label'      => 'Photo  (' . self::ISIC_PHOTO_WIDTH . ' x ' . self::ISIC_PHOTO_HEIGHT . ')',
                     'required'   => true,
                     'attributes' => array(
-                        'data-help' => 'The image for the photo on your card. The maximum file size is ' . self::ISIC_PHOTO_FILESIZE . '. This must be a valid image (jpg, png, ...). The image must have a width of  ' . self::ISIC_PHOTO_WIDTH . 'px and a height of ' . self::ISIC_PHOTO_HEIGHT . 'px.',
+                        'data-help' => 'The image for the photo on your card. The maximum file size is ' . self::ISIC_PHOTO_FILE_SIZE . '. This must be a valid image (jpg, png, ...). The image must have a width of  ' . self::ISIC_PHOTO_WIDTH . 'px and a height of ' . self::ISIC_PHOTO_HEIGHT . 'px.',
                     ),
                     'options' => array(
                         'input' => array(
                             'validators' => array(
                                 array(
-                                    'name'    => 'filesize',
+                                    'name' => 'FileIsImage',
+                                ),
+                                array(
+                                    'name'    => 'FileSize',
                                     'options' => array(
-                                        'max' => self::ISIC_PHOTO_FILESIZE,
+                                        'max' => self::ISIC_PHOTO_FILE_SIZE,
                                     ),
                                 ),
                                 array(
-                                    'name' => 'fileisimage',
-                                ),
-                                array(
-                                    'name'    => 'fileimagesize',
+                                    'name'    => 'FileImageSize',
                                     'options' => array(
                                         'minwidth'  => self::ISIC_PHOTO_WIDTH,
                                         'maxwidth'  => self::ISIC_PHOTO_WIDTH,

@@ -20,8 +20,6 @@
 
 namespace CudiBundle\Form\Admin\Article;
 
-use LogicException;
-
 /**
  * Duplicate of Article
  *
@@ -31,10 +29,6 @@ class Duplicate extends Add
 {
     public function init()
     {
-        if (null === $this->article) {
-            throw new LogicException('Cannot duplicate a null article');
-        }
-
         parent::init();
 
         $this->remove('subject_form');

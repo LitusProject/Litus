@@ -20,14 +20,14 @@
 
 namespace SportBundle\Form\Admin\Group;
 
-use LogicException,
-    SportBundle\Entity\Group;
+use SportBundle\Entity\Group;
+
 /**
  * Edit to edit the boolean of speedygroup
  *
  * @author Koen Certyn <koen.certyn@litus.cc>
  */
-class Editspeedygroup extends \CommonBundle\Component\Form\Admin\Form
+class EditSpeedyGroup extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
      * @var Group|null
@@ -38,9 +38,6 @@ class Editspeedygroup extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        if (null === $this->group) {
-            throw new LogicException('Cannot edit null group');
-        }
         $value = $this->group->getIsSpeedyGroup();
         if ($value === null) {
             $value = false;

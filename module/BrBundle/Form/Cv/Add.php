@@ -81,7 +81,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'field_length',
+                                    'name'    => 'FieldLength',
                                     'options' => array(
                                         'max_length'      => 100,
                                         'new_line_length' => 75,
@@ -104,7 +104,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'decimal',
+                                    'name'    => 'Decimal',
                                     'options' => array(
                                         'max_after_decimal' => '2',
                                     ),
@@ -155,7 +155,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'decimal',
+                                    'name'    => 'Decimal',
                                     'options' => array(
                                         'max_after_decimal' => '2',
                                     ),
@@ -201,7 +201,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'field_length',
+                                    'name'    => 'FieldLength',
                                     'options' => array(
                                         'max_length'      => 100,
                                         'new_line_length' => 75,
@@ -234,7 +234,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'field_length',
+                                    'name'    => 'FieldLength',
                                     'options' => array(
                                         'max_length'      => 50,
                                         'new_line_length' => 75,
@@ -259,7 +259,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'field_length',
+                                    'name'    => 'FieldLength',
                                     'options' => array(
                                         'max_length'      => 50,
                                         'new_line_length' => 75,
@@ -302,7 +302,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'field_length',
+                                    'name'    => 'FieldLength',
                                     'options' => array(
                                         'max_length'      => 100,
                                         'new_line_length' => 75,
@@ -338,7 +338,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'field_length',
+                                    'name'    => 'FieldLength',
                                     'options' => array(
                                         'max_length'      => 250,
                                         'new_line_length' => 75,
@@ -387,7 +387,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'field_length',
+                                    'name'    => 'FieldLength',
                                     'options' => array(
                                         'max_length'      => 250,
                                         'new_line_length' => 75,
@@ -421,7 +421,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'field_length',
+                                    'name'    => 'FieldLength',
                                     'options' => array(
                                         'max_length'      => 50,
                                         'new_line_length' => 75,
@@ -469,7 +469,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'field_length',
+                                    'name'    => 'FieldLength',
                                     'options' => array(
                                         'max_length'      => 200,
                                         'new_line_length' => 75,
@@ -505,7 +505,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'field_length',
+                                    'name'    => 'FieldLength',
                                     'options' => array(
                                         'max_length'      => 100,
                                         'new_line_length' => 75,
@@ -533,7 +533,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'validators' => array(
                                 array(
-                                    'name'    => 'field_length',
+                                    'name'    => 'FieldLength',
                                     'options' => array(
                                         'max_length'      => 200,
                                         'new_line_length' => 75,

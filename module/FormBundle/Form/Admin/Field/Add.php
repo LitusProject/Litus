@@ -85,9 +85,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'digits',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),
@@ -103,7 +101,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             'options' => array(
                 'input' => array(
                     'validators' => array(
-                        array('name' => 'form_field_required'),
+                        array('name' => 'FieldRequired'),
                     ),
                 ),
             ),
@@ -139,7 +137,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->add(array(
             'type'       => 'form_field_field_timeslot',
             'name'       => 'timeslot_form',
-            'label'      => 'Timeslot Options',
+            'label'      => 'Time Slot Options',
             'attributes' => array(
                 'class' => 'timeslot_form extra_form hide',
             ),
@@ -326,9 +324,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $fileForm = $this->get('file_form');
             $fileForm->setRequired();
         } elseif ($type == 'timeslot') {
-            /** @var \FormBundle\Form\Admin\Field\Field\Timeslot $timeslotForm */
-            $timeslotForm = $this->get('timeslot_form');
-            $timeslotForm->setRequired();
+            /** @var \FormBundle\Form\Admin\Field\Field\TimeSlot $timeslotForm */
+            $timeSlotForm = $this->get('timeslot_form');
+            $timeSlotForm->setRequired();
         }
 
         $specs = parent::getInputFilterSpecification();

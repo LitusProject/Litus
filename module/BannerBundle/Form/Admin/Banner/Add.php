@@ -80,7 +80,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'date_compare',
+                            'name'    => 'DateCompare',
                             'options' => array(
                                 'first_date' => 'start_date',
                                 'format'     => 'd/m/Y H:i',
@@ -112,16 +112,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'filesize',
+                            'name' => 'FileIsImage'
+                        ),
+                        array(
+                            'name'    => 'FileSize',
                             'options' => array(
                                 'max' => self::BANNER_FILESIZE,
                             ),
                         ),
+
                         array(
-                            'name' => 'fileisimage',
-                        ),
-                        array(
-                            'name'    => 'fileimagesize',
+                            'name'    => 'FileImageSize',
                             'options' => array(
                                 'minwidth'  => self::BANNER_WIDTH,
                                 'maxwidth'  => self::BANNER_WIDTH,

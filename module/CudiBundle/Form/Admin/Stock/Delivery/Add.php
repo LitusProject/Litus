@@ -59,7 +59,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options' => array(
                 'input' => array(
                     'validators' => array(
-                        array('name' => 'typeahead_sale_article'),
+                        array('name' => 'TypeaheadSaleArticle'),
                     ),
                 ),
             ),
@@ -81,10 +81,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'int',
+                            'name' => 'Int',
                         ),
                         array(
-                            'name'    => 'greaterthan',
+                            'name'    => 'GreaterThan',
                             'options' => array(
                                 'min' => 0,
                             ),

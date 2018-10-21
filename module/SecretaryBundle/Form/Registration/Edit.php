@@ -20,8 +20,6 @@
 
 namespace SecretaryBundle\Form\Registration;
 
-use LogicException;
-
 /**
  * Edit Registration
  *
@@ -31,10 +29,6 @@ class Edit extends Add
 {
     public function init()
     {
-        if (null === $this->metaData && null === $this->academic) {
-            throw new LogicException('Cannot edit null registration');
-        }
-
         parent::init();
 
         $academic = null !== $this->metaData

@@ -39,7 +39,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             'options'  => array(
                 'input' => array(
                     'validators' => array(
-                        array('name' => 'syllabus_typeahead_subject'),
+                        array('name' => 'TypeaheadSubject'),
                     ),
                 ),
             ),

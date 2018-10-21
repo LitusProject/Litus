@@ -83,8 +83,8 @@ class Edit extends Add
             $this->remove('reminder_mail_form');
         }
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'form_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'form_edit');
 
         if (null !== $this->form) {
             $this->bind($this->form);

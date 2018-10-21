@@ -45,7 +45,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             );
         }
 
-        $this->getSessionStorage()->key = $this->getRequest()->getQuery('client_id');
+        $this->getSessionContainer()->key = $this->getRequest()->getQuery('client_id');
 
         $form = $this->getForm('common_auth_login');
 
@@ -133,7 +133,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                     if ($this->getAuthentication()->isAuthenticated()) {
                         $key = $this->getEntityManager()
                             ->getRepository('ApiBundle\Entity\Key')
-                            ->findOneActiveByCode($this->getSessionStorage()->key);
+                            ->findOneActiveByCode($this->getSessionContainer()->key);
 
                         $authorizationCode = new AuthorizationCode(
                             $this->getAuthentication()->getPersonObject(),

@@ -72,14 +72,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'syllabus_subject_module-group',
+                            'name' => 'TypeaheadStudyModuleGroup',
+                        ),
+                        array(
+                            'name'    => 'SubjectModuleGroup',
                             'options' => array(
                                 'subject'       => $this->subject,
                                 'academic_year' => $this->academicYear,
                             ),
-                        ),
-                        array(
-                            'name' => 'syllabus_typeahead_study_module-group',
                         ),
                     ),
                 ),

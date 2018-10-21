@@ -20,7 +20,29 @@
 
 namespace CommonBundle;
 
-use CommonBundle\Component\Module\Config;
+use CommonBundle\Component\Authentication\Authentication,
+    CommonBundle\Component\Authentication\Action\Doctrine as DoctrineAction,
+    CommonBundle\Component\Authentication\Adapter\Doctrine\Credential as DoctrineCredentialAdapter,
+    CommonBundle\Component\Authentication\Service\Doctrine as DoctrineService,
+    CommonBundle\Component\Controller\Plugin\Service\PaginatorFactory as PaginatorPluginFactory,
+    CommonBundle\Component\Form\Factory as FormFactory,
+    CommonBundle\Component\Form\Service\FactoryFactory as FormFactoryFactory,
+    CommonBundle\Component\Hydrator\HydratorPluginManager,
+    CommonBundle\Component\Module\Config,
+    CommonBundle\Component\Module\Service\AbstractInstallerFactory,
+    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+    CommonBundle\Component\Validator\Service\AbstractValidatorFactory,
+    CommonBundle\Entity\User\Person,
+    CommonBundle\Entity\User\Session,
+    Interop\Container\ContainerInterface,
+    Symfony\Component\Console\Application as ConsoleApplication,
+    Zend\Authentication\Storage\Session as SessionStorage,
+    Zend\Form\ElementFactory,
+    Zend\I18n\Translator\Resources as TranslatorResources,
+    Zend\Mail\Transport\Sendmail,
+    Zend\Mvc\I18n\Translator as MvcTranslator,
+    Zend\ServiceManager\Factory\InvokableFactory,
+    Zend\Session\Container as SessionContainer;
 
 return Config::create(
     array(
@@ -32,8 +54,8 @@ return Config::create(
     array(
         'controllers' => array(
             'initializers' => array(
-                function (\Interop\Container\ContainerInterface $container, $instance) {
-                    if (!$instance instanceof Component\ServiceManager\ServiceLocatorAwareInterface) {
+                function (ContainerInterface $container, $instance) {
+                    if (!$instance instanceof ServiceLocatorAwareInterface) {
                         return;
                     }
 
@@ -42,77 +64,153 @@ return Config::create(
             ),
         ),
         'service_manager' => array(
-            'invokables' => array(
-                'mail_transport'     => 'Zend\Mail\Transport\Sendmail',
-                'AsseticCacheBuster' => 'AsseticBundle\CacheBuster\LastModifiedStrategy',
-            ),
             'factories' => array(
-                'authentication' => function ($serviceManager) {
-                    return new Component\Authentication\Authentication(
-                        $serviceManager->get('authentication_credentialadapter'),
+                Authentication::class => function ($serviceManager) {
+                    return new Authentication(
+                        $serviceManager->get('authentication_credential_adapter'),
                         $serviceManager->get('authentication_service')
                     );
                 },
-                'authentication_doctrinecredentialadapter' => function ($serviceManager) {
-                    return new Component\Authentication\Adapter\Doctrine\Credential(
+                DoctrineCredentialAdapter::class => function ($serviceManager) {
+                    return new DoctrineCredentialAdapter(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
-                        'CommonBundle\Entity\User\Person',
+                        Person::class,
                         'username'
                     );
                 },
-                'authentication_doctrineservice' => function ($serviceManager) {
-                    return new Component\Authentication\Service\Doctrine(
+                DoctrineService::class => function ($serviceManager) {
+                    $sessionStorage = new SessionStorage(
+                        (false !== getenv('ORGANIZATION') ? getenv('ORGANIZATION') . '_' : '') . 'Litus_Auth'
+                    );
+
+                    return new DoctrineService(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
-                        'CommonBundle\Entity\User\Session',
+                        Session::class,
                         2678400,
-                        $serviceManager->get('authentication_sessionstorage'),
+                        $sessionStorage,
                         'Litus_Auth',
                         'Session',
-                        $serviceManager->get('authentication_action')
+                        $serviceManager->get(DoctrineAction::class)
                     );
                 },
-                'authentication_doctrineaction' => function ($serviceManager) {
-                    return new Component\Authentication\Action\Doctrine(
+                DoctrineAction::class => function ($serviceManager) {
+                    return new DoctrineAction(
                         $serviceManager->get('doctrine.entitymanager.orm_default'),
                         $serviceManager->get('mail_transport')
                     );
                 },
-                'authentication_sessionstorage' => function () {
-                    return new \Zend\Authentication\Storage\Session(getenv('ORGANIZATION') . '_Litus_Auth');
-                },
 
-                'common_sessionstorage' => function () {
-                    return new \Zend\Session\Container(getenv('ORGANIZATION') . '_Litus_Common');
-                },
-
-                'console' => 'CommonBundle\Component\Console\Service\ApplicationFactory',
-
-                'litus.hydratormanager' => function($serviceManager) {
-                    return new Component\Hydrator\HydratorPluginManager(
-                        $serviceManager
+                SessionContainer::class => function () {
+                    return new SessionContainer(
+                        (false !== getenv('ORGANIZATION') ? getenv('ORGANIZATION') . '_' : '') . 'Litus'
                     );
                 },
 
-                Component\Form\Factory::class => Component\Form\Service\FactoryFactory::class,
+                HydratorPluginManager::class => function($serviceManager) {
+                    return new HydratorPluginManager($serviceManager);
+                },
+
+                ConsoleApplication::class => ConsoleApplicationFactory::class,
+                FormFactory::class        => FormFactoryFactory::class,
+                Sendmail::class           => InvokableFactory::class,
             ),
             'abstract_factories' => array(
-                Component\Module\Service\AbstractInstallerFactory::class
+                AbstractInstallerFactory::class
             ),
             'aliases' => array(
-                'authentication_service'           => 'authentication_doctrineservice',
-                'authentication_credentialadapter' => 'authentication_doctrinecredentialadapter',
-                'authentication_action'            => 'authentication_doctrineaction',
+                'authentication'                    => Authentication::class,
+                'authentication_credential_adapter' => DoctrineCredentialAdapter::class,
+                'authentication_service'            => DoctrineService::class,
 
-                'translator' => 'MvcTranslator',
+                'console'                 => ConsoleApplication::class,
+                'hydrator_plugin_manager' => HydratorPluginManager::class,
+                'mail_transport'          => Sendmail::class,
+                'session_container'       => SessionContainer::class,
+                'translator'              => MvcTranslator::class
+            ),
+        ),
+
+        'controller_plugins' => array(
+            'factories' => array(
+                Component\Controller\Plugin\HasAccess::class      => InvokableFactory::class,
+                Component\Controller\Plugin\FlashMessenger::class => InvokableFactory::class,
+                Component\Controller\Plugin\Paginator::class      => PaginatorPluginFactory::class,
+                Component\Controller\Plugin\Url::class            => InvokableFactory::class,
+            ),
+            'aliases' => array(
+                'hasaccess'      => Component\Controller\Plugin\HasAccess::class,
+                'hasAccess'      => Component\Controller\Plugin\HasAccess::class,
+                'HasAccess'      => Component\Controller\Plugin\HasAccess::class,
+                'flashmessenger' => Component\Controller\Plugin\FlashMessenger::class,
+                'flashMessenger' => Component\Controller\Plugin\FlashMessenger::class,
+                'FlashMessenger' => Component\Controller\Plugin\FlashMessenger::class,
+                'paginator'      => Component\Controller\Plugin\Paginator::class,
+                'Paginator'      => Component\Controller\Plugin\Paginator::class,
+                'url'            => Component\Controller\Plugin\Url::class,
+                'Url'            => Component\Controller\Plugin\Url::class,
+            ),
+        ),
+        'filters' => array(
+            'invokables' => array(
+                Component\Filter\StripCarriageReturn::class,
+            ),
+            'aliases' => array(
+                'stripcarriagereturn' => Component\Filter\StripCarriageReturn::class,
+                'stripCarriageReturn' => Component\Filter\StripCarriageReturn::class,
+                'StripCarriageReturn' => Component\Filter\StripCarriageReturn::class,
             ),
         ),
         'translator' => array(
             'translation_file_patterns' => array(
                 array(
                     'type'     => 'phparray',
-                    'base_dir' => \Zend\I18n\Translator\Resources::getBasePath(),
-                    'pattern'  => \Zend\I18n\Translator\Resources::getPatternForValidator(),
+                    'base_dir' => TranslatorResources::getBasePath(),
+                    'pattern'  => TranslatorResources::getPatternForValidator(),
                 ),
+            ),
+        ),
+        'validators' => array(
+            'abstract_factories' => array(
+                AbstractValidatorFactory::class
+            ),
+            'aliases' => array(
+                'datecompare'     => Component\Validator\DateCompare::class,
+                'dateCompare'     => Component\Validator\DateCompare::class,
+                'DateCompare'     => Component\Validator\DateCompare::class,
+                'decimal'         => Component\Validator\Decimal::class,
+                'Decimal'         => Component\Validator\Decimal::class,
+                'fieldlength'     => Component\Validator\FieldLength::class,
+                'fieldLength'     => Component\Validator\FieldLength::class,
+                'FieldLength'     => Component\Validator\FieldLength::class,
+                'fieldlinelength' => Component\Validator\FieldLineLength::class,
+                'fieldLineLength' => Component\Validator\FieldLineLength::class,
+                'FieldLineLength' => Component\Validator\FieldLineLength::class,
+                'noat'            => Component\Validator\NoAt::class,
+                'noAt'            => Component\Validator\NoAt::class,
+                'NoAt'            => Component\Validator\NoAt::class,
+                'notzero'         => Component\Validator\NotZero::class,
+                'notZero'         => Component\Validator\NotZero::class,
+                'NotZero'         => Component\Validator\NotZero::class,
+                'personbarcode'   => Component\Validator\PersonBarcode::class,
+                'personBarcode'   => Component\Validator\PersonBarcode::class,
+                'PersonBarcode'   => Component\Validator\PersonBarcode::class,
+                'phonenumber'     => Component\Validator\PhoneNumber::class,
+                'phoneNumber'     => Component\Validator\PhoneNumber::class,
+                'PhoneNumber'     => Component\Validator\PhoneNumber::class,
+                'positivenumber'  => Component\Validator\PositiveNumber::class,
+                'positiveNumber'  => Component\Validator\PositiveNumber::class,
+                'PositiveNumber'  => Component\Validator\PositiveNumber::class,
+                'price'           => Component\Validator\Price::class,
+                'Price'           => Component\Validator\Price::class,
+                'role'            => Component\Validator\Role::class,
+                'Role'            => Component\Validator\Role::class,
+                'typeaheadperson' => Component\Validator\Typeahead\Person::class,
+                'typeaheadPerson' => Component\Validator\Typeahead\Person::class,
+                'TypeaheadPerson' => Component\Validator\Typeahead\Person::class,
+                'username'        => Component\Validator\Username::class,
+                'Username'        => Component\Validator\Username::class,
+                'year'            => Component\Validator\Year::class,
+                'Year'            => Component\Validator\Year::class,
             ),
         ),
         'view_manager' => array(
@@ -131,28 +229,38 @@ return Config::create(
         ),
         'view_helpers' => array(
             'invokables' => array(
-                'dateLocalized' => 'CommonBundle\Component\View\Helper\DateLocalized',
-                'getClass'      => 'CommonBundle\Component\View\Helper\GetClass',
-                'getParam'      => 'CommonBundle\Component\View\Helper\GetParam',
-                'hasAccess'     => 'CommonBundle\Component\View\Helper\HasAccess',
-                'hideEmail'     => 'CommonBundle\Component\View\Helper\HideEmail',
-                'staticMap'     => 'CommonBundle\Component\View\Helper\StaticMap',
-                'url'           => 'CommonBundle\Component\View\Helper\Url',
-            ),
-        ),
-        'controller_plugins' => array(
-            'invokables' => array(
-                'hasAccess'      => 'CommonBundle\Component\Controller\Plugin\HasAccess',
-                'flashMessenger' => 'CommonBundle\Component\Controller\Plugin\FlashMessenger',
-                'url'            => 'CommonBundle\Component\Controller\Plugin\Url',
-            ),
-            'factories' => array(
-                Component\Controller\Plugin\Paginator::class => Component\Controller\Plugin\Service\PaginatorFactory::class,
+                Component\View\Helper\DateLocalized::class,
+                Component\View\Helper\GetClass::class,
+                Component\View\Helper\GetParam::class,
+                Component\View\Helper\HasAccess::class,
+                Component\View\Helper\HideEmail::class,
+                Component\View\Helper\StaticMap::class,
+                Component\View\Helper\Url::class,
             ),
             'aliases' => array(
-                'paginator' => Component\Controller\Plugin\Paginator::class
+                'datelocalized' => Component\View\Helper\DateLocalized::class,
+                'dateLocalized' => Component\View\Helper\DateLocalized::class,
+                'DateLocalized' => Component\View\Helper\DateLocalized::class,
+                'getclass'      => Component\View\Helper\GetClass::class,
+                'getClass'      => Component\View\Helper\GetClass::class,
+                'GetClass'      => Component\View\Helper\GetClass::class,
+                'getparam'      => Component\View\Helper\GetParam::class,
+                'getParam'      => Component\View\Helper\GetParam::class,
+                'GetParam'      => Component\View\Helper\GetParam::class,
+                'hasaccess'     => Component\View\Helper\HasAccess::class,
+                'hasAccess'     => Component\View\Helper\HasAccess::class,
+                'HasAccess'     => Component\View\Helper\HasAccess::class,
+                'hideemail'     => Component\View\Helper\HideEmail::class,
+                'hideEmail'     => Component\View\Helper\HideEmail::class,
+                'HideEmail'     => Component\View\Helper\HideEmail::class,
+                'staticmap'     => Component\View\Helper\StaticMap::class,
+                'staticMap'     => Component\View\Helper\StaticMap::class,
+                'StaticMap'     => Component\View\Helper\StaticMap::class,
+                'url'           => Component\View\Helper\Url::class,
+                'Url'           => Component\View\Helper\Url::class,
             ),
         ),
+
         'assetic_configuration' => array(
             'buildOnRequest' => getenv('APPLICATION_ENV') == 'development',
             'debug'          => false,
@@ -161,126 +269,137 @@ return Config::create(
             'cachePath'      => __DIR__ . '/../../../../data/cache',
             'basePath'       => '/_assetic/',
         ),
-        'authentication_sessionstorage' => array(
-            'namespace' => getenv('ORGANIZATION') . '_Litus_Auth',
-            'member'    => 'storage',
-        ),
+
         'litus' => array(
             'forms' => array(
                 'bootstrap' => array(
                     'factories' => array(
-                        Component\Form\Collection::class => \Zend\Form\ElementFactory::class,
-                        Component\Form\Fieldset::class   => \Zend\Form\ElementFactory::class,
+                        Component\Form\Collection::class => ElementFactory::class,
+                        Component\Form\Fieldset::class   => ElementFactory::class,
 
-                        Component\Form\Bootstrap\Element\Button::class    => \Zend\Form\ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Checkbox::class  => \Zend\Form\ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Date::class      => \Zend\Form\ElementFactory::class,
-                        Component\Form\Bootstrap\Element\DateTime::class  => \Zend\Form\ElementFactory::class,
-                        Component\Form\Bootstrap\Element\File::class      => \Zend\Form\ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Hidden::class    => \Zend\Form\ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Password::class  => \Zend\Form\ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Radio::class     => \Zend\Form\ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Reset::class     => \Zend\Form\ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Select::class    => \Zend\Form\ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Submit::class    => \Zend\Form\ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Text::class      => \Zend\Form\ElementFactory::class,
-                        Component\Form\Bootstrap\Element\Textarea::class  => \Zend\Form\ElementFactory::class,
-                        Component\Form\Bootstrap\Element\TypeAhead::class => \Zend\Form\ElementFactory::class,
+                        Component\Form\Bootstrap\Element\Button::class    => ElementFactory::class,
+                        Component\Form\Bootstrap\Element\Checkbox::class  => ElementFactory::class,
+                        Component\Form\Bootstrap\Element\Date::class      => ElementFactory::class,
+                        Component\Form\Bootstrap\Element\DateTime::class  => ElementFactory::class,
+                        Component\Form\Bootstrap\Element\File::class      => ElementFactory::class,
+                        Component\Form\Bootstrap\Element\Hidden::class    => ElementFactory::class,
+                        Component\Form\Bootstrap\Element\Password::class  => ElementFactory::class,
+                        Component\Form\Bootstrap\Element\Radio::class     => ElementFactory::class,
+                        Component\Form\Bootstrap\Element\Reset::class     => ElementFactory::class,
+                        Component\Form\Bootstrap\Element\Select::class    => ElementFactory::class,
+                        Component\Form\Bootstrap\Element\Submit::class    => ElementFactory::class,
+                        Component\Form\Bootstrap\Element\Text::class      => ElementFactory::class,
+                        Component\Form\Bootstrap\Element\Textarea::class  => ElementFactory::class,
+                        Component\Form\Bootstrap\Element\Typeahead::class => ElementFactory::class,
                     ),
                     'aliases' => array(
                         'collection' => Component\Form\Collection::class,
+                        'Collection' => Component\Form\Collection::class,
                         'fieldset'   => Component\Form\Fieldset::class,
+                        'Fieldset'   => Component\Form\Fieldset::class,
 
                         'button'    => Component\Form\Bootstrap\Element\Button::class,
+                        'Button'    => Component\Form\Bootstrap\Element\Button::class,
                         'checkbox'  => Component\Form\Bootstrap\Element\Checkbox::class,
+                        'Checkbox'  => Component\Form\Bootstrap\Element\Checkbox::class,
                         'date'      => Component\Form\Bootstrap\Element\Date::class,
+                        'Date'      => Component\Form\Bootstrap\Element\Date::class,
                         'datetime'  => Component\Form\Bootstrap\Element\DateTime::class,
+                        'dateTime'  => Component\Form\Bootstrap\Element\DateTime::class,
+                        'DateTime'  => Component\Form\Bootstrap\Element\DateTime::class,
                         'file'      => Component\Form\Bootstrap\Element\File::class,
+                        'File'      => Component\Form\Bootstrap\Element\File::class,
                         'hidden'    => Component\Form\Bootstrap\Element\Hidden::class,
+                        'Hidden'    => Component\Form\Bootstrap\Element\Hidden::class,
                         'password'  => Component\Form\Bootstrap\Element\Password::class,
+                        'Password'  => Component\Form\Bootstrap\Element\Password::class,
                         'radio'     => Component\Form\Bootstrap\Element\Radio::class,
+                        'Radio'     => Component\Form\Bootstrap\Element\Radio::class,
                         'reset'     => Component\Form\Bootstrap\Element\Reset::class,
+                        'Reset'     => Component\Form\Bootstrap\Element\Reset::class,
                         'select'    => Component\Form\Bootstrap\Element\Select::class,
+                        'Select'    => Component\Form\Bootstrap\Element\Select::class,
                         'submit'    => Component\Form\Bootstrap\Element\Submit::class,
+                        'Submit'    => Component\Form\Bootstrap\Element\Submit::class,
                         'text'      => Component\Form\Bootstrap\Element\Text::class,
+                        'Text'      => Component\Form\Bootstrap\Element\Text::class,
                         'textarea'  => Component\Form\Bootstrap\Element\Textarea::class,
-                        'typeahead' => Component\Form\Bootstrap\Element\TypeAhead::class,
+                        'Textarea'  => Component\Form\Bootstrap\Element\Textarea::class,
+                        'typeahead' => Component\Form\Bootstrap\Element\Typeahead::class,
+                        'Typeahead' => Component\Form\Bootstrap\Element\Typeahead::class,
                     ),
                 ),
                 'admin' => array(
                     'factories' => array(
-                        Component\Form\Collection::class => \Zend\Form\ElementFactory::class,
-                        Component\Form\Fieldset::class   => \Zend\Form\ElementFactory::class,
+                        Component\Form\Collection::class => ElementFactory::class,
+                        Component\Form\Fieldset::class   => ElementFactory::class,
 
-                        Component\Form\Admin\Element\Checkbox::class  => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\Csrf::class      => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\Date::class      => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\DateTime::class  => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\File::class      => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\Hidden::class    => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\Password::class  => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\Radio::class     => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\Reset::class     => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\Select::class    => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\Tabs::class      => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\Text::class      => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\Textarea::class  => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\Time::class      => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Element\TypeAhead::class => \Zend\Form\ElementFactory::class,
+                        Component\Form\Admin\Element\Checkbox::class  => ElementFactory::class,
+                        Component\Form\Admin\Element\Csrf::class      => ElementFactory::class,
+                        Component\Form\Admin\Element\Date::class      => ElementFactory::class,
+                        Component\Form\Admin\Element\DateTime::class  => ElementFactory::class,
+                        Component\Form\Admin\Element\File::class      => ElementFactory::class,
+                        Component\Form\Admin\Element\Hidden::class    => ElementFactory::class,
+                        Component\Form\Admin\Element\Password::class  => ElementFactory::class,
+                        Component\Form\Admin\Element\Radio::class     => ElementFactory::class,
+                        Component\Form\Admin\Element\Reset::class     => ElementFactory::class,
+                        Component\Form\Admin\Element\Select::class    => ElementFactory::class,
+                        Component\Form\Admin\Element\Tabs::class      => ElementFactory::class,
+                        Component\Form\Admin\Element\Text::class      => ElementFactory::class,
+                        Component\Form\Admin\Element\Textarea::class  => ElementFactory::class,
+                        Component\Form\Admin\Element\Time::class      => ElementFactory::class,
+                        Component\Form\Admin\Element\Typeahead::class => ElementFactory::class,
 
-                        Component\Form\Admin\Fieldset\Tabbable::class   => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Fieldset\TabContent::class => \Zend\Form\ElementFactory::class,
-                        Component\Form\Admin\Fieldset\TabPane::class    => \Zend\Form\ElementFactory::class,
+                        Component\Form\Admin\Fieldset\Tabbable::class   => ElementFactory::class,
+                        Component\Form\Admin\Fieldset\TabContent::class => ElementFactory::class,
+                        Component\Form\Admin\Fieldset\TabPane::class    => ElementFactory::class,
                     ),
                     'aliases' => array(
                         'collection' => Component\Form\Collection::class,
+                        'Collection' => Component\Form\Collection::class,
                         'fieldset'   => Component\Form\Fieldset::class,
+                        'Fieldset'   => Component\Form\Fieldset::class,
 
                         'checkbox'  => Component\Form\Admin\Element\Checkbox::class,
+                        'Checkbox'  => Component\Form\Admin\Element\Checkbox::class,
                         'csrf'      => Component\Form\Admin\Element\Csrf::class,
+                        'Csrf'      => Component\Form\Admin\Element\Csrf::class,
                         'date'      => Component\Form\Admin\Element\Date::class,
+                        'Date'      => Component\Form\Admin\Element\Date::class,
                         'datetime'  => Component\Form\Admin\Element\DateTime::class,
+                        'dateTime'  => Component\Form\Admin\Element\DateTime::class,
+                        'DateTime'  => Component\Form\Admin\Element\DateTime::class,
                         'file'      => Component\Form\Admin\Element\File::class,
+                        'File'      => Component\Form\Admin\Element\File::class,
                         'hidden'    => Component\Form\Admin\Element\Hidden::class,
+                        'Hidden'    => Component\Form\Admin\Element\Hidden::class,
                         'password'  => Component\Form\Admin\Element\Password::class,
+                        'Password'  => Component\Form\Admin\Element\Password::class,
                         'radio'     => Component\Form\Admin\Element\Radio::class,
+                        'Radio'     => Component\Form\Admin\Element\Radio::class,
                         'select'    => Component\Form\Admin\Element\Select::class,
+                        'Select'    => Component\Form\Admin\Element\Select::class,
                         'tabs'      => Component\Form\Admin\Element\Tabs::class,
+                        'Tabs'      => Component\Form\Admin\Element\Tabs::class,
                         'text'      => Component\Form\Admin\Element\Text::class,
+                        'Text'      => Component\Form\Admin\Element\Text::class,
                         'textarea'  => Component\Form\Admin\Element\Textarea::class,
+                        'Textarea'  => Component\Form\Admin\Element\Textarea::class,
                         'time'      => Component\Form\Admin\Element\Time::class,
-                        'typeahead' => Component\Form\Admin\Element\TypeAhead::class,
+                        'Time'      => Component\Form\Admin\Element\Time::class,
+                        'typeahead' => Component\Form\Admin\Element\Typeahead::class,
+                        'Typeahead' => Component\Form\Admin\Element\Typeahead::class,
 
-                        'tabpane'    => Component\Form\Admin\Fieldset\Tabbable::class,
+                        'tabbable'   => Component\Form\Admin\Fieldset\Tabbable::class,
+                        'Tabbable'   => Component\Form\Admin\Fieldset\Tabbable::class,
                         'tabcontent' => Component\Form\Admin\Fieldset\TabContent::class,
+                        'tabContent' => Component\Form\Admin\Fieldset\TabContent::class,
+                        'TabContent' => Component\Form\Admin\Fieldset\TabContent::class,
                         'tabpane'    => Component\Form\Admin\Fieldset\TabPane::class,
+                        'tabPane'    => Component\Form\Admin\Fieldset\TabPane::class,
+                        'TabPane'    => Component\Form\Admin\Fieldset\TabPane::class,
                     ),
                 ),
-            ),
-        ),
-        'filters' => array(
-            'invokables' => array(
-                'stripcarriagereturn' => 'CommonBundle\Component\Filter\StripCarriageReturn',
-            ),
-        ),
-        'validators' => array(
-            'abstract_factories' => array(
-                Component\Validator\Service\AbstractValidatorFactory::class
-            ),
-            'aliases' => array(
-                'person_barcode'    => Component\Validator\Person\Barcode::class,
-                'typeahead_person'  => Component\Validator\Typeahead\Person::class,
-                'date_compare'      => Component\Validator\DateCompare::class,
-                'decimal'           => Component\Validator\Decimal::class,
-                'field_length'      => Component\Validator\FieldLength::class,
-                'field_line_length' => Component\Validator\FieldLineLength::class,
-                'not_zero'          => Component\Validator\NotZero::class,
-                'phone_number'      => Component\Validator\PhoneNumber::class,
-                'positive_number'   => Component\Validator\PositiveNumber::class,
-                'price'             => Component\Validator\Price::class,
-                'role'              => Component\Validator\Role::class,
-                'username'          => Component\Validator\Username::class,
-                'year'              => Component\Validator\Year::class,
             ),
         ),
     )

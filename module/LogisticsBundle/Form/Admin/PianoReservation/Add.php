@@ -50,7 +50,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'options'  => array(
                 'input' => array(
                     'validators' => array(
-                        array('name' => 'typeahead_person'),
+                        array('name' => 'TypeaheadPerson'),
                     ),
                 ),
             ),
@@ -71,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'date',
+                            'name'    => 'Date',
                             'options' => array(
                                 'format' => 'd/m/Y H:i',
                             ),
@@ -96,20 +96,20 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'date',
+                            'name'    => 'Date',
                             'options' => array(
                                 'format' => 'd/m/Y H:i',
                             ),
                         ),
                         array(
-                            'name'    => 'date_compare',
+                            'name'    => 'DateCompare',
                             'options' => array(
                                 'first_date' => 'start_date',
                                 'format'     => 'd/m/Y H:i',
                             ),
                         ),
                         array(
-                            'name'    => 'logistics_piano_reservation_conflict',
+                            'name'    => 'PianoReservationConflict',
                             'options' => array(
                                 'start_date'     => 'start_date',
                                 'format'         => 'd/m/Y H:i',
@@ -118,7 +118,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             ),
                         ),
                         array(
-                            'name'    => 'logistics_piano_duration',
+                            'name'    => 'PianoDuration',
                             'options' => array(
                                 'start_date' => 'start_date',
                                 'format'     => 'd/m/Y H:i',

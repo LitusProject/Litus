@@ -50,7 +50,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'gallery_album_name',
+                            'name'    => 'AlbumName',
                             'options' => array(
                                 'album' => $this->album,
                             ),

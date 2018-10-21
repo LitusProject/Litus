@@ -32,10 +32,18 @@ return Config::create(
     array(
         'validators' => array(
             'aliases' => array(
-                'contract_bullet'   => Component\Validator\Contract\Bullet::class,
-                'company_logo_type' => Component\Validator\Logo\Type::class,
-                'company_name'      => Component\Validator\CompanyName::class,
-                'product_name'      => Component\Validator\ProductName::class,
+                'contractbullet' => Component\Validator\ContractBullet::class,
+                'contractBullet' => Component\Validator\ContractBullet::class,
+                'ContractBullet' => Component\Validator\ContractBullet::class,
+                'logotype'       => Component\Validator\LogoType::class,
+                'logoType'       => Component\Validator\LogoType::class,
+                'LogoType'       => Component\Validator\LogoType::class,
+                'companyname'    => Component\Validator\CompanyName::class,
+                'companyName'    => Component\Validator\CompanyName::class,
+                'CompanyName'    => Component\Validator\CompanyName::class,
+                'productname'    => Component\Validator\ProductName::class,
+                'productName'    => Component\Validator\ProductName::class,
+                'ProductName'    => Component\Validator\ProductName::class,
             ),
         ),
     )

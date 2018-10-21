@@ -70,7 +70,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'validators' => array(
                         array('name' => 'int'),
                         array(
-                            'name'    => 'syllabus_study_external_id',
+                            'name'    => 'StudyExternalId',
                             'options' => array(
                                 'exclude' => $this->study,
                             ),

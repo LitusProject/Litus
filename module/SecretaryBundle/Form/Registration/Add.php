@@ -162,7 +162,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array('name' => 'phone_number'),
+                                array('name' => 'PhoneNumber'),
                             ),
                         ),
                     ),
@@ -200,7 +200,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                         array('name' => 'StringTrim'),
                                     ),
                                     'validators' => array(
-                                        array('name' => 'secretary_no_at'),
+                                        array('name' => 'NoAt'),
                                     ),
                                 ),
                             ),
@@ -218,9 +218,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-                                array(
-                                    'name' => 'EmailAddress',
-                                ),
+                                array('name' => 'EmailAddress'),
                             ),
                         ),
                     ),

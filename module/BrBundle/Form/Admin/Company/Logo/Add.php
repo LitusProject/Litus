@@ -32,7 +32,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 {
     protected $hydrator = 'BrBundle\Hydrator\Company\Logo';
 
-    const FILESIZE = '10MB';
+    const FILE_SIZE = '10MB';
 
     /**
      * @var Company The company to add the logo
@@ -49,18 +49,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Logo',
             'required'   => true,
             'attributes' => array(
-                'data-help' => 'The logo must be an image of max ' . self::FILESIZE . '.',
+                'data-help' => 'The logo must be an image with a file size limit of ' . self::FILE_SIZE . '.',
             ),
             'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'fileisimage',
+                            'name' => 'FileIsImage',
                         ),
                         array(
-                            'name'    => 'filesize',
+                            'name'    => 'FileSize',
                             'options' => array(
-                                'max' => self::FILESIZE,
+                                'max' => self::FILE_SIZE,
                             ),
                         ),
                     ),
@@ -79,9 +79,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'uri',
-                        ),
+                        array('name' => 'Uri'),
                     ),
                 ),
             ),
@@ -104,7 +102,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'company_logo_type',
+                            'name'    => 'LogoType',
                             'options' => array(
                                 'company' => $this->company,
                             ),

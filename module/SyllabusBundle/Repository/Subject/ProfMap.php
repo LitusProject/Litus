@@ -122,7 +122,7 @@ class ProfMap extends EntityRepository
         return $resultSet;
     }
 
-    public function findAllByNameAndProfAndAcademicYearTypeAheadQuery($name, Academic $prof, AcademicYear $academicYear)
+    public function findAllByNameAndProfAndAcademicYearTypeaheadQuery($name, Academic $prof, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('m')

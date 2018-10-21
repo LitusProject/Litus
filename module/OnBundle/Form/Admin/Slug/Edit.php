@@ -35,7 +35,7 @@ class Edit extends Add
         $nameField = $this->get('name');
         $nameField->setRequired();
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'slug_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'slug_edit');
     }
 }

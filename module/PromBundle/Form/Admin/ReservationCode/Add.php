@@ -42,7 +42,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array('name' => 'int'),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),

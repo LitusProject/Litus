@@ -88,7 +88,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     {
         return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Language')
-            ->findOneByAbbrev($this->getSessionStorage()->language);
+            ->findOneByAbbrev($this->getSessionContainer()->language);
     }
 
     /**

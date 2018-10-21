@@ -46,22 +46,22 @@ class ManualEdit extends ManualAdd
             'label'      => 'Change File',
             'required'   => false,
             'attributes' => array(
-                'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILESIZE . '.',
+                'data-help' => 'The file can be of any type and has a filesize limit of ' . self::FILE_SIZE . '.',
                 'size'      => 256,
             ),
             'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'filesize',
+                            'name'    => 'FileExtension',
                             'options' => array(
-                                'max' => self::FILESIZE,
+                                'extension' => 'pdf',
                             ),
                         ),
                         array(
-                            'name'    => 'fileextension',
+                            'name'    => 'FileSize',
                             'options' => array(
-                                'extension' => 'pdf',
+                                'max' => self::FILE_SIZE,
                             ),
                         ),
                     ),
@@ -69,9 +69,8 @@ class ManualEdit extends ManualAdd
             ),
         ));
 
-        $this->remove('submit');
-
-        $this->addSubmit('Save', 'invoice_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'invoice_edit');
 
         if (null !== $this->invoice) {
             $this->bind($this->invoice);

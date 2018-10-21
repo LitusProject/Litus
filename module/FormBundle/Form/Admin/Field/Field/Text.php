@@ -43,7 +43,7 @@ class Text extends \CommonBundle\Component\Form\Fieldset
         $this->add(array(
             'type'       => 'text',
             'name'       => 'charsperline',
-            'label'      => 'Max. characters per line (or Infinite)',
+            'label'      => 'Maximum Characters per Line (or Infinite)',
             'attributes' => array(
                 'data-help' => 'The maximum numbers of characters on one line. Zero is infinite.',
             ),
@@ -56,7 +56,7 @@ class Text extends \CommonBundle\Component\Form\Fieldset
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'notempty',
+                            'name'    => 'NotEmpty',
                             'options' => array(
                                 'null',
                             ),
@@ -69,7 +69,7 @@ class Text extends \CommonBundle\Component\Form\Fieldset
         $this->add(array(
             'type'       => 'text',
             'name'       => 'lines',
-            'label'      => 'Max. number of lines (Multiline fields only)',
+            'label'      => 'Maximum Number of Lines (Multiline Fields Only)',
             'attributes' => array(
                 'data-help' => 'The maximum numbers of lines. Zero is infinite.',
             ),
@@ -79,9 +79,7 @@ class Text extends \CommonBundle\Component\Form\Fieldset
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'digits',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),
@@ -94,7 +92,7 @@ class Text extends \CommonBundle\Component\Form\Fieldset
 
         if ($this->get('charsperline')->getValue() != '') {
             $specs['charsperline']['validators'][] = array(
-                'name' => 'digits',
+                'name' => 'Int',
             );
         }
 
@@ -102,7 +100,7 @@ class Text extends \CommonBundle\Component\Form\Fieldset
         $lineValue = $this->get('lines')->getValue();
 
         $specs['charsperline']['validators'][] = array(
-            'name'    => 'form_text_field',
+            'name'    => 'TextField',
             'options' => array(
                 'multiline' => !empty($multilineValue) ? $this->get('multiline')->getValue() : false,
                 'lines'     => !empty($lineValue) ? $this->get('lines')->getValue() : null,

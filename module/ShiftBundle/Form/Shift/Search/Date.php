@@ -56,7 +56,7 @@ class Date extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'date',
+                            'name'    => 'Date',
                             'options' => array(
                                 'format' => 'd/m/Y',
                             ),

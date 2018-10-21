@@ -65,7 +65,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name'    => 'date_compare',
+                            'name'    => 'DateCompare',
                             'options' => array(
                                 'first_date' => 'start_date',
                                 'format'     => 'd/m/Y H:i',
@@ -85,7 +85,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->add(array(
             'type'       => 'text',
             'name'       => 'max',
-            'label'      => 'Total Max Entries',
+            'label'      => 'Total Maximum Entries',
             'attributes' => array(
                 'class'     => 'form_element',
                 'data-help' => 'The maximum number of form submittions possible.',
@@ -96,9 +96,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'digits',
-                        ),
+                        array('name' => 'Int'),
                     ),
                 ),
             ),

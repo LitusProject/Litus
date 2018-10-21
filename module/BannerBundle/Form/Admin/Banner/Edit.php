@@ -32,7 +32,7 @@ class Edit extends Add
     {
         parent::init(false);
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'banner_edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'banner_edit');
     }
 }

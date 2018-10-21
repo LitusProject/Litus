@@ -34,9 +34,9 @@ trait SessionStorageTrait
     /**
      * @return Container
      */
-    public function getSessionStorage()
+    public function getSessionContainer()
     {
-        return $this->getServiceLocator()->get('common_sessionstorage');
+        return $this->getServiceLocator()->get('session_container');
     }
 
     /**

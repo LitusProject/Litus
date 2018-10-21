@@ -52,7 +52,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name'    => 'on_slug_name',
+                            'name'    => 'SlugName',
                             'options' => array(
                                 'slug' => $this->slug,
                             ),
@@ -73,9 +73,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array('name' => 'StringTrim'),
                     ),
                     'validators' => array(
-                        array(
-                            'name' => 'uri',
-                        ),
+                        array('name' => 'Uri'),
                     ),
                 ),
             ),

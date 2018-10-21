@@ -39,7 +39,7 @@ class Activity extends \CommonBundle\Component\Validator\AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::NOT_VALID => 'The activity has already a ticket system',
+        self::NOT_VALID => 'The activity already has a ticket system',
     );
 
     /**

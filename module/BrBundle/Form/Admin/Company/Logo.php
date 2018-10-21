@@ -27,7 +27,7 @@ namespace BrBundle\Form\Admin\Company;
  */
 class Logo extends \CommonBundle\Component\Form\Admin\Form
 {
-    const FILESIZE = '2MB';
+    const FILE_SIZE = '2MB';
 
     public function init()
     {
@@ -39,18 +39,18 @@ class Logo extends \CommonBundle\Component\Form\Admin\Form
             'label'      => 'Logo',
             'required'   => true,
             'attributes' => array(
-                'data-help' => 'The logo must be an image of max ' . self::FILESIZE . '.',
+                'data-help' => 'The logo must be an image with a file size limit of ' . self::FILE_SIZE . '.',
             ),
             'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'fileisimage',
+                            'name' => 'FileIsImage',
                         ),
                         array(
-                            'name'    => 'filesize',
+                            'name'    => 'FileSize',
                             'options' => array(
-                                'max' => self::FILESIZE,
+                                'max' => self::FILE_SIZE,
                             ),
                         ),
                     ),

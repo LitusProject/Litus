@@ -20,8 +20,7 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use LogicException,
-    TicketBundle\Entity\Event;
+use TicketBundle\Entity\Event;
 
 /**
  * Edit Event
@@ -37,10 +36,6 @@ class Edit extends Add
 
     public function init()
     {
-        if (null === $this->event) {
-            throw new LogicException('No event given to edit');
-        }
-
         parent::init();
 
         $events = $this->createEventsArray();
@@ -52,8 +47,8 @@ class Edit extends Add
                 ->setAttribute('disabled', true);
         }
 
-        $this->remove('submit');
-        $this->addSubmit('Save', 'edit');
+        $this->remove('submit')
+            ->addSubmit('Save', 'edit');
 
         $this->bind($this->event);
     }
@@ -66,7 +61,7 @@ class Edit extends Add
             if (isset($spec['name']) && $spec['name'] == 'event') {
                 $specs[$key]['validators'] = array(
                     array(
-                        'name'    => 'ticket_activtiy',
+                        'name'    => 'Activity',
                         'options' => array(
                             'exclude' => $this->event,
                         ),
