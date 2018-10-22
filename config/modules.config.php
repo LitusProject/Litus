@@ -35,7 +35,6 @@ return array(
     'DoctrineModule',
     'DoctrineORMModule',
     'DoctrineMongoODMModule',
-    'EdpMarkdown',
     'ZendDeveloperTools',
     'ZendTwig',
 
