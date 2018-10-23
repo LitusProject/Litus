@@ -50,15 +50,15 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         ));
 
         $this->add(array(
-            'type'     => 'file',
-            'name'     => 'file',
-            'label'    => 'File',
-            'required' => true,
+            'type'       => 'file',
+            'name'       => 'file',
+            'label'      => 'File',
+            'required'   => true,
             'attributes' => array(
                 'data-help' => 'The file can be of any type and has a file size limit of ' . self::FILE_SIZE . '.',
                 'size'      => 256,
             ),
-            'options'  => array(
+            'options' => array(
                 'input' => array(
                     'validators' => array(
                         array(

@@ -185,7 +185,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
 
         $servername_parts = explode('.', $this->request->getServer()->get('SERVER_NAME'));
         $domain_parts = array_slice($servername_parts, -2);
-        $domain = $domain_parts[0].".".$domain_parts[1];
+        $domain = $domain_parts[0] . "." . $domain_parts[1];
 
         $this->response->getHeaders()->addHeader(
             (new SetCookie())

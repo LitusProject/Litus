@@ -251,7 +251,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
         return $this->getServiceLocator()->build(
             Factory::class,
             array(
-                'isAdmin' => true
+                'isAdmin' => true,
             )
         );
     }

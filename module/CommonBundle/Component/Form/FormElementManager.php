@@ -21,8 +21,8 @@
 namespace CommonBundle\Component\Form;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    Interop\Container\ContainerInterface,
     CommonBundle\Component\Util\StringUtil,
+    Interop\Container\ContainerInterface,
     RuntimeException,
     Zend\Form\FormFactoryAwareInterface,
     Zend\Hydrator\ClassMethods as ClassMethodsHydrator;

@@ -53,8 +53,8 @@ class Client
     /**
      * Constructs a new Sentry client.
      *
-     * @param Raven_Client          $ravenClient    The Raven client connecting to the Sentry server
-     * @param Authentication|null   $authentication The authentication instance
+     * @param Raven_Client        $ravenClient    The Raven client connecting to the Sentry server
+     * @param Authentication|null $authentication The authentication instance
      */
     public function __construct(Raven_Client $ravenClient, Authentication $authentication = null)
     {
@@ -73,7 +73,7 @@ class Client
         $this->ravenClient->captureException(
             $exception,
             array(
-                'user'  => $this->getUser(),
+                'user' => $this->getUser(),
             )
         );
     }

@@ -23,12 +23,12 @@ namespace CommonBundle\Component\Controller\Plugin\Service;
 use CommonBundle\Component\Controller\Plugin\Paginator,
     CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     Interop\Container\ContainerInterface,
-    Zend\ServiceManager\FactoryInterface,
+    Zend\ServiceManager\Factory\FactoryInterface,
     Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to instantiate a paginator.
- * 
+ *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
 class PaginatorFactory implements FactoryInterface

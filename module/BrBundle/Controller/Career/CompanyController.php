@@ -20,7 +20,6 @@
 
 namespace BrBundle\Controller\Career;
 
-
 use BrBundle\Entity\Company,
     BrBundle\Entity\Company\Page,
     DateTime,

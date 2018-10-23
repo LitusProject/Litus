@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Component\Validator\Service;
 
-use CommonBundle\Component\Validator\AbstractValidator,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
+    CommonBundle\Component\Validator\AbstractValidator,
     Interop\Container\ContainerInterface,
     Zend\ServiceManager\Factory\AbstractFactoryInterface,
     Zend\Validator\AbstractValidator as ZendAbstractValidator;

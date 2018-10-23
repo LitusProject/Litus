@@ -20,9 +20,9 @@
 
 namespace CommonBundle;
 
-use CommonBundle\Component\Authentication\Authentication,
-    CommonBundle\Component\Authentication\Action\Doctrine as DoctrineAction,
+use CommonBundle\Component\Authentication\Action\Doctrine as DoctrineAction,
     CommonBundle\Component\Authentication\Adapter\Doctrine\Credential as DoctrineCredentialAdapter,
+    CommonBundle\Component\Authentication\Authentication,
     CommonBundle\Component\Authentication\Service\Doctrine as DoctrineService,
     CommonBundle\Component\Controller\Plugin\Service\PaginatorFactory as PaginatorPluginFactory,
     CommonBundle\Component\Form\Factory as FormFactory,
@@ -106,7 +106,7 @@ return Config::create(
                     );
                 },
 
-                HydratorPluginManager::class => function($serviceManager) {
+                HydratorPluginManager::class => function ($serviceManager) {
                     return new HydratorPluginManager($serviceManager);
                 },
 
@@ -115,7 +115,7 @@ return Config::create(
                 Sendmail::class           => InvokableFactory::class,
             ),
             'abstract_factories' => array(
-                AbstractInstallerFactory::class
+                AbstractInstallerFactory::class,
             ),
             'aliases' => array(
                 'authentication'                    => Authentication::class,
@@ -126,7 +126,7 @@ return Config::create(
                 'hydrator_plugin_manager' => HydratorPluginManager::class,
                 'mail_transport'          => Sendmail::class,
                 'session_container'       => SessionContainer::class,
-                'translator'              => MvcTranslator::class
+                'translator'              => MvcTranslator::class,
             ),
         ),
 
@@ -171,7 +171,7 @@ return Config::create(
         ),
         'validators' => array(
             'abstract_factories' => array(
-                AbstractValidatorFactory::class
+                AbstractValidatorFactory::class,
             ),
             'aliases' => array(
                 'datecompare'     => Component\Validator\DateCompare::class,

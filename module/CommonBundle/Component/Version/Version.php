@@ -42,5 +42,5 @@ class Version
         }
 
         return $commitHash;
-    } 
+    }
 }

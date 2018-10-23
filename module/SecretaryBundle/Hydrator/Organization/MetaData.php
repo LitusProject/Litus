@@ -21,6 +21,7 @@
 namespace SecretaryBundle\Hydrator\Organization;
 
 use CommonBundle\Entity\User\Status\University as UniversityStatus,
+    RuntimeException,
     SecretaryBundle\Entity\Organization\MetaData as MetaDataEntity;
 
 class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
@@ -62,7 +63,7 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 
         if (null === $object) {
             if (!isset($data['academic'])) {
-                throw new LogicException('Cannot create a MetaData without Academic.');
+                throw new RuntimeException('Cannot create metadata without an academic');
             }
 
             $academic = $data['academic'];

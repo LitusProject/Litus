@@ -20,7 +20,6 @@
 
 namespace BrBundle\Repository;
 
-
 use BrBundle\Entity\Collaborator as CollaboratorEntity,
     BrBundle\Entity\Company as CompanyEntity,
     CommonBundle\Component\Doctrine\ORM\EntityRepository,

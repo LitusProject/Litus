@@ -20,7 +20,6 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-
 use CommonBundle\Component\Acl\Driver\Exception\RuntimeException,
     CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
     CommonBundle\Component\Util\File\TmpFile,

@@ -41,7 +41,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
 class Paginator extends \Zend\Mvc\Controller\Plugin\AbstractPlugin implements ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
-    
+
     use DoctrineTrait;
 
     /**

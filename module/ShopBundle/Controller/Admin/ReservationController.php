@@ -52,7 +52,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
-                'totals'   => $result,
+                'totals'            => $result,
                 'salesSession'      => $salesSession,
             )
         );

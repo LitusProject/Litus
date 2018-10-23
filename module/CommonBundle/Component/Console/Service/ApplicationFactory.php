@@ -28,7 +28,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     Symfony\Component\Console\ConsoleEvents,
     Symfony\Component\Console\Event\ConsoleErrorEvent,
     Symfony\Component\EventDispatcher\EventDispatcher,
-    Zend\ServiceManager\FactoryInterface,
+    Zend\ServiceManager\Factory\FactoryInterface,
     Zend\ServiceManager\ServiceLocatorInterface;
 
 /**

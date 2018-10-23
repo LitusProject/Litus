@@ -20,9 +20,9 @@
 
 namespace QuizBundle\Form\Admin\Team;
 
-use RuntimeException,
-    QuizBundle\Entity\Quiz,
-    QuizBundle\Entity\Team;
+use QuizBundle\Entity\Quiz,
+    QuizBundle\Entity\Team,
+    RuntimeException;
 
 /**
  * Add a new team

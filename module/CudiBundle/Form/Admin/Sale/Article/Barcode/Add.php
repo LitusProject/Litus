@@ -46,7 +46,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     ),
                     'validators' => array(
                         array(
-                            'name' => 'SaleArticleBarcodeUnique'
+                            'name' => 'SaleArticleBarcodeUnique',
                         ),
                         array(
                             'name'    => 'Barcode',

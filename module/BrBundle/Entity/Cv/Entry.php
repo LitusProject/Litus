@@ -776,19 +776,22 @@ class Entry
         $sorted = count($experiences) == 0;
 
         while (!$sorted) {
-            $indexSmalest = 0;
-            for ($i = 0; $i < count($experiences); $i++) {
-                if ($experiences[$i]->getEndYear() == $experiences[$indexSmalest]->getEndYear()) {
-                    if ($experiences[$i]->getStartYear() > $experiences[$indexSmalest]->getStartYear()) {
-                        $indexSmalest = $i;
-                    } elseif ($experiences[$i]->getEndYear() >= $experiences[$indexSmalest]->getEndYear()) {
-                        $indexSmalest = $i;
+            $nbExperiences = count($experiences);
+
+            $indexSmallest = 0;
+            for ($i = 0; $i < $nbExperiences; $i++) {
+                if ($experiences[$i]->getEndYear() == $experiences[$indexSmallest]->getEndYear()) {
+                    if ($experiences[$i]->getStartYear() > $experiences[$indexSmallest]->getStartYear()) {
+                        $indexSmallest = $i;
+                    } elseif ($experiences[$i]->getEndYear() >= $experiences[$indexSmallest]->getEndYear()) {
+                        $indexSmallest = $i;
                     }
                 }
             }
-            $result[] = $experiences[$indexSmalest];
-            unset($experiences[$indexSmalest]);
-            $experiences = array_values($experiences);
+
+            $result[] = $experiences[$indexSmallest];
+            array_splice($experiences, $indexSmallest, 1);
+
             $sorted = count($experiences) == 0;
         }
 

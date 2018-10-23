@@ -112,7 +112,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'input' => array(
                     'validators' => array(
                         array(
-                            'name' => 'FileIsImage'
+                            'name' => 'FileIsImage',
                         ),
                         array(
                             'name'    => 'FileSize',

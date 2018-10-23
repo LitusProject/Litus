@@ -41,7 +41,7 @@ trait FormFactoryTrait
         return $this->getServiceLocator()->build(
             Factory::class,
             array(
-                'isAdmin' => false
+                'isAdmin' => false,
             )
         );
     }

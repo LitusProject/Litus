@@ -28,11 +28,11 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
     RuntimeException,
     Zend\Form\FieldsetInterface as ZendFieldsetInterface,
     Zend\Form\FormInterface,
+    Zend\Hydrator\ClassMethods as ClassMethodsHydrator,
     Zend\InputFilter\InputFilterAwareInterface,
     Zend\InputFilter\InputFilterInterface,
     Zend\InputFilter\InputInterface,
-    Zend\InputFilter\InputProviderInterface,
-    Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
+    Zend\InputFilter\InputProviderInterface;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want

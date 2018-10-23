@@ -80,7 +80,7 @@ EOT
         if ($this->hasSentry()) {
             $this->logMessage($str);
         }
-        
+
         return parent::write($str, $raw);
     }
 
@@ -94,7 +94,7 @@ EOT
         if ($this->hasSentry()) {
             $this->logMessage($str);
         }
-        
+
         return parent::writeln($str, $raw);
     }
 
