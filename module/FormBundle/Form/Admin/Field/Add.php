@@ -324,7 +324,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             $fileForm = $this->get('file_form');
             $fileForm->setRequired();
         } elseif ($type == 'timeslot') {
-            /** @var \FormBundle\Form\Admin\Field\Field\TimeSlot $timeslotForm */
+            /** @var \FormBundle\Form\Admin\Field\Field\TimeSlot $timeSlotForm */
             $timeSlotForm = $this->get('timeslot_form');
             $timeSlotForm->setRequired();
         }

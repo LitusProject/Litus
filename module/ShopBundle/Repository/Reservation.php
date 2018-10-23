@@ -20,7 +20,6 @@
 
 namespace ShopBundle\Repository;
 
-
 use CommonBundle\Component\Doctrine\ORM\EntityRepository,
     DateTime,
     Doctrine\ORM\Query\ResultSetMapping;

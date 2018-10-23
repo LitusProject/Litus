@@ -38,7 +38,9 @@ class AddWithSubject extends Add
     {
         parent::init();
 
+        /** @var \CommonBundle\Component\Form\Fieldset $subjectFieldset */
         $subjectFieldset = $this->get('subject');
+        /** @var \CommonBundle\Component\Form\Bootstrap\Element\TypeAhead $subjectField */
         $subjectField = $subjectFieldset->get('subject');
 
         $subjectField->get('id')
