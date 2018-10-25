@@ -20,13 +20,13 @@
 
 namespace BrBundle\Entity\User\Person;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\User\Status\Corporate as CorporateStatus,
-    CommonBundle\Component\Util\AcademicYear,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException,
-    RuntimeException;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\User\Status\Corporate as CorporateStatus;
+use CommonBundle\Component\Util\AcademicYear;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * This is a person that represents a contact in a company.

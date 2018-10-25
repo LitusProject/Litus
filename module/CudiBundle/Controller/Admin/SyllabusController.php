@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Entity\General\AcademicYear,
-    Cudibundle\Entity\Article,
-    SyllabusBundle\Entity\Study,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\General\AcademicYear;
+use Cudibundle\Entity\Article;
+use SyllabusBundle\Entity\Study;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * SyllabusController

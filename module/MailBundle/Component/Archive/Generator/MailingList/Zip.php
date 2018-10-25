@@ -20,10 +20,10 @@
 
 namespace MailBundle\Component\Archive\Generator\MailingList;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    ZipArchive;
+use CommonBundle\Component\Util\File\TmpFile;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use ZipArchive;
 
 /**
  * A class that can be used to generate a ZIP from a given array of

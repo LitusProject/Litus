@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Sale\Article as SaleArticle,
-    CudiBundle\Entity\Sale\SaleItem\External as ExternalItem,
-    CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem,
-    CudiBundle\Entity\Sale\Session,
-    CudiBundle\Entity\Supplier,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Sale\SaleItem\External as ExternalItem;
+use CudiBundle\Entity\Sale\SaleItem\Prof as ProfItem;
+use CudiBundle\Entity\Sale\Session;
+use CudiBundle\Entity\Supplier;
+use Zend\View\Model\ViewModel;
 
 /**
  * SoldController

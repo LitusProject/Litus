@@ -20,8 +20,8 @@
 
 namespace NotificationBundle\Repository\Node;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    DateTime;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use DateTime;
 
 /**
  * Notification

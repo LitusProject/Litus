@@ -20,9 +20,9 @@
 
 namespace PublicationBundle\Controller\Archive;
 
-use CommonBundle\Entity\General\AcademicYear,
-    PublicationBundle\Entity\Publication,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use PublicationBundle\Entity\Publication;
+use Zend\View\Model\ViewModel;
 
 /**
  * IndexController

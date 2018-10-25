@@ -20,18 +20,18 @@
 
 namespace CommonBundle\Component\Controller\Plugin;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
-    DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter,
-    Doctrine\ORM\Query,
-    Doctrine\ORM\QueryBuilder,
-    Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator,
-    Zend\Http\Request as HttpRequest,
-    Zend\Mvc\Controller\AbstractController,
-    Zend\Mvc\Exception,
-    Zend\Paginator\Adapter\ArrayAdapter,
-    Zend\Paginator\Paginator as ZendPaginator;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrinePaginatorAdapter;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
+use Zend\Http\Request as HttpRequest;
+use Zend\Mvc\Controller\AbstractController;
+use Zend\Mvc\Exception;
+use Zend\Paginator\Adapter\ArrayAdapter;
+use Zend\Paginator\Paginator as ZendPaginator;
 
 /**
  * A controller plugin containing some utility methods for pagination.

@@ -20,15 +20,15 @@
 
 namespace SecretaryBundle\Controller;
 
-use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-    CommonBundle\Component\Authentication\Authentication,
-    CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    SecretaryBundle\Entity\Organization\MetaData,
-    SecretaryBundle\Entity\Registration,
-    Zend\Mvc\MvcEvent,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
+use CommonBundle\Component\Authentication\Authentication;
+use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
+use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use SecretaryBundle\Entity\Organization\MetaData;
+use SecretaryBundle\Entity\Registration;
+use Zend\Mvc\MvcEvent;
+use Zend\View\Model\ViewModel;
 
 /**
  * RegistrationController

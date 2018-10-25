@@ -20,11 +20,11 @@
 
 namespace BrBundle\Component\Controller;
 
-use BrBundle\Entity\User\Person\Corporate,
-    CommonBundle\Component\Controller\Exception\HasNoAccessException,
-    CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Form\Auth\Login as LoginForm,
-    Zend\Mvc\MvcEvent;
+use BrBundle\Entity\User\Person\Corporate;
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Form\Auth\Login as LoginForm;
+use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.

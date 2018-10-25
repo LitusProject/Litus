@@ -20,12 +20,12 @@
 
 namespace CommonBundle\Component\View\Helper;
 
-use DateTime,
-    IntlDateFormatter,
-    Zend\I18n\Translator\Translator,
-    Zend\I18n\Translator\TranslatorAwareInterface,
-    Zend\I18n\Translator\TranslatorInterface,
-    Zend\Mvc\I18n\Translator as MvcTranslator;
+use DateTime;
+use IntlDateFormatter;
+use Zend\I18n\Translator\Translator;
+use Zend\I18n\Translator\TranslatorAwareInterface;
+use Zend\I18n\Translator\TranslatorInterface;
+use Zend\Mvc\I18n\Translator as MvcTranslator;
 
 /**
  * A view helper that allows us to easily translate the date.

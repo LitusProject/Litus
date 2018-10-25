@@ -20,9 +20,9 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use CommonBundle\Entity\User\Barcode as BarcodeEntity,
-    CommonBundle\Entity\User\Person,
-    LogicException;
+use CommonBundle\Entity\User\Barcode as BarcodeEntity;
+use CommonBundle\Entity\User\Person;
+use LogicException;
 
 /**
  * Academic Barcode form

@@ -20,8 +20,8 @@
 
 namespace LogisticsBundle\Repository\Lease;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    LogisticsBundle\Entity\Lease\Item as ItemEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use LogisticsBundle\Entity\Lease\Item as ItemEntity;
 
 /**
  * Lease

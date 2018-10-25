@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Component\Controller\ActionController;
 
-use PageBundle\Entity\Node\Page,
-    Zend\Http\Request as HttpRequest,
-    Zend\Mvc\MvcEvent;
+use PageBundle\Entity\Node\Page;
+use Zend\Http\Request as HttpRequest;
+use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.

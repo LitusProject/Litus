@@ -20,12 +20,12 @@
 
 namespace TicketBundle\Entity;
 
-use CalendarBundle\Entity\Node\Event as CalendarEvent,
-    DateInterval,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CalendarBundle\Entity\Node\Event as CalendarEvent;
+use DateInterval;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Event")

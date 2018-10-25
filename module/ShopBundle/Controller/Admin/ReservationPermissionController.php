@@ -20,8 +20,8 @@
 
 namespace ShopBundle\Controller\Admin;
 
-use ShopBundle\Entity\ReservationPermission,
-    Zend\View\Model\ViewModel;
+use ShopBundle\Entity\ReservationPermission;
+use Zend\View\Model\ViewModel;
 
 /**
  * ReservationPermissionController

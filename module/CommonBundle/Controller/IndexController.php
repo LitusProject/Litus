@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Entity\User\Person\Academic as Academic,
-    DateInterval,
-    DateTime,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic as Academic;
+use DateInterval;
+use DateTime;
+use Zend\View\Model\ViewModel;
 
 /**
  * IndexController

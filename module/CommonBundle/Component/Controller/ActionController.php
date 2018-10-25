@@ -20,31 +20,31 @@
 
 namespace CommonBundle\Component\Controller;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
-    CommonBundle\Component\Controller\Exception\RuntimeException,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\RouterTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionStorageTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\ViewRendererTrait,
-    CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\General\Visit,
-    Locale,
-    Zend\Http\Header\HeaderInterface,
-    Zend\Mvc\MvcEvent,
-    Zend\Paginator\Paginator,
-    Zend\Validator\AbstractValidator,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
+use CommonBundle\Component\Controller\Exception\RuntimeException;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\RouterTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionStorageTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ViewRendererTrait;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\General\Visit;
+use Locale;
+use Zend\Http\Header\HeaderInterface;
+use Zend\Mvc\MvcEvent;
+use Zend\Paginator\Paginator;
+use Zend\Validator\AbstractValidator;
+use Zend\View\Model\ViewModel;
 
 /**
  * We extend the basic Zend controller to simplify database access, authentication
@@ -91,15 +91,15 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $this->initFallbackLanguage();
         $this->initViewHelpers();
 
-        if (null !== $this->initAuthentication()) {
-            return new ViewModel();
+        if ($this->initAuthentication() !== null) {
+            return new ViewModel;
         }
 
         $this->logVisit();
 
         $this->initLocalization();
 
-        if (false !== getenv('SERVED_BY')) {
+        if (getenv('SERVED_BY') !== false) {
             $this->getResponse()
                 ->getHeaders()
                 ->addHeaderLine('X-Served-By', getenv('SERVED_BY'));
@@ -216,7 +216,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                         ->getConfigValue('fallback_language')
                 );
 
-            if (null === $fallbackLanguage) {
+            if ($fallbackLanguage === null) {
                 $this->flashMessenger()->warn(
                     'Warning',
                     'The specified fallback language does not exist'
@@ -224,7 +224,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
             } else {
                 Locale::setDefault($fallbackLanguage->getAbbrev());
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new RuntimeException('Unable to initialize fallback language.');
         }
     }
@@ -296,13 +296,11 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     protected function initAuthentication()
     {
         $authenticationHandler = $this->getAuthenticationHandler();
-        if (null !== $authenticationHandler) {
-            if (
-                $this->hasAccess()->toResourceAction($this->getParam('controller'), $this->getParam('action'))
+        if ($authenticationHandler !== null) {
+            if ($this->hasAccess()->toResourceAction($this->getParam('controller'), $this->getParam('action'))
             ) {
                 if ($this->getAuthentication()->isAuthenticated()) {
-                    if (
-                        $authenticationHandler['controller'] == $this->getParam('controller')
+                    if ($authenticationHandler['controller'] == $this->getParam('controller')
                             && $authenticationHandler['action'] == $this->getParam('action')
                     ) {
                         return $this->redirectAfterAuthentication();
@@ -310,8 +308,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 }
             } else {
                 if (!$this->getAuthentication()->isAuthenticated()) {
-                    if (
-                        $authenticationHandler['controller'] != $this->getParam('controller')
+                    if ($authenticationHandler['controller'] != $this->getParam('controller')
                             && $authenticationHandler['action'] != $this->getParam('action')
                     ) {
                         return $this->redirect()->toRoute(
@@ -350,7 +347,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * Get the current academic year.
      *
-     * @param  boolean      $organization
+     * @param  bool      $organization
      * @return AcademicYear
      */
     public function getCurrentAcademicYear($organization = false)
@@ -369,7 +366,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     private function getAcl()
     {
-        if (null !== $this->getCache()) {
+        if ($this->getCache() !== null) {
             if (!$this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
                 $acl = new Acl(
                     $this->getEntityManager()
@@ -406,7 +403,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function getLanguage()
     {
-        if (null !== $this->language) {
+        if ($this->language !== null) {
             return $this->language;
         }
 
@@ -427,9 +424,10 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('nl');
 
-            if (null === $language) {
+            if ($language === null) {
                 $language = new Language(
-                    'nl', 'Nederlands'
+                    'nl',
+                    'Nederlands'
                 );
 
                 $this->getEntityManager()->persist($language);
@@ -464,7 +462,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function logMessage($message)
     {
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->getSentry()->logMessage($message);
         }
     }
@@ -500,7 +498,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
      */
     protected function getEntityById($entityName, $paramKey = 'id', $entityKey = 'id')
     {
-        if (null === $this->getParam($paramKey)) {
+        if ($this->getParam($paramKey) === null) {
             return;
         }
 
@@ -512,7 +510,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
                 )
             );
 
-        if (null === $entity) {
+        if ($entity === null) {
             return;
         }
 

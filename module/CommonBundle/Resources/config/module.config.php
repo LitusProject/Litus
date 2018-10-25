@@ -20,30 +20,30 @@
 
 namespace CommonBundle;
 
-use CommonBundle\Component\Authentication\Action\Doctrine as DoctrineAction,
-    CommonBundle\Component\Authentication\Adapter\Doctrine\Credential as DoctrineCredentialAdapter,
-    CommonBundle\Component\Authentication\Authentication,
-    CommonBundle\Component\Authentication\Service\Doctrine as DoctrineService,
-    CommonBundle\Component\Console\Service\ApplicationFactory as ConsoleApplicationFactory,
-    CommonBundle\Component\Controller\Plugin\Service\PaginatorFactory as PaginatorPluginFactory,
-    CommonBundle\Component\Form\Factory as FormFactory,
-    CommonBundle\Component\Form\Service\FactoryFactory as FormFactoryFactory,
-    CommonBundle\Component\Hydrator\HydratorPluginManager,
-    CommonBundle\Component\Module\Config,
-    CommonBundle\Component\Module\Service\AbstractInstallerFactory,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\Validator\Service\AbstractValidatorFactory,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\User\Session,
-    Interop\Container\ContainerInterface,
-    Symfony\Component\Console\Application as ConsoleApplication,
-    Zend\Authentication\Storage\Session as SessionStorage,
-    Zend\Form\ElementFactory,
-    Zend\I18n\Translator\Resources as TranslatorResources,
-    Zend\Mail\Transport\Sendmail,
-    Zend\Mvc\I18n\Translator as MvcTranslator,
-    Zend\ServiceManager\Factory\InvokableFactory,
-    Zend\Session\Container as SessionContainer;
+use CommonBundle\Component\Authentication\Action\Doctrine as DoctrineAction;
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Credential as DoctrineCredentialAdapter;
+use CommonBundle\Component\Authentication\Authentication;
+use CommonBundle\Component\Authentication\Service\Doctrine as DoctrineService;
+use CommonBundle\Component\Console\Service\ApplicationFactory as ConsoleApplicationFactory;
+use CommonBundle\Component\Controller\Plugin\Service\PaginatorFactory as PaginatorPluginFactory;
+use CommonBundle\Component\Form\Factory as FormFactory;
+use CommonBundle\Component\Form\Service\FactoryFactory as FormFactoryFactory;
+use CommonBundle\Component\Hydrator\HydratorPluginManager;
+use CommonBundle\Component\Module\Config;
+use CommonBundle\Component\Module\Service\AbstractInstallerFactory;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\Validator\Service\AbstractValidatorFactory;
+use CommonBundle\Entity\User\Person;
+use CommonBundle\Entity\User\Session;
+use Interop\Container\ContainerInterface;
+use Symfony\Component\Console\Application as ConsoleApplication;
+use Zend\Authentication\Storage\Session as SessionStorage;
+use Zend\Form\ElementFactory;
+use Zend\I18n\Translator\Resources as TranslatorResources;
+use Zend\Mail\Transport\Sendmail;
+use Zend\Mvc\I18n\Translator as MvcTranslator;
+use Zend\ServiceManager\Factory\InvokableFactory;
+use Zend\Session\Container as SessionContainer;
 
 return Config::create(
     array(

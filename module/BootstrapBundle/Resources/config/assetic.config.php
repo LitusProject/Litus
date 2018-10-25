@@ -20,8 +20,8 @@
 
 namespace BootstrapBundle;
 
-use CommonBundle\Component\Assetic\Filter\Js as JsFilter,
-    CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+use CommonBundle\Component\Assetic\Filter\Js as JsFilter;
+use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
 
 return array(
     'collections' => array(

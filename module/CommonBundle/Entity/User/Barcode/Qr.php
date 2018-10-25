@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Entity\User\Barcode;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores a QR code.

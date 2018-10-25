@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Booking,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Sale\Booking;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\IsicCard")

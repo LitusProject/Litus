@@ -20,12 +20,12 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
-    SecretaryBundle\Entity\Promotion,
-    SecretaryBundle\Entity\Promotion\Academic,
-    SecretaryBundle\Entity\Promotion\External,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
+use CommonBundle\Entity\General\AcademicYear;
+use SecretaryBundle\Entity\Promotion;
+use SecretaryBundle\Entity\Promotion\Academic;
+use SecretaryBundle\Entity\Promotion\External;
+use Zend\View\Model\ViewModel;
 
 /**
  * PromotionController

@@ -20,8 +20,8 @@
 
 namespace FormBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    FormBundle\Entity\Node\Form;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use FormBundle\Entity\Node\Form;
 
 /**
  * Field

@@ -20,11 +20,11 @@
 
 namespace GalleryBundle\Controller;
 
-use CommonBundle\Component\Util\AcademicYear,
-    DateInterval,
-    GalleryBundle\Entity\Album\Album,
-    GalleryBundle\Entity\Album\Photo,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use DateInterval;
+use GalleryBundle\Entity\Album\Album;
+use GalleryBundle\Entity\Album\Photo;
+use Zend\View\Model\ViewModel;
 
 /**
  * GalleryController

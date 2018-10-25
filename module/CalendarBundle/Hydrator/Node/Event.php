@@ -20,9 +20,9 @@
 
 namespace CalendarBundle\Hydrator\Node;
 
-use CalendarBundle\Entity\Node\Event as EventEntity,
-    CalendarBundle\Entity\Node\Translation as TranslationEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidDateException;
+use CalendarBundle\Entity\Node\Event as EventEntity;
+use CalendarBundle\Entity\Node\Translation as TranslationEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidDateException;
 
 /**
  * This hydrator hydrates/extracts event data.

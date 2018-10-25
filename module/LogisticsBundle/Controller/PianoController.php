@@ -20,13 +20,13 @@
 
 namespace LogisticsBundle\Controller;
 
-use CommonBundle\Entity\User\Person,
-    DateInterval,
-    DateTime,
-    IntlDateFormatter,
-    LogisticsBundle\Entity\Reservation\PianoReservation,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person;
+use DateInterval;
+use DateTime;
+use IntlDateFormatter;
+use LogisticsBundle\Entity\Reservation\PianoReservation;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>

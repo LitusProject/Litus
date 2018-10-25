@@ -20,8 +20,8 @@
 
 namespace PageBundle\Hydrator;
 
-use PageBundle\Entity\Category as CategoryEntity,
-    PageBundle\Entity\Category\Translation as TranslationEntity;
+use PageBundle\Entity\Category as CategoryEntity;
+use PageBundle\Entity\Category\Translation as TranslationEntity;
 
 /**
  * This hydrator hydrates/extracts page data.

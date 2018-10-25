@@ -20,10 +20,10 @@
 
 namespace LogisticsBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\File\TmpFile as TmpFile,
-    Doctrine\ODM\MongoDB\DocumentManager,
-    Doctrine\ORM\EntityManager,
-    LogisticsBundle\Entity\Reservation\VanReservation;
+use CommonBundle\Component\Util\File\TmpFile as TmpFile;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ORM\EntityManager;
+use LogisticsBundle\Entity\Reservation\VanReservation;
 
 /**
  * Ics

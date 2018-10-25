@@ -20,13 +20,13 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Collaborator,
-    BrBundle\Entity\Contract,
-    BrBundle\Entity\Contract\ContractEntry,
-    BrBundle\Entity\Contract\ContractHistory,
-    BrBundle\Entity\Product\Order,
-    BrBundle\Entity\Product\OrderEntry,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Collaborator;
+use BrBundle\Entity\Contract;
+use BrBundle\Entity\Contract\ContractEntry;
+use BrBundle\Entity\Contract\ContractHistory;
+use BrBundle\Entity\Product\Order;
+use BrBundle\Entity\Product\OrderEntry;
+use Zend\View\Model\ViewModel;
 
 /**
  * OrderController

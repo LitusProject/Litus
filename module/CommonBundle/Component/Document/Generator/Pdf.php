@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    Doctrine\ORM\EntityManager,
-    InvalidArgumentException,
-    RuntimeException;
+use CommonBundle\Component\Util\File\TmpFile;
+use Doctrine\ORM\EntityManager;
+use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * This class provides a container to create documents

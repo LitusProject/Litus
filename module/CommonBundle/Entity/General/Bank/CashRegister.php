@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Entity\General\Bank;
 
-use Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A class that is used to store the contents of a counted register

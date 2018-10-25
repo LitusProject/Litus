@@ -20,11 +20,11 @@
 
 namespace BrBundle\Entity\Invoice;
 
-use BrBundle\Entity\Product\Order,
-    DateInterval,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Product\Order;
+use DateInterval;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Invoice\ContractInvoice")

@@ -20,17 +20,17 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator,
-    BrBundle\Entity\Contract,
-    BrBundle\Entity\Contract\ContractHistory,
-    BrBundle\Entity\Invoice\ContractInvoice,
-    BrBundle\Entity\Invoice\InvoiceEntry,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File as FileUtil,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Component\Document\Generator\Pdf\Contract as ContractGenerator;
+use BrBundle\Entity\Contract;
+use BrBundle\Entity\Contract\ContractHistory;
+use BrBundle\Entity\Invoice\ContractInvoice;
+use BrBundle\Entity\Invoice\InvoiceEntry;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File as FileUtil;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * ContractController

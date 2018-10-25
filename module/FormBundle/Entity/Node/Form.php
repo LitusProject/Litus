@@ -20,16 +20,16 @@
 
 namespace FormBundle\Entity\Node;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Mail\Mail,
-    FormBundle\Entity\Node\Entry,
-    Locale;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Field;
+use FormBundle\Entity\Mail\Mail;
+use FormBundle\Entity\Node\Entry;
+use Locale;
 
 /**
  * This entity stores the form

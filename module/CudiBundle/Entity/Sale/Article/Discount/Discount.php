@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Entity\Sale\Article\Discount;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
-    CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Sale\Article;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Discount\Discount")

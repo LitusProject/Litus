@@ -20,9 +20,9 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Event,
-    BrBundle\Entity\Event\CompanyMap,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Event;
+use BrBundle\Entity\Event\CompanyMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * EventController

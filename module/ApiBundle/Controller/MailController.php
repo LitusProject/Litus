@@ -20,12 +20,12 @@
 
 namespace ApiBundle\Controller;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    MailBundle\Component\Archive\Generator\MailingList\Tar,
-    MailBundle\Component\Archive\Generator\MailingList\Zip,
-    RuntimeException,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile;
+use MailBundle\Component\Archive\Generator\MailingList\Tar;
+use MailBundle\Component\Archive\Generator\MailingList\Zip;
+use RuntimeException;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * MailController

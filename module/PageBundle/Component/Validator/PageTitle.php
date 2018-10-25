@@ -20,9 +20,9 @@
 
 namespace PageBundle\Component\Validator;
 
-use CommonBundle\Component\Form\Form,
-    CommonBundle\Component\Util\Url,
-    CommonBundle\Component\Validator\FormAwareInterface;
+use CommonBundle\Component\Form\Form;
+use CommonBundle\Component\Util\Url;
+use CommonBundle\Component\Validator\FormAwareInterface;
 
 /**
  * Matches the given page title against the database to check whether it is

@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Entity\Acl;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Entity\Acl\Action,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Entity\Acl\Action;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Represents a group of users and is capable of determining which rights those users have.

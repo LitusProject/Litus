@@ -20,13 +20,13 @@
 
 namespace SyllabusBundle\Repository\Study;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\Query,
-    SyllabusBundel\Entity\Study\SubjectMap as SubjectMapEntity,
-    SyllabusBundle\Entity\Study as StudyEntity,
-    SyllabusBundle\Entity\Study\ModuleGroup as ModuleGroupEntity,
-    SyllabusBundle\Entity\Subject as SubjectEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\ORM\Query;
+use SyllabusBundel\Entity\Study\SubjectMap as SubjectMapEntity;
+use SyllabusBundle\Entity\Study as StudyEntity;
+use SyllabusBundle\Entity\Study\ModuleGroup as ModuleGroupEntity;
+use SyllabusBundle\Entity\Subject as SubjectEntity;
 
 /**
  * StudySubjectMap

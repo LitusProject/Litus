@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Component\Module;
 
-use CommonBundle\Entity\General\Address\City,
-    CommonBundle\Entity\General\Address\Street,
-    CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\General\Organization;
+use CommonBundle\Entity\General\Address\City;
+use CommonBundle\Entity\General\Address\Street;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\General\Organization;
 
 /**
  * CommonBundle Installer

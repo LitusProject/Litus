@@ -20,9 +20,9 @@
 
 namespace SyllabusBundle\Form\Admin\Subject\ModuleGroup;
 
-use CommonBundle\Entity\General\AcademicYear,
-    SyllabusBundle\Entity\Study\SubjectMap,
-    SyllabusBundle\Entity\Subject;
+use CommonBundle\Entity\General\AcademicYear;
+use SyllabusBundle\Entity\Study\SubjectMap;
+use SyllabusBundle\Entity\Subject;
 
 /**
  * Add ModuleGroup to Subject

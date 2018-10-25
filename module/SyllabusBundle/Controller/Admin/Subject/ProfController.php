@@ -20,11 +20,11 @@
 
 namespace SyllabusBundle\Controller\Admin\Subject;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\ProfMap,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\ProfMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * ProfController

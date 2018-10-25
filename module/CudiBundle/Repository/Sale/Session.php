@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Bank\CashRegister,
-    CommonBundle\Entity\General\Organization,
-    CudiBundle\Entity\Sale\Session as SessionEntity,
-    DateTime;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Bank\CashRegister;
+use CommonBundle\Entity\General\Organization;
+use CudiBundle\Entity\Sale\Session as SessionEntity;
+use DateTime;
 
 /**
  * Session

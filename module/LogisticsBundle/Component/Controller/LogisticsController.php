@@ -20,8 +20,8 @@
 
 namespace LogisticsBundle\Component\Controller;
 
-use CommonBundle\Component\Controller\Exception\HasNoAccessException,
-    Zend\Mvc\MvcEvent;
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
+use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller.

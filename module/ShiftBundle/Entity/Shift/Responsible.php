@@ -20,11 +20,11 @@
 
 namespace ShiftBundle\Entity\Shift;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM,
-    IllegalArgumentException;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+use IllegalArgumentException;
 
 /**
  * This entity stores a responsible for a shift.

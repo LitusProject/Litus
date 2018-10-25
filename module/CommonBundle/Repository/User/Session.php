@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Repository\User;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\User\Person as PersonEntity,
-    DateTime;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\User\Person as PersonEntity;
+use DateTime;
 
 /**
  * Session

@@ -20,9 +20,9 @@
 
 namespace QuizBundle\Form\Admin\Round;
 
-use QuizBundle\Entity\Quiz,
-    QuizBundle\Entity\Round,
-    RuntimeException;
+use QuizBundle\Entity\Quiz;
+use QuizBundle\Entity\Round;
+use RuntimeException;
 
 /**
  * Add a new round

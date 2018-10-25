@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Component\Form;
 
-use Zend\Form\FieldsetInterface as ZendFieldsetInterface,
-    Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
+use Zend\InputFilter\InputFilterProviderInterface;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>

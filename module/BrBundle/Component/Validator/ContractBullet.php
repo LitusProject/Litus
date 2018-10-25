@@ -20,8 +20,8 @@
 
 namespace BrBundle\Component\Validator;
 
-use BrBundle\Component\ContractParser\IllegalFormatException,
-    BrBundle\Component\ContractParser\Parser as BulletParser;
+use BrBundle\Component\ContractParser\IllegalFormatException;
+use BrBundle\Component\ContractParser\Parser as BulletParser;
 
 /**
  * Check for syntac errors in text.

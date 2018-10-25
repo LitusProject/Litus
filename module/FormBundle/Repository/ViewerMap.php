@@ -20,10 +20,10 @@
 
 namespace FormBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\User\Person,
-    FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\Group;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\User\Person;
+use FormBundle\Entity\Node\Form;
+use FormBundle\Entity\Node\Group;
 
 /**
  * Viewermap

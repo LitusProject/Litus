@@ -20,8 +20,8 @@
 
 namespace OnBundle\Controller\Admin;
 
-use OnBundle\Document\Slug,
-    Zend\View\Model\ViewModel;
+use OnBundle\Document\Slug;
+use Zend\View\Model\ViewModel;
 
 /**
  * SlugController

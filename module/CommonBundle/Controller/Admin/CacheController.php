@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use Zend\Cache\Storage\Adapter\MemcachedOptions,
-    Zend\Cache\Storage\FlushableInterface,
-    Zend\View\Model\ViewModel;
+use Zend\Cache\Storage\Adapter\MemcachedOptions;
+use Zend\Cache\Storage\FlushableInterface;
+use Zend\View\Model\ViewModel;
 
 /**
  * CacheController

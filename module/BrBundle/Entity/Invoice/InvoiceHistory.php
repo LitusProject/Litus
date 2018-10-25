@@ -20,9 +20,9 @@
 
 namespace BrBundle\Entity\Invoice;
 
-use BrBundle\Entity\Invoice,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Invoice;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Invoice\InvoiceHistory")

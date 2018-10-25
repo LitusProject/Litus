@@ -20,10 +20,10 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Event,
-    Imagick,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\Company\Event;
+use Imagick;
+use Zend\View\Model\ViewModel;
 
 /**
  * EventController

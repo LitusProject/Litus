@@ -20,11 +20,11 @@
 
 namespace FormBundle\Entity;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Node\Form,
-    Locale;
+use CommonBundle\Entity\General\Language;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Node\Form;
+use Locale;
 
 /**
  * This entity stores the node item.

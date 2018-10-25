@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Entity\General\Organization;
 
-use CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\General\Organization,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\Acl\Role;
+use CommonBundle\Entity\General\Organization;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores a unit of the organization.

@@ -20,9 +20,9 @@
 
 namespace SyllabusBundle\Form\Admin\Poc;
 
-use SyllabusBundle\Entity\Group,
-    SyllabusBundle\Entity\Poc,
-    SyllabusBundle\Repository\Group as GroupRepository;
+use SyllabusBundle\Entity\Group;
+use SyllabusBundle\Entity\Poc;
+use SyllabusBundle\Repository\Group as GroupRepository;
 
 /**
  * Add Poc

@@ -20,10 +20,10 @@
 
 namespace ApiBundle\Controller;
 
-use DateInterval,
-    DateTime,
-    Markdown_Parser,
-    Zend\View\Model\ViewModel;
+use DateInterval;
+use DateTime;
+use Markdown_Parser;
+use Zend\View\Model\ViewModel;
 
 /**
  * NewsController

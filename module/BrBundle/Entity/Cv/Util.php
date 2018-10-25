@@ -20,11 +20,11 @@
 
 namespace BrBundle\Entity\Cv;
 
-use BrBundle\Entity\Cv\Entry,
-    CommonBundle\Component\Util\Xml\Node,
-    CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
-    Zend\Mvc\I18n\Translator;
+use BrBundle\Entity\Cv\Entry;
+use CommonBundle\Component\Util\Xml\Node;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\ORM\EntityManager;
+use Zend\Mvc\I18n\Translator;
 
 /**
  * A Util class providing functions to retrieve the cv book data in a common way.

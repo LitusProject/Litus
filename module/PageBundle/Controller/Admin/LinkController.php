@@ -20,8 +20,8 @@
 
 namespace PageBundle\Controller\Admin;
 
-use PageBundle\Entity\Link,
-    Zend\View\Model\ViewModel;
+use PageBundle\Entity\Link;
+use Zend\View\Model\ViewModel;
 
 /**
  * LinkController

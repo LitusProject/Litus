@@ -20,9 +20,9 @@
 
 namespace FormBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    FormBundle\Entity\Field as FieldEntity,
-    FormBundle\Entity\Node\Entry as FormEntryEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use FormBundle\Entity\Field as FieldEntity;
+use FormBundle\Entity\Node\Entry as FormEntryEntity;
 
 /**
  * Entry

@@ -19,9 +19,9 @@
  */
 namespace PromBundle\Entity\Bus;
 
-use Doctrine\ORM\Mapping as ORM,
-    PromBundle\Entity\Bus,
-    PromBundle\Entity\Bus\ReservationCode;
+use Doctrine\ORM\Mapping as ORM;
+use PromBundle\Entity\Bus;
+use PromBundle\Entity\Bus\ReservationCode;
 
 /**
  * This is the entity for a passenger for the bus

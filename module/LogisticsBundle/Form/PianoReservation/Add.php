@@ -20,10 +20,10 @@
 
 namespace LogisticsBundle\Form\PianoReservation;
 
-use DateInterval,
-    DateTime,
-    IntlDateFormatter,
-    LogisticsBundle\Entity\Reservation\PianoReservation;
+use DateInterval;
+use DateTime;
+use IntlDateFormatter;
+use LogisticsBundle\Entity\Reservation\PianoReservation;
 
 /**
  * The form used to add a new Reservation.

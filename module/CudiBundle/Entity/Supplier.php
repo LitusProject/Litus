@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\General\Organization,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\General\Organization;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Supplier")

@@ -20,15 +20,15 @@
 
 namespace GalleryBundle\Controller\Admin;
 
-use GalleryBundle\Entity\Album\Album,
-    GalleryBundle\Entity\Album\Photo,
-    Imagick,
-    ImagickPixel,
-    Zend\Validator\File\IsImage as IsImageValidator,
-    Zend\Validator\File\Size as SizeValidator,
-    Zend\Validator\File\UploadFile as UploadFileValidator,
-    Zend\Validator\ValidatorChain,
-    Zend\View\Model\ViewModel;
+use GalleryBundle\Entity\Album\Album;
+use GalleryBundle\Entity\Album\Photo;
+use Imagick;
+use ImagickPixel;
+use Zend\Validator\File\IsImage as IsImageValidator;
+use Zend\Validator\File\Size as SizeValidator;
+use Zend\Validator\File\UploadFile as UploadFileValidator;
+use Zend\Validator\ValidatorChain;
+use Zend\View\Model\ViewModel;
 
 /**
  * GalleryController

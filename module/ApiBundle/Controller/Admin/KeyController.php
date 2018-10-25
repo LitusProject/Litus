@@ -20,8 +20,8 @@
 
 namespace ApiBundle\Controller\Admin;
 
-use ApiBundle\Entity\Key,
-    Zend\View\Model\ViewModel;
+use ApiBundle\Entity\Key;
+use Zend\View\Model\ViewModel;
 
 /**
  * KeyController

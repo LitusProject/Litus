@@ -20,19 +20,19 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    CudiBundle\Component\Mail\Booking as BookingMail,
-    CudiBundle\Entity\Log\Sale\Assignments as LogAssignments,
-    CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
-    CudiBundle\Entity\Sale\Article as ArticleEntity,
-    CudiBundle\Entity\Sale\Booking as BookingEntity,
-    CudiBundle\Entity\Stock\Period,
-    DateInterval,
-    DateTime,
-    Exception,
-    Zend\Mail\Transport\TransportInterface;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Component\Mail\Booking as BookingMail;
+use CudiBundle\Entity\Log\Sale\Assignments as LogAssignments;
+use CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations;
+use CudiBundle\Entity\Sale\Article as ArticleEntity;
+use CudiBundle\Entity\Sale\Booking as BookingEntity;
+use CudiBundle\Entity\Stock\Period;
+use DateInterval;
+use DateTime;
+use Exception;
+use Zend\Mail\Transport\TransportInterface;
 
 /**
  * Booking

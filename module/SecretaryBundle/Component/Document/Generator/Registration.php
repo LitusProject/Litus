@@ -20,9 +20,9 @@
 
 namespace SecretaryBundle\Component\Document\Generator;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Registration

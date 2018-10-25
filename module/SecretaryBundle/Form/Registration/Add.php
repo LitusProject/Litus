@@ -20,10 +20,10 @@
 
 namespace SecretaryBundle\Form\Registration;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait,
-    CommonBundle\Entity\User\Person\Academic,
-    SecretaryBundle\Entity\Organization\MetaData,
-    Zend\Validator\Identical;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait;
+use CommonBundle\Entity\User\Person\Academic;
+use SecretaryBundle\Entity\Organization\MetaData;
+use Zend\Validator\Identical;
 
 /**
  * Add Registration

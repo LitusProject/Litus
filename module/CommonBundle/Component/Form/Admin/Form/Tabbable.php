@@ -20,12 +20,12 @@
 
 namespace CommonBundle\Component\Form\Admin\Form;
 
-use CommonBundle\Component\Form\Admin\Fieldset\TabContent,
-    CommonBundle\Component\Form\Admin\Fieldset\TabPane,
-    CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Entity\General\Language,
-    Locale,
-    RuntimeException;
+use CommonBundle\Component\Form\Admin\Fieldset\TabContent;
+use CommonBundle\Component\Form\Admin\Fieldset\TabPane;
+use CommonBundle\Component\Form\FieldsetInterface;
+use CommonBundle\Entity\General\Language;
+use Locale;
+use RuntimeException;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want

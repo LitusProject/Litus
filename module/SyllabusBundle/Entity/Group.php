@@ -20,10 +20,10 @@
 
 namespace SyllabusBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    SyllabusBundle\Entity\Poc;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use SyllabusBundle\Entity\Poc;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Group")

@@ -20,9 +20,9 @@
 
 namespace LogisticsBundle\Entity\Reservation;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM,
-    LogisticsBundle\Entity\Driver;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\Mapping as ORM;
+use LogisticsBundle\Entity\Driver;
 
 /**
  * This is the entity for a reservation.

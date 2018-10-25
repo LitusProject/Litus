@@ -20,10 +20,10 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * GroupController

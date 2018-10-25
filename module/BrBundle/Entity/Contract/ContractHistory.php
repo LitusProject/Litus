@@ -20,9 +20,9 @@
 
 namespace BrBundle\Entity\Contract;
 
-use BrBundle\Entity\Contract,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Contract;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Contract\ContractHistory")

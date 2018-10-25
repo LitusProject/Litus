@@ -20,14 +20,14 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Component\ContractParser\Parser as BulletParser,
-    BrBundle\Entity\Contract as ContractEntity,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
-    CommonBundle\Component\Util\Xml\Node as XmlNode,
-    Doctrine\ORM\EntityManager,
-    IntlDateFormatter,
-    Zend\I18n\Translator\TranslatorInterface;
+use BrBundle\Component\ContractParser\Parser as BulletParser;
+use BrBundle\Entity\Contract as ContractEntity;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Generator as XmlGenerator;
+use CommonBundle\Component\Util\Xml\Node as XmlNode;
+use Doctrine\ORM\EntityManager;
+use IntlDateFormatter;
+use Zend\I18n\Translator\TranslatorInterface;
 
 /**
  * Generate a PDF for a contract.

@@ -20,8 +20,8 @@
 
 namespace BrBundle\Repository\Invoice;
 
-use BrBundle\Entity\Invoice,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Invoice;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * InvoiceHistory

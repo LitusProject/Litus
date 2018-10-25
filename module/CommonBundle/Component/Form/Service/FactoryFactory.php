@@ -20,13 +20,13 @@
 
 namespace CommonBundle\Component\Form\Service;
 
-use CommonBundle\Component\Form\Factory,
-    CommonBundle\Component\Form\FormElementManager,
-    Interop\Container\ContainerInterface,
-    Zend\Filter\FilterChain,
-    Zend\ServiceManager\Config,
-    Zend\ServiceManager\Factory\FactoryInterface,
-    Zend\Validator\ValidatorChain;
+use CommonBundle\Component\Form\Factory;
+use CommonBundle\Component\Form\FormElementManager;
+use Interop\Container\ContainerInterface;
+use Zend\Filter\FilterChain;
+use Zend\ServiceManager\Config;
+use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\Validator\ValidatorChain;
 
 /**
  * A factory class for form factories.

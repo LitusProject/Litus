@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Repository\User\Person\Organization;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
-    CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization;
+use CommonBundle\Entity\User\Person\Academic;
 
 /**
  * AcademicYearMap

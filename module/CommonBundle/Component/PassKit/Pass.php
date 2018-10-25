@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Component\PassKit;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    DirectoryIterator,
-    ZipArchive;
+use CommonBundle\Component\Util\File\TmpFile;
+use DirectoryIterator;
+use ZipArchive;
 
 /**
  * This class can be used to generate Apple Pass Kit passes.

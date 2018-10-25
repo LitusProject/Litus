@@ -20,9 +20,9 @@
 
 namespace BrBundle\Controller\Career;
 
-use BrBundle\Entity\Company\Event,
-    DateTime,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company\Event;
+use DateTime;
+use Zend\View\Model\ViewModel;
 
 /**
  * EventController

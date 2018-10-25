@@ -20,9 +20,9 @@
 
 namespace BrBundle\Repository\Company\Request;
 
-use BrBundle\Entity\Company as CompanyEntity,
-    BrBundle\Entity\Company\Job as JobEntity,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Company as CompanyEntity;
+use BrBundle\Entity\Company\Job as JobEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * RequestVacancy

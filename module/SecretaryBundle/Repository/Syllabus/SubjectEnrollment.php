@@ -20,10 +20,10 @@
 
 namespace SecretaryBundle\Repository\Syllabus;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    SyllabusBundle\Entity\Subject;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
+use SyllabusBundle\Entity\Subject;
 
 /**
  * SubjectEnrollment

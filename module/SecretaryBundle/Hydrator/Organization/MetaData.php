@@ -20,9 +20,9 @@
 
 namespace SecretaryBundle\Hydrator\Organization;
 
-use CommonBundle\Entity\User\Status\University as UniversityStatus,
-    RuntimeException,
-    SecretaryBundle\Entity\Organization\MetaData as MetaDataEntity;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
+use RuntimeException;
+use SecretaryBundle\Entity\Organization\MetaData as MetaDataEntity;
 
 class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 {

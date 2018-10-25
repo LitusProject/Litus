@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Form\Admin\Sale\Article\Discount;
 
-use CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Sale\Article\Discount\Discount,
-    LogicException;
+use CudiBundle\Entity\Sale\Article;
+use CudiBundle\Entity\Sale\Article\Discount\Discount;
+use LogicException;
 
 /**
  * Add Discount

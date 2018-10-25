@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Node,
-    CudiBundle\Entity\Article\Internal as InternalArticle,
-    CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Generator;
+use CommonBundle\Component\Util\Xml\Node;
+use CudiBundle\Entity\Article\Internal as InternalArticle;
+use CudiBundle\Entity\Sale\Article;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Front

@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Repository\Sale\Session\OpeningHour;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    DateInterval,
-    DateTime;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use DateInterval;
+use DateTime;
 
 /**
  * OpeningHour

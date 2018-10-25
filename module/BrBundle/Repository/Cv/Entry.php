@@ -20,11 +20,11 @@
 
 namespace BrBundle\Repository\Cv;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    SyllabusBundle\Entity\Group,
-    SyllabusBundle\Entity\Study;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
+use SyllabusBundle\Entity\Group;
+use SyllabusBundle\Entity\Study;
 
 /**
  * Entry

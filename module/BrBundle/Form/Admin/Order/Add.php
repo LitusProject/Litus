@@ -20,9 +20,9 @@
 
 namespace BrBundle\Form\Admin\Order;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Product\Order,
-    CommonBundle\Entity\General\AcademicYear;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\Product\Order;
+use CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Add a order.

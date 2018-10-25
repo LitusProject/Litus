@@ -20,9 +20,9 @@
 
 namespace PageBundle\Entity\Link;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\ORM\Mapping as ORM,
-    PageBundle\Entity\Link;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\Mapping as ORM;
+use PageBundle\Entity\Link;
 
 /**
  * This entity represents a translation of a link.

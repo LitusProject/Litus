@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Repository\Sale\Article\Discount;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\Organization,
-    CudiBundle\Entity\Sale\Article;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\Organization;
+use CudiBundle\Entity\Sale\Article;
 
 /**
  * Discount

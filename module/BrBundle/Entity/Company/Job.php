@@ -20,12 +20,12 @@
 
 namespace BrBundle\Entity\Company;
 
-use BrBundle\Entity\Company,
-    CommonBundle\Component\Util\StringUtil,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException,
-    Markdown_Parser;
+use BrBundle\Entity\Company;
+use CommonBundle\Component\Util\StringUtil;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
+use Markdown_Parser;
 
 /**
  * This is the entity for an job.

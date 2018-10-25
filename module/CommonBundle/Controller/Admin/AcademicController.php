@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Entity\User\Person\Academic,
-    CudiBundle\Component\WebSocket\Sale\Printer as Printer,
-    Doctrine\ORM\Query,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Component\WebSocket\Sale\Printer as Printer;
+use Doctrine\ORM\Query;
+use Zend\View\Model\ViewModel;
 
 /**
  * AcademicController

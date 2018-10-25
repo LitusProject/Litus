@@ -20,8 +20,8 @@
 
 namespace LogisticsBundle\Entity\Reservation;
 
-use Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a driver.

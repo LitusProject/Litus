@@ -20,9 +20,9 @@
 
 namespace PageBundle\Controller;
 
-use PageBundle\Entity\Node\Page,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use PageBundle\Entity\Node\Page;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * PageController

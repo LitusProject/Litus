@@ -20,15 +20,15 @@
 
 namespace BrBundle\Entity;
 
-use BrBundle\Entity\Collaborator,
-    BrBundle\Entity\Company,
-    BrBundle\Entity\Contract\ContractEntry,
-    BrBundle\Entity\Product\Order,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use BrBundle\Entity\Collaborator;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\Contract\ContractEntry;
+use BrBundle\Entity\Product\Order;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * This is the entity for a contract.

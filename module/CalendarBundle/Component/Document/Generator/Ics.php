@@ -20,12 +20,12 @@
 
 namespace CalendarBundle\Component\Document\Generator;
 
-use CalendarBundle\Entity\Node\Event,
-    CommonBundle\Component\Controller\Plugin\Url,
-    CommonBundle\Component\Util\File\TmpFile as TmpFile,
-    CommonBundle\Entity\General\Language,
-    Doctrine\ORM\EntityManager,
-    Zend\Http\PhpEnvironment\Request;
+use CalendarBundle\Entity\Node\Event;
+use CommonBundle\Component\Controller\Plugin\Url;
+use CommonBundle\Component\Util\File\TmpFile as TmpFile;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\EntityManager;
+use Zend\Http\PhpEnvironment\Request;
 
 /**
  * Ics

@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Repository\User;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\Acl\Role;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\Acl\Role;
 
 /**
  * Person

@@ -20,8 +20,8 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Form\Fieldset,
-    Zend\InputFilter\InputFilterProviderInterface;
+use CommonBundle\Component\Form\Fieldset;
+use Zend\InputFilter\InputFilterProviderInterface;
 
 /**
  * Add Option

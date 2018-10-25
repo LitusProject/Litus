@@ -20,10 +20,10 @@
 
 namespace SyllabusBundle\Entity\Study;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\Mapping as ORM,
-    SyllabusBundle\Entity\Study,
-    SyllabusBundle\Entity\Subject;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\ORM\Mapping as ORM;
+use SyllabusBundle\Entity\Study;
+use SyllabusBundle\Entity\Subject;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Study\SubjectMap")

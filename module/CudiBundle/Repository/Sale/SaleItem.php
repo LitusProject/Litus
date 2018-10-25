@@ -20,14 +20,14 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
-    CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Article as ArticleEntity,
-    CudiBundle\Entity\Sale\Session as SessionEntity,
-    CudiBundle\Entity\Supplier,
-    DateTime;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Sale\Article as ArticleEntity;
+use CudiBundle\Entity\Sale\Session as SessionEntity;
+use CudiBundle\Entity\Supplier;
+use DateTime;
 
 /**
  * SaleItem

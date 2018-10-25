@@ -20,9 +20,9 @@
 
 namespace SyllabusBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Subject")

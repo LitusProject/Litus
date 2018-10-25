@@ -20,10 +20,10 @@
 
 namespace ShopBundle\Controller;
 
-use DateInterval,
-    DateTime,
-    ShopBundle\Entity\SalesSession,
-    Zend\View\Model\ViewModel;
+use DateInterval;
+use DateTime;
+use ShopBundle\Entity\SalesSession;
+use Zend\View\Model\ViewModel;
 
 /**
  * ShopController

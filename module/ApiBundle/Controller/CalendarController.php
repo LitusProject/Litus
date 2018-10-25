@@ -20,8 +20,8 @@
 
 namespace ApiBundle\Controller;
 
-use Imagick,
-    Zend\View\Model\ViewModel;
+use Imagick;
+use Zend\View\Model\ViewModel;
 
 /**
  * CalendarController

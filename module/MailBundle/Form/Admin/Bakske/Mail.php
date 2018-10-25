@@ -20,8 +20,8 @@
 
 namespace MailBundle\Form\Admin\Bakske;
 
-use CommonBundle\Entity\General\AcademicYear,
-    RuntimeException;
+use CommonBundle\Entity\General\AcademicYear;
+use RuntimeException;
 
 /**
  * Send Mail

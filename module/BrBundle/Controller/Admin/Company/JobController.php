@@ -20,9 +20,9 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Job,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\Company\Job;
+use Zend\View\Model\ViewModel;
 
 /**
  * JobController

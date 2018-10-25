@@ -20,12 +20,12 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
-    Zend\Form\FormInterface,
-    Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use Zend\Form\FormInterface;
+use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
  * Extending Zend's fieldset component, so that our forms look the way we want

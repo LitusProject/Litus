@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Entity\User\Person,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person;
+use Zend\View\Model\ViewModel;
 
 /**
  * PersonController

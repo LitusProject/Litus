@@ -20,12 +20,12 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\Util\StringUtil,
-    Interop\Container\ContainerInterface,
-    RuntimeException,
-    Zend\Form\FormFactoryAwareInterface,
-    Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\Util\StringUtil;
+use Interop\Container\ContainerInterface;
+use RuntimeException;
+use Zend\Form\FormFactoryAwareInterface;
+use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>

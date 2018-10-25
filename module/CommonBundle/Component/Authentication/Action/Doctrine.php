@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Component\Authentication\Action;
 
-use CommonBundle\Component\Authentication\Result,
-    CommonBundle\Entity\User\Code,
-    Doctrine\ORM\EntityManager,
-    Zend\Mail\Message,
-    Zend\Mail\Transport\TransportInterface;
+use CommonBundle\Component\Authentication\Result;
+use CommonBundle\Entity\User\Code;
+use Doctrine\ORM\EntityManager;
+use Zend\Mail\Message;
+use Zend\Mail\Transport\TransportInterface;
 
 /**
  * The action that should be taken after authentication.

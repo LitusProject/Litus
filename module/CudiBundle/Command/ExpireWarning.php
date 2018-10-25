@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Command;
 
-use CudiBundle\Component\Mail\Booking,
-    DateInterval,
-    DateTime;
+use CudiBundle\Component\Mail\Booking;
+use DateInterval;
+use DateTime;
 
 /**
  * Sends expiry warnings to users

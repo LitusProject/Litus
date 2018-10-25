@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Entity\Sale;
 
-use CommonBundle\Entity\User\Person,
-    DateInterval,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use CommonBundle\Entity\User\Person;
+use DateInterval;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Booking")

@@ -20,9 +20,9 @@
 
 namespace FormBundle\Entity\Mail;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\Language;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.

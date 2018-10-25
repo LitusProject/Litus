@@ -20,9 +20,9 @@
 
 namespace LogisticsBundle\Entity\Reservation;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a reservation.

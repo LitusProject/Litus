@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Controller\Prof\Article;
 
-use CudiBundle\Entity\Article\Internal as InternalArticle,
-    CudiBundle\Entity\File\File,
-    CudiBundle\Entity\File\Mapping,
-    CudiBundle\Entity\Prof\Action,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article\Internal as InternalArticle;
+use CudiBundle\Entity\File\File;
+use CudiBundle\Entity\File\Mapping;
+use CudiBundle\Entity\Prof\Action;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * FileController

@@ -20,12 +20,12 @@
 
 namespace SyllabusBundle\Controller\Admin\Subject;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\Comment,
-    SyllabusBundle\Entity\Subject\Reply,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\Comment;
+use SyllabusBundle\Entity\Subject\Reply;
+use Zend\View\Model\ViewModel;
 
 /**
  * CommentController

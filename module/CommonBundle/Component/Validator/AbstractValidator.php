@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Component\Validator;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
-    Zend\Form\ElementInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use Zend\Form\ElementInterface;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>

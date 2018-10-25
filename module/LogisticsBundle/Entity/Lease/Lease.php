@@ -20,9 +20,9 @@
 
 namespace LogisticsBundle\Entity\Lease;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * The entity for the lease of an item

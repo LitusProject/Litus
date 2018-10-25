@@ -20,10 +20,10 @@
 
 namespace ApiBundle\Controller;
 
-use CommonBundle\Entity\User\Person\Academic,
-    DoorBundle\Document\Log,
-    DoorBundle\Document\Rule,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic;
+use DoorBundle\Document\Log;
+use DoorBundle\Document\Rule;
+use Zend\View\Model\ViewModel;
 
 /**
  * DoorController

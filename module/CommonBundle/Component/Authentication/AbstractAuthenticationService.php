@@ -20,13 +20,13 @@
 
 namespace CommonBundle\Component\Authentication;
 
-use CommonBundle\Component\Authentication\Action,
-    CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
-    Zend\Authentication\Storage\StorageInterface,
-    Zend\Http\Header\Cookie,
-    Zend\Http\Header\SetCookie,
-    Zend\Http\PhpEnvironment\Request,
-    Zend\Http\PhpEnvironment\Response;
+use CommonBundle\Component\Authentication\Action;
+use CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter;
+use Zend\Authentication\Storage\StorageInterface;
+use Zend\Http\Header\Cookie;
+use Zend\Http\Header\SetCookie;
+use Zend\Http\PhpEnvironment\Request;
+use Zend\Http\PhpEnvironment\Response;
 
 /**
  * An authentication service superclass that handles the setting and clearing of the cookie.

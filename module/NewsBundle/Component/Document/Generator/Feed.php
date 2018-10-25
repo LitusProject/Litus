@@ -20,14 +20,14 @@
 
 namespace NewsBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Controller\Plugin\Url,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Node as XmlNode,
-    CommonBundle\Entity\General\Language,
-    Doctrine\ORM\EntityManager,
-    Locale,
-    NewsBundle\Entity\Node\News,
-    Zend\Http\PhpEnvironment\Request;
+use CommonBundle\Component\Controller\Plugin\Url;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Node as XmlNode;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\EntityManager;
+use Locale;
+use NewsBundle\Entity\Node\News;
+use Zend\Http\PhpEnvironment\Request;
 
 /**
  * Feed

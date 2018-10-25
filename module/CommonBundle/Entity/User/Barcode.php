@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Entity\User;
 
-use CommonBundle\Entity\User\Barcode\Ean12,
-    CommonBundle\Entity\User\Barcode\Qr,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Barcode\Ean12;
+use CommonBundle\Entity\User\Barcode\Qr;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores a user's barcode.

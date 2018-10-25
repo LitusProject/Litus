@@ -20,17 +20,17 @@
 
 namespace CommonBundle\Component\Console;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConsoleTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryTrait,
-    Exception,
-    Raven_ErrorHandler,
-    Symfony\Component\Console\Input\InputInterface as Input,
-    Symfony\Component\Console\Output\OutputInterface as Output;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConsoleTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryTrait;
+use Exception;
+use Raven_ErrorHandler;
+use Symfony\Component\Console\Input\InputInterface as Input;
+use Symfony\Component\Console\Output\OutputInterface as Output;
 
 abstract class Command extends \Symfony\Component\Console\Command\Command implements ServiceLocatorAwareInterface
 {

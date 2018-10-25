@@ -20,18 +20,18 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator,
-    BrBundle\Entity\Invoice,
-    BrBundle\Entity\Invoice\ContractInvoice,
-    BrBundle\Entity\Invoice\InvoiceHistory,
-    BrBundle\Entity\Invoice\ManualInvoice,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File as FileUtil,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    DateTime,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator;
+use BrBundle\Entity\Invoice;
+use BrBundle\Entity\Invoice\ContractInvoice;
+use BrBundle\Entity\Invoice\InvoiceHistory;
+use BrBundle\Entity\Invoice\ManualInvoice;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File as FileUtil;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use DateTime;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * InvoiceController

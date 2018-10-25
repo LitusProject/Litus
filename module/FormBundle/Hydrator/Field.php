@@ -20,15 +20,15 @@
 
 namespace FormBundle\Hydrator;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity,
-    FormBundle\Entity\Field\Dropdown as DropdownFieldEntity,
-    FormBundle\Entity\Field\File as FileFieldEntity,
-    FormBundle\Entity\Field\Text as StringFieldEntity,
-    FormBundle\Entity\Field\TimeSlot as TimeSlotFieldEntity,
-    FormBundle\Entity\Field\Translation\Option as OptionTranslationFieldEntity,
-    FormBundle\Entity\Field\Translation\TimeSlot as TimeSlotTranslationFieldEntity,
-    FormBundle\Entity\Translation as TranslationEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity;
+use FormBundle\Entity\Field\Dropdown as DropdownFieldEntity;
+use FormBundle\Entity\Field\File as FileFieldEntity;
+use FormBundle\Entity\Field\Text as StringFieldEntity;
+use FormBundle\Entity\Field\TimeSlot as TimeSlotFieldEntity;
+use FormBundle\Entity\Field\Translation\Option as OptionTranslationFieldEntity;
+use FormBundle\Entity\Field\Translation\TimeSlot as TimeSlotTranslationFieldEntity;
+use FormBundle\Entity\Translation as TranslationEntity;
 
 class Field extends \CommonBundle\Component\Hydrator\Hydrator
 {

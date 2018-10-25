@@ -20,11 +20,11 @@
 
 namespace FormBundle\Hydrator\Node;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    FormBundle\Entity\Entry as FieldEntryEntity,
-    FormBundle\Entity\Field as FieldEntity,
-    FormBundle\Entity\Field\File as FileFieldEntity,
-    FormBundle\Entity\Node\Entry as FormEntryEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use FormBundle\Entity\Entry as FieldEntryEntity;
+use FormBundle\Entity\Field as FieldEntity;
+use FormBundle\Entity\Field\File as FileFieldEntity;
+use FormBundle\Entity\Node\Entry as FormEntryEntity;
 
 class Entry extends \CommonBundle\Component\Hydrator\Hydrator
 {

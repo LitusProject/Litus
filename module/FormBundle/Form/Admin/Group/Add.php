@@ -20,8 +20,8 @@
 
 namespace FormBundle\Form\Admin\Group;
 
-use CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Entity\General\Language;
+use CommonBundle\Component\Form\FieldsetInterface;
+use CommonBundle\Entity\General\Language;
 
 /**
  * Add Group

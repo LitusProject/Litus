@@ -20,10 +20,10 @@
 
 namespace SyllabusBundle\Controller\Admin\Study;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Entity\Study\ModuleGroup,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use SyllabusBundle\Entity\Study\ModuleGroup;
+use Zend\View\Model\ViewModel;
 
 /**
  * ModuleGroupController

@@ -20,9 +20,9 @@
 
 namespace QuizBundle\Controller\Admin;
 
-use QuizBundle\Entity\Quiz,
-    QuizBundle\Entity\Round,
-    Zend\View\Model\ViewModel;
+use QuizBundle\Entity\Quiz;
+use QuizBundle\Entity\Round;
+use Zend\View\Model\ViewModel;
 
 /**
  * RoundController

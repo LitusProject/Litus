@@ -18,8 +18,8 @@
  * @license http://litus.cc/LICENSE
  */
 
-use Zend\Mvc\Application,
-    Zend\Stdlib\ArrayUtils;
+use Zend\Mvc\Application;
+use Zend\Stdlib\ArrayUtils;
 
 if (false === getenv('APPLICATION_ENV')) {
     putenv('APPLICATION_ENV=development');

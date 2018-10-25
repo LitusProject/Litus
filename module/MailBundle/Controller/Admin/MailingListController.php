@@ -20,14 +20,14 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Entity\User\Person\Academic,
-    MailBundle\Entity\MailingList,
-    MailBundle\Entity\MailingList\AdminMap as ListAdmin,
-    MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole,
-    MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry,
-    MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry,
-    MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic;
+use MailBundle\Entity\MailingList;
+use MailBundle\Entity\MailingList\AdminMap as ListAdmin;
+use MailBundle\Entity\MailingList\AdminRoleMap as ListAdminRole;
+use MailBundle\Entity\MailingList\Entry\MailingList as MailingListEntry;
+use MailBundle\Entity\MailingList\Entry\Person\Academic as AcademicEntry;
+use MailBundle\Entity\MailingList\Entry\Person\External as ExternalEntry;
+use Zend\View\Model\ViewModel;
 
 /**
  * MailingListController

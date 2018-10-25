@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Repository\Sale\Article\Restriction;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CudiBundle\Entity\Sale\Article;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Sale\Article;
 
 /**
  * Member

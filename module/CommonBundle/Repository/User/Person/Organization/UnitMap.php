@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Repository\User\Person\Organization;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization\Unit;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization\Unit;
 
 /**
  * UnitMap

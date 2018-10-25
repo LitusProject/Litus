@@ -20,15 +20,15 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Markdown_Parser,
-    Zend\Mail\Message,
-    Zend\Mime\Message as MimeMessage,
-    Zend\Mime\Mime,
-    Zend\Mime\Part,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Markdown_Parser;
+use Zend\Mail\Message;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Mime;
+use Zend\Mime\Part;
+use Zend\View\Model\ViewModel;
 
 /**
  * ProfController

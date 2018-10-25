@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Component\Form\Admin\Element;
 
-use CommonBundle\Component\Form\ElementTrait,
-    Zend\Form\FormInterface;
+use CommonBundle\Component\Form\ElementTrait;
+use Zend\Form\FormInterface;
 
 /**
  * File form element

@@ -20,16 +20,16 @@
 
 namespace CommonBundle\Component\Form\Admin\Fieldset;
 
-use CommonBundle\Component\Form\Admin\Fieldset\TabContent,
-    CommonBundle\Component\Form\Admin\Fieldset\TabPane,
-    CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
-    CommonBundle\Entity\General\Language,
-    Locale,
-    RuntimeException,
-    Zend\Form\FormInterface;
+use CommonBundle\Component\Form\Admin\Fieldset\TabContent;
+use CommonBundle\Component\Form\Admin\Fieldset\TabPane;
+use CommonBundle\Component\Form\FieldsetInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Entity\General\Language;
+use Locale;
+use RuntimeException;
+use Zend\Form\FormInterface;
 
 /**
  * Extending Zend's fieldset component, so that our forms look the way we want

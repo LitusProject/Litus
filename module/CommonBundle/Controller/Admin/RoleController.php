@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Entity\Acl\Action,
-    CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\User\Person,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Entity\Acl\Action;
+use CommonBundle\Entity\Acl\Role;
+use CommonBundle\Entity\User\Person;
+use Zend\View\Model\ViewModel;
 
 /**
  * RoleController

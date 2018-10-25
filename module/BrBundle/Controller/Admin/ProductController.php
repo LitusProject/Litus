@@ -20,11 +20,11 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Product,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Product;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * ProductController

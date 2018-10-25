@@ -20,9 +20,9 @@
 
 namespace FormBundle\Hydrator\Node;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    FormBundle\Entity\Node\Form\Doodle as DoodleEntity,
-    FormBundle\Entity\Node\Translation\Form as TranslationEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use FormBundle\Entity\Node\Form\Doodle as DoodleEntity;
+use FormBundle\Entity\Node\Translation\Form as TranslationEntity;
 
 class Form extends \CommonBundle\Component\Hydrator\Hydrator
 {

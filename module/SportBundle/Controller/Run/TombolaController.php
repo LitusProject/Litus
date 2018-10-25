@@ -20,8 +20,8 @@
 
 namespace SportBundle\Controller\Run;
 
-use SportBundle\Entity\Runner,
-    Zend\View\Model\ViewModel;
+use SportBundle\Entity\Runner;
+use Zend\View\Model\ViewModel;
 
 /**
  * TombolaController

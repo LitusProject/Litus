@@ -20,8 +20,8 @@
 
 namespace BannerBundle\Hydrator\Node;
 
-use BannerBundle\Entity\Node\Banner as BannerEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidDateException;
+use BannerBundle\Entity\Node\Banner as BannerEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidDateException;
 
 /**
  * This hydrator hydrates/extracts Banner data.

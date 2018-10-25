@@ -20,9 +20,9 @@
 
 namespace FormBundle\Entity\Node\Translation;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Node\Group as GroupEntity;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Node\Group as GroupEntity;
 
 /**
  * This entity stores the node item.

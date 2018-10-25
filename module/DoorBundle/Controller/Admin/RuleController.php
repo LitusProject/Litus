@@ -20,10 +20,10 @@
 
 namespace DoorBundle\Controller\Admin;
 
-use DateInterval,
-    DateTime,
-    DoorBundle\Document\Rule,
-    Zend\View\Model\ViewModel;
+use DateInterval;
+use DateTime;
+use DoorBundle\Document\Rule;
+use Zend\View\Model\ViewModel;
 
 /**
  * RuleController

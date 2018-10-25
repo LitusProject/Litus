@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Hydrator\User\Person;
 
-use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
-    CommonBundle\Entity\User\Status\University as UniversityStatus;
+use CommonBundle\Entity\User\Person\Academic as AcademicEntity;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
 
 class Academic extends \CommonBundle\Hydrator\User\Person
 {

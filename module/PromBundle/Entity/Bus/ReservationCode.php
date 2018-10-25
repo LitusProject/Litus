@@ -19,8 +19,8 @@
  */
 namespace PromBundle\Entity\Bus;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for reservationcodes.

@@ -20,9 +20,9 @@
 
 namespace BrBundle\Entity\Company;
 
-use BrBundle\Entity\Company,
-    CalendarBundle\Entity\Node\Event as CommonEvent,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Company;
+use CalendarBundle\Entity\Node\Event as CommonEvent;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an event.

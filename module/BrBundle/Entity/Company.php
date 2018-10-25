@@ -20,13 +20,13 @@
 
 namespace BrBundle\Entity;
 
-use BrBundle\Entity\Company\Page,
-    BrBundle\Entity\User\Person\Corporate,
-    CommonBundle\Component\Util\Url,
-    CommonBundle\Entity\General\Address,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use BrBundle\Entity\Company\Page;
+use BrBundle\Entity\User\Person\Corporate;
+use CommonBundle\Component\Util\Url;
+use CommonBundle\Entity\General\Address;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * This is the entity for a company.

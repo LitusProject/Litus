@@ -20,12 +20,12 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\Piwik\Analytics,
-    CommonBundle\Component\Version\Version,
-    DateInterval,
-    DateTime,
-    PackageVersions\Versions,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Piwik\Analytics;
+use CommonBundle\Component\Version\Version;
+use DateInterval;
+use DateTime;
+use PackageVersions\Versions;
+use Zend\View\Model\ViewModel;
 
 /**
  * IndexController

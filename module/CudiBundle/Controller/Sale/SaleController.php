@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Controller\Sale;
 
-use CudiBundle\Entity\Sale\QueueItem,
-    CudiBundle\Entity\Sale\ReturnItem,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Sale\QueueItem;
+use CudiBundle\Entity\Sale\ReturnItem;
+use Zend\View\Model\ViewModel;
 
 /**
  * SaleController

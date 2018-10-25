@@ -20,15 +20,15 @@
 
 namespace SportBundle\Component\WebSocket\Run;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\WebSocket\User,
-    CommonBundle\Entity\User\Person,
-    DateInterval,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    SportBundle\Entity\Lap,
-    SportBundle\Entity\Runner;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\WebSocket\User;
+use CommonBundle\Entity\User\Person;
+use DateInterval;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use SportBundle\Entity\Lap;
+use SportBundle\Entity\Runner;
 
 /**
  * This is the server to handle all requests by the websocket protocol for the Queue.

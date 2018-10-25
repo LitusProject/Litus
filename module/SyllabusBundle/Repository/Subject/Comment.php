@@ -20,10 +20,10 @@
 
 namespace SyllabusBundle\Repository\Subject;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    SyllabusBundle\Entity\Subject;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use SyllabusBundle\Entity\Subject;
 
 /**
  * Comment

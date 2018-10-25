@@ -20,11 +20,11 @@
 
 namespace FormBundle\Entity\Node\Form;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field\File as FileField,
-    FormBundle\Entity\Node\Entry,
-    FormBundle\Entity\Node\Form as BaseForm;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Field\File as FileField;
+use FormBundle\Entity\Node\Entry;
+use FormBundle\Entity\Node\Form as BaseForm;
 
 /**
  * This entity stores the node item.

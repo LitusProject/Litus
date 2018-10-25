@@ -20,11 +20,11 @@
 
 namespace PageBundle\Entity;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    Locale,
-    PageBundle\Entity\Node\Page;
+use CommonBundle\Entity\General\Language;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Locale;
+use PageBundle\Entity\Node\Page;
 
 /**
  * This entity stores a category.

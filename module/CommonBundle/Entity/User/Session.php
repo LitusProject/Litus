@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Entity\User;
 
-use DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * We store all sessions in the database, so that we have a tidbit more information and

@@ -20,10 +20,10 @@
 
 namespace SportBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    SportBundle\Entity\Department as DepartmentEntity,
-    SportBundle\Entity\Runner as RunnerEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use SportBundle\Entity\Department as DepartmentEntity;
+use SportBundle\Entity\Runner as RunnerEntity;
 
 /**
  * Lap

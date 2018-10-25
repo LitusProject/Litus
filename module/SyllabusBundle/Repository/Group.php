@@ -20,10 +20,10 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear as AcademicYear,
-    SyllabusBundle\Entity\Group as GroupEntity,
-    ommonBundle\Entity\User\Person\Academic as Academic;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear as AcademicYear;
+use SyllabusBundle\Entity\Group as GroupEntity;
+use ommonBundle\Entity\User\Person\Academic as Academic;
 
 /**
  * Group

@@ -20,8 +20,8 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use Zend\View\Model\ViewModel;
 
 /**
  * CounterController

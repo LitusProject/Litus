@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Form\Admin\Academic;
 
-use CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CommonBundle\Entity\User\Status\University as UniversityStatus;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
 
 /**
  * Add Academic

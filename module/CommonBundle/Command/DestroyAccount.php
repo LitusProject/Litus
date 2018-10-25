@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Command;
 
-use CommonBundle\Entity\User\Person\Academic,
-    DateTime,
-    Symfony\Component\Console\Input\InputArgument,
-    Symfony\Component\Console\Question\ConfirmationQuestion;
+use CommonBundle\Entity\User\Person\Academic;
+use DateTime;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Destroy the personal data of an account.

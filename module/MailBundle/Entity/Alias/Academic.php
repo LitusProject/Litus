@@ -20,8 +20,8 @@
 
 namespace MailBundle\Entity\Alias;
 
-use CommonBundle\Entity\User\Person\Academic as AcademicEntity,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person\Academic as AcademicEntity;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an academic alias.

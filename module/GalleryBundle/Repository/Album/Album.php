@@ -20,8 +20,8 @@
 
 namespace GalleryBundle\Repository\Album;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    DateTime;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use DateTime;
 
 /**
  * Album

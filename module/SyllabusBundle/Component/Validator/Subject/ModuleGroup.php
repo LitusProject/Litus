@@ -20,8 +20,8 @@
 
 namespace SyllabusBundle\Component\Validator\Subject;
 
-use CommonBundle\Component\Form\Form,
-    CommonBundle\Component\Validator\FormAwareInterface;
+use CommonBundle\Component\Form\Form;
+use CommonBundle\Component\Validator\FormAwareInterface;
 
 /**
  * Matches the given subject against the database to check duplicate mappings.

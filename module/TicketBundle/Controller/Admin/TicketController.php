@@ -20,14 +20,14 @@
 
 namespace TicketBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    DateTime,
-    TicketBundle\Component\Document\Generator\Event\Csv as CsvGenerator,
-    TicketBundle\Component\Document\Generator\Event\Pdf as PdfGenerator,
-    TicketBundle\Entity\Event,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use DateTime;
+use TicketBundle\Component\Document\Generator\Event\Csv as CsvGenerator;
+use TicketBundle\Component\Document\Generator\Event\Pdf as PdfGenerator;
+use TicketBundle\Entity\Event;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * TicketController

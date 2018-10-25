@@ -20,10 +20,10 @@
 
 namespace BrBundle\Repository;
 
-use BrBundle\Entity\Collaborator as CollaboratorEntity,
-    BrBundle\Entity\Company as CompanyEntity,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear;
+use BrBundle\Entity\Collaborator as CollaboratorEntity;
+use BrBundle\Entity\Company as CompanyEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Contract

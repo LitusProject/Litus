@@ -20,11 +20,11 @@
 
 namespace LogisticsBundle\Controller;
 
-use DateTime,
-    LogisticsBundle\Component\Controller\LogisticsController,
-    LogisticsBundle\Entity\Lease\Item,
-    LogisticsBundle\Entity\Lease\Lease,
-    Zend\View\Model\ViewModel;
+use DateTime;
+use LogisticsBundle\Component\Controller\LogisticsController;
+use LogisticsBundle\Entity\Lease\Item;
+use LogisticsBundle\Entity\Lease\Lease;
+use Zend\View\Model\ViewModel;
 
 /**
  * LeaseController

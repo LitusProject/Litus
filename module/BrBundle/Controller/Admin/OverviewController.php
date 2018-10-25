@@ -20,14 +20,14 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Component\Document\Generator\Pdf\Overview as PdfGenerator,
-    BrBundle\Entity\Collaborator,
-    BrBundle\Entity\Company,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Component\Document\Generator\Pdf\Overview as PdfGenerator;
+use BrBundle\Entity\Collaborator;
+use BrBundle\Entity\Company;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * OverviewController.

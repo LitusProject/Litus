@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller;
 
-use CommonBundle\Entity\User\Person\Academic,
-    CudiBundle\Entity\Article\Notification\Subscription,
-    CudiBundle\Entity\Sale\Booking,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Entity\Article\Notification\Subscription;
+use CudiBundle\Entity\Sale\Booking;
+use Zend\View\Model\ViewModel;
 
 /**
  * BookingController

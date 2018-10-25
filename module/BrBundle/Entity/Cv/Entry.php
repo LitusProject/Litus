@@ -20,13 +20,13 @@
 
 namespace BrBundle\Entity\Cv;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\User\Person\Academic,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    SyllabusBundle\Entity\Study;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\User\Person\Academic;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use SyllabusBundle\Entity\Study;
 
 /**
  * This is the entity for a cv entry.

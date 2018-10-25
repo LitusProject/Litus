@@ -20,13 +20,13 @@
 
 namespace BrBundle\Entity;
 
-use BrBundle\Entity\Product,
-    DateInterval,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use BrBundle\Entity\Product;
+use DateInterval;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * This is the entity for a invoice.

@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Form\Admin\Config;
 
-use CommonBundle\Entity\General\Config,
-    LogicException;
+use CommonBundle\Entity\General\Config;
+use LogicException;
 
 /**
  * Edit Configuration

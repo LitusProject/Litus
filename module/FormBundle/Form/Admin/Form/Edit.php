@@ -20,8 +20,8 @@
 
 namespace FormBundle\Form\Admin\Form;
 
-use FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\Form\Doodle;
+use FormBundle\Entity\Node\Form;
+use FormBundle\Entity\Node\Form\Doodle;
 
 /**
  * Edit Form

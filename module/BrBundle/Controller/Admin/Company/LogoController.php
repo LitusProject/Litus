@@ -20,10 +20,10 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Logo,
-    Imagick,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\Company\Logo;
+use Imagick;
+use Zend\View\Model\ViewModel;
 
 /**
  * LogoController

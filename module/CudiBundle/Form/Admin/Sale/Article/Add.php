@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Form\Admin\Sale\Article;
 
-use CudiBundle\Entity\Sale\Article,
-    DateInterval;
+use CudiBundle\Entity\Sale\Article;
+use DateInterval;
 
 /**
  * Add Article

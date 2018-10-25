@@ -20,8 +20,8 @@
 
 namespace BrBundle\Form\Cv;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
 
 /**
  * Add Cv

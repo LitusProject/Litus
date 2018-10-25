@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Component\Hydrator;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    Interop\Container\ContainerInterface,
-    RuntimeException,
-    Zend\Hydrator\HydratorInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use Interop\Container\ContainerInterface;
+use RuntimeException;
+use Zend\Hydrator\HydratorInterface;
 
 /**
  * Manager for our hydrators

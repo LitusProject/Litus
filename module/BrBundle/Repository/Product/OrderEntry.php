@@ -20,9 +20,9 @@
 
 namespace BrBundle\Repository\Product;
 
-use BrBundle\Entity\Product,
-    BrBundle\Entity\Product\Order as EditOrder,
-    Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Product;
+use BrBundle\Entity\Product\Order as EditOrder;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * OrderEntry

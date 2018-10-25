@@ -20,9 +20,9 @@
 
 namespace FormBundle\Controller\Manage;
 
-use FormBundle\Entity\Node\Form,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use FormBundle\Entity\Node\Form;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * MailController

@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
-    CudiBundle\Entity\Sale\Article as ArticleEntity,
-    CudiBundle\Entity\Sale\Session as SessionEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization;
+use CudiBundle\Entity\Sale\Article as ArticleEntity;
+use CudiBundle\Entity\Sale\Session as SessionEntity;
 
 /**
  * ReturnItem

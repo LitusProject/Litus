@@ -20,12 +20,12 @@
 
 namespace ApiBundle\Controller;
 
-use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Sale\Booking,
-    CudiBundle\Entity\Sale\QueueItem,
-    DateInterval,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Sale\Article;
+use CudiBundle\Entity\Sale\Booking;
+use CudiBundle\Entity\Sale\QueueItem;
+use DateInterval;
+use Zend\View\Model\ViewModel;
 
 /**
  * CudiController

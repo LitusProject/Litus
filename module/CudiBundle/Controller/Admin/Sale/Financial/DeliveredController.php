@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Financial;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Sale\Article as SaleArticle,
-    CudiBundle\Entity\Supplier,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Supplier;
+use Zend\View\Model\ViewModel;
 
 /**
  * DeliveredController

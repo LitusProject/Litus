@@ -20,12 +20,12 @@
 
 namespace SportBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    DateInterval,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    SportBundle\Entity\Department;
+use CommonBundle\Entity\General\AcademicYear;
+use DateInterval;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use SportBundle\Entity\Department;
 
 /**
  * This entity represents a lap.

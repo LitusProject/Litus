@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Controller;
 
-use DateInterval,
-    DateTime,
-    Zend\View\Model\ViewModel;
+use DateInterval;
+use DateTime;
+use Zend\View\Model\ViewModel;
 
 /**
  * OpeningHourController

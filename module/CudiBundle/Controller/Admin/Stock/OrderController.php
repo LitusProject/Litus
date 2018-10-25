@@ -20,19 +20,19 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-use CommonBundle\Component\Acl\Driver\Exception\RuntimeException,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator,
-    CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator,
-    CudiBundle\Entity\Stock\Order\Item as OrderItem,
-    CudiBundle\Entity\Stock\Order\Order,
-    CudiBundle\Entity\Stock\Period,
-    CudiBundle\Entity\Supplier,
-    DateTime,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Acl\Driver\Exception\RuntimeException;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator;
+use CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator;
+use CudiBundle\Entity\Stock\Order\Item as OrderItem;
+use CudiBundle\Entity\Stock\Order\Order;
+use CudiBundle\Entity\Stock\Period;
+use CudiBundle\Entity\Supplier;
+use DateTime;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * OrderController

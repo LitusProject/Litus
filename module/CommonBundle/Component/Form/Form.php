@@ -20,19 +20,19 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait,
-    CommonBundle\Component\Validator\FormAwareInterface,
-    RuntimeException,
-    Zend\Form\FieldsetInterface as ZendFieldsetInterface,
-    Zend\Form\FormInterface,
-    Zend\Hydrator\ClassMethods as ClassMethodsHydrator,
-    Zend\InputFilter\InputFilterAwareInterface,
-    Zend\InputFilter\InputFilterInterface,
-    Zend\InputFilter\InputInterface,
-    Zend\InputFilter\InputProviderInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait;
+use CommonBundle\Component\Validator\FormAwareInterface;
+use RuntimeException;
+use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
+use Zend\Form\FormInterface;
+use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
+use Zend\InputFilter\InputFilterAwareInterface;
+use Zend\InputFilter\InputFilterInterface;
+use Zend\InputFilter\InputInterface;
+use Zend\InputFilter\InputProviderInterface;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want

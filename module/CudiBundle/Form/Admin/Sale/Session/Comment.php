@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Form\Admin\Sale\Session;
 
-use CudiBundle\Entity\Sale\Session,
-    LogicException;
+use CudiBundle\Entity\Sale\Session;
+use LogicException;
 
 /**
  * Add Sale Session Comment

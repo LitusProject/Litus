@@ -20,8 +20,8 @@
 
 namespace BrBundle\Hydrator;
 
-use BrBundle\Entity\Company as CompanyEntity,
-    BrBundle\Entity\Company\Page as PageEntity;
+use BrBundle\Entity\Company as CompanyEntity;
+use BrBundle\Entity\Company\Page as PageEntity;
 
 /**
  * This hydrator hydrates/extracts Company data.

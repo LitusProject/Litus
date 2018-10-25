@@ -20,8 +20,8 @@
 
 namespace FormBundle\Repository\Node;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    FormBundle\Entity\Node\Form as FormEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use FormBundle\Entity\Node\Form as FormEntity;
 
 /**
  * GuestInfo

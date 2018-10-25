@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Entity\Prof;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Prof\Action")

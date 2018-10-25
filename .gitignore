@@ -22,9 +22,5 @@ public/_publications/pdf
 public/_publications/html
 public/_br/img
 
-# Exclude Composer configuration and dependencies
+# Exclude dependencies
 vendor/
-composer.phar
-
-# Code Style Fixer
-.php_cs.cache

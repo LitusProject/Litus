@@ -20,11 +20,11 @@
 
 namespace SyllabusBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    SyllabusBundle\Entity\Study\Combination;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use SyllabusBundle\Entity\Study\Combination;
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Poc")
  * @ORM\Table(name="syllabus.pocs")

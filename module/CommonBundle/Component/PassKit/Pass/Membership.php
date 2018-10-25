@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Component\PassKit\Pass;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\EntityManager;
 
 /**
  * This class can be used to generate a membership pass.

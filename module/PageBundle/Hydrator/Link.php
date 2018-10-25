@@ -20,8 +20,8 @@
 
 namespace PageBundle\Hydrator;
 
-use PageBundle\Entity\Link as LinkEntity,
-    PageBundle\Entity\Link\Translation as TranslationEntity;
+use PageBundle\Entity\Link as LinkEntity;
+use PageBundle\Entity\Link\Translation as TranslationEntity;
 
 /**
  * This hydrator hydrates/extracts page data.

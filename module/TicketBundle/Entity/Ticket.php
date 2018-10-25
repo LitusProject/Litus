@@ -20,10 +20,10 @@
 
 namespace TicketBundle\Entity;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="TicketBundle\Repository\Ticket")

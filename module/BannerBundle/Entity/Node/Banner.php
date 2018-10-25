@@ -20,8 +20,8 @@
 
 namespace BannerBundle\Entity\Node;
 
-use DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.

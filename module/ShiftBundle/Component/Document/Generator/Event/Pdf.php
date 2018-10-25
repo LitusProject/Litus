@@ -20,11 +20,11 @@
 
 namespace ShiftBundle\Component\Document\Generator\Event;
 
-use CalendarBundle\Entity\Node\Event,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Generator,
-    CommonBundle\Component\Util\Xml\Node,
-    Doctrine\ORM\EntityManager;
+use CalendarBundle\Entity\Node\Event;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Generator;
+use CommonBundle\Component\Util\Xml\Node;
+use Doctrine\ORM\EntityManager;
 
 /**
  * EventPdf

@@ -20,8 +20,8 @@
 
 namespace QuizBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    QuizBundle\Entity\Quiz as QuizEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use QuizBundle\Entity\Quiz as QuizEntity;
 
 /**
  * Point

@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Controller\Prof;
 
-use SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\ProfMap,
-    Zend\View\Model\ViewModel;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\ProfMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * ProfController

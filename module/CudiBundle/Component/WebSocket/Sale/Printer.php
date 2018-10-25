@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CommonBundle\Entity\General\AcademicYear as AcademicYear,
-    CommonBundle\Entity\User\Barcode\Ean12 as Ean12,
-    CommonBundle\Entity\User\Person\Academic,
-    CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\General\AcademicYear as AcademicYear;
+use CommonBundle\Entity\User\Barcode\Ean12 as Ean12;
+use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Entity\Sale\QueueItem as EntityQueueItem;
+use Doctrine\ORM\EntityManager;
 
 class Printer
 {

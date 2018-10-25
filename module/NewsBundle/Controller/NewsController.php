@@ -20,11 +20,11 @@
 
 namespace NewsBundle\Controller;
 
-use CommonBundle\Component\Util\File\TmpFile as TmpFile,
-    NewsBundle\Component\Document\Generator\Feed as FeedGenerator,
-    NewsBundle\Entity\Node\News,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile as TmpFile;
+use NewsBundle\Component\Document\Generator\Feed as FeedGenerator;
+use NewsBundle\Entity\Node\News;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * NewsController

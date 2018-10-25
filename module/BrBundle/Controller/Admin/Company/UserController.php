@@ -20,9 +20,9 @@
 
 namespace BrBundle\Controller\Admin\Company;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\User\Person\Corporate,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\User\Person\Corporate;
+use Zend\View\Model\ViewModel;
 
 /**
  * ContactController

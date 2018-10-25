@@ -20,10 +20,10 @@
 
 namespace SecretaryBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    ZipArchive;
+use CommonBundle\Component\Util\File\TmpFile;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use ZipArchive;
 
 /**
  * Create a zip with the photo's of the given promotions

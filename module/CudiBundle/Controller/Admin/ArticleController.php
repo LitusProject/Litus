@@ -20,14 +20,14 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CudiBundle\Entity\Article\External,
-    CudiBundle\Entity\Article\History,
-    CudiBundle\Entity\Article\Internal,
-    CudiBundle\Entity\Article\SubjectMap,
-    CudiBundle\Entity\Comment\Mapping as CommentMapping,
-    CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog,
-    Cudibundle\Entity\Article,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article\External;
+use CudiBundle\Entity\Article\History;
+use CudiBundle\Entity\Article\Internal;
+use CudiBundle\Entity\Article\SubjectMap;
+use CudiBundle\Entity\Comment\Mapping as CommentMapping;
+use CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog;
+use Cudibundle\Entity\Article;
+use Zend\View\Model\ViewModel;
 
 /**
  * ArticleController

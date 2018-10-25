@@ -20,10 +20,10 @@
 
 namespace FormBundle\Repository\Field;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    FormBundle\Entity\Node\Form;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use FormBundle\Entity\Node\Form;
 
 /**
  * TimeSlot

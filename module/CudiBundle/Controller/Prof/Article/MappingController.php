@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Controller\Prof\Article;
 
-use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Article\SubjectMap,
-    CudiBundle\Entity\Prof\Action,
-    SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\ProfMap,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Article\SubjectMap;
+use CudiBundle\Entity\Prof\Action;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\ProfMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * MappingController

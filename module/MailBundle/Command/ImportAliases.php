@@ -20,9 +20,9 @@
 
 namespace MailBundle\Command;
 
-use MailBundle\Entity\Alias\Academic as AcademicAlias,
-    MailBundle\Entity\Alias\External as ExternalAlias,
-    Symfony\Component\Console\Input\InputArgument;
+use MailBundle\Entity\Alias\Academic as AcademicAlias;
+use MailBundle\Entity\Alias\External as ExternalAlias;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * ImportAliases

@@ -20,11 +20,11 @@
 
 namespace ApiBundle\Document;
 
-use ApiBundle\Document\Code\Authorization as AuthorizationCode,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
-    Doctrine\ORM\EntityManager;
+use ApiBundle\Document\Code\Authorization as AuthorizationCode;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\ORM\EntityManager;
 
 /**
  * This entity represents an access token used in OAuth 2.0.

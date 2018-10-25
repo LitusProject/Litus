@@ -20,15 +20,15 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use CalendarBundle\Entity\Node\Event,
-    CommonBundle\Component\Util\File\TmpFile,
-    DateInterval,
-    DateTime,
-    ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator,
-    ShiftBundle\Entity\Shift,
-    Zend\Http\Headers,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CalendarBundle\Entity\Node\Event;
+use CommonBundle\Component\Util\File\TmpFile;
+use DateInterval;
+use DateTime;
+use ShiftBundle\Component\Document\Generator\Event\Pdf as PdfGenerator;
+use ShiftBundle\Entity\Shift;
+use Zend\Http\Headers;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * ShiftController

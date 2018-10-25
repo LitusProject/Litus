@@ -20,9 +20,9 @@
 
 namespace NotificationBundle\Hydrator\Node;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidDateException,
-    NotificationBundle\Entity\Node\Notification as NotificationEntity,
-    NotificationBundle\Entity\Node\Translation as TranslationEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidDateException;
+use NotificationBundle\Entity\Node\Notification as NotificationEntity;
+use NotificationBundle\Entity\Node\Translation as TranslationEntity;
 
 /**
  * This hydrator hydrates/extracts notification data.

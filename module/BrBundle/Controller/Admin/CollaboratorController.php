@@ -20,8 +20,8 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Collaborator,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Collaborator;
+use Zend\View\Model\ViewModel;
 
 /**
  * CollaboratorController

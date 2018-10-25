@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\Config,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\Config;
+use Zend\View\Model\ViewModel;
 
 /**
  * ConfigController

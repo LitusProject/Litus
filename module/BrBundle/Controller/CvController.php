@@ -20,13 +20,13 @@
 
 namespace BrBundle\Controller;
 
-use BrBundle\Component\Document\Generator\Pdf\Cv as CvGenerator,
-    BrBundle\Entity\Cv\Entry as CvEntry,
-    CommonBundle\Component\FlashMessenger\FlashMessage,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Entity\User\Person\Academic,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Component\Document\Generator\Pdf\Cv as CvGenerator;
+use BrBundle\Entity\Cv\Entry as CvEntry;
+use CommonBundle\Component\FlashMessenger\FlashMessage;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Entity\User\Person\Academic;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * CvController

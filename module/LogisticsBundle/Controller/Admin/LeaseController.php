@@ -19,9 +19,9 @@
  */
 namespace LogisticsBundle\Controller\Admin;
 
-use CommonBundle\Component\Controller\ActionController\AdminController,
-    LogisticsBundle\Entity\Lease\Item,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Controller\ActionController\AdminController;
+use LogisticsBundle\Entity\Lease\Item;
+use Zend\View\Model\ViewModel;
 
 /**
  * LeaseController

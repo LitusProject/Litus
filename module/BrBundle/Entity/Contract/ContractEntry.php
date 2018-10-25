@@ -20,10 +20,10 @@
 
 namespace BrBundle\Entity\Contract;
 
-use BrBundle\Entity\Contract,
-    BrBundle\Entity\Product\OrderEntry,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use BrBundle\Entity\Contract;
+use BrBundle\Entity\Product\OrderEntry;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * An entry of a contract.

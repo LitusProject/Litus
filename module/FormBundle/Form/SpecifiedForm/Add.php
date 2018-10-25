@@ -20,16 +20,16 @@
 
 namespace FormBundle\Form\SpecifiedForm;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    FormBundle\Component\Exception\UnsupportedTypeException,
-    FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity,
-    FormBundle\Entity\Field\Dropdown as DropdownFieldEntity,
-    FormBundle\Entity\Field\File as FileFieldEntity,
-    FormBundle\Entity\Field\Text as StringFieldEntity,
-    FormBundle\Entity\Node\Entry as EntryEntity,
-    FormBundle\Entity\Node\Form\Form as FormEntity,
-    FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use FormBundle\Component\Exception\UnsupportedTypeException;
+use FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity;
+use FormBundle\Entity\Field\Dropdown as DropdownFieldEntity;
+use FormBundle\Entity\Field\File as FileFieldEntity;
+use FormBundle\Entity\Field\Text as StringFieldEntity;
+use FormBundle\Entity\Node\Entry as EntryEntity;
+use FormBundle\Entity\Node\Form\Form as FormEntity;
+use FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
 
 /**
  * Specifield Form Add

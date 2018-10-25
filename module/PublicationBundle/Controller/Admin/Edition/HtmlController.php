@@ -20,11 +20,11 @@
 
 namespace PublicationBundle\Controller\Admin\Edition;
 
-use DateTime,
-    PublicationBundle\Entity\Edition\Html as HtmlEdition,
-    PublicationBundle\Entity\Publication,
-    Zend\View\Model\ViewModel,
-    ZipArchive;
+use DateTime;
+use PublicationBundle\Entity\Edition\Html as HtmlEdition;
+use PublicationBundle\Entity\Publication;
+use Zend\View\Model\ViewModel;
+use ZipArchive;
 
 /**
  * HtmlController

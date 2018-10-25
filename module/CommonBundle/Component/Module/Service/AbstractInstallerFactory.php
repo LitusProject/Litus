@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Component\Module\Service;
 
-use CommonBundle\Component\Module\AbstractInstaller,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    Interop\Container\ContainerInterface,
-    Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use CommonBundle\Component\Module\AbstractInstaller;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
 /**
  * Abstract factory instantiating an installer.

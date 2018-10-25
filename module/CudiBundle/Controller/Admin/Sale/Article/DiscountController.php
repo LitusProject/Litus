@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article;
 
-use CudiBundle\Entity\Sale\Article as SaleArticle,
-    CudiBundle\Entity\Sale\Article\Discount\Discount,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Sale\Article\Discount\Discount;
+use Zend\View\Model\ViewModel;
 
 /**
  * DiscountController

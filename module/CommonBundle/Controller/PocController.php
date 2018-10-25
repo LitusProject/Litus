@@ -20,13 +20,13 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic as Academic,
-    SecretaryBundle\Entity\Syllabus\StudyEnrollment,
-    SyllabusBundle\Entity\Group\StudyMap,
-    SyllabusBundle\Entity\Poc,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic as Academic;
+use SecretaryBundle\Entity\Syllabus\StudyEnrollment;
+use SyllabusBundle\Entity\Group\StudyMap;
+use SyllabusBundle\Entity\Poc;
+use Zend\View\Model\ViewModel;
 
 /**
  * PocController

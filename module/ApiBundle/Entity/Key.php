@@ -20,11 +20,11 @@
 
 namespace ApiBundle\Entity;
 
-use CommonBundle\Component\Acl\RoleAware,
-    CommonBundle\Entity\Acl\Role,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Component\Acl\RoleAware;
+use CommonBundle\Entity\Acl\Role;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores an API key.

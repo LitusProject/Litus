@@ -20,13 +20,13 @@
 
 namespace GalleryBundle\Entity\Album;
 
-use CommonBundle\Component\Util\Url as UrlUtil,
-    CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    Locale;
+use CommonBundle\Component\Util\Url as UrlUtil;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Locale;
 
 /**
  * This entity stores the album item.

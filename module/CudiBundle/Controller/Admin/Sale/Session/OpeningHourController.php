@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Session;
 
-use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Sale\Session\OpeningHour\OpeningHour;
+use Zend\View\Model\ViewModel;
 
 /**
  * OpeningHourController

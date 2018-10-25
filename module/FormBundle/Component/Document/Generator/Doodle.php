@@ -20,9 +20,9 @@
 
 namespace FormBundle\Component\Document\Generator;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\ORM\EntityManager,
-    FormBundle\Entity\ViewerMap;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\EntityManager;
+use FormBundle\Entity\ViewerMap;
 
 /**
  * Doodle

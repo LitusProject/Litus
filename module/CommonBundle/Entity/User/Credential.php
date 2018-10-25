@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Entity\User;
 
-use Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * This entity stores a user's credentials.

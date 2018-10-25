@@ -20,14 +20,14 @@
 
 namespace SyllabusBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    SyllabusBundle\Component\Document\Generator\Group as CsvGenerator,
-    SyllabusBundle\Entity\Group,
-    SyllabusBundle\Entity\Group\StudyMap,
-    SyllabusBundle\Entity\Poc as PocEntity,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use SyllabusBundle\Component\Document\Generator\Group as CsvGenerator;
+use SyllabusBundle\Entity\Group;
+use SyllabusBundle\Entity\Group\StudyMap;
+use SyllabusBundle\Entity\Poc as PocEntity;
+use Zend\View\Model\ViewModel;
 
 /**
  * GroupController

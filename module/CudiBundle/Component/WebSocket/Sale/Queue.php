@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\WebSocket\User,
-    CudiBundle\Entity\Sale\QueueItem as EntityQueueItem,
-    CudiBundle\Entity\Sale\Session,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\WebSocket\User;
+use CudiBundle\Entity\Sale\QueueItem as EntityQueueItem;
+use CudiBundle\Entity\Sale\Session;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Queue Object

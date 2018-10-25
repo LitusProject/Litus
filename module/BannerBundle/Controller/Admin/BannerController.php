@@ -20,8 +20,8 @@
 
 namespace BannerBundle\Controller\Admin;
 
-use BannerBundle\Entity\Node\Banner,
-    Zend\View\Model\ViewModel;
+use BannerBundle\Entity\Node\Banner;
+use Zend\View\Model\ViewModel;
 
 /**
  * BannerController

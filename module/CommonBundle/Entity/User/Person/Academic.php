@@ -20,12 +20,12 @@
 
 namespace CommonBundle\Entity\User\Person;
 
-use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\General\Address,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an academic person, e.g. a student or professor.

@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Form\Admin\Sale\Article\Restriction;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CudiBundle\Entity\Sale\Article,
-    LogicException;
+use CommonBundle\Component\Util\AcademicYear;
+use CudiBundle\Entity\Sale\Article;
+use LogicException;
 
 /**
  * Add Restriction

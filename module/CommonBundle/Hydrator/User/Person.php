@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Hydrator\User;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    CommonBundle\Entity\User\Barcode\Ean12 as Barcode,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use CommonBundle\Entity\User\Barcode\Ean12 as Barcode;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
 
 abstract class Person extends \CommonBundle\Component\Hydrator\Hydrator
 {

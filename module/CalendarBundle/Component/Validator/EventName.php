@@ -20,10 +20,10 @@
 
 namespace CalendarBundle\Component\Validator;
 
-use CommonBundle\Component\Form\Form,
-    CommonBundle\Component\Util\Url,
-    CommonBundle\Component\Validator\FormAwareInterface,
-    DateTime;
+use CommonBundle\Component\Form\Form;
+use CommonBundle\Component\Util\Url;
+use CommonBundle\Component\Validator\FormAwareInterface;
+use DateTime;
 
 /**
  * Matches the given event title against the database to check whether it is

@@ -20,10 +20,10 @@
 
 namespace BrBundle\Entity\User\Status;
 
-use BrBundle\Entity\User\Person\Corporate as CorporatePerson,
-    CommonBundle\Component\Util\AcademicYear,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use BrBundle\Entity\User\Person\Corporate as CorporatePerson;
+use CommonBundle\Component\Util\AcademicYear;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * A classification of a user based on his status at our Alma Mater.

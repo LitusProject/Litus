@@ -20,11 +20,11 @@
 
 namespace PublicationBundle\Controller\Admin\Edition;
 
-use DateTime,
-    PublicationBundle\Entity\Edition\Pdf as PdfEdition,
-    PublicationBundle\Entity\Publication,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use DateTime;
+use PublicationBundle\Entity\Edition\Pdf as PdfEdition;
+use PublicationBundle\Entity\Publication;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * PdfController

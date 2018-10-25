@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
+use CommonBundle\Entity\General\AcademicYear;
+use Zend\View\Model\ViewModel;
 
 /**
  * PraesidiumController

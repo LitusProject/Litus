@@ -20,17 +20,17 @@
 
 namespace FormBundle\Controller\Manage;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    FormBundle\Component\Document\Generator\Doodle as DoodleGenerator,
-    FormBundle\Component\Document\Generator\Form as FormGenerator,
-    FormBundle\Component\Document\Generator\Zip as ZipGenerator,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Node\Entry as FormEntry,
-    FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\GuestInfo,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use FormBundle\Component\Document\Generator\Doodle as DoodleGenerator;
+use FormBundle\Component\Document\Generator\Form as FormGenerator;
+use FormBundle\Component\Document\Generator\Zip as ZipGenerator;
+use FormBundle\Entity\Field;
+use FormBundle\Entity\Node\Entry as FormEntry;
+use FormBundle\Entity\Node\Form;
+use FormBundle\Entity\Node\GuestInfo;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * FormController

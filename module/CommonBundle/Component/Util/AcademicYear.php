@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Component\Util;
 
-use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    DateInterval,
-    DateTime,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use DateInterval;
+use DateTime;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Utility class containing methods used to retrieve the academic year

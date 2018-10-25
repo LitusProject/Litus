@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Component\Mvc\View\Http;
 
-use Zend\EventManager\EventManagerInterface,
-    Zend\EventManager\ListenerAggregateInterface,
-    Zend\Filter\Word\CamelCaseToDash as CamelCaseToDashFilter,
-    Zend\Mvc\MvcEvent,
-    Zend\View\Model\ModelInterface as ViewModel;
+use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\ListenerAggregateInterface;
+use Zend\Filter\Word\CamelCaseToDash as CamelCaseToDashFilter;
+use Zend\Mvc\MvcEvent;
+use Zend\View\Model\ModelInterface as ViewModel;
 
 class InjectTemplateListener implements ListenerAggregateInterface
 {

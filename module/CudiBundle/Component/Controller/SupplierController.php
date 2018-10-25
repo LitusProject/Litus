@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Component\Controller;
 
-use CommonBundle\Component\Controller\Exception\HasNoAccessException,
-    CudiBundle\Entity\User\Person\Supplier,
-    Zend\Mvc\MvcEvent;
+use CommonBundle\Component\Controller\Exception\HasNoAccessException;
+use CudiBundle\Entity\User\Person\Supplier;
+use Zend\Mvc\MvcEvent;
 
 /**
  * We extend the CommonBundle controller to check a valid user is logged in.

@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Entity\Article;
 
-use CudiBundle\Entity\Article\Option\Binding,
-    CudiBundle\Entity\Article\Option\Color,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CudiBundle\Entity\Article\Option\Binding;
+use CudiBundle\Entity\Article\Option\Color;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article\Internal")

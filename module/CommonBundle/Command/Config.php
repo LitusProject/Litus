@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Command;
 
-use RuntimeException,
-    Symfony\Component\Console\Input\InputArgument;
+use RuntimeException;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Performs garbage collection on the sessions.

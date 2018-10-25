@@ -20,9 +20,9 @@
 
 namespace BrBundle\Entity\Company;
 
-use BrBundle\Entity\Company,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use BrBundle\Entity\Company;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * This is the entity for an event.

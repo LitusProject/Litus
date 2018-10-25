@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Entity\General;
 
-use Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * This class represents a configuration entry that is saved in the database

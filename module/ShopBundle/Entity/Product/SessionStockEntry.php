@@ -20,9 +20,9 @@
 
 namespace ShopBundle\Entity\Product;
 
-use Doctrine\ORM\Mapping as ORM,
-    ShopBundle\Entity\Product,
-    ShopBundle\Entity\SalesSession;
+use Doctrine\ORM\Mapping as ORM;
+use ShopBundle\Entity\Product;
+use ShopBundle\Entity\SalesSession;
 
 /**
  * This entity stores how many products of a certain type will be available for sale during a certain sales session.

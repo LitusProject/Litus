@@ -20,11 +20,11 @@
 
 namespace FormBundle\Controller\Admin;
 
-use FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\Form\Doodle,
-    FormBundle\Entity\Node\Form\Form as RegularForm,
-    FormBundle\Entity\ViewerMap,
-    Zend\View\Model\ViewModel;
+use FormBundle\Entity\Node\Form;
+use FormBundle\Entity\Node\Form\Doodle;
+use FormBundle\Entity\Node\Form\Form as RegularForm;
+use FormBundle\Entity\ViewerMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * FormController

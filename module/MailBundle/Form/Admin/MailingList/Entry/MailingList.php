@@ -20,8 +20,8 @@
 
 namespace MailBundle\Form\Admin\MailingList\Entry;
 
-use CommonBundle\Entity\User\Person,
-    MailBundle\Entity\MailingList as MailingListEntity;
+use CommonBundle\Entity\User\Person;
+use MailBundle\Entity\MailingList as MailingListEntity;
 
 /**
  * Add MailingList

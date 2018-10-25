@@ -20,11 +20,11 @@
 
 namespace ApiBundle\Controller;
 
-use CommonBundle\Entity\User\Person,
-    ShiftBundle\Entity\Shift,
-    ShiftBundle\Entity\Shift\Responsible,
-    ShiftBundle\Entity\Shift\Volunteer,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person;
+use ShiftBundle\Entity\Shift;
+use ShiftBundle\Entity\Shift\Responsible;
+use ShiftBundle\Entity\Shift\Volunteer;
+use Zend\View\Model\ViewModel;
 
 /**
  * ShiftController

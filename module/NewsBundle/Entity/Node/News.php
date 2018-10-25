@@ -20,13 +20,13 @@
 
 namespace NewsBundle\Entity\Node;
 
-use CommonBundle\Component\Util\Url,
-    CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    Locale;
+use CommonBundle\Component\Util\Url;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Locale;
 
 /**
  * This entity stores the node item.

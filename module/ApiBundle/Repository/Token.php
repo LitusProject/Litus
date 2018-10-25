@@ -20,10 +20,10 @@
 
 namespace ApiBundle\Repository;
 
-use ApiBundle\Document\Code\Authorization as AuthorizationCode,
-    DateTime,
-    Doctrine\ODM\MongoDB\DocumentRepository,
-    MongoId;
+use ApiBundle\Document\Code\Authorization as AuthorizationCode;
+use DateTime;
+use Doctrine\ODM\MongoDB\DocumentRepository;
+use MongoId;
 
 /**
  * Token

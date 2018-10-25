@@ -20,9 +20,9 @@
 
 namespace BrBundle\Repository\Invoice;
 
-use BrBundle\Entity\Collaborator,
-    BrBundle\Entity\Company,
-    Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Collaborator;
+use BrBundle\Entity\Company;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * ManualInvoice

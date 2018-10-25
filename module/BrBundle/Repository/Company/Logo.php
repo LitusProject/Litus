@@ -20,8 +20,8 @@
 
 namespace BrBundle\Repository\Company;
 
-use BrBundle\Entity\Company as CompanyEntity,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Company as CompanyEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * Logo

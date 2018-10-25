@@ -20,8 +20,8 @@
 
 namespace BrBundle\Repository\Contract;
 
-use BrBundle\Entity\Contract,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Contract;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * ContractHistory

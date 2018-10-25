@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Repository\Sale\Session\Restriction;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CudiBundle\Entity\Sale\Session;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Sale\Session;
 
 /**
  * Study

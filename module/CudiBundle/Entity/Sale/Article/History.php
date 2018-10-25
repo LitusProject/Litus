@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Entity\Sale\Article;
 
-use CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\Mapping as ORM;
+use CudiBundle\Entity\Sale\Article;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\History")

@@ -20,9 +20,9 @@
 
 namespace FormBundle\Controller\Admin;
 
-use FormBundle\Entity\Node\Form,
-    FormBundle\Entity\ViewerMap,
-    Zend\View\Model\ViewModel;
+use FormBundle\Entity\Node\Form;
+use FormBundle\Entity\ViewerMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * ViewerController

@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Form\Admin\Academic;
 
-use CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    LogicException;
+use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
+use LogicException;
 
 /**
  * Edit Academic

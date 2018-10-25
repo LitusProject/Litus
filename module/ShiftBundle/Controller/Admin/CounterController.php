@@ -20,13 +20,13 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    ShiftBundle\Component\Document\Generator\Counter\Csv as CsvGenerator,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use ShiftBundle\Component\Document\Generator\Counter\Csv as CsvGenerator;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * CounterController

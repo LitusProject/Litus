@@ -20,9 +20,9 @@
 
 namespace FormBundle\Entity\Field\Translation;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field\OptionSelector;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Field\OptionSelector;
 
 /**
  * This entity stores the node item.

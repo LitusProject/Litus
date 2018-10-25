@@ -20,9 +20,9 @@
 
 namespace SyllabusBundle\Controller;
 
-use CommonBundle\Component\Util\AcademicYear,
-    Doctrine\ORM\Query,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use Doctrine\ORM\Query;
+use Zend\View\Model\ViewModel;
 
 /**
  * SubjectController

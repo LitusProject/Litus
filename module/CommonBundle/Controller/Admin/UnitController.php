@@ -20,14 +20,14 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    CommonBundle\Entity\General\Organization\Unit,
-    CommonBundle\Entity\User\Person\Organization\UnitMap\Academic as UnitMapAcademic,
-    CommonBundle\Entity\User\Person\Organization\UnitMap\External as UnitMapExternal,
-    Imagick,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\Acl\Role;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use CommonBundle\Entity\General\Organization\Unit;
+use CommonBundle\Entity\User\Person\Organization\UnitMap\Academic as UnitMapAcademic;
+use CommonBundle\Entity\User\Person\Organization\UnitMap\External as UnitMapExternal;
+use Imagick;
+use Zend\View\Model\ViewModel;
 
 /**
  * UnitController

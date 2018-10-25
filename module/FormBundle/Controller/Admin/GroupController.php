@@ -20,10 +20,10 @@
 
 namespace FormBundle\Controller\Admin;
 
-use FormBundle\Entity\Node\Group,
-    FormBundle\Entity\Node\Group\Mapping,
-    FormBundle\Entity\ViewerMap,
-    Zend\View\Model\ViewModel;
+use FormBundle\Entity\Node\Group;
+use FormBundle\Entity\Node\Group\Mapping;
+use FormBundle\Entity\ViewerMap;
+use Zend\View\Model\ViewModel;
 
 /**
  * GroupController

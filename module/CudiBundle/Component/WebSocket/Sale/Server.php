@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\WebSocket\User,
-    DateTime,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\WebSocket\User;
+use DateTime;
+use Doctrine\ORM\EntityManager;
 
 /**
  * This is the server to handle all requests by the websocket protocol for the Queue.

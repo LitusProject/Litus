@@ -20,9 +20,9 @@
 
 namespace BrBundle\Entity\Event;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Event,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\Event;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Event\CompanyMap")

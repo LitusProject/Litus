@@ -20,9 +20,9 @@
 
 namespace FormBundle\Controller\Manage;
 
-use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-    CommonBundle\Component\Authentication\Authentication,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
+use CommonBundle\Component\Authentication\Authentication;
+use Zend\View\Model\ViewModel;
 
 /**
  * AuthController

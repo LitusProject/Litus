@@ -20,9 +20,9 @@
 
 namespace SyllabusBundle\Component\Document\Generator;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Doctrine\ORM\EntityManager,
-    SyllabusBundle\Entity\Group as GroupEntity;
+use CommonBundle\Entity\General\AcademicYear;
+use Doctrine\ORM\EntityManager;
+use SyllabusBundle\Entity\Group as GroupEntity;
 
 /**
  * Group

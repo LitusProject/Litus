@@ -20,18 +20,18 @@
 
 namespace SecretaryBundle\Component\Controller;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Person\Organization\AcademicYearMap,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    DateInterval,
-    DateTime,
-    SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
-    SecretaryBundle\Entity\Syllabus\StudyEnrollment,
-    SecretaryBundle\Entity\Syllabus\SubjectEnrollment,
-    SecretaryBundle\Form\Registration\Subject\Add as AddSubjectForm,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization;
+use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Person\Organization\AcademicYearMap;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
+use DateInterval;
+use DateTime;
+use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
+use SecretaryBundle\Entity\Syllabus\StudyEnrollment;
+use SecretaryBundle\Entity\Syllabus\SubjectEnrollment;
+use SecretaryBundle\Form\Registration\Subject\Add as AddSubjectForm;
+use Zend\View\Model\ViewModel;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>

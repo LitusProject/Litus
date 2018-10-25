@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Entity\General;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This class represents a visit, every page view is a visit

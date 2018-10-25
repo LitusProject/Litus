@@ -20,11 +20,11 @@
 
 namespace FormBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\File\TmpFile as TmpFile,
-    CommonBundle\Entity\General\Language,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    ZipArchive;
+use CommonBundle\Component\Util\File\TmpFile as TmpFile;
+use CommonBundle\Entity\General\Language;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use ZipArchive;
 
 /**
  * Zip

@@ -20,10 +20,10 @@
 
 namespace ShopBundle\Controller\Admin;
 
-use DateTime,
-    ShopBundle\Entity\Product\SessionStockEntry,
-    ShopBundle\Entity\SalesSession,
-    Zend\View\Model\ViewModel;
+use DateTime;
+use ShopBundle\Entity\Product\SessionStockEntry;
+use ShopBundle\Entity\SalesSession;
+use Zend\View\Model\ViewModel;
 
 /**
  * SalesSessionController

@@ -20,9 +20,9 @@
 
 namespace ApiBundle\Controller;
 
-use CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\User\Person\Academic,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person;
+use CommonBundle\Entity\User\Person\Academic;
+use Zend\View\Model\ViewModel;
 
 /**
  * AuthController

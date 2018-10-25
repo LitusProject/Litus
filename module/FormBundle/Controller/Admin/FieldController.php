@@ -20,15 +20,15 @@
 
 namespace FormBundle\Controller\Admin;
 
-use FormBundle\Component\Exception\UnsupportedTypeException,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Field\Checkbox as CheckboxField,
-    FormBundle\Entity\Field\Dropdown as DropdownField,
-    FormBundle\Entity\Field\File as FileField,
-    FormBundle\Entity\Field\Text as StringField,
-    FormBundle\Entity\Field\TimeSlot as TimeSlotField,
-    FormBundle\Entity\Node\Form,
-    Zend\View\Model\ViewModel;
+use FormBundle\Component\Exception\UnsupportedTypeException;
+use FormBundle\Entity\Field;
+use FormBundle\Entity\Field\Checkbox as CheckboxField;
+use FormBundle\Entity\Field\Dropdown as DropdownField;
+use FormBundle\Entity\Field\File as FileField;
+use FormBundle\Entity\Field\Text as StringField;
+use FormBundle\Entity\Field\TimeSlot as TimeSlotField;
+use FormBundle\Entity\Node\Form;
+use Zend\View\Model\ViewModel;
 
 /**
  * FieldController

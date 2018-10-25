@@ -44,9 +44,9 @@
 
 namespace CommonBundle\Component\Doctrine\ORM;
 
-use Doctrine\ORM\EntityRepository as DoctrineEntityRepository,
-    Doctrine\ORM\Query,
-    LogicException;
+use Doctrine\ORM\EntityRepository as DoctrineEntityRepository;
+use Doctrine\ORM\Query;
+use LogicException;
 
 /**
  * Improved EntityRepository that handles conversion from methods returning a {@link Query}

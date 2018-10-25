@@ -20,9 +20,9 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    SyllabusBundle\Entity\Study\Combination as CombinationEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use SyllabusBundle\Entity\Study\Combination as CombinationEntity;
 
 /**
  * Study

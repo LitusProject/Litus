@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Repository\Article;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CudiBundle\Entity\Article;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Article;
 
 /**
  * History

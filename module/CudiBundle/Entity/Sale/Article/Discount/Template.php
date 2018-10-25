@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Entity\Sale\Article\Discount;
 
-use CommonBundle\Entity\General\Organization,
-    CudiBundle\Entity\Sale\Article,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\Organization;
+use CudiBundle\Entity\Sale\Article;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Discount\Template")

@@ -20,14 +20,14 @@
 
 namespace CalendarBundle\Controller;
 
-use CalendarBundle\Component\Document\Generator\Ics as IcsGenerator,
-    CalendarBundle\Entity\Node\Event,
-    CommonBundle\Component\Util\File\TmpFile,
-    DateInterval,
-    DateTime,
-    IntlDateFormatter,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CalendarBundle\Component\Document\Generator\Ics as IcsGenerator;
+use CalendarBundle\Entity\Node\Event;
+use CommonBundle\Component\Util\File\TmpFile;
+use DateInterval;
+use DateTime;
+use IntlDateFormatter;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * CalendarController

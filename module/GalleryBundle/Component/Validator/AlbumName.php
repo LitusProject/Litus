@@ -20,11 +20,11 @@
 
 namespace GalleryBundle\Component\Validator;
 
-use CommonBundle\Component\Form\Form,
-    CommonBundle\Component\Util\Url,
-    CommonBundle\Component\Validator\FormAwareInterface,
-    DateTime,
-    GalleryBundle\Entity\Album\Album;
+use CommonBundle\Component\Form\Form;
+use CommonBundle\Component\Util\Url;
+use CommonBundle\Component\Validator\FormAwareInterface;
+use DateTime;
+use GalleryBundle\Entity\Album\Album;
 
 /**
  * Matches the given page title against the database to check whether it is

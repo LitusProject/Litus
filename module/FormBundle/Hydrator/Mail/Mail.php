@@ -20,8 +20,8 @@
 
 namespace FormBundle\Hydrator\Mail;
 
-use FormBundle\Entity\Mail\Mail as MailEntity,
-    FormBundle\Entity\Mail\Translation as TranslationEntity;
+use FormBundle\Entity\Mail\Mail as MailEntity;
+use FormBundle\Entity\Mail\Translation as TranslationEntity;
 
 class Mail extends \CommonBundle\Component\Hydrator\Hydrator
 {

@@ -20,13 +20,13 @@
 
 namespace BrBundle\Entity;
 
-use CalendarBundle\Entity\Node\Event,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use CalendarBundle\Entity\Node\Event;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * A product is something that can be sold to companies.

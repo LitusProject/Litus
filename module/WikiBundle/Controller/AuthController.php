@@ -20,10 +20,10 @@
 
 namespace WikiBundle\Controller;
 
-use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-    CommonBundle\Component\Authentication\Authentication,
-    Exception,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
+use CommonBundle\Component\Authentication\Authentication;
+use Exception;
+use Zend\View\Model\ViewModel;
 
 /**
  * AuthController

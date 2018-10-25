@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Session as SessionEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Sale\Session as SessionEntity;
 
 /**
  * QueueItem

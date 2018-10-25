@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Entity\User\Shibboleth;
 
-use DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * We register the server's hostname as the Shibboleth SP with the KU Leuven.

@@ -19,12 +19,12 @@
  */
 namespace PromBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    Exception,
-    PromBundle\Entity\Bus\Passenger;
+use CommonBundle\Entity\General\AcademicYear;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Exception;
+use PromBundle\Entity\Bus\Passenger;
 
 /**
  * This is the entity for a bus

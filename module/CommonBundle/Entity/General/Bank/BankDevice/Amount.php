@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Entity\General\Bank\BankDevice;
 
-use CommonBundle\Entity\General\Bank\BankDevice,
-    CommonBundle\Entity\General\Bank\CashRegister,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\Bank\BankDevice;
+use CommonBundle\Entity\General\Bank\CashRegister;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * For a given register, this class has the amount

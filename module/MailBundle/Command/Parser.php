@@ -20,9 +20,9 @@
 
 namespace MailBundle\Command;
 
-use MailBundle\Component\Parser\Message as MessageParser,
-    MailBundle\Document\Message,
-    MailBundle\Document\Message\Attachment;
+use MailBundle\Component\Parser\Message as MessageParser;
+use MailBundle\Document\Message;
+use MailBundle\Document\Message\Attachment;
 
 /**
  * Parser

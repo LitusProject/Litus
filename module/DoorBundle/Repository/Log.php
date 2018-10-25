@@ -20,8 +20,8 @@
 
 namespace DoorBundle\Repository;
 
-use DateTime,
-    Doctrine\ODM\MongoDB\DocumentRepository;
+use DateTime;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**
  * Log

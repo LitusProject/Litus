@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Repository\File;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CudiBundle\Entity\Article,
-    CudiBundle\Entity\File\File as FileEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Article;
+use CudiBundle\Entity\File\File as FileEntity;
 
 /**
  * Mapping

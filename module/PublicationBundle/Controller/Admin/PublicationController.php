@@ -20,8 +20,8 @@
 
 namespace PublicationBundle\Controller\Admin;
 
-use PublicationBundle\Entity\Publication,
-    Zend\View\Model\ViewModel;
+use PublicationBundle\Entity\Publication;
+use Zend\View\Model\ViewModel;
 
 /**
  * PublicationController

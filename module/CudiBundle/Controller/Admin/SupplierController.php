@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CudiBundle\Entity\Supplier,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Supplier;
+use Zend\View\Model\ViewModel;
 
 /**
  * SupplierController

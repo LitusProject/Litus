@@ -20,8 +20,8 @@
 
 namespace BrBundle\Repository\Invoice;
 
-use BrBundle\Entity\Order,
-    Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Order;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * ContractInvoice

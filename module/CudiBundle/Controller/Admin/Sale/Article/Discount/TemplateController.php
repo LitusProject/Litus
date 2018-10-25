@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Article\Discount;
 
-use CudiBundle\Entity\Sale\Article\Discount\Template,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Sale\Article\Discount\Template;
+use Zend\View\Model\ViewModel;
 
 /**
  * TemplateController

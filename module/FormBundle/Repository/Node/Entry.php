@@ -20,11 +20,11 @@
 
 namespace FormBundle\Repository\Node;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\User\Person,
-    FormBundle\Entity\Node\Form as FormEntity,
-    FormBundle\Entity\Node\Group as GroupEntity,
-    FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\User\Person;
+use FormBundle\Entity\Node\Form as FormEntity;
+use FormBundle\Entity\Node\Group as GroupEntity;
+use FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
 
 /**
  * Entry

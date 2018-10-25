@@ -20,10 +20,10 @@
 
 namespace CalendarBundle\Controller\Admin;
 
-use CalendarBundle\Entity\Node\Event,
-    Imagick,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CalendarBundle\Entity\Node\Event;
+use Imagick;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * Handles system admin for calendar.

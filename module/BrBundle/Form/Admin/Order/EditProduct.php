@@ -20,8 +20,8 @@
 
 namespace BrBundle\Form\Admin\Order;
 
-use BrBundle\Entity\Product\OrderEntry,
-    LogicException;
+use BrBundle\Entity\Product\OrderEntry;
+use LogicException;
 
 /**
  * Add a product.

@@ -20,28 +20,28 @@
 
 namespace ApiBundle\Component\Controller\ActionController;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver,
-    CommonBundle\Component\Controller\Exception\RuntimeException,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\RouterTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionStorageTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\ViewRendererTrait,
-    CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\General\Visit,
-    Zend\Http\Header\HeaderInterface,
-    Zend\Mvc\MvcEvent,
-    Zend\Uri\UriFactory,
-    Zend\Validator\AbstractValidator,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
+use CommonBundle\Component\Controller\Exception\RuntimeException;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\RouterTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionStorageTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ViewRendererTrait;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\General\Visit;
+use Zend\Http\Header\HeaderInterface;
+use Zend\Mvc\MvcEvent;
+use Zend\Uri\UriFactory;
+use Zend\Validator\AbstractValidator;
+use Zend\View\Model\ViewModel;
 
 /**
  * We extend the CommonBundle controller.

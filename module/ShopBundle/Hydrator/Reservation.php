@@ -20,8 +20,8 @@
 
 namespace ShopBundle\Hydrator;
 
-use DateTime,
-    ShopBundle\Entity\Reservation as ReservationEntity;
+use DateTime;
+use ShopBundle\Entity\Reservation as ReservationEntity;
 
 /**
  * Class Reservation

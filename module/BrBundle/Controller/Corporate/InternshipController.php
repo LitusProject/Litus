@@ -20,12 +20,12 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Job,
-    BrBundle\Entity\Company\Request\RequestInternship,
-    BrBundle\Entity\User\Person\Corporate,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\Company\Job;
+use BrBundle\Entity\Company\Request\RequestInternship;
+use BrBundle\Entity\User\Person\Corporate;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * InternshipController

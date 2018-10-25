@@ -20,8 +20,8 @@
 
 namespace ShopBundle\Controller\Admin;
 
-use ShopBundle\Entity\Product,
-    Zend\View\Model\ViewModel;
+use ShopBundle\Entity\Product;
+use Zend\View\Model\ViewModel;
 
 /**
  * ProductController

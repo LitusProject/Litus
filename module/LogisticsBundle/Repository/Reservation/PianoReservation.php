@@ -20,10 +20,10 @@
 
 namespace LogisticsBundle\Repository\Reservation;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    LogisticsBundle\Entity\Reservation\ReservableResource as ReservableResourceEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use LogisticsBundle\Entity\Reservation\ReservableResource as ReservableResourceEntity;
 
 /**
  * PianoReservation

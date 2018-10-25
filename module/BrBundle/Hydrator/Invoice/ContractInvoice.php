@@ -20,8 +20,8 @@
 
 namespace BrBundle\Hydrator\Invoice;
 
-use BrBundle\Entity\Invoice\InvoiceEntry as InvoiceEntryEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use BrBundle\Entity\Invoice\InvoiceEntry as InvoiceEntryEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
  * This hydrator hydrates/extracts Invoice data.

@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Component\Validator\Service;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\Validator\AbstractValidator,
-    Interop\Container\ContainerInterface,
-    Zend\ServiceManager\Factory\AbstractFactoryInterface,
-    Zend\Validator\AbstractValidator as ZendAbstractValidator;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\Validator\AbstractValidator;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Zend\Validator\AbstractValidator as ZendAbstractValidator;
 
 /**
  * Abstract factory instantiating an installer.

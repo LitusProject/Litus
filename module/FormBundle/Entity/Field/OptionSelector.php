@@ -20,12 +20,12 @@
 
 namespace FormBundle\Entity\Field;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Node\Form,
-    Locale;
+use CommonBundle\Entity\General\Language;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Field;
+use FormBundle\Entity\Node\Form;
+use Locale;
 
 /**
  * An abstract class that stores a number of options.

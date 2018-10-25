@@ -20,13 +20,13 @@
 
 namespace LogisticsBundle\Controller;
 
-use CommonBundle\Component\Util\File\TmpFile as TmpFile,
-    DateTime,
-    LogisticsBundle\Component\Document\Generator\Ics as IcsGenerator,
-    LogisticsBundle\Document\Token,
-    LogisticsBundle\Entity\Reservation\VanReservation,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile as TmpFile;
+use DateTime;
+use LogisticsBundle\Component\Document\Generator\Ics as IcsGenerator;
+use LogisticsBundle\Document\Token;
+use LogisticsBundle\Entity\Reservation\VanReservation;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * @author Niels Avonds <niels.avonds@litus.cc>

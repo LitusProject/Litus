@@ -20,12 +20,12 @@
 
 namespace ShiftBundle\Repository;
 
-use CalendarBundle\Entity\Node\Event,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization\Unit as UnitEntity,
-    CommonBundle\Entity\User\Person,
-    DateTime;
+use CalendarBundle\Entity\Node\Event;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization\Unit as UnitEntity;
+use CommonBundle\Entity\User\Person;
+use DateTime;
 
 /**
  * Shift

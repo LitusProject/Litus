@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Form\Admin\Sale\Session\Restriction;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CudiBundle\Entity\Sale\Session,
-    CudiBundle\Entity\Sale\Session\Restriction,
-    CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction;
+use CommonBundle\Component\Util\AcademicYear;
+use CudiBundle\Entity\Sale\Session;
+use CudiBundle\Entity\Sale\Session\Restriction;
+use CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction;
 
 /**
  * Add Sale Session content

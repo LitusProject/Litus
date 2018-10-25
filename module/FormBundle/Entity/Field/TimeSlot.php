@@ -20,14 +20,14 @@
 
 namespace FormBundle\Entity\Field;
 
-use CommonBundle\Entity\General\Language,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Node\Form,
-    IntlDateFormatter,
-    Locale;
+use CommonBundle\Entity\General\Language;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Field;
+use FormBundle\Entity\Node\Form;
+use IntlDateFormatter;
+use Locale;
 
 /**
  * This entity stores the node item.

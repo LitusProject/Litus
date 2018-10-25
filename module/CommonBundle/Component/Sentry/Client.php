@@ -20,16 +20,16 @@
 
 namespace CommonBundle\Component\Sentry;
 
-use CommonBundle\Component\Authentication\Authentication,
-    Exception,
-    Raven_Client,
-    Symfony\Component\Console\Event\ConsoleErrorEvent,
-    Throwable,
-    Zend\Console\Request as ConsoleRequest,
-    Zend\Http\PhpEnvironment\Request as PhpRequest,
-    Zend\Mvc\Application,
-    Zend\Mvc\MvcEvent,
-    Zend\Stdlib\RequestInterface;
+use CommonBundle\Component\Authentication\Authentication;
+use Exception;
+use Raven_Client;
+use Symfony\Component\Console\Event\ConsoleErrorEvent;
+use Throwable;
+use Zend\Console\Request as ConsoleRequest;
+use Zend\Http\PhpEnvironment\Request as PhpRequest;
+use Zend\Mvc\Application;
+use Zend\Mvc\MvcEvent;
+use Zend\Stdlib\RequestInterface;
 
 /**
  * Sentry is an open-source error tracking platform that provides complete app logic,

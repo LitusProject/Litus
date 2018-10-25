@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Component\Mail;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ORM\EntityManager,
-    Zend\Mail\Message,
-    Zend\Mail\Transport\TransportInterface;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\EntityManager;
+use Zend\Mail\Message;
+use Zend\Mail\Transport\TransportInterface;
 
 /**
  * Booking

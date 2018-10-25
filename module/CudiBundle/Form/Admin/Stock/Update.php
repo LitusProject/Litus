@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Form\Admin\Stock;
 
-use CudiBundle\Entity\Sale\Article,
-    LogicException;
+use CudiBundle\Entity\Sale\Article;
+use LogicException;
 
 /**
  * Update Stock

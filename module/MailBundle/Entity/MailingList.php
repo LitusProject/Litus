@@ -20,9 +20,9 @@
 
 namespace MailBundle\Entity;
 
-use CommonBundle\Entity\User\Person\Academic,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person\Academic;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a list.

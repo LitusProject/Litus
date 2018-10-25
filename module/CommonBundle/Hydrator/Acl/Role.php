@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Hydrator\Acl;
 
-use CommonBundle\Entity\Acl\Action as ActionEntity,
-    CommonBundle\Entity\Acl\Role as RoleEntity;
+use CommonBundle\Entity\Acl\Action as ActionEntity;
+use CommonBundle\Entity\Acl\Role as RoleEntity;
 
 class Role extends \CommonBundle\Component\Hydrator\Hydrator
 {

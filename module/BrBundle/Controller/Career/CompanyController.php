@@ -20,11 +20,11 @@
 
 namespace BrBundle\Controller\Career;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Page,
-    DateTime,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\Company\Page;
+use DateTime;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * CompanyController

@@ -20,13 +20,13 @@
 
 namespace ApiBundle\Controller;
 
-use ApiBundle\Document\Code\Authorization as AuthorizationCode,
-    ApiBundle\Document\Token\Access as AccessToken,
-    ApiBundle\Document\Token\Refresh as RefreshToken,
-    CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter,
-    CommonBundle\Component\Authentication\Authentication,
-    CommonBundle\Entity\User\Person\Academic,
-    Zend\View\Model\ViewModel;
+use ApiBundle\Document\Code\Authorization as AuthorizationCode;
+use ApiBundle\Document\Token\Access as AccessToken;
+use ApiBundle\Document\Token\Refresh as RefreshToken;
+use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as ShibbolethAdapter;
+use CommonBundle\Component\Authentication\Authentication;
+use CommonBundle\Entity\User\Person\Academic;
+use Zend\View\Model\ViewModel;
 
 /**
  * OAuthController

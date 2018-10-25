@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Cudibundle\Entity\IsicCard,
-    Zend\Soap\Client as SoapClient,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use Cudibundle\Entity\IsicCard;
+use Zend\Soap\Client as SoapClient;
+use Zend\View\Model\ViewModel;
 
 /**
  * IsicController

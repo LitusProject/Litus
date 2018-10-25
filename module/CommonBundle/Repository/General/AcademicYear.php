@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Repository\General;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    DateInterval;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use DateInterval;
 
 /**
  * AcademicYear

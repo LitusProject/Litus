@@ -20,10 +20,10 @@
 
 namespace SecretaryBundle\Entity\Syllabus;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    Doctrine\ORM\Mapping as ORM,
-    SyllabusBundle\Entity\Subject;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
+use Doctrine\ORM\Mapping as ORM;
+use SyllabusBundle\Entity\Subject;
 
 /**
  * This entity stores the node item.

@@ -20,16 +20,16 @@
 
 namespace FormBundle\Form\Admin\Field;
 
-use CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Entity\General\Language,
-    FormBundle\Entity\Field,
-    FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity,
-    FormBundle\Entity\Field\Dropdown as DropdownFieldEntity,
-    FormBundle\Entity\Field\File as FileFieldEntity,
-    FormBundle\Entity\Field\Text as StringFieldEntity,
-    FormBundle\Entity\Field\TimeSlot as TimeSlotFieldEntity,
-    FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\Form\Doodle;
+use CommonBundle\Component\Form\FieldsetInterface;
+use CommonBundle\Entity\General\Language;
+use FormBundle\Entity\Field;
+use FormBundle\Entity\Field\Checkbox as CheckboxFieldEntity;
+use FormBundle\Entity\Field\Dropdown as DropdownFieldEntity;
+use FormBundle\Entity\Field\File as FileFieldEntity;
+use FormBundle\Entity\Field\Text as StringFieldEntity;
+use FormBundle\Entity\Field\TimeSlot as TimeSlotFieldEntity;
+use FormBundle\Entity\Node\Form;
+use FormBundle\Entity\Node\Form\Doodle;
 
 /**
  * Add Field

@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Entity\Stock\Order;
 
-use CudiBundle\Entity\Sale\Article,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use CudiBundle\Entity\Sale\Article;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Order\Virtual")

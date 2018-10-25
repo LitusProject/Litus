@@ -20,8 +20,8 @@
 
 namespace SecretaryBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
 
 /**
  * Promotion

@@ -20,21 +20,21 @@
 
 namespace SyllabusBundle\Component\XMLParser;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Status\University as UniversityStatus,
-    Doctrine\ORM\EntityManager,
-    RuntimeException,
-    SimpleXMLElement,
-    SyllabusBundle\Entity\Study as StudyEntity,
-    SyllabusBundle\Entity\Study\Combination,
-    SyllabusBundle\Entity\Study\ModuleGroup,
-    SyllabusBundle\Entity\Study\SubjectMap,
-    SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\ProfMap,
-    Zend\Http\Client as HttpClient,
-    Zend\Mail\Transport\TransportInterface,
-    finfo;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Status\University as UniversityStatus;
+use Doctrine\ORM\EntityManager;
+use RuntimeException;
+use SimpleXMLElement;
+use SyllabusBundle\Entity\Study as StudyEntity;
+use SyllabusBundle\Entity\Study\Combination;
+use SyllabusBundle\Entity\Study\ModuleGroup;
+use SyllabusBundle\Entity\Study\SubjectMap;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\ProfMap;
+use Zend\Http\Client as HttpClient;
+use Zend\Mail\Transport\TransportInterface;
+use finfo;
 
 /**
  * Study

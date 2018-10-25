@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Controller\Admin\Stock;
 
-use CudiBundle\Entity\Stock\Retour,
-    CudiBundle\Entity\Supplier,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Stock\Retour;
+use CudiBundle\Entity\Supplier;
+use Zend\View\Model\ViewModel;
 
 /**
  * RetourController

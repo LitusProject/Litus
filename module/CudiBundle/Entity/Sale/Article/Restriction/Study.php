@@ -20,14 +20,14 @@
 
 namespace CudiBundle\Entity\Sale\Article\Restriction;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Sale\Article\Restriction,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    SyllabusBundle\Entity\Study as StudyEntity;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Sale\Article;
+use CudiBundle\Entity\Sale\Article\Restriction;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Restriction\Study")

@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Session;
 
-use CommonBundle\Component\Controller\Exception\RuntimeException,
-    CudiBundle\Entity\Sale\Session,
-    CudiBundle\Entity\Sale\Session\Restriction,
-    CudiBundle\Entity\Sale\Session\Restriction\Name as NameRestriction,
-    CudiBundle\Entity\Sale\Session\Restriction\Study as StudyRestriction,
-    CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Controller\Exception\RuntimeException;
+use CudiBundle\Entity\Sale\Session;
+use CudiBundle\Entity\Sale\Session\Restriction;
+use CudiBundle\Entity\Sale\Session\Restriction\Name as NameRestriction;
+use CudiBundle\Entity\Sale\Session\Restriction\Study as StudyRestriction;
+use CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction;
+use Zend\View\Model\ViewModel;
 
 /**
  * RestrictionController

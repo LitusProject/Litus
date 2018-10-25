@@ -20,9 +20,9 @@
 
 namespace CalendarBundle\Form\Admin\Event;
 
-use CalendarBundle\Entity\Node\Event as EventEntity,
-    CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Entity\General\Language;
+use CalendarBundle\Entity\Node\Event as EventEntity;
+use CommonBundle\Component\Form\FieldsetInterface;
+use CommonBundle\Entity\General\Language;
 
 /**
  * Add an event.

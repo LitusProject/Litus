@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Component\InputFilter;
 
-use Zend\InputFilter\Factory as ZendFactory,
-    Zend\InputFilter\InputFilter;
+use Zend\InputFilter\Factory as ZendFactory;
+use Zend\InputFilter\InputFilter;
 
 class Factory extends ZendFactory
 {

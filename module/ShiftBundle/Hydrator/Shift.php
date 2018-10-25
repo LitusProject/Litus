@@ -20,8 +20,8 @@
 
 namespace ShiftBundle\Hydrator;
 
-use CommonBundle\Entity\User\Person\Academic,
-    ShiftBundle\Entity\Shift as ShiftEntity;
+use CommonBundle\Entity\User\Person\Academic;
+use ShiftBundle\Entity\Shift as ShiftEntity;
 
 class Shift extends \CommonBundle\Component\Hydrator\Hydrator
 {

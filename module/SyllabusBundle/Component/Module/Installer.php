@@ -20,10 +20,10 @@
 
 namespace SyllabusBundle\Component\Module;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    DateInterval,
-    DateTime;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use DateInterval;
+use DateTime;
 
 /**
  * SyllabusBundle installer

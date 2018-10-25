@@ -20,9 +20,9 @@
 
 namespace PromBundle\Controller\Admin;
 
-use PromBundle\Entity\Bus\Passenger,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use PromBundle\Entity\Bus\Passenger;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * PassengerController

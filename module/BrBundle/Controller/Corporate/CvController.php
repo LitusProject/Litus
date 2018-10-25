@@ -20,11 +20,11 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use BrBundle\Entity\Cv\Util,
-    BrBundle\Entity\User\Person\Corporate,
-    CommonBundle\Entity\General\AcademicYear,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Cv\Util;
+use BrBundle\Entity\User\Person\Corporate;
+use CommonBundle\Entity\General\AcademicYear;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * CvController

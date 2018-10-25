@@ -20,19 +20,19 @@
 
 namespace CommonBundle\Component\Module;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Console\Command,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
-    CommonBundle\Entity\Acl\Action,
-    CommonBundle\Entity\Acl\Resource,
-    CommonBundle\Entity\Acl\Role,
-    CommonBundle\Entity\General\Config as ConfigEntity,
-    Exception,
-    RuntimeException;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\Console\Command;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Entity\Acl\Action;
+use CommonBundle\Entity\Acl\Resource;
+use CommonBundle\Entity\Acl\Role;
+use CommonBundle\Entity\General\Config as ConfigEntity;
+use Exception;
+use RuntimeException;
 
 /**
  * Installs a module.

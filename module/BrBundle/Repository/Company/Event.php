@@ -20,9 +20,9 @@
 
 namespace BrBundle\Repository\Company;
 
-use BrBundle\Entity\Company as CompanyEntity,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    DateTime;
+use BrBundle\Entity\Company as CompanyEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use DateTime;
 
 /**
  * Event

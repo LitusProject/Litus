@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Component\Authentication;
 
-use CommonBundle\Component\Authentication\AbstractAuthenticationService as AuthenticationService,
-    CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
-    RuntimeException;
+use CommonBundle\Component\Authentication\AbstractAuthenticationService as AuthenticationService;
+use CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter;
+use RuntimeException;
 
 /**
  * Authentication

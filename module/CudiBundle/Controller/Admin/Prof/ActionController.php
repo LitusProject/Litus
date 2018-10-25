@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Admin\Prof;
 
-use CudiBundle\Entity\Article\History,
-    CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog,
-    CudiBundle\Entity\Prof\Action,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article\History;
+use CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog;
+use CudiBundle\Entity\Prof\Action;
+use Zend\View\Model\ViewModel;
 
 /**
  * ActionController

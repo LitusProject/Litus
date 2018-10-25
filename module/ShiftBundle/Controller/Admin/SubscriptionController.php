@@ -20,11 +20,11 @@
 
 namespace ShiftBundle\Controller\Admin;
 
-use ShiftBundle\Entity\Shift,
-    ShiftBundle\Entity\Shift\Responsible,
-    ShiftBundle\Entity\Shift\Volunteer,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use ShiftBundle\Entity\Shift;
+use ShiftBundle\Entity\Shift\Responsible;
+use ShiftBundle\Entity\Shift\Volunteer;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * ShiftController

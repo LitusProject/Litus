@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Controller\Prof\Subject;
 
-use SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\Comment,
-    SyllabusBundle\Entity\Subject\ProfMap,
-    SyllabusBundle\Entity\Subject\Reply,
-    Zend\View\Model\ViewModel;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\Comment;
+use SyllabusBundle\Entity\Subject\ProfMap;
+use SyllabusBundle\Entity\Subject\Reply;
+use Zend\View\Model\ViewModel;
 
 /**
  * CommentController

@@ -20,12 +20,12 @@
 
 namespace FormBundle\Entity\Node;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    Locale;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use Locale;
 
 /**
  * This entity stores the form group item

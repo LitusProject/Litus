@@ -20,8 +20,8 @@
 
 namespace BrBundle\Form\Admin\Company\Logo;
 
-use BrBundle\Entity\Company,
-    BrBundle\Entity\Company\Logo;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\Company\Logo;
 
 /**
  * Add Logo

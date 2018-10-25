@@ -20,8 +20,8 @@
 
 namespace TicketBundle\Hydrator;
 
-use TicketBundle\Component\Ticket\Ticket as TicketBook,
-    TicketBundle\Entity\GuestInfo;
+use TicketBundle\Component\Ticket\Ticket as TicketBook;
+use TicketBundle\Entity\GuestInfo;
 
 class Ticket extends \CommonBundle\Component\Hydrator\Hydrator
 {

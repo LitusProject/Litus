@@ -20,9 +20,9 @@
 
 namespace LogisticsBundle\Repository\Reservation;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    DateTime,
-    LogisticsBundle\Entity\Reservation\ReservableResource as ReservableResourceEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use DateTime;
+use LogisticsBundle\Entity\Reservation\ReservableResource as ReservableResourceEntity;
 
 /**
  * Reservation

@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Component\Util\WebSocket as WebSocketUtil,
-    CommonBundle\Entity\General\Bank\CashRegister,
-    CudiBundle\Entity\Sale\Session,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\WebSocket as WebSocketUtil;
+use CommonBundle\Entity\General\Bank\CashRegister;
+use CudiBundle\Entity\Sale\Session;
+use Zend\View\Model\ViewModel;
 
 /**
  * SessionController

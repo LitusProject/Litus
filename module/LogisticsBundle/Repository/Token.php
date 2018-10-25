@@ -20,8 +20,8 @@
 
 namespace LogisticsBundle\Repository;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ODM\MongoDB\DocumentRepository;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**
  * Token

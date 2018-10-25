@@ -20,20 +20,20 @@
 
 namespace ShiftBundle\Entity;
 
-use CalendarBundle\Entity\Node\Event,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Location,
-    CommonBundle\Entity\General\Organization\Unit,
-    CommonBundle\Entity\User\Person,
-    DateInterval,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException,
-    ShiftBundle\Entity\Shift\Responsible,
-    ShiftBundle\Entity\Shift\Volunteer,
-    Zend\Mail\Message;
+use CalendarBundle\Entity\Node\Event;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Location;
+use CommonBundle\Entity\General\Organization\Unit;
+use CommonBundle\Entity\User\Person;
+use DateInterval;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
+use ShiftBundle\Entity\Shift\Responsible;
+use ShiftBundle\Entity\Shift\Volunteer;
+use Zend\Mail\Message;
 
 /**
  * This entity stores a shift.

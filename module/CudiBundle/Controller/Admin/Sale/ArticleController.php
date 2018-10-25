@@ -20,18 +20,18 @@
 
 namespace CudiBundle\Controller\Admin\Sale;
 
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Component\Document\Generator\SaleArticles as SaleArticlesGenerator,
-    CudiBundle\Entity\Article,
-    CudiBundle\Entity\Article\Internal as InternalArticle,
-    CudiBundle\Entity\Log\Article\Sale\Bookable as BookableLog,
-    CudiBundle\Entity\Log\Article\Sale\Unbookable as UnbookableLog,
-    CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations,
-    CudiBundle\Entity\Sale\Article as SaleArticle,
-    CudiBundle\Entity\Sale\Article\History,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Component\Document\Generator\SaleArticles as SaleArticlesGenerator;
+use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Article\Internal as InternalArticle;
+use CudiBundle\Entity\Log\Article\Sale\Bookable as BookableLog;
+use CudiBundle\Entity\Log\Article\Sale\Unbookable as UnbookableLog;
+use CudiBundle\Entity\Log\Sale\Cancellations as LogCancellations;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use CudiBundle\Entity\Sale\Article\History;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * ArticleController

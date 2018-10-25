@@ -20,12 +20,12 @@
 
 namespace SyllabusBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    SyllabusBundle\Entity\Group as GroupEntity,
-    SyllabusBundle\Entity\Group\StudyMap,
-    SyllabusBundle\Entity\Poc as PocEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
+use SyllabusBundle\Entity\Group as GroupEntity;
+use SyllabusBundle\Entity\Group\StudyMap;
+use SyllabusBundle\Entity\Poc as PocEntity;
 
 /**
  * Group

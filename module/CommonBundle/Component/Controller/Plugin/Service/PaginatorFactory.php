@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Component\Controller\Plugin\Service;
 
-use CommonBundle\Component\Controller\Plugin\Paginator,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    Interop\Container\ContainerInterface,
-    Zend\ServiceManager\Factory\FactoryInterface,
-    Zend\ServiceManager\ServiceLocatorInterface;
+use CommonBundle\Component\Controller\Plugin\Paginator;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to instantiate a paginator.

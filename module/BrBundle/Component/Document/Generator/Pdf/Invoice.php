@@ -20,12 +20,12 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Invoice\ContractInvoice as InvoiceEntity,
-    CommonBundle\Component\Document\Generator\Pdf as PdfGenerator,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
-    CommonBundle\Component\Util\Xml\Node as XmlNode,
-    Doctrine\ORM\EntityManager;
+use BrBundle\Entity\Invoice\ContractInvoice as InvoiceEntity;
+use CommonBundle\Component\Document\Generator\Pdf as PdfGenerator;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Generator as XmlGenerator;
+use CommonBundle\Component\Util\Xml\Node as XmlNode;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Generate a PDF for an invoice.

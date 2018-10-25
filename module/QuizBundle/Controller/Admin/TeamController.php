@@ -20,9 +20,9 @@
 
 namespace QuizBundle\Controller\Admin;
 
-use QuizBundle\Entity\Quiz,
-    QuizBundle\Entity\Team,
-    Zend\View\Model\ViewModel;
+use QuizBundle\Entity\Quiz;
+use QuizBundle\Entity\Team;
+use Zend\View\Model\ViewModel;
 
 /**
  * TeamController

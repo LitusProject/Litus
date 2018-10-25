@@ -20,9 +20,9 @@
 
 namespace MailBundle\Document;
 
-use DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * This entity stores an e-mail message, received through our own

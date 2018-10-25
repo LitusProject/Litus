@@ -20,9 +20,9 @@
 
 namespace GalleryBundle\Form\Admin\Album;
 
-use CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Entity\General\Language,
-    GalleryBundle\Entity\Album\Album;
+use CommonBundle\Component\Form\FieldsetInterface;
+use CommonBundle\Entity\General\Language;
+use GalleryBundle\Entity\Album\Album;
 
 /**
  * Add an album.

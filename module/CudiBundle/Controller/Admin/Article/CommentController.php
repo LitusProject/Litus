@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Controller\Admin\Article;
 
-use CudiBundle\Entity\Article,
-    CudiBundle\Entity\Comment\Comment,
-    CudiBundle\Entity\Comment\Mapping,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Comment\Comment;
+use CudiBundle\Entity\Comment\Mapping;
+use Zend\View\Model\ViewModel;
 
 /**
  * CommentController

@@ -20,13 +20,13 @@
 
 namespace FormBundle\Form\SpecifiedForm;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    FormBundle\Component\Exception\UnsupportedTypeException,
-    FormBundle\Entity\Field\TimeSlot as TimeSlotFieldEntity,
-    FormBundle\Entity\Node\Entry as EntryEntity,
-    FormBundle\Entity\Node\Form\Doodle as DoodleEntity,
-    FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use FormBundle\Component\Exception\UnsupportedTypeException;
+use FormBundle\Entity\Field\TimeSlot as TimeSlotFieldEntity;
+use FormBundle\Entity\Node\Entry as EntryEntity;
+use FormBundle\Entity\Node\Form\Doodle as DoodleEntity;
+use FormBundle\Entity\Node\GuestInfo as GuestInfoEntity;
 
 /**
  * Specifield Form Doodle

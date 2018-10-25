@@ -20,14 +20,14 @@
 
 namespace CudiBundle\Controller\Admin\Article;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    CudiBundle\Component\Document\Generator\Front as FrontGenerator,
-    CudiBundle\Entity\Article\Internal as InternalArticle,
-    CudiBundle\Entity\File\File,
-    CudiBundle\Entity\File\Mapping,
-    CudiBundle\Entity\Sale\Article as SaleArticle,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\File\TmpFile;
+use CudiBundle\Component\Document\Generator\Front as FrontGenerator;
+use CudiBundle\Entity\Article\Internal as InternalArticle;
+use CudiBundle\Entity\File\File;
+use CudiBundle\Entity\File\Mapping;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * FileController

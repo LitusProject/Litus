@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Form\Admin\Unit;
 
-use CommonBundle\Entity\General\Organization\Unit,
-    RuntimeException;
+use CommonBundle\Entity\General\Organization\Unit;
+use RuntimeException;
 
 /**
  * Add Unit

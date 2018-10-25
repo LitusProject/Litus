@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Component\Acl\Driver;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\Acl\RoleAware;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\Acl\RoleAware;
 
 /**
  * A view helper that allows us to easily verify whether or not the authenticated user

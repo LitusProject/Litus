@@ -20,8 +20,8 @@
 
 namespace FormBundle\Hydrator\Node\Entry;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    FormBundle\Entity\Entry as FieldEntryEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use FormBundle\Entity\Entry as FieldEntryEntity;
 
 class Doodle extends \FormBundle\Hydrator\Node\Entry
 {

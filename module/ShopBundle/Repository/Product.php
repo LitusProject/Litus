@@ -20,8 +20,8 @@
 
 namespace ShopBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    Doctrine\ORM\Query\Expr;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * Product

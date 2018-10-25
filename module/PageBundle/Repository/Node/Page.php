@@ -20,8 +20,8 @@
 
 namespace PageBundle\Repository\Node;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    PageBundle\Entity\Node\Page as PageEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use PageBundle\Entity\Node\Page as PageEntity;
 
 /**
  * Page

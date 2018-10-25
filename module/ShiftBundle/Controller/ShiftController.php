@@ -20,15 +20,15 @@
 
 namespace ShiftBundle\Controller;
 
-use DateInterval,
-    DateTime,
-    ShiftBundle\Document\Token,
-    ShiftBundle\Entity\Shift\Responsible,
-    ShiftBundle\Entity\Shift\User\Person\Insurance,
-    ShiftBundle\Entity\Shift\Volunteer,
-    Zend\Http\Headers,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use DateInterval;
+use DateTime;
+use ShiftBundle\Document\Token;
+use ShiftBundle\Entity\Shift\Responsible;
+use ShiftBundle\Entity\Shift\User\Person\Insurance;
+use ShiftBundle\Entity\Shift\Volunteer;
+use Zend\Http\Headers;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * ShiftController

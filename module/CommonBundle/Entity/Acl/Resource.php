@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Entity\Acl;
 
-use Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class that represents a resource that can get accessed and/or manipulated, for example, a forum post, or a contact

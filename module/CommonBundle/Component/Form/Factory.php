@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\InputFilter\Factory as InputFilterFactory,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    Zend\Form\ElementInterface as ZendElementInterface,
-    Zend\Form\FieldsetInterface as ZendFieldsetInterface;
+use CommonBundle\Component\InputFilter\Factory as InputFilterFactory;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\Form\ElementInterface as ZendElementInterface;
+use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
 
 /**
  * @author Bram Gotink <bram.gotink@litus.cc>

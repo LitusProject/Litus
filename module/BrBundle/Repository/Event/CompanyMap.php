@@ -20,8 +20,8 @@
 
 namespace BrBundle\Repository\Event;
 
-use BrBundle\Entity\Event,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Event;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * CompanyMap

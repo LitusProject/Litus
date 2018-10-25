@@ -20,8 +20,8 @@
 
 namespace BrBundle\Hydrator;
 
-use BrBundle\Entity\Product as ProductEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use BrBundle\Entity\Product as ProductEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
  * This hydrator hydrates/extracts Product data.

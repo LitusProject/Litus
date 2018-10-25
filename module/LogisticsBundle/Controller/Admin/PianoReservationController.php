@@ -20,10 +20,10 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use IntlDateFormatter,
-    LogisticsBundle\Entity\Reservation\PianoReservation,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use IntlDateFormatter;
+use LogisticsBundle\Entity\Reservation\PianoReservation;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 class PianoReservationController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {

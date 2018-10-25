@@ -20,11 +20,11 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Contract as ContractEntity,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Generator as XmlGenerator,
-    CommonBundle\Component\Util\Xml\Node as XmlNode,
-    Doctrine\ORM\EntityManager;
+use BrBundle\Entity\Contract as ContractEntity;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Generator as XmlGenerator;
+use CommonBundle\Component\Util\Xml\Node as XmlNode;
+use Doctrine\ORM\EntityManager;
 
 class Letter extends CommonBundle\Component\Document\Generator\Pdf
 {

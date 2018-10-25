@@ -20,19 +20,19 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\WebSocket\User,
-    CommonBundle\Entity\User\Barcode\Ean12 as Ean12,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CudiBundle\Component\WebSocket\Sale\Printer as Printer,
-    CudiBundle\Entity\IsicCard,
-    CudiBundle\Entity\Sale\Booking,
-    CudiBundle\Entity\Sale\SaleItem,
-    CudiBundle\Entity\User\Person\Sale\Acco as AccoCard,
-    Doctrine\ORM\EntityManager,
-    SecretaryBundle\Entity\Registration,
-    Zend\Soap\Client as SoapClient;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\WebSocket\User;
+use CommonBundle\Entity\User\Barcode\Ean12 as Ean12;
+use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CudiBundle\Component\WebSocket\Sale\Printer as Printer;
+use CudiBundle\Entity\IsicCard;
+use CudiBundle\Entity\Sale\Booking;
+use CudiBundle\Entity\Sale\SaleItem;
+use CudiBundle\Entity\User\Person\Sale\Acco as AccoCard;
+use Doctrine\ORM\EntityManager;
+use SecretaryBundle\Entity\Registration;
+use Zend\Soap\Client as SoapClient;
 
 /**
  * QueueItem Object

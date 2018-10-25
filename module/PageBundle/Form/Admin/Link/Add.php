@@ -20,10 +20,10 @@
 
 namespace PageBundle\Form\Admin\Link;
 
-use CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Entity\General\Language,
-    PageBundle\Entity\Category,
-    RuntimeException;
+use CommonBundle\Component\Form\FieldsetInterface;
+use CommonBundle\Entity\General\Language;
+use PageBundle\Entity\Category;
+use RuntimeException;
 
 /**
  * Add Link

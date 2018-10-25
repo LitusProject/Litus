@@ -20,9 +20,9 @@
 
 namespace OnBundle\Document;
 
-use CommonBundle\Entity\User\Person,
-    Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\ORM\EntityManager;
 
 /**
  * This entity stores a slug, and the URL it should redirect to.

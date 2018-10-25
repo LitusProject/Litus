@@ -20,10 +20,10 @@
 
 namespace BrBundle\Entity\Company\Request;
 
-use BrBundle\Entity\Company\Job,
-    BrBundle\Entity\Company\Request,
-    BrBundle\Entity\User\Person\Corporate,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Company\Job;
+use BrBundle\Entity\Company\Request;
+use BrBundle\Entity\User\Person\Corporate;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for an event.

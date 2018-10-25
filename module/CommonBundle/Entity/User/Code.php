@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Entity\User;
 
-use DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores a user's codes.

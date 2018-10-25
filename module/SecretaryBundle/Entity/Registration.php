@@ -20,10 +20,10 @@
 
 namespace SecretaryBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person\Academic,
-    DateTime,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity stores the node item.

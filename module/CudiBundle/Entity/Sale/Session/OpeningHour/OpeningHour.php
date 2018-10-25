@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Entity\Sale\Session\OpeningHour;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    Locale;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Locale;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\OpeningHour\OpeningHour")

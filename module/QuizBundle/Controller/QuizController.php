@@ -20,12 +20,12 @@
 
 namespace QuizBundle\Controller;
 
-use CommonBundle\Entity\User\Person,
-    QuizBundle\Entity\Point,
-    QuizBundle\Entity\Quiz,
-    QuizBundle\Entity\Round,
-    QuizBundle\Entity\Team,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person;
+use QuizBundle\Entity\Point;
+use QuizBundle\Entity\Quiz;
+use QuizBundle\Entity\Round;
+use QuizBundle\Entity\Team;
+use Zend\View\Model\ViewModel;
 
 /**
  * QuizController

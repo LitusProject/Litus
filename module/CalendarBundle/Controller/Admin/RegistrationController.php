@@ -20,8 +20,8 @@
 
 namespace CalendarBundle\Controller\Admin;
 
-use Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * RegistrationController

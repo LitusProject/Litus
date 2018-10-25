@@ -20,16 +20,16 @@
 
 namespace BrBundle\Entity\Product;
 
-use BrBundle\Entity\Collaborator,
-    BrBundle\Entity\Company,
-    BrBundle\Entity\Contract,
-    BrBundle\Entity\Invoice,
-    BrBundle\Entity\User\Person\Corporate as CorporatePerson,
-    CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Collaborator;
+use BrBundle\Entity\Company;
+use BrBundle\Entity\Contract;
+use BrBundle\Entity\Invoice;
+use BrBundle\Entity\User\Person\Corporate as CorporatePerson;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * An order of several products.

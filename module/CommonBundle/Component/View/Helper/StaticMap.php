@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Component\View\Helper;
 
-use CommonBundle\Entity\General\Location,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\General\Location;
+use Doctrine\ORM\EntityManager;
 
 /**
  * This view helper can be used to create an URL of an image that displays

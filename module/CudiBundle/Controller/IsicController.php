@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Controller;
 
-use CommonBundle\Entity\User\Person\Academic,
-    CudiBundle\Entity\IsicCard,
-    CudiBundle\Entity\Sale\Booking,
-    SecretaryBundle\Component\Registration\Articles as RegistrationArticles,
-    Zend\Soap\Client as SoapClient,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Entity\IsicCard;
+use CudiBundle\Entity\Sale\Booking;
+use SecretaryBundle\Component\Registration\Articles as RegistrationArticles;
+use Zend\Soap\Client as SoapClient;
+use Zend\View\Model\ViewModel;
 
 class IsicController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {

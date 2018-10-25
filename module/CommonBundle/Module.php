@@ -20,10 +20,10 @@
 
 namespace CommonBundle;
 
-use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener,
-    Raven_ErrorHandler,
-    Zend\Mvc\MvcEvent,
-    Zend\Stdlib\DispatchableInterface;
+use CommonBundle\Component\Mvc\View\Http\InjectTemplateListener;
+use Raven_ErrorHandler;
+use Zend\Mvc\MvcEvent;
+use Zend\Stdlib\DispatchableInterface;
 
 class Module
 {

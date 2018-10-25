@@ -20,10 +20,10 @@
 
 namespace TicketBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    TicketBundle\Entity\Event as EventEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use TicketBundle\Entity\Event as EventEntity;
 
 /**
  * Ticket

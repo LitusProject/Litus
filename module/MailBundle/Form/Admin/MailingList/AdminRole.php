@@ -20,8 +20,8 @@
 
 namespace MailBundle\Form\Admin\MailingList;
 
-use MailBundle\Entity\MailingList,
-    RuntimeException;
+use MailBundle\Entity\MailingList;
+use RuntimeException;
 
 /**
  * Add Admin Role

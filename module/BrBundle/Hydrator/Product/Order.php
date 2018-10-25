@@ -20,12 +20,12 @@
 
 namespace BrBundle\Hydrator\Product;
 
-use BrBundle\Entity\Contract as ContractEntity,
-    BrBundle\Entity\Contract\ContractEntry as ContractEntryEntity,
-    BrBundle\Entity\Contract\ContractHistory as ContractHistoryEntity,
-    BrBundle\Entity\Product\Order as OrderEntity,
-    BrBundle\Entity\Product\OrderEntry as OrderEntryEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use BrBundle\Entity\Contract as ContractEntity;
+use BrBundle\Entity\Contract\ContractEntry as ContractEntryEntity;
+use BrBundle\Entity\Contract\ContractHistory as ContractHistoryEntity;
+use BrBundle\Entity\Product\Order as OrderEntity;
+use BrBundle\Entity\Product\OrderEntry as OrderEntryEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
  * This hydrator hydrates/extracts Order data.

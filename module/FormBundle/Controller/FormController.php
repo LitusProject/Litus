@@ -20,14 +20,14 @@
 
 namespace FormBundle\Controller;
 
-use DateTime,
-    FormBundle\Component\Form\Mail as MailHelper,
-    FormBundle\Entity\Node\Entry as FormEntry,
-    FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\Group,
-    FormBundle\Entity\Node\GuestInfo,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use DateTime;
+use FormBundle\Component\Form\Mail as MailHelper;
+use FormBundle\Entity\Node\Entry as FormEntry;
+use FormBundle\Entity\Node\Form;
+use FormBundle\Entity\Node\Group;
+use FormBundle\Entity\Node\GuestInfo;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * FormController

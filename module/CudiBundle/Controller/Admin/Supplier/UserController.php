@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Controller\Admin\Supplier;
 
-use CudiBundle\Entity\Supplier,
-    CudiBundle\Entity\User\Person\Supplier as SupplierPerson,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Supplier;
+use CudiBundle\Entity\User\Person\Supplier as SupplierPerson;
+use Zend\View\Model\ViewModel;
 
 /**
  * UserController

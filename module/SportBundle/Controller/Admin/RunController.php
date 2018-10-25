@@ -20,14 +20,14 @@
 
 namespace SportBundle\Controller\Admin;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CommonBundle\Component\Util\WebSocket as WebSocketUtil,
-    CommonBundle\Entity\General\AcademicYear as AcademicYearEntity,
-    DateInterval,
-    DateTime,
-    SportBundle\Entity\Group,
-    SportBundle\Entity\Runner,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Component\Util\WebSocket as WebSocketUtil;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
+use DateInterval;
+use DateTime;
+use SportBundle\Entity\Group;
+use SportBundle\Entity\Runner;
+use Zend\View\Model\ViewModel;
 
 /**
  * RunController

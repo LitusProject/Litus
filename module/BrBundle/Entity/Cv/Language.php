@@ -20,8 +20,8 @@
 
 namespace BrBundle\Entity\Cv;
 
-use Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * This is the entity for a language specification on a cv.

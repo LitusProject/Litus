@@ -20,11 +20,11 @@
 
 namespace SecretaryBundle\Component\Registration;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
-    CommonBundle\Entity\User\Person\Academic,
-    CudiBundle\Entity\Sale\Booking,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization;
+use CommonBundle\Entity\User\Person\Academic;
+use CudiBundle\Entity\Sale\Booking;
+use Doctrine\ORM\EntityManager;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>

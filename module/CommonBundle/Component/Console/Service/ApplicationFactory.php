@@ -20,16 +20,16 @@
 
 namespace CommonBundle\Component\Console\Service;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\Version\Version,
-    Interop\Container\ContainerInterface,
-    Raven_ErrorHandler,
-    Symfony\Component\Console\Application,
-    Symfony\Component\Console\ConsoleEvents,
-    Symfony\Component\Console\Event\ConsoleErrorEvent,
-    Symfony\Component\EventDispatcher\EventDispatcher,
-    Zend\ServiceManager\Factory\FactoryInterface,
-    Zend\ServiceManager\ServiceLocatorInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\Version\Version;
+use Interop\Container\ContainerInterface;
+use Raven_ErrorHandler;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleErrorEvent;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Zend\ServiceManager\Factory\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Factory to instantiate a console application.

@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    Traversable,
-    Zend\Form\FormInterface,
-    Zend\Stdlib\ArrayUtils;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use Traversable;
+use Zend\Form\FormInterface;
+use Zend\Stdlib\ArrayUtils;
 
 class Collection extends \Zend\Form\Element\Collection implements FieldsetInterface, ServiceLocatorAwareInterface
 {

@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Form\Admin\Stock\Order;
 
-use CudiBundle\Entity\Stock\Order\Item,
-    LogicException;
+use CudiBundle\Entity\Stock\Order\Item;
+use LogicException;
 
 /**
  * Edit Order

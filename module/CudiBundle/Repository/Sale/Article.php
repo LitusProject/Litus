@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Repository\Sale;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Article as ArticleEntity,
-    CudiBundle\Entity\Supplier;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Entity\Article as ArticleEntity;
+use CudiBundle\Entity\Supplier;
 
 /**
  * Article

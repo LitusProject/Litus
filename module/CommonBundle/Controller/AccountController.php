@@ -20,18 +20,18 @@
 
 namespace CommonBundle\Controller;
 
-use CommonBundle\Component\PassKit\Pass\Membership,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Entity\User\Credential,
-    CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\User\Person\Academic,
-    CommonBundle\Entity\User\Status\Organization as OrganizationStatus,
-    CudiBundle\Entity\Sale\Booking,
-    Imagick,
-    SecretaryBundle\Entity\Organization\MetaData,
-    SecretaryBundle\Entity\Registration,
-    Zend\Http\Headers,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\PassKit\Pass\Membership;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Entity\User\Credential;
+use CommonBundle\Entity\User\Person;
+use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use CudiBundle\Entity\Sale\Booking;
+use Imagick;
+use SecretaryBundle\Entity\Organization\MetaData;
+use SecretaryBundle\Entity\Registration;
+use Zend\Http\Headers;
+use Zend\View\Model\ViewModel;
 
 /**
  * Handles account page.

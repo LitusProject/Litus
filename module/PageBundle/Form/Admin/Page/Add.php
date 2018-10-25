@@ -20,11 +20,11 @@
 
 namespace PageBundle\Form\Admin\Page;
 
-use CommonBundle\Component\Form\FieldsetInterface,
-    CommonBundle\Entity\General\Language,
-    PageBundle\Entity\Category,
-    PageBundle\Entity\Node\Page as PageEntity,
-    RuntimeException;
+use CommonBundle\Component\Form\FieldsetInterface;
+use CommonBundle\Entity\General\Language;
+use PageBundle\Entity\Category;
+use PageBundle\Entity\Node\Page as PageEntity;
+use RuntimeException;
 
 /**
  * Add Page

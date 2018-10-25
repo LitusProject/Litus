@@ -20,12 +20,12 @@
 
 namespace SyllabusBundle\Component\WebSocket;
 
-use CommonBundle\Component\Acl\Acl,
-    CommonBundle\Component\WebSocket\User,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    SyllabusBundle\Component\XMLParser\Study as StudyParser,
-    Zend\Mail\Transport\TransportInterface;
+use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\WebSocket\User;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use SyllabusBundle\Component\XMLParser\Study as StudyParser;
+use Zend\Mail\Transport\TransportInterface;
 
 /**
  * This is the server to handle all requests by the websocket protocol for the Queue.

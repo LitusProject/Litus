@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Component\Acl;
 
-use CommonBundle\Entity\Acl\Resource,
-    CommonBundle\Entity\Acl\Role,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\QueryBuilder;
+use CommonBundle\Entity\Acl\Resource;
+use CommonBundle\Entity\Acl\Role;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Extending Zend's ACL implementation to support our own structure,

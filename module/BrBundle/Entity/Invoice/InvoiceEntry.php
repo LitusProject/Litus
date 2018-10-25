@@ -20,10 +20,10 @@
 
 namespace BrBundle\Entity\Invoice;
 
-use BrBundle\Entity\Invoice,
-    BrBundle\Entity\Product\OrderEntry,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use BrBundle\Entity\Invoice;
+use BrBundle\Entity\Product\OrderEntry;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * An entry of an invoice.

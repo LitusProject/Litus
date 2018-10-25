@@ -20,8 +20,8 @@
 
 namespace GalleryBundle\Hydrator\Album;
 
-use GalleryBundle\Entity\Album\Album as AlbumEntity,
-    GalleryBundle\Entity\Album\Translation;
+use GalleryBundle\Entity\Album\Album as AlbumEntity;
+use GalleryBundle\Entity\Album\Translation;
 
 class Album extends \CommonBundle\Component\Hydrator\Hydrator
 {

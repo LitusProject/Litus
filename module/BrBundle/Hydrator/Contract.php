@@ -20,8 +20,8 @@
 
 namespace BrBundle\Hydrator;
 
-use BrBundle\Entity\Contract\ContractEntry as ContractEntryEntity,
-    CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use BrBundle\Entity\Contract\ContractEntry as ContractEntryEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 
 /**
  * This hydrator hydrates/extracts Contract data.

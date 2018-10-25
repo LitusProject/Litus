@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Repository\Prof;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\User\Person;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\User\Person;
 
 /**
  * Action

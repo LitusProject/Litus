@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Repository\Comment;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CudiBundle\Entity\Article,
-    CudiBundle\Entity\Comment\Comment as CommentEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Article;
+use CudiBundle\Entity\Comment\Comment as CommentEntity;
 
 /**
  * Mapping

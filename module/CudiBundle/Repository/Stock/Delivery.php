@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Repository\Stock;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Stock\Period as PeriodEntity,
-    CudiBundle\Entity\Supplier,
-    DateTime;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Entity\Sale\Article;
+use CudiBundle\Entity\Stock\Period as PeriodEntity;
+use CudiBundle\Entity\Supplier;
+use DateTime;
 
 /**
  * Delivery

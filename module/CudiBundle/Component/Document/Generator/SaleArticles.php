@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Component\Document\Generator;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Sale\Article\Discount\Discount,
-    Doctrine\ORM\EntityManager;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Entity\Sale\Article\Discount\Discount;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Sale Articles

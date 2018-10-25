@@ -20,8 +20,8 @@
 
 namespace BrBundle\Form\Cv;
 
-use BrBundle\Entity\Cv\Language as CvLanguage,
-    CommonBundle\Component\Form\Fieldset;
+use BrBundle\Entity\Cv\Language as CvLanguage;
+use CommonBundle\Component\Form\Fieldset;
 
 /**
  * Add Option

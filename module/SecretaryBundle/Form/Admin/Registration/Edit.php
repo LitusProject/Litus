@@ -20,8 +20,8 @@
 
 namespace SecretaryBundle\Form\Admin\Registration;
 
-use SecretaryBundle\Entity\Organization\MetaData,
-    SecretaryBundle\Entity\Registration;
+use SecretaryBundle\Entity\Organization\MetaData;
+use SecretaryBundle\Entity\Registration;
 
 /**
  * Edit Registration Data form

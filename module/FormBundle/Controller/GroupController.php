@@ -20,10 +20,10 @@
 
 namespace FormBundle\Controller;
 
-use DateTime,
-    FormBundle\Entity\Node\Group,
-    FormBundle\Entity\Node\GuestInfo,
-    Zend\View\Model\ViewModel;
+use DateTime;
+use FormBundle\Entity\Node\Group;
+use FormBundle\Entity\Node\GuestInfo;
+use Zend\View\Model\ViewModel;
 
 /**
  * GroupController

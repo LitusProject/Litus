@@ -20,10 +20,10 @@
 
 namespace MailBundle\Component\Archive\Generator\MailingList;
 
-use Archive_Tar,
-    CommonBundle\Component\Util\File\TmpFile,
-    DateTime,
-    Doctrine\ORM\EntityManager;
+use Archive_Tar;
+use CommonBundle\Component\Util\File\TmpFile;
+use DateTime;
+use Doctrine\ORM\EntityManager;
 
 require_once 'Archive/Tar.php';
 

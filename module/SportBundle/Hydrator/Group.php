@@ -20,9 +20,9 @@
 
 namespace SportBundle\Hydrator;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException,
-    SportBundle\Entity\Group as GroupEntity,
-    SportBundle\Entity\Runner as RunnerEntity;
+use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
+use SportBundle\Entity\Group as GroupEntity;
+use SportBundle\Entity\Runner as RunnerEntity;
 
 class Group extends \CommonBundle\Component\Hydrator\Hydrator
 {

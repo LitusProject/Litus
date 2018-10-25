@@ -20,17 +20,17 @@
 
 namespace CudiBundle\Entity\Sale;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\General\Organization,
-    CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Article as MainArticle,
-    CudiBundle\Entity\Sale\Article\Barcode,
-    CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction,
-    CudiBundle\Entity\Supplier,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Article as MainArticle;
+use CudiBundle\Entity\Sale\Article\Barcode;
+use CudiBundle\Entity\Sale\Article\Restriction\Member as MemberRestriction;
+use CudiBundle\Entity\Supplier;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article")

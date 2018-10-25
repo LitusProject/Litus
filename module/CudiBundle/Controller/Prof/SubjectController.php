@@ -20,12 +20,12 @@
 
 namespace CudiBundle\Controller\Prof;
 
-use CudiBundle\Entity\Article,
-    DateInterval,
-    SyllabusBundle\Entity\Subject,
-    SyllabusBundle\Entity\Subject\ProfMap,
-    SyllabusBundle\Entity\Subject\StudentEnrollment,
-    Zend\View\Model\ViewModel;
+use CudiBundle\Entity\Article;
+use DateInterval;
+use SyllabusBundle\Entity\Subject;
+use SyllabusBundle\Entity\Subject\ProfMap;
+use SyllabusBundle\Entity\Subject\StudentEnrollment;
+use Zend\View\Model\ViewModel;
 
 /**
  * SubjectController

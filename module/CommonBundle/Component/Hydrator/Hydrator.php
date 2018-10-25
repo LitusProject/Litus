@@ -20,18 +20,18 @@
 
 namespace CommonBundle\Component\Hydrator;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait,
-    CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait,
-    CommonBundle\Component\Util\AcademicYear,
-    DateTime,
-    RecursiveArrayIterator,
-    RecursiveIteratorIterator,
-    RuntimeException,
-    Zend\Hydrator\Filter\FilterComposite,
-    Zend\Hydrator\HydratorInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait;
+use CommonBundle\Component\Util\AcademicYear;
+use DateTime;
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
+use RuntimeException;
+use Zend\Hydrator\Filter\FilterComposite;
+use Zend\Hydrator\HydratorInterface;
 
 /**
  * A common superclass for hydrators.

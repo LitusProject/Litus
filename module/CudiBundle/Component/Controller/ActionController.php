@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Component\Controller;
 
-use CommonBundle\Component\Util\AcademicYear,
-    CudiBundle\Entity\Stock\Period;
+use CommonBundle\Component\Util\AcademicYear;
+use CudiBundle\Entity\Stock\Period;
 
 /**
  * @author Kristof Mariën <kristof.marien@litus.cc>

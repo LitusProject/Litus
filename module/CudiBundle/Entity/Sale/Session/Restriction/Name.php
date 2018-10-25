@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Entity\Sale\Session\Restriction;
 
-use CommonBundle\Entity\User\Person,
-    CudiBundle\Entity\Sale\Session,
-    CudiBundle\Entity\Sale\Session\Restriction,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\Person;
+use CudiBundle\Entity\Sale\Session;
+use CudiBundle\Entity\Sale\Session\Restriction;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\Restriction\Name")

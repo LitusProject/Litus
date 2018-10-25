@@ -20,9 +20,9 @@
 
 namespace GalleryBundle;
 
-use CommonBundle\Component\Assetic\Filter\Css as CssFilter,
-    CommonBundle\Component\Assetic\Filter\Js as JsFilter,
-    CommonBundle\Component\Assetic\Filter\Less as LessFilter;
+use CommonBundle\Component\Assetic\Filter\Css as CssFilter;
+use CommonBundle\Component\Assetic\Filter\Js as JsFilter;
+use CommonBundle\Component\Assetic\Filter\Less as LessFilter;
 
 return array(
     'controllers' => array(

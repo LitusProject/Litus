@@ -20,9 +20,9 @@
 
 namespace FormBundle\Entity\Node\Group;
 
-use Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Node\Form,
-    FormBundle\Entity\Node\Group;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Node\Form;
+use FormBundle\Entity\Node\Group;
 
 /**
  * This entity stores mapping of forms and groups

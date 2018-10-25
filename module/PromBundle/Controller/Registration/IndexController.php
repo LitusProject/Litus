@@ -19,12 +19,12 @@
  */
 namespace PromBundle\Controller\Registration;
 
-use CommonBundle\Component\Form\Form,
-    PromBundle\Entity\Bus,
-    PromBundle\Entity\Bus\Passenger,
-    PromBundle\Entity\Bus\ReservationCode,
-    Zend\Mail\Message,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Component\Form\Form;
+use PromBundle\Entity\Bus;
+use PromBundle\Entity\Bus\Passenger;
+use PromBundle\Entity\Bus\ReservationCode;
+use Zend\Mail\Message;
+use Zend\View\Model\ViewModel;
 
 /**
  * IndexController

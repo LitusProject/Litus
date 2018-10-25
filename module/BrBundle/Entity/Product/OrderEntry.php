@@ -20,9 +20,9 @@
 
 namespace BrBundle\Entity\Product;
 
-use BrBundle\Entity\Product,
-    BrBundle\Entity\Product\Order,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Product;
+use BrBundle\Entity\Product\Order;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * An order of several products.

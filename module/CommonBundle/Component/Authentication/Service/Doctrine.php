@@ -20,12 +20,12 @@
 
 namespace CommonBundle\Component\Authentication\Service;
 
-use CommonBundle\Component\Authentication\Action,
-    CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter,
-    CommonBundle\Component\Authentication\Result\Doctrine as Result,
-    Doctrine\ORM\EntityManager,
-    Zend\Authentication\Adapter\AdapterInterface,
-    Zend\Authentication\Storage\StorageInterface;
+use CommonBundle\Component\Authentication\Action;
+use CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter;
+use CommonBundle\Component\Authentication\Result\Doctrine as Result;
+use Doctrine\ORM\EntityManager;
+use Zend\Authentication\Adapter\AdapterInterface;
+use Zend\Authentication\Storage\StorageInterface;
 
 /**
  * An authentication service that uses a Doctrine result.

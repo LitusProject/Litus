@@ -20,10 +20,10 @@
 
 namespace LogisticsBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This is the entity for a driver.

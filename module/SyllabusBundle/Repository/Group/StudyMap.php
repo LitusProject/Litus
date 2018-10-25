@@ -20,10 +20,10 @@
 
 namespace SyllabusBundle\Repository\Group;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    SyllabusBundle\Entity\Group as GroupEntity,
-    SyllabusBundle\Entity\Study as StudyEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use SyllabusBundle\Entity\Group as GroupEntity;
+use SyllabusBundle\Entity\Study as StudyEntity;
 
 /**
  * StudyMap

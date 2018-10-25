@@ -20,12 +20,12 @@
 
 namespace FormBundle\Entity\Node\Form;
 
-use CommonBundle\Entity\General\Language,
-    CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Mail\Mail,
-    FormBundle\Entity\Node\Entry,
-    FormBundle\Entity\Node\Form as BaseForm;
+use CommonBundle\Entity\General\Language;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Mail\Mail;
+use FormBundle\Entity\Node\Entry;
+use FormBundle\Entity\Node\Form as BaseForm;
 
 /**
  * This entity stores the node item.

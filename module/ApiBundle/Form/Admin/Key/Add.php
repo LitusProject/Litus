@@ -20,8 +20,8 @@
 
 namespace ApiBundle\Form\Admin\Key;
 
-use RuntimeException,
-    Zend\Validator\Hostname as HostnameValidator;
+use RuntimeException;
+use Zend\Validator\Hostname as HostnameValidator;
 
 /**
  * Add Key

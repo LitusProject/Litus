@@ -20,11 +20,11 @@
 
 namespace FormBundle\Command;
 
-use DateInterval,
-    DateTime,
-    FormBundle\Entity\Field\TimeSlot,
-    FormBundle\Entity\Node\Form\Doodle,
-    Zend\Mail\Message;
+use DateInterval;
+use DateTime;
+use FormBundle\Entity\Field\TimeSlot;
+use FormBundle\Entity\Node\Form\Doodle;
+use Zend\Mail\Message;
 
 /**
  * RenderMail

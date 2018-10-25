@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Entity\General\Bank\MoneyUnit;
 
-use CommonBundle\Entity\General\Bank\CashRegister,
-    CommonBundle\Entity\General\Bank\MoneyUnit,
-    Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\General\Bank\CashRegister;
+use CommonBundle\Entity\General\Bank\MoneyUnit;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CommonBundle\Repository\General\Bank\MoneyUnit\Amount")

@@ -20,8 +20,8 @@
 
 namespace ShiftBundle\Form\Shift\Search;
 
-use CommonBundle\Entity\General\Language,
-    LogicException;
+use CommonBundle\Entity\General\Language;
+use LogicException;
 
 /**
  * Search Event

@@ -20,10 +20,10 @@
 
 namespace CudiBundle\Entity\Article;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Article,
-    Doctrine\ORM\Mapping as ORM,
-    SyllabusBundle\Entity\Subject;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Entity\Article;
+use Doctrine\ORM\Mapping as ORM;
+use SyllabusBundle\Entity\Subject;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article\SubjectMap")

@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Component\Authentication\Result;
 
-use CommonBundle\Entity\User\Person,
-    CommonBundle\Entity\User\Session,
-    RuntimeException;
+use CommonBundle\Entity\User\Person;
+use CommonBundle\Entity\User\Session;
+use RuntimeException;
 
 /**
  * Extending the general authentication result to support Doctrine.

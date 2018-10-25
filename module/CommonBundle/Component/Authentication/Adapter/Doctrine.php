@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Component\Authentication\Adapter;
 
-use CommonBundle\Component\Authentication\Result\Doctrine as Result,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\QueryBuilder;
+use CommonBundle\Component\Authentication\Result\Doctrine as Result;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * An authentication adapter using Doctrine.

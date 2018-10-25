@@ -20,10 +20,10 @@
 
 namespace ShiftBundle\Repository\Shift;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    DateTime,
-    ShiftBundle\Entity\Shift;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use DateTime;
+use ShiftBundle\Entity\Shift;
 
 /**
  * Volunteer

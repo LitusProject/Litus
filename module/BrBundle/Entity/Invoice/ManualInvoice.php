@@ -20,10 +20,10 @@
 
 namespace BrBundle\Entity\Invoice;
 
-use BrBundle\Entity\Collaborator,
-    BrBundle\Entity\Company,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM;
+use BrBundle\Entity\Collaborator;
+use BrBundle\Entity\Company;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Invoice\ManualInvoice")

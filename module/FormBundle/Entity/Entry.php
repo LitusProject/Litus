@@ -20,9 +20,9 @@
 
 namespace FormBundle\Entity;
 
-use CommonBundle\Entity\General\Language,
-    Doctrine\ORM\Mapping as ORM,
-    FormBundle\Entity\Node\Entry as NodeEntry;
+use CommonBundle\Entity\General\Language;
+use Doctrine\ORM\Mapping as ORM;
+use FormBundle\Entity\Node\Entry as NodeEntry;
 
 /**
  * This entity stores the node item.

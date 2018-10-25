@@ -20,8 +20,8 @@
 
 namespace SyllabusBundle\Hydrator;
 
-use SyllabusBundle\Entity\Study as StudyEntity,
-    SyllabusBundle\Entity\Study\Combination as CombinationEntity;
+use SyllabusBundle\Entity\Study as StudyEntity;
+use SyllabusBundle\Entity\Study\Combination as CombinationEntity;
 
 class Study extends \CommonBundle\Component\Hydrator\Hydrator
 {

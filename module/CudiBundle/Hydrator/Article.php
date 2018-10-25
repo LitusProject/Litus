@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Hydrator;
 
-use CudiBundle\Entity\Article\External as ExternalArticle,
-    CudiBundle\Entity\Article\Internal as InternalArticle,
-    InvalidArgumentException;
+use CudiBundle\Entity\Article\External as ExternalArticle;
+use CudiBundle\Entity\Article\Internal as InternalArticle;
+use InvalidArgumentException;
 
 class Article extends \CommonBundle\Component\Hydrator\Hydrator
 {

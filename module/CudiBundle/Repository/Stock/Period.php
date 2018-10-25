@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Repository\Stock;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Stock\Period as PeriodEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CudiBundle\Entity\Sale\Article;
+use CudiBundle\Entity\Stock\Period as PeriodEntity;
 
 /**
  * Period

@@ -20,8 +20,8 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Entity\Company\Request,
-    Zend\View\Model\ViewModel;
+use BrBundle\Entity\Company\Request;
+use Zend\View\Model\ViewModel;
 
 /**
  * RequestController

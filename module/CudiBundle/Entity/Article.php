@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Entity;
 
-use CudiBundle\Entity\Sale\Article as SaleArticle,
-    DateTime,
-    Doctrine\ORM\EntityManager,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use CudiBundle\Entity\Sale\Article as SaleArticle;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Article")

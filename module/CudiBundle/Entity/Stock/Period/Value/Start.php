@@ -20,9 +20,9 @@
 
 namespace CudiBundle\Entity\Stock\Period\Value;
 
-use CudiBundle\Entity\Sale\Article,
-    CudiBundle\Entity\Stock\Period,
-    Doctrine\ORM\Mapping as ORM;
+use CudiBundle\Entity\Sale\Article;
+use CudiBundle\Entity\Stock\Period;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Stock\Period\Value\Start")

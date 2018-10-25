@@ -20,11 +20,11 @@
 
 namespace CudiBundle\Repository\Article;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    CommonBundle\Entity\General\AcademicYear,
-    CudiBundle\Entity\Article,
-    SyllabusBundle\Entity\Study,
-    SyllabusBundle\Entity\Subject as SubjectEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use CommonBundle\Entity\General\AcademicYear;
+use CudiBundle\Entity\Article;
+use SyllabusBundle\Entity\Study;
+use SyllabusBundle\Entity\Subject as SubjectEntity;
 
 /**
  * SubjectMap

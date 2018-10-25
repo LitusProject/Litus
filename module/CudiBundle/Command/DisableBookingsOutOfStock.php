@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Command;
 
-use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil,
-    CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
+use CommonBundle\Entity\General\AcademicYear;
 /**
  * Disable bookings
  */

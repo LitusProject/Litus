@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Component\Validator;
 
-use CommonBundle\Component\Form\Form,
-    CommonBundle\Component\Validator\FormAwareInterface;
+use CommonBundle\Component\Form\Form;
+use CommonBundle\Component\Validator\FormAwareInterface;
 
 /**
  * Check if user has bought an aritcle

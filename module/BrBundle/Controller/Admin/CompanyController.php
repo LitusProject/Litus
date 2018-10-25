@@ -20,18 +20,18 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Component\Document\Generator\Company\Pdf as PdfGenerator,
-    BrBundle\Entity\Company,
-    CommonBundle\Component\Document\Generator\Csv as CsvGenerator,
-    CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile,
-    Imagick,
-    Zend\Filter\File\RenameUpload as RenameUploadFilter,
-    Zend\Http\Headers,
-    Zend\Validator\File\IsImage as IsImageValidator,
-    Zend\Validator\File\UploadFile as UploadFileValidator,
-    Zend\Validator\ValidatorChain,
-    Zend\View\Model\ViewModel;
+use BrBundle\Component\Document\Generator\Company\Pdf as PdfGenerator;
+use BrBundle\Entity\Company;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use Imagick;
+use Zend\Filter\File\RenameUpload as RenameUploadFilter;
+use Zend\Http\Headers;
+use Zend\Validator\File\IsImage as IsImageValidator;
+use Zend\Validator\File\UploadFile as UploadFileValidator;
+use Zend\Validator\ValidatorChain;
+use Zend\View\Model\ViewModel;
 
 /**
  * CompanyController

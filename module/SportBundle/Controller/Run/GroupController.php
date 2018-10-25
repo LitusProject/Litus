@@ -20,8 +20,8 @@
 
 namespace SportBundle\Controller\Run;
 
-use SportBundle\Entity\Group,
-    Zend\View\Model\ViewModel;
+use SportBundle\Entity\Group;
+use Zend\View\Model\ViewModel;
 
 /**
  * GroupController

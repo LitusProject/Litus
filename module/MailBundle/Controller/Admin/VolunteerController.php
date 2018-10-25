@@ -20,12 +20,12 @@
 
 namespace MailBundle\Controller\Admin;
 
-use CommonBundle\Entity\General\AcademicYear,
-    Zend\Mail\Message,
-    Zend\Mime\Message as MimeMessage,
-    Zend\Mime\Mime,
-    Zend\Mime\Part,
-    Zend\View\Model\ViewModel;
+use CommonBundle\Entity\General\AcademicYear;
+use Zend\Mail\Message;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Mime;
+use Zend\Mime\Part;
+use Zend\View\Model\ViewModel;
 
 /**
  * VolunteerController

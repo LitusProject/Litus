@@ -20,9 +20,9 @@
 
 namespace MailBundle\Entity\MailingList;
 
-use CommonBundle\Entity\Acl\Role,
-    Doctrine\ORM\Mapping as ORM,
-    MailBundle\Entity\MailingList;
+use CommonBundle\Entity\Acl\Role;
+use Doctrine\ORM\Mapping as ORM;
+use MailBundle\Entity\MailingList;
 
 /**
  * This entity maps admin roles to mailing lists.

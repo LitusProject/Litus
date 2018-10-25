@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Entity\User\Status;
 
-use CommonBundle\Entity\General\AcademicYear,
-    CommonBundle\Entity\User\Person,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Person;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * Specifying the different types of memberships the organization has.

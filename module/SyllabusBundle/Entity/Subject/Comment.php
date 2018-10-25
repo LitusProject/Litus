@@ -20,12 +20,12 @@
 
 namespace SyllabusBundle\Entity\Subject;
 
-use CommonBundle\Entity\User\Person,
-    DateTime,
-    Doctrine\Common\Collections\ArrayCollection,
-    Doctrine\ORM\Mapping as ORM,
-    InvalidArgumentException,
-    SyllabusBundle\Entity\Subject;
+use CommonBundle\Entity\User\Person;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
+use SyllabusBundle\Entity\Subject;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Subject\Comment")

@@ -20,8 +20,8 @@
 
 namespace CommonBundle\Component\Util\Xml;
 
-use CommonBundle\Component\Util\File\TmpFile,
-    CommonBundle\Component\Util\Xml\Node;
+use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\Xml\Node;
 
 /**
  * This generator creates an XML file from the supplied XML objects

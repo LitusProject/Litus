@@ -20,8 +20,8 @@
 
 namespace BrBundle\Repository\Contract;
 
-use BrBundle\Entity\Product\OrderEntry,
-    CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use BrBundle\Entity\Product\OrderEntry;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 
 /**
  * ContractEntry

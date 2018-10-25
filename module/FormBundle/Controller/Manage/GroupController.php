@@ -20,8 +20,8 @@
 
 namespace FormBundle\Controller\Manage;
 
-use FormBundle\Entity\Node\Group,
-    Zend\View\Model\ViewModel;
+use FormBundle\Entity\Node\Group;
+use Zend\View\Model\ViewModel;
 
 /**
  * GroupController

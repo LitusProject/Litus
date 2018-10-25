@@ -20,8 +20,8 @@
 
 namespace SyllabusBundle\Repository\Subject;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository,
-    SyllabusBundle\Entity\Subject\Comment as CommentEntity;
+use CommonBundle\Component\Doctrine\ORM\EntityRepository;
+use SyllabusBundle\Entity\Subject\Comment as CommentEntity;
 
 /**
  * Reply

@@ -20,8 +20,8 @@
 
 namespace TicketBundle\Controller\Sale;
 
-use TicketBundle\Entity\Ticket,
-    Zend\View\Model\ViewModel;
+use TicketBundle\Entity\Ticket;
+use Zend\View\Model\ViewModel;
 
 /**
  * TicketController
