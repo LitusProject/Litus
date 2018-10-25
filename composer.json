@@ -47,7 +47,9 @@
     "require-dev": {
         "zendframework/zend-developer-tools": "^1.2",
 
-        "litus/php-cs-fixer": "dev-master"
+        "phpstan/phpstan": "^0.10.5",
+        "squizlabs/php_codesniffer": "^3.3",
+        "slevomat/coding-standard": "^4.8"
     },
     "provide": {
         "ext-mongo": "^1.5"
@@ -80,5 +82,10 @@
             "TicketBundle\\": "module/TicketBundle",
             "WikiBundle\\": "module/WikiBundle"
         }
+    },
+    "scripts": {
+        "phpcs": "vendor/bin/phpcs",
+        "phpcbf": "vendor/bin/phpcbf",
+        "phpstan": "vendor/bin/phpstan"
     }
 }
