@@ -102,7 +102,10 @@
                     </div>
                     <div id="contact" class="panel-collapse collapse">
                         <div class="panel-body">
-                            {{ markdown(internship.getContact())|raw }}
+                            {{ translate('Mail') }}:
+                            <a href="mailto:{{ (internship.getEmail()) }}" class="panel-title" data-parent="#accordion">
+                                {{ internship.getEmail() }}
+                            </a>
                         </div>
                     </div>
                 </div>
