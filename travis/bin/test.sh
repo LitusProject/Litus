@@ -22,7 +22,7 @@ EOF
 }
 
 phpcs() {
-    vendor/bin/phpcs --report=summary
+    vendor/bin/phpcs -q --runtime-set ignore_warnings_on_exit true --report=summary
 }
 
 install() {
