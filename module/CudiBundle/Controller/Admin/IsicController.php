@@ -106,18 +106,18 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
 
         if (!($isicCard = $this->getIsicCardEntity())) {
             return new ViewModel(
-            array(
-                'result' => (object) array('status' => 'error'),
-            )
-        );
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
         }
 
         if ($isicCard->getBooking()->getStatus() !== 'sold') {
             return new ViewModel(
-            array(
-                'result' => (object) array('status' => 'error'),
-            )
-        );
+                array(
+                    'result' => (object) array('status' => 'error'),
+                )
+            );
         }
 
         if (!$isicCard->hasPaid()) {
@@ -199,7 +199,7 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
             $item->number = $card->getCardNumber();
             $item->person = $card->getPerson()->getFullName();
             $item->status = $card->getBooking()->getStatus();
-            $item->year = $card->getAcademicYear()->getStartDate()->format('Y') . " - " . $card->getAcademicYear()->getEndDate()->format('Y') ;
+            $item->year = $card->getAcademicYear()->getStartDate()->format('Y') . ' - ' . $card->getAcademicYear()->getEndDate()->format('Y') ;
             $item->isPaid = $card->hasPaid();
             $item->booking = $card->getBooking()->getId();
             $result[] = $item;
@@ -213,7 +213,7 @@ class IsicController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  AcademicYear             $academicYear
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function search(AcademicYear $academicYear)

@@ -127,7 +127,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Add', 'unit_add');
 
-        if (null !== $this->unit) {
+        if ($this->unit !== null) {
             $this->bind($this->unit);
         }
     }
@@ -177,7 +177,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActive();
 
-        $exclude = null === $this->unit ? 0 : $this->unit->getId();
+        $exclude = $this->unit === null ? 0 : $this->unit->getId();
 
         $unitsArray = array(
             '' => '',

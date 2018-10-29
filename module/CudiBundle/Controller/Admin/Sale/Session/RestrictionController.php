@@ -55,11 +55,11 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                if ('name' == $formData['type']) {
+                if ($formData['type'] == 'name') {
                     $restriction = new NameRestriction($session, $formData['start_value_name'], $formData['end_value_name']);
-                } elseif ('year' == $formData['type']) {
+                } elseif ($formData['type'] == 'year') {
                     $restriction = new YearRestriction($session, $formData['start_value_year'], $formData['end_value_year']);
-                } elseif ('study' == $formData['type']) {
+                } elseif ($formData['type'] == 'study') {
                     $restriction = new StudyRestriction($session);
 
                     foreach ($formData['value_study'] as $id) {

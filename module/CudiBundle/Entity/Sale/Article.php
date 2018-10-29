@@ -254,7 +254,7 @@ class Article
      */
     public function setBarcode($barcode)
     {
-        if ('' == $barcode) {
+        if ($barcode == '') {
             return $this;
         }
 
@@ -269,7 +269,7 @@ class Article
             }
         }
 
-        if (!(null !== $main && $main->getBarcode() == $barcode)) {
+        if (!($main !== null && $main->getBarcode() == $barcode)) {
             if ($main) {
                 $main->setIsMain(false);
             }
@@ -549,7 +549,7 @@ class Article
         $memberRestriction = $entityManager->getRepository('CudiBundle\Entity\Sale\Article\Restriction\Member')
             ->findOneByArticle($this);
 
-        if ($onlyMember && null === $memberRestriction) {
+        if ($onlyMember && $memberRestriction === null) {
             $restrictions[] = new MemberRestriction($this, false);
         }
 

@@ -45,7 +45,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $academicYear = $this->getAcademicYearEntity();
         $semester = $this->getSemester();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $articles = $this->search($academicYear, $semester);
         }
 
@@ -82,7 +82,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         $form->setAttribute(
             'action',
             $this->url()->fromRoute(
-                'cudi_admin_sales_article', array('action' => 'download')
+                'cudi_admin_sales_article',
+                array('action' => 'download')
             )
         );
 
@@ -114,11 +115,11 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
 
                 $this->getResponse()->getHeaders()
                     ->addHeaders(
-                    array(
-                        'Content-Disposition' => 'attachment; filename="sale_articles_' . $semester . '_' . $academicYear->getCode() . '.csv"',
-                        'Content-Type'        => 'text/csv',
-                    )
-                );
+                        array(
+                            'Content-Disposition' => 'attachment; filename="sale_articles_' . $semester . '_' . $academicYear->getCode() . '.csv"',
+                            'Content-Type'        => 'text/csv',
+                        )
+                    );
 
                 return new ViewModel(
                     array(
@@ -229,7 +230,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('cudi.front_page_cache_dir');
 
-                    if (null !== $mainArticle->getFrontPage() && file_exists($cachePath . '/' . $mainArticle->getFrontPage())) {
+                    if ($mainArticle->getFrontPage() !== null && file_exists($cachePath . '/' . $mainArticle->getFrontPage())) {
                         unlink($cachePath . '/' . $mainArticle->getFrontPage());
                     }
 
@@ -464,7 +465,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                             ->addTo($booking->getPerson()->getEmail(), $booking->getPerson()->getFullName())
                             ->setSubject($formData['subject']);
 
-                        if ('development' != getenv('APPLICATION_ENV')) {
+                        if (getenv('APPLICATION_ENV') != 'development') {
                             $this->getMailTransport()->send($mail);
                         }
                     }
@@ -530,8 +531,8 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  AcademicYear             $academicYear
-     * @param  int                      $semester
+     * @param  AcademicYear $academicYear
+     * @param  integer      $semester
      * @return \Doctrine\ORM\Query|null
      */
     private function search(AcademicYear $academicYear, $semester)
@@ -609,7 +610,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return int
+     * @return integer
      */
     private function getSemester()
     {

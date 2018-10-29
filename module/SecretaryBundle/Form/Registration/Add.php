@@ -85,7 +85,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'name'       => 'first_name',
                     'label'      => 'First Name',
                     'required'   => true,
-                    'value'      => isset($extra['first_name']) ? $extra['first_name'] : '',
+                    'value'      => $extra['first_name'] ?? '',
                     'attributes' => array(
                         'id' => 'first_name',
                     ),
@@ -102,7 +102,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'name'       => 'last_name',
                     'label'      => 'Last Name',
                     'required'   => true,
-                    'value'      => isset($extra['last_name']) ? $extra['last_name'] : '',
+                    'value'      => $extra['last_name'] ?? '',
                     'attributes' => array(
                         'id' => 'last_name',
                     ),
@@ -230,11 +230,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'value' => true,
                 ),
                 array(
-                            'type'  => 'checkbox',
-                            'name'  => 'is_international',
-                            'label' => 'I am an international student',
-                            'value' => false,
-                        ),
+                    'type'  => 'checkbox',
+                    'name'  => 'is_international',
+                    'label' => 'I am an international student',
+                    'value' => false,
+                ),
                 array(
                     'type'     => 'common_address_add-primary',
                     'name'     => 'primary_address',
@@ -290,13 +290,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 array(
-                    'type'       => (empty($memberShipArticles) && !($isicMembership == '1')) ? 'hidden' : 'checkbox',
+                    'type'       => empty($memberShipArticles) && !($isicMembership == '1') ? 'hidden' : 'checkbox',
                     'name'       => 'become_member',
                     'label'      => 'I want to become a member of the student association in academic year { year } (&euro; { price })',
-                    'value'      => (empty($memberShipArticles) && !($isicMembership == '1')) ? false : true,
+                    'value'      => empty($memberShipArticles) && !($isicMembership == '1') ? false : true,
                     'attributes' => array(
                         'id'       => 'become_member',
-                        'disabled' => 1 != $registrationEnabled,
+                        'disabled' => $registrationEnabled != 1,
                     ),
                 ),
                 array(
@@ -328,7 +328,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->addSubmit('Register', 'btn btn-primary', 'register');
 
-        if (null !== $this->metaData) {
+        if ($this->metaData !== null) {
             if ($this->metaData->becomeMember()) {
                 /** @var \CommonBundle\Component\Form\Fieldset $organizationInfoFieldset */
                 $organizationInfoFieldset = $this->get('organization_info');
@@ -345,7 +345,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             }
 
             $this->bind($this->metaData);
-        } elseif (null !== $this->academic) {
+        } elseif ($this->academic !== null) {
             /** @var \CommonBundle\Component\Form\Fieldset $academicFieldset */
             $academicFieldset = $this->get('academic');
             $academicFieldset->populateValues(
@@ -376,7 +376,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @param  bool $conditionsChecked
+     * @param  boolean $conditionsChecked
      * @return self
      */
     public function setConditionsChecked($conditionsChecked = true)
@@ -431,7 +431,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isOtherOrganizationEnabled()
     {
@@ -443,7 +443,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     public function getInputFilterSpecification()
     {
         $specs = parent::getInputFilterSpecification();
-        if (null !== $this->metaData) {
+        if ($this->metaData !== null) {
             if (isset($specs['organization_info']['conditions'])) {
                 unset($specs['organization_info']['conditions']);
             }

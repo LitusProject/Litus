@@ -187,7 +187,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
                     $mail->addBcc($responsible->getPerson()->getEmail(), $responsible->getPerson()->getFullName());
                 }
 
-                if ('development' != getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
                 }
 
@@ -262,7 +262,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
             $mail->addBcc($responsible->getPerson()->getEmail(), $responsible->getPerson()->getFullName());
         }
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
 
@@ -426,7 +426,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     private static function loadDate($date)

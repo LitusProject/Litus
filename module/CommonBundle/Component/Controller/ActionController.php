@@ -23,8 +23,6 @@ namespace CommonBundle\Component\Controller;
 use CommonBundle\Component\Acl\Acl;
 use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
 use CommonBundle\Component\Controller\Exception\RuntimeException;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait;
@@ -36,13 +34,14 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionStorageTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ViewRendererTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\General\Visit;
 use Locale;
 use Zend\Http\Header\HeaderInterface;
 use Zend\Mvc\MvcEvent;
-use Zend\Paginator\Paginator;
 use Zend\Validator\AbstractValidator;
 use Zend\View\Model\ViewModel;
 
@@ -76,7 +75,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * Execute the request.
      *
-     * @param  MvcEvent                       $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      * @throws Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -92,7 +91,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
         $this->initViewHelpers();
 
         if ($this->initAuthentication() !== null) {
-            return new ViewModel;
+            return new ViewModel();
         }
 
         $this->logVisit();
@@ -347,7 +346,7 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     /**
      * Get the current academic year.
      *
-     * @param  bool      $organization
+     * @param  boolean $organization
      * @return AcademicYear
      */
     public function getCurrentAcademicYear($organization = false)
@@ -481,8 +480,8 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * @param  string                            $name
-     * @param  array|object|null                 $data
+     * @param  string            $name
+     * @param  array|object|null $data
      * @return \CommonBundle\Component\Form\Form
      */
     public function getForm($name, $data = null)
@@ -491,9 +490,9 @@ class ActionController extends \Zend\Mvc\Controller\AbstractActionController imp
     }
 
     /**
-     * @param  string     $entityName
-     * @param  string     $paramKey
-     * @param  string     $entityKey
+     * @param  string $entityName
+     * @param  string $paramKey
+     * @param  string $entityKey
      * @return mixed|null
      */
     protected function getEntityById($entityName, $paramKey = 'id', $entityKey = 'id')

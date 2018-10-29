@@ -56,7 +56,7 @@ class Amount
     private $unit;
 
     /**
-     * @var int The number of units
+     * @var integer The number of units
      *
      * @ORM\Column(type="integer")
      */
@@ -65,7 +65,7 @@ class Amount
     /**
      * @param CashRegister The cash register this amount is assigned to
      * @param MoneyUnit The unit for which this is the amount
-     * @param int $amount The number of units
+     * @param integer                                                   $amount The number of units
      */
     public function __construct(CashRegister $register, MoneyUnit $unit, $amount)
     {

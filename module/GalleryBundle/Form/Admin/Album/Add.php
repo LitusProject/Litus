@@ -82,7 +82,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->addSubmit('Add', 'gallery_add');
 
-        if (null !== $this->album) {
+        if ($this->album !== null) {
             $this->bind($this->album);
         }
     }

@@ -50,10 +50,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->subject) {
+        if ($this->subject === null) {
             throw new LogicException('No subject was given to add a module group to');
         }
-        if (null === $this->academicYear) {
+        if ($this->academicYear === null) {
             throw new LogicException('No academic year was given');
         }
 

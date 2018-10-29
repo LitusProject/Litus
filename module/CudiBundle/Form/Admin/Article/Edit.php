@@ -25,7 +25,7 @@ namespace CudiBundle\Form\Admin\Article;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \CudiBundle\Form\Admin\Article\Add
 {
     public function init()
     {

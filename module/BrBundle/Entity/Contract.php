@@ -42,7 +42,7 @@ use InvalidArgumentException;
 class Contract
 {
     /**
-     * @var int The contract's ID
+     * @var integer The contract's ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -118,35 +118,35 @@ class Contract
     private $paymentDetails;
 
     /**
-     * @var int The paymentdays of the contract
+     * @var integer The paymentdays of the contract
      *
      * @ORM\Column(name="payment_days", type="integer", options={"default" = 30})
      */
     private $paymentDays;
 
     /**
-     * @var int The contract number. A form of identification that means something to the human users.
+     * @var integer The contract number. A form of identification that means something to the human users.
      *
      * @ORM\Column(name="contract_nb", type="integer")
      */
     private $contractNb;
 
     /**
-     * @var bool True if the contract has been updated but the updated version has not been generated yet.
+     * @var boolean True if the contract has been updated but the updated version has not been generated yet.
      *
      * @ORM\Column(type="boolean")
      */
     private $dirty;
 
     /**
-     * @var bool True if the contract has been signed or not.
+     * @var boolean True if the contract has been signed or not.
      *
      * @ORM\Column(type="boolean")
      */
     private $signed;
 
     /**
-     * @var Integer that resembles the version of this contract.
+     * @var integer that resembles the version of this contract.
      *
      * @ORM\Column(type="integer")
      */
@@ -174,7 +174,7 @@ class Contract
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getVersion()
     {
@@ -182,7 +182,7 @@ class Contract
     }
 
     /**
-     * @param int $versionNb
+     * @param integer $versionNb
      */
     public function setVersion($versionNb)
     {
@@ -190,7 +190,7 @@ class Contract
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getPaymentDays()
     {
@@ -198,7 +198,7 @@ class Contract
     }
 
     /**
-     * @param  int  $paymentDays
+     * @param  integer $paymentDays
      * @return self
      */
     public function setPaymentDays($paymentDays)
@@ -285,7 +285,7 @@ class Contract
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -320,12 +320,12 @@ class Contract
 
     /**
      * @throws InvalidArgumentException
-     * @param  Collaborator             $author
+     * @param  Collaborator $author
      * @return self
      */
     public function setAuthor(Collaborator $author)
     {
-        if (null === $author) {
+        if ($author === null) {
             throw new InvalidArgumentException('Author cannot be null');
         }
 
@@ -344,12 +344,12 @@ class Contract
 
     /**
      * @throws InvalidArgumentException
-     * @param  Company                  $company
+     * @param  Company $company
      * @return self
      */
     public function setCompany(Company $company)
     {
-        if (null === $company) {
+        if ($company === null) {
             throw new InvalidArgumentException('Company cannot be null');
         }
 
@@ -368,12 +368,12 @@ class Contract
 
     /**
      * @throws InvalidArgumentException
-     * @param  string                   $title The title of the contract
+     * @param  string $title The title of the contract
      * @return self
      */
     public function setTitle($title)
     {
-        if (null === $title || !is_string($title)) {
+        if ($title === null || !is_string($title)) {
             throw new InvalidArgumentException('Invalid title');
         }
 
@@ -383,7 +383,7 @@ class Contract
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isDirty()
     {
@@ -391,7 +391,7 @@ class Contract
     }
 
     /**
-     * @param  bool $dirty
+     * @param  boolean $dirty
      * @return self
      */
     public function setDirty($dirty = true)
@@ -402,7 +402,7 @@ class Contract
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isSigned()
     {
@@ -410,7 +410,7 @@ class Contract
     }
 
     /**
-     * @param  bool $signed
+     * @param  boolean $signed
      * @return self
      */
     public function setSigned($signed = true)
@@ -437,13 +437,13 @@ class Contract
             $entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.contract_number_codes')
-            )[$academicYear->getCode(true)];
+        )[$academicYear->getCode(true)];
 
         return $contractYearCode . $this->getAuthor()->getNumber() . str_pad($this->contractNb, 3, '0', STR_PAD_LEFT);
     }
 
     /**
-     * @return int
+     * @return integer
      *
      * @note    Returns the number of the current contract. This number is used to generate the full contract number.
      *
@@ -454,12 +454,12 @@ class Contract
     }
 
     /**
-     * @param  int  $contractNb
+     * @param  integer $contractNb
      * @return self
      */
     public function setContractNb($contractNb)
     {
-        if (null === $contractNb || !is_numeric($contractNb)) {
+        if ($contractNb === null || !is_numeric($contractNb)) {
             throw new InvalidArgumentException('Invalid contract number: ' . $contractNb);
         }
 

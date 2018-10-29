@@ -42,7 +42,7 @@ class Event extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function init()
     {
-        if (null === $this->language) {
+        if ($this->language === null) {
             throw new LogicException('Language needs to be set.');
         }
 

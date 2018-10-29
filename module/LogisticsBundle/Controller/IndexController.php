@@ -20,7 +20,7 @@
 
 namespace LogisticsBundle\Controller;
 
-use CommonBundle\Component\Util\File\TmpFile as TmpFile;
+use CommonBundle\Component\Util\File\TmpFile;
 use DateTime;
 use LogisticsBundle\Component\Document\Generator\Ics as IcsGenerator;
 use LogisticsBundle\Document\Token;
@@ -44,7 +44,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 ->findOneByPerson($this->getAuthentication()->getPersonObject());
         }
 
-        if (null === $token && $this->getAuthentication()->isAuthenticated()) {
+        if ($token === null && $this->getAuthentication()->isAuthenticated()) {
             $token = new Token(
                 $this->getAuthentication()->getPersonObject()
             );
@@ -81,7 +81,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     'color' => '#444444',
                     'name'  => '',
                 );
-                if (null !== $driver) {
+                if ($driver !== null) {
                     $driverArray['id'] = $driver->getPerson()->getId();
                     $driverArray['color'] = $driver->getColor();
                     $driverArray['name'] = $driver->getPerson()->getFullname();
@@ -89,7 +89,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
                 $passengerName = '';
                 $passengerId = '';
-                if (null !== $passenger) {
+                if ($passenger !== null) {
                     $passengerName = $passenger->getFullname();
                     $passengerId = $passenger->getId();
                 }
@@ -158,7 +158,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                     'color' => '#444444',
                     'name'  => '',
                 );
-                if (null !== $driver) {
+                if ($driver !== null) {
                     $driverArray['id'] = $driver->getPerson()->getId();
                     $driverArray['color'] = $driver->getColor();
                     $driverArray['name'] = $driver->getPerson()->getFullname();
@@ -168,7 +168,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
                 $passengerName = '';
                 $passengerId = '';
-                if (null !== $passenger) {
+                if ($passenger !== null) {
                     $passengerName = $passenger->getFullname();
                     $passengerId = $passenger->getId();
                 }
@@ -265,7 +265,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
         $reservations = $this->getReservations();
 
-        if (null === $reservations) {
+        if ($reservations === null) {
             return $this->notFoundAction();
         }
 
@@ -277,7 +277,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 'color' => '#444444',
                 'name'  => '',
             );
-            if (null !== $driver) {
+            if ($driver !== null) {
                 $driverArray['id'] = $driver->getPerson()->getId();
                 $driverArray['color'] = $driver->getColor();
                 $driverArray['name'] = $driver->getPerson()->getFullname();
@@ -287,7 +287,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
             $passengerName = '';
             $passengerId = '';
-            if (null !== $passenger) {
+            if ($passenger !== null) {
                 $passengerName = $passenger->getFullname();
                 $passengerId = $passenger->getId();
             }
@@ -340,7 +340,7 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
      */
     private function getReservations()
     {
-        if (null === $this->getParam('start') || null === $this->getParam('end')) {
+        if ($this->getParam('start') === null || $this->getParam('end') === null) {
             return;
         }
 

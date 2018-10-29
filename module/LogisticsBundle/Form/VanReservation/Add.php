@@ -211,9 +211,10 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         return $this;
     }
+
     private function returnYesNoArray()
     {
-        return array("N","Y");
+        return array('N','Y');
     }
 
     private function getDriversArray()

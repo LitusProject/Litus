@@ -50,7 +50,7 @@ class SaleController extends \CudiBundle\Component\Controller\ActionController
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                if ('prof' == $formData['sale_to']) {
+                if ($formData['sale_to'] == 'prof') {
                     $saleItem = new ProfItem(
                         $article,
                         $formData['number'],

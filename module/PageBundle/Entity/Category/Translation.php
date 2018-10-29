@@ -33,7 +33,7 @@ use PageBundle\Entity\Category;
 class Translation
 {
     /**
-     * @var int The ID of this tanslation
+     * @var integer The ID of this tanslation
      *
      * @ORM\Id
      * @ORM\GeneratedValue

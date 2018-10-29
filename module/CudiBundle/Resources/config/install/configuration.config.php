@@ -584,8 +584,8 @@ Zo kan GUIDO je ook in de toekomst op de hoogte houden van onze tips, trucs, nie
 Wij verkopen je gegevens nooit aan derden.<br>
 Bij elke elektronische post die je van GUIDO zal ontvangen, krijg je trouwens de mogelijkheid om je uit te schrijven voor toekomstige elektronische communicatie en je kunt je gegevens steeds raadplegen en laten verbeteren. (cfr. De GDPR-wetgeving op de privacy)<br>
 Dit is de rechtstreekse link naar onze online-privacy pagina: <a href="https://www.guido.be/Specialepaginas/Privacy.aspx">https://www.guido.be/Specialepaginas/Privacy.aspx</a>.',
-                )
-            ),
+            )
+        ),
         'description' => 'The additional conditions to be displayed below the isic registration form.',
     ),
 );

@@ -112,7 +112,8 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'form'    => $form,
                 'request' => $request,
-            ));
+            )
+        );
     }
 
     /**

@@ -27,7 +27,7 @@ use SyllabusBundle\Entity\Subject;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class AddWithSubject extends Add
+class AddWithSubject extends \CudiBundle\Form\Prof\Article\Add
 {
     /**
      * @var Subject|null

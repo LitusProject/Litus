@@ -63,7 +63,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                     ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
                     ->findOneBySubjectAndProfAndAcademicYear($subject, $docent, $academicYear);
 
-                if (null === $mapping) {
+                if ($mapping === null) {
                     $mapping = new ProfMap($subject, $docent, $academicYear);
                     $this->getEntityManager()->persist($mapping);
                     $this->getEntityManager()->flush();
@@ -194,7 +194,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

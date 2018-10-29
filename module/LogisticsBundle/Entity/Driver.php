@@ -20,7 +20,6 @@
 
 namespace LogisticsBundle\Entity;
 
-use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -68,7 +67,7 @@ class Driver
     private $removed;
 
     /**
-     * @param Person $person The person to mark as a driver
+     * @param Person                          $person The person to mark as a driver
      * @param $color The color for this driver
      */
     public function __construct(Person $person)

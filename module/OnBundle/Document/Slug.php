@@ -64,7 +64,7 @@ class Slug
     private $url;
 
     /**
-     * @var int How many times this slug was hit
+     * @var integer How many times this slug was hit
      *
      * @ODM\Field(type="increment")
      */
@@ -137,7 +137,7 @@ class Slug
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getHits()
     {

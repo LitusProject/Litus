@@ -27,7 +27,7 @@ use ShopBundle\Entity\SalesSession;
  *
  * @author Floris Kint <floris.kint@litus.cc>
  */
-class Edit extends Add
+class Edit extends \ShopBundle\Form\Admin\SalesSession\Add
 {
     /**
      * @var SalesSession The session to edit.

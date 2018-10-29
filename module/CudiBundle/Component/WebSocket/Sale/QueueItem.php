@@ -22,11 +22,9 @@ namespace CudiBundle\Component\WebSocket\Sale;
 
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\WebSocket\User;
-use CommonBundle\Entity\User\Barcode\Ean12 as Ean12;
 use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
-use CudiBundle\Component\WebSocket\Sale\Printer as Printer;
-use CudiBundle\Entity\IsicCard;
+use CudiBundle\Component\WebSocket\Sale\Printer;
 use CudiBundle\Entity\Sale\Booking;
 use CudiBundle\Entity\Sale\SaleItem;
 use CudiBundle\Entity\User\Person\Sale\Acco as AccoCard;
@@ -276,7 +274,7 @@ class QueueItem
                 $status = $booking->getPerson()
                     ->getOrganizationStatus($this->getCurrentAcademicYear());
 
-                if (null === $status) {
+                if ($status === null) {
                     $booking->getPerson()
                         ->addOrganizationStatus(
                             new OrganizationStatus(
@@ -286,7 +284,7 @@ class QueueItem
                             )
                         );
                 } else {
-                    if ('non_member' === $status->getStatus()) {
+                    if ($status->getStatus() === 'non_member') {
                         $status->setStatus('member');
                     }
                 }
@@ -295,7 +293,7 @@ class QueueItem
                     ->getRepository('SecretaryBundle\Entity\Registration')
                     ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->getCurrentAcademicYear());
 
-                if (null === $registration) {
+                if ($registration === null) {
                     $academic = $booking->getPerson();
                     if (!($academic instanceof Academic)) {
                         continue;
@@ -346,7 +344,7 @@ class QueueItem
             if (in_array($booking->getArticle()->getId(), $memberShipArticles)) {
                 $status = $booking->getPerson()
                     ->getOrganizationStatus($this->getCurrentAcademicYear());
-                if (null === $status) {
+                if ($status === null) {
                     $booking->getPerson()
                         ->addOrganizationStatus(
                             new OrganizationStatus(
@@ -356,7 +354,7 @@ class QueueItem
                             )
                         );
                 } else {
-                    if ('non_member' === $status->getStatus()) {
+                    if ($status->getStatus() === 'non_member') {
                         $status->setStatus('member');
                     }
                 }
@@ -365,7 +363,7 @@ class QueueItem
                     ->getRepository('SecretaryBundle\Entity\Registration')
                     ->findOneByAcademicAndAcademicYear($booking->getPerson(), $this->getCurrentAcademicYear());
 
-                if (null === $registration) {
+                if ($registration === null) {
                     $academic = $booking->getPerson();
                     if (!($academic instanceof Academic)) {
                         continue;
@@ -399,7 +397,7 @@ class QueueItem
                     }
                 }
 
-                $number = (isset($bestDiscount) && $bestDiscount->applyOnce()) ? 1 : $soldArticle['number'];
+                $number = isset($bestDiscount) && $bestDiscount->applyOnce() ? 1 : $soldArticle['number'];
                 $saleItem = new SaleItem(
                     $soldArticle['article'],
                     $number,
@@ -483,7 +481,7 @@ class QueueItem
                     'number'    => $booking->getNumber(),
                     'status'    => $booking->getStatus(),
                     'sellable'  => $booking->getArticle()->isSellable(),
-                    'collected' => isset($this->articles->{$booking->getArticle()->getId()}) ? $this->articles->{$booking->getArticle()->getId()} : 0,
+                    'collected' => $this->articles->{$booking->getArticle()->getId()} ?? 0,
                     'discounts' => array(),
                 );
 

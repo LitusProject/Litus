@@ -41,7 +41,7 @@ use Zend\View\Model\ViewModel;
  */
 class OrderController extends \CudiBundle\Component\Controller\ActionController
 {
-    const NOT_APPLICABLE = "/";
+    const NOT_APPLICABLE = '/';
 
     public function manageAction()
     {
@@ -71,7 +71,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $orders = $this->search($period);
         }
 
@@ -418,7 +418,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     ->findAllByOrderOnAlpha($order);
                 break;
             default:
-                new RuntimeException("Unknown sorting order");
+                new RuntimeException('Unknown sorting order');
         }
 
         $file = new CsvFile();
@@ -547,7 +547,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  Period                   $period
+     * @param  Period $period
      * @return \Doctrine\ORM\Query|null
      */
     private function search(Period $period)

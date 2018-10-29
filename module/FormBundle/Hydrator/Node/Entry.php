@@ -30,7 +30,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create a entry');
         }
 
@@ -47,7 +47,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $guestInfo = $object->getGuestInfo();
-        if (null !== $guestInfo && isset($guestData['first_name'])) {
+        if ($guestInfo !== null && isset($guestData['first_name'])) {
             $guestInfo->setFirstName($guestData['first_name'])
                 ->setLastName($guestData['last_name'])
                 ->setEmail($guestData['email']);
@@ -56,7 +56,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setDraft(isset($data['save_as_draft']) && $data['save_as_draft']);
 
         foreach ($object->getForm()->getFields() as $field) {
-            $value = isset($fieldData['field-' . $field->getId()]) ? $fieldData['field-' . $field->getId()] : '';
+            $value = $fieldData['field-'.$field->getId()] ?? '';
 
             if ($object->getId()) {
                 $fieldEntry = $this->getEntityManager()
@@ -73,7 +73,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             }
 
             if (!$removed) {
-                if (null !== $fieldEntry) {
+                if ($fieldEntry !== null) {
                     $fieldEntry->setValue($value)
                         ->setReadableValue($readableValue);
                 } else {
@@ -88,7 +88,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -134,7 +134,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
                 $formEntry->removeFieldEntry($fieldEntry);
             }
         } elseif (is_array($data['field-' . $field->getId()]) && $data['field-' . $field->getId()]['size'] > 0) {
-            if (null === $fieldEntry || $fieldEntry->getValue() == '') {
+            if ($fieldEntry === null || $fieldEntry->getValue() == '') {
                 do {
                     $fileName = sha1(uniqid());
                 } while (file_exists($filePath . '/' . $fileName));
@@ -150,10 +150,10 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             $readableValue = basename($data['field-' . $field->getId()]['name']);
             $value = $fileName;
 
-            if ($value == '' && null !== $fieldEntry) {
+            if ($value == '' && $fieldEntry !== null) {
                 $value = $fieldEntry->getValue();
             }
-        } elseif (null !== $fieldEntry) {
+        } elseif ($fieldEntry !== null) {
             $value = $fieldEntry->getValue();
             $readableValue = $fieldEntry->getReadableValue();
         }

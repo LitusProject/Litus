@@ -41,8 +41,8 @@ class RunQueue extends \CommonBundle\Component\Console\Command\WebSocket
 
     protected function isSocketEnabled()
     {
-        return '1' === $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('sport.queue_socket_enabled');
+            ->getConfigValue('sport.queue_socket_enabled') === '1';
     }
 }

@@ -55,7 +55,7 @@ class StaticMap extends \Zend\View\Helper\AbstractHelper
      */
     public function __invoke(Location $location, $size, $color)
     {
-        if (null === $this->entityManager) {
+        if ($this->entityManager === null) {
             throw new Exception\RuntimeException('No EntityManager instance was provided');
         }
 

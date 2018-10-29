@@ -26,7 +26,7 @@ namespace BannerBundle\Form\Admin\Banner;
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \BannerBundle\Form\Admin\Banner\Add
 {
     public function init()
     {

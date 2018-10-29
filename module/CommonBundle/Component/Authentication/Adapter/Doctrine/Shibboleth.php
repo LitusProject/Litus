@@ -33,9 +33,9 @@ use Doctrine\ORM\QueryBuilder;
 class Shibboleth extends \CommonBundle\Component\Authentication\Adapter\Doctrine
 {
     /**
-     * @param  EntityManager                                                                     $entityManager  The EntityManager instance
-     * @param  string                                                                            $entityName     The name of the class in the model that has the authentication information
-     * @param  string                                                                            $identityColumn The name of the column that holds the identity
+     * @param  EntityManager $entityManager  The EntityManager instance
+     * @param  string        $entityName     The name of the class in the model that has the authentication information
+     * @param  string        $identityColumn The name of the column that holds the identity
      * @throws \CommonBundle\Component\Authentication\Adapter\Exception\InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(EntityManager $entityManager, $entityName, $identityColumn)

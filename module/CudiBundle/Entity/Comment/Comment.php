@@ -97,13 +97,13 @@ class Comment
         $entityManager->persist(new Mapping($article, $this));
 
         $this->setText($text);
-        if (null !== $type) {
+        if ($type !== null) {
             $this->setType($type);
         }
     }
 
     /**
-     * @param  string  $type
+     * @param  string $type
      * @return boolean
      */
     public static function isValidCommentType($type)

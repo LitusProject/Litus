@@ -48,10 +48,10 @@ class ConfigController extends \ApiBundle\Component\Controller\ActionController\
                 $nowWithInterval->add(new DateInterval($entry->getValue()));
 
                 $value = $nowWithInterval->getTimestamp() - $now->getTimestamp();
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 try {
                     $value = unserialize($entry->getValue());
-                } catch (\Exception $e) {
+                } catch (\Throwable $e) {
                     $value = $entry->getValue();
                 }
             }

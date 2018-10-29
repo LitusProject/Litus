@@ -17,6 +17,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace PromBundle\Controller\Registration;
 
 use CommonBundle\Component\Form\Form;
@@ -222,7 +223,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
             ->getRepository('PromBundle\Entity\Bus\ReservationCode')
             ->getRegistrationCodeByCode($createFormData['create']['ticket_code']);
 
-        if (null !== $code) {
+        if ($code !== null) {
             setcookie(
                 self::$cookieNamespace,
                 $code->getCode(),
@@ -260,7 +261,7 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
             $passenger = $passengers[0];
         }
 
-        if (null !== $passenger && $manageFormData['manage']['email'] == $passenger->getEmail()) {
+        if ($passenger !== null && $manageFormData['manage']['email'] == $passenger->getEmail()) {
             setcookie(
                 self::$cookieNamespace,
                 $code->getCode(),
@@ -298,13 +299,13 @@ class IndexController extends \PromBundle\Component\Controller\RegistrationContr
             ->addBcc($mailData['from'])
             ->setSubject($mailData['subject']);
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
     }
 
     /**
-     * @param  boolean              $checkUsed
+     * @param  boolean $checkUsed
      * @return ReservationCode|null
      */
     private function getReservationCodeEntity($checkUsed = true)

@@ -119,7 +119,7 @@ class Booking
             $mail->addCc($mailAddress, $mailName);
         }
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $mailTransport->send($mail);
         }
     }
@@ -211,7 +211,7 @@ class Booking
             $mail->addCc($mailAddress, $mailName);
         }
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $mailTransport->send($mail);
         }
     }
@@ -307,7 +307,7 @@ class Booking
             $mail->addCc($mailAddress, $mailName);
         }
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $mailTransport->send($mail);
         }
     }

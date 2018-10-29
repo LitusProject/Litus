@@ -42,9 +42,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
     private $invoide;
 
     /**
-     * @var String The language used for the invoice
+     * @var string The language used for the invoice
      */
-    private $lang = "nl";
+    private $lang = 'nl';
 
     /**
      * @var String The xsl file path, relative to the br generator path, to use for each language
@@ -58,7 +58,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
     /**
      * @param \Doctrine\ORM\EntityManager              $entityManager The EntityManager instance
      * @param \BrBundle\Entity\Invoice\ContractInvoice $invoice       The invoice for which we want to generate a PDF
-     * @param String                                   $language      The language we want to generate the PDF in
+     * @param string                                   $language      The language we want to generate the PDF in
      */
     public function __construct(EntityManager $entityManager, InvoiceEntity $invoice, String $language = null)
     {
@@ -74,7 +74,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                 . $invoice->getInvoiceNumber() . '.pdf'
         );
         $this->invoide = $invoice;
-        if (null !== $language) {
+        if ($language !== null) {
             $this->lang = $language;
         }
     }
@@ -101,7 +101,7 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $logo = $configs->getConfigValue('organization_logo');
         $unionVat = $configs->getConfigValue('br.vat_number');
 
-        if ('' == $this->invoide->getVatContext()) {
+        if ($this->invoide->getVatContext() == '') {
             $vatTypeExplanation = '';
         } else {
             $vatTypeExplanation = $configs->getConfigValue('br.invoice_vat_explanation') . ' ' . $this->invoide->getVatContext();
@@ -121,19 +121,21 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             $product = $entry->getOrderEntry()->getProduct();
             $price = $product->getSignedPrice() / 100;
 
-            if (($price > 0) || (null !== $entry->getInvoiceDescription() && '' != $entry->getInvoiceDescription())) {
+            if (($price > 0) || ($entry->getInvoiceDescription() !== null && $entry->getInvoiceDescription() != '')) {
                 $tax = $this->invoide->getTaxFree() ? 0 : $vatTypes[$product->getVatType()];
 
-                $entries[] = new XmlNode('entry', null,
+                $entries[] = new XmlNode(
+                    'entry',
+                    null,
                     array(
-                        new XmlNode('description', null,
-                            (null === $entry->getInvoiceDescription() || '' == $entry->getInvoiceDescription())
-                                    ? $product->getName()
-                                    : $entry->getInvoiceDescription()
+                        new XmlNode(
+                            'description',
+                            null,
+                            $entry->getInvoiceDescription() === null || $entry->getInvoiceDescription() == '' ? $product->getName() : $entry->getInvoiceDescription()
                         ),
                         new XmlNode('price', null, XmlNode::fromString('<euro/> ' . number_format($price, 2))),
                         new XmlNode('amount', null, $entry->getOrderEntry()->getQuantity() . ''),
-                        new XmlNode('vat_type', null,  $tax . '%'),
+                        new XmlNode('vat_type', null, $tax . '%'),
                     )
                 );
 
@@ -152,19 +154,21 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
         $discountTax = $this->invoide->getTaxFree() ? 0 : 21;
 
-        if ( $percentage > 0) {
-            $entries[] = new XmlNode('entry', null,
-                    array(
-                        new XmlNode('description', null,
-                            (null === $this->invoide->getAutoDiscountText() || '' == $this->invoide->getAutoDiscountText())
-                                    ? 'Korting: ' . $percentage . '%'
-                                    : $this->invoide->getAutoDiscountText()
-                        ),
-                        new XmlNode('price', null, XmlNode::fromString('<euro/> ' . number_format($autoDiscount, 2))),
-                        new XmlNode('amount', null, '1'),
-                        new XmlNode('vat_type', null,  $discountTax . '%'),
-                    )
-                );
+        if ($percentage > 0) {
+            $entries[] = new XmlNode(
+                'entry',
+                null,
+                array(
+                    new XmlNode(
+                        'description',
+                        null,
+                        $this->invoide->getAutoDiscountText() === null || $this->invoide->getAutoDiscountText() == '' ? 'Korting: ' . $percentage . '%' : $this->invoide->getAutoDiscountText()
+                    ),
+                    new XmlNode('price', null, XmlNode::fromString('<euro/> ' . number_format($autoDiscount, 2))),
+                    new XmlNode('amount', null, '1'),
+                    new XmlNode('vat_type', null, $discountTax . '%'),
+                )
+            );
 
             $totalVat += $autoDiscount * $discountTax / 100;
 
@@ -180,20 +184,24 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
         $entries[] = new XmlNode('empty_line');
 
         $discount = $this->invoide->getOrder()->getDiscount() / 100;
-        if (0 != $discount) {
-            if ('' == $this->invoide->getDiscountText()) {
-                $entries[] = new XmlNode('entry', null,
-                array(
-                    new XmlNode('description', null, 'Korting'),
-                    new XmlNode('price', null, XmlNode::fromString('<euro/> -' . number_format($discount, 2))),
-                    new XmlNode('amount', null, '1'),
-                    new XmlNode('vat_type', null, $discountTax . '%'),
-                )
-            );
-            } else {
-                $entries[] = new XmlNode('entry', null,
+        if ($discount != 0) {
+            if ($this->invoide->getDiscountText() == '') {
+                $entries[] = new XmlNode(
+                    'entry',
+                    null,
                     array(
-                        new XmlNode('description', null,$this->invoide->getDiscountText()),
+                        new XmlNode('description', null, 'Korting'),
+                        new XmlNode('price', null, XmlNode::fromString('<euro/> -' . number_format($discount, 2))),
+                        new XmlNode('amount', null, '1'),
+                        new XmlNode('vat_type', null, $discountTax . '%'),
+                    )
+                );
+            } else {
+                $entries[] = new XmlNode(
+                    'entry',
+                    null,
+                    array(
+                        new XmlNode('description', null, $this->invoide->getDiscountText()),
                         new XmlNode('price', null, XmlNode::fromString('<euro/> -' . number_format($discount, 2))),
                         new XmlNode('amount', null, '1'),
                         new XmlNode('vat_type', null, $discountTax . '%'),
@@ -204,16 +212,19 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
             $totalVat += -$discount * $discountTax / 100;
         }
 
-        $totalExclusive = $totalExclusive - $discount + $autoDiscount;
+        $totalExclusive -= $discount + $autoDiscount;
 
         $total = $totalExclusive + $totalVat;
 
-        $xml->append(new XmlNode('invoice',
+        $xml->append(new XmlNode(
+            'invoice',
             array(
                 'payment_days' => (String) $paymentDays,
-                ),
+            ),
             array(
-                new XmlNode('title', null,
+                new XmlNode(
+                    'title',
+                    null,
                     array(
                         new XmlNode('invoice_number', null, $invoiceNb),
                         new XmlNode('invoice_date', null, $invoiceDate),
@@ -223,7 +234,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                     )
                 ),
 
-                new XmlNode('our_union', null,
+                new XmlNode(
+                    'our_union',
+                    null,
                     array(
                         new XmlNode('name', null, $unionName),
                         new XmlNode(
@@ -267,7 +280,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
                     )
                 ),
 
-                new XmlNode('company', array('contact_person' => $companyContactPerson),
+                new XmlNode(
+                    'company',
+                    array('contact_person' => $companyContactPerson),
                     array(
                         new XmlNode('name', null, $companyName),
                         new XmlNode(
@@ -311,7 +326,9 @@ class Invoice extends \CommonBundle\Component\Document\Generator\Pdf
 
                 new XmlNode('entries', null, $entries),
 
-                new XmlNode('total', null,
+                new XmlNode(
+                    'total',
+                    null,
                     array(
                         new XmlNode('vat_type_explanation', null, $vatTypeExplanation),
                         new XmlNode('price_excl', null, XmlNode::fromString('<euro/>' . number_format($totalExclusive, 2))),

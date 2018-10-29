@@ -72,14 +72,14 @@ class Acl extends \Zend\Permissions\Acl\Acl
     /**
      * Adding a resource retrieved from the database as well as its children.
      *
-     * @param  Resource $resource The resource that should be added
+     * @param  resource $resource The resource that should be added
      * @return void
      */
     private function addResourceEntity(Resource $resource)
     {
         $this->addResource(
             $resource->getName(),
-            (null === $resource->getParent()) ? null : $resource->getParent()->getName()
+            $resource->getParent() === null ? null : $resource->getParent()->getName()
         );
 
         foreach ($resource->getChildren($this->entityManager) as $childResource) {
@@ -121,7 +121,8 @@ class Acl extends \Zend\Permissions\Acl\Acl
         }
 
         $this->addRole(
-            $role->getName(), $parents
+            $role->getName(),
+            $parents
         );
 
         foreach ($role->getActions() as $action) {

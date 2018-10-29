@@ -109,7 +109,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
                         )
                     );
 
-                if (null !== $repositoryCheck) {
+                if ($repositoryCheck !== null) {
                     $this->flashMessenger()->error(
                         'Error',
                         'This user has already been given access to this list!'
@@ -177,7 +177,7 @@ class GroupViewerController extends \CommonBundle\Component\Controller\ActionCon
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
             ->findOneByForm($viewer->getForm());
 
-        if (null == $group) {
+        if ($group == null) {
             return new ViewModel(
                 array(
                     'result' => (object) array('status' => 'error'),

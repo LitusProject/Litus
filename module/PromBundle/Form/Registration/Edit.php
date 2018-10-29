@@ -28,7 +28,7 @@ use PromBundle\Entity\Bus\Passenger;
  * @author Mathijs Cuppens
  * @author Kristof Marien <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \PromBundle\Form\Registration\Add
 {
     /**
      * @var Passenger
@@ -46,23 +46,23 @@ class Edit extends Add
         $firstBusEntity = null;
         $secondBusEntity = null;
 
-        if (null !== $this->passenger) {
+        if ($this->passenger !== null) {
             $firstName = $this->passenger->getFirstName();
             $lastName = $this->passenger->getLastName();
             $email = $this->passenger->getEmail();
 
             $codeEntity = $this->passenger->getCode();
-            if (null !== $codeEntity) {
+            if ($codeEntity !== null) {
                 $code = $codeEntity->getCode();
             }
 
             $firstBusEntity = $this->passenger->getFirstBus();
-            if (null !== $firstBusEntity) {
+            if ($firstBusEntity !== null) {
                 $firstBus = $firstBusEntity->getId();
             }
 
             $secondBusEntity = $this->passenger->getSecondBus();
-            if (null !== $secondBusEntity) {
+            if ($secondBusEntity !== null) {
                 $secondBus = $secondBusEntity->getId();
             }
         }

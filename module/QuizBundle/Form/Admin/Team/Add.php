@@ -44,7 +44,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->quiz) {
+        if ($this->quiz === null) {
             throw new RuntimeException('Quiz cannot be null when adding a team');
         }
 

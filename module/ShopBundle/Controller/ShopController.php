@@ -57,11 +57,9 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         $endDate = clone $startDate;
         $endDate->add($interval);
 
-        $salesSessions = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\SalesSession')
             ->findAllReservationsPossibleInterval($startDate, $endDate);
-
-        return $salesSessions;
     }
 
     public function reserveproductsAction()
@@ -79,11 +77,13 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         $salesSession = $this->getSalesSessionEntity();
         $stockEntries = $this->getStockEntries($salesSession);
 
-        $reserveForm = $this->getForm('shop_shop_reserve',
+        $reserveForm = $this->getForm(
+            'shop_shop_reserve',
             array(
                 'stockEntries' => $stockEntries,
                 'salesSession' => $salesSession,
-            ));
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -154,10 +154,12 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $salesSessions = $this->getSalesSessions();
-        $sessionsForm = $this->getForm('shop_shop_sessions',
+        $sessionsForm = $this->getForm(
+            'shop_shop_sessions',
             array(
                 'salesSessions' => $salesSessions,
-            ));
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -243,7 +245,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     private function canReserve()
     {
@@ -293,7 +295,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return int
+     * @return integer
      */
     private function getTotalShiftCount()
     {
@@ -314,7 +316,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
     /**
      * @param $unitId
-     * @return int
+     * @return integer
      */
     private function getUnitShiftCount($unitId)
     {

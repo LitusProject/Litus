@@ -50,8 +50,8 @@ class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
      *          set<Key>, with <Key> the array key of the value.
      * - object: the object will be bound to the object
      *
-     * @param  array|\Traversable          $spec
-     * @param  array|object|null           $data
+     * @param  array|\Traversable $spec
+     * @param  array|object|null  $data
      * @return \Zend\Form\ElementInterface
      */
     public function create($spec, $data = null)
@@ -60,7 +60,7 @@ class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
             return $spec['instance'];
         }
 
-        if (null === $data && is_array($spec)
+        if ($data === null && is_array($spec)
                 && isset($spec['options']['data'])) {
             $data = $spec['options']['data'];
         }
@@ -84,9 +84,7 @@ class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
 
         if ($element instanceof ElementInterface) {
             $element->setRequired(
-                isset($spec['required'])
-                ? (bool) $spec['required']
-                : false
+                isset($spec['required']) ? (bool) $spec['required'] : false
             );
         }
 
@@ -124,7 +122,7 @@ class Factory extends \Zend\Form\Factory implements ServiceLocatorAwareInterface
 
     public function getInputFilterFactory()
     {
-        if (null === $this->inputFilterFactory) {
+        if ($this->inputFilterFactory === null) {
             $this->setInputFilterFactory(new InputFilterFactory());
         }
 

@@ -236,12 +236,12 @@ class SessionController extends \CudiBundle\Component\Controller\ActionControlle
                 );
 
                 $this->redirect()->toRoute(
-                       'cudi_admin_sales_session',
-                       array(
-                           'action' => 'edit',
-                           'id'     => $session->getId(),
-                       )
-                   );
+                    'cudi_admin_sales_session',
+                    array(
+                        'action' => 'edit',
+                        'id'     => $session->getId(),
+                    )
+                );
 
                 return new ViewModel();
             }

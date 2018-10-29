@@ -44,7 +44,7 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class Node
 {
     /**
-     * @var int The ID of this node
+     * @var integer The ID of this node
      *
      * @ORM\Id
      * @ORM\GeneratedValue

@@ -35,7 +35,7 @@ use PageBundle\Entity\Node\Page;
 class Category
 {
     /**
-     * @var int The ID of this category
+     * @var integer The ID of this category
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -100,14 +100,14 @@ class Category
     }
 
     /**
-     * @param  Language|null                                $language
-     * @param  boolean                                      $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return \PageBundle\Entity\Category\Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language) {
+            if ($language !== null && $translation->getLanguage() == $language) {
                 return $translation;
             }
 
@@ -132,7 +132,7 @@ class Category
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getName();
         }
 

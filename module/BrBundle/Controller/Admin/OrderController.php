@@ -355,7 +355,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = $this->getForm('br_order_generate-contract',array('order' => $order));
+        $form = $this->getForm('br_order_generate-contract', array('order' => $order));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -415,7 +415,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  boolean    $allowSigned
+     * @param  boolean $allowSigned
      * @return Order|null
      */
     private function getOrderEntity($allowSigned = true)
@@ -458,7 +458,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  boolean         $allowSigned
+     * @param  boolean $allowSigned
      * @return OrderEntry|null
      */
     private function getEntryEntity($allowSigned = true)
@@ -525,7 +525,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('BrBundle\Entity\Collaborator')
             ->findCollaboratorByPersonId($this->getAuthentication()->getPersonObject()->getId());
 
-        if (null === $collaborator) {
+        if ($collaborator === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'You are not a collaborator, so you cannot add or edit orders.'

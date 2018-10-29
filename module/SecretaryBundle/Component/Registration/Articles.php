@@ -51,7 +51,7 @@ class Articles
                 ->getRepository('CudiBundle\Entity\Sale\Article')
                 ->findOneById($ids[$organization->getId()]);
 
-            if (null !== $membershipArticle) {
+            if ($membershipArticle !== null) {
                 $booking = $entityManager
                     ->getRepository('CudiBundle\Entity\Sale\Booking')
                     ->findOneSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
@@ -60,7 +60,7 @@ class Articles
                         $academicYear
                     );
 
-                if (null === $booking) {
+                if ($booking === null) {
                     $booking = new Booking(
                         $entityManager,
                         $academic,
@@ -97,7 +97,7 @@ class Articles
                     $academicYear
                 );
 
-            if (null !== $booking) {
+            if ($booking !== null) {
                 $hasShirt = true;
                 break;
             }
@@ -157,7 +157,7 @@ class Articles
                         $academicYear
                     );
 
-                if (null !== $booking) {
+                if ($booking !== null) {
                     continue;
                 }
 
@@ -211,7 +211,7 @@ class Articles
                     $academicYear
                 );
 
-            if (null !== $booking) {
+            if ($booking !== null) {
                 $booking->setStatus('canceled', $entityManager);
             }
         }
@@ -233,7 +233,7 @@ class Articles
                     $academicYear
                 );
 
-            if (null !== $booking) {
+            if ($booking !== null) {
                 $booking->setStatus('canceled', $entityManager);
             }
         }

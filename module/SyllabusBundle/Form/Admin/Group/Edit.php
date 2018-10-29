@@ -25,7 +25,7 @@ namespace SyllabusBundle\Form\Admin\Group;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \SyllabusBundle\Form\Admin\Group\Add
 {
     public function init()
     {

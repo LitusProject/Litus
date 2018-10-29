@@ -95,7 +95,7 @@ class PraesidiumController extends \CommonBundle\Component\Controller\ActionCont
     private function getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYearUtil::getDateTime($this->getParam('academicyear'));
         }
 

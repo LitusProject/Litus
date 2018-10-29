@@ -156,12 +156,12 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @param  int|null     $id
+     * @param  integer|null $id
      * @return Subject|null
      */
     private function getSubjectEntity($id = null)
     {
-        $id = $id === null ? $this->getParam('id') : $id;
+        $id = $id ?? $this->getParam('id');
 
         if (!($academicYear = $this->getCurrentAcademicYear())) {
             return;
@@ -202,7 +202,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $comment = $this->getEntityById('SyllabusBundle\Entity\Subject\Comment');
 
-        if (!($comment instanceof Comment) || null === $this->getSubjectEntity($comment->getSubject()->getId())) {
+        if (!($comment instanceof Comment) || $this->getSubjectEntity($comment->getSubject()->getId()) === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'No comment was found!'

@@ -21,7 +21,6 @@
 namespace CommonBundle\Component\Controller\Plugin\Service;
 
 use CommonBundle\Component\Controller\Plugin\Paginator;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;

@@ -224,8 +224,8 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
 
     private function getCities()
     {
-        if (null !== $this->getCache()) {
-            if (null !== ($result = $this->getCache()->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets'))) {
+        if ($this->getCache() !== null) {
+            if (($result = $this->getCache()->getItem('Litus_CommonBundle_Entity_General_Address_Cities_Streets')) !== null) {
                 return $result;
             }
         }
@@ -247,7 +247,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
 
         $optionsCity['other'] = 'Other';
 
-        if (null !== $this->getCache()) {
+        if ($this->getCache() !== null) {
             $this->getCache()->setItem(
                 'Litus_CommonBundle_Entity_General_Address_Cities_Streets',
                 array(
@@ -264,7 +264,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
     {
         $specs = parent::getInputFilterSpecification();
 
-        if ('' === $this->get('city')->getValue() && !$this->isRequired()) {
+        if ($this->get('city')->getValue() === '' && !$this->isRequired()) {
             // empty form
             return array();
         }
@@ -274,7 +274,7 @@ class AddPrimary extends \CommonBundle\Component\Form\Fieldset
 
             if (is_array($specs['street'])) {
                 foreach ($specs['street'] as $city => $streetSpecification) {
-                    if ('type' == $city) {
+                    if ($city == 'type') {
                         continue;
                     }
                     $specs['street'][$city]['required'] = $this->isRequired() && ($city == 'street_' . $this->get('city')->getValue());

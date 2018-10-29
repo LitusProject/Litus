@@ -92,7 +92,7 @@ class Xml
                 $jobId = $this->entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('cudi.order_job_id');
-                $jobId = str_replace('{{ code }}', substr((string) $item->getArticle()->getBarcode(),-5) ,str_replace('{{ date }}', $this->order->getDateOrdered()->format('Ymd'), $jobId));
+                $jobId = str_replace('{{ code }}', substr((string) $item->getArticle()->getBarcode(), -5), str_replace('{{ date }}', $this->order->getDateOrdered()->format('Ymd'), $jobId));
 
                 $zip->addFile($xmlFile->getFilename(), $jobId . '.xml');
             } else {
@@ -357,85 +357,85 @@ class Xml
             ->getConfigValue('cudi.mail');
 
         setlocale(LC_ALL, 'en_US.UTF8');
-        $title = iconv("UTF-8", "ASCII//TRANSLIT", $item->getArticle()->getMainArticle()->getTitle());
+        $title = iconv('UTF-8', 'ASCII//TRANSLIT', $item->getArticle()->getMainArticle()->getTitle());
 
         $orderDetails = array(
-                    new Node(
-                        'Jobnummber',
-                        null,
-                        str_replace('{{ code }}', substr((string) $item->getArticle()->getBarcode(),-5) ,str_replace('{{ date }}', $this->order->getDateOrdered()->format('Ymd'), $jobId))
-                    ),
-                    new Node(
-                        'Klantnaam',
-                        null,
-                        $name
-                    ),
-                    new Node(
-                        'Klantvoornaam',
-                        null,
-                        ''
-                    ),
-                    new Node(
-                        'Klantemail',
-                        null,
-                        $mail
-                    ),
-                    new Node(
-                        'Levering',
-                        null,
-                        $this->order->getDeliveryDate()->format('d/m/Y')
-                    ),
-                    new Node(
-                        'Levering2',
-                        null,
-                        ''
-                    ),
-                    new Node(
-                        'Orderline',
-                        null,
-                        '1'
-                    ),
-                    new Node(
-                        'Titel',
-                        null,
-                        $title
-                    ),
-                    new Node(
-                        'Barcode',
-                        null,
-                        $item->getArticle()->getBarcode()
-                    ),
-                    new Node(
-                        'Categorie',
-                        null,
-                        'DOC'
-                    ),
-                    new Node(
-                        'Quantity',
-                        null,
-                        (string) $item->getNumber()
-                    ),
-                    new Node(
-                        'Afdruk',
-                        null,
-                        $mainArticle->getNbColored() > 0 ? 'kleur' : 'zwart wit'
-                    ),
-                    new Node(
-                        'bedrukking',
-                        null,
-                        (string) $mainArticle->isRectoVerso() ? 'Recto-Verso' : 'Recto'
-                    ),
-                    new Node(
-                        'afwerking',
-                        null,
-                        $binding
-                    ),
-                    new Node(
-                        'Bestandsnaam',
-                        null,
-                        substr((string) $item->getArticle()->getBarcode(),-5) . '.pdf'
-                    ),
-                );
+            new Node(
+                'Jobnummber',
+                null,
+                str_replace('{{ code }}', substr((string) $item->getArticle()->getBarcode(), -5), str_replace('{{ date }}', $this->order->getDateOrdered()->format('Ymd'), $jobId))
+            ),
+            new Node(
+                'Klantnaam',
+                null,
+                $name
+            ),
+            new Node(
+                'Klantvoornaam',
+                null,
+                ''
+            ),
+            new Node(
+                'Klantemail',
+                null,
+                $mail
+            ),
+            new Node(
+                'Levering',
+                null,
+                $this->order->getDeliveryDate()->format('d/m/Y')
+            ),
+            new Node(
+                'Levering2',
+                null,
+                ''
+            ),
+            new Node(
+                'Orderline',
+                null,
+                '1'
+            ),
+            new Node(
+                'Titel',
+                null,
+                $title
+            ),
+            new Node(
+                'Barcode',
+                null,
+                $item->getArticle()->getBarcode()
+            ),
+            new Node(
+                'Categorie',
+                null,
+                'DOC'
+            ),
+            new Node(
+                'Quantity',
+                null,
+                (string) $item->getNumber()
+            ),
+            new Node(
+                'Afdruk',
+                null,
+                $mainArticle->getNbColored() > 0 ? 'kleur' : 'zwart wit'
+            ),
+            new Node(
+                'bedrukking',
+                null,
+                (string) $mainArticle->isRectoVerso() ? 'Recto-Verso' : 'Recto'
+            ),
+            new Node(
+                'afwerking',
+                null,
+                $binding
+            ),
+            new Node(
+                'Bestandsnaam',
+                null,
+                substr((string) $item->getArticle()->getBarcode(), -5) . '.pdf'
+            ),
+        );
 
         $xml->append(
             new Node(

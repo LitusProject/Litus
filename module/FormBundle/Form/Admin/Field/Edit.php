@@ -26,7 +26,7 @@ namespace FormBundle\Form\Admin\Field;
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \FormBundle\Form\Admin\Field\Add
 {
     public function init()
     {

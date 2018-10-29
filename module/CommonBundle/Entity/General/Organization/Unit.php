@@ -209,9 +209,7 @@ class Unit
     public function getRoles($mergeParentRoles = true)
     {
         return array_merge(
-            $mergeParentRoles && null !== $this->getParent()
-                ? $this->getParent()->getRoles()
-                : array(),
+            $mergeParentRoles && $this->getParent() !== null ? $this->getParent()->getRoles() : array(),
             $this->roles->toArray()
         );
     }
@@ -245,9 +243,7 @@ class Unit
     public function getCoordinatorRoles($mergeParentRoles = true)
     {
         return array_merge(
-            $mergeParentRoles && null !== $this->getParent()
-                ? $this->getParent()->getCoordinatorRoles()
-                : array(),
+            $mergeParentRoles && $this->getParent() !== null ? $this->getParent()->getCoordinatorRoles() : array(),
             $this->coordinatorRoles->toArray()
         );
     }

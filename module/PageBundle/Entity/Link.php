@@ -36,7 +36,7 @@ use PageBundle\Entity\Node\Page;
 class Link
 {
     /**
-     * @var int The ID of this link
+     * @var integer The ID of this link
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -119,14 +119,14 @@ class Link
     }
 
     /**
-     * @param  Language|null                            $language
-     * @param  boolean                                  $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return \PageBundle\Entity\Link\Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language) {
+            if ($language !== null && $translation->getLanguage() == $language) {
                 return $translation;
             }
 
@@ -151,7 +151,7 @@ class Link
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getName();
         }
 
@@ -167,7 +167,7 @@ class Link
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getUrl();
         }
 

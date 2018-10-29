@@ -75,7 +75,7 @@ class Authentication
             return;
         }
 
-        if ('' != $identity) {
+        if ($identity != '') {
             $this->adapter
                 ->setIdentity($identity)
                 ->setCredential($credential);
@@ -100,7 +100,7 @@ class Authentication
     /**
      * Returns true if the user has been authenticated.
      *
-     * @return bool
+     * @return boolean
      */
     public function isAuthenticated()
     {
@@ -120,7 +120,7 @@ class Authentication
     /**
      * Checks whether external sites can access this authentication.
      *
-     * @return bool
+     * @return boolean
      */
     public function isExternallyAuthenticated()
     {
@@ -150,7 +150,7 @@ class Authentication
     /**
      * Return the session object.
      *
-     * @return null|\CommonBundle\Entity\User\Session
+     * @return \CommonBundle\Entity\User\Session|null
      */
     public function getSessionObject()
     {

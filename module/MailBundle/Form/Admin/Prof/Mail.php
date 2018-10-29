@@ -38,7 +38,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     private $message;
 
     /**
-     * @var int
+     * @var integer
      */
     private $semester;
 
@@ -139,7 +139,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param  int  $semester
+     * @param  integer $semester
      * @return self
      */
     public function setSemester($semester)
@@ -150,7 +150,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getSemester()
     {

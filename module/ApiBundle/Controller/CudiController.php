@@ -171,7 +171,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             $bookings[] = array(
                 'id'             => $booking->getId(),
                 'assigned'       => $booking->getStatus() == 'assigned',
-                'expirationDate' => (null !== $booking->getExpirationDate() ? $booking->getExpirationDate()->format('c') : null),
+                'expirationDate' => ($booking->getExpirationDate() !== null ? $booking->getExpirationDate()->format('c') : null),
                 'number'         => $booking->getNumber(),
                 'article'        => $booking->getArticle()->getId(),
             );
@@ -211,7 +211,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
-        if (null === $this->getAccessToken()) {
+        if ($this->getAccessToken() === null) {
             return $this->error(401, 'The access token is not valid');
         }
 
@@ -337,7 +337,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneByPersonNotSold($session, $person);
 
-        if (null === $queueItem) {
+        if ($queueItem === null) {
             $queueItem = new QueueItem($this->getEntityManager(), $person, $session);
 
             $this->getEntityManager()->persist($queueItem);
@@ -379,7 +379,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneByPersonNotSold($session, $person);
 
-        if (null === $queueItem) {
+        if ($queueItem === null) {
             return new ViewModel(
                 array(
                     'result' => (object) array(
@@ -518,7 +518,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
      */
     private function getBookingEntity()
     {
-        if (null === $this->getRequest()->getPost('id')) {
+        if ($this->getRequest()->getPost('id') === null) {
             return null;
         }
 
@@ -532,7 +532,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
      */
     private function getArticleEntity()
     {
-        if (null === $this->getRequest()->getPost('id')) {
+        if ($this->getRequest()->getPost('id') === null) {
             return null;
         }
 
@@ -546,7 +546,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
      */
     private function getAcademicEntity()
     {
-        if (null === $this->getAccessToken()) {
+        if ($this->getAccessToken() === null) {
             return null;
         }
 

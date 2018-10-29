@@ -28,7 +28,7 @@ use BrBundle\Entity\Company\Job;
  * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \BrBundle\Form\Corporate\Job\Add
 {
     /**
      * @var Job
@@ -42,7 +42,7 @@ class Edit extends Add
         $this->remove('submit')
             ->addSubmit('Save Changes');
 
-        if (null !== $this->job) {
+        if ($this->job !== null) {
             $hydrator = $this->getHydrator();
             $this->populateValues($hydrator->extract($this->job));
         }

@@ -86,10 +86,7 @@ EOT
                 continue;
             }
 
-            $number = $startRepository->findValueByArticleAndPeriod($article, $period)
-                + $period->getNbDelivered($article) - $period->getNbSold($article)
-                + $deltaRepository->findTotalByArticleAndPeriod($article, $period)
-                - $retourRepository->findTotalByArticleAndPeriod($article, $period);
+            $number = $startRepository->findValueByArticleAndPeriod($article, $period) + $period->getNbDelivered($article) - $period->getNbSold($article) + $deltaRepository->findTotalByArticleAndPeriod($article, $period) - $retourRepository->findTotalByArticleAndPeriod($article, $period);
 
             if ($number < 0) {
                 $number = 0;

@@ -144,14 +144,14 @@ class OpeningHour
     }
 
     /**
-     * @param  Language|null    $language
-     * @param  boolean          $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language) {
+            if ($language !== null && $translation->getLanguage() == $language) {
                 return $translation;
             }
 
@@ -175,7 +175,7 @@ class OpeningHour
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getComment();
         }
 
@@ -191,12 +191,12 @@ class OpeningHour
     {
         $translation = $this->getTranslation($language, false);
 
-        if (null === $comment) {
+        if ($comment === null) {
             if ($translation !== null) {
                 $this->translations->removeElement($translation);
             }
         } else {
-            if (null === $translation) {
+            if ($translation === null) {
                 $this->translations->add(new Translation($this, $language, $comment));
             } else {
                 $translation->setComment($comment);

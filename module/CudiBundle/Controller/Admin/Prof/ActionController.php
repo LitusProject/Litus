@@ -266,7 +266,7 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     $cachePath = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('cudi.front_page_cache_dir');
-                    if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage())) {
+                    if ($article->getFrontPage() !== null && file_exists($cachePath . '/' . $article->getFrontPage())) {
                         unlink($cachePath . '/' . $article->getFrontPage());
                         $article->setFrontPage();
                     }
@@ -322,7 +322,8 @@ class ActionController extends \CudiBundle\Component\Controller\ActionController
                     'cudi_admin_prof_action',
                     array(
                         'action' => 'manage',
-                    )                );
+                    )                
+                );
 
                 return new ViewModel();
             }

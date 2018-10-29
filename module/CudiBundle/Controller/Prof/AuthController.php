@@ -45,7 +45,9 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
                 $this->getAuthentication()->forget();
 
                 $this->getAuthentication()->authenticate(
-                    $formData['username'], $formData['password'], $formData['remember_me']
+                    $formData['username'],
+                    $formData['password'],
+                    $formData['remember_me']
                 );
 
                 if ($this->getAuthentication()->isAuthenticated()) {
@@ -96,7 +98,7 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
 
     public function shibbolethAction()
     {
-        if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
+        if ($this->getParam('identification') !== null && $this->getParam('hash') !== null) {
             $authentication = new Authentication(
                 new ShibbolethAdapter(
                     $this->getEntityManager(),
@@ -110,7 +112,7 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
                 ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                 ->findLastByUniversityIdentification($this->getParam('identification'));
 
-            if (null !== $code) {
+            if ($code !== null) {
                 if ($code->validate($this->getParam('hash'))) {
                     $this->getEntityManager()->remove($code);
                     $this->getEntityManager()->flush();
@@ -118,11 +120,14 @@ class AuthController extends \CudiBundle\Component\Controller\ProfController
                     $this->getAuthentication()->forget();
 
                     $authentication->authenticate(
-                        $this->getParam('identification'), '', true, true
+                        $this->getParam('identification'),
+                        '',
+                        true,
+                        true
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        if (null !== $code->getRedirect()) {
+                        if ($code->getRedirect() !== null) {
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );

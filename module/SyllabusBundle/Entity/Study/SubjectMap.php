@@ -22,7 +22,6 @@ namespace SyllabusBundle\Entity\Study;
 
 use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\ORM\Mapping as ORM;
-use SyllabusBundle\Entity\Study;
 use SyllabusBundle\Entity\Subject;
 
 /**

@@ -222,73 +222,73 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                             'name' => $cudi_name,
                         ),
                         array(
-                             new Node(
-                                 'mail',
-                                 null,
-                                 $cudi_mail
-                             ),
-                             new Node(
-                                 'phone',
-                                 null,
-                                 $person->getPhoneNumber()
-                             ),
-                             new Node(
-                                 'delivery_address',
-                                 null,
-                                 array(
-                                     new Node(
-                                         'name',
-                                         null,
-                                         $delivery_address_name
-                                     ),
-                                     new Node(
-                                         'street',
-                                         null,
-                                         $delivery_address->getStreet() . ' ' . $delivery_address->getNumber() . (null === $delivery_address->getMailbox() ? '' : '/' . $delivery_address->getMailbox())
-                                     ),
-                                     new Node(
-                                         'city',
-                                         null,
-                                         $delivery_address->getPostal() . ' ' . $delivery_address->getCity()
-                                     ),
-                                     new Node(
-                                         'extra',
-                                         null,
-                                         $delivery_address_extra
-                                     ),
-                                 )
-                             ),
-                             new Node(
-                                 'billing_address',
-                                 null,
-                                 array(
-                                     new Node(
-                                         'name',
-                                         null,
-                                         $billing_address_name
-                                     ),
-                                     new Node(
-                                         'VAT',
-                                         null,
-                                         $billing_address_VAT
-                                     ),
-                                     new Node(
-                                         'person',
-                                         null,
-                                         $person->getFullname()
-                                     ),
-                                     new Node(
-                                         'street',
-                                         null,
-                                         $billing_address->getStreet() . ' ' . $billing_address->getNumber() . (null === $billing_address->getMailbox() ? '' : '/' . $billing_address->getMailbox())
-                                     ),
-                                     new Node(
-                                         'city',
-                                         null,
-                                         $billing_address->getPostal() . ' ' . $billing_address->getCity()
-                                     ),
-                                 )
-                             ),
+                            new Node(
+                                'mail',
+                                null,
+                                $cudi_mail
+                            ),
+                            new Node(
+                                'phone',
+                                null,
+                                $person->getPhoneNumber()
+                            ),
+                            new Node(
+                                'delivery_address',
+                                null,
+                                array(
+                                    new Node(
+                                        'name',
+                                        null,
+                                        $delivery_address_name
+                                    ),
+                                    new Node(
+                                        'street',
+                                        null,
+                                        $delivery_address->getStreet() . ' ' . $delivery_address->getNumber() . ($delivery_address->getMailbox() === null ? '' : '/' . $delivery_address->getMailbox())
+                                    ),
+                                    new Node(
+                                        'city',
+                                        null,
+                                        $delivery_address->getPostal() . ' ' . $delivery_address->getCity()
+                                    ),
+                                    new Node(
+                                        'extra',
+                                        null,
+                                        $delivery_address_extra
+                                    ),
+                                )
+                            ),
+                            new Node(
+                                'billing_address',
+                                null,
+                                array(
+                                    new Node(
+                                        'name',
+                                        null,
+                                        $billing_address_name
+                                    ),
+                                    new Node(
+                                        'VAT',
+                                        null,
+                                        $billing_address_VAT
+                                    ),
+                                    new Node(
+                                        'person',
+                                        null,
+                                        $person->getFullname()
+                                    ),
+                                    new Node(
+                                        'street',
+                                        null,
+                                        $billing_address->getStreet() . ' ' . $billing_address->getNumber() . ($billing_address->getMailbox() === null ? '' : '/' . $billing_address->getMailbox())
+                                    ),
+                                    new Node(
+                                        'city',
+                                        null,
+                                        $billing_address->getPostal() . ' ' . $billing_address->getCity()
+                                    ),
+                                )
+                            ),
                         )
                     ),
                     new Node(

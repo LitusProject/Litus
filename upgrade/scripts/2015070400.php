@@ -18,7 +18,7 @@
  * @license http://litus.cc/LICENSE
  */
 
-ini_set('memory_limit','500M');
+ini_set('memory_limit', '500M');
 
 include 'init_autoloader.php';
 $app = Zend\Mvc\Application::init(include 'config/application.config.php');
@@ -123,6 +123,7 @@ if ($returnValue !== 0) {
 }
 
 echo ' -> Migrate studies' . PHP_EOL;
+
 function createStudyFullTitle($data)
 {
     global $studies;
@@ -134,6 +135,7 @@ function createStudyFullTitle($data)
 
     return trim(preg_replace('/\s\s+/', ' ', $title . $data['title']));
 }
+
 $addedModuleGroups = array();
 foreach ($usedStudies as $id) {
     $studyData = $studies['_' . $id];

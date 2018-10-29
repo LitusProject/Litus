@@ -77,7 +77,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             return;
         }
 
-        if (null === $this->person) {
+        if ($this->person === null) {
             $this->add(array(
                 'type'     => 'text',
                 'name'     => 'first_name',
@@ -187,7 +187,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 throw new UnsupportedTypeException('This field type is unknown!');
             }
 
-            if (null !== $fieldSpecification->getVisibilityDecissionField()) {
+            if ($fieldSpecification->getVisibilityDecissionField() !== null) {
                 $specification['attributes']['data-visible_if_element'] = $fieldSpecification->getVisibilityDecissionField()->getId();
                 $specification['attributes']['data-visible_if_value'] = $fieldSpecification->getVisibilityValue();
             }
@@ -200,7 +200,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->addSubmit($this->form->getSubmitText($this->language));
 
-        if (null !== $this->entry) {
+        if ($this->entry !== null) {
             $this->bind($this->entry);
 
             foreach ($this->entry->getFieldEntries() as $fieldEntry) {

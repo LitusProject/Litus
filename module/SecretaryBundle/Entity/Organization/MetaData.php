@@ -23,7 +23,6 @@ namespace SecretaryBundle\Entity\Organization;
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person\Academic;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 
 /**
  * This entity stores the node item.
@@ -34,7 +33,7 @@ use InvalidArgumentException;
 class MetaData
 {
     /**
-     * @var int The ID of the metadata
+     * @var integer The ID of the metadata
      *
      * @ORM\Id
      * @ORM\GeneratedValue

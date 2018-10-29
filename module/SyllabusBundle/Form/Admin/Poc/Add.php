@@ -22,7 +22,6 @@ namespace SyllabusBundle\Form\Admin\Poc;
 
 use SyllabusBundle\Entity\Group;
 use SyllabusBundle\Entity\Poc;
-use SyllabusBundle\Repository\Group as GroupRepository;
 
 /**
  * Add Poc

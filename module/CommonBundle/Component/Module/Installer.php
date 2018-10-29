@@ -31,7 +31,7 @@ use CommonBundle\Entity\General\Organization;
  * @author Pieter Maene <pieter.maene@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class Installer extends AbstractInstaller
+class Installer extends \CommonBundle\Component\Module\AbstractInstaller
 {
     protected function preInstall()
     {
@@ -60,7 +60,7 @@ class Installer extends AbstractInstaller
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev($abbrev);
 
-            if (null === $language) {
+            if ($language === null) {
                 $language = new Language($abbrev, $name);
                 $this->getEntityManager()->persist($language);
             }
@@ -78,7 +78,7 @@ class Installer extends AbstractInstaller
                 ->getRepository('CommonBundle\Entity\General\Address\City')
                 ->findOneByPostal($cityData['postal']);
 
-            if (null === $city) {
+            if ($city === null) {
                 $city = new City($cityData['postal'], $cityData['name']);
                 $this->getEntityManager()->persist($city);
             }
@@ -87,7 +87,7 @@ class Installer extends AbstractInstaller
                 $street = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Address\Street')
                     ->findOneByCityAndName($city, $streetData['name']);
-                if (null === $street) {
+                if ($street === null) {
                     $this->getEntityManager()->persist(new Street($city, $streetData['register'], $streetData['name']));
                 }
             }
@@ -114,7 +114,7 @@ class Installer extends AbstractInstaller
                 ->getRepository('CommonBundle\Entity\General\Organization')
                 ->findOneByName($name);
 
-            if (null === $organization) {
+            if ($organization === null) {
                 $organization = new Organization($name);
                 $this->getEntityManager()->persist($organization);
             }

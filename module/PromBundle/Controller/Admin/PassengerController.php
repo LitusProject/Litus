@@ -91,7 +91,7 @@ class PassengerController extends \CommonBundle\Component\Controller\ActionContr
             ->addBcc($mailData['from'])
             ->setSubject($mailData['subject']);
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
 

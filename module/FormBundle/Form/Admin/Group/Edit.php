@@ -20,14 +20,12 @@
 
 namespace FormBundle\Form\Admin\Group;
 
-use FormBundle\Entity\Node\Group;
-
 /**
  * Edit Group
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \FormBundle\Form\Admin\Group\Add
 {
     public function init()
     {

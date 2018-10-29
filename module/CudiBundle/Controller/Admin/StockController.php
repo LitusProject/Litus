@@ -23,11 +23,11 @@ namespace CudiBundle\Controller\Admin;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Entity\General\AcademicYear;
 use CudiBundle\Component\Document\Generator\Stock as StockGenerator;
+use Cudibundle\Entity\Sale\Article as SaleArticle;
 use CudiBundle\Entity\Stock\Delivery;
 use CudiBundle\Entity\Stock\Order\Virtual as VirtualOrder;
 use CudiBundle\Entity\Stock\Period;
 use CudiBundle\Entity\Stock\Period\Value\Delta;
-use Cudibundle\Entity\Sale\Article as SaleArticle;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
 
@@ -47,7 +47,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
         $academicYear = $this->getAcademicYearEntity();
         $semester = $this->getSemester();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $articles = $this->search($academicYear, $semester);
         }
 
@@ -78,7 +78,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $articles = $this->searchNotDelivered($period);
         }
 
@@ -585,8 +585,8 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  AcademicYear             $academicYear
-     * @param  int                      $semester
+     * @param  AcademicYear $academicYear
+     * @param  integer      $semester
      * @return \Doctrine\ORM\Query|null
      */
     private function search(AcademicYear $academicYear, $semester = 0)
@@ -608,7 +608,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  Period     $period
+     * @param  Period $period
      * @return array|null
      */
     private function searchNotDelivered(Period $period)
@@ -656,7 +656,7 @@ class StockController extends \CudiBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return int
+     * @return integer
      */
     private function getSemester()
     {

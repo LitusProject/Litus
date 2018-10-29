@@ -26,9 +26,7 @@ use CommonBundle\Entity\User\Credential;
 use CommonBundle\Entity\User\Person;
 use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
-use CudiBundle\Entity\Sale\Booking;
 use Imagick;
-use SecretaryBundle\Entity\Organization\MetaData;
 use SecretaryBundle\Entity\Registration;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
@@ -122,7 +120,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $termsAndConditions = $this->getTermsAndConditions();
 
-        if (null !== $metaData) {
+        if ($metaData !== null) {
             $form = $this->getForm('common_account_edit', array(
                 'meta_data' => $metaData,
             ));
@@ -160,16 +158,14 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             if ($metaData && $metaData->becomeMember()) {
                 $formData['organization_info']['become_member'] = true;
             } else {
-                $formData['organization_info']['become_member'] = isset($formData['organization_info']['become_member'])
-                    ? $formData['organization_info']['become_member']
-                    : 0;
+                $formData['organization_info']['become_member'] = $formData['organization_info']['become_member'] ?? 0;
             }
             $formData['organization_info']['conditions'] = true;
 
             $organizationData = $formData['organization_info'];
 
             if (isset($organizationData['organization'])) {
-                if (0 == $organizationData['organization'] && $enableOtherOrganization) {
+                if ($organizationData['organization'] == 0 && $enableOtherOrganization) {
                     $selectedOrganization = null;
                 } else {
                     $selectedOrganization = $this->getEntityManager()
@@ -189,7 +185,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 $formData = $form->getData();
                 $organizationData = $formData['organization_info'];
 
-                if (null === $metaData) {
+                if ($metaData === null) {
                     $metaData = $form->hydrateObject();
 
                     $this->getEntityManager()->persist($metaData);
@@ -205,7 +201,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     );
                 }
 
-                if (null !== $selectedOrganization) {
+                if ($selectedOrganization !== null) {
                     $this->setOrganization(
                         $academic,
                         $this->getCurrentAcademicYear(),
@@ -227,7 +223,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                             ->findOneById($articleId);
                     }
 
-                    if ($metaData->becomeMember() && null !== $selectedOrganization) {
+                    if ($metaData->becomeMember() && $selectedOrganization !== null) {
                         if ($isicMembership && $isicOrder == null) {
                             $isicRedirect = true;
                         } else {
@@ -243,7 +239,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                                     $this->getCurrentAcademicYear()
                                 );
 
-                            if (null !== $booking && $isicOrder->getBooking() !== $booking) {
+                            if ($booking !== null && $isicOrder->getBooking() !== $booking) {
                                 $this->getEntityManager()->remove($booking);
                             }
                         }
@@ -259,7 +255,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     ->getRepository('SecretaryBundle\Entity\Registration')
                     ->findOneByAcademicAndAcademicYear($academic, $this->getCurrentAcademicYear());
 
-                if (null === $registration) {
+                if ($registration === null) {
                     $registration = new Registration(
                         $academic,
                         $this->getCurrentAcademicYear()
@@ -579,7 +575,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
      */
     private function doRedirect()
     {
-        if (null === $this->getParam('return')) {
+        if ($this->getParam('return') === null) {
             $this->redirect()->toRoute(
                 'common_account'
             );

@@ -28,17 +28,15 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        $data['driver'] = null !== $object->getDriver()
-            ? $object->getDriver()->getPerson()->getId()
-            : -1;
+        $data['driver'] = $object->getDriver() !== null ? $object->getDriver()->getPerson()->getId() : -1;
 
-        if (null !== $object->getPassenger()) {
+        if ($object->getPassenger() !== null) {
             $data['passenger']['id'] = $object->getPassenger()->getId();
             $data['passenger']['value'] = $object->getPassenger()->getFullName();
         }
@@ -51,7 +49,7 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $resource = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
                 ->findOneByName(VanReservationEntity::VAN_RESOURCE_NAME);
@@ -71,12 +69,12 @@ class VanReservation extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneById($data['passenger']['id']);
 
-            if (null !== $passenger) {
+            if ($passenger !== null) {
                 $object->setPassenger($passenger);
             }
         }
 
-        if (null !== $driver) {
+        if ($driver !== null) {
             $object->setDriver($driver);
         }
 

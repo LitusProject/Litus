@@ -104,8 +104,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
     {
         $rankingCriteria = unserialize($this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shift.ranking_criteria')
-        );
+            ->getConfigValue('shift.ranking_criteria'));
 
         $ranks = array(
             'none' => 'None',

@@ -131,7 +131,7 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  int  $max
+     * @param  integer $max
      * @return self
      */
     public function setMax($max)
@@ -214,7 +214,7 @@ class Group extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getTitle();
         }
 
@@ -230,7 +230,7 @@ class Group extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getIntroduction();
         }
 
@@ -238,14 +238,14 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  Language|null                             $language
-     * @param  boolean                                   $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return \FormBundle\Entity\Node\Translation\Group
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language) {
+            if ($language !== null && $translation->getLanguage() == $language) {
                 return $translation;
             }
 
@@ -270,7 +270,7 @@ class Group extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  Form    $form
+     * @param  Form $form
      * @return integer
      */
     public function getFormNumber(Form $form)
@@ -309,7 +309,7 @@ class Group extends \CommonBundle\Entity\Node
      */
     public function canBeEditedBy(Person $person = null)
     {
-        if (null === $person) {
+        if ($person === null) {
             return false;
         }
 

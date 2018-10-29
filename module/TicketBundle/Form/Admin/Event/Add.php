@@ -20,8 +20,6 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use Ticketbundle\Entity\Event;
-
 /**
  * Add Event
  *
@@ -277,7 +275,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         if (!$this->data['generate_tickets']) {
             foreach ($specs['number_of_tickets']['validators'] as $key => $validator) {
-                if ('greaterthan' == $validator['name']) {
+                if ($validator['name'] == 'greaterthan') {
                     unset($specs['number_of_tickets']['validators'][$key]);
                 }
             }

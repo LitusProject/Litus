@@ -60,7 +60,7 @@ class Language
     );
 
     /**
-     * @var int The language entry's ID
+     * @var integer The language entry's ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -112,7 +112,7 @@ class Language
     }
 
     /**
-     * @return int id.
+     * @return integer id.
      */
     public function getId()
     {
@@ -136,7 +136,7 @@ class Language
     }
 
     /**
-     * @param  string  $skill
+     * @param  string $skill
      * @return boolean
      */
     public static function isValidWrittenSkill($skill)
@@ -145,7 +145,7 @@ class Language
     }
 
     /**
-     * @param  string  $skill
+     * @param  string $skill
      * @return boolean
      */
     public static function isValidOralSkill($skill)

@@ -87,7 +87,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->addSubmit('Add', 'calendar_add');
 
-        if (null !== $this->getEvent()) {
+        if ($this->getEvent() !== null) {
             $this->bind($this->getEvent());
         }
     }

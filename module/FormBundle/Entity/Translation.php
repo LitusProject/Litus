@@ -32,7 +32,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Translation
 {
     /**
-     * @var int The ID of this tanslation
+     * @var integer The ID of this tanslation
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -65,8 +65,8 @@ class Translation
 
     /**
      * @param Field field
-     * @param Language $language
-     * @param string   $label
+     * @param Language    $language
+     * @param string      $label
      */
     public function __construct(Field $field, Language $language, $label)
     {

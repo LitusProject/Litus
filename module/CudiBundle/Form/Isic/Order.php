@@ -298,7 +298,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     'value'      => $newsletterMandatory,
                     'attributes' => array(
                         'id'       => 'newsletter',
-                        'disabled' => 1 == $newsletterMandatory,
+                        'disabled' => $newsletterMandatory == 1,
                     ),
                 ),
                 array(
@@ -308,7 +308,7 @@ class Order extends \CommonBundle\Component\Form\Bootstrap\Form
                     'value'      => $partnerMandatory,
                     'attributes' => array(
                         'id'       => 'partners',
-                        'disabled' => 1 == $partnerMandatory,
+                        'disabled' => $partnerMandatory == 1,
                     ),
                 ),
             ),

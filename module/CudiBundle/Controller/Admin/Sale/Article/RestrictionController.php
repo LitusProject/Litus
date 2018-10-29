@@ -50,13 +50,13 @@ class RestrictionController extends \CudiBundle\Component\Controller\ActionContr
             if ($form->isValid()) {
                 $formData = $form->getData();
 
-                if ('amount' == $formData['type']) {
+                if ($formData['type'] == 'amount') {
                     $restriction = new AmountRestriction($article, $formData['value']['amount']);
-                } elseif ('available' == $formData['type']) {
+                } elseif ($formData['type'] == 'available') {
                     $restriction = new AvailableRestriction($article);
-                } elseif ('member' == $formData['type']) {
+                } elseif ($formData['type'] == 'member') {
                     $restriction = new MemberRestriction($article, isset($formData['value']['member']) && $formData['value']['member']);
-                } elseif ('study' == $formData['type']) {
+                } elseif ($formData['type'] == 'study') {
                     $restriction = new StudyRestriction($article);
 
                     foreach ($formData['value']['study'] as $id) {

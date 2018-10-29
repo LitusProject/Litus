@@ -25,7 +25,7 @@ namespace BrBundle\Form\Admin\Company;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \BrBundle\Form\Admin\Company\Add
 {
     public function init()
     {

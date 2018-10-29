@@ -53,7 +53,7 @@ class WebSocket
 
         $pid = exec('cat ' . escapeshellarg($pidFile) . ' 2>&1', $output, $return);
 
-        if (0 !== $return) {
+        if ($return !== 0) {
             return (object) array(
                 'status' => 'error',
                 'reason' => 'pid_file',
@@ -65,7 +65,7 @@ class WebSocket
 
         exec('kill ' . escapeshellarg($pid) . ' 2>&1', $output, $return);
 
-        if (0 !== $return) {
+        if ($return !== 0) {
             return (object) array(
                 'status' => 'error',
                 'reason' => 'kill_failed',

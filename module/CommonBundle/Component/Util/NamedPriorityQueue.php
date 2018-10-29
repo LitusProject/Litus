@@ -31,8 +31,8 @@ class NamedPriorityQueue extends \SplPriorityQueue
     /**
      * Compares two priorities.
      *
-     * @param  array   $a
-     * @param  array   $b
+     * @param  array $a
+     * @param  array $b
      * @return integer
      */
     public function compare($a, $b)

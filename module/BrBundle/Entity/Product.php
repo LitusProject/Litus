@@ -37,7 +37,7 @@ use InvalidArgumentException;
 class Product
 {
     /**
-     * @var int A generated ID
+     * @var integer A generated ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -98,7 +98,7 @@ class Product
     private $deliveryDate;
 
     /**
-     * @var int The price (VAT excluded!) a company has to pay when they agree to this product of the contract
+     * @var integer The price (VAT excluded!) a company has to pay when they agree to this product of the contract
      *
      * @ORM\Column(type="integer")
      */
@@ -187,7 +187,7 @@ class Product
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -208,7 +208,7 @@ class Product
      */
     public function setName($name)
     {
-        if (null === $name || !is_string($name)) {
+        if ($name === null || !is_string($name)) {
             throw new InvalidArgumentException('Invalid name');
         }
 
@@ -231,7 +231,7 @@ class Product
      */
     public function setAuthor(Person $author)
     {
-        if (null === $author) {
+        if ($author === null) {
             throw new InvalidArgumentException('Invalid author');
         }
 
@@ -254,7 +254,7 @@ class Product
      */
     public function setContractText($contractText)
     {
-        if (null === $contractText || !is_string($contractText)) {
+        if ($contractText === null || !is_string($contractText)) {
             throw new InvalidArgumentException('Invalid contract text');
         }
 
@@ -293,7 +293,7 @@ class Product
     /**
      * Returns the VAT percentage for this product.
      *
-     * @return int
+     * @return integer
      */
     public function getVatPercentage()
     {
@@ -312,17 +312,17 @@ class Product
      */
     public function setPrice($price)
     {
-        if (null === $price || !preg_match('/^[0-9]+.?[0-9]{0,2}$/', $price)) {
+        if ($price === null || !preg_match('/^[0-9]+.?[0-9]{0,2}$/', $price)) {
             throw new InvalidArgumentException('Invalid price');
         }
 
-        $this->price = (int) ($price);
+        $this->price = (int) $price;
 
         return $this;
     }
 
     /**
-     * @return int price in cents
+     * @return integer price in cents
      */
     public function getPrice()
     {
@@ -330,7 +330,7 @@ class Product
     }
 
     /**
-     * @return int price in cents with sign
+     * @return integer price in cents with sign
      */
     public function getSignedPrice()
     {
@@ -356,7 +356,7 @@ class Product
      */
     public function setDescription($description)
     {
-        if (null === $description || !is_string($description) || '' == $description) {
+        if ($description === null || !is_string($description) || $description == '') {
             throw new InvalidArgumentException('Invalid description');
         }
 
@@ -379,7 +379,7 @@ class Product
      */
     public function setInvoiceDescription($description)
     {
-        if (null === $description || !is_string($description)) {
+        if ($description === null || !is_string($description)) {
             throw new InvalidArgumentException('Invalid description');
         }
 

@@ -54,10 +54,10 @@ class FormElementManager extends \Zend\Form\FormElementManager
 
     /**
      * @param boolean                                 $isAdmin
-     * @param null|ConfigInterface|ContainerInterface $configInstanceOrParentLocator
+     * @param ConfigInterface|ContainerInterface|null $configInstanceOrParentLocator
      * @param array                                   $config
      */
-    public function __construct($isAdmin, $configInstanceOrParentLocator = null, array $config = [])
+    public function __construct($isAdmin, $configInstanceOrParentLocator = null, array $config = array())
     {
         // Add initializer before the parent constructor, because we want this
         // to be the bottom of the stack before parent::__construct is called.
@@ -119,7 +119,7 @@ class FormElementManager extends \Zend\Form\FormElementManager
      */
     public function hydrate(ContainerInterface $container, $instance)
     {
-        if (null !== $this->data) {
+        if ($this->data !== null) {
             $this->hydrator->hydrate($this->data, $instance);
         }
 
@@ -140,7 +140,7 @@ class FormElementManager extends \Zend\Form\FormElementManager
     /**
      * @param  string       $name
      * @param  string|array $options
-     * @param  bool         $usePeeringServiceManagers
+     * @param  boolean      $usePeeringServiceManagers
      * @return object|array
      */
     public function get($name, $options = array(), $usePeeringServiceManagers = true)
@@ -151,7 +151,7 @@ class FormElementManager extends \Zend\Form\FormElementManager
                 throw new RuntimeException('Unknown form element: ' . $name);
             }
 
-            if (!$this->isAdmin && '' != $matches[2]) {
+            if (!$this->isAdmin && $matches[2] != '') {
                 throw new RuntimeException('Cannot create admin form element through non-admin FormElementManager');
             }
 

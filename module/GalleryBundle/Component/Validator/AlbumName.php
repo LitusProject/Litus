@@ -24,7 +24,6 @@ use CommonBundle\Component\Form\Form;
 use CommonBundle\Component\Util\Url;
 use CommonBundle\Component\Validator\FormAwareInterface;
 use DateTime;
-use GalleryBundle\Entity\Album\Album;
 
 /**
  * Matches the given page title against the database to check whether it is
@@ -80,7 +79,7 @@ class AlbumName extends \CommonBundle\Component\Validator\AbstractValidator impl
                 ->getRepository('GalleryBundle\Entity\Album\Album')
                 ->findOneByName($title);
 
-            if (null === $album || ($this->options['album'] && $album == $this->options['album'])) {
+            if ($album === null || ($this->options['album'] && $album == $this->options['album'])) {
                 return true;
             }
 

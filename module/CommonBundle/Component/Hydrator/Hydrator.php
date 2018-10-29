@@ -20,11 +20,11 @@
 
 namespace CommonBundle\Component\Hydrator;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use DateTime;
 use RecursiveArrayIterator;
@@ -71,12 +71,12 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
 
     public function __construct()
     {
-        if (false === $this->entity) {
-            $entity = get_class($this);
+        if ($this->entity === false) {
+            $entity = static::class;
             $entity = explode('\\', $entity, 3);
 
-            if ('Hydrator' != $entity[1]) {
-                throw new RuntimeException('Class ' . get_class($this) . ' should be placed in namespace ' . $entity[0] . '\Hydrator');
+            if ($entity[1] != 'Hydrator') {
+                throw new RuntimeException('Class ' . static::class . ' should be placed in namespace ' . $entity[0] . '\Hydrator');
             }
             $entity[1] = 'Entity';
 
@@ -93,7 +93,7 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
     abstract protected function doExtract($object = null);
 
     /**
-     * @param  object|null                      $object The object to extract data from, or null
+     * @param  object|null $object The object to extract data from, or null
      * @return array                            The object's data, if any
      * @throws Exception\InvalidObjectException If the object is of the wrong class
      */
@@ -114,8 +114,8 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
     abstract protected function doHydrate(array $array, $object = null);
 
     /**
-     * @param  array                            $array  The data, if any
-     * @param  object|null                      $object The object to hydrate, or null
+     * @param  array       $array  The data, if any
+     * @param  object|null $object The object to hydrate, or null
      * @return object                           The hydrated object or a new instance if $object is null
      * @throws Exception\InvalidObjectException If the object is of the wrong class
      * @throws \InvalidArgumentException        If the array contains illegal data
@@ -134,7 +134,7 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
      */
     private function checkType($object = null, $method = '')
     {
-        if (null !== $object && null !== $this->entity) {
+        if ($object !== null && $this->entity !== null) {
             if (!($object instanceof $this->entity)) {
                 throw new Exception\InvalidObjectException(
                     sprintf(
@@ -180,13 +180,13 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
      */
     protected function stdExtract($object = null, array $keys = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
         static $originalHydrator = null;
 
-        if (null === $originalHydrator) {
+        if ($originalHydrator === null) {
             $originalHydrator = $this->getHydrator('classmethods');
             $originalHydrator->setNamingStrategy(new NamingStrategy\RemoveIs());
         }
@@ -219,7 +219,7 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
     /**
      * Get the current academic year.
      *
-     * @param  boolean      $organization
+     * @param  boolean $organization
      * @return AcademicYear
      */
     public function getCurrentAcademicYear($organization = false)
@@ -232,7 +232,7 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
     }
 
     /**
-     * @param  string            $name
+     * @param  string $name
      * @return HydratorInterface
      */
     public function getHydrator($name)
@@ -252,7 +252,7 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
 
     /**
      * Loads the given date, ignoring the time.
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     protected static function loadDate($date)
@@ -262,7 +262,7 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
 
     /**
      * Loads the given date and time.
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     protected static function loadDateTime($date)
@@ -272,7 +272,7 @@ abstract class Hydrator implements HydratorInterface, ServiceLocatorAwareInterfa
 
     /**
      * Loads the given time, ignoring the date.
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     protected static function loadTime($date)

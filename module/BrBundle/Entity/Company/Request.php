@@ -80,7 +80,7 @@ abstract class Request
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -137,7 +137,7 @@ abstract class Request
     abstract public function getJob();
 
     /**
-     * @return String
+     * @return string
      */
     abstract public function getRejectMessage();
 }

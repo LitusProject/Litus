@@ -55,20 +55,20 @@ class Code
     private $code;
 
     /**
-     * @param string $code
-     * @param int    $expirationTime
+     * @param string  $code
+     * @param integer $expirationTime
      */
     public function __construct($code, $expirationTime = 604800)
     {
         $this->expirationTime = new DateTime(
-            'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
+            'now ' . ($expirationTime < 0 ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
 
         $this->code = $code;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

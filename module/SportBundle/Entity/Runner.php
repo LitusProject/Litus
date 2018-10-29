@@ -35,7 +35,7 @@ use SportBundle\Entity\Department;
 class Runner
 {
     /**
-     * @var int The ID of this runner
+     * @var integer The ID of this runner
      *
      * @ORM\Id
      * @ORM\GeneratedValue

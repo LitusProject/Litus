@@ -38,7 +38,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new CompanyEntity();
         }
 
@@ -92,7 +92,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
             }
         }
 
-        if (null === $object->getPage()) {
+        if ($object->getPage() === null) {
             $object->setPage(
                 new PageEntity(
                     $object
@@ -109,7 +109,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -135,12 +135,12 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
         $data['address'] = $hydrator->extract($object->getAddress());
 
         $invoiceAddress = $object->getRawInvoiceAddress();
-        if (null !== $invoiceAddress) {
+        if ($invoiceAddress !== null) {
             $data['invoice']['invoice_address'] = $hydrator->extract($invoiceAddress);
         }
 
         $page = $object->getPage();
-        if (null !== $page) {
+        if ($page !== null) {
             $data['page']['years'] = array();
             foreach ($page->getYears() as $year) {
                 $data['page']['years'][] = $year->getId();

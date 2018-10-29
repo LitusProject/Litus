@@ -25,6 +25,7 @@ namespace SyllabusBundle\Command\Socket;
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
+
 use SyllabusBundle\Component\WebSocket\Update as UpdateSocket;
 
 class Update extends \CommonBundle\Component\Console\Command\WebSocket
@@ -41,8 +42,8 @@ class Update extends \CommonBundle\Component\Console\Command\WebSocket
 
     protected function isSocketEnabled()
     {
-        return '1' === $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('syllabus.update_socket_enabled');
+            ->getConfigValue('syllabus.update_socket_enabled') === '1';
     }
 }

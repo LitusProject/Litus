@@ -27,7 +27,7 @@ use CommonBundle\Component\Form\Fieldset;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Typeahead extends Fieldset
+class Typeahead extends \CommonBundle\Component\Form\Fieldset
 {
     public function init()
     {
@@ -79,7 +79,7 @@ class Typeahead extends Fieldset
 
     public function setAttribute($name, $value)
     {
-        if ('name' == $name) {
+        if ($name == 'name') {
             parent::setAttribute($name, $value);
         } else {
             $this->get('value')->setAttribute($name, $value);

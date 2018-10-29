@@ -44,8 +44,6 @@ abstract class Server
     const OP_PING = 0x9;
     const OP_PONG = 0xa;
 
-    /**
-     */
     public function __construct($file)
     {
         $this->file = $file;
@@ -110,7 +108,7 @@ abstract class Server
                 } else {
                     $buffer = fread($socket, 2048);
 
-                    if (false === $buffer || strlen($buffer) === 0) {
+                    if ($buffer === false || strlen($buffer) === 0) {
                         $this->removeUserSocket($socket);
                     } else {
                         $user = $this->getUserBySocket($socket);
@@ -201,7 +199,7 @@ abstract class Server
 
         try {
             socket_close($socket);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             // Do nothing
         }
 

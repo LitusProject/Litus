@@ -115,15 +115,16 @@ Student IT',
         'description' => 'The path to the logo of the organization',
     ),
     array(
-            'key'   => 'organization_address_array',
-            'value' => serialize(array(
-                            'street'  => 'Studentenwijk Arenberg',
-                            'number'  => '6',
-                            'mailbox' => '1',
-                            'postal'  => '3001',
-                            'city'    => 'Heverlee',
-                            'country' => 'Belgium', )),
-            'description' => 'The address of the organization',
+        'key'   => 'organization_address_array',
+        'value' => serialize(array(
+            'street'  => 'Studentenwijk Arenberg',
+            'number'  => '6',
+            'mailbox' => '1',
+            'postal'  => '3001',
+            'city'    => 'Heverlee',
+            'country' => 'Belgium', 
+        )),
+        'description' => 'The address of the organization',
     ),
     array(
         'key'         => 'organization_url',
@@ -467,7 +468,7 @@ You can remove any installed cookies from your computer or mobile device at any 
         'value'       => '0',
         'description' => 'Boolean that displays the pocers screen on the homepage',
     ),
-     array(
+    array(
         'key'         => 'common.pocUrl',
         'value'       => '#',
         'description' => 'The url to the poc info page',

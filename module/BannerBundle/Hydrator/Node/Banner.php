@@ -38,14 +38,14 @@ class Banner extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new BannerEntity($this->getPersonEntity());
         }
 
         $startDate = self::loadDateTime($data['start_date']);
         $endDate = self::loadDateTime($data['end_date']);
 
-        if (null === $startDate || null === $endDate) {
+        if ($startDate === null || $endDate === null) {
             throw new InvalidDateException();
         }
 
@@ -57,7 +57,7 @@ class Banner extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

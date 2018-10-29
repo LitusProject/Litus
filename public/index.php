@@ -21,11 +21,11 @@
 use Zend\Mvc\Application;
 use Zend\Stdlib\ArrayUtils;
 
-if (false === getenv('APPLICATION_ENV')) {
+if (getenv('APPLICATION_ENV') === false) {
     putenv('APPLICATION_ENV=development');
 }
 
-if ('development' == getenv('APPLICATION_ENV')) {
+if (getenv('APPLICATION_ENV') == 'development') {
     ini_set('display_errors', true);
     error_reporting(E_ALL);
 

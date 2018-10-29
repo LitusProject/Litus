@@ -46,7 +46,7 @@ class Organization
     );
 
     /**
-     * @var int The ID of this union status
+     * @var integer The ID of this union status
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -80,9 +80,9 @@ class Organization
     private $academicYear;
 
     /**
-     * @param  Person                   $person       The person this union status describes
-     * @param  string                   $status       The actual status value
-     * @param  AcademicYear             $academicYear The year of the status
+     * @param  Person       $person       The person this union status describes
+     * @param  string       $status       The actual status value
+     * @param  AcademicYear $academicYear The year of the status
      * @throws InvalidArgumentException
      */
     public function __construct(Person $person, $status, AcademicYear $academicYear)
@@ -118,7 +118,7 @@ class Organization
      *
      * @static
      * @param  Person $person The person to check
-     * @return bool
+     * @return boolean
      */
     public static function isValidPerson(Person $person, AcademicYear $academicYear)
     {
@@ -150,7 +150,7 @@ class Organization
      * Checks whether the given status is valid.
      *
      * @param  string $status string A status
-     * @return bool
+     * @return boolean
      */
     public static function isValidStatus($status)
     {

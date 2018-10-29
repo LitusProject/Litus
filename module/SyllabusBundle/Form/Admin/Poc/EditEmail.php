@@ -52,6 +52,7 @@ class EditEmail extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Save', 'edit');
     }
+
     public function setPoc(Poc $poc)
     {
         $this->poc = $poc;

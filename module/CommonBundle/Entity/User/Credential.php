@@ -35,7 +35,7 @@ class Credential
     const DEFAULT_NB_ITERATIONS = 1000;
 
     /**
-     * @var int The ID of this credential
+     * @var integer The ID of this credential
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -65,7 +65,7 @@ class Credential
     private $hash;
 
     /**
-     * @var int The number of hash iterations
+     * @var integer The number of hash iterations
      *
      * @ORM\Column(type="integer", nullable=true)
      */
@@ -74,8 +74,8 @@ class Credential
     /**
      * Constructs a new credential
      *
-     * @param  string                   $algorithm  The algorithm that should be used to create the hash
-     * @param  string                   $credential The credential that will be hashed and stored
+     * @param  string $algorithm  The algorithm that should be used to create the hash
+     * @param  string $credential The credential that will be hashed and stored
      * @throws InvalidArgumentException
      */
     public function __construct($credential, $algorithm = self::DEFAULT_ALGORITHM, $iterations = self::DEFAULT_NB_ITERATIONS)
@@ -92,7 +92,7 @@ class Credential
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -119,7 +119,7 @@ class Credential
      * Checks whether or not the given credential is valid.
      *
      * @param  string $credential The credential that should be checked
-     * @return bool
+     * @return boolean
      */
     public function validateCredential($credential)
     {
@@ -129,7 +129,7 @@ class Credential
     /**
      * Checks whether the credential should be updated.
      *
-     * @return bool
+     * @return boolean
      */
     public function shouldUpdate()
     {

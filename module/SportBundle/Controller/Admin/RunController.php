@@ -159,7 +159,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
                     ->getRepository('SportBundle\Entity\Runner')
                     ->findOneByUniversityIdentification($academic->getUniversityIdentification());
 
-                if (null === $repositoryCheck) {
+                if ($repositoryCheck === null) {
                     $department = $this->getEntityManager()
                         ->getRepository('SportBundle\Entity\Department')
                         ->findOneById($formData['department']);
@@ -240,8 +240,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
         $rewardRunners = array();
         foreach ($laps as $lap) {
-            if (
-                    null !== $lap->getEndTime()
+            if ($lap->getEndTime() !== null
                     && $this->convertDateIntervalToSeconds($lap->getLapTime()) <= $rewardTimeLimit
                 ) {
                 $runner = $lap->getRunner();
@@ -373,7 +372,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $laps = $runnerEntity->getLaps($this->getAcademicYearEntity());
             foreach ($laps as $lap) {
                 $lapTime = $lap->getLapTime();
-                $totalTime = $totalTime + $lapTime->h * 3600 + $lapTime->i * 60 + $lapTime->s;
+                $totalTime += $lapTime->h * 3600 + $lapTime->i * 60 + $lapTime->s;
             }
 
             $d1 = new DateTime();
@@ -381,7 +380,8 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
             $d2->add(new DateInterval('PT' . round($totalTime / count($laps)) . 'S'));
             $avarage = $d2->diff($d1);
 
-            array_push($runnersList,
+            array_push(
+                $runnersList,
                 array(
                     'name'    => $name,
                     'laps'    => count($laps),
@@ -436,7 +436,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
      */
     private function getAcademicYearEntity()
     {
-        if (null === $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') === null) {
             return $this->getCurrentAcademicYear();
         }
 
@@ -480,7 +480,7 @@ class RunController extends \CommonBundle\Component\Controller\ActionController\
 
     /**
      * @param  DateInterval $interval
-     * @return int
+     * @return integer
      */
     private function convertDateIntervalToSeconds(DateInterval $interval)
     {

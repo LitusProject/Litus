@@ -115,7 +115,7 @@ class AcademicYear
      */
     public function getCode($short = false)
     {
-        if (true === $short) {
+        if ($short === true) {
             return $this->universityStart->format('y') . $this->getUniversityEndDate()->format('y');
         }
 

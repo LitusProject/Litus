@@ -47,7 +47,7 @@ class BookingsCloseDate extends \CommonBundle\Component\Validator\AbstractValida
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -79,7 +79,7 @@ class BookingsCloseDate extends \CommonBundle\Component\Validator\AbstractValida
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findOneById($context['event']);
 
-        if (null === $event || $event->getStartDate() >= DateTime::createFromFormat($this->options['format'], $value)) {
+        if ($event === null || $event->getStartDate() >= DateTime::createFromFormat($this->options['format'], $value)) {
             return true;
         }
 

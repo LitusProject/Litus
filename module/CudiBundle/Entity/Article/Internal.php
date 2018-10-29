@@ -112,7 +112,7 @@ class Internal extends \CudiBundle\Entity\Article
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getNbBlackAndWhite()
     {
@@ -132,7 +132,7 @@ class Internal extends \CudiBundle\Entity\Article
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getNbColored()
     {
@@ -338,7 +338,7 @@ class Internal extends \CudiBundle\Entity\Article
     /**
      * @param EntityManager $entityManager
      *
-     * @return double
+     * @return float
      */
     public function precalculateSellPrice(EntityManager $entityManager)
     {
@@ -383,7 +383,7 @@ class Internal extends \CudiBundle\Entity\Article
     /**
      * @param EntityManager $entityManager
      *
-     * @return double
+     * @return float
      */
     public function precalculatePurchasePrice(EntityManager $entityManager)
     {

@@ -26,7 +26,7 @@ namespace CommonBundle\Component\Validator;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Username extends AbstractValidator
+class Username extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -52,7 +52,7 @@ class Username extends AbstractValidator
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneByUsername($value);
 
-        if (null === $person) {
+        if ($person === null) {
             return true;
         }
 

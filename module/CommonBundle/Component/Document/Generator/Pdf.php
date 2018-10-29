@@ -57,8 +57,8 @@ abstract class Pdf
     /**
      * @var String The possible languages for a generated pdf
      */
-    const ENGLISH = "en";
-    const DUTCH = "nl";
+    const ENGLISH = 'en';
+    const DUTCH = 'nl';
 
     /**
      * @param EntityManager $entityManager The EntityManager instance
@@ -151,7 +151,8 @@ abstract class Pdf
             ->getConfigValue('fop_command');
 
         system(
-            escapeshellcmd($fopCommand . ' -q -xsl ' . $this->xslPath . ' -xml ' . $xmlPath . ' ' . $this->pdfPath), $resultValue
+            escapeshellcmd($fopCommand . ' -q -xsl ' . $this->xslPath . ' -xml ' . $xmlPath . ' ' . $this->pdfPath),
+            $resultValue
         );
 
         if ($resultValue !== 0) {

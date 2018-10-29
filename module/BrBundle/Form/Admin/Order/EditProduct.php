@@ -29,7 +29,7 @@ use LogicException;
  * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class EditProduct extends AddProduct
+class EditProduct extends \BrBundle\Form\Admin\Order\AddProduct
 {
     /**
      * @var entry|null The order entry to edit.
@@ -40,7 +40,7 @@ class EditProduct extends AddProduct
     {
         parent::init();
 
-        if (null === $this->entry) {
+        if ($this->entry === null) {
             throw new LogicException('Cannot edit a null order entry');
         }
 

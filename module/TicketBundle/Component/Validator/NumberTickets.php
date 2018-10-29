@@ -58,7 +58,7 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -118,13 +118,13 @@ class NumberTickets extends \CommonBundle\Component\Validator\AbstractValidator 
             $person = $this->options['person'];
         }
 
-        if (null === $person && !$this->form->get('is_guest')->getValue()) {
+        if ($person === null && !$this->form->get('is_guest')->getValue()) {
             $this->error(self::NOT_VALID);
 
             return false;
         }
 
-        if (null !== $person) {
+        if ($person !== null) {
             $tickets = $this->getEntityManager()
                 ->getRepository('TicketBundle\Entity\Ticket')
                 ->findAllByEventAndPerson($this->options['event'], $person);

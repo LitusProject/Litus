@@ -79,7 +79,7 @@ abstract class Token
     /**
      * @param \CommonBundle\Entity\User\Person       $person
      * @param \ApiBundle\Document\Code\Authorization $authorizationCode
-     * @param int                                    $expirationTime
+     * @param integer                                $expirationTime
      */
     public function __construct(Person $person, AuthorizationCode $authorizationCode, $expirationTime = self::DEFAULT_EXPIRATION_TIME)
     {
@@ -88,7 +88,7 @@ abstract class Token
         $this->person = $person->getId();
         $this->authorizationCode = $authorizationCode;
         $this->expirationTime = new DateTime(
-            'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
+            'now ' . ($expirationTime < 0 ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
     }
 
@@ -109,7 +109,7 @@ abstract class Token
     }
 
     /**
-     * @param  \Doctrine\ORM\EntityManager      $entityManager
+     * @param  \Doctrine\ORM\EntityManager $entityManager
      * @return \CommonBundle\Entity\User\Person
      */
     public function getPerson(EntityManager $entityManager)

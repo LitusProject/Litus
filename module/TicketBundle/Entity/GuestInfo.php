@@ -31,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
 class GuestInfo
 {
     /**
-     * @var int The ID of this guest info
+     * @var integer The ID of this guest info
      *
      * @ORM\Id
      * @ORM\GeneratedValue

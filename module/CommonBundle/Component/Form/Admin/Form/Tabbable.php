@@ -134,7 +134,7 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Admin\Form
 
     public function getPrefix()
     {
-        if (null === $this->prefix || '' == $this->prefix) {
+        if ($this->prefix === null || $this->prefix == '') {
             return '';
         }
 

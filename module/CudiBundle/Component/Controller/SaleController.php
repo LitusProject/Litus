@@ -21,7 +21,6 @@
 namespace CudiBundle\Component\Controller;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\FormFactoryTrait;
-use Exception;
 use Zend\Mvc\MvcEvent;
 
 /**
@@ -36,7 +35,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
     /**
      * Execute the request.
      *
-     * @param  MvcEvent                                                          $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      * @throws \CommonBundle\Component\Controller\Exception\HasNoAccessException The user does not have permissions to access this resource
      */
@@ -46,7 +45,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('session'));
 
-        if (null == $session || !$session->isOpen()) {
+        if ($session == null || !$session->isOpen()) {
             $sessions = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\Session')
                 ->findOpen();
@@ -64,7 +63,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
 
         $result = parent::onDispatch($e);
 
-        if (null == $session || !$session->isOpen()) {
+        if ($session == null || !$session->isOpen()) {
             $result->invalidSession = true;
         }
 

@@ -34,7 +34,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Department
 {
     /**
-     * @var int The ID of this department
+     * @var integer The ID of this department
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -149,7 +149,7 @@ class Department
             ->findByAcadmicYearAndDepartment($academicYear, $this);
 
         foreach ($laps as $lap) {
-            if (null === $lap->getEndTime()) {
+            if ($lap->getEndTime() === null) {
                 continue;
             }
 

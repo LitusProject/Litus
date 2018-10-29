@@ -27,7 +27,7 @@ use FormBundle\Entity\Field\File as FileFieldEntity;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \FormBundle\Form\SpecifiedForm\Add
 {
     public function init()
     {

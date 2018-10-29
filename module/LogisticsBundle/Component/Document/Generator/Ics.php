@@ -20,7 +20,7 @@
 
 namespace LogisticsBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\File\TmpFile as TmpFile;
+use CommonBundle\Component\Util\File\TmpFile;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use LogisticsBundle\Entity\Reservation\VanReservation;
@@ -118,18 +118,18 @@ class Ics
             ->findAllActive();
 
         $person = null;
-        if (null !== $this->token) {
+        if ($this->token !== null) {
             $token = $this->documentManager
                 ->getRepository('LogisticsBundle\Document\Token')
                 ->findOneByHash($this->token);
 
-            if (null !== $token) {
+            if ($token !== null) {
                 $person = $token->getPerson($this->entityManager);
             }
         }
 
         foreach ($reservations as $reservation) {
-            if (null !== $person && $reservation->getDriver() && $reservation->getDriver()->getPerson() != $person) {
+            if ($person !== null && $reservation->getDriver() && $reservation->getDriver()->getPerson() != $person) {
                 continue;
             }
 

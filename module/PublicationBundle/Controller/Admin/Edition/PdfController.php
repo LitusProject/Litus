@@ -258,7 +258,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
     }
 
     /**
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     private static function loadDate($date)

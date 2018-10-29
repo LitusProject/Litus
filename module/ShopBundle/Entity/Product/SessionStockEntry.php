@@ -97,7 +97,7 @@ class SessionStockEntry
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getAmount()
     {

@@ -218,7 +218,7 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

@@ -107,7 +107,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
                 ->getRepository('SportBundle\Entity\Department')
                 ->findOneByName($department['name']);
 
-            if (null === $repositoryCheck) {
+            if ($repositoryCheck === null) {
                 $newDepartment = new Department($department['name'], $department['happyHours']);
                 $this->getEntityManager()->persist($newDepartment);
             } else {

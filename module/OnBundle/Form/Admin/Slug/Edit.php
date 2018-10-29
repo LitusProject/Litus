@@ -25,7 +25,7 @@ namespace OnBundle\Form\Admin\Slug;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \OnBundle\Form\Admin\Slug\Add
 {
     public function init()
     {

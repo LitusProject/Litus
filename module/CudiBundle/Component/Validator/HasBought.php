@@ -79,7 +79,7 @@ class HasBought extends \CommonBundle\Component\Validator\AbstractValidator impl
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findOneSoldByArticleAndPerson($article, $person, false);
 
-        if (null !== $booking) {
+        if ($booking !== null) {
             return true;
         }
 

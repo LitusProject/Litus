@@ -23,7 +23,6 @@ namespace CudiBundle\Entity;
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use CudiBundle\Entity\Sale\Booking;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

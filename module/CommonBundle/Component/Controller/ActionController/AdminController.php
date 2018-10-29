@@ -55,15 +55,13 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getRepository('CudiBundle\Entity\Stock\Period')
                 ->findOneActive();
 
-            $result->createNewStockPeriod = (
-                null === $period
+            $result->createNewStockPeriod = ($period === null
                 || ($period->getStartDate()->format('Y') < date('Y') && (($period->getStartDate()->format('n') < 12) || ($period->getStartDate()->format('j') <= 15)))
-                || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate()
-            );
+                || $period->getStartDate() < $this->getCurrentAcademicYear()->getStartDate());
         }
 
         $result->servedBy = null;
-        if (false !== getenv('SERVED_BY')) {
+        if (getenv('SERVED_BY') !== false) {
             $result->servedBy = ucfirst(getenv('SERVED_BY'));
         }
 
@@ -97,7 +95,7 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
      */
     protected function getLanguage()
     {
-        if (null !== $this->language) {
+        if ($this->language !== null) {
             return $this->language;
         }
 
@@ -105,9 +103,10 @@ class AdminController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CommonBundle\Entity\General\Language')
             ->findOneByAbbrev('en');
 
-        if (null === $language) {
+        if ($language === null) {
             $language = new Language(
-                'en', 'English'
+                'en',
+                'English'
             );
 
             $this->getEntityManager()->persist($language);

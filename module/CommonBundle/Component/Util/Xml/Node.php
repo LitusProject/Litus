@@ -36,9 +36,9 @@ class Node
     private $content;
 
     /**
-     * @param  string                                                              $tag     The node's tag
-     * @param  array|null                                                          $params  The node's paramters
-     * @param  mixed|null                                                          $content The node's content
+     * @param  string     $tag     The node's tag
+     * @param  array|null $params  The node's paramters
+     * @param  mixed|null $content The node's content
      * @throws \CommonBundle\Component\Util\Xml\Exception\InvalidArugmentException The given content was invalid
      */
     public function __construct($tag, array $params = null, $content = null)
@@ -107,7 +107,7 @@ class Node
     /**
      * Converts an UTF-8 value to HTML.
      *
-     * @param  string      $value The value that should be converted
+     * @param  string $value The value that should be converted
      * @return string|null
      */
     private function escape($value)

@@ -20,8 +20,6 @@
 
 namespace CommonBundle\Form\Admin\Person;
 
-use CommonBundle\Entity\User\Person;
-
 /**
  * Edit Person
  *

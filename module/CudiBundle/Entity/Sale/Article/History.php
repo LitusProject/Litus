@@ -60,7 +60,7 @@ class History
      */
     public function __construct(Article $article, Article $precursor = null)
     {
-        $this->precursor = isset($precursor) ? $precursor : clone $article;
+        $this->precursor = $precursor ?? clone $article;
 
         $this->precursor->setVersionNumber($article->getVersionNumber())
             ->setIsHistory(true);

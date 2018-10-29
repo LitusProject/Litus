@@ -31,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Reservation\PianoReservation")
  * @ORM\Table(name="logistics.reservations_piano")
  */
-class PianoReservation extends Reservation
+class PianoReservation extends \LogisticsBundle\Entity\Reservation\Reservation
 {
     const PIANO_RESOURCE_NAME = 'Piano';
 

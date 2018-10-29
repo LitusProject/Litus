@@ -41,7 +41,8 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             $this->getEntityManager()
                 ->getRepository('ShopBundle\Entity\Reservation')
                 ->findBySalesSessionQuery($salesSession),
-            $this->getParam('page'));
+            $this->getParam('page')
+        );
 
         $result = $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\Reservation')

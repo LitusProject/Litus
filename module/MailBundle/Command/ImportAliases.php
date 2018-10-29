@@ -89,7 +89,7 @@ EOT
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByEmail($mail);
 
-            if (null !== $academic) {
+            if ($academic !== null) {
                 $this->writeln('Academic: ' . $academic->getFullName());
 
                 $newAlias = new AcademicAlias($alias, $academic);

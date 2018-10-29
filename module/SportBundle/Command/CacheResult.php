@@ -58,7 +58,7 @@ EOT
             $fileContents = @file_get_contents($resultPage, false, stream_context_create($options));
             $resultPage = json_decode($fileContents);
 
-            if (false !== $fileContents && null !== $resultPage) {
+            if ($fileContents !== false && $resultPage !== null) {
                 file_put_contents('data/cache/run-' . md5('run_result_page'), $fileContents);
                 $this->writeln('Succesfully cached the result page');
 

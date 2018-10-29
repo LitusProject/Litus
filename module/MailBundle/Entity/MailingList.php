@@ -38,7 +38,7 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class MailingList
 {
     /**
-     * @var int The list's unique identifier
+     * @var integer The list's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -75,7 +75,7 @@ abstract class MailingList
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

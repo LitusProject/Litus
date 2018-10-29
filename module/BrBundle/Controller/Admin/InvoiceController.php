@@ -22,12 +22,10 @@ namespace BrBundle\Controller\Admin;
 
 use BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator;
 use BrBundle\Entity\Invoice;
-use BrBundle\Entity\Invoice\ContractInvoice;
 use BrBundle\Entity\Invoice\InvoiceHistory;
 use BrBundle\Entity\Invoice\ManualInvoice;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File as FileUtil;
-use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateTime;
 use Zend\Http\Headers;
@@ -68,7 +66,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('BrBundle\Entity\Invoice')
             ->findAllInvoicePrefixes();
 
-        $invoiceYears = [];
+        $invoiceYears = array();
         foreach ($invoicePrefixes as $invoicePrefix) {
             $invoiceYears[] = substr($invoicePrefix['invoiceNumberPrefix'], 0, 4);
         }
@@ -79,7 +77,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllUnPayedByInvoiceYearQuery($invoiceYear)
             ->getResult();
 
-        $invoiceData = [];
+        $invoiceData = array();
         foreach ($invoices as $invoice) {
             $value = 0;
             if ($invoice->hasContract()) {
@@ -88,7 +86,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             } else {
                 $value = $invoice->getPrice() / 100;
             }
-            $invoiceData[] = array("invoice" => $invoice, "value" => $value);
+            $invoiceData[] = array('invoice' => $invoice, 'value' => $value);
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -160,7 +158,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
                         ->findAllPayedQuery()
                         ->getResult();
 
-        $invoiceData = [];
+        $invoiceData = array();
         foreach ($invoices as $invoice) {
             $value = 0;
             if ($invoice->hasContract()) {
@@ -169,7 +167,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             } else {
                 $value = $invoice->getPrice();
             }
-            $invoiceData[] = array("invoice" => $invoice, "value" => $value);
+            $invoiceData[] = array('invoice' => $invoice, 'value' => $value);
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -407,7 +405,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        if ('true' == $this->getParam('payed')) {
+        if ($this->getParam('payed') == 'true') {
             $invoice->setPayed();
         }
 
@@ -423,7 +421,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @param  boolean      $allowPaid
+     * @param  boolean $allowPaid
      * @return Invoice|null
      */
     private function getInvoiceEntity($allowPaid = true)
@@ -490,7 +488,7 @@ class InvoiceController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('BrBundle\Entity\Collaborator')
             ->findCollaboratorByPersonId($this->getAuthentication()->getPersonObject()->getId());
 
-        if (null === $collaborator) {
+        if ($collaborator === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'You are not a collaborator, so you cannot add or edit invoices.'

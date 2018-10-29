@@ -118,7 +118,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('PublicationBundle\Entity\Edition\Pdf')
                 ->findOneById($formData['pdf_version']);
 
-            $host = (('on' === $this->getRequest()->getServer('HTTPS', 'off')) ? 'https' : 'http')
+            $host = ($this->getRequest()->getServer('HTTPS', 'off') === 'on' ? 'https' : 'http')
                 . '://'
                 . $this->getRequest()->getServer('HTTP_HOST');
             $html = preg_replace(
@@ -148,7 +148,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
 
             $zip = new ZipArchive();
 
-            if (true === $zip->open($zipFileName)) {
+            if ($zip->open($zipFileName) === true) {
                 $zip->extractTo($filePath . $fileName);
                 $zip->close();
                 unlink($zipFileName);
@@ -296,7 +296,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     private static function loadDate($date)

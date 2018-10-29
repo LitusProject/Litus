@@ -20,15 +20,13 @@
 
 namespace CommonBundle\Component\Console;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConfigTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ConsoleTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\MailTransportTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SentryTrait;
-use Exception;
-use Raven_ErrorHandler;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 
@@ -53,7 +51,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     protected $output;
 
     /**
-     * @return int|void
+     * @return integer|void
      */
     protected function execute(Input $input, Output $output)
     {
@@ -64,7 +62,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
     }
 
     /**
-     * @return int|void
+     * @return integer|void
      */
     abstract protected function executeCommand();
 
@@ -104,7 +102,7 @@ abstract class Command extends \Symfony\Component\Console\Command\Command implem
      */
     public function writeln($string, $raw = false)
     {
-        if ($raw || false === $this->getLogName()) {
+        if ($raw || $this->getLogName() === false) {
             $this->output->writeln($string);
         } else {
             $this->output->writeln(

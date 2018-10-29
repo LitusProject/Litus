@@ -81,9 +81,9 @@ class Authorization
     private $exchangeTime;
 
     /**
-     * @param Person $person
-     * @param Key    $key
-     * @param int    $expirationTime
+     * @param Person  $person
+     * @param Key     $key
+     * @param integer $expirationTime
      */
     public function __construct(Person $person, Key $key, $expirationTime = self::DEFAULT_EXPIRATION_TIME)
     {
@@ -92,7 +92,7 @@ class Authorization
         $this->person = $person->getId();
         $this->key = $key->getId();
         $this->expirationTime = new DateTime(
-            'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
+            'now ' . ($expirationTime < 0 ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
     }
 
@@ -165,7 +165,7 @@ class Authorization
      */
     public function hasBeenExchanged()
     {
-        return null !== $this->exchangeTime;
+        return $this->exchangeTime !== null;
     }
 
     /**

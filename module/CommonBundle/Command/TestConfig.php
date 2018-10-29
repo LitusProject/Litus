@@ -50,7 +50,7 @@ EOT
             try {
                 $number++;
                 unserialize($value->getValue());
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->writeln('Couldn\'t unserialize <comment>' . $value->getKey() . '</comment>');
             }
         }

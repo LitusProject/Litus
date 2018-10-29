@@ -174,14 +174,15 @@ class Role
      * @param  Acl    $acl      The ACL instance
      * @param  string $resource The resource the action belongs to
      * @param  string $action   The action that should be verified
-     * @return bool
+     * @return boolean
      */
     public function isAllowed(Acl $acl, $resource, $action)
     {
-        if (
-            $acl->isAllowed(
-                $this->getName(), $resource, $action
-            )
+        if ($acl->isAllowed(
+            $this->getName(),
+            $resource,
+            $action
+        )
         ) {
             return true;
         }

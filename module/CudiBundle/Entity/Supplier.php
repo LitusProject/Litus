@@ -98,7 +98,7 @@ class Supplier
     private $entityManager;
 
     /**
-     * @param  string  $template
+     * @param  string $template
      * @return boolean
      */
     public static function isValidTemplate($template)

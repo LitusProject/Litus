@@ -68,7 +68,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
         $result->getPersonObject()
             ->setFailedLogins($result->getPersonObject()->getFailedLogins() + 1);
 
-        if ($result->getPersonObject()->getFailedLogins() >= 5 && null === $result->getPersonObject()->getCode()) {
+        if ($result->getPersonObject()->getFailedLogins() >= 5 && $result->getPersonObject()->getCode() === null) {
             do {
                 $code = md5(uniqid(rand(), true));
                 $found = $this->entityManager
@@ -111,7 +111,7 @@ class Doctrine implements \CommonBundle\Component\Authentication\Action
                 ->addTo($result->getPersonObject()->getEmail(), $result->getPersonObject()->getFullName())
                 ->setSubject($subject);
 
-            if ('development' != getenv('APPLICATION_ENV')) {
+            if (getenv('APPLICATION_ENV') != 'development') {
                 $this->mailTransport->send($mail);
             }
         }

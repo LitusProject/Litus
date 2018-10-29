@@ -81,7 +81,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Add', 'role_add');
 
-        if (null !== $this->role) {
+        if ($this->role !== null) {
             $this->bind($this->role);
         }
     }
@@ -109,7 +109,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ->getRepository('CommonBundle\Entity\Acl\Role')
             ->findBy(array(), array('name' => 'ASC'));
 
-        $exclude = null === $this->role ? '' : $this->role->getName();
+        $exclude = $this->role === null ? '' : $this->role->getName();
 
         $parents = array();
         foreach ($roles as $role) {

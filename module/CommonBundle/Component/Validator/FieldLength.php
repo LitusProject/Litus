@@ -25,7 +25,7 @@ namespace CommonBundle\Component\Validator;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class FieldLength extends AbstractValidator
+class FieldLength extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -44,7 +44,7 @@ class FieldLength extends AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {

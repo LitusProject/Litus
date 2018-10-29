@@ -43,7 +43,7 @@ class AdminRole extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -76,7 +76,7 @@ class AdminRole extends \CommonBundle\Component\Validator\AbstractValidator
                 )
             );
 
-        if (null === $adminRole) {
+        if ($adminRole === null) {
             return true;
         }
 

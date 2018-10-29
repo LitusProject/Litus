@@ -28,7 +28,7 @@ use SecretaryBundle\Entity\Registration;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \SecretaryBundle\Form\Admin\Registration\Add
 {
     /**
      * @var Registration

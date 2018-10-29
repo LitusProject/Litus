@@ -43,7 +43,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         $this->setAttribute('id', 'uploadFile');
 
         $studies = $this->getStudies();
-        if (0 != count($studies)) {
+        if (count($studies) != 0) {
             $this->add(array(
                 'type'       => 'select',
                 'name'       => 'studies',
@@ -59,7 +59,7 @@ class Mail extends \CommonBundle\Component\Form\Admin\Form
         }
 
         $groups = $this->getGroups();
-        if (0 != count($groups)) {
+        if (count($groups) != 0) {
             $this->add(array(
                 'type'       => 'select',
                 'name'       => 'groups',

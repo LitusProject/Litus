@@ -23,7 +23,6 @@ namespace SyllabusBundle\Entity;
 use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
-use SyllabusBundle\Entity\Poc;
 
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Group")
@@ -211,7 +210,7 @@ class Group
 
     /**
      * @param  AcademicYear $academicYear
-     * @return int
+     * @return integer
      */
     public function getNbOfPocers(AcademicYear $academicYear)
     {
@@ -229,6 +228,7 @@ class Group
          ->getRepository('SyllabusBundle\Entity\Poc')
          ->getIsPocGroup($this, $academicYear);
     }
+
     /**
      * @param  AcademicYear $academicYear
      * @return string
@@ -237,7 +237,7 @@ class Group
     {
         $pocIndicator = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
-            ->findIndicatorFromGroupAndAcademicYear($this,$academicYear);
+            ->findIndicatorFromGroupAndAcademicYear($this, $academicYear);
 
         return $pocIndicator->getEmailAdress();
     }

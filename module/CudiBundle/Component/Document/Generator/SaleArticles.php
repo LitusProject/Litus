@@ -65,7 +65,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
     /**
      * @param EntityManager $entityManager
      * @param AcademicYear  $academicYear
-     * @param int           $semester
+     * @param integer       $semester
      */
     private function getData(EntityManager $entityManager, AcademicYear $academicYear, $semester)
     {
@@ -94,12 +94,12 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
                     $foundDiscount = null;
 
                     foreach ($discounts as $discount) {
-                        if ($discount->getRawType() == $key && ($discount->getOrganization() == $organization || null === $discount->getOrganization())) {
+                        if ($discount->getRawType() == $key && ($discount->getOrganization() == $organization || $discount->getOrganization() === null)) {
                             $foundDiscount = $discount;
                         }
                     }
 
-                    if (null !== $foundDiscount) {
+                    if ($foundDiscount !== null) {
                         $articleData[] = number_format($foundDiscount->apply($article->getSellPrice()) / 100, 2);
                     } else {
                         $articleData[] = '';

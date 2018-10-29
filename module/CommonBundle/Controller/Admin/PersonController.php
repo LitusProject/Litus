@@ -20,7 +20,6 @@
 
 namespace CommonBundle\Controller\Admin;
 
-use CommonBundle\Entity\User\Person;
 use Zend\View\Model\ViewModel;
 
 /**

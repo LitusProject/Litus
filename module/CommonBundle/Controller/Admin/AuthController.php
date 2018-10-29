@@ -43,11 +43,14 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
         if ($this->getRequest()->isPost()) {
             parse_str(
-                $this->getRequest()->getPost()->get('formData'), $formData
+                $this->getRequest()->getPost()->get('formData'),
+                $formData
             );
 
             $this->getAuthentication()->authenticate(
-                $formData['username'], $formData['password'], $formData['remember_me']
+                $formData['username'],
+                $formData['password'],
+                $formData['remember_me']
             );
 
             if ($this->getAuthentication()->isAuthenticated()) {
@@ -90,7 +93,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
     {
         $session = $this->getAuthentication()->forget();
 
-        if (null !== $session && $session->isShibboleth()) {
+        if ($session !== null && $session->isShibboleth()) {
             $shibbolethLogoutUrl = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shibboleth_logout_url');
@@ -107,7 +110,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
     public function shibbolethAction()
     {
-        if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
+        if ($this->getParam('identification') !== null && $this->getParam('hash') !== null) {
             $authentication = new Authentication(
                 new ShibbolethAdapter(
                     $this->getEntityManager(),
@@ -121,17 +124,20 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                 ->findLastByUniversityIdentification($this->getParam('identification'));
 
-            if (null !== $code) {
+            if ($code !== null) {
                 if ($code->validate($this->getParam('hash'))) {
                     $this->getEntityManager()->remove($code);
                     $this->getEntityManager()->flush();
 
                     $authentication->authenticate(
-                        $this->getParam('identification'), '', true, true
+                        $this->getParam('identification'),
+                        '',
+                        true,
+                        true
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        if (null !== $code->getRedirect()) {
+                        if ($code->getRedirect() !== null) {
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );
@@ -164,10 +170,10 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
 
-        if (false !== @unserialize($shibbolethUrl)) {
+        if (@unserialize($shibbolethUrl) !== false) {
             $shibbolethUrl = unserialize($shibbolethUrl);
 
-            if (false === getenv('SERVED_BY')) {
+            if (getenv('SERVED_BY') === false) {
                 throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
             }
             if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {

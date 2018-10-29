@@ -27,7 +27,7 @@ namespace CudiBundle\Form\Admin\Stock\Delivery;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Retour extends Add
+class Retour extends \CudiBundle\Form\Admin\Stock\Delivery\Add
 {
     public function init()
     {

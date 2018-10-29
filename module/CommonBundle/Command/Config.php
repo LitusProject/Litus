@@ -34,7 +34,7 @@ class Config extends \CommonBundle\Component\Console\Command
             ->setName('common:config')
             ->setDescription('Get configuration values.')
             ->addArgument('action', InputArgument::REQUIRED, 'the action to take (test|get)')
-            ->addArgument('key',    InputArgument::REQUIRED, 'the name of the configuration value')
+            ->addArgument('key', InputArgument::REQUIRED, 'the name of the configuration value')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command gets or sets configuration values.
 
@@ -54,8 +54,8 @@ EOT
             ->getRepository('CommonBundle\Entity\General\Config')
             ->find($key);
 
-        if ('get' == $action) {
-            if (null === $config) {
+        if ($action == 'get') {
+            if ($config === null) {
                 fwrite(STDERR, 'Configuration key "' . $key . '" doesn\'t exist' . PHP_EOL);
 
                 return 1;
@@ -64,8 +64,8 @@ EOT
 
                 return 0;
             }
-        } elseif ('test' == $action) {
-            return (null === $config) ? 1 : 0;
+        } elseif ($action == 'test') {
+            return $config === null ? 1 : 0;
         } else {
             throw new RuntimeException('Invalid action: ' . $action);
         }

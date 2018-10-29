@@ -45,7 +45,7 @@ use Locale;
 abstract class Field
 {
     /**
-     * @var int The reservation's unique identifier
+     * @var integer The reservation's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -62,7 +62,7 @@ abstract class Field
     private $form;
 
     /**
-     * @var int The order of this field.
+     * @var integer The order of this field.
      *
      * @ORM\Column(name="fieldOrder", type="bigint")
      */
@@ -117,7 +117,7 @@ abstract class Field
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -133,7 +133,7 @@ abstract class Field
     }
 
     /**
-     * @param int $order
+     * @param integer $order
      *
      * @return self
      */
@@ -145,7 +145,7 @@ abstract class Field
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getOrder()
     {
@@ -222,7 +222,7 @@ abstract class Field
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getLabel();
         }
 
@@ -238,7 +238,7 @@ abstract class Field
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language) {
+            if ($language !== null && $translation->getLanguage() == $language) {
                 return $translation;
             }
 

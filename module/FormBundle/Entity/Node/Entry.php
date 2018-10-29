@@ -35,7 +35,7 @@ use FormBundle\Entity\Entry as FieldEntry;
 class Entry
 {
     /**
-     * @var int The ID of this node
+     * @var integer The ID of this node
      *
      * @ORM\Id
      * @ORM\GeneratedValue

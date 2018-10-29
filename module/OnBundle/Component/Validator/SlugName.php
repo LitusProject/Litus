@@ -43,7 +43,7 @@ class SlugName extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -69,7 +69,7 @@ class SlugName extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('OnBundle\Document\Slug')
             ->findOneByName($value);
 
-        if (null === $slug || ($this->options['slug'] && $slug == $this->options['slug'])) {
+        if ($slug === null || ($this->options['slug'] && $slug == $this->options['slug'])) {
             return true;
         }
 

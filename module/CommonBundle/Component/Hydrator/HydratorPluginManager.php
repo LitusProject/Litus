@@ -23,7 +23,6 @@ namespace CommonBundle\Component\Hydrator;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use Interop\Container\ContainerInterface;
 use RuntimeException;
-use Zend\Hydrator\HydratorInterface;
 
 /**
  * Manager for our hydrators
@@ -33,10 +32,10 @@ use Zend\Hydrator\HydratorInterface;
 class HydratorPluginManager extends \Zend\Hydrator\HydratorPluginManager
 {
     /**
-     * @param null|ConfigInterface|ContainerInterface $configInstanceOrParentLocator
+     * @param ConfigInterface|ContainerInterface|null $configInstanceOrParentLocator
      * @param array                                   $config
      */
-    public function __construct($configInstanceOrParentLocator = null, array $config = [])
+    public function __construct($configInstanceOrParentLocator = null, array $config = array())
     {
         // Add initializer before the parent constructor, because we want this
         // to be the bottom of the stack before parent::__construct is called.
@@ -63,14 +62,14 @@ class HydratorPluginManager extends \Zend\Hydrator\HydratorPluginManager
     }
 
     /**
-     * @param  string       $name
-     * @param  array        $options
+     * @param  string $name
+     * @param  array  $options
      * @return object|array
      */
     public function get($name, $options = array())
     {
         if (!$this->has($name)) {
-            if (0 === strpos($name, '\\')) {
+            if (strpos($name, '\\') === 0) {
                 $name = substr($name, 1);
             }
 
@@ -93,7 +92,7 @@ class HydratorPluginManager extends \Zend\Hydrator\HydratorPluginManager
     {
         $parts = explode('\\', $name, 3);
 
-        if ('Entity' !== $parts[1]) {
+        if ($parts[1] !== 'Entity') {
             return $name;
         }
         $parts[1] = 'Hydrator';

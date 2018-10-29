@@ -20,7 +20,6 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use LogisticsBundle\Entity\Driver;
 use LogisticsBundle\Entity\Reservation\VanReservation;
 use Zend\View\Model\ViewModel;
 

@@ -37,7 +37,7 @@ class Mail
 {
     public static function send(FormEntry $formEntry, FormEntity $formSpecification, Language $language, MailTransport $mailTransport, Url $url, Request $request)
     {
-        $urlString = (('on' === $request->getServer('HTTPS', 'off')) ? 'https://' : 'http://') . $request->getServer('HTTP_HOST') . $url->fromRoute(
+        $urlString = ($request->getServer('HTTPS', 'off') === 'on' ? 'https://' : 'http://') . $request->getServer('HTTP_HOST') . $url->fromRoute(
             'form_view',
             array(
                 'action' => 'login',
@@ -58,7 +58,7 @@ class Mail
             $mail->addBcc($mailAddress);
         }
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $mailTransport->send($mail);
         }
     }

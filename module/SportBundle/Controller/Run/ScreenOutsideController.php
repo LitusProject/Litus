@@ -20,13 +20,11 @@
 
 namespace SportBundle\Controller\Run;
 
-use Zend\View\Model\ViewModel;
-
 /**
  * ScreenController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class ScreenOutsideController extends ScreenController
+class ScreenOutsideController extends \SportBundle\Controller\Run\ScreenController
 {
 }

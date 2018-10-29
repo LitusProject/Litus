@@ -95,7 +95,7 @@ class User
             }
         }
 
-        if (null === $key) {
+        if ($key === null) {
             return;
         }
 
@@ -186,7 +186,7 @@ class User
      */
     public function getExtraData($key)
     {
-        return isset($this->extraData[$key]) ? $this->extraData[$key] : null;
+        return $this->extraData[$key] ?? null;
     }
 
     /**

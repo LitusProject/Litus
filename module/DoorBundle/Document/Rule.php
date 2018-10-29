@@ -57,21 +57,21 @@ class Rule
     private $endDate;
 
     /**
-     * @var int The time from when access is allowed
+     * @var integer The time from when access is allowed
      *
      * @ODM\Field(type="int")
      */
     private $startTime;
 
     /**
-     * @var int The time until when access is allowed
+     * @var integer The time until when access is allowed
      *
      * @ODM\Field(type="int")
      */
     private $endTime;
 
     /**
-     * @var int The ID of the academic
+     * @var integer The ID of the academic
      *
      * @ODM\Field(type="int")
      */
@@ -132,7 +132,7 @@ class Rule
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getStartTime()
     {
@@ -148,7 +148,7 @@ class Rule
     }
 
     /**
-     * @param  int  $startTime
+     * @param  integer $startTime
      * @return self
      */
     public function setStartTime($startTime)
@@ -159,7 +159,7 @@ class Rule
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getEndTime()
     {
@@ -175,7 +175,7 @@ class Rule
     }
 
     /**
-     * @param  int  $endTime
+     * @param  integer $endTime
      * @return self
      */
     public function setEndTime($endTime)
@@ -209,7 +209,7 @@ class Rule
     /**
      * Prints an integer time as hh:mm
      *
-     * @param  int|null $time
+     * @param  integer|null $time
      * @return string
      */
     private static function intToTime($time)

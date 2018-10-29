@@ -50,24 +50,24 @@ class QueueController extends \SportBundle\Component\Controller\RunController
     {
         $this->initAjax();
 
-        if (8 == strlen($this->getParam('university_identification'))) {
+        if (strlen($this->getParam('university_identification')) == 8) {
             $runner = $this->getEntityManager()
                     ->getRepository('SportBundle\Entity\Runner')
                     ->findOneByRunnerIdentification($this->getParam('university_identification'));
 
-            if (null === $runner) {
+            if ($runner === null) {
                 $runner = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
                     ->findOneByUniversityIdentification($this->getParam('university_identification'));
                 $department = null;
             } else {
                 $department = $runner->getDepartment();
-                if (null !== $department) {
+                if ($department !== null) {
                     $department = $department->getId();
                 }
             }
 
-            if (null !== $runner) {
+            if ($runner !== null) {
                 return new ViewModel(
                     array(
                         'result' => (object) array(

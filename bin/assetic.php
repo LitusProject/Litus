@@ -21,7 +21,7 @@
 use Zend\Mvc\Application;
 use Zend\Stdlib\ArrayUtils;
 
-if (false === getenv('APPLICATION_ENV')) {
+if (getenv('APPLICATION_ENV') === false) {
     putenv('APPLICATION_ENV=development');
 }
 

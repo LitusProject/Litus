@@ -39,9 +39,9 @@ class Csv extends \CommonBundle\Component\Document\Generator\Csv
         $result = array();
         foreach ($volunteers as $volunteer) {
             $result[] = array(
-                    $volunteer['firstName'],
-                    $volunteer['lastName'],
-                );
+                $volunteer['firstName'],
+                $volunteer['lastName'],
+            );
         }
 
         $result[] = array(' ');

@@ -38,7 +38,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $studies = $this->search($academicYear);
         }
 
@@ -122,7 +122,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $mappings = $this->searchSubject($study);
         }
 
@@ -152,7 +152,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $mappings = $this->searchSubject($study);
         }
 
@@ -314,7 +314,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  AcademicYearEntity       $academicYear
+     * @param  AcademicYearEntity $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function search(AcademicYearEntity $academicYear)
@@ -328,7 +328,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @param  Study                    $study
+     * @param  Study $study
      * @return \Doctrine\ORM\Query|null
      */
     private function searchSubject(Study $study)
@@ -377,7 +377,7 @@ class StudyController extends \CommonBundle\Component\Controller\ActionControlle
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

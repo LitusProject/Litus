@@ -45,7 +45,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneById($this->getParam('id'));
 
-        if (null == $event) {
+        if ($event == null) {
             throw new Exception('No valid event is given');
         }
 

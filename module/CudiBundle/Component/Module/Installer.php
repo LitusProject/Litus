@@ -31,7 +31,6 @@ use CudiBundle\Entity\Article\Option\Color;
 use CudiBundle\Entity\Sale\PayDesk;
 use DateInterval;
 use DateTime;
-use Exception;
 
 /**
  * CudiBundle installer
@@ -84,7 +83,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $binding = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\Option\Binding')
                 ->findOneByCode($code);
-            if (null == $binding) {
+            if ($binding == null) {
                 $binding = new Binding($code, $name);
                 $this->getEntityManager()->persist($binding);
             }
@@ -100,7 +99,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $color = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\Option\Color')
                 ->findOneByName($item);
-            if (null == $color) {
+            if ($color == null) {
                 $color = new Color($item);
                 $this->getEntityManager()->persist($color);
             }
@@ -128,7 +127,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
         );
         $organizationStart = new DateTime($organizationStart);
 
-        if (null === $academicYear) {
+        if ($academicYear === null) {
             $academicYear = new AcademicYearEntity($organizationStart, $startAcademicYear);
             $this->getEntityManager()->persist($academicYear);
             $this->getEntityManager()->flush();
@@ -142,7 +141,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $academicYear = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\AcademicYear')
                 ->findOneByStart($organizationStart);
-            if (null == $academicYear) {
+            if ($academicYear == null) {
                 $startAcademicYear = AcademicYear::getEndOfAcademicYear(
                     $organizationStart
                 );
@@ -159,7 +158,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.delivery_address');
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $address = (new Address())
                 ->setStreet('Kasteelpark Arenberg')
                 ->setNumber(41)
@@ -177,7 +176,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.billing_address');
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $address = (new Address())
                 ->setStreet('Studentenwijk Arenberg')
                 ->setNumber(6)
@@ -200,7 +199,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $unit = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Bank\MoneyUnit')
                 ->findOneByUnit($item);
-            if (null == $unit) {
+            if ($unit == null) {
                 $unit = new MoneyUnit($item);
                 $this->getEntityManager()->persist($unit);
             }
@@ -216,7 +215,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $bankdevice = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Bank\BankDevice')
                 ->findOneByName($item);
-            if (null == $bankdevice) {
+            if ($bankdevice == null) {
                 $bankdevice = new BankDevice($item);
                 $this->getEntityManager()->persist($bankdevice);
             }
@@ -236,7 +235,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
             $paydesk = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Sale\PayDesk')
                 ->findOneByCode($code);
-            if (null == $paydesk) {
+            if ($paydesk == null) {
                 $paydesk = new PayDesk($code, $name);
                 $this->getEntityManager()->persist($paydesk);
             }

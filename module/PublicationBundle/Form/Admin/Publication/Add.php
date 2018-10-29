@@ -54,7 +54,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         array(
                             'name'    => 'PublicationTitle',
                             'options' => array(
-                                'exclude' => (null !== $this->publication) ? $this->publication->getId() : null,
+                                'exclude' => $this->publication !== null ? $this->publication->getId() : null,
                             ),
                         ),
                     ),

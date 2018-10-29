@@ -63,7 +63,9 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                 $this->getAuthentication()->forget();
 
                 $this->getAuthentication()->authenticate(
-                    $formData['username'], $formData['password'], true
+                    $formData['username'],
+                    $formData['password'],
+                    true
                 );
 
                 if ($this->getAuthentication()->isAuthenticated()) {
@@ -106,7 +108,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
     {
         $session = $this->getAuthentication()->forget();
 
-        if (null !== $session && $session->isShibboleth()) {
+        if ($session !== null && $session->isShibboleth()) {
             $shibbolethLogoutUrl = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shibboleth_logout_url');
@@ -132,7 +134,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
             return new ViewModel();
         }
 
-        if ((null !== $this->getParam('identification')) && (null !== $this->getParam('hash'))) {
+        if ($this->getParam('identification') !== null && $this->getParam('hash') !== null) {
             $authentication = new Authentication(
                 new ShibbolethAdapter(
                     $this->getEntityManager(),
@@ -146,7 +148,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                 ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
                 ->findLastByUniversityIdentification($this->getParam('identification'));
 
-            if (null !== $code) {
+            if ($code !== null) {
                 if ($code->validate($this->getParam('hash'))) {
                     $this->getEntityManager()->remove($code);
                     $this->getEntityManager()->flush();
@@ -154,11 +156,14 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
                     $this->getAuthentication()->forget();
 
                     $authentication->authenticate(
-                        $this->getParam('identification'), '', true, true
+                        $this->getParam('identification'),
+                        '',
+                        true,
+                        true
                     );
 
                     if ($authentication->isAuthenticated()) {
-                        if (null !== $code->getRedirect()) {
+                        if ($code->getRedirect() !== null) {
                             $this->redirect()->toUrl(
                                 $code->getRedirect()
                             );
@@ -193,7 +198,7 @@ class AuthController extends \WikiBundle\Component\Controller\ActionController\W
             return null;
         }
 
-        if (null !== $this->getParam('redirect')) {
+        if ($this->getParam('redirect') !== null) {
             return $this->redirect()->toUrl(
                 urldecode($this->getParam('redirect'))
             );

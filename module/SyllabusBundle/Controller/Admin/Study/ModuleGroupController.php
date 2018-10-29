@@ -38,7 +38,7 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $moduleGroups = $this->search();
         }
 
@@ -123,7 +123,7 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $mappings = $this->searchSubject($moduleGroup, $academicYear);
         }
 
@@ -157,7 +157,7 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $mappings = $this->searchSubject($moduleGroup, $academicYear);
         }
 
@@ -312,8 +312,8 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
     }
 
     /**
-     * @param  ModuleGroup              $moduleGroup
-     * @param  AcademicYearEntity       $academicYear
+     * @param  ModuleGroup        $moduleGroup
+     * @param  AcademicYearEntity $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function searchSubject(ModuleGroup $moduleGroup, AcademicYearEntity $academicYear)
@@ -362,7 +362,7 @@ class ModuleGroupController extends \CommonBundle\Component\Controller\ActionCon
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

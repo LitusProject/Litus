@@ -162,7 +162,7 @@ class Message
      */
     public function setBody($body)
     {
-        $this->body = utf8_encode(str_replace(chr( 194 ) . chr( 160 ), ' ', $body));
+        $this->body = utf8_encode(str_replace(chr(194) . chr(160), ' ', $body));
 
         return $this;
     }

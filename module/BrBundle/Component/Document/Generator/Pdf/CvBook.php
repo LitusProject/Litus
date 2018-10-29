@@ -20,7 +20,6 @@
 
 namespace BrBundle\Component\Document\Generator\Pdf;
 
-use BrBundle\Entity\Cv\Entry;
 use BrBundle\Entity\Cv\Util;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\Xml\Generator;

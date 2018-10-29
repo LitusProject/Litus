@@ -38,7 +38,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $subjects = $this->search();
         }
 
@@ -306,7 +306,7 @@ class SubjectController extends \CommonBundle\Component\Controller\ActionControl
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

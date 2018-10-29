@@ -23,7 +23,7 @@ namespace CalendarBundle\Form\Admin\Event;
 /**
  * Edit an event.
  */
-class Edit extends Add
+class Edit extends \CalendarBundle\Form\Admin\Event\Add
 {
     public function init()
     {

@@ -80,7 +80,7 @@ class Group extends \CommonBundle\Component\Document\Generator\Csv
                     'academicEmail'     => $ac->getEmail(),
                 );
 
-                if (null !== $primaryAddress) {
+                if ($primaryAddress !== null) {
                     $result[$ac->getId()]['academicPrimaryAddressStreet'] = $primaryAddress->getStreet();
                     $result[$ac->getId()]['academicPrimaryAddressNumber'] = $primaryAddress->getNumber();
                     $result[$ac->getId()]['academicPrimaryAddressMailbox'] = $primaryAddress->getMailbox();
@@ -96,7 +96,7 @@ class Group extends \CommonBundle\Component\Document\Generator\Csv
                     $result[$ac->getId()]['academicPrimaryAddressCountry'] = '';
                 }
 
-                if (null !== $secondaryAddress) {
+                if ($secondaryAddress !== null) {
                     $result[$ac->getId()]['academicSecondaryAddressStreet'] = $secondaryAddress->getStreet();
                     $result[$ac->getId()]['academicSecondaryAddressNumber'] = $secondaryAddress->getNumber();
                     $result[$ac->getId()]['academicSecondaryAddressMailbox'] = $secondaryAddress->getMailbox();

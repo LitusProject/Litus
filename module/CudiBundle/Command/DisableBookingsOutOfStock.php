@@ -22,6 +22,7 @@ namespace CudiBundle\Command;
 
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
 use CommonBundle\Entity\General\AcademicYear;
+
 /**
  * Disable bookings
  */
@@ -80,10 +81,8 @@ EOT
         $startAcademicYear = AcademicYearUtil::getStartOfAcademicYear();
         $startAcademicYear->setTime(0, 0);
 
-        $academicYear = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findOneByUniversityStart($startAcademicYear);
-
-        return $academicYear;
     }
 }

@@ -267,7 +267,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  AcademicYearEntity    $academicYear
+     * @param  AcademicYearEntity $academicYear
      * @return UniversityStatus|null
      */
     public function getUniversityStatus(AcademicYearEntity $academicYear)
@@ -361,7 +361,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  AcademicYearEntity                        $academicYear
+     * @param  AcademicYearEntity $academicYear
      * @return \CommonBundle\Entity\General\Organization
      */
     public function getOrganization(AcademicYearEntity $academicYear)
@@ -376,7 +376,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  AcademicYearEntity                             $academicYear
+     * @param  AcademicYearEntity $academicYear
      * @return \CommonBundle\Entity\General\Organization\Unit
      */
     public function getUnit(AcademicYearEntity $academicYear)
@@ -398,7 +398,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     {
         return array_merge(
             parent::getRoles(),
-            true === $mergeUnitRoles ? $this->getUnitRoles() : array()
+            $mergeUnitRoles === true ? $this->getUnitRoles() : array()
         );
     }
 

@@ -36,7 +36,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -73,7 +73,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             if (!isset($data['article']['internal'])) {
                 throw new InvalidArgumentException('Form data doesn\'t show whether to create an internal article or not');
             }
@@ -92,7 +92,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
                 ->setPublishers($data['article']['publisher'])
                 ->setIsDownloadable($data['article']['downloadable'])
                 ->setIsSameAsPreviousYear($data['article']['same_as_previous_year'])
-                ->setType(isset($data['article']['type']) && '' != $data['article']['type'] ? $data['article']['type'] : 'common');
+                ->setType(isset($data['article']['type']) && $data['article']['type'] != '' ? $data['article']['type'] : 'common');
         }
 
         if ($object->isInternal() && isset($data['internal'])) {
@@ -110,12 +110,12 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
             $this->stdHydrate($data['internal'], $object, self::$internalKeys);
 
             $object->setBinding($binding)
-                ->setIsOfficial(isset($data['internal']['official']) ? $data['internal']['official'] : true)
+                ->setIsOfficial($data['internal']['official'] ?? true)
                 ->setIsRectoVerso($data['internal']['rectoverso'])
                 ->setFrontColor($frontPageColor)
                 ->setIsPerforated($data['internal']['perforated'])
                 ->setIsColored($data['internal']['colored'])
-                ->setIsHardCovered(isset($data['internal']['hardcovered']) ? $data['internal']['hardcovered'] : false);
+                ->setIsHardCovered($data['internal']['hardcovered'] ?? false);
         }
 
         return $object;

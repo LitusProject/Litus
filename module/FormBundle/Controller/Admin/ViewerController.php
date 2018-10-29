@@ -96,7 +96,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
             ->findOneByForm($formSpecification);
 
-        if (null !== $group) {
+        if ($group !== null) {
             $this->flashMessenger()->error(
                 'Error',
                 'This form is in a group, you cannot edit the viewer here!'
@@ -135,7 +135,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
                         )
                     );
 
-                if (null !== $repositoryCheck) {
+                if ($repositoryCheck !== null) {
                     $this->flashMessenger()->error(
                         'Error',
                         'This user has already been given access to this list!'
@@ -201,7 +201,7 @@ class ViewerController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
             ->findOneByForm($viewer->getForm());
 
-        if (null !== $group) {
+        if ($group !== null) {
             $this->flashMessenger()->error(
                 'Error',
                 'This form is in a group, you cannot edit the viewer here!'

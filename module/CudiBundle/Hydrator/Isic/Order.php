@@ -84,7 +84,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -93,9 +93,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $data['personal_info'] = $this->stdExtract($object, array(self::$stdKeysPersonal));
         $data['contact_details'] = $this->stdExtract($object, array(self::$stdKeysContact));
 
-        $data['personal_info']['birthday'] = $object->getBirthday() !== null
-            ? $object->getBirthday()->format('d/m/Y')
-            : '';
+        $data['personal_info']['birthday'] = $object->getBirthday() !== null ? $object->getBirthday()->format('d/m/Y') : '';
 
         $hydratorAddress = $this->getHydrator('CommonBundle\Hydrator\General\Address');
         $data['address'] = $hydratorAddress->extract($object->getSecondaryAddress());

@@ -43,7 +43,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field') && ($companies = $this->search())) {
+        if ($this->getParam('field') !== null && ($companies = $this->search())) {
             $paginator = $this->paginator()->createFromQuery(
                 $companies,
                 $this->getParam('page')
@@ -170,7 +170,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
 
             $validatorChain = new ValidatorChain();
             $validatorChain->attach(new UploadFileValidator());
-            if ('image' == $form['type']) {
+            if ($form['type'] == 'image') {
                 $validatorChain->attach(
                     new IsImageValidator(
                         array('image/gif', 'image/jpeg', 'image/png')

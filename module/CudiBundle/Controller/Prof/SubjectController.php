@@ -20,7 +20,6 @@
 
 namespace CudiBundle\Controller\Prof;
 
-use CudiBundle\Entity\Article;
 use DateInterval;
 use SyllabusBundle\Entity\Subject;
 use SyllabusBundle\Entity\Subject\ProfMap;

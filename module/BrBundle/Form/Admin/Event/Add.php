@@ -119,7 +119,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Add', 'mail_add');
 
-        if (null !== $this->event) {
+        if ($this->event !== null) {
             $this->bind($this->event);
         }
     }

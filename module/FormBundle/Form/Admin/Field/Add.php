@@ -176,7 +176,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->addSubmit('Add', 'field_add');
         $this->addSubmit('Add And Repeat', 'field_add', 'submit_repeat');
 
-        if (null !== $this->field) {
+        if ($this->field !== null) {
             if ($this->repeat) {
                 $field = clone $this->field;
                 if ($field instanceof TimeSlotFieldEntity) {
@@ -228,7 +228,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         $options = array('always' => 'Always');
         foreach ($this->form->getFields() as $field) {
-            if (null !== $this->field && $field->getId() == $this->field->getId()) {
+            if ($this->field !== null && $field->getId() == $this->field->getId()) {
                 continue;
             }
 
@@ -352,7 +352,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
      */
     private function getType()
     {
-        if (null === $this->field) {
+        if ($this->field === null) {
             return $this->data['type'];
         }
 

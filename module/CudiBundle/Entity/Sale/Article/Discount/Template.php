@@ -21,7 +21,6 @@
 namespace CudiBundle\Entity\Sale\Article\Discount;
 
 use CommonBundle\Entity\General\Organization;
-use CudiBundle\Entity\Sale\Article;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -125,7 +124,7 @@ class Template
     }
 
     /**
-     * @param  int  $value
+     * @param  integer $value
      * @return self
      */
     public function setValue($value)

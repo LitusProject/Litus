@@ -59,8 +59,8 @@ class Analytics
     /**
      * Returns the number of unique visitors in the given period.
      *
-     * @param  string        $date   The period over which we want to query
-     * @param  string        $period The resolution of the date argument
+     * @param  string $date   The period over which we want to query
+     * @param  string $period The resolution of the date argument
      * @return array|integer
      */
     public function getUniqueVisitors($date = 'today', $period = 'day')
@@ -71,7 +71,7 @@ class Analytics
             'period' => $period,
         );
 
-        if (null === ($data = $this->getData($parameters))) {
+        if (($data = $this->getData($parameters)) === null) {
             return null;
         }
 
@@ -95,7 +95,7 @@ class Analytics
             'lastMinutes' => $lastMinutes,
         );
 
-        if (null === ($data = $this->getData($parameters))) {
+        if (($data = $this->getData($parameters)) === null) {
             return array(
                 'visits'  => 'N/A',
                 'actions' => 'N/A',
@@ -111,7 +111,7 @@ class Analytics
     /**
      * Retrieves the data at the given URI.
      *
-     * @param  array      $parameters The request's parameters
+     * @param  array $parameters The request's parameters
      * @return array|null
      */
     private function getData($parameters)
@@ -137,7 +137,7 @@ class Analytics
             );
 
             return (array) json_decode($client->send()->getBody());
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }

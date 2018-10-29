@@ -81,7 +81,7 @@ return Config::create(
                 },
                 DoctrineService::class => function ($serviceManager) {
                     $sessionStorage = new SessionStorage(
-                        (false !== getenv('ORGANIZATION') ? getenv('ORGANIZATION') . '_' : '') . 'Litus_Auth'
+                        (getenv('ORGANIZATION') !== false ? getenv('ORGANIZATION') . '_' : '') . 'Litus_Auth'
                     );
 
                     return new DoctrineService(
@@ -103,7 +103,7 @@ return Config::create(
 
                 SessionContainer::class => function () {
                     return new SessionContainer(
-                        (false !== getenv('ORGANIZATION') ? getenv('ORGANIZATION') . '_' : '') . 'Litus'
+                        (getenv('ORGANIZATION') !== false ? getenv('ORGANIZATION') . '_' : '') . 'Litus'
                     );
                 },
 

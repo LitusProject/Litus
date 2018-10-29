@@ -79,7 +79,7 @@ class Lease
     private $leasedTo;
 
     /**
-     * @var int The pawn the person paid for the leased item in cents
+     * @var integer The pawn the person paid for the leased item in cents
      *
      * @ORM\Column(name="leased_pawn", type="bigint")
      */
@@ -129,7 +129,7 @@ class Lease
     private $returnedTo;
 
     /**
-     * @var int|null The pawn the person got back for returning the item in cents
+     * @var integer|null The pawn the person got back for returning the item in cents
      *
      * @ORM\Column(name="returned_pawn", type="bigint", nullable=true)
      */
@@ -144,11 +144,11 @@ class Lease
 
     /**
      * @param Item        $item          The leased item
-     * @param int         $leasedAmount  The number of items that was leased
+     * @param integer     $leasedAmount  The number of items that was leased
      * @param DateTime    $leasedDate    The date of the lease
      * @param Person      $leasedBy      The person who handed out the item
      * @param string      $leasedTo      The person who received the item
-     * @param int         $leasedPawn    The pawn paid for the item
+     * @param integer     $leasedPawn    The pawn paid for the item
      * @param string|null $leasedComment An optional comment for the lease
      */
     public function __construct(Item $item, $leasedAmount, DateTime $leasedDate, Person $leasedBy, $leasedTo, $leasedPawn, $leasedComment = null)
@@ -357,7 +357,7 @@ class Lease
      */
     public function getReturnedPawn()
     {
-        if (null === $this->returnedPawn) {
+        if ($this->returnedPawn === null) {
             return 0;
         }
 

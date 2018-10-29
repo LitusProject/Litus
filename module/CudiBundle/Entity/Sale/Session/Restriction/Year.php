@@ -23,7 +23,6 @@ namespace CudiBundle\Entity\Sale\Session\Restriction;
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
 use CommonBundle\Entity\User\Person;
 use CudiBundle\Entity\Sale\Session;
-use CudiBundle\Entity\Sale\Session\Restriction;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,7 +30,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Session\Restriction\Year")
  * @ORM\Table(name="cudi.sales_session_restriction_year")
  */
-class Year extends Restriction
+class Year extends \CudiBundle\Entity\Sale\Session\Restriction
 {
     /**
      * @var array The possible years of a restriction
@@ -45,14 +44,14 @@ class Year extends Restriction
     );
 
     /**
-     * @var int The start value of restriction
+     * @var integer The start value of restriction
      *
      * @ORM\Column(type="smallint", name="start_value")
      */
     private $startValue;
 
     /**
-     * @var int The end value of restriction
+     * @var integer The end value of restriction
      *
      * @ORM\Column(type="smallint", name="end_value")
      */
@@ -117,7 +116,7 @@ class Year extends Restriction
         foreach ($studies as $studyMap) {
             $year = $studyMap->getStudy()->getPhase();
             if (strpos(strtolower($studyMap->getStudy()->getFullTitle()), 'master') !== false) {
-                $year = $year + 3;
+                $year += 3;
             }
 
             if ($year >= $this->startValue && $year <= $this->endValue) {

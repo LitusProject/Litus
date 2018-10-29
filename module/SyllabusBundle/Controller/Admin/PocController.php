@@ -21,12 +21,9 @@
 namespace SyllabusBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\AcademicYear;
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
-use SyllabusBundle\Component\Document\Generator\Group as CsvGenerator;
 use SyllabusBundle\Entity\Group;
-use SyllabusBundle\Entity\Group\StudyMap;
-use SyllabusBundle\Entity\Poc as Poc;
+use SyllabusBundle\Entity\Poc;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -72,7 +69,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         if (!($pocgroup = $this->getGroupEntity())) {
             return new ViewModel();
         }
-        $form = $this->getForm('syllabus_poc_add',array('pocgroup' => $pocgroup));
+        $form = $this->getForm('syllabus_poc_add', array('pocgroup' => $pocgroup));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -106,7 +103,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 
         $pocers = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
-            ->findPocersFromGroupAndAcademicYear($pocgroup,$academicYear);
+            ->findPocersFromGroupAndAcademicYear($pocgroup, $academicYear);
 
         return new ViewModel(
             array(
@@ -127,9 +124,9 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         }
         $pocIndicator = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
-            ->findIndicatorFromGroupAndAcademicYear($pocgroup,$academicYear);
+            ->findIndicatorFromGroupAndAcademicYear($pocgroup, $academicYear);
 
-        $form = $this->getForm('syllabus_poc_editEmail',array('poc' => $pocIndicator));
+        $form = $this->getForm('syllabus_poc_editEmail', array('poc' => $pocIndicator));
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
 
@@ -177,7 +174,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         }
         $pocs = $this->getEntityManager()
             ->getRepository('SyllabusBundle\Entity\Poc')
-            ->findPocersFromGroupAndAcademicYearWithIndicator($pocgroup,$academicYear);
+            ->findPocersFromGroupAndAcademicYearWithIndicator($pocgroup, $academicYear);
         foreach ($pocs as $poc) {
             $this->getEntityManager()->remove($poc);
         }
@@ -263,7 +260,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

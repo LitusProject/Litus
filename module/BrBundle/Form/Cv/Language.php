@@ -20,15 +20,12 @@
 
 namespace BrBundle\Form\Cv;
 
-use BrBundle\Entity\Cv\Language as CvLanguage;
-use CommonBundle\Component\Form\Fieldset;
-
 /**
  * Add Option
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Language extends Fieldset
+class Language extends \CommonBundle\Component\Form\Fieldset
 {
     public static $writtenAndOralSkills = array(
         'Notions'       => 'Notions',

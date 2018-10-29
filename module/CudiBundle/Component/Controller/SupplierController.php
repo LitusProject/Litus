@@ -34,7 +34,7 @@ class SupplierController extends \CommonBundle\Component\Controller\ActionContro
     /**
      * Execute the request.
      *
-     * @param  MvcEvent             $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      * @throws HasNoAccessException The user does not have permissions to access this resource
      */

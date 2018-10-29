@@ -44,7 +44,7 @@ class Name extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -72,7 +72,7 @@ class Name extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('SyllabusBundle\Entity\Group')
             ->findOneByName($value);
 
-        if (null === $group || ($this->options['exclude'] !== null && $group->getId() == $this->options['exclude']->getId())) {
+        if ($group === null || ($this->options['exclude'] !== null && $group->getId() == $this->options['exclude']->getId())) {
             return true;
         }
 

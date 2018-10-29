@@ -55,7 +55,7 @@ class PianoReservationConflict extends \CommonBundle\Component\Validator\Abstrac
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -82,7 +82,7 @@ class PianoReservationConflict extends \CommonBundle\Component\Validator\Abstrac
     {
         $this->setValue($value);
 
-        if (null === $startDate = $this->getFormValue($context, $this->options['start_date'])) {
+        if ($startDate === null = $this->getFormValue($context, $this->options['start_date'])) {
             $this->error(self::NO_START_DATE);
 
             return false;

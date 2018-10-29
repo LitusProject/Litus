@@ -22,7 +22,6 @@ namespace CudiBundle\Form\Admin\Sale\Session\Restriction;
 
 use CommonBundle\Component\Util\AcademicYear;
 use CudiBundle\Entity\Sale\Session;
-use CudiBundle\Entity\Sale\Session\Restriction;
 use CudiBundle\Entity\Sale\Session\Restriction\Year as YearRestriction;
 
 /**
@@ -39,7 +38,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->session) {
+        if ($this->session === null) {
             throw new LogicException('Cannot add a restriction to a null sale session');
         }
 
@@ -208,17 +207,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $specs = parent::getInputFilterSpecification();
 
-        if ('name' == $this->data['type']) {
+        if ($this->data['type'] == 'name') {
             unset($specs['start_value_year']);
             unset($specs['end_value_year']);
 
             unset($specs['value_study']);
-        } elseif ('year' == $this->data['type']) {
+        } elseif ($this->data['type'] == 'year') {
             unset($specs['start_value_name']);
             unset($specs['end_value_name']);
 
             unset($specs['value_study']);
-        } elseif ('study' == $this->data['type']) {
+        } elseif ($this->data['type'] == 'study') {
             unset($specs['start_value_name']);
             unset($specs['end_value_name']);
 

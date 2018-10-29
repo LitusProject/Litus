@@ -60,7 +60,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                     ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                     ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
 
-                if (null === $mapping) {
+                if ($mapping === null) {
                     $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
                     $this->getEntityManager()->persist($mapping);
                     $this->getEntityManager()->persist(new AddedLog($this->getAuthentication()->getPersonObject(), $mapping));
@@ -69,7 +69,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                         $cachePath = $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')
                             ->getConfigValue('cudi.front_page_cache_dir');
-                        if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage())) {
+                        if ($article->getFrontPage() !== null && file_exists($cachePath . '/' . $article->getFrontPage())) {
                             unlink($cachePath . '/' . $article->getFrontPage());
                             $article->setFrontPage();
                         }
@@ -135,7 +135,7 @@ class SubjectMapController extends \CudiBundle\Component\Controller\ActionContro
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.front_page_cache_dir');
 
-            if (null !== $article->getFrontPage() && file_exists($cachePath . '/' . $article->getFrontPage())) {
+            if ($article->getFrontPage() !== null && file_exists($cachePath . '/' . $article->getFrontPage())) {
                 unlink($cachePath . '/' . $article->getFrontPage());
             }
             $article->setFrontPage();

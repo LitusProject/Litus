@@ -48,8 +48,8 @@ class FlashMessenger extends \Zend\Mvc\Plugin\FlashMessenger\FlashMessenger
      * Accepts strings to provide compatibility with frameworks that use this.
      *
      * @param  FlashMessage|string $message
-     * @param  null|string         $namespace
-     * @param  null|int            $hops
+     * @param  string|null         $namespace
+     * @param  integer|null        $hops
      * @return self                Provides a fluent interface
      */
     public function addMessage($message, $namespace = null, $hops = 1)

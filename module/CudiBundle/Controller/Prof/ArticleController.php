@@ -172,7 +172,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
                     $article,
                     $mappingProf->getSubject(),
                     $academicYear,
-                    isset($formData['subject']['mandatory']) ? $formData['subject']['mandatory'] : false
+                    $formData['subject']['mandatory'] ?? false
                 );
                 $mapping->setIsProf(true);
                 $this->getEntityManager()->persist($mapping);
@@ -355,12 +355,12 @@ class ArticleController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @param  int|null     $id
+     * @param  integer|null $id
      * @return Article|null
      */
     private function getArticleEntity($id = null)
     {
-        $id = $id === null ? $this->getParam('id', 0) : $id;
+        $id = $id ?? $this->getParam('id', 0);
 
         $article = null;
 

@@ -113,12 +113,12 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @param  int|null     $id
+     * @param  integer|null $id
      * @return Article|null
      */
     private function getArticleEntity($id = null)
     {
-        $id = $id === null ? $this->getParam('id', 0) : $id;
+        $id = $id ?? $this->getParam('id', 0);
 
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')
@@ -151,7 +151,7 @@ class CommentController extends \CudiBundle\Component\Controller\ProfController
     {
         $mapping = $this->getEntityById('CudiBundle\Entity\Comment\Mapping');
 
-        if (!($mapping instanceof Mapping) || null === $this->getArticleEntity($mapping->getArticle()->getId())) {
+        if (!($mapping instanceof Mapping) || $this->getArticleEntity($mapping->getArticle()->getId()) === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'No mapping was found!'

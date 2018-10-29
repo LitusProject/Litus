@@ -25,7 +25,6 @@ use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\Mapping as ORM;
 use FormBundle\Entity\Mail\Mail;
 use FormBundle\Entity\Node\Entry;
-use FormBundle\Entity\Node\Form as BaseForm;
 
 /**
  * This entity stores the node item.
@@ -33,7 +32,7 @@ use FormBundle\Entity\Node\Form as BaseForm;
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Form\Doodle")
  * @ORM\Table(name="nodes.forms_doodles")
  */
-class Doodle extends BaseForm
+class Doodle extends \FormBundle\Entity\Node\Form
 {
     /**
      * @var boolean Flag whether the names of reservations are visible for others
@@ -56,7 +55,7 @@ class Doodle extends BaseForm
      */
     public function canBeSavedBy(Person $person = null)
     {
-        if ($this->isEditableByUser() || null === $person) {
+        if ($this->isEditableByUser() || $person === null) {
             return true;
         }
 
@@ -64,7 +63,7 @@ class Doodle extends BaseForm
             ->getRepository('FormBundle\Entity\Node\Entry')
             ->findOneByFormAndPerson($this, $person);
 
-        if (null === $formEntry) {
+        if ($formEntry === null) {
             return true;
         }
 
@@ -110,7 +109,7 @@ class Doodle extends BaseForm
      */
     public function hasReminderMail()
     {
-        return null !== $this->reminderMail;
+        return $this->reminderMail !== null;
     }
 
     /**

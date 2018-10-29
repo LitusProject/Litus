@@ -46,7 +46,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         $events = $this->getEvents();
 
-        if (null === $events) {
+        if ($events === null) {
             return $this->notFoundAction();
         }
 
@@ -120,7 +120,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
      */
     private function getEvents()
     {
-        if (null === $this->getParam('start') || null === $this->getParam('end')) {
+        if ($this->getParam('start') === null || $this->getParam('end') === null) {
             return;
         }
 

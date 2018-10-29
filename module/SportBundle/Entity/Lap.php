@@ -36,7 +36,7 @@ use SportBundle\Entity\Department;
 class Lap
 {
     /**
-     * @var int The ID of this lap
+     * @var integer The ID of this lap
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -219,11 +219,11 @@ class Lap
      */
     public function getLapTime()
     {
-        if (null === $this->startTime) {
+        if ($this->startTime === null) {
             return new DateInterval('PT0S');
         }
 
-        if (null !== $this->endTime) {
+        if ($this->endTime !== null) {
             $lapTime = $this->endTime->diff($this->startTime);
         } else {
             $now = new DateTime();

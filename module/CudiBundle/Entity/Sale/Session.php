@@ -132,6 +132,7 @@ class Session
 
         return $this;
     }
+
     /**
      * @return DateTime
      */
@@ -210,7 +211,7 @@ class Session
      */
     public function isOpen()
     {
-        if (null === $this->getCloseDate()) {
+        if ($this->getCloseDate() === null) {
             return true;
         }
 

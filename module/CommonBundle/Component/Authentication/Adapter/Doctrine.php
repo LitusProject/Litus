@@ -48,7 +48,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     private $identityColumn = '';
 
     /**
-     * @var bool Whether or not the username check is case-sensitive
+     * @var boolean Whether or not the username check is case-sensitive
      */
     private $caseSensitive = false;
 
@@ -73,10 +73,10 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     private $personObject = null;
 
     /**
-     * @param  EntityManager                      $entityManager  The EntityManager instance
-     * @param  string                             $entityName     The name of the class in the model that has the authentication information
-     * @param  string                             $identityColumn The name of the column that holds the identity
-     * @param  bool                               $caseSensitive  Whether or not the username check is case-sensitive
+     * @param  EntityManager $entityManager  The EntityManager instance
+     * @param  string        $entityName     The name of the class in the model that has the authentication information
+     * @param  string        $identityColumn The name of the column that holds the identity
+     * @param  boolean       $caseSensitive  Whether or not the username check is case-sensitive
      * @throws Exception\InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(EntityManager $entityManager, $entityName, $identityColumn, $caseSensitive = false)
@@ -86,7 +86,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
         // A bit of a dirty hack to get Zend's DI to play nice
         $entityName = str_replace('"', '', $entityName);
 
-        if ('\\' == substr($entityName, 0, 1)) {
+        if (substr($entityName, 0, 1) == '\\') {
             throw new Exception\InvalidArgumentException(
                 'The entity name cannot have a leading backslash'
             );
@@ -131,7 +131,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     protected function getCaseSensitive()
     {
@@ -212,7 +212,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     /**
      * Execute the DQL query.
      *
-     * @param  QueryBuilder                   $query The DQL query that should be executed
+     * @param  QueryBuilder $query The DQL query that should be executed
      * @return void
      * @throws Exception\QueryFailedException The adapter failed to execute the query
      */
@@ -220,9 +220,11 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     {
         try {
             $resultSet = $query->getQuery()->getResult();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new Exception\QueryFailedException(
-                'The adapter failed to execute the query', 0, $e
+                'The adapter failed to execute the query',
+                0,
+                $e
             );
         }
 
@@ -239,7 +241,7 @@ abstract class Doctrine implements \Zend\Authentication\Adapter\AdapterInterface
     /**
      * Validate the query result: check the number of results.
      *
-     * @param  array       $resultSet The result set of the DQL query
+     * @param  array $resultSet The result set of the DQL query
      * @return Result|void
      */
     protected function validateResultSet(array $resultSet)

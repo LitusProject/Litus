@@ -83,7 +83,7 @@ class ContractEdit extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Save', 'invoice_edit');
 
-        if (null !== $this->invoice) {
+        if ($this->invoice !== null) {
             $this->bind($this->invoice);
         }
     }

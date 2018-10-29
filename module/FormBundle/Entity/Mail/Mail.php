@@ -122,7 +122,7 @@ class Mail
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getSubject();
         }
 
@@ -138,7 +138,7 @@ class Mail
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getContent();
         }
 
@@ -146,8 +146,8 @@ class Mail
     }
 
     /**
-     * @param  Language|null                            $language
-     * @param  boolean                                  $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return \FormBundle\Entity\Mail\Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
@@ -157,7 +157,7 @@ class Mail
         }
 
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language && strlen($translation->getSubject()) > 0) {
+            if ($language !== null && $translation->getLanguage() == $language && strlen($translation->getSubject()) > 0) {
                 return $translation;
             }
 

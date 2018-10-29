@@ -177,7 +177,7 @@ class Feed extends \CommonBundle\Component\Util\Xml\Generator
     }
 
     /**
-     * @param  News    $item
+     * @param  News $item
      * @return XmlNode
      */
     private function generateItemXml(News $item)

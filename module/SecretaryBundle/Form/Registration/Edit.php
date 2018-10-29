@@ -25,20 +25,17 @@ namespace SecretaryBundle\Form\Registration;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \SecretaryBundle\Form\Registration\Add
 {
     public function init()
     {
         parent::init();
 
-        $academic = null !== $this->metaData
-            ? $this->metaData->getAcademic()
-            : $this->academic;
+        $academic = $this->metaData !== null ? $this->metaData->getAcademic() : $this->academic;
         $academicYear = $this->getCurrentAcademicYear(false);
 
-        if (
-            null !== $academic->getOrganizationStatus($academicYear)
-            && 'praesidium' == $academic->getOrganizationStatus($academicYear)->getStatus()
+        if ($academic->getOrganizationStatus($academicYear) !== null
+            && $academic->getOrganizationStatus($academicYear)->getStatus() == 'praesidium'
         ) {
             /** @var \CommonBundle\Component\Form\Fieldset $organizationInfoFieldset */
             $organizationInfoFieldset = $this->get('organization_info');

@@ -24,7 +24,6 @@ use CommonBundle\Component\Form\Factory;
 use CommonBundle\Component\Form\FormElementManager;
 use Interop\Container\ContainerInterface;
 use Zend\Filter\FilterChain;
-use Zend\ServiceManager\Config;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\Validator\ValidatorChain;
 

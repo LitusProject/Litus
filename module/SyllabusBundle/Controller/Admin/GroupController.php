@@ -117,7 +117,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function addPocGroup(Group $groupEntity,AcademicYearEntity $academicYear)
+    public function addPocGroup(Group $groupEntity, AcademicYearEntity $academicYear)
     {
         $object = new PocEntity();
         $object->setAcademicYear($academicYear);
@@ -126,6 +126,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
         $this->getEntityManager()->persist($object);
         $this->getEntityManager()->flush();
     }
+
     public function editAction()
     {
         if (!($academicYear = $this->getAcademicYearEntity())) {
@@ -148,7 +149,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                 $isPocGroup = $group->getIsPocGroup($academicYear);
                 if ($data['poc_group']) {
                     if (!$isPocGroup) {
-                        $this->addPocGroup($group,$academicYear);
+                        $this->addPocGroup($group, $academicYear);
                     }
                 }
 
@@ -220,7 +221,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
                             ->getRepository('SyllabusBundle\Entity\Group\StudyMap')
                             ->findOneByStudyGroup($study, $group);
 
-                        if (null === $map) {
+                        if ($map === null) {
                             $this->getEntityManager()->persist(new StudyMap($study, $group));
                         }
                     }
@@ -322,9 +323,9 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
 
         $this->getResponse()->getHeaders()
             ->addHeaders(array(
-            'Content-Disposition' => 'attachment; filename="' . $group->getName() . '_' . $academicYear->getCode() . '.csv"',
-            'Content-Type'        => 'text/csv',
-        ));
+                'Content-Disposition' => 'attachment; filename="' . $group->getName() . '_' . $academicYear->getCode() . '.csv"',
+                'Content-Type'        => 'text/csv',
+            ));
 
         return new ViewModel(
             array(
@@ -393,7 +394,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

@@ -60,7 +60,7 @@ class Mapping extends \CommonBundle\Component\Form\Admin\Form
                 ->getRepository('FormBundle\Entity\Node\Group\Mapping')
                 ->findOneByForm($form);
 
-            if (null == $group) {
+            if ($group == null) {
                 $options[$form->getId()] = $form->getTitle($language);
             }
         }

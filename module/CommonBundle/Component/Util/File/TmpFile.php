@@ -40,7 +40,7 @@ class TmpFile
     protected $fileHandle;
 
     /**
-     * @param  string                                                            $tmpDirectory The path to the directory that holds the temporary files
+     * @param  string $tmpDirectory The path to the directory that holds the temporary files
      * @throws \CommonBundle\Component\Util\File\Exception\FailedToOpenException Failed to open the temporary file
      */
     public function __construct($tmpDirectory = '/tmp')
@@ -52,7 +52,7 @@ class TmpFile
         $this->filename = FileUtil::getRealFilename($tmpDirectory . $filename);
         $this->fileHandle = fopen($this->filename, 'wb');
 
-        if (false === $this->fileHandle) {
+        if ($this->fileHandle === false) {
             throw new Exception\FailedToOpenException(
                 'Failed to open file "' . $this->filename . '"'
             );
@@ -143,10 +143,10 @@ class TmpFile
     /**
      * Check whether or not this file is open.
      *
-     * @return bool
+     * @return boolean
      */
     private function isOpen()
     {
-        return null !== $this->fileHandle;
+        return $this->fileHandle !== null;
     }
 }

@@ -24,7 +24,7 @@ use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person\Academic;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
-use SyllabusBundle\Entity\Study\Combination;
+
 /**
  * @ORM\Entity(repositoryClass="SyllabusBundle\Repository\Poc")
  * @ORM\Table(name="syllabus.pocs")
@@ -115,6 +115,7 @@ class Poc
     {
         return $this->academic;
     }
+
     /**
      * @param  Academic $academic
      * @return self
@@ -190,7 +191,7 @@ class Poc
         } else {
             $pocIndicator = $this->entityManager
             ->getRepository('SyllabusBundle\Entity\Poc')
-            ->findIndicatorFromGroupAndAcademicYear($this->getGroupId(),$this->getAcademicYear());
+            ->findIndicatorFromGroupAndAcademicYear($this->getGroupId(), $this->getAcademicYear());
 
             return $pocIndicator->getEmailAdress();
         }

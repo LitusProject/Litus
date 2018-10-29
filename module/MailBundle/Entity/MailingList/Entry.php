@@ -39,7 +39,7 @@ use MailBundle\Entity\MailingList;
 abstract class Entry
 {
     /**
-     * @var int The entry's unique identifier
+     * @var integer The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -66,7 +66,7 @@ abstract class Entry
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

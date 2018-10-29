@@ -27,7 +27,7 @@ use TicketBundle\Entity\Event;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \TicketBundle\Form\Admin\Event\Add
 {
     /**
      * @var Event

@@ -33,7 +33,7 @@ foreach ($registrations as $registration) {
     if ($registration->hasPayed() && !$registration->isCancelled()) {
         $status = $registration->getAcademic()
             ->getOrganizationStatus($year);
-        if (null === $status) {
+        if ($status === null) {
             $registration->getAcademic()
                 ->addOrganizationStatus(
                     new OrganizationStatus(
@@ -42,7 +42,7 @@ foreach ($registrations as $registration) {
                         $year
                     )
                 );
-        } elseif ('non_member' === $status->getStatus()) {
+        } elseif ($status->getStatus() === 'non_member') {
             $status->setStatus('member');
         }
     }

@@ -78,14 +78,14 @@ class Corporate extends \CommonBundle\Entity\User\Person
     /**
      * Adds a corporate status to the list, if possible.
      *
-     * @param  CorporateStatus          $corporateStatus
+     * @param  CorporateStatus $corporateStatus
      * @return self
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
     public function addCorporateStatus(CorporateStatus $corporateStatus)
     {
-        if (null === $corporateStatus) {
+        if ($corporateStatus === null) {
             throw new InvalidArgumentException('Invalid status');
         }
 
@@ -102,7 +102,7 @@ class Corporate extends \CommonBundle\Entity\User\Person
      * If this person already has a corporate status for this academic year, a new
      * one cannot be set.
      *
-     * @return bool
+     * @return boolean
      */
     public function canHaveCorporateStatus()
     {

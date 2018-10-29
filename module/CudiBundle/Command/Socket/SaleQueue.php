@@ -41,8 +41,8 @@ class SaleQueue extends \CommonBundle\Component\Console\Command\WebSocket
 
     protected function isSocketEnabled()
     {
-        return '1' === $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.queue_socket_enabled');
+            ->getConfigValue('cudi.queue_socket_enabled') === '1';
     }
 }

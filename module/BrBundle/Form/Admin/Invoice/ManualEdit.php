@@ -27,7 +27,7 @@ use BrBundle\Entity\Invoice;
  *
  * @author Mathijs Cuppens <mathijs.cuppens@litus.cc>
  */
-class ManualEdit extends ManualAdd
+class ManualEdit extends \BrBundle\Form\Admin\Invoice\ManualAdd
 {
     /**
      * @var Invoice
@@ -72,7 +72,7 @@ class ManualEdit extends ManualAdd
         $this->remove('submit')
             ->addSubmit('Save', 'invoice_edit');
 
-        if (null !== $this->invoice) {
+        if ($this->invoice !== null) {
             $this->bind($this->invoice);
         }
     }

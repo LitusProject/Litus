@@ -66,7 +66,7 @@ class ReservationPermission
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function getReservationsAllowed()
     {

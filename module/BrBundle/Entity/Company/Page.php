@@ -100,7 +100,7 @@ class Page
     }
 
     /**
-     * @param  string                        $description
+     * @param  string $description
      * @return \BrBundle\Entity\Company\Page
      */
     public function setDescription($description)
@@ -134,7 +134,7 @@ class Page
     }
 
     /**
-     * @param  array                         $years Sets the years in which this page existed.
+     * @param  array $years Sets the years in which this page existed.
      * @return \BrBundle\Entity\Company\Page This
      */
     public function setYears(array $years)

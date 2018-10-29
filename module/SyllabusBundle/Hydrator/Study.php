@@ -29,12 +29,12 @@ class Study extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new StudyEntity();
         }
 
         $combination = $object->getCombination();
-        if (null === $combination) {
+        if ($combination === null) {
             $combination = new CombinationEntity();
             $object->setCombination($combination);
         }
@@ -53,7 +53,7 @@ class Study extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
                 ->findOneById($groupData['module_group']['id']);
 
-            if (null !== $group) {
+            if ($group !== null) {
                 $groups[] = $group;
             }
         }
@@ -65,7 +65,7 @@ class Study extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

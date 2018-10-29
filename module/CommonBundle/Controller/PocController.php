@@ -22,10 +22,7 @@ namespace CommonBundle\Controller;
 
 use CommonBundle\Component\Util\AcademicYear as AcademicYearUtil;
 use CommonBundle\Entity\General\AcademicYear;
-use CommonBundle\Entity\User\Person\Academic as Academic;
-use SecretaryBundle\Entity\Syllabus\StudyEnrollment;
-use SyllabusBundle\Entity\Group\StudyMap;
-use SyllabusBundle\Entity\Poc;
+use CommonBundle\Entity\User\Person\Academic;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -66,15 +63,15 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
 
         return new ViewModel(
             array(
-            //'isLoggedIn'	=> $isLoggedIn,
-            'pocItem'             => $pocItem,
-            'academicYears'       => $academicYears,
-            'activeAcademicYear'  => $academicYear,
-            'currentAcademicYear' => $this->getCurrentAcademicYear(),
-            'profilePath'         => $this->getEntityManager()
+            //'isLoggedIn'  => $isLoggedIn,
+                'pocItem'             => $pocItem,
+                'academicYears'       => $academicYears,
+                'activeAcademicYear'  => $academicYear,
+                'currentAcademicYear' => $this->getCurrentAcademicYear(),
+                'profilePath'         => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
-            //'personalPocItem'	  => $personalPocItem,
+            //'personalPocItem'   => $personalPocItem,
             )
         );
     }
@@ -95,7 +92,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
                     'groupId'      => $lastPocGroup,
                     'pocGroupList' => $pocGroupList,
                     'pocExample'   => $pocGroupList[0],
-                    );
+                );
                 unset($pocGroupList);
                 $pocGroupList = array();
                 $pocGroupList[] = $pocer;
@@ -104,9 +101,10 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
         }
         if (!empty($pocGroupList)) {
             $pocItem[] = array(
-                    'groupId'      => $lastPocGroup,
-                    'pocGroupList' => $pocGroupList,
-                    'pocExample'   => $pocGroupList[0],);
+                'groupId'      => $lastPocGroup,
+                'pocGroupList' => $pocGroupList,
+                'pocExample'   => $pocGroupList[0],
+            );
         }
 
         return $pocItem;
@@ -118,7 +116,7 @@ class PocController extends \CommonBundle\Component\Controller\ActionController\
     private function getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYearUtil::getDateTime($this->getParam('academicyear'));
         }
 

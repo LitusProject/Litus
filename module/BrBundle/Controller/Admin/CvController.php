@@ -103,9 +103,9 @@ class CvController extends \BrBundle\Component\Controller\CvController
             $address = $entry->getAddress();
             $addressString = $address->getStreet() . ' ' . $address->getNumber();
             if ($address->getMailbox()) {
-                $addressString = $addressString . ' (' . $address->getMailbox() . ')';
+                $addressString .= ' (' . $address->getMailbox() . ')';
             }
-            $addressString = $addressString . ', ' . $address->getPostal() . ' ' . $address->getCity() . ' ' . $address->getCountry();
+            $addressString .= ', ' . $address->getPostal() . ' ' . $address->getCity() . ' ' . $address->getCountry();
 
             $results[] = array(
                 $entry->getFirstName(),

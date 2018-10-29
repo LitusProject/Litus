@@ -90,7 +90,7 @@ class Queue
             $repository->findAllByStatus($session, 'signed_in')
         );
 
-        $json = json_encode(
+        return json_encode(
             (object) array(
                 'queue' => array(
                     'selling'    => $selling,
@@ -100,17 +100,15 @@ class Queue
                 ),
             )
         );
-
-        return $json;
     }
 
     /**
-     * @param  string      $id The queue item id
+     * @param  string $id The queue item id
      * @return string|null
      */
     public function getJsonQueueItem($id)
     {
-        if (null == $id) {
+        if ($id == null) {
             return;
         }
 
@@ -187,7 +185,7 @@ class Queue
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneByUsername($universityIdentification);
 
-        if (null == $person) {
+        if ($person == null) {
             return json_encode(
                 (object) array(
                     'error' => 'person',
@@ -221,7 +219,7 @@ class Queue
             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
             ->findOneByPersonNotSold($session, $person);
 
-        if (null == $queueItem) {
+        if ($queueItem == null) {
             $queueItem = new EntityQueueItem($this->entityManager, $person, $session);
 
             $this->entityManager->persist($queueItem);
@@ -257,9 +255,9 @@ class Queue
     }
 
     /**
-     * @param  User        $user
-     * @param  integer     $id
-     * @param  boolean     $bulk
+     * @param  User    $user
+     * @param  integer $id
+     * @param  boolean $bulk
      * @return string|null
      */
     public function startCollecting(User $user, $id, $bulk = false)
@@ -309,7 +307,7 @@ class Queue
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.enable_collect_scanning');
 
-        if (!$enableCollectScanning || !isset($this->queueItems[$id]) || null == $articles) {
+        if (!$enableCollectScanning || !isset($this->queueItems[$id]) || $articles == null) {
             return;
         }
 
@@ -346,7 +344,7 @@ class Queue
         $paydesk = $this->entityManager
             ->getRepository('CudiBundle\Entity\Sale\PayDesk')
             ->findOneByCode($user->getExtraData('paydesk'));
-        if (null !== $paydesk) {
+        if ($paydesk !== null) {
             $item->setPayDesk($paydesk);
         }
 
@@ -362,7 +360,7 @@ class Queue
     }
 
     /**
-     * @param  int  $id
+     * @param  integer $id
      * @return null
      */
     public function cancelSale($id)
@@ -407,7 +405,7 @@ class Queue
     }
 
     /**
-     * @param  int  $id
+     * @param  integer $id
      * @return null
      */
     public function setHold($id)
@@ -425,7 +423,7 @@ class Queue
     }
 
     /**
-     * @param  int  $id
+     * @param  integer $id
      * @return null
      */
     public function setUnhold($id)
@@ -443,8 +441,8 @@ class Queue
     }
 
     /**
-     * @param  int    $id
-     * @param  int    $articleId
+     * @param  integer $id
+     * @param  integer $articleId
      * @return string
      */
     public function addArticle($id, $articleId)
@@ -541,7 +539,7 @@ class Queue
     }
 
     /**
-     * @param  int  $id
+     * @param  integer $id
      * @return null
      */
     public function undoSale($id)

@@ -37,7 +37,7 @@ use Doctrine\ORM\Mapping as ORM;
 class AcademicYearMap
 {
     /**
-     * @var int The ID of this academic year map
+     * @var integer The ID of this academic year map
      *
      * @ORM\Id
      * @ORM\GeneratedValue

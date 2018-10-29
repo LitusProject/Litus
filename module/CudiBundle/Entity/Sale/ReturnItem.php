@@ -86,8 +86,8 @@ class ReturnItem
      */
     public function __construct(Article $article, $price, QueueItem $queueItem = null, EntityManager $entityManager = null)
     {
-        if (null == $queueItem) {
-            if (null == $entityManager) {
+        if ($queueItem == null) {
+            if ($entityManager == null) {
                 throw new InvalidArgumentException('EntityManager must be set');
             }
             $this->session = $entityManager->getRepository('CudiBundle\Entity\Sale\Session')

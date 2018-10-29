@@ -31,7 +31,7 @@ class RemoveIs extends \Zend\Hydrator\NamingStrategy\UnderscoreNamingStrategy
     {
         $extracted = parent::extract($name);
 
-        if (0 !== strpos($extracted, 'is_')) {
+        if (strpos($extracted, 'is_') !== 0) {
             return $extracted;
         }
 

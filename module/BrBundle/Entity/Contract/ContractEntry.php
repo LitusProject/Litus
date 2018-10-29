@@ -34,7 +34,7 @@ use InvalidArgumentException;
 class ContractEntry
 {
     /**
-     * @var int A generated ID
+     * @var integer A generated ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -66,14 +66,14 @@ class ContractEntry
     private $contractText;
 
     /**
-     * @var int The position number of the entry in the contract
+     * @var integer The position number of the entry in the contract
      *
      * @ORM\Column(type="integer")
      */
     private $position;
 
     /**
-     * @var int The version of the contract this entry belongs too.
+     * @var integer The version of the contract this entry belongs too.
      *
      * @ORM\Column(type="integer")
      */
@@ -82,8 +82,8 @@ class ContractEntry
     /**
      * @param Contract   $contract   The contract of which this entry is part.
      * @param OrderEntry $orderEntry The order entry corresponding to this contract entry.
-     * @param int        $position   The position number of the entry in the contract
-     * @param int        $version    The version number of this contract entry
+     * @param integer    $position   The position number of the entry in the contract
+     * @param integer    $version    The version number of this contract entry
      */
     public function __construct(Contract $contract, OrderEntry $orderEntry, $position, $version)
     {
@@ -95,7 +95,7 @@ class ContractEntry
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getVersion()
     {
@@ -103,7 +103,7 @@ class ContractEntry
     }
 
     /**
-     * @param  int  $versionNmbr
+     * @param  integer $versionNmbr
      * @return null
      */
     private function setVersion($versionNmbr)
@@ -116,7 +116,7 @@ class ContractEntry
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -145,14 +145,14 @@ class ContractEntry
     public function getContractText($replace = true)
     {
         if ($replace === true) {
-            return str_replace('<amount />', (String) $this->getOrderEntry()->getQuantity() ,$this->contractText);
+            return str_replace('<amount />', (String) $this->getOrderEntry()->getQuantity(), $this->contractText);
         }
 
         return $this->contractText;
     }
 
     /**
-     * @param  string        $contractText
+     * @param  string $contractText
      * @return ContractEntry
      */
     public function setContractText($contractText)
@@ -163,7 +163,7 @@ class ContractEntry
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getPosition()
     {
@@ -174,7 +174,7 @@ class ContractEntry
      * Sets the position to the given value.
      *
      * @throws InvalidArgumentException
-     * @param  int                      $position
+     * @param  integer $position
      * @return self
      */
     public function setPosition($position)

@@ -51,7 +51,7 @@ EOT
 
     protected function executeCommand()
     {
-        if ($this->getOption('mail') && 'development' == getenv('APPLICATION_ENV')) {
+        if ($this->getOption('mail') && getenv('APPLICATION_ENV') == 'development') {
             $this->writeln('<fg=red;options=bold>Warning:</fg=red;options=bold> APPLICATION_ENV is development, --mail is ignored');
         }
 
@@ -117,7 +117,7 @@ EOT
                 $mail->addBcc($mailAddress);
             }
 
-            if ('development' != getenv('APPLICATION_ENV') && $this->getOption('mail')) {
+            if (getenv('APPLICATION_ENV') != 'development' && $this->getOption('mail')) {
                 $this->getMailTransport()->send($mail);
             }
         }

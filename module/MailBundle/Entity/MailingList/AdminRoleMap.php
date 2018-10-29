@@ -117,7 +117,7 @@ class AdminRoleMap
     }
 
     /**
-     * @param  bool $editAdmin
+     * @param  boolean $editAdmin
      * @return self
      */
     public function setEditAdmin($editAdmin)

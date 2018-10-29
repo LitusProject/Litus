@@ -170,7 +170,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Add', 'product_add');
 
-        if (null !== $this->product) {
+        if ($this->product !== null) {
             $this->bind($this->product);
         }
     }

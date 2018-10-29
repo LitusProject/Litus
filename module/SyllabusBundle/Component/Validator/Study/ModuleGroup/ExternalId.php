@@ -45,7 +45,7 @@ class ExternalId extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -74,7 +74,7 @@ class ExternalId extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
             ->findOneByExternalId($value);
 
-        if (null === $moduleGroup || ($this->options['exclude'] !== null && $moduleGroup->getId() == $this->options['exclude']->getId())) {
+        if ($moduleGroup === null || ($this->options['exclude'] !== null && $moduleGroup->getId() == $this->options['exclude']->getId())) {
             return true;
         }
 

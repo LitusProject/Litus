@@ -156,7 +156,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                 );
             }
 
-            if (null !== $entry) {
+            if ($entry !== null) {
                 $this->getEntityManager()->persist($entry);
                 $this->getEntityManager()->flush();
 
@@ -465,7 +465,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
     }
 
     /**
-     * @return null|ExternalEntry|AcademicEntry
+     * @return ExternalEntry|AcademicEntry|null
      */
     private function getMailingListEntryEntity()
     {

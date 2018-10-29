@@ -21,7 +21,6 @@
 namespace ShopBundle\Form\Shop;
 
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait;
-use Zend\Form\Element;
 
 /**
  * Sessions

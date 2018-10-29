@@ -50,7 +50,7 @@ class BusSeats extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -82,7 +82,7 @@ class BusSeats extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('PromBundle\Entity\Bus')
             ->findOneById($value);
 
-        if ($this->bus == $newBus || null === $newBus) {
+        if ($this->bus == $newBus || $newBus === null) {
             return true;
         }
 

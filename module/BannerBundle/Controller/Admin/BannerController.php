@@ -217,7 +217,7 @@ class BannerController extends \CommonBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  boolean     $redirect
+     * @param  boolean $redirect
      * @return Banner|null
      */
     private function getBannerEntity($redirect = true)

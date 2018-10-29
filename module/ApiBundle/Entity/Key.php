@@ -84,13 +84,13 @@ class Key implements RoleAware
     private $roles;
 
     /**
-     * @param string $code
-     * @param int    $expirationTime
+     * @param string  $code
+     * @param integer $expirationTime
      */
     public function __construct($code, $expirationTime = /* 5 years */ 157680000)
     {
         $this->expirationTime = new DateTime(
-            'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
+            'now ' . ($expirationTime < 0 ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
 
         $this->code = $code;
@@ -158,7 +158,7 @@ class Key implements RoleAware
     }
 
     /**
-     * @param  boolean               $checkHost
+     * @param  boolean $checkHost
      * @return \ApiBundle\Entity\Key
      */
     public function setCheckHost($checkHost)
@@ -179,7 +179,7 @@ class Key implements RoleAware
     /**
      * Add the specified roles to the user.
      *
-     * @param  array                 $roles An array containing the roles that should be added
+     * @param  array $roles An array containing the roles that should be added
      * @return \ApiBundle\Entity\Key
      */
     public function setRoles(array $roles)
@@ -218,7 +218,7 @@ class Key implements RoleAware
     /**
      * Checks whether or not this key is valid.
      *
-     * @param  string  $ip The remote IP
+     * @param  string $ip The remote IP
      * @return boolean
      */
     public function validate($ip)

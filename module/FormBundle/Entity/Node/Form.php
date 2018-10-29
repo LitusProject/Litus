@@ -46,7 +46,7 @@ use Locale;
 abstract class Form extends \CommonBundle\Entity\Node
 {
     /**
-     * @var int The maximum number of entries of this form.
+     * @var integer The maximum number of entries of this form.
      *
      * @ORM\Column(name="max", type="integer")
      */
@@ -141,7 +141,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param int $max
+     * @param integer $max
      *
      * @return self
      */
@@ -153,7 +153,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getMax()
     {
@@ -319,7 +319,7 @@ abstract class Form extends \CommonBundle\Entity\Node
      */
     public function hasMail()
     {
-        return null !== $this->mail;
+        return $this->mail !== null;
     }
 
     /**
@@ -350,7 +350,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getTitle();
         }
 
@@ -366,7 +366,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getIntroduction();
         }
 
@@ -382,7 +382,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getSubmitText();
         }
 
@@ -398,7 +398,7 @@ abstract class Form extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getUpdateText();
         }
 
@@ -406,14 +406,14 @@ abstract class Form extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  Language|null                            $language
-     * @param  boolean                                  $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return \FormBundle\Entity\Node\Translation\Form
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language) {
+            if ($language !== null && $translation->getLanguage() == $language) {
                 return $translation;
             }
 
@@ -437,7 +437,7 @@ abstract class Form extends \CommonBundle\Entity\Node
      */
     public function canBeViewedBy(Person $person = null)
     {
-        if (null === $person) {
+        if ($person === null) {
             return false;
         }
 
@@ -456,7 +456,7 @@ abstract class Form extends \CommonBundle\Entity\Node
      */
     public function canBeEditedBy(Person $person = null)
     {
-        if (null === $person) {
+        if ($person === null) {
             return false;
         }
 

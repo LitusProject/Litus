@@ -46,7 +46,7 @@ class TextField extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -72,7 +72,7 @@ class TextField extends \CommonBundle\Component\Validator\AbstractValidator
         $this->setValue($value);
 
         if ($this->options['multiline']) {
-            if ( ($this->isSpecified($this->options['lines']) && !$this->isSpecified($value)) ||
+            if (($this->isSpecified($this->options['lines']) && !$this->isSpecified($value)) ||
                 (!$this->isSpecified($this->options['lines']) && $this->isSpecified($value)) ) {
                 $this->error(self::ML_BOTH);
 

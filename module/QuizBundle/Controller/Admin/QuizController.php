@@ -45,7 +45,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $paginator = $this->paginator()->createFromArray(
-            $quizes, $this->getParam('page')
+            $quizes,
+            $this->getParam('page')
         );
 
         return new ViewModel(

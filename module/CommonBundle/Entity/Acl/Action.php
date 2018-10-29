@@ -37,7 +37,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Action
 {
     /**
-     * @var int The ID of this action
+     * @var integer The ID of this action
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -71,7 +71,7 @@ class Action
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

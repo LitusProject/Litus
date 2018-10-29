@@ -41,7 +41,7 @@ class Message extends \CommonBundle\Component\Hydrator\Hydrator
     {
         // SlugDocument requires the Person that created it, so
         // we cannot create an object here.
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException();
         }
 
@@ -50,7 +50,7 @@ class Message extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

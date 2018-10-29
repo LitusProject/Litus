@@ -100,14 +100,14 @@ class Event
     private $limitPerPerson;
 
     /**
-     * @var bool Flag whether only members can book tickets
+     * @var boolean Flag whether only members can book tickets
      *
      * @ORM\Column(name="only_members", type="boolean")
      */
     private $onlyMembers;
 
     /**
-     * @var bool Flag whether users can remove there ticket
+     * @var boolean Flag whether users can remove there ticket
      *
      * @ORM\Column(name="allow_remove", type="boolean")
      */
@@ -511,7 +511,7 @@ class Event
                 continue;
             }
 
-            if (null !== $option) {
+            if ($option !== null) {
                 if (($ticket->getOption() == $option) && (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member))) {
                     $number++;
                 }
@@ -538,7 +538,7 @@ class Event
                 continue;
             }
 
-            if (null !== $option) {
+            if ($option !== null) {
                 if (($ticket->getOption() == $option) && (($ticket->isMember() && $member) || (!$ticket->isMember() && !$member))) {
                     $number++;
                 }

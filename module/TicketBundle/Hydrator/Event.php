@@ -36,7 +36,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new EventEntity();
         }
 
@@ -119,7 +119,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                 }
             } else {
                 // tickets weren't generated yet, but are now
-                for ($i = 0 ; $i < $data['number_of_tickets'] ; $i++) {
+                for ($i = 0; $i < $data['number_of_tickets']; $i++) {
                     $this->getEntityManager()->persist(
                         new TicketEntity(
                             $object,
@@ -154,7 +154,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

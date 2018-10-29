@@ -26,7 +26,7 @@ namespace CommonBundle\Component\Validator;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Role extends AbstractValidator
+class Role extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -52,7 +52,7 @@ class Role extends AbstractValidator
             ->getRepository('CommonBundle\Entity\Acl\Role')
             ->findOneByName($value);
 
-        if (null === $role) {
+        if ($role === null) {
             return true;
         }
 

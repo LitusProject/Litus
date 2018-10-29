@@ -25,7 +25,7 @@ namespace CudiBundle\Form\Admin\Sale\Session;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \CudiBundle\Form\Admin\Sale\Session\Add
 {
     public function init()
     {

@@ -55,7 +55,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
 
                 $addresses = $this->getAddresses($formData['studies'], $groups, $formData['bcc']);
 
-                if ('' == $formData['selected_message']['stored_message']) {
+                if ($formData['selected_message']['stored_message'] == '') {
                     $body = $formData['compose_message']['message'];
 
                     $part = new Part($body);
@@ -72,7 +72,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     if ($formData['test']) {
                         $body = '<br/>This email would have been sent to:<br/>';
                         foreach ($addresses as $address) {
-                            $body = $body . $address . '<br/>';
+                            $body .= $address . '<br/>';
                         }
 
                         $part = new Part($body);
@@ -125,7 +125,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     if ($formData['test']) {
                         $body = '<br/>This email would have been sent to:<br/>';
                         foreach ($addresses as $address) {
-                            $body = $body . $address . '<br/>';
+                            $body .= $address . '<br/>';
                         }
 
                         $part = new Part($body);
@@ -156,17 +156,17 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                 $i = 0;
                 if (!$formData['test']) {
                     foreach ($addresses as $address) {
-                        if ('' == $address) {
+                        if ($address == '') {
                             continue;
                         }
 
                         $i++;
                         $mail->addBcc($address);
 
-                        if (500 == $i) {
+                        if ($i == 500) {
                             $i = 0;
 
-                            if ('development' != getenv('APPLICATION_ENV')) {
+                            if (getenv('APPLICATION_ENV') != 'development') {
                                 $this->getMailTransport()->send($mail);
                             }
 
@@ -175,7 +175,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
                     }
                 }
 
-                if ('development' != getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
                 }
 
@@ -299,8 +299,7 @@ class StudyController extends \MailBundle\Component\Controller\AdminController
             foreach ($studies as $study) {
                 $enrollments = array_merge($enrollments, $this->getEntityManager()
                     ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                    ->findAllByStudy($study->getStudy())
-                );
+                    ->findAllByStudy($study->getStudy()));
             }
         }
 

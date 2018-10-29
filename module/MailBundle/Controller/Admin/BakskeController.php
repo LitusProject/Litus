@@ -84,7 +84,7 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
 
                     $mail->addTo($mailAddress, 'System Administrator');
 
-                    if ('development' != getenv('APPLICATION_ENV')) {
+                    if (getenv('APPLICATION_ENV') != 'development') {
                         $this->getMailTransport()->send($mail);
                     }
                 } else {
@@ -93,7 +93,7 @@ class BakskeController extends \MailBundle\Component\Controller\AdminController
                             $mail->addBcc($recipient->getAcademic()->getEmail(), $recipient->getAcademic()->getFullName());
                         }
 
-                        if ('development' != getenv('APPLICATION_ENV')) {
+                        if (getenv('APPLICATION_ENV') != 'development') {
                             $this->getMailTransport()->send($mail);
                         }
 

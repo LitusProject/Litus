@@ -50,7 +50,7 @@ class Collection extends \Zend\Form\Element\Collection implements FieldsetInterf
     /**
      * Set a hash of element names/messages to use when validation fails
      *
-     * @param  array|\Traversable                 $messages
+     * @param  array|\Traversable $messages
      * @return Collection
      * @throws Exception\InvalidArgumentException
      */
@@ -95,7 +95,7 @@ class Collection extends \Zend\Form\Element\Collection implements FieldsetInterf
     /**
      * Checks if this fieldset can bind data
      *
-     * @return bool
+     * @return boolean
      */
     public function allowValueBinding()
     {

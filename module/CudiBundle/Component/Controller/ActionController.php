@@ -36,7 +36,7 @@ class ActionController extends \CommonBundle\Component\Controller\ActionControll
     protected function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
 

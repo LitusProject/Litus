@@ -100,7 +100,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 ->getRepository('FormBundle\Entity\Node\Group\Mapping')
                 ->findOneByForm($form);
 
-            if (null == $group) {
+            if ($group == null) {
                 $options[$form->getId()] = $form->getTitle($language);
             }
         }

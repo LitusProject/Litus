@@ -21,8 +21,6 @@
 namespace ShiftBundle\Controller\Admin;
 
 use ShiftBundle\Entity\Shift;
-use ShiftBundle\Entity\Shift\Responsible;
-use ShiftBundle\Entity\Shift\Volunteer;
 use Zend\Mail\Message;
 use Zend\View\Model\ViewModel;
 
@@ -50,7 +48,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             if ($form->isValid()) {
                 $subscriber = $form->hydrateObject($shift);
 
-                if (null === $subscriber) {
+                if ($subscriber === null) {
                     $this->flashMessenger()->error(
                         'Error',
                         'Unable to add the given person to the shift!'
@@ -146,7 +144,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->addTo($subscription->getPerson()->getEmail(), $subscription->getPerson()->getFullName())
             ->setSubject($subject);
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
 
@@ -197,7 +195,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
 
         $subscription = $repository->findOneById($this->getParam('id', 0));
 
-        if (null === $subscription) {
+        if ($subscription === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'No subscription with the given ID was found!'

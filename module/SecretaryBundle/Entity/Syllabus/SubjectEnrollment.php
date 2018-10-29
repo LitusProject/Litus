@@ -34,7 +34,7 @@ use SyllabusBundle\Entity\Subject;
 class SubjectEnrollment
 {
     /**
-     * @var int The ID of the enrollment
+     * @var integer The ID of the enrollment
      *
      * @ORM\Id
      * @ORM\GeneratedValue

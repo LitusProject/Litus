@@ -37,7 +37,7 @@ class Confirm extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->mapping) {
+        if ($this->mapping === null) {
             throw new LogicException('Cannot confirm a null mapping');
         }
 

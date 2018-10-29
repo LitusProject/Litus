@@ -110,7 +110,7 @@ class Study
      */
     public function getTitle()
     {
-        if (null !== $this->combination) {
+        if ($this->combination !== null) {
             return $this->combination->getTitle();
         }
 
@@ -118,11 +118,11 @@ class Study
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getPhase()
     {
-        if (null !== $this->combination) {
+        if ($this->combination !== null) {
             return $this->combination->getPhase();
         }
 
@@ -134,7 +134,7 @@ class Study
      */
     public function getLanguage()
     {
-        if (null !== $this->combination) {
+        if ($this->combination !== null) {
             return $this->combination->getLanguage();
         }
 

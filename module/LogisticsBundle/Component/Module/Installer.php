@@ -48,7 +48,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
                 ->getRepository('LogisticsBundle\Entity\Reservation\ReservableResource')
                 ->findOneByName($name);
 
-            if (null == $resource) {
+            if ($resource == null) {
                 $this->getEntityManager()->persist(new ReservableResource($name));
             }
         }

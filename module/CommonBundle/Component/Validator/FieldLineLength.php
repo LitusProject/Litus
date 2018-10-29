@@ -25,7 +25,7 @@ namespace CommonBundle\Component\Validator;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class FieldLineLength extends AbstractValidator
+class FieldLineLength extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
 
@@ -44,7 +44,7 @@ class FieldLineLength extends AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -74,10 +74,10 @@ class FieldLineLength extends AbstractValidator
         $len = 0;
         for ($i = count($lines) - 2; $i >= 0; $i--) {
             $line = $lines[$i];
-            $len = $len + ceil(strlen($line) === 0 ? 1 : strlen($line) / $this->options['chars_per_line']) * $this->options['chars_per_line'];
+            $len += ceil(strlen($line) === 0 ? 1 : strlen($line) / $this->options['chars_per_line']) * $this->options['chars_per_line'];
         }
 
-        $len = $len + strlen($lines[count($lines) - 1]);
+        $len += strlen($lines[count($lines) - 1]);
 
         if ($this->options['lines'] * $this->options['chars_per_line'] - $len >= 0) {
             return true;

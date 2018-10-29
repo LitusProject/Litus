@@ -41,7 +41,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getConfigValue('common.enable_piwik');
 
         $piwik = null;
-        if ('development' != getenv('APPLICATION_ENV') && $enablePiwik) {
+        if (getenv('APPLICATION_ENV') != 'development' && $enablePiwik) {
             $analytics = new Analytics(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -128,7 +128,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getVisitsGraph(Analytics $analytics)
     {
-        if (null !== $this->getCache()) {
+        if ($this->getCache() !== null) {
             if ($this->getCache()->hasItem('CommonBundle_Controller_IndexController_VisitsGraph')) {
                 $now = new DateTime();
                 if ($this->getCache()->getItem('CommonBundle_Controller_IndexController_VisitsGraph')['expirationTime'] > $now) {
@@ -177,7 +177,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getRegistrationsGraph()
     {
-        if (null !== $this->getCache()) {
+        if ($this->getCache() !== null) {
             if ($this->getCache()->hasItem('CommonBundle_Controller_IndexController_RegistrationsGraph')) {
                 $now = new DateTime();
                 if ($this->getCache()->getItem('CommonBundle_Controller_IndexController_RegistrationsGraph')['expirationTime'] > $now) {

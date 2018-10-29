@@ -33,7 +33,6 @@ use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use ShiftBundle\Entity\Shift\Responsible;
 use ShiftBundle\Entity\Shift\Volunteer;
-use Zend\Mail\Message;
 
 /**
  * This entity stores a shift.
@@ -629,7 +628,7 @@ class Shift
      */
     public function canEditDates()
     {
-        return (0 == $this->countResponsibles()) && (0 == $this->countVolunteers());
+        return $this->countResponsibles() == 0 && $this->countVolunteers() == 0;
     }
 
     /**
@@ -669,7 +668,7 @@ class Shift
     /**
      * Removes the given person from this shift.
      *
-     * @param  Person                $person The person that should be removed
+     * @param  Person $person The person that should be removed
      * @return Responsible|Volunteer
      */
     public function removePerson(Person $person)
@@ -701,7 +700,7 @@ class Shift
      */
     public function canBeEditedBy(Person $person = null)
     {
-        if (null == $person) {
+        if ($person == null) {
             return false;
         }
 

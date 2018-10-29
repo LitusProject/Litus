@@ -38,7 +38,7 @@ class Barcode extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->getPerson()) {
+        if ($this->getPerson() === null) {
             throw new LogicException('Cannot add a barcode to a null person.');
         }
 

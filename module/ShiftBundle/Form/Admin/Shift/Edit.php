@@ -27,7 +27,7 @@ use Shiftbundle\Entity\Shift;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \ShiftBundle\Form\Admin\Shift\Add
 {
     /**
      * @var Shift|null The shift to edit.

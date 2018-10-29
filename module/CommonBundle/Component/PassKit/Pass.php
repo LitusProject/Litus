@@ -136,7 +136,7 @@ abstract class Pass
      */
     protected function getSerialNumber()
     {
-        if ('' == $this->serialNumber) {
+        if ($this->serialNumber == '') {
             $this->serialNumber = uniqid();
         }
 

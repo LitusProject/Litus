@@ -44,7 +44,7 @@ class CodeEmail extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -72,7 +72,7 @@ class CodeEmail extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('PromBundle\Entity\Bus\ReservationCode')
             ->getRegistrationCodeByCode($context['ticket_code']);
 
-        if (null === $code) {
+        if ($code === null) {
             return false;
         }
 
@@ -85,7 +85,7 @@ class CodeEmail extends \CommonBundle\Component\Validator\AbstractValidator
             $passenger = $passengers[0];
         }
 
-        if (null !== $passenger && $value == $passenger->getEmail()) {
+        if ($passenger !== null && $value == $passenger->getEmail()) {
             return true;
         }
 

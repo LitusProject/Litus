@@ -17,6 +17,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace LogisticsBundle\Form\Admin\Lease;
 
 /**
@@ -24,7 +25,7 @@ namespace LogisticsBundle\Form\Admin\Lease;
  *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class Edit extends Add
+class Edit extends \LogisticsBundle\Form\Admin\Lease\Add
 {
     public function init()
     {

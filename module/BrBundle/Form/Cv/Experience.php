@@ -20,14 +20,12 @@
 
 namespace BrBundle\Form\Cv;
 
-use CommonBundle\Component\Form\Fieldset;
-
 /**
  * Add Option
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Experience extends Fieldset
+class Experience extends \CommonBundle\Component\Form\Fieldset
 {
     public function init()
     {

@@ -33,7 +33,7 @@ use FormBundle\Entity\Field\TimeSlot as TimeSlotField;
 class TimeSlot
 {
     /**
-     * @var int The ID of this tanslation
+     * @var integer The ID of this tanslation
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -73,9 +73,9 @@ class TimeSlot
 
     /**
      * @param TimeSlotField timeslot
-     * @param Language $language
-     * @param string   $location
-     * @param string   $extraInformation
+     * @param Language               $language
+     * @param string                 $location
+     * @param string                 $extraInformation
      */
     public function __construct(TimeSlotField $timeslot, Language $language, $location, $extraInformation)
     {

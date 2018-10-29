@@ -228,7 +228,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->addSubmit('Save', 'company_edit');
 
-        if (null !== $this->company) {
+        if ($this->company !== null) {
             $this->bind($this->company);
         }
     }

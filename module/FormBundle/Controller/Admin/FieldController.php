@@ -143,7 +143,7 @@ class FieldController extends \CommonBundle\Component\Controller\ActionControlle
                     'The field was successfully created!'
                 );
 
-                if (null !== $this->getRequest()->getPost()->get('submit_repeat')) {
+                if ($this->getRequest()->getPost()->get('submit_repeat') !== null) {
                     $this->redirect()->toRoute(
                         'form_admin_form_field',
                         array(

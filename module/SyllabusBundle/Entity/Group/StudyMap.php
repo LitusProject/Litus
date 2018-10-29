@@ -20,7 +20,6 @@
 
 namespace SyllabusBundle\Entity\Group;
 
-use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\ORM\Mapping as ORM;
 use SyllabusBundle\Entity\Group;
 use SyllabusBundle\Entity\Study;
@@ -81,6 +80,7 @@ class StudyMap
     {
         return $this->study;
     }
+
     /**
      * @return Group
      */

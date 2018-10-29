@@ -21,11 +21,7 @@
 namespace SecretaryBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\File\TmpFile;
-use CommonBundle\Entity\General\AcademicYear;
-use DateTime;
 use SecretaryBundle\Component\Document\Generator\PhotosZip as PhotosZipGenerator;
-use SecretaryBundle\Entity\Promotion;
-use SecretaryBundle\Form\Admin\Photos\Photos as PhotosForm;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
 
@@ -98,7 +94,7 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
 
             $this->redirect()->toRoute(
                 'secretary_admin_photos',
-                 array(
+                array(
                     'action' => 'photos',
                 )
             );
@@ -106,7 +102,7 @@ class PhotosController extends \CommonBundle\Component\Controller\ActionControll
 
         $this->redirect()->toRoute(
             'secretary_admin_photos',
-             array(
+            array(
                 'action' => 'photos',
             )
         );

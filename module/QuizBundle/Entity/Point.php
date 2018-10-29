@@ -32,7 +32,7 @@ use InvalidArgumentException;
 class Point
 {
     /**
-     * @var int The entry's unique identifier
+     * @var integer The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -57,7 +57,7 @@ class Point
     private $team;
 
     /**
-     * @var int The point
+     * @var integer The point
      *
      * @ORM\Column(type="smallint")
      */
@@ -76,7 +76,7 @@ class Point
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -100,7 +100,7 @@ class Point
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getPoint()
     {
@@ -108,7 +108,7 @@ class Point
     }
 
     /**
-     * @param  int  $point
+     * @param  integer $point
      * @return self
      */
     public function setPoint($point)

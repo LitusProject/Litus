@@ -48,7 +48,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
 
                 $people = array();
                 $enrollments = array();
-                $groupIds = isset($formData['groups']) ? $formData['groups'] : null;
+                $groupIds = $formData['groups'] ?? null;
 
                 $addresses = array();
 
@@ -71,14 +71,13 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                                 if ($study->getStudy()->getPhase() == 2) {
                                     $enrollments = array_merge($enrollments, $this->getEntityManager()
                                         ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
-                                        ->findAllByStudy($study->getStudy())
-                                    );
+                                        ->findAllByStudy($study->getStudy()));
                                 }
                             }
                         }
 
                         foreach ($enrollments as $enrollment) {
-                            if (null !== $enrollment->getAcademic()->getPersonalEmail()) {
+                            if ($enrollment->getAcademic()->getPersonalEmail() !== null) {
                                 array_push($addresses, $enrollment->getAcademic()->getPersonalEmail());
                             }
                         }
@@ -91,7 +90,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                         );
 
                         foreach ($people as $person) {
-                            if (null !== $person->getEmailAddress()) {
+                            if ($person->getEmailAddress() !== null) {
                                 array_push($addresses, $person->getEmailAddress());
                             }
                         }
@@ -106,7 +105,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('secretary.mail');
 
-                if ('' == $formData['selected_message']['stored_message']) {
+                if ($formData['selected_message']['stored_message'] == '') {
                     $body = $formData['compose_message']['message'];
 
                     $part = new Part($body);
@@ -190,7 +189,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                 if ($formData['test']) {
                     $body = '<br/>This email would have been sent to:<br/>';
                     foreach ($addresses as $address) {
-                        $body = $body . $address . '<br/>';
+                        $body .= $address . '<br/>';
                     }
                     $part = new Part($body);
                     $part->type = Mime::TYPE_HTML;
@@ -202,7 +201,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
 
                         if ($i == 500) {
                             $i = 0;
-                            if ('development' != getenv('APPLICATION_ENV')) {
+                            if (getenv('APPLICATION_ENV') != 'development') {
                                 $this->getMailTransport()->send($mail);
                             }
 
@@ -211,7 +210,7 @@ class PromotionController extends \MailBundle\Component\Controller\AdminControll
                     }
                 }
 
-                if ('development' != getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
                 }
 

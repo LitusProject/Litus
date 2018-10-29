@@ -122,13 +122,13 @@ class Ticket
     private $member;
 
     /**
-     * @param  Event                    $event
-     * @param  string                   $status
-     * @param  Person|null              $person
-     * @param  GuestInfo|null           $guestInfo
-     * @param  DateTime|null            $bookDate
-     * @param  DateTime|null            $soldDate
-     * @param  integer|null             $number
+     * @param  Event          $event
+     * @param  string         $status
+     * @param  Person|null    $person
+     * @param  GuestInfo|null $guestInfo
+     * @param  DateTime|null  $bookDate
+     * @param  DateTime|null  $soldDate
+     * @param  integer|null   $number
      * @throws InvalidArgumentException
      */
     public function __construct(Event $event, $status, Person $person = null, GuestInfo $guestInfo = null, DateTime $bookDate = null, DateTime $soldDate = null, $number = null)
@@ -147,7 +147,7 @@ class Ticket
     }
 
     /**
-     * @param  string  $status
+     * @param  string $status
      * @return boolean
      */
     public static function isValidTicketStatus($status)
@@ -188,7 +188,7 @@ class Ticket
     }
 
     /**
-     * @param  string                   $status
+     * @param  string $status
      * @return self
      * @throws InvalidArgumentException
      */
@@ -261,11 +261,11 @@ class Ticket
      */
     public function getFullName()
     {
-        if (null !== $this->person) {
+        if ($this->person !== null) {
             return $this->person->getFullName();
         }
 
-        if (null !== $this->guestInfo) {
+        if ($this->guestInfo !== null) {
             return $this->guestInfo->getfullName();
         }
 

@@ -159,7 +159,7 @@ EOT
         $body = null;
         if (count($parser->getBody()) > 1) {
             foreach ($parser->getBody() as $itBody) {
-                if ('html' == $itBody['type']) {
+                if ($itBody['type'] == 'html') {
                     $body = $itBody;
                     break;
                 }
@@ -168,7 +168,7 @@ EOT
             $body = $parser->getBody()[0];
         }
 
-        if (null !== $body) {
+        if ($body !== null) {
             $newMessage = new Message(
                 $body['type'],
                 substr($parser->getSubject(), 7),

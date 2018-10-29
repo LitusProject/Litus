@@ -24,7 +24,6 @@ use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use CommonBundle\Entity\User\Person\Academic;
 use CudiBundle\Entity\Sale\Article;
-use CudiBundle\Entity\Sale\Article\Restriction;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Restriction\Member")
  * @ORM\Table(name="cudi.sales_articles_restrictions_member")
  */
-class Member extends Restriction
+class Member extends \CudiBundle\Entity\Sale\Article\Restriction
 {
     /**
      * @var boolean The value of the restriction
@@ -94,7 +93,7 @@ class Member extends Restriction
         }
 
         $membershipBooked = false;
-        if (null !== $organization && isset($membershipArticle[$organization->getId()])) {
+        if ($organization !== null && isset($membershipArticle[$organization->getId()])) {
             foreach ($bookings as $booking) {
                 // TODO on cancellation of membership: remove all bookings that can no longer be booked
 

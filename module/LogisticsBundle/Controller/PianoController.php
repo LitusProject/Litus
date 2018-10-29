@@ -199,8 +199,12 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
         $mail = new Message();
         $mail->setEncoding('UTF-8')
             ->setBody(
-                str_replace('{{ name }}', $person->getFullName(),
-                    str_replace('{{ start }}', $formatterDate->format($reservation->getStartDate()),
+                str_replace(
+                    '{{ name }}',
+                    $person->getFullName(),
+                    str_replace(
+                        '{{ start }}',
+                        $formatterDate->format($reservation->getStartDate()),
                         str_replace('{{ end }}', $formatterDate->format($reservation->getEndDate()), $message)
                     )
                 )
@@ -224,13 +228,13 @@ class PianoController extends \CommonBundle\Component\Controller\ActionControlle
             )
             ->setSubject($subject);
 
-        if ('development' != getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
     }
 
     /**
-     * @param  string        $date
+     * @param  string $date
      * @return DateTime|null
      */
     private static function loadDate($date)

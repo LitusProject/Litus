@@ -26,7 +26,7 @@ namespace BrBundle\Form\Admin\Product;
  * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Edit extends Add
+class Edit extends \BrBundle\Form\Admin\Product\Add
 {
     public function init()
     {

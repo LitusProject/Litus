@@ -48,7 +48,7 @@ EOT
     }
 
     /**
-     * @return int|null
+     * @return integer|null
      */
     protected function executeCommand()
     {
@@ -98,7 +98,7 @@ EOT
     }
 
     /**
-     * @return int|null
+     * @return integer|null
      */
     private function getTicket()
     {

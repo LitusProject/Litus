@@ -25,7 +25,7 @@ namespace DoorBundle\Form\Admin\Rule;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \DoorBundle\Form\Admin\Rule\Add
 {
     public function init()
     {

@@ -78,7 +78,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $editable = $this->form->canBeSavedBy($this->person) || $this->forceEdit;
 
-        if (null === $this->person) {
+        if ($this->person === null) {
             $this->add(array(
                 'type'     => 'text',
                 'name'     => 'first_name',
@@ -192,7 +192,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
             $this->addSubmit($this->form->getSubmitText($this->language));
         }
 
-        if (null !== $this->entry) {
+        if ($this->entry !== null) {
             $this->bind($this->entry);
         }
     }
@@ -265,7 +265,7 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function getOccupiedSlots()
     {
-        if (null !== $this->occupiedSlots) {
+        if ($this->occupiedSlots !== null) {
             return $this->occupiedSlots;
         }
 
@@ -275,8 +275,8 @@ class Doodle extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->occupiedSlots = array();
         foreach ($formEntries as $formEntry) {
-            if ((null !== $this->person && $formEntry->getCreationPerson() == $this->person) ||
-                (null !== $this->guestInfo && $formEntry->getGuestInfo() == $this->guestInfo)) {
+            if (($this->person !== null && $formEntry->getCreationPerson() == $this->person) ||
+                ($this->guestInfo !== null && $formEntry->getGuestInfo() == $this->guestInfo)) {
                 continue;
             }
 

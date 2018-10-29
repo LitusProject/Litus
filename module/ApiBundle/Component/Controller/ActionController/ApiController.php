@@ -23,8 +23,6 @@ namespace ApiBundle\Component\Controller\ActionController;
 use CommonBundle\Component\Acl\Acl;
 use CommonBundle\Component\Acl\Driver\HasAccess as HasAccessDriver;
 use CommonBundle\Component\Controller\Exception\RuntimeException;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\AuthenticationTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
@@ -34,6 +32,8 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\RouterTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\SessionStorageTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\TranslatorTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ViewRendererTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\General\Visit;
@@ -99,7 +99,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
 
         $this->logVisit();
 
-        if (false !== getenv('SERVED_BY')) {
+        if (getenv('SERVED_BY') !== false) {
             $this->getResponse()
                 ->getHeaders()
                 ->addHeaderLine('X-Served-By', getenv('SERVED_BY'));
@@ -109,14 +109,14 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         $result->setTerminal(true);
 
         if ($this->validateKey() || $this->validateOAuth()) {
-            if ('development' != getenv('APPLICATION_ENV')) {
+            if (getenv('APPLICATION_ENV') != 'development') {
                 $this->hasAccess()->setDriver($this->hasAccessDriver);
             }
 
-            if (
-                !$this->hasAccess()->toResourceAction(
-                    $this->getParam('controller'), $this->getParam('action')
-                )
+            if (!$this->hasAccess()->toResourceAction(
+                $this->getParam('controller'),
+                $this->getParam('action')
+            )
             ) {
                 $error = $this->error(401, 'You do not have sufficient permissions to access this resource');
                 $error->setOptions($result->getOptions());
@@ -132,7 +132,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
             return $error;
         }
 
-        if (false !== getenv('SERVED_BY')) {
+        if (getenv('SERVED_BY') !== false) {
             $this->getResponse()
                 ->getHeaders()
                 ->addHeaderLine('X-Served-By', getenv('SERVED_BY'));
@@ -148,8 +148,8 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     /**
      * Returns an error message.
      *
-     * @param  integer                    $code    The HTTP status code
-     * @param  string                     $message The error message
+     * @param  integer $code    The HTTP status code
+     * @param  string  $message The error message
      * @return \Zend\View\Model\ViewModel
      */
     public function error($code, $message)
@@ -216,10 +216,10 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                         ->getConfigValue('fallback_language')
                 );
 
-            if (null !== $fallbackLanguage) {
+            if ($fallbackLanguage !== null) {
                 \Locale::setDefault($fallbackLanguage->getAbbrev());
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new RuntimeException('Unable to initialize fallback language.');
         }
     }
@@ -345,7 +345,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function isAuthorizeAction()
     {
-        return ('authorize' == $this->getParam('action') || 'shibboleth' == $this->getParam('action')) && 'api_oauth' == $this->getParam('controller');
+        return ($this->getParam('action') == 'authorize' || $this->getParam('action') == 'shibboleth') && $this->getParam('controller') == 'api_oauth';
     }
 
     /**
@@ -355,7 +355,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function isOAuthAction()
     {
-        return 'api_oauth' == $this->getParam('controller');
+        return $this->getParam('controller') == 'api_oauth';
     }
 
     /**
@@ -365,7 +365,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function getAcl()
     {
-        if (null !== $this->getCache()) {
+        if ($this->getCache() !== null) {
             if (!$this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
                 $acl = new Acl(
                     $this->getEntityManager()
@@ -385,7 +385,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     /**
      * Get the current academic year.
      *
-     * @param  boolean      $organization
+     * @param  boolean $organization
      * @return AcademicYear
      */
     protected function getCurrentAcademicYear($organization = false)
@@ -400,7 +400,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     /**
      * Helper method that retrieves the API key.
      *
-     * @param  string                $field The name of the field that contains the key
+     * @param  string $field The name of the field that contains the key
      * @return \ApiBundle\Entity\Key
      */
     protected function getKey($field = 'key')
@@ -410,7 +410,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         }
 
         $code = $this->getRequest()->getQuery($field);
-        if (null === $code && $this->getRequest()->isPost()) {
+        if ($code === null && $this->getRequest()->isPost()) {
             $code = $this->getRequest()->getPost($field);
         }
 
@@ -424,13 +424,13 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     /**
      * Helper method that retrieves the OAuth 2 access token.
      *
-     * @param  string                           $field The name of the field that contains the access token
+     * @param  string $field The name of the field that contains the access token
      * @return \ApiBundle\Document\Token\Access
      */
     protected function getAccessToken($field = 'access_token')
     {
         $code = $this->getRequest()->getQuery($field);
-        if (null === $code && $this->getRequest()->isPost()) {
+        if ($code === null && $this->getRequest()->isPost()) {
             $code = $this->getRequest()->getPost($field);
         }
 
@@ -448,13 +448,13 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     protected function getLanguage()
     {
-        if ('' != $this->getRequest()->getPost('language', '')) {
+        if ($this->getRequest()->getPost('language', '') != '') {
             return $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev($this->getRequest()->getPost('language'));
         }
 
-        if (null !== $this->language) {
+        if ($this->language !== null) {
             return $this->language;
         }
 
@@ -469,9 +469,10 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
                 ->getRepository('CommonBundle\Entity\General\Language')
                 ->findOneByAbbrev('nl');
 
-            if (null === $language) {
+            if ($language === null) {
                 $language = new Language(
-                    'nl', 'Nederlands'
+                    'nl',
+                    'Nederlands'
                 );
 
                 $this->getEntityManager()->persist($language);
@@ -497,15 +498,13 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
     }
 
     /**
-     * @param  string                            $name
-     * @param  array|object|null                 $data
+     * @param  string            $name
+     * @param  array|object|null $data
      * @return \CommonBundle\Component\Form\Form
      */
     public function getForm($name, $data = null)
     {
-        $form = $this->getFormFactory()->create(array('type' => $name), $data);
-
-        return $form;
+        return $this->getFormFactory()->create(array('type' => $name), $data);
     }
 
     /**
@@ -515,7 +514,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function validateKey()
     {
-        if ('development' == getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') == 'development') {
             return true;
         }
 
@@ -530,7 +529,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         }
 
         $key = $this->getKey();
-        if (null === $key) {
+        if ($key === null) {
             return false;
         }
 
@@ -558,7 +557,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
      */
     private function validateOAuth()
     {
-        if ('development' == getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') == 'development') {
             return true;
         }
 
@@ -573,7 +572,7 @@ class ApiController extends \Zend\Mvc\Controller\AbstractActionController implem
         }
 
         $accessToken = $this->getAccessToken();
-        if (null === $accessToken) {
+        if ($accessToken === null) {
             return false;
         }
 

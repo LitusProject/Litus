@@ -164,8 +164,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         'article'   => $article,
                         'comments'  => $comments,
                         'mandatory' => $subjectMap->isMandatory(),
-                        'booked'    => isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0,
-                        'sold'      => isset($sold[$article->getId()]) ? $sold[$article->getId()] : 0,
+                        'booked'    => $booked[$article->getId()] ?? 0,
+                        'sold'      => $sold[$article->getId()] ?? 0,
                         'bookable'  => $article->isBookable()
                             && $article->canBook($academic, $this->getEntityManager())
                             && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions)),
@@ -198,8 +198,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     'article'   => $commonArticle,
                     'comments'  => $comments,
                     'mandatory' => false,
-                    'booked'    => isset($booked[$commonArticle->getId()]) ? $booked[$commonArticle->getId()] : 0,
-                    'sold'      => isset($sold[$commonArticle->getId()]) ? $sold[$commonArticle->getId()] : 0,
+                    'booked'    => $booked[$commonArticle->getId()] ?? 0,
+                    'sold'      => $sold[$commonArticle->getId()] ?? 0,
                     'bookable'  => $commonArticle->isBookable()
                         && $commonArticle->canBook($academic, $this->getEntityManager())
                         && ($enableBookings || in_array($commonArticle->getId(), $bookingsClosedExceptions)),
@@ -238,7 +238,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         continue;
                     }
 
-                    if ('article-' == substr($formKey, 0, 8) && '' != $formValue && '0' != $formValue) {
+                    if (substr($formKey, 0, 8) == 'article-' && $formValue != '' && $formValue != '0') {
                         $total += $formValue;
 
                         $saleArticle = $this->getEntityManager()
@@ -258,7 +258,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                                             $saleArticle,
                                             $academic,
                                             $this->getCurrentAcademicYear()
-                                    )
+                                        )
                                 );
                                 if ($amount + $formValue > $restriction->getValue()) {
                                     $formValue = $restriction->getValue() - $amount;
@@ -306,7 +306,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                 $this->getEntityManager()->flush();
 
-                if (0 == $total) {
+                if ($total == 0) {
                     $this->flashMessenger()->warn(
                         'Warning',
                         'You have not booked any textbooks!'
@@ -419,8 +419,8 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $item->bookable = $article->isBookable()
                 && $article->canBook($academic, $this->getEntityManager())
                 && ($enableBookings || in_array($article->getId(), $bookingsClosedExceptions));
-            $item->booked = isset($booked[$article->getId()]) ? $booked[$article->getId()] : 0;
-            $item->sold = isset($sold[$article->getId()]) ? $sold[$article->getId()] : 0;
+            $item->booked = $booked[$article->getId()] ?? 0;
+            $item->sold = $sold[$article->getId()] ?? 0;
             $item->comments = array();
 
             $comments = $this->getEntityManager()
@@ -476,7 +476,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     ->getRepository('CudiBundle\Entity\Sale\Article')
                     ->findOneById($id);
 
-                if (null === $article || !is_numeric($number)) {
+                if ($article === null || !is_numeric($number)) {
                     continue;
                 }
 
@@ -554,7 +554,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
             $subscription = $this->getEntityManager()
                 ->getRepository('CudiBundle\Entity\Article\Notification\Subscription')
                 ->findOneByPerson($academic);
-            if (null !== $subscription) {
+            if ($subscription !== null) {
                 $this->getEntityManager()->remove($subscription);
             }
         }
@@ -590,7 +590,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
      */
     private function getBookingEntity()
     {
-        if (null === $this->getParam('id') || !is_numeric($this->getParam('id'))) {
+        if ($this->getParam('id') === null || !is_numeric($this->getParam('id'))) {
             return;
         }
 

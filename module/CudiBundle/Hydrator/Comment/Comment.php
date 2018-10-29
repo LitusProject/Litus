@@ -28,7 +28,7 @@ class Comment extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -39,7 +39,7 @@ class Comment extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create a comment');
         }
 

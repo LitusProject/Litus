@@ -207,7 +207,7 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
 
                 $result = '';
                 $regex = '/^OK(S 032 (\d{3} ){3}[A-Za-z])$/i';
-                if ('development' == getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') == 'development') {
                     $result = 'OKS 032 123 456 789 A';
                 } else {
                     if ($delayOrder) {
@@ -294,10 +294,10 @@ class IsicController extends \CommonBundle\Component\Controller\ActionController
                             ->findOneById($articleID);
 
         $additionalConditions = unserialize(
-                        $this->getEntityManager()
+            $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')
                             ->getConfigValue('cudi.isic_Guido_conditions')
-                    );
+        );
 
         return new ViewModel(
             array(

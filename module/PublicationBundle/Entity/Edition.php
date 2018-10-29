@@ -17,6 +17,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace PublicationBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear;
@@ -105,7 +106,7 @@ abstract class Edition
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

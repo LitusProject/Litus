@@ -47,7 +47,7 @@ class University
     );
 
     /**
-     * @var int The ID of this university status
+     * @var integer The ID of this university status
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -81,9 +81,9 @@ class University
     private $academicYear;
 
     /**
-     * @param  Academic                 $person       The person that should be given the status
-     * @param  string                   $status       The status that should be given to the person
-     * @param  AcademicYear             $academicYear The year of the status
+     * @param  Academic     $person       The person that should be given the status
+     * @param  string       $status       The status that should be given to the person
+     * @param  AcademicYear $academicYear The year of the status
      * @throws InvalidArgumentException
      */
     public function __construct(Academic $person, $status, AcademicYear $academicYear)
@@ -120,7 +120,7 @@ class University
      * @static
      * @param  Academic     $person       the user to check
      * @param  AcademicYear $academicYear The year of the status
-     * @return bool
+     * @return boolean
      */
     public static function isValidPerson(Academic $person, AcademicYear $academicYear)
     {
@@ -136,7 +136,7 @@ class University
     }
 
     /**
-     * @param  string     $status string the status to set
+     * @param  string $status string the status to set
      * @return University
      */
     public function setStatus($status)
@@ -152,7 +152,7 @@ class University
      * Checks whether the given status is valid.
      *
      * @param  string $status string A status
-     * @return bool
+     * @return boolean
      */
     public static function isValidStatus($status)
     {

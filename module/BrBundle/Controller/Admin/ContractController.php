@@ -27,7 +27,6 @@ use BrBundle\Entity\Invoice\ContractInvoice;
 use BrBundle\Entity\Invoice\InvoiceEntry;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File as FileUtil;
-use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
@@ -52,7 +51,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         foreach ($contracts as $contract) {
             $contract->getOrder()->setEntityManager($this->getEntityManager());
             $value = $contract->getOrder()->getTotalCostExclusive();
-            $contractData[] = array("contract" => $contract, "value" => $value);
+            $contractData[] = array('contract' => $contract, 'value' => $value);
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -81,7 +80,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
         foreach ($contracts as $contract) {
             $contract->getOrder()->setEntityManager($this->getEntityManager());
             $value = $contract->getOrder()->getTotalCostExclusive();
-            $contractData[] = array("contract" => $contract, "value" => $value);
+            $contractData[] = array('contract' => $contract, 'value' => $value);
         }
 
         $paginator = $this->paginator()->createFromArray(
@@ -225,11 +224,11 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             return new ViewModel();
         }
 
-        if ('true' == $this->getParam('signed')) {
+        if ($this->getParam('signed') == 'true') {
             $invoice = new ContractInvoice($contract->getOrder(), $this->getEntityManager());
 
             foreach ($contract->getEntries() as $entry) {
-                $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(),0);
+                $invoiceEntry = new InvoiceEntry($invoice, $entry->getOrderEntry(), $entry->getPosition(), 0);
                 $this->getEntityManager()->persist($invoiceEntry);
             }
 
@@ -252,7 +251,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             $this->getEntityManager()->persist($invoice);
         }
 
-        $contract->setSigned('true' == $this->getParam('signed') ? true : false);
+        $contract->setSigned($this->getParam('signed') == 'true' ? true : false);
 
         $this->getEntityManager()->flush();
 
@@ -395,7 +394,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
     }
 
     /**
-     * @param  boolean       $allowSigned
+     * @param  boolean $allowSigned
      * @return Contract|null
      */
     private function getContractEntity($allowSigned = true)

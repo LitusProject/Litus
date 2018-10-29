@@ -20,13 +20,11 @@
 
 namespace ShopBundle\Repository\Product;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
-
 /**
  * Product
  * @author Floris Kint <floris.kint@litus.cc>
  */
-class SessionStockEntry extends EntityRepository
+class SessionStockEntry extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
      * @param $product
@@ -91,7 +89,7 @@ class SessionStockEntry extends EntityRepository
     /**
      * @param  Product      $product
      * @param  SalesSession $salesSession
-     * @return int
+     * @return integer
      */
     public function getRealAvailability($product, $salesSession)
     {

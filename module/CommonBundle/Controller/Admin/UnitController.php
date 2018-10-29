@@ -152,7 +152,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                         )
                     );
 
-                if (null !== $repositoryCheck) {
+                if ($repositoryCheck !== null) {
                     $this->flashMessenger()->error(
                         'Error',
                         'This academic already is a member of this unit!'
@@ -402,7 +402,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
      */
     private function findRoleWithParent(Role $role, Unit $parent = null)
     {
-        if (null === $parent) {
+        if ($parent === null) {
             return false;
         }
 
@@ -420,7 +420,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
      */
     private function findCoordinatorRoleWithParent(Role $role, Unit $parent = null)
     {
-        if (null === $parent) {
+        if ($parent === null) {
             return false;
         }
 
@@ -436,7 +436,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getAcademicYearEntity()
     {
-        if (null === $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') === null) {
             return $this->getCurrentAcademicYear();
         }
 

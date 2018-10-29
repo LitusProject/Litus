@@ -209,7 +209,7 @@ class Job
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isRemoved()
     {
@@ -217,11 +217,11 @@ class Job
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isApproved()
     {
-        if (null === $this->approved) {
+        if ($this->approved === null) {
             return true;
         }
 
@@ -242,7 +242,7 @@ class Job
      */
     public function setName($name)
     {
-        if (null === $name || !is_string($name)) {
+        if ($name === null || !is_string($name)) {
             throw new InvalidArgumentException('Invalid name');
         }
 
@@ -265,7 +265,7 @@ class Job
      */
     public function setType($type)
     {
-        if (null === $type || !is_string($type)) {
+        if ($type === null || !is_string($type)) {
             throw new InvalidArgumentException('Invalid type');
         }
 

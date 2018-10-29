@@ -20,7 +20,7 @@
 
 namespace FormBundle\Component\Document\Generator;
 
-use CommonBundle\Component\Util\File\TmpFile as TmpFile;
+use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Entity\General\Language;
 use DateTime;
 use Doctrine\ORM\EntityManager;

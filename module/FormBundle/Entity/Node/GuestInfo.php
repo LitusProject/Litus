@@ -33,7 +33,7 @@ use Zend\Http\PhpEnvironment\Request;
 class GuestInfo
 {
     /**
-     * @var int The ID of this node
+     * @var integer The ID of this node
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -174,7 +174,7 @@ class GuestInfo
     }
 
     /**
-     * @param  Request                           $request
+     * @param  Request $request
      * @return \FormBundle\Entity\Node\GuestInfo
      */
     public function renew(Request $request)

@@ -50,7 +50,7 @@ abstract class Barcode
     );
 
     /**
-     * @var int The ID of this credential
+     * @var integer The ID of this credential
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -86,7 +86,7 @@ abstract class Barcode
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

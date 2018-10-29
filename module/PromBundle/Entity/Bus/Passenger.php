@@ -17,6 +17,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace PromBundle\Entity\Bus;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -32,7 +33,7 @@ use PromBundle\Entity\Bus\ReservationCode;
 class Passenger
 {
     /**
-     * @var int The ID of this guest info
+     * @var integer The ID of this guest info
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -104,7 +105,7 @@ class Passenger
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

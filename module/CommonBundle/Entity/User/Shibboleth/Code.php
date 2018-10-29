@@ -87,7 +87,7 @@ class Code
      * @param string      $universityIdentification
      * @param string      $code
      * @param string      $info
-     * @param int         $expirationTime
+     * @param integer     $expirationTime
      * @param string|null $redirect
      */
     public function __construct($universityIdentification, $code, $info, $expirationTime = 300, $redirect = null)
@@ -96,7 +96,7 @@ class Code
 
         $this->creationTime = new DateTime();
         $this->expirationTime = new DateTime(
-            'now ' . (($expirationTime < 0) ? '-' : '+') . abs($expirationTime) . ' seconds'
+            'now ' . ($expirationTime < 0 ? '-' : '+') . abs($expirationTime) . ' seconds'
         );
 
         $this->universityIdentification = $universityIdentification;
@@ -163,7 +163,7 @@ class Code
      * up all expired sessions at once.
      *
      * @param  string $hash The hash that was received
-     * @return bool
+     * @return boolean
      */
     public function validate($hash)
     {

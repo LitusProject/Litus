@@ -53,7 +53,7 @@ class PageTitle extends \CommonBundle\Component\Validator\AbstractValidator impl
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -78,7 +78,7 @@ class PageTitle extends \CommonBundle\Component\Validator\AbstractValidator impl
         $this->setValue($value);
 
         $parentName = null;
-        if ('' != $this->form->get('parent_' . $this->form->get('category')->getValue())->getValue()) {
+        if ($this->form->get('parent_' . $this->form->get('category')->getValue())->getValue() != '') {
             $realParent = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Node\Page')
                 ->findOneById($this->form->get('parent_' . $this->form->get('category')->getValue())->getValue());
@@ -89,10 +89,11 @@ class PageTitle extends \CommonBundle\Component\Validator\AbstractValidator impl
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Node\Page')
             ->findOneByNameAndParent(
-                Url::createSlug($value), Url::createSlug($parentName)
+                Url::createSlug($value),
+                Url::createSlug($parentName)
             );
 
-        if (null === $page || $page->getName() == $this->options['exclude']) {
+        if ($page === null || $page->getName() == $this->options['exclude']) {
             return true;
         }
 

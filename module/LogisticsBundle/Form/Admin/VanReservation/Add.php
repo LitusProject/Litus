@@ -141,7 +141,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Add', 'reservation_add');
 
-        if (null !== $this->reservation) {
+        if ($this->reservation !== null) {
             $this->bind($this->reservation);
         }
     }
@@ -172,8 +172,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         return $driversArray;
     }
+
     private function returnYesNoArray()
     {
-        return array("N","Y");
+        return array('N','Y');
     }
 }

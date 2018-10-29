@@ -38,7 +38,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->article) {
+        if ($this->article === null) {
             throw new LogicException('Cannot add a discount to a null article');
         }
 
@@ -205,7 +205,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $specs = parent::getInputFilterSpecification();
 
-        $required = isset($this->data['template']) && 0 == $this->data['template'];
+        $required = isset($this->data['template']) && $this->data['template'] == 0;
 
         $specs['value']['required'] = $required;
         $specs['method']['required'] = $required;

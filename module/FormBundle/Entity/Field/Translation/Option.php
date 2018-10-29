@@ -33,7 +33,7 @@ use FormBundle\Entity\Field\OptionSelector;
 class Option
 {
     /**
-     * @var int The ID of this tanslation
+     * @var integer The ID of this tanslation
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -66,8 +66,8 @@ class Option
 
     /**
      * @param OptionSelector field
-     * @param Language $language
-     * @param string   $options
+     * @param Language             $language
+     * @param string               $options
      */
     public function __construct(OptionSelector $field, Language $language, $options)
     {

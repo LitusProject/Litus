@@ -20,10 +20,8 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use BrBundle\Entity\Company;
 use BrBundle\Entity\Company\Job;
 use BrBundle\Entity\Company\Request\RequestVacancy;
-use BrBundle\Entity\User\Person\Corporate;
 use Zend\Mail\Message;
 use Zend\View\Model\ViewModel;
 
@@ -116,9 +114,9 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
                 $mail->setBody($link)
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($mailAddress, $mailName)
-                    ->setSubject("New Vacancy Request " . $person->getCompany()->getName());
+                    ->setSubject('New Vacancy Request ' . $person->getCompany()->getName());
 
-                if ('development' != getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
                 }
 

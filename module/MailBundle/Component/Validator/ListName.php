@@ -43,7 +43,7 @@ class ListName extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -71,7 +71,7 @@ class ListName extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('MailBundle\Entity\MailingList\Named')
             ->findOneByName($value);
 
-        if (null === $list || ($this->options['list'] && $list == $this->options['list'])) {
+        if ($list === null || ($this->options['list'] && $list == $this->options['list'])) {
             return true;
         }
 

@@ -191,7 +191,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 }
 
                 $formEntry = new FormEntry($formSpecification, $person);
-                if (null === $person) {
+                if ($person === null) {
                     $formEntry->setGuestInfo(
                         new GuestInfo($this->getEntityManager(), $this->getRequest())
                     );
@@ -358,7 +358,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
                 }
 
                 $formEntry = new FormEntry($formSpecification, $person);
-                if (null === $person) {
+                if ($person === null) {
                     $formEntry->setGuestInfo(
                         new GuestInfo($this->getEntityManager(), $this->getRequest())
                     );
@@ -601,7 +601,7 @@ class FormController extends \FormBundle\Component\Controller\FormController
             ->getRepository('FormBundle\Entity\Entry')
             ->findOneByValue($this->getParam('id'));
 
-        if (null === $fieldEntry || !$this->getAuthentication()->isAuthenticated()) {
+        if ($fieldEntry === null || !$this->getAuthentication()->isAuthenticated()) {
             return $this->notFoundAction();
         }
 

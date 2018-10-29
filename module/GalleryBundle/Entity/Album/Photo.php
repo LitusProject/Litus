@@ -31,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Photo
 {
     /**
-     * @var int The ID of this photo
+     * @var integer The ID of this photo
      *
      * @ORM\Id
      * @ORM\GeneratedValue

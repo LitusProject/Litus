@@ -109,7 +109,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
         foreach ($vatTypes as $type) {
             if ($this->contract->getOrder()->getCostVatTypeExclusive($type) > 0) {
                 $price = $this->contract->getOrder()->getCostVatTypeExclusive($type) / 100;
-                $vatTotals = $vatTotals . '<vat_total><vat>' . $type . '</vat><total>' . $price . '</total></vat_total>';
+                $vatTotals .= '<vat_total><vat>' . $type . '</vat><total>' . $price . '</total></vat_total>';
             }
         }
 
@@ -132,13 +132,13 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
 
         $contractText = '';
         foreach ($entries as $entry) {
-            $contractText = $contractText . "\n" . $entry->getContractText();
+            $contractText .= "\n" . $entry->getContractText();
         }
         if ($this->contract->getAutoDiscountText() != '') {
-            $contractText = $contractText . "\n" . $this->contract->getAutoDiscountText();
+            $contractText .= "\n" . $this->contract->getAutoDiscountText();
         }
         if ($this->contract->getDiscountText() != '') {
-            $contractText = $contractText . "\n" . $this->contract->getDiscountText();
+            $contractText .= "\n" . $this->contract->getDiscountText();
         }
 
         $entry_s = new XmlNode('entries', null, 'Empty Contract');
@@ -162,9 +162,9 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                     new XmlNode(
                         'our_union',
                         array(
-                             'short_name'     => $unionNameShort,
-                             'contact_person' => $ourContactPerson,
-                             'coordinator'    => $brgroco,
+                            'short_name'     => $unionNameShort,
+                            'contact_person' => $ourContactPerson,
+                            'coordinator'    => $brgroco,
                         ),
                         array(
                             new XmlNode('name', null, $brName),
@@ -274,7 +274,7 @@ class Contract extends \CommonBundle\Component\Document\Generator\Pdf
                     new XmlNode('above_sign', array('middle' => $above_sign_middle, 'end' => '.'), $above_sign),
                     new XmlNode('footer'),
                     new XmlNode('sale_conditions_nl'),
-                    new XmlNode('for_contact_person', null, "test"),
+                    new XmlNode('for_contact_person', null, 'test'),
                 )
             )
         );

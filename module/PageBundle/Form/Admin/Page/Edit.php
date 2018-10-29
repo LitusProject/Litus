@@ -23,7 +23,7 @@ namespace PageBundle\Form\Admin\Page;
 /**
  * Edit a page.
  */
-class Edit extends Add
+class Edit extends \PageBundle\Form\Admin\Page\Add
 {
     public function init()
     {

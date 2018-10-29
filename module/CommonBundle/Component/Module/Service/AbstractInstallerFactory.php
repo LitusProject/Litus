@@ -35,7 +35,7 @@ class AbstractInstallerFactory implements AbstractFactoryInterface
     /**
      * @param  ContainerInterface $container
      * @param  string             $requestedName
-     * @return bool
+     * @return boolean
      */
     public function canCreate(ContainerInterface $container, $requestedName)
     {
@@ -49,7 +49,7 @@ class AbstractInstallerFactory implements AbstractFactoryInterface
     /**
      * @param  ContainerInterface $container
      * @param  string             $requestedName
-     * @param  null|array         $options
+     * @param  array|null         $options
      * @return AbstractInstaller
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)

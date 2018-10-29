@@ -57,7 +57,7 @@ class Refresh extends \ApiBundle\Document\Token
      * @param Person            $person
      * @param AuthorizationCode $authorizationCode
      * @param Key               $key
-     * @param int               $expirationTime
+     * @param integer           $expirationTime
      */
     public function __construct(Person $person, AuthorizationCode $authorizationCode, Key $key, $expirationTime = self::DEFAULT_EXPIRATION_TIME)
     {
@@ -101,6 +101,6 @@ class Refresh extends \ApiBundle\Document\Token
      */
     public function hasBeenExchanged()
     {
-        return null !== $this->exchangeTime;
+        return $this->exchangeTime !== null;
     }
 }

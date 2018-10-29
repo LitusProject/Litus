@@ -23,7 +23,6 @@ namespace CudiBundle\Controller\Admin;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CommonBundle\Entity\General\AcademicYear;
-use Cudibundle\Entity\Article;
 use SyllabusBundle\Entity\Study;
 use Zend\Http\Headers;
 use Zend\View\Model\ViewModel;
@@ -41,7 +40,7 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $studies = $this->searchStudies($academicYear);
         }
 
@@ -69,6 +68,7 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
             )
         );
     }
+
     public function listAction()
     {
         if (!($study = $this->getStudyEntity())) {
@@ -210,7 +210,7 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  AcademicYearEntity       $academicYear
+     * @param  AcademicYearEntity $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function search(AcademicYear $academicYear)
@@ -224,7 +224,7 @@ class SyllabusController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  AcademicYearEntity       $academicYear
+     * @param  AcademicYearEntity $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function searchStudies(AcademicYear $academicYear)

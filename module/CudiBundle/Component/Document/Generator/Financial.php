@@ -182,16 +182,16 @@ class Financial extends \CommonBundle\Component\Document\Generator\Pdf
                             'name' => $cudi_name,
                         ),
                         array(
-                             new Node(
-                                 'mail',
-                                 null,
-                                 $cudi_mail
-                             ),
-                             new Node(
-                                 'phone',
-                                 null,
-                                 $person->getPhoneNumber()
-                             ),
+                            new Node(
+                                'mail',
+                                null,
+                                $cudi_mail
+                            ),
+                            new Node(
+                                'phone',
+                                null,
+                                $person->getPhoneNumber()
+                            ),
                         )
                     ),
                     new Node(

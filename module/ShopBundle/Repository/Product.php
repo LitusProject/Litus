@@ -20,14 +20,13 @@
 
 namespace ShopBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 
 /**
  * Product
  * @author Floris Kint <floris.kint@litus.cc>
  */
-class Product extends EntityRepository
+class Product extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
      * @return \Doctrine\ORM\Query
@@ -35,22 +34,20 @@ class Product extends EntityRepository
     public function findAllQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p')
+        return $query->select('p')
             ->from('ShopBundle\Entity\Product', 'p')
             ->orderBy('p.name', 'ASC')
             ->getQuery();
-
-        return $resultSet;
     }
 
     /**
-     * @param  string              $name
+     * @param  string $name
      * @return \Doctrine\ORM\Query
      */
     public function findAllByNameQuery($name)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p')
+        return $query->select('p')
             ->from('ShopBundle\Entity\Product', 'p')
             ->where(
                 $query->expr()->like($query->expr()->lower('p.name'), ':name')
@@ -58,8 +55,6 @@ class Product extends EntityRepository
             ->orderBy('p.name', 'ASC')
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->getQuery();
-
-        return $resultSet;
     }
 
     /**
@@ -68,7 +63,7 @@ class Product extends EntityRepository
     public function findAllAvailable()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        $resultSet = $query->select('p')
+        return $query->select('p')
             ->from('ShopBundle\Entity\Product', 'p')
             ->where(
                 $query->expr()->eq('p.available', ':available')
@@ -77,8 +72,6 @@ class Product extends EntityRepository
             ->setParameter('available', true)
             ->getQuery()
             ->getResult();
-
-        return $resultSet;
     }
 
     /**

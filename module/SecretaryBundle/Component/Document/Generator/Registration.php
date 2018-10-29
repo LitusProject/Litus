@@ -68,7 +68,7 @@ class Registration extends \CommonBundle\Component\Document\Generator\Csv
                 ->getRepository('SecretaryBundle\Entity\Registration')
                 ->findOneByAcademicAndAcademicYear($academic, $academicYear);
 
-            if (null === $registration || !$registration->hasPayed()) {
+            if ($registration === null || !$registration->hasPayed()) {
                 continue;
             }
 

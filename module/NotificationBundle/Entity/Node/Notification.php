@@ -150,14 +150,14 @@ class Notification extends \CommonBundle\Entity\Node
     }
 
     /**
-     * @param  Language|null    $language
-     * @param  boolean          $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language) {
+            if ($language !== null && $translation->getLanguage() == $language) {
                 return $translation;
             }
 
@@ -182,7 +182,7 @@ class Notification extends \CommonBundle\Entity\Node
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getContent();
         }
 

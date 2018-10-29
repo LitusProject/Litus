@@ -45,7 +45,7 @@ class Code extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -74,7 +74,7 @@ class Code extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('SyllabusBundle\Entity\Subject')
             ->findOneByCode($value);
 
-        if (null === $subject || ($this->options['exclude'] !== null && $subject->getId() == $this->options['exclude']->getId())) {
+        if ($subject === null || ($this->options['exclude'] !== null && $subject->getId() == $this->options['exclude']->getId())) {
             return true;
         }
 

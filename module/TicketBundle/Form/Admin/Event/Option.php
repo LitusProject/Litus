@@ -20,7 +20,6 @@
 
 namespace TicketBundle\Form\Admin\Event;
 
-use CommonBundle\Component\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 
 /**
@@ -28,7 +27,7 @@ use Zend\InputFilter\InputFilterProviderInterface;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class Option extends Fieldset implements InputFilterProviderInterface
+class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilterProviderInterface
 {
     public function init()
     {

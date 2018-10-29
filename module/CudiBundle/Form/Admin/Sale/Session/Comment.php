@@ -37,7 +37,7 @@ class Comment extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->session) {
+        if ($this->session === null) {
             throw new LogicException('Cannot edit the comment of a null sale session');
         }
 

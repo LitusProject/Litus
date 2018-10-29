@@ -79,7 +79,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
             mkdir($cachePath);
         }
 
-        if (null !== $mainArticle->getFrontPage() && file_exists($cachePath . '/' . $mainArticle->getFrontPage())) {
+        if ($mainArticle->getFrontPage() !== null && file_exists($cachePath . '/' . $mainArticle->getFrontPage())) {
             copy($cachePath . '/' . $mainArticle->getFrontPage(), $this->pdfPath);
             clearstatcache();
         } else {
@@ -223,7 +223,7 @@ class Front extends \CommonBundle\Component\Document\Generator\Pdf
                             new Node(
                                 'street',
                                 null,
-                                $address->getStreet() . ' ' . $address->getNumber() . (null === $address->getMailbox() ? '' : '/' . $address->getMailbox())
+                                $address->getStreet() . ' ' . $address->getNumber() . ($address->getMailbox() === null ? '' : '/' . $address->getMailbox())
                             ),
                             new Node(
                                 'city',

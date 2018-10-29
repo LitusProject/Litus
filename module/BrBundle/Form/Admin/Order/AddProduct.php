@@ -26,7 +26,7 @@ namespace BrBundle\Form\Admin\Order;
  * @author Koen Certyn <koen.certyn@litus.cc>
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class AddProduct extends Add
+class AddProduct extends \BrBundle\Form\Admin\Order\Add
 {
     /**
      * @var array The currently used products

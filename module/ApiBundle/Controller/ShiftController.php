@@ -104,7 +104,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
             return $this->error(404, 'The shift was not found');
         }
 
-        if (!($shift->canHaveAsResponsible($this->getEntityManager(), $person))) {
+        if (!$shift->canHaveAsResponsible($this->getEntityManager(), $person)) {
             return $this->error(500, 'This person cannot be a responsible');
         }
 
@@ -143,7 +143,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
             return $this->error(404, 'The shift was not found');
         }
 
-        if (!($shift->canHaveAsVolunteer($this->getEntityManager(), $person))) {
+        if (!$shift->canHaveAsVolunteer($this->getEntityManager(), $person)) {
             return $this->error(500, 'This person cannot be a volunteer');
         }
 
@@ -183,7 +183,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
                         ->addTo($volunteer->getPerson()->getEmail(), $volunteer->getPerson()->getFullName())
                         ->setSubject($subject);
 
-                    if ('development' != getenv('APPLICATION_ENV')) {
+                    if (getenv('APPLICATION_ENV') != 'development') {
                         $this->getMailTransport()->send($mail);
                     }
 
@@ -227,12 +227,12 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
             return $this->error(404, 'The shift was not found');
         }
 
-        if (!($shift->canSignout($this->getEntityManager()))) {
+        if (!$shift->canSignout($this->getEntityManager())) {
             return $this->error(500, 'This person cannot be signed out');
         }
 
         $remove = $shift->removePerson($person);
-        if (null !== $remove) {
+        if ($remove !== null) {
             $this->getEntityManager()->remove($remove);
         }
 
@@ -256,7 +256,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
      */
     private function getPersonEntity()
     {
-        if (null === $this->getAccessToken()) {
+        if ($this->getAccessToken() === null) {
             return null;
         }
 
@@ -268,7 +268,7 @@ class ShiftController extends \ApiBundle\Component\Controller\ActionController\A
      */
     private function getShiftEntity()
     {
-        if (null === $this->getRequest()->getPost('id')) {
+        if ($this->getRequest()->getPost('id') === null) {
             return null;
         }
 

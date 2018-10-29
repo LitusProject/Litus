@@ -26,7 +26,7 @@ use CommonBundle\Component\Util\Xml\Generator as XmlGenerator;
 use CommonBundle\Component\Util\Xml\Node as XmlNode;
 use Doctrine\ORM\EntityManager;
 
-class Letter extends CommonBundle\Component\Document\Generator\Pdf
+class Letter extends \BrBundle\Component\Document\Generator\Pdf\CommonBundle\Component\Document\Generator\Pdf
 {
     /**
      * @var \BrBundle\Entity\Contract
@@ -68,37 +68,44 @@ class Letter extends CommonBundle\Component\Document\Generator\Pdf
 
         $title = $configs->getConfigValue('br.letter.title.' . $ourContactPerson->getSex());
 
-        $xml->append(new XmlNode('letter', null,
-                 array(
-                     new XmlNode('our_union', null,
-                        array(
-                            new XmlNode('name', null, $ourUnionName),
-                            new XmlNode('contact_person', null, $ourContactPerson->getFirstName() . ' ' . $ourContactPerson->getLastName()),
-                            new XmlNode('address', null, $ourUnionAddress),
-                            new XmlNode('logo', null, $ourUnionLogo),
-                            new XmlNode('vat_number', null, $ourUnionVatNb),
-                        )
-                     ),
+        $xml->append(new XmlNode(
+            'letter',
+            null,
+            array(
+                new XmlNode(
+                    'our_union',
+                    null,
+                    array(
+                        new XmlNode('name', null, $ourUnionName),
+                        new XmlNode('contact_person', null, $ourContactPerson->getFirstName() . ' ' . $ourContactPerson->getLastName()),
+                        new XmlNode('address', null, $ourUnionAddress),
+                        new XmlNode('logo', null, $ourUnionLogo),
+                        new XmlNode('vat_number', null, $ourUnionVatNb),
+                    )
+                ),
 
-                     new XmlNode('company', null,
-                         array(
-                             new XmlNode('name', null, $companyName),
-                             new XmlNode('contact_person', null,
-                                array(
-                                    new XmlNode('title', null, $title),
-                                    new XmlNode('first_name', null, $ourContactPerson->getFirstName()),
-                                    new XmlNode('last_name', null, $ourContactPerson->getLastName()),
-                                )
-                             ),
-                             new XmlNode('address', null, $companyAddress),
-                         )
-                     ),
+                new XmlNode(
+                    'company',
+                    null,
+                    array(
+                        new XmlNode('name', null, $companyName),
+                        new XmlNode(
+                            'contact_person',
+                            null,
+                            array(
+                                new XmlNode('title', null, $title),
+                                new XmlNode('first_name', null, $ourContactPerson->getFirstName()),
+                                new XmlNode('last_name', null, $ourContactPerson->getLastName()),
+                            )
+                        ),
+                        new XmlNode('address', null, $companyAddress),
+                    )
+                ),
 
-                     $content,
+                $content,
 
-                     new XmlNode('footer', null, $footer),
-                 )
-             )
-        );
+                new XmlNode('footer', null, $footer),
+            )
+        ));
     }
 }

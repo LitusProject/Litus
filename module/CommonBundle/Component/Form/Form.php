@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\HydratorPluginManagerTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Validator\FormAwareInterface;
 use RuntimeException;
 use Zend\Form\FieldsetInterface as ZendFieldsetInterface;
@@ -32,7 +32,6 @@ use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputInterface;
-use Zend\InputFilter\InputProviderInterface;
 
 /**
  * Extending Zend's form component, so that our forms look the way we want
@@ -54,8 +53,8 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     }
 
     /**
-     * @param null|string|int $name    Optional name for the element
-     * @param array           $options
+     * @param string|integer|null $name    Optional name for the element
+     * @param array               $options
      */
     public function __construct($name = null, $options = array())
     {
@@ -70,7 +69,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
      */
     public function getHydrator()
     {
-        if (null === $this->hydrator) {
+        if ($this->hydrator === null) {
             $this->setHydrator(new ClassMethodsHydrator());
         } elseif (is_string($this->hydrator)) {
             $this->setHydrator(
@@ -116,7 +115,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
             'value' => $value,
         );
 
-        if (null !== $class) {
+        if ($class !== null) {
             $attributes['class'] = $class;
         }
 
@@ -130,8 +129,8 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
     /**
      * Adds a fieldset to the form.
      *
-     * @param  string   $label
-     * @param  string   $name
+     * @param  string $label
+     * @param  string $name
      * @return Fieldset
      */
     public function addFieldset($label, $name)
@@ -167,7 +166,7 @@ abstract class Form extends \Zend\Form\Form implements InputFilterAwareInterface
      *
      * This method does nothing if the form is invalid.
      *
-     * @param  object|null      $object The object to hydrate
+     * @param  object|null $object The object to hydrate
      * @return object           The hydrated object
      * @throws RuntimeException If $object is null and creating objects is not supported by the hydrator
      * @throws RuntimeException If this form hasn't been validated yet

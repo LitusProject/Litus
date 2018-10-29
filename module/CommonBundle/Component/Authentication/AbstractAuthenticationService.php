@@ -21,7 +21,6 @@
 namespace CommonBundle\Component\Authentication;
 
 use CommonBundle\Component\Authentication\Action;
-use CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter;
 use Zend\Authentication\Storage\StorageInterface;
 use Zend\Http\Header\Cookie;
 use Zend\Http\Header\SetCookie;
@@ -46,7 +45,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     private $cookie = '';
 
     /**
-     * @var int The duration of the authentication
+     * @var integer The duration of the authentication
      */
     protected $duration = -1;
 
@@ -74,7 +73,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
      * @param StorageInterface $storage      The persistent storage handler
      * @param string           $namespace    The namespace the storage handlers will use
      * @param string           $cookieSuffix The cookie suffix that is used to store the session cookie
-     * @param int              $duration     The expiration time for the cookie
+     * @param integer          $duration     The expiration time for the cookie
      * @param Action           $action       The action that should be taken after authentication
      */
     public function __construct(StorageInterface $storage, $namespace, $cookieSuffix, $duration, Action $action)
@@ -125,7 +124,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     /**
      * Checks whether external sites (e.g. wiki) can access this authentication
      *
-     * @return bool
+     * @return boolean
      */
     public function isExternallyVisible()
     {
@@ -145,7 +144,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
     /**
      * Checks whether the cookie has been set.
      *
-     * @return bool
+     * @return boolean
      */
     protected function hasCookie()
     {
@@ -185,7 +184,7 @@ abstract class AbstractAuthenticationService extends \Zend\Authentication\Authen
 
         $servername_parts = explode('.', $this->request->getServer()->get('SERVER_NAME'));
         $domain_parts = array_slice($servername_parts, -2);
-        $domain = $domain_parts[0] . "." . $domain_parts[1];
+        $domain = $domain_parts[0] . '.' . $domain_parts[1];
 
         $this->response->getHeaders()->addHeader(
             (new SetCookie())

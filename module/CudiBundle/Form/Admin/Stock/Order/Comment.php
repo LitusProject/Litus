@@ -37,7 +37,7 @@ class Comment extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->order) {
+        if ($this->order === null) {
             throw new LogicException('Cannot comment on a null order.');
         }
 

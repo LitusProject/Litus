@@ -36,7 +36,7 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create a field');
         }
 
@@ -64,10 +64,10 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
             $dropdownData = $data['dropdown_form'];
             foreach ($this->getLanguages() as $language) {
                 $languageData = $dropdownData['tab_content']['tab_' . $language->getAbbrev()];
-                if ('' != $languageData['options']) {
+                if ($languageData['options'] != '') {
                     $translation = $object->getOptionTranslation($language, false);
 
-                    if (null !== $translation) {
+                    if ($translation !== null) {
                         $translation->setOptions($languageData['options']);
                     } else {
                         $translation = new OptionTranslationFieldEntity(
@@ -99,14 +99,14 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
                 $languageData = $timeslotData['tab_content']['tab_' . $language->getAbbrev()];
                 $translation = $object->getTimeSlotTranslation($language, false);
 
-                if ('' == $languageData['location'] && '' == $languageData['extra_info']) {
-                    if (null !== $translation) {
+                if ($languageData['location'] == '' && $languageData['extra_info'] == '') {
+                    if ($translation !== null) {
                         $this->getEntityManager()->remove($translation);
                     }
                     continue;
                 }
 
-                if (null !== $translation) {
+                if ($translation !== null) {
                     $translation->setLocation($languageData['location'])
                         ->setExtraInformation($languageData['extra_info']);
                 } else {
@@ -124,10 +124,10 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
 
         foreach ($this->getLanguages() as $language) {
             $languageData = $data['tab_content']['tab_' . $language->getAbbrev()];
-            if ('' != $languageData['label']) {
+            if ($languageData['label'] != '') {
                 $translation = $object->getTranslation($language, false);
 
-                if (null === $translation) {
+                if ($translation === null) {
                     $translation = new TranslationEntity(
                         $object,
                         $language,
@@ -151,7 +151,7 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -182,7 +182,7 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
 
             foreach ($this->getLanguages() as $language) {
                 $translation = $object->getOptionTranslation($language, false);
-                if (null !== $translation) {
+                if ($translation !== null) {
                     $data['dropdown_form']['tab_content']['tab_' . $language->getAbbrev()]['options'] = $translation->getOptions();
                 }
             }
@@ -200,7 +200,7 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
 
             foreach ($this->getLanguages() as $language) {
                 $translation = $object->getTimeSlotTranslation($language, false);
-                if (null !== $translation) {
+                if ($translation !== null) {
                     $data['timeslot_form']['tab_content']['tab_' . $language->getAbbrev()] = array(
                         'location'   => $translation->getLocation(),
                         'extra_info' => $translation->getExtraInformation(),
@@ -211,7 +211,7 @@ class Field extends \CommonBundle\Component\Hydrator\Hydrator
 
         foreach ($this->getLanguages() as $language) {
             $translation = $object->getTranslation($language, false);
-            if (null !== $translation) {
+            if ($translation !== null) {
                 $data['tab_content']['tab_' . $language->getAbbrev()] = array(
                     'label' => $translation->getLabel(),
                 );

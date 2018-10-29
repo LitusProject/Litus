@@ -45,7 +45,7 @@ class Activity extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -77,7 +77,7 @@ class Activity extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('TicketBundle\Entity\Event')
             ->findOneByActivity($activity);
 
-        if (null === $event || (null !== $this->options['exclude'] && $event->getId() == $this->options['exclude']->getId())) {
+        if ($event === null || ($this->options['exclude'] !== null && $event->getId() == $this->options['exclude']->getId())) {
             return true;
         }
 

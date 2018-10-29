@@ -36,7 +36,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $academics = $this->search();
 
             $paginator = $this->paginator()->createFromArray(
@@ -165,7 +165,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('SecretaryBundle\Entity\Syllabus\StudyEnrollment')
                     ->findOneByAcademicAndStudy($academic, $study);
 
-                if (null === $enrollment) {
+                if ($enrollment === null) {
                     $this->getEntityManager()->persist(new StudyEnrollment($academic, $study));
                 }
 
@@ -179,7 +179,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                             ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
                             ->findOneByAcademicAndAcademicYearAndSubject($academic, $academicYear, $mapping->getSubject());
 
-                        if (null === $enrollment) {
+                        if ($enrollment === null) {
                             $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $mapping->getSubject()));
                         }
                     }
@@ -245,7 +245,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                     ->getRepository('SecretaryBundle\Entity\Syllabus\SubjectEnrollment')
                     ->findOneByAcademicAndAcademicYearAndSubject($academic, $academicYear, $subject);
 
-                if (null === $enrollment) {
+                if ($enrollment === null) {
                     $this->getEntityManager()->persist(new SubjectEnrollment($academic, $academicYear, $subject));
                 }
 
@@ -297,9 +297,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $item = (object) array();
                 $item->id = $academic->getId();
                 $item->username = $academic->getUsername();
-                $item->universityIdentification = (
-                    null !== $academic->getUniversityIdentification() ? $academic->getUniversityIdentification() : ''
-                );
+                $item->universityIdentification = ($academic->getUniversityIdentification() ?? '');
                 $item->fullName = $academic->getFullName();
                 $item->email = $academic->getEmail();
 
@@ -417,7 +415,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
     private function getAcademicYearEntity()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);

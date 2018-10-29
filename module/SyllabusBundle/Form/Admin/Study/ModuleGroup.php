@@ -20,14 +20,12 @@
 
 namespace SyllabusBundle\Form\Admin\Study;
 
-use CommonBundle\Component\Form\Fieldset;
-
 /**
  * Add Module Group
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class ModuleGroup extends Fieldset
+class ModuleGroup extends \CommonBundle\Component\Form\Fieldset
 {
     public function init()
     {

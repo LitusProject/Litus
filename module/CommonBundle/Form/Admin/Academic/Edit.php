@@ -41,7 +41,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
 
     public function init()
     {
-        if (null === $this->person) {
+        if ($this->person === null) {
             throw new LogicException('Cannot edit null Academic.');
         }
 

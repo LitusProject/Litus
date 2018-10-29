@@ -54,7 +54,7 @@ class EventName extends \CommonBundle\Component\Validator\AbstractValidator impl
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -87,7 +87,7 @@ class EventName extends \CommonBundle\Component\Validator\AbstractValidator impl
                 ->getRepository('CalendarBundle\Entity\Node\Event')
                 ->findOneByName($title);
 
-            if (null === $event || ($this->options['event'] && $event->getEvent() == $this->options['event'])) {
+            if ($event === null || ($this->options['event'] && $event->getEvent() == $this->options['event'])) {
                 return true;
             }
 

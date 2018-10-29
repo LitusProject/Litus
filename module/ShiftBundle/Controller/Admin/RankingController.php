@@ -87,12 +87,12 @@ class RankingController extends \CommonBundle\Component\Controller\ActionControl
     private function getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
-        if (null === $academicYear) {
+        if ($academicYear === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'No academic year was found!'

@@ -20,7 +20,6 @@
 
 namespace ShopBundle\Controller\Admin;
 
-use DateTime;
 use ShopBundle\Entity\Product\SessionStockEntry;
 use ShopBundle\Entity\SalesSession;
 use Zend\View\Model\ViewModel;
@@ -89,10 +88,12 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
     public function addAction()
     {
         $products = $this->getAvailableProducts();
-        $form = $this->getForm('shop_salesSession_add',
+        $form = $this->getForm(
+            'shop_salesSession_add',
             array(
                 'products' => $products,
-            ));
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -144,11 +145,13 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
             return new ViewModel();
         }
         $products = $this->getAvailableAndStockAndReservationProducts($salesSession);
-        $form = $this->getForm('shop_salesSession_edit',
+        $form = $this->getForm(
+            'shop_salesSession_edit',
             array(
                 'salesSession' => $salesSession,
                 'products'     => $products,
-            ));
+            )
+        );
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

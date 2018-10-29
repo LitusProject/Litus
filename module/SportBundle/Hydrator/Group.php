@@ -28,17 +28,17 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException();
         }
 
         $object->setName($data['group_information']['name'])
             ->setHappyHours(
-            array(
-                $data['group_information']['happy_hour_one'],
-                $data['group_information']['happy_hour_two'],
-            )
-        );
+                array(
+                    $data['group_information']['happy_hour_one'],
+                    $data['group_information']['happy_hour_two'],
+                )
+            );
 
         $groupMembers = array();
         foreach (GroupEntity::$allMembers as $memberNb) {
@@ -54,7 +54,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
                         ->findOneByRunnerIdentification($memberData['university_identification']);
                 }
 
-                if (null === $repositoryCheck) {
+                if ($repositoryCheck === null) {
                     $academic = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneByUniversityIdentification($memberData['university_identification']);
@@ -74,7 +74,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
 
                     $newRunner->setGroup($object);
 
-                    if ('' != $memberData['university_identification']) {
+                    if ($memberData['university_identification'] != '') {
                         $newRunner->setRunnerIdentification($memberData['university_identification']);
                     }
 
@@ -82,7 +82,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
 
                     $groupMembers[] = $newRunner;
                 } else {
-                    if (null === $repositoryCheck->getGroup()) {
+                    if ($repositoryCheck->getGroup() === null) {
                         $repositoryCheck->setGroup($object);
                         $groupMembers[] = $repositoryCheck;
                     }
@@ -95,7 +95,7 @@ class Group extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

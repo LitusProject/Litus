@@ -114,7 +114,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'start_date'     => 'start_date',
                                 'format'         => 'd/m/Y H:i',
                                 'resource'       => PianoReservation::PIANO_RESOURCE_NAME,
-                                'reservation_id' => null !== $this->reservation ? $this->reservation->getId() : null,
+                                'reservation_id' => $this->reservation !== null ? $this->reservation->getId() : null,
                             ),
                         ),
                         array(
@@ -150,7 +150,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->addSubmit('Add', 'reservation_add');
 
-        if (null !== $this->reservation) {
+        if ($this->reservation !== null) {
             $this->bind($this->reservation);
         }
     }
@@ -194,7 +194,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $list = array();
 
         while ($now < $maxDate) {
-            if (null !== $config[$now->format('N')]) {
+            if ($config[$now->format('N')] !== null) {
                 foreach ($config[$now->format('N')] as $slot) {
                     $startSlot = clone $now;
                     $startSlot->setTime(

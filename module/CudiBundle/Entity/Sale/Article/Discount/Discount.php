@@ -221,7 +221,7 @@ class Discount
     }
 
     /**
-     * @param  string  $type
+     * @param  string $type
      * @return boolean
      */
     public static function isValidDiscountType($type)
@@ -230,7 +230,7 @@ class Discount
     }
 
     /**
-     * @param  string  $method
+     * @param  string $method
      * @return boolean
      */
     public static function isValidDiscountMethod($method)
@@ -239,7 +239,7 @@ class Discount
     }
 
     /**
-     * @param  string  $rounding
+     * @param  string $rounding
      * @return boolean
      */
     public static function isValidRoundingType($rounding)
@@ -423,7 +423,7 @@ class Discount
             if ($this->getOrganization() !== null) {
                 $organization = $entityManager->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
                     ->findOneByAcademicAndAcademicYear($person, $academicYear);
-                if (null == $organization) {
+                if ($organization == null) {
                     return false;
                 }
                 if ($organization != $this->getOrganization()) {

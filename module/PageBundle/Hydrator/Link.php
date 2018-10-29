@@ -33,7 +33,7 @@ class Link extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new LinkEntity();
         }
 
@@ -43,12 +43,12 @@ class Link extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setCategory($category);
 
-        if ('' != $data['parent_' . $category->getId()]) {
+        if ($data['parent_' . $category->getId()] != '') {
             $parent = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Node\Page')
                 ->findOneById($data['parent_' . $category->getId()]);
 
-            if (null !== $parent) {
+            if ($parent !== null) {
                 $object->setParent($parent);
             }
         } else {
@@ -60,11 +60,11 @@ class Link extends \CommonBundle\Component\Hydrator\Hydrator
 
             $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
 
-            if (null !== $translation) {
+            if ($translation !== null) {
                 $translation->setName($translationData['name'])
                     ->setUrl($translationData['url']);
             } else {
-                if ('' != $translationData['name'] && '' != $translationData['url']) {
+                if ($translationData['name'] != '' && $translationData['url'] != '') {
                     $translation = new TranslationEntity(
                         $object,
                         $language,
@@ -82,7 +82,7 @@ class Link extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

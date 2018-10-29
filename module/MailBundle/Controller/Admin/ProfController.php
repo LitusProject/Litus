@@ -74,7 +74,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                 $this->saveConfig($formData['subject'], $formData['message']);
 
                 foreach ($statuses as $status) {
-                    if ('' == $status->getPerson()->getEmail()) {
+                    if ($status->getPerson()->getEmail() == '') {
                         continue;
                     }
 
@@ -119,11 +119,12 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
                         );
                     } else {
                         $mail->addTo(
-                            $status->getPerson()->getEmail(), $status->getPerson()->getFullName()
+                            $status->getPerson()->getEmail(),
+                            $status->getPerson()->getFullName()
                         );
                     }
 
-                    if ('development' != getenv('APPLICATION_ENV')) {
+                    if (getenv('APPLICATION_ENV') != 'development') {
                         $this->getMailTransport()->send($mail);
                     }
 
@@ -180,7 +181,7 @@ class ProfController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @param  Person       $person
      * @param  AcademicYear $academicYear
-     * @param  int          $semester
+     * @param  integer      $semester
      * @return string|null
      */
     private function getSubjects(Person $person, AcademicYear $academicYear, $semester)

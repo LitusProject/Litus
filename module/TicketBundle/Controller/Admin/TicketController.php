@@ -42,7 +42,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             return new ViewModel();
         }
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $tickets = $this->search($event);
         }
 
@@ -158,7 +158,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  Event      $event
+     * @param  Event $event
      * @return array|null
      */
     private function search(Event $event)

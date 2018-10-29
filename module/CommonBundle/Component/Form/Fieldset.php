@@ -20,10 +20,10 @@
 
 namespace CommonBundle\Component\Form;
 
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\CacheTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
+use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\Form\FormInterface;
 use Zend\Hydrator\ClassMethods as ClassMethodsHydrator;
 
@@ -75,7 +75,7 @@ class Fieldset extends \Zend\Form\Fieldset implements FieldsetInterface, Service
      */
     public function showAs()
     {
-        if (null !== $this->getOption('showAs')) {
+        if ($this->getOption('showAs') !== null) {
             return $this->getOption('showAs');
         }
 

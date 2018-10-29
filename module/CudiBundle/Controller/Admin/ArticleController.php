@@ -20,13 +20,13 @@
 
 namespace CudiBundle\Controller\Admin;
 
+use Cudibundle\Entity\Article;
 use CudiBundle\Entity\Article\External;
 use CudiBundle\Entity\Article\History;
 use CudiBundle\Entity\Article\Internal;
 use CudiBundle\Entity\Article\SubjectMap;
 use CudiBundle\Entity\Comment\Mapping as CommentMapping;
 use CudiBundle\Entity\Log\Article\SubjectMap\Added as SubjectMapAddedLog;
-use Cudibundle\Entity\Article;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -40,7 +40,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $academicYear = $this->getAcademicYearEntity();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $articles = $this->search();
         }
 
@@ -91,7 +91,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                         ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                         ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear);
 
-                    if (null === $mapping) {
+                    if ($mapping === null) {
                         $mapping = new SubjectMap($article, $subject, $academicYear, $formData['subject_form']['mandatory']);
                         $this->getEntityManager()->persist($mapping);
                         $this->getEntityManager()->persist(new SubjectMapAddedLog($this->getAuthentication()->getPersonObject(), $mapping));

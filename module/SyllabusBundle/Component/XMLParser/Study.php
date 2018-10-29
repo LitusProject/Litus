@@ -34,7 +34,6 @@ use SyllabusBundle\Entity\Subject;
 use SyllabusBundle\Entity\Subject\ProfMap;
 use Zend\Http\Client as HttpClient;
 use Zend\Mail\Transport\TransportInterface;
-use finfo;
 
 /**
  * Study
@@ -188,9 +187,9 @@ class Study
     }
 
     /**
-     * @param  int         $phase
-     * @param  int         $id
-     * @param  string      $title
+     * @param  integer $phase
+     * @param  integer $id
+     * @param  string  $title
      * @return Combination
      */
     private function createCombination($phase, $id, $title)
@@ -199,7 +198,7 @@ class Study
             ->getRepository('SyllabusBundle\Entity\Study\Combination')
             ->findOneByExternalId($id);
 
-        if (null === $combination) {
+        if ($combination === null) {
             $combination = new Combination();
             $this->getEntityManager()->persist($combination);
         }
@@ -212,7 +211,7 @@ class Study
             ->getRepository('SyllabusBundle\Entity\Study')
             ->findOneByCombinationAndAcademicYear($combination, $this->academicYear);
 
-        if (null === $study) {
+        if ($study === null) {
             $study = new StudyEntity();
             $study->setCombination($combination)
                 ->setAcademicYear($this->academicYear);
@@ -249,7 +248,7 @@ class Study
                     ->getRepository('SyllabusBundle\Entity\Study\ModuleGroup')
                     ->findOneByExternalId($externalId);
 
-                if (null === $moduleGroup) {
+                if ($moduleGroup === null) {
                     $moduleGroup = new ModuleGroup();
                     $this->getEntityManager()->persist($moduleGroup);
                 }
@@ -298,7 +297,7 @@ class Study
                 ->getRepository('SyllabusBundle\Entity\Subject')
                 ->findOneByCode($code);
 
-            if (null === $subject) {
+            if ($subject === null) {
                 if (isset($this->subjectCache[$code])) {
                     $subject = $this->subjectCache[$code];
                 } else {
@@ -344,7 +343,7 @@ class Study
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
                 ->findOneByUniversityIdentification($identification);
 
-            if (null === $prof) {
+            if ($prof === null) {
                 if (isset($this->profCache[$identification])) {
                     $prof = $this->profCache[$identification];
                 } else {
@@ -397,7 +396,7 @@ class Study
                 ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
                 ->findOneBySubjectAndProfAndAcademicYear($subject, $prof, $this->academicYear);
 
-            if (null === $map) {
+            if ($map === null) {
                 if (!isset($maps[$prof->getUniversityIdentification()])) {
                     $map = new ProfMap($subject, $prof, $this->academicYear);
                     $this->getEntityManager()->persist($map);
@@ -463,7 +462,7 @@ class Study
 
             if (sizeof($combination['groups']) == 0) {
                 foreach ($moduleGroups as $group) {
-                    if ($group->getPhase() == $combination['entity']->getPhase() && null === $group->getParent()) {
+                    if ($group->getPhase() == $combination['entity']->getPhase() && $group->getParent() === null) {
                         $groups[] = $group;
                         break;
                     }
@@ -486,8 +485,8 @@ class Study
     }
 
     /**
-     * @param  int   $phase
-     * @param  array $moduleGroups
+     * @param  integer $phase
+     * @param  array   $moduleGroups
      * @return array
      */
     private function getGeneralMandatoryGroups($phase, $moduleGroups)
@@ -497,7 +496,7 @@ class Study
         //for each child node in the same phase check if branch is fully mandatory
         foreach ($moduleGroups as $group) {
             if ($phase == $group->getPhase() && count($group->getChildren()) == 0) {
-                if ( $this->isFullMandatoryBranch($group) ) {
+                if ($this->isFullMandatoryBranch($group)) {
                     $groups[] = $group;
                 } else {
                 }
@@ -515,7 +514,7 @@ class Study
     {
         $result = false;
         if ($group->isMandatory()) {
-            if (null !== $group->getParent()) {
+            if ($group->getParent() !== null) {
                 $result = $this->isFullMandatoryBranch($group->getParent());
             } else {
                 return true;

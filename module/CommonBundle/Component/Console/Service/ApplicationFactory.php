@@ -26,7 +26,6 @@ use Interop\Container\ContainerInterface;
 use Raven_ErrorHandler;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\ConsoleEvents;
-use Symfony\Component\Console\Event\ConsoleErrorEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -50,7 +49,7 @@ class ApplicationFactory implements FactoryInterface
         $application->setCatchExceptions(true);
         $application->setAutoExit(false);
 
-        if ('production' == getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') == 'production') {
             $events = new EventDispatcher();
             $events->addListener(ConsoleEvents::ERROR, array($services->get('sentry'), 'logConsoleErrorEvent'));
 

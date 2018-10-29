@@ -24,12 +24,7 @@ use CommonBundle\Component\Authentication\Authentication;
 use Exception;
 use Raven_Client;
 use Symfony\Component\Console\Event\ConsoleErrorEvent;
-use Throwable;
-use Zend\Console\Request as ConsoleRequest;
-use Zend\Http\PhpEnvironment\Request as PhpRequest;
-use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
-use Zend\Stdlib\RequestInterface;
 
 /**
  * Sentry is an open-source error tracking platform that provides complete app logic,
@@ -68,7 +63,7 @@ class Client
      * @param  Exception $exception The exception that should be sent
      * @return void
      */
-    public function logException(Exception $exception)
+    public function logException(\Throwable $exception)
     {
         $this->ravenClient->captureException(
             $exception,

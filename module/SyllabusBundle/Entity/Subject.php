@@ -182,7 +182,7 @@ class Subject
     }
 
     /**
-     * @param  AcademicYear           $academicYear
+     * @param  AcademicYear $academicYear
      * @return StudentEnrollment|null
      */
     public function getEnrollment(AcademicYear $academicYear)

@@ -33,11 +33,11 @@ class Category extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new CategoryEntity();
         }
 
-        if ('' != $data['parent']) {
+        if ($data['parent'] != '') {
             $parent = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Node\Page')
                 ->findOneById($data['parent']);
@@ -52,10 +52,10 @@ class Category extends \CommonBundle\Component\Hydrator\Hydrator
 
             $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
 
-            if (null !== $translation) {
+            if ($translation !== null) {
                 $translation->setName($translationData['name']);
             } else {
-                if ('' != $translationData['name']) {
+                if ($translationData['name'] != '') {
                     $translation = new TranslationEntity(
                         $object,
                         $language,
@@ -75,7 +75,7 @@ class Category extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

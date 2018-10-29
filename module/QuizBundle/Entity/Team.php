@@ -32,7 +32,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Team
 {
     /**
-     * @var int The entry's unique identifier
+     * @var integer The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -56,7 +56,7 @@ class Team
     private $quiz;
 
     /**
-     * @var int The number of the team
+     * @var integer The number of the team
      *
      * @ORM\Column(type="smallint")
      */
@@ -79,7 +79,7 @@ class Team
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -114,7 +114,7 @@ class Team
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getNumber()
     {
@@ -122,7 +122,7 @@ class Team
     }
 
     /**
-     * @param  int  $number
+     * @param  integer $number
      * @return self
      */
     public function setNumber($number)

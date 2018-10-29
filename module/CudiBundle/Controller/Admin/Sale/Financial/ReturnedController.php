@@ -35,7 +35,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     public function individualAction()
     {
         $academicYear = $this->getAcademicYearEntity();
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->individualSearch($academicYear);
         }
 
@@ -113,7 +113,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  AcademicYear             $academicYear
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function individualSearch(AcademicYear $academicYear)
@@ -183,7 +183,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->sessionSearch($session);
         }
 
@@ -251,7 +251,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  Session                  $session
+     * @param  Session $session
      * @return \Doctrine\ORM\Query|null
      */
     private function sessionSearch(Session $session)
@@ -279,7 +279,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     public function articlesAction()
     {
         $academicYear = $this->getAcademicYearEntity();
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->articlesSearch($academicYear);
         }
 
@@ -350,7 +350,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  AcademicYear             $academicYear
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function articlesSearch(AcademicYear $academicYear)
@@ -391,7 +391,7 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Organization')
             ->findAll();
 
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $records = $this->articleSearch($article, $this->getAcademicYearEntity());
         }
 
@@ -465,8 +465,8 @@ class ReturnedController extends \CudiBundle\Component\Controller\ActionControll
     }
 
     /**
-     * @param  SaleArticle              $article
-     * @param  AcademicYear             $academicYear
+     * @param  SaleArticle  $article
+     * @param  AcademicYear $academicYear
      * @return \Doctrine\ORM\Query|null
      */
     private function articleSearch(SaleArticle $article, AcademicYear $academicYear)

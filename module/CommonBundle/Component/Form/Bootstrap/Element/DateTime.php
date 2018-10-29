@@ -25,7 +25,7 @@ namespace CommonBundle\Component\Form\Bootstrap\Element;
  *
  * @author Bram Gotink <bram.gotink@litus.cc>
  */
-class DateTime extends Text
+class DateTime extends \CommonBundle\Component\Form\Bootstrap\Element\Text
 {
     public function init()
     {

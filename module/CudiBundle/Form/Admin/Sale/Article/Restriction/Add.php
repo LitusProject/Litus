@@ -38,7 +38,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->article) {
+        if ($this->article === null) {
             throw new LogicException('Cannot add a restriction to a null article');
         }
 
@@ -163,9 +163,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         $specs = parent::getInputFilterSpecification();
 
-        $specs['value']['amount']['required'] = 'amount' === $this->data['type'];
-        $specs['value']['member']['required'] = 'member' === $this->data['type'];
-        $specs['value']['study']['required'] = 'study' === $this->data['type'];
+        $specs['value']['amount']['required'] = $this->data['type'] === 'amount';
+        $specs['value']['member']['required'] = $this->data['type'] === 'member';
+        $specs['value']['study']['required'] = $this->data['type'] === 'study';
 
         return $specs;
     }

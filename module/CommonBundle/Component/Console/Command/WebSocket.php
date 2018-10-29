@@ -64,7 +64,7 @@ EOT
         }
 
         $socket = $this->createSocket();
-        if (null === $socket) {
+        if ($socket === null) {
             return 2;
         }
 
@@ -77,7 +77,7 @@ EOT
     }
 
     /**
-     * @return bool whether the socket is enabled
+     * @return boolean whether the socket is enabled
      */
     abstract protected function isSocketEnabled();
 
@@ -96,7 +96,7 @@ EOT
      */
     private function getModuleName()
     {
-        $calledClass = get_called_class();
+        $calledClass = static::class;
         $module = substr($calledClass, 0, strpos($calledClass, '\\', 1));
 
         return str_replace(array('bundle', 'module'), '', strtolower($module));

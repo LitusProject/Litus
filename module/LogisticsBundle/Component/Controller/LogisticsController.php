@@ -33,7 +33,7 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
     /**
      * Execute the request.
      *
-     * @param  MvcEvent             $e The MVC event
+     * @param  MvcEvent $e The MVC event
      * @return array
      * @throws HasNoAccessException The user does not have permissions to access this resource
      */

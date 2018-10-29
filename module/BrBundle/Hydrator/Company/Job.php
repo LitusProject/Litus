@@ -38,7 +38,7 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create a job');
         }
 
@@ -55,13 +55,13 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        echo "<script>console.log(" . json_encode( $data ) . ")</script>";
+        echo '<script>console.log(' . json_encode($data) . ')</script>';
 
         $data['sector'] = $object->getSectorCode();
         $data['location'] = $object->getLocationCode();

@@ -87,7 +87,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->addSubmit('Add', 'page_add');
 
-        if (null !== $this->getPage()) {
+        if ($this->getPage() !== null) {
             $this->bind($this->getPage());
         }
     }

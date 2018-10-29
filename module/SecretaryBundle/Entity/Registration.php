@@ -34,7 +34,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Registration
 {
     /**
-     * @var int The ID of the registration
+     * @var integer The ID of the registration
      *
      * @ORM\Id
      * @ORM\GeneratedValue

@@ -60,7 +60,7 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
                     ->getRepository('CudiBundle\Entity\Article\SubjectMap')
                     ->findOneByArticleAndSubjectAndAcademicYear($article, $subject, $academicYear, true);
 
-                if (null === $mapping) {
+                if ($mapping === null) {
                     $mapping = new SubjectMap($article, $subject, $academicYear, $formData['mandatory']);
                     $mapping->setIsProf(true);
                     $this->getEntityManager()->persist($mapping);
@@ -184,13 +184,13 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
 
         $mappingProf = null;
 
-        if (null !== $mapping) {
+        if ($mapping !== null) {
             $mappingProf = $this->getEntityManager()
                 ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
                 ->findOneBySubjectAndProfAndAcademicYear($mapping->getSubject(), $this->getAuthentication()->getPersonObject(), $academicYear);
         }
 
-        if (!($mapping instanceof SubjectMap) || null === $mappingProf) {
+        if (!($mapping instanceof SubjectMap) || $mappingProf === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'No subject map was found!'
@@ -248,12 +248,12 @@ class MappingController extends \CudiBundle\Component\Controller\ProfController
     }
 
     /**
-     * @param  int|null     $id
+     * @param  integer|null $id
      * @return Article|null
      */
     private function getArticleEntity($id = null)
     {
-        $id = $id === null ? $this->getParam('id', 0) : $id;
+        $id = $id ?? $this->getParam('id', 0);
 
         $article = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Article')

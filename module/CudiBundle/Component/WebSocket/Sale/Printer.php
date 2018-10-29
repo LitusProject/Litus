@@ -20,8 +20,8 @@
 
 namespace CudiBundle\Component\WebSocket\Sale;
 
-use CommonBundle\Entity\General\AcademicYear as AcademicYear;
-use CommonBundle\Entity\User\Barcode\Ean12 as Ean12;
+use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\User\Barcode\Ean12;
 use CommonBundle\Entity\User\Person\Academic;
 use CudiBundle\Entity\Sale\QueueItem as EntityQueueItem;
 use Doctrine\ORM\EntityManager;
@@ -44,7 +44,7 @@ class Printer
         $printCollect = (int) $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.print_collect_as_signin');
-        if (1 === $printCollect) {
+        if ($printCollect === 1) {
             return self::collectTicket($entityManager, $printer, $queueItem, $bookings);
         }
 
@@ -103,7 +103,7 @@ class Printer
             return;
         }
 
-        usort($bookings, array(__CLASS__, 'articleSort'));
+        usort($bookings, array(self::class, 'articleSort'));
 
         $articles = array();
         $totalPrice = 0;

@@ -67,8 +67,8 @@ class Config
     private $published;
 
     /**
-     * @param  string                   $key   The entry's key
-     * @param  string|array             $value The entry's value
+     * @param  string       $key   The entry's key
+     * @param  string|array $value The entry's value
      * @throws InvalidArgumentException Key must be a string
      */
     public function __construct($key, $value)
@@ -122,7 +122,7 @@ class Config
     }
 
     /**
-     * @param  string|null              $description A description for this configuration entry
+     * @param  string|null $description A description for this configuration entry
      * @return self
      * @throws InvalidArgumentException Description must be a string or null
      */

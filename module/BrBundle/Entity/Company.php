@@ -21,7 +21,6 @@
 namespace BrBundle\Entity;
 
 use BrBundle\Entity\Company\Page;
-use BrBundle\Entity\User\Person\Corporate;
 use CommonBundle\Component\Util\Url;
 use CommonBundle\Entity\General\Address;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -125,7 +124,7 @@ class Company
     private $logo;
 
     /**
-     * @var bool Whether or not this is an active company
+     * @var boolean Whether or not this is an active company
      *
      * @ORM\Column(type="boolean")
      */
@@ -226,7 +225,7 @@ class Company
     }
 
     /**
-     * @param  string  $sector
+     * @param  string $sector
      * @return boolean
      */
     public static function isValidSector($sector)
@@ -235,7 +234,7 @@ class Company
     }
 
     /**
-     * @param  string  $sector
+     * @param  string $sector
      * @return boolean
      */
     public static function isValidLocation($location)
@@ -244,7 +243,7 @@ class Company
     }
 
     /**
-     * @param  string  $master
+     * @param  string $master
      * @return boolean
      */
     public static function isValidMaster($master)
@@ -464,7 +463,7 @@ class Company
     public function getFullWebsite()
     {
         $result = $this->getWebsite();
-        if (false === strpos($result, 'http://')) {
+        if (strpos($result, 'http://') === false) {
             $result = 'http://' . $result;
         }
 
@@ -524,7 +523,7 @@ class Company
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isActive()
     {
@@ -584,13 +583,13 @@ class Company
      */
     public function getCvBookArchiveYears()
     {
-        if (null === $this->cvBookArchiveYears || '' == $this->cvBookArchiveYears) {
+        if ($this->cvBookArchiveYears === null || $this->cvBookArchiveYears == '') {
             return array();
         }
 
         try {
             return unserialize($this->cvBookArchiveYears);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return array();
         }
     }

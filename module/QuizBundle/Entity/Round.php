@@ -32,7 +32,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Round
 {
     /**
-     * @var int The entry's unique identifier
+     * @var integer The entry's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -56,14 +56,14 @@ class Round
     private $quiz;
 
     /**
-     * @var int The order of the round
+     * @var integer The order of the round
      *
      * @ORM\Column(name="round_order", type="smallint")
      */
     private $order;
 
     /**
-     * @var int The max points of the round
+     * @var integer The max points of the round
      *
      * @ORM\Column(name="max_points", type="smallint")
      */
@@ -87,7 +87,7 @@ class Round
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -122,7 +122,7 @@ class Round
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getOrder()
     {
@@ -130,7 +130,7 @@ class Round
     }
 
     /**
-     * @param  int  $order
+     * @param  integer $order
      * @return self
      */
     public function setOrder($order)
@@ -141,7 +141,7 @@ class Round
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getMaxPoints()
     {
@@ -149,7 +149,7 @@ class Round
     }
 
     /**
-     * @param  int  $maxPoints
+     * @param  integer $maxPoints
      * @return self
      */
     public function setMaxPoints($maxPoints)

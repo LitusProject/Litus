@@ -28,7 +28,7 @@ use DateTime;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class DateCompare extends AbstractValidator
+class DateCompare extends \CommonBundle\Component\Validator\AbstractValidator
 {
     /**
      * @var string The error codes
@@ -57,7 +57,7 @@ class DateCompare extends AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -82,13 +82,13 @@ class DateCompare extends AbstractValidator
     {
         $this->setValue($value);
 
-        if (null === $value || '' == $value) {
+        if ($value === null || $value == '') {
             return true;
         }
 
-        if ('now' == $this->options['first_date']) {
+        if ($this->options['first_date'] == 'now') {
             $endDate = 'now';
-        } elseif (null === $endDate = self::getFormValue($context, $this->options['first_date'])) {
+        } elseif ($endDate === null = self::getFormValue($context, $this->options['first_date'])) {
             $this->error(self::NOT_VALID);
 
             return false;

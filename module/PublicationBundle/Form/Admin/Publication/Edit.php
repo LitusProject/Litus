@@ -25,7 +25,7 @@ namespace PublicationBundle\Form\Admin\Publication;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Edit extends Add
+class Edit extends \PublicationBundle\Form\Admin\Publication\Add
 {
     public function init()
     {

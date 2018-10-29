@@ -158,7 +158,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findOneById($this->getParam('id'));
 
-        if (null === $shift) {
+        if ($shift === null) {
             return new ViewModel();
         }
 
@@ -166,14 +166,14 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getParam('person'));
 
-        if (null === $person) {
+        if ($person === null) {
             return new ViewModel();
         }
 
         foreach ($shift->getVolunteers() as $volunteer) {
             if ($volunteer->getPerson() == $person) {
                 $volunteer->setPayed(
-                    'true' == $this->getParam('payed') ? true : false
+                    $this->getParam('payed') == 'true' ? true : false
                 );
             }
         }
@@ -197,7 +197,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('ShiftBundle\Entity\Shift')
             ->findOneById($this->getParam('id'));
 
-        if (null === $shift) {
+        if ($shift === null) {
             return new ViewModel();
         }
 
@@ -205,7 +205,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getParam('person'));
 
-        if (null === $person) {
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -299,7 +299,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneById($this->getParam('person'));
 
-        if (null === $person) {
+        if ($person === null) {
             return new ViewModel();
         }
 
@@ -332,12 +332,12 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
     private function getAcademicYear()
     {
         $date = null;
-        if (null !== $this->getParam('academicyear')) {
+        if ($this->getParam('academicyear') !== null) {
             $date = AcademicYear::getDateTime($this->getParam('academicyear'));
         }
         $academicYear = AcademicYear::getOrganizationYear($this->getEntityManager(), $date);
 
-        if (null === $academicYear) {
+        if ($academicYear === null) {
             $this->flashMessenger()->error(
                 'Error',
                 'No academic year was found!'
@@ -383,7 +383,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
-     * @return Array
+     * @return array
      */
     public function exportAction()
     {

@@ -20,7 +20,7 @@
 
 namespace NewsBundle\Controller;
 
-use CommonBundle\Component\Util\File\TmpFile as TmpFile;
+use CommonBundle\Component\Util\File\TmpFile;
 use NewsBundle\Component\Document\Generator\Feed as FeedGenerator;
 use NewsBundle\Entity\Node\News;
 use Zend\Http\Headers;

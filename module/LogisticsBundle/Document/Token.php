@@ -51,7 +51,7 @@ class Token
     private $hash;
 
     /**
-     * @var int The person associated with this token
+     * @var integer The person associated with this token
      *
      * @ODM\Field(type="int")
      */

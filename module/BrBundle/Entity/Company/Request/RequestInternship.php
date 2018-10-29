@@ -21,7 +21,6 @@
 namespace BrBundle\Entity\Company\Request;
 
 use BrBundle\Entity\Company\Job;
-use BrBundle\Entity\Company\Request;
 use BrBundle\Entity\User\Person\Corporate;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -102,7 +101,7 @@ class RequestInternship extends \BrBundle\Entity\Company\Request
     }
 
     /**
-     * @return String
+     * @return string
      */
     public function getRejectMessage()
     {
@@ -157,7 +156,8 @@ class RequestInternship extends \BrBundle\Entity\Company\Request
                 $this->getJob()->remove();
                 break;
 
-            default:break;
+            default:
+                break;
         }
     }
 

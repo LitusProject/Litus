@@ -96,7 +96,7 @@ class Visit
      * @param string      $requestMethod
      * @param string      $controller
      * @param string      $action
-     * @param null|Person $user
+     * @param Person|null $user
      */
     public function __construct($browser, $url, $requestMethod, $controller, $action, Person $user = null)
     {

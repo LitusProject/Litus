@@ -199,7 +199,7 @@ class RuleController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getLogGraph()
     {
-        if (null !== $this->getCache()) {
+        if ($this->getCache() !== null) {
             if ($this->getCache()->hasItem('CommonBundle_Controller_RuleController_LogGraph')) {
                 $now = new DateTime();
                 if ($this->getCache()->getItem('CommonBundle_Controller_RuleController_LogGraph')['expirationTime'] > $now) {

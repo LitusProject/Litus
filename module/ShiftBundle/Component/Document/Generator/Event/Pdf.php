@@ -112,26 +112,26 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                 $y = $shift->getNbResponsibles() - count($shift->getResponsibles());
                 for ($x = 0; $x < $y; $x++) {
                     $people[] = new Node(
-                    'person',
-                    array(),
-                    array(
-                        new Node(
-                            'name',
-                            array(),
-                            ''
-                        ),
-                        new Node(
-                            'phone_number',
-                            array(),
-                            ''
-                        ),
-                        new Node(
-                            'responsible',
-                            array(),
-                            '1'
-                        ),
-                    )
-                );
+                        'person',
+                        array(),
+                        array(
+                            new Node(
+                                'name',
+                                array(),
+                                ''
+                            ),
+                            new Node(
+                                'phone_number',
+                                array(),
+                                ''
+                            ),
+                            new Node(
+                                'responsible',
+                                array(),
+                                '1'
+                            ),
+                        )
+                    );
                 }
             }
 
@@ -162,26 +162,26 @@ class Pdf extends \CommonBundle\Component\Document\Generator\Pdf
                 $y = $shift->getNbVolunteers() - count($shift->getVolunteers());
                 for ($x = 0; $x < $y; $x++) {
                     $people[] = new Node(
-                    'person',
-                    array(),
-                    array(
-                        new Node(
-                            'name',
-                            array(),
-                            ''
-                        ),
-                        new Node(
-                            'phone_number',
-                            array(),
-                            ''
-                        ),
-                        new Node(
-                            'responsible',
-                            array(),
-                            '0'
-                        ),
-                    )
-                );
+                        'person',
+                        array(),
+                        array(
+                            new Node(
+                                'name',
+                                array(),
+                                ''
+                            ),
+                            new Node(
+                                'phone_number',
+                                array(),
+                                ''
+                            ),
+                            new Node(
+                                'responsible',
+                                array(),
+                                '0'
+                            ),
+                        )
+                    );
                 }
             }
             $shifts[] = new Node(

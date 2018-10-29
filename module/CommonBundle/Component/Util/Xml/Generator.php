@@ -36,7 +36,7 @@ class Generator
     private $data = null;
 
     /**
-     * @var bool Whether or not the file should be destroyed, defaults to true
+     * @var boolean Whether or not the file should be destroyed, defaults to true
      */
     private $destroy = true;
 

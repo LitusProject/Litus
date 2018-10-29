@@ -27,7 +27,7 @@ use ShopBundle\Entity\Product;
  *
  * @author Floris Kint <floris.kint@litus.cc>
  */
-class Edit extends Add
+class Edit extends \ShopBundle\Form\Admin\Product\Add
 {
     /**
      * @var Product The product to edit.

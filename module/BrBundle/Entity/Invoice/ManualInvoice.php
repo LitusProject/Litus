@@ -32,7 +32,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ManualInvoice extends \BrBundle\Entity\Invoice
 {
     /**
-     * @var int The price (VAT excluded!) a company has to pay when they agree to this product of the manual invoice
+     * @var integer The price (VAT excluded!) a company has to pay when they agree to this product of the manual invoice
      *
      * @ORM\Column(type="integer")
      */
@@ -55,7 +55,7 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
     private $company;
 
     /**
-     * @var int The paymentdays of the manual invoice
+     * @var integer The paymentdays of the manual invoice
      *
      * @ORM\Column(name="payment_days", type="integer", options={"default" = 30})
      */
@@ -83,7 +83,7 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function hasContract()
     {
@@ -115,17 +115,17 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
      */
     public function setPrice($price)
     {
-        if (null === $price || !preg_match('/^[0-9]+.?[0-9]{0,2}$/', $price)) {
+        if ($price === null || !preg_match('/^[0-9]+.?[0-9]{0,2}$/', $price)) {
             throw new InvalidArgumentException('Invalid price');
         }
 
-        $this->price = (int) ($price);
+        $this->price = (int) $price;
 
         return $this;
     }
 
     /**
-     * @return int price in cents
+     * @return integer price in cents
      */
     public function getPrice()
     {
@@ -133,7 +133,7 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
     }
 
     /**
-     * @return int price in cents with sign
+     * @return integer price in cents with sign
      */
     public function getSignedPrice()
     {
@@ -146,15 +146,15 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
     }
 
     /**
-     * @return double price
+     * @return float price
      */
     public function getExclusivePrice()
     {
-        return ((double) $this->getSignedPrice()) / 100;
+        return (float) $this->getSignedPrice() / 100;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getPaymentDays()
     {
@@ -162,7 +162,7 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
     }
 
     /**
-     * @param  int  $paymentDays
+     * @param  integer $paymentDays
      * @return self
      */
     public function setPaymentDays($paymentDays)
@@ -182,12 +182,12 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
 
     /**
      * @throws InvalidArgumentException
-     * @param  Collaborator             $author
+     * @param  Collaborator $author
      * @return self
      */
     public function setAuthor(Collaborator $author)
     {
-        if (null === $author) {
+        if ($author === null) {
             throw new InvalidArgumentException('Author cannot be null');
         }
 
@@ -206,12 +206,12 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
 
     /**
      * @throws InvalidArgumentException
-     * @param  Company                  $company
+     * @param  Company $company
      * @return self
      */
     public function setCompany(Company $company)
     {
-        if (null === $company) {
+        if ($company === null) {
             throw new InvalidArgumentException('Company cannot be null');
         }
 
@@ -230,12 +230,12 @@ class ManualInvoice extends \BrBundle\Entity\Invoice
 
     /**
      * @throws InvalidArgumentException
-     * @param  string                   $title The title of the contract
+     * @param  string $title The title of the contract
      * @return self
      */
     public function setTitle($title)
     {
-        if (null === $title || !is_string($title)) {
+        if ($title === null || !is_string($title)) {
             throw new InvalidArgumentException('Invalid title');
         }
 

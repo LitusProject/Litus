@@ -20,15 +20,13 @@
 
 namespace ShopBundle\Repository;
 
-use CommonBundle\Component\Doctrine\ORM\EntityRepository;
 use DateTime;
-use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * Reservation
  * @author Floris Kint <floris.kint@litus.cc>
  */
-class Reservation extends EntityRepository
+class Reservation extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
      * @param $person
@@ -79,14 +77,12 @@ class Reservation extends EntityRepository
         $stmt = $em->getConnection()->prepare($q);
         $stmt->bindValue('sessId', $salesSession->getId());
         $stmt->execute();
-        $res = $stmt->fetchAll();
-
-        return $res;
+        return $stmt->fetchAll();
     }
 
     /**
      * @param  Person $person
-     * @return int
+     * @return integer
      */
     public function getNoShowSessionCount($person)
     {

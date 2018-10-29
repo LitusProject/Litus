@@ -38,7 +38,7 @@ class Login extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->setAttribute('id', 'login');
 
-        if (null !== $this->username) {
+        if ($this->username !== null) {
             $this->add(array(
                 'type'       => 'text',
                 'name'       => 'username_visible',

@@ -81,9 +81,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             ),
         ));
 
-        $barcodeCheck = 1 == $this->getEntityManager()
+        $barcodeCheck = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.enable_sale_article_barcode_check');
+            ->getConfigValue('cudi.enable_sale_article_barcode_check') == 1;
 
         $barcodeInput = array();
         if ($barcodeCheck) {

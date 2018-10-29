@@ -25,7 +25,7 @@ namespace CommonBundle\Form\Admin\Unit;
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \CommonBundle\Form\Admin\Unit\Add
 {
     public function init()
     {

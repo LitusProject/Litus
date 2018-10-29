@@ -40,7 +40,7 @@ class Edit extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->config) {
+        if ($this->config === null) {
             throw new LogicException('Cannot edit a null config');
         }
 

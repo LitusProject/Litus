@@ -17,6 +17,7 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace PublicationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -64,7 +65,7 @@ class Publication
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

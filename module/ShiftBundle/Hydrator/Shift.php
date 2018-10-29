@@ -37,7 +37,7 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -51,9 +51,7 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
         $data['manager']['value'] = $manager->getFullName()
                 . ($manager instanceof Academic ? ' - ' . $manager->getUniversityIdentification() : '');
         $data['unit'] = $object->getUnit()->getId();
-        $data['event'] = null === $object->getEvent()
-                ? ''
-                : $object->getEvent()->getId();
+        $data['event'] = $object->getEvent() === null ? '' : $object->getEvent()->getId();
         $data['location'] = $object->getLocation()->getId();
         $data['edit_roles'] = $this->createRolesPopulationArray($object->getEditRoles());
 
@@ -76,7 +74,7 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new ShiftEntity(
                 $this->getPersonEntity(),
                 $this->getCurrentAcademicYear(true)
@@ -115,7 +113,7 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
             )
             ->setEditRoles($editRoles);
 
-        if ('' != $data['event']) {
+        if ($data['event'] != '') {
             $object->setEvent(
                 $this->getEntityManager()
                     ->getRepository('CalendarBundle\Entity\Node\Event')

@@ -22,7 +22,6 @@ namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\Mapping as ORM;
-use FormBundle\Entity\Field;
 
 /**
  * This entity stores the node item.
@@ -30,17 +29,17 @@ use FormBundle\Entity\Field;
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\Text")
  * @ORM\Table(name="forms.fields_texts")
  */
-class Text extends Field
+class Text extends \FormBundle\Entity\Field
 {
     /**
-     * @var int The maximum length per line of this field.
+     * @var integer The maximum length per line of this field.
      *
      * @ORM\Column(name="line_length", type="bigint", nullable=true)
      */
     private $lineLength;
 
     /**
-     * @var int The maximum number of lines.
+     * @var integer The maximum number of lines.
      *
      * @ORM\Column(name="lines", type="bigint", nullable=true)
      */
@@ -128,9 +127,7 @@ class Text extends Field
      */
     public function hasLengthSpecification()
     {
-        $result = $this->getLineLength() !== null && $this->getLineLength() != 0 && $this->getLines() !== null && $this->getLines() != 0;
-
-        return $result;
+        return $this->getLineLength() !== null && $this->getLineLength() != 0 && $this->getLines() !== null && $this->getLines() != 0;
     }
 
     /**

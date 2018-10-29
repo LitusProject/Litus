@@ -21,7 +21,6 @@
 namespace LogisticsBundle\Controller;
 
 use DateTime;
-use LogisticsBundle\Component\Controller\LogisticsController;
 use LogisticsBundle\Entity\Lease\Item;
 use LogisticsBundle\Entity\Lease\Lease;
 use Zend\View\Model\ViewModel;
@@ -31,7 +30,7 @@ use Zend\View\Model\ViewModel;
  *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class LeaseController extends LogisticsController
+class LeaseController extends \LogisticsBundle\Component\Controller\LogisticsController
 {
     public function indexAction()
     {
@@ -129,7 +128,7 @@ class LeaseController extends LogisticsController
     }
 
     /**
-     * @return null|\CommonBundle\Component\Form\Form
+     * @return \CommonBundle\Component\Form\Form|null
      */
     private function handleLeaseForm()
     {
@@ -183,7 +182,7 @@ class LeaseController extends LogisticsController
     }
 
     /**
-     * @return null|\CommonBundle\Component\Form\Form
+     * @return \CommonBundle\Component\Form\Form|null
      */
     private function handleReturnForm()
     {
@@ -239,7 +238,7 @@ class LeaseController extends LogisticsController
     }
 
     /**
-     * @return null|\CommonBundle\Entity\User\Person
+     * @return \CommonBundle\Entity\User\Person|null
      */
     private function getPersonEntity()
     {
@@ -279,12 +278,12 @@ class LeaseController extends LogisticsController
     }
 
     /**
-     * @param  int|null  $id
+     * @param  integer|null $id
      * @return Item|null
      */
     private function getItemEntity($id = null)
     {
-        $id = $id === null ? $this->getParam('id', 0) : $id;
+        $id = $id ?? $this->getParam('id', 0);
 
         $item = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Lease\Item')

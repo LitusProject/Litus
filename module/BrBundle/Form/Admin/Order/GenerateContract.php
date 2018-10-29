@@ -21,6 +21,7 @@
 namespace BrBundle\Form\Admin\Order;
 
 use BrBundle\Entity\Product\Order;
+
 /**
  * generate a contract.
  *

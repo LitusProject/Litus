@@ -37,7 +37,7 @@ use Locale;
 class Album
 {
     /**
-     * @var int The ID of this album
+     * @var integer The ID of this album
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -140,7 +140,7 @@ class Album
     {
         $this->dateActivity = $date;
 
-        if (null === $this->name) {
+        if ($this->name === null) {
             $this->name = $date->format('d_m_Y_H_i');
         }
 
@@ -162,7 +162,7 @@ class Album
     public function addTranslation(Translation $translation)
     {
         $existing = $this->getTranslation($translation->getLanguage(), false);
-        if (null !== $existing) {
+        if ($existing !== null) {
             $this->removeTranslation($existing);
         }
 
@@ -183,14 +183,14 @@ class Album
     }
 
     /**
-     * @param  Language|null    $language
-     * @param  boolean          $allowFallback
+     * @param  Language|null $language
+     * @param  boolean       $allowFallback
      * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->translations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language) {
+            if ($language !== null && $translation->getLanguage() == $language) {
                 return $translation;
             }
 
@@ -215,7 +215,7 @@ class Album
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getTitle();
         }
 

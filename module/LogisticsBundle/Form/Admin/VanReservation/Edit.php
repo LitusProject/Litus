@@ -25,7 +25,7 @@ namespace LogisticsBundle\Form\Admin\VanReservation;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Edit extends Add
+class Edit extends \LogisticsBundle\Form\Admin\VanReservation\Add
 {
     public function init()
     {

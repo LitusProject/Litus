@@ -20,9 +20,9 @@
 
 namespace CommonBundle\Component\Validator;
 
+use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
-use CommonBundle\Component\ServiceManager\ServiceLocatorAware\DoctrineTrait;
 use Zend\Form\ElementInterface;
 
 /**
@@ -41,14 +41,12 @@ abstract class AbstractValidator extends \Zend\Validator\AbstractValidator imple
      */
     protected static function getFormValue($context = null, $path = '')
     {
-        if (null === $context || !(is_array($context) || $context instanceof ElementInterface)) {
+        if ($context === null || !(is_array($context) || $context instanceof ElementInterface)) {
             return null;
         }
         if (is_array($path)) {
             if (empty($path)) {
-                return $context instanceof ElementInterface
-                    ? $context->getValue()
-                    : $context;
+                return $context instanceof ElementInterface ? $context->getValue() : $context;
             }
 
             $step = array_shift($path);
@@ -57,9 +55,7 @@ abstract class AbstractValidator extends \Zend\Validator\AbstractValidator imple
         } else {
             $context = self::takeStep($context, $path);
 
-            return $context instanceof ElementInterface
-                ? $context->getValue()
-                : $context;
+            return $context instanceof ElementInterface ? $context->getValue() : $context;
         }
     }
 

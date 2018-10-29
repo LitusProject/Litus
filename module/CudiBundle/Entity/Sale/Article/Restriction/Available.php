@@ -20,10 +20,8 @@
 
 namespace CudiBundle\Entity\Sale\Article\Restriction;
 
-use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\User\Person;
 use CudiBundle\Entity\Sale\Article;
-use CudiBundle\Entity\Sale\Article\Restriction;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,11 +29,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="CudiBundle\Repository\Sale\Article\Restriction\Available")
  * @ORM\Table(name="cudi.sales_articles_restrictions_available")
  */
-class Available extends Restriction
+class Available extends \CudiBundle\Entity\Sale\Article\Restriction
 {
     /**
      * @param Article $article The article of the restriction
-     * @param int     $value   The value of the restriction
+     * @param integer $value   The value of the restriction
      */
     public function __construct(Article $article)
     {

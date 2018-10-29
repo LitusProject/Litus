@@ -57,7 +57,7 @@ class ProfController extends \CudiBundle\Component\Controller\ProfController
                     ->getRepository('SyllabusBundle\Entity\Subject\ProfMap')
                     ->findOneBySubjectAndProfAndAcademicYear($subject, $docent, $academicYear);
 
-                if (null === $mapping) {
+                if ($mapping === null) {
                     $mapping = new ProfMap($subject, $docent, $academicYear);
                     $this->getEntityManager()->persist($mapping);
                     $this->getEntityManager()->flush();

@@ -17,9 +17,9 @@
  *
  * @license http://litus.cc/LICENSE
  */
+
 namespace LogisticsBundle\Controller\Admin;
 
-use CommonBundle\Component\Controller\ActionController\AdminController;
 use LogisticsBundle\Entity\Lease\Item;
 use Zend\View\Model\ViewModel;
 
@@ -28,7 +28,7 @@ use Zend\View\Model\ViewModel;
  *
  * @author Lars Vierbergen <lars.vierbergen@litus.cc>
  */
-class LeaseController extends AdminController
+class LeaseController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {

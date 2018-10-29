@@ -25,7 +25,7 @@ namespace BrBundle\Form\Admin\Event;
  *
  * @author Matthias Swiggers <matthias.swiggers@vtk.be>
  */
-class Edit extends Add
+class Edit extends \BrBundle\Form\Admin\Event\Add
 {
     public function init()
     {

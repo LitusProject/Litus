@@ -23,6 +23,7 @@ namespace BrBundle\Hydrator\Cv;
 use BrBundle\Entity\Cv\Experience as CvExperienceEntity;
 use BrBundle\Entity\Cv\Language as CvLanguageEntity;
 use CommonBundle\Entity\General\Address as AddressEntity;
+
 /**
  * This hydrator hydrates/extracts Cv entry data.
  *
@@ -33,7 +34,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException('Cannot create a contract');
         }
 
@@ -69,7 +70,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             ->setAbout($data['profile']['about']);
 
         $address = $object->getAddress();
-        if (null === $address) {
+        if ($address === null) {
             $address = new AddressEntity();
             $object->setAddress($address);
         }
@@ -91,7 +92,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
         $this->getEntityManager()->flush();
 
         foreach ($data['languages'] as $languageData) {
-            if (!isset($languageData['language_name']) || '' === $languageData['language_name']) {
+            if (!isset($languageData['language_name']) || $languageData['language_name'] === '') {
                 continue;
             }
 
@@ -115,7 +116,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
         $this->getEntityManager()->flush();
 
         foreach ($data['capabilities']['experiences'] as $experienceData) {
-            if (!isset($experienceData['experience_function']) || '' === $experienceData['experience_function']) {
+            if (!isset($experienceData['experience_function']) || $experienceData['experience_function'] === '') {
                 continue;
             }
 
@@ -135,7 +136,7 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

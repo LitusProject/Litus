@@ -37,7 +37,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field')) {
+        if ($this->getParam('field') !== null) {
             $pages = $this->search();
         }
 
@@ -115,18 +115,18 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
-        if (null !== $page->getEndTime()) {
+        if ($page->getEndTime() !== null) {
             $activeVersion = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Node\Page')
                 ->findOneByName($page->getName());
 
             $this->redirect()->toRoute(
-                    'page_admin_page',
-                    array(
-                        'action' => 'edit',
-                        'id'     => $activeVersion->getId(),
-                    )
-                );
+                'page_admin_page',
+                array(
+                    'action' => 'edit',
+                    'id'     => $activeVersion->getId(),
+                )
+            );
         }
 
         $form = $this->getForm('page_page_edit', array('page' => $page));
@@ -188,7 +188,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
             $validatorChain = new ValidatorChain();
             $validatorChain->attach(new UploadFileValidator());
-            if ('image' == $form['type']) {
+            if ($form['type'] == 'image') {
                 $validatorChain->attach(
                     new IsImageValidator(
                         array('image/gif', 'image/jpeg', 'image/png')

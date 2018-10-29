@@ -34,7 +34,7 @@ class Module
         $events = $application->getEventManager();
         $sharedEvents = $events->getSharedManager();
 
-        if ('production' == getenv('APPLICATION_ENV')) {
+        if (getenv('APPLICATION_ENV') == 'production') {
             $events->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($services->get('sentry'), 'logMvcEvent'));
             $events->attach(MvcEvent::EVENT_RENDER_ERROR, array($services->get('sentry'), 'logMvcEvent'));
 

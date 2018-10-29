@@ -38,7 +38,7 @@ namespace BrBundle\Component\Document\Generator\Pdf;
 
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\Xml\Generator;
-use CommonBundle\Component\Util\Xml\Node as Node;
+use CommonBundle\Component\Util\Xml\Node;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -146,18 +146,18 @@ class Overview extends \CommonBundle\Component\Document\Generator\Pdf
             foreach ($contracts as $contract) {
                 $contract->getOrder()->setEntityManager($this->getEntityManager());
                 $value = $contract->getOrder()->getTotalCostExclusive();
-                $contracted = $contracted + $value;
-                $totalContracted = $totalContracted + $value;
+                $contracted += $value;
+                $totalContracted += $value;
 
                 $isPaid = false;
                 if ($contract->isSigned()) {
-                    $signed = $signed + $value;
-                    $totalSigned = $totalSigned + $value;
+                    $signed += $value;
+                    $totalSigned += $value;
 
                     if ($contract->getOrder()->getInvoice()->isPaid()) {
                         $isPaid = true;
-                        $paid = $paid + $value;
-                        $totalPaid = $totalPaid + $value;
+                        $paid += $value;
+                        $totalPaid += $value;
                     }
                 }
 

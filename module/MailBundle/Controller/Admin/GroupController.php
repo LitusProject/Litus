@@ -48,7 +48,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
             return new ViewModel();
         }
 
-        if ('organization' == $type) {
+        if ($type == 'organization') {
             if (!($status = $this->getOrganizationStatus())) {
                 return new ViewModel();
             }
@@ -80,7 +80,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                     ->setFrom($formData['from'], $formData['name'])
                     ->setSubject($formData['subject']);
 
-                if ('organization' == $type) {
+                if ($type == 'organization') {
                     $people = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Status\Organization')
                         ->findAllByStatus($status, $this->getCurrentAcademicYear(false));
@@ -95,7 +95,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                 if (!$formData['test']) {
                     $addresses = array();
                     foreach ($people as $person) {
-                        if (null === $person->getPerson()->getEmail()) {
+                        if ($person->getPerson()->getEmail() === null) {
                             continue;
                         }
 
@@ -110,10 +110,10 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                         $mail->addBcc($address['address'], $address['name']);
                         $i++;
 
-                        if (500 == $i) {
+                        if ($i == 500) {
                             $i = 0;
 
-                            if ('development' != getenv('APPLICATION_ENV')) {
+                            if (getenv('APPLICATION_ENV') != 'development') {
                                 $this->getMailTransport()->send($mail);
                             }
 
@@ -122,7 +122,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
                     }
                 }
 
-                if ('development' != getenv('APPLICATION_ENV')) {
+                if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
                 }
 
@@ -158,7 +158,7 @@ class GroupController extends \MailBundle\Component\Controller\AdminController
     {
         $type = $this->getParam('type', '');
 
-        if ('organization' != $type && 'university' != $type) {
+        if ($type != 'organization' && $type != 'university') {
             $this->flashMessenger()->error(
                 'Error',
                 'No type was found!'

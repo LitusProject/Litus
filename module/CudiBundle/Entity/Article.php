@@ -172,7 +172,7 @@ abstract class Article
     }
 
     /**
-     * @param  string  $type
+     * @param  string $type
      * @return boolean
      */
     public static function isValidArticleType($type)
@@ -197,7 +197,7 @@ abstract class Article
     }
 
     /**
-     * @param  string                   $title
+     * @param  string $title
      * @throws InvalidArgumentException
      * @return self
      */
@@ -263,7 +263,7 @@ abstract class Article
     }
 
     /**
-     * @param int $yearPublished
+     * @param integer $yearPublished
      *
      * @return self
      */
@@ -499,7 +499,7 @@ abstract class Article
      */
     public function getSaleArticle()
     {
-        if (null == $this->entityManager) {
+        if ($this->entityManager == null) {
             return null;
         }
 

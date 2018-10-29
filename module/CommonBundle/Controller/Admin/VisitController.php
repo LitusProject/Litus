@@ -31,7 +31,7 @@ class VisitController extends \CommonBundle\Component\Controller\ActionControlle
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field') && ($visits = $this->search())) {
+        if ($this->getParam('field') !== null && ($visits = $this->search())) {
             $paginator = $this->paginator()->createFromQuery(
                 $visits,
                 $this->getParam('page')

@@ -59,15 +59,15 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
 
         $date = new DateTime();
         $startOffset = new DateInterval(
-                $this->getEntityManager()
+            $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('start_academic_year_offset')
-            );
+        );
         $endOffset = new DateInterval(
-                $this->getEntityManager()
+            $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('secretary.date_info_message_interval')
-            );
+        );
 
         $startNewUniversityYear = $academicYear->getUniversityEndDate()->sub($startOffset);
         $startNewAcademicYear = $academicYear->getStartDate()->add(new DateInterval('P1Y'))->sub($endOffset);
@@ -125,7 +125,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                     ->getRepository('SyllabusBundle\Entity\Study')
                     ->findOneById($id);
 
-                if (null === $study) {
+                if ($study === null) {
                     continue;
                 }
 
@@ -142,7 +142,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 }
             }
 
-            if (null === $academic->getUniversityStatus($academicYear) && $academic->canHaveUniversityStatus($academicYear)) {
+            if ($academic->getUniversityStatus($academicYear) === null && $academic->canHaveUniversityStatus($academicYear)) {
                 $academic->addUniversityStatus(
                     new UniversityStatus(
                         $academic,
@@ -152,7 +152,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
                 );
             }
         } else {
-            if (null !== $academic->getUniversityStatus($academicYear)) {
+            if ($academic->getUniversityStatus($academicYear) !== null) {
                 $academic->removeUniversityStatus($academic->getUniversityStatus($academicYear));
             }
         }
@@ -351,7 +351,7 @@ class RegistrationController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('CommonBundle\Entity\User\Person\Organization\AcademicYearMap')
             ->findOneByAcademicAndAcademicYear($academic, $academicYear);
 
-        if (null === $map) {
+        if ($map === null) {
             $this->getEntityManager()->persist(new AcademicYearMap($academic, $academicYear, $organization));
         } else {
             $map->setOrganization($organization);

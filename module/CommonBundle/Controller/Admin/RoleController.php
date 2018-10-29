@@ -288,7 +288,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
      */
     private function updateCache()
     {
-        if (null !== $this->getCache() && $this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
+        if ($this->getCache() !== null && $this->getCache()->hasItem('CommonBundle_Component_Acl_Acl')) {
             $this->getCache()->replaceItem(
                 'CommonBundle_Component_Acl_Acl',
                 new Acl(
@@ -299,8 +299,8 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @param  Action  $action
-     * @param  array   $parents
+     * @param  Action $action
+     * @param  array  $parents
      * @return boolean
      */
     private function findActionWithParents(Action $action, array $parents)

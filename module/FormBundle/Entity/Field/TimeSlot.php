@@ -24,7 +24,6 @@ use CommonBundle\Entity\General\Language;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use FormBundle\Entity\Field;
 use FormBundle\Entity\Node\Form;
 use IntlDateFormatter;
 use Locale;
@@ -35,7 +34,7 @@ use Locale;
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\TimeSlot")
  * @ORM\Table(name="forms.fields_timeslot")
  */
-class TimeSlot extends Field
+class TimeSlot extends \FormBundle\Entity\Field
 {
     /**
      * @var DateTime The start date of the timeslot
@@ -151,7 +150,7 @@ class TimeSlot extends Field
     {
         $translation = $this->getTimeSlotTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getLocation();
         }
 
@@ -168,7 +167,7 @@ class TimeSlot extends Field
     {
         $translation = $this->getTimeSlotTranslation($language, $allowFallback);
 
-        if (null !== $translation) {
+        if ($translation !== null) {
             return $translation->getExtraInformation();
         }
 
@@ -184,7 +183,7 @@ class TimeSlot extends Field
     public function getTimeSlotTranslation(Language $language = null, $allowFallback = true)
     {
         foreach ($this->timeslotTranslations as $translation) {
-            if (null !== $language && $translation->getLanguage() == $language) {
+            if ($language !== null && $translation->getLanguage() == $language) {
                 return $translation;
             }
 

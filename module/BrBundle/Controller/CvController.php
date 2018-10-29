@@ -182,7 +182,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findOneByAcademicAndAcademicYear($this->getCurrentAcademicYear(), $person);
 
-        if (null === $entry) {
+        if ($entry === null) {
             $this->redirect()->toRoute(
                 'br_cv_index',
                 array(
@@ -268,7 +268,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             ->getRepository('BrBundle\Entity\Cv\Entry')
             ->findOneByAcademicAndAcademicYear($this->getCurrentAcademicYear(), $person);
 
-        if (null === $entry) {
+        if ($entry === null) {
             $this->redirect()->toRoute(
                 'br_cv_index',
                 array(
@@ -303,7 +303,7 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
     }
 
     /**
-     * @param  Academic          $person
+     * @param  Academic $person
      * @return FlashMessage|null
      */
     private function getBadAccountMessage(Academic $person)
@@ -319,28 +319,28 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
         }
 
         $address = $person->getSecondaryAddress();
-        if ($address === null || '' == $address->getStreet() || '' == $address->getNumber()
-                || '' == $address->getPostal() || '' == $address->getCity() || '' == $address->getCountryCode()) {
+        if ($address === null || $address->getStreet() == '' || $address->getNumber() == ''
+                || $address->getPostal() == '' || $address->getCity() == '' || $address->getCountryCode() == '') {
             $content .= '<li>' . $this->getTranslator()->translate('Your address') . '</li>';
         }
 
-        if ('' == $person->getFirstName() || '' == $person->getLastName()) {
+        if ($person->getFirstName() == '' || $person->getLastName() == '') {
             $content .= '<li>' . $this->getTranslator()->translate('Your name') . '</li>';
         }
 
-        if ('' == $person->getPhoneNumber()) {
+        if ($person->getPhoneNumber() == '') {
             $content .= '<li>' . $this->getTranslator()->translate('Your phone number') . '</li>';
         }
 
-        if ('' == $person->getPersonalEmail()) {
+        if ($person->getPersonalEmail() == '') {
             $content .= '<li>' . $this->getTranslator()->translate('Your personal email address') . '</li>';
         }
 
-        if ('' == $person->getPhotoPath()) {
+        if ($person->getPhotoPath() == '') {
             $content .= '<li>' . $this->getTranslator()->translate('Your photo') . '</li>';
         }
 
-        if (null === $person->getBirthDay()) {
+        if ($person->getBirthDay() === null) {
             $content .= '<li>' . $this->getTranslator()->translate('Your birthday') . '</li>';
         }
 

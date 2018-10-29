@@ -43,7 +43,7 @@ class Enrollment extends \CommonBundle\Component\Form\Bootstrap\Form
             'name'       => 'students',
             'label'      => 'Students',
             'required'   => true,
-            'value'      => null !== $this->enrollment ? $this->enrollment->getNumber() : '',
+            'value'      => $this->enrollment !== null ? $this->enrollment->getNumber() : '',
             'attributes' => array(
                 'autocomplete' => 'off',
             ),

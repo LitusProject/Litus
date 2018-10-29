@@ -91,11 +91,9 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
             $weight3 += (int) $split[$i * 2 + 1];
         }
         $sum = 1 * $weight1 + 3 * $weight3;
-        $checkdigit = (10 - ($sum % 10)) % 10;
+        $checkdigit = 10 - ($sum % 10) % 10;
 
-        $ean13 = 10 * $ean12 + $checkdigit;
-
-        return $ean13;
+        return 10 * $ean12 + $checkdigit;
     }
 
     /**
@@ -117,7 +115,7 @@ class Ean12 extends \CommonBundle\Entity\User\Barcode
                 ->getRepository('CommonBundle\Entity\User\Barcode\Ean12')
                 ->findOneByBarcode($ean12);
 
-            $done = (null === $barcode) && ($validator->isValid(strval($ean12)));
+            $done = ($barcode === null) && $validator->isValid(strval($ean12));
         } while (!$done);
 
         return $ean12;

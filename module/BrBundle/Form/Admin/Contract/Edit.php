@@ -59,7 +59,7 @@ class Edit extends \BrBundle\Form\Admin\Order\GenerateContract
 
         $this->addSubmit('Save', 'contract_edit');
 
-        if (null !== $this->contract) {
+        if ($this->contract !== null) {
             $this->bind($this->contract);
         }
     }

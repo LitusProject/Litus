@@ -25,7 +25,7 @@ namespace CudiBundle\Form\Admin\Sale\Article;
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
  */
-class View extends Add
+class View extends \CudiBundle\Form\Admin\Sale\Article\Add
 {
     public function init()
     {

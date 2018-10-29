@@ -29,7 +29,7 @@ use FormBundle\Entity\Node\Form\Doodle;
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Pieter Maene <pieter.maene@litus.cc>
  */
-class Edit extends Add
+class Edit extends \FormBundle\Form\Admin\Form\Add
 {
     /**
      * @var Form
@@ -46,7 +46,7 @@ class Edit extends Add
             ->getRepository('FormBundle\Entity\Node\Group\Mapping')
             ->findOneByForm($this->form);
 
-        if (null !== $group) {
+        if ($group !== null) {
             /** @var \CommonBundle\Component\Form\Admin\Element\DateTime $startDateField */
             $startDateField = $this->get('start_date');
             /** @var \CommonBundle\Component\Form\Admin\Element\DateTime $endDateField */
@@ -86,7 +86,7 @@ class Edit extends Add
         $this->remove('submit')
             ->addSubmit('Save', 'form_edit');
 
-        if (null !== $this->form) {
+        if ($this->form !== null) {
             $this->bind($this->form);
         }
     }

@@ -36,7 +36,7 @@ class AbstractValidatorFactory implements AbstractFactoryInterface
     /**
      * @param  ContainerInterface $container
      * @param  string             $requestedName
-     * @return bool
+     * @return boolean
      */
     public function canCreate(ContainerInterface $container, $requestedName)
     {
@@ -45,11 +45,7 @@ class AbstractValidatorFactory implements AbstractFactoryInterface
                 return true;
             }
 
-            if (in_array(ZendAbstractValidator::class, class_parents($requestedName), true)) {
-                return true;
-            }
-
-            return false;
+            return in_array(ZendAbstractValidator::class, class_parents($requestedName), true);
         }
 
         return false;
@@ -58,7 +54,7 @@ class AbstractValidatorFactory implements AbstractFactoryInterface
     /**
      * @param  ContainerInterface $container
      * @param  string             $requestedName
-     * @param  null|array         $options
+     * @param  array|null         $options
      * @return AbstractValidator
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)

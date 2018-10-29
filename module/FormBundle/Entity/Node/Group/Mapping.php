@@ -33,7 +33,7 @@ use FormBundle\Entity\Node\Group;
 class Mapping
 {
     /**
-     * @var int The ID of this mapping
+     * @var integer The ID of this mapping
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -58,7 +58,7 @@ class Mapping
     private $group;
 
     /**
-     * @var int The order of this form
+     * @var integer The order of this form
      *
      * @ORM\Column(name="group_order", type="smallint")
      */

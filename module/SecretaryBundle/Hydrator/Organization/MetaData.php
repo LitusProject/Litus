@@ -30,7 +30,7 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 
@@ -61,7 +61,7 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
         /** @var \CommonBundle\Hydrator\User\Person\Academic $hydrator */
         $hydrator = $this->getHydrator('CommonBundle\Hydrator\User\Person\Academic');
 
-        if (null === $object) {
+        if ($object === null) {
             if (!isset($data['academic'])) {
                 throw new RuntimeException('Cannot create metadata without an academic');
             }
@@ -85,7 +85,7 @@ class MetaData extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $data['organization_info'];
 
-        if ($data['become_member'] == "") {
+        if ($data['become_member'] == '') {
             $data['become_member'] = false;
         }
 

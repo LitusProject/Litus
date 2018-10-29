@@ -24,7 +24,6 @@ use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\Mapping as ORM;
 use FormBundle\Entity\Field\File as FileField;
 use FormBundle\Entity\Node\Entry;
-use FormBundle\Entity\Node\Form as BaseForm;
 
 /**
  * This entity stores the node item.
@@ -32,7 +31,7 @@ use FormBundle\Entity\Node\Form as BaseForm;
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Node\Form\Form")
  * @ORM\Table(name="nodes.forms_forms")
  */
-class Form extends BaseForm
+class Form extends \FormBundle\Entity\Node\Form
 {
     /**
      * @return string

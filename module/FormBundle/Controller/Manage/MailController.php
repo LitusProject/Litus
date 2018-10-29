@@ -84,7 +84,7 @@ class MailController extends \FormBundle\Component\Controller\FormController
                         ->addTo($entry->getPersonInfo()->getEmail(), $entry->getPersonInfo()->getFullName())
                         ->setSubject($formData['subject']);
 
-                    if ('development' != getenv('APPLICATION_ENV')) {
+                    if (getenv('APPLICATION_ENV') != 'development') {
                         $this->getMailTransport()->send($mail);
                     }
                 }

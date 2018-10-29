@@ -21,7 +21,6 @@
 namespace CommonBundle\Component\Authentication\Service;
 
 use CommonBundle\Component\Authentication\Action;
-use CommonBundle\Component\Authentication\Adapter\Doctrine as DoctrineAdapter;
 use CommonBundle\Component\Authentication\Result\Doctrine as Result;
 use Doctrine\ORM\EntityManager;
 use Zend\Authentication\Adapter\AdapterInterface;
@@ -47,23 +46,29 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     private $entityName = '';
 
     /**
-     * @param  EntityManager                      $entityManager The EntityManager instance
-     * @param  string                             $entityName    The name of the entity that holds the sessions
-     * @param  int                                $expire        The expiration time for the persistent storage
-     * @param  StorageInterface                   $storage       The persistent storage handler
-     * @param  string                             $namespace     The namespace the storage handlers will use
-     * @param  string                             $cookieSuffix  The cookie suffix that is used to store the session cookie
-     * @param  Action                             $action        The action that should be taken after authentication
+     * @param  EntityManager    $entityManager The EntityManager instance
+     * @param  string           $entityName    The name of the entity that holds the sessions
+     * @param  integer          $expire        The expiration time for the persistent storage
+     * @param  StorageInterface $storage       The persistent storage handler
+     * @param  string           $namespace     The namespace the storage handlers will use
+     * @param  string           $cookieSuffix  The cookie suffix that is used to store the session cookie
+     * @param  Action           $action        The action that should be taken after authentication
      * @throws Exception\InvalidArgumentException The entity name cannot have a leading backslash
      */
     public function __construct(
-        EntityManager $entityManager, $entityName, $expire, StorageInterface $storage, $namespace, $cookieSuffix, Action $action
+        EntityManager $entityManager,
+        $entityName,
+        $expire,
+        StorageInterface $storage,
+        $namespace,
+        $cookieSuffix,
+        Action $action
     ) {
         parent::__construct($storage, $namespace, $cookieSuffix, $expire, $action);
 
         $this->entityManager = $entityManager;
 
-        if ('\\' == substr($entityName, 0, 1)) {
+        if (substr($entityName, 0, 1) == '\\') {
             throw new Exception\InvalidArgumentException(
                 'The entity name cannot have a leading backslash'
             );
@@ -83,13 +88,13 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     public function authenticate(AdapterInterface $adapter = null, $rememberMe = false, $shibboleth = false)
     {
         $result = null;
-        if (null == $this->request) {
+        if ($this->request == null) {
             return;
         }
 
         $server = $this->request->getServer();
 
-        if ('' == $this->getIdentity() && null !== $adapter) {
+        if ($this->getIdentity() == '' && $adapter !== null) {
             $adapterResult = $adapter->authenticate();
 
             if ($adapterResult->isValid()) {
@@ -128,14 +133,14 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
                 $this->getIdentity()
             );
 
-            if (null !== $session) {
+            if ($session !== null) {
                 $sessionValidation = $session->validate(
                     $this->entityManager,
                     $server->get('HTTP_USER_AGENT'),
                     $server->get('HTTP_X_FORWARDED_FOR', $server->get('REMOTE_ADDR'))
                 );
 
-                if (true !== $sessionValidation) {
+                if ($sessionValidation !== true) {
                     $this->getStorage()->write($sessionValidation);
 
                     if ($this->hasCookie() || $rememberMe) {
@@ -145,12 +150,12 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
                     }
                 }
 
-                if (false !== $sessionValidation) {
+                if ($sessionValidation !== false) {
                     $result = new Result(
                         Result::SUCCESS,
                         $session->getPerson()->getUsername(),
                         array(
-                             'Authentication successful',
+                            'Authentication successful',
                         ),
                         $session->getPerson(),
                         $session
@@ -191,7 +196,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
             $this->getIdentity()
         );
 
-        if (null !== $session) {
+        if ($session !== null) {
             $session->deactivate();
             $this->entityManager->flush();
         }
@@ -205,7 +210,7 @@ class Doctrine extends \CommonBundle\Component\Authentication\AbstractAuthentica
     /**
      * Checks whether or not there is a stored session identity.
      *
-     * @return bool
+     * @return boolean
      */
     public function hasIdentity()
     {

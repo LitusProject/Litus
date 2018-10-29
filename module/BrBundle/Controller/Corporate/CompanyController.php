@@ -20,11 +20,6 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use BrBundle\Entity\Company;
-use BrBundle\Entity\Company\Job;
-use BrBundle\Entity\Company\Request\RequestVacancy;
-use BrBundle\Entity\User\Person\Corporate;
-use Zend\Mail\Message;
 use Zend\View\Model\ViewModel;
 
 /**

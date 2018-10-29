@@ -29,7 +29,7 @@ class Ticket extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             throw new InvalidObjectException();
         }
 
@@ -45,13 +45,13 @@ class Ticket extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $numbers = array(
-            'member'     => isset($data['options_form']['number_member']) ? $data['options_form']['number_member'] : 0,
-            'non_member' => isset($data['options_form']['number_non_member']) ? $data['options_form']['number_non_member'] : 0,
+            'member'     => $data['options_form']['number_member'] ?? 0,
+            'non_member' => $data['options_form']['number_non_member'] ?? 0,
         );
 
         foreach ($object->getOptions() as $option) {
             $numbers['option_' . $option->getId() . '_number_member'] = $data['options_form']['option_' . $option->getId() . '_number_member'];
-            $numbers['option_' . $option->getId() . '_number_non_member'] = isset($data['options_form']['option_' . $option->getId() . '_number_non_member']) ? $data['options_form']['option_' . $option->getId() . '_number_non_member'] : 0;
+            $numbers['option_' . $option->getId() . '_number_non_member'] = $data['options_form']['option_'.$option->getId().'_number_non_member'] ?? 0;
         }
 
         return TicketBook::book(

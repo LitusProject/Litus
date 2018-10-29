@@ -44,10 +44,10 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
 
     public function init()
     {
-        if (null === $this->event) {
+        if ($this->event === null) {
             throw new LogicException('Cannot book ticket for null form.');
         }
-        if (null === $this->person) {
+        if ($this->person === null) {
             throw new RuntimeException('You have to be logged in to book tickets.');
         }
 
@@ -163,7 +163,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
         $numbers = array();
         $max = $this->event->getLimitPerPerson() == 0 ? 10 : $this->event->getLimitPerPerson();
 
-        for ($i = 0 ; $i <= $max ; $i++) {
+        for ($i = 0; $i <= $max; $i++) {
             $numbers[$i] = $i;
         }
 

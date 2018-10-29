@@ -37,7 +37,7 @@ class Collaborator extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new CollaboratorEntity(
                 $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\Person')
@@ -50,7 +50,7 @@ class Collaborator extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array();
         }
 

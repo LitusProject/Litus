@@ -27,7 +27,7 @@ class Poc extends \CommonBundle\Component\Hydrator\Hydrator
     //notice that the group is not hydrated here, the group will be set in the poccontroller.
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new PocEntity();
         }
 
@@ -35,7 +35,7 @@ class Poc extends \CommonBundle\Component\Hydrator\Hydrator
 
         $object->setAcademic($this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                ->findOneById($data['person']['id']) );
+                ->findOneById($data['person']['id']));
 
         return $object;
     }
@@ -43,6 +43,7 @@ class Poc extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doExtract($object = null)
     {
     }
+
     protected function dataToGroup($groupData)
     {
         return $this->getEntityManager()

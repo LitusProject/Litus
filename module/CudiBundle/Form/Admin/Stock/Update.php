@@ -37,7 +37,7 @@ class Update extends \CommonBundle\Component\Form\Admin\Form
 
     public function init()
     {
-        if (null === $this->article) {
+        if ($this->article === null) {
             throw new LogicException('Cannot update the stock of a null article');
         }
 

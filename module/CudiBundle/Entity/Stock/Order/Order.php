@@ -198,7 +198,7 @@ class Order
      */
     public function isOrdered()
     {
-        return null !== $this->dateOrdered;
+        return $this->dateOrdered !== null;
     }
 
     /**

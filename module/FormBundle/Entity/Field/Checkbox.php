@@ -22,7 +22,6 @@ namespace FormBundle\Entity\Field;
 
 use CommonBundle\Entity\General\Language;
 use Doctrine\ORM\Mapping as ORM;
-use FormBundle\Entity\Field;
 
 /**
  * This entity stores the node item.
@@ -30,7 +29,7 @@ use FormBundle\Entity\Field;
  * @ORM\Entity(repositoryClass="FormBundle\Repository\Field\Checkbox")
  * @ORM\Table(name="forms.fields_checkboxes")
  */
-class Checkbox extends Field
+class Checkbox extends \FormBundle\Entity\Field
 {
     /**
      * @param  Language $language

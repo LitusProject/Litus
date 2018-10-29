@@ -32,7 +32,7 @@ namespace CommonBundle\Component\ServiceManager\ServiceLocatorAware;
 trait SentryTrait
 {
     /**
-     * @return bool
+     * @return boolean
      */
     protected function hasSentry()
     {

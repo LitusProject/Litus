@@ -163,7 +163,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         while ($now < $maxDate) {
             $listStart = array();
             $listEnd = array();
-            if (null !== $config[$now->format('N')]) {
+            if ($config[$now->format('N')] !== null) {
                 foreach ($config[$now->format('N')] as $slot) {
                     $startSlot = clone $now;
                     $startSlot->setTime(

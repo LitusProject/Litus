@@ -40,7 +40,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
         $submenu = $this->buildSubmenu($page);
         $parent = $page->getParent();
-        if (empty($submenu) && null !== $parent) {
+        if (empty($submenu) && $parent !== null) {
             $submenu = $this->buildSubmenu($parent);
         }
 
@@ -89,7 +89,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         $page = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Node\Page')
             ->findOneByNameAndParent(
-                $this->getParam('name', ''), $this->getParam('parent')
+                $this->getParam('name', ''),
+                $this->getParam('parent')
             );
 
         if (!($page instanceof Page)) {

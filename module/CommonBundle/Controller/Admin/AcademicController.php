@@ -21,7 +21,7 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Person\Academic;
-use CudiBundle\Component\WebSocket\Sale\Printer as Printer;
+use CudiBundle\Component\WebSocket\Sale\Printer;
 use Doctrine\ORM\Query;
 use Zend\View\Model\ViewModel;
 
@@ -34,7 +34,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 {
     public function manageAction()
     {
-        if (null !== $this->getParam('field') && ($academics = $this->search())) {
+        if ($this->getParam('field') !== null && ($academics = $this->search())) {
             $paginator = $this->paginator()->createFromQuery(
                 $academics,
                 $this->getParam('page')
@@ -275,9 +275,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
                 $item = (object) array();
                 $item->id = $academic->getId();
                 $item->username = $academic->getUsername();
-                $item->universityIdentification = (
-                    null !== $academic->getUniversityIdentification() ? $academic->getUniversityIdentification() : ''
-                );
+                $item->universityIdentification = ($academic->getUniversityIdentification() ?? '');
                 $item->fullName = $academic->getFullName();
                 $item->email = $academic->getEmail();
 
@@ -336,7 +334,7 @@ class AcademicController extends \CommonBundle\Component\Controller\ActionContro
 
         return new ViewModel(
             array(
-                "result" => array("status" => "success"),
+                'result' => array('status' => 'success'),
             )
         );
     }

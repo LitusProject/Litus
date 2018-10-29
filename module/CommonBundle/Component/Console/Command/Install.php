@@ -74,7 +74,7 @@ EOT
 
     private function getModule()
     {
-        $calledClass = get_called_class();
+        $calledClass = static::class;
 
         return substr($calledClass, 0, strpos($calledClass, '\\', 1));
     }

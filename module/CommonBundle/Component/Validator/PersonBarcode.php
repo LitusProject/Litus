@@ -20,8 +20,6 @@
 
 namespace CommonBundle\Component\Validator;
 
-use CommonBundle\Entity\User\Person;
-
 class PersonBarcode extends \CommonBundle\Component\Validator\AbstractValidator
 {
     const NOT_VALID = 'notValid';
@@ -42,7 +40,7 @@ class PersonBarcode extends \CommonBundle\Component\Validator\AbstractValidator
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -67,7 +65,7 @@ class PersonBarcode extends \CommonBundle\Component\Validator\AbstractValidator
     {
         $this->setValue($value);
 
-        if (null === $this->options['person']) {
+        if ($this->options['person'] === null) {
             return true;
         }
 
@@ -75,7 +73,7 @@ class PersonBarcode extends \CommonBundle\Component\Validator\AbstractValidator
             ->getRepository('CommonBundle\Entity\User\Barcode')
             ->findOneByBarcode($value);
 
-        if (null === $barcode || ($this->options['person'] && $barcode->getPerson() == $this->options['person'])) {
+        if ($barcode === null || ($this->options['person'] && $barcode->getPerson() == $this->options['person'])) {
             return true;
         }
 

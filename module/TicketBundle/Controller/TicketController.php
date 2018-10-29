@@ -55,8 +55,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 $formData = $form->getData();
 
                 $numbers = array(
-                    'member'     => isset($formData['number_member']) ? $formData['number_member'] : 0,
-                    'non_member' => isset($formData['number_non_member']) ? $formData['number_non_member'] : 0,
+                    'member'     => $formData['number_member'] ?? 0,
+                    'non_member' => $formData['number_non_member'] ?? 0,
                 );
 
                 foreach ($event->getOptions() as $option) {

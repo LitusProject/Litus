@@ -293,8 +293,8 @@ class Booking
     }
 
     /**
-     * @param  string                   $status
-     * @param  EntityManager            $entityManager
+     * @param  string        $status
+     * @param  EntityManager $entityManager
      * @throws InvalidArgumentException
      * @return self
      */

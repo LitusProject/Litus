@@ -54,7 +54,7 @@ class ModuleGroup extends \CommonBundle\Component\Validator\AbstractValidator im
     /**
      * Sets validator options
      *
-     * @param int|array|\Traversable $options
+     * @param integer|array|\Traversable $options
      */
     public function __construct($options = array())
     {
@@ -96,7 +96,7 @@ class ModuleGroup extends \CommonBundle\Component\Validator\AbstractValidator im
             ->getRepository('SyllabusBundle\Entity\Study\SubjectMap')
             ->findOneByModuleGroupSubjectAndAcademicYear($moduleGroup, $this->options['subject'], $this->options['academic_year']);
 
-        if (null === $mapping) {
+        if ($mapping === null) {
             return true;
         }
 

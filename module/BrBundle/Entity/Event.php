@@ -35,7 +35,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Event
 {
     /**
-     * @var int The event's unique identifier
+     * @var integer The event's unique identifier
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -90,7 +90,7 @@ class Event
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {

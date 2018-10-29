@@ -20,8 +20,6 @@
 
 namespace ShopBundle\Form\Shop;
 
-use Zend\Form\Element;
-
 /**
  * Reserve
  *

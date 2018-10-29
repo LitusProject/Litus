@@ -32,7 +32,7 @@ use LogisticsBundle\Entity\Driver;
  * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\Reservation\VanReservation")
  * @ORM\Table(name="logistics.reservations_van")
  */
-class VanReservation extends Reservation
+class VanReservation extends \LogisticsBundle\Entity\Reservation\Reservation
 {
     const VAN_RESOURCE_NAME = 'Van';
 

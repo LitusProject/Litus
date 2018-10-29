@@ -36,7 +36,7 @@ class PrimaryAddress extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doExtract($object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             return array(
                 'country' => 'BE',
                 'city'    => '',
@@ -49,7 +49,7 @@ class PrimaryAddress extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        if (null !== $city) {
+        if ($city !== null) {
             $data['city'] = $city->getId();
 
             $street = $this->getEntityManager()
@@ -69,7 +69,7 @@ class PrimaryAddress extends \CommonBundle\Component\Hydrator\Hydrator
 
     protected function doHydrate(array $data, $object = null)
     {
-        if (null === $object) {
+        if ($object === null) {
             $object = new AddressEntity();
         }
 
