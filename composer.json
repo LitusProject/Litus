@@ -82,10 +82,5 @@
             "TicketBundle\\": "module/TicketBundle",
             "WikiBundle\\": "module/WikiBundle"
         }
-    },
-    "scripts": {
-        "phpcs": "vendor/bin/phpcs",
-        "phpcbf": "vendor/bin/phpcbf",
-        "phpstan": "vendor/bin/phpstan"
     }
 }

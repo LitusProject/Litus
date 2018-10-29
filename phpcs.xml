@@ -10,7 +10,6 @@
 
     <arg name="colors"/>
     <arg name="extensions" value="php"/>
-    <arg value="p"/>
 
     <rule ref="PSR2">
         <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace"/>

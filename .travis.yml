@@ -13,11 +13,12 @@ cache:
         - $HOME/.composer/cache
 
 env:
+    - LITUS_TEST=analyze
     - LITUS_TEST=install
-    - LITUS_TEST=codestyle
 
 before_install: phpenv config-add travis/config/php.ini
 
 install: travis/bin/install.sh
 
 script: travis/bin/test.sh $LITUS_TEST
+

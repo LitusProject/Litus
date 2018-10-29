@@ -21,8 +21,8 @@ db.createUser({
 EOF
 }
 
-codestyle() {
-    vendor/bin/php-cs-fixer fix -vvv
+phpcs() {
+    vendor/bin/phpcs --report=summary
 }
 
 install() {
@@ -33,8 +33,8 @@ install() {
 }
 
 case $1 in
-    codestyle)
-        codestyle
+    analyze)
+        phpcs
         ;;
     install)
         install
